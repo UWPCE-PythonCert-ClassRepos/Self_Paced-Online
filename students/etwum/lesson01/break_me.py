@@ -1,5 +1,5 @@
 def name_error():
-    "a name error is expected to occur"
+    #a name error is expected to occur
     x = 5
     y = 6
     print(w)
@@ -9,7 +9,7 @@ name_error()
 
 
 def type_error():
-    "a type error is expected to occur"
+    #a type error is expected to occur
     x = 5
     y = "4"
     z = x + y
@@ -19,14 +19,14 @@ def type_error():
 type_error()
 
 def syntax_error():
-    "a syntax error is expected to occur"
+    #a syntax error is expected to occur
     print x
 
 syntax_error()
 
 
 def attribute_error():
-    "an attribute error is expected to occur"
+    #an attribute error is expected to occur
     x = 5
     x.random
 
