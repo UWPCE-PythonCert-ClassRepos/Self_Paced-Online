@@ -33,5 +33,19 @@ def print_fixed_grid():
     print(tmb + (4 * bars) + tmb + (4 * bars) + tmb)
 
 
+def print_grid(d):
+    '''
+    This function prints a 2 x 2 cell grid where length = width = d
+    '''
+
+    if d < 0:
+        return None
+
+    print_row(2, int(d / 2), False)
+    print_row(2, int(d / 2), True)
+    print()
+
+
 if __name__ == '__main__':
     print_fixed_grid()
+    print_grid(4)
