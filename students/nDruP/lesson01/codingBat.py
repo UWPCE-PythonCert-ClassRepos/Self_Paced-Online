@@ -1,3 +1,5 @@
+#For any of the exercises that I'm having trouble w/
+
 def last2(str):
   if len(str)<3:
     return 0
