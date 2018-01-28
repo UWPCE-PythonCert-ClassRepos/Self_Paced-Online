@@ -46,6 +46,20 @@ def print_grid(d):
     print()
 
 
+def print_grid2(n, sz):
+    '''
+    This function prints a n x n cell grid where each cell is of size sz.
+    '''
+
+    if n < 0 or sz < 0:
+        return None
+
+    for i in range(n):
+        print_row(n, sz, True if (i == n - 1) else False)
+    print()
+
+
 if __name__ == '__main__':
     print_fixed_grid()
     print_grid(4)
+    print_grid2(5, 1)
