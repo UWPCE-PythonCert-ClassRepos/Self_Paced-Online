@@ -32,12 +32,12 @@ while(True):
     # while loop to get user input
     while boolInput != True:
 
-        # try/except for catch user inputs other than a number
+        # try/except block to catch user inputs other than whole numbers
         try:
             grid_size = int(input('Please enter a number to determine the rows and column in the grid: '))
             unit_size = int(input('Please enter a number to determine the the unit size: '))
         except ValueError as b:
-            print('Please input numbers only')
+            print('Please input whole numbers only')
             print()
         else:
             boolInput = True
