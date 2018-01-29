@@ -8,7 +8,7 @@ def print_grid(dimensions, units):
         # column
         print('+' + ' - ' * units + '+')
 
-        #row
+        # row
         print(((("|" + "   " * units + "|") * (dimensions) + "\n") * (units) +
                ('+' + ' - ' * units + '+') * (dimensions) + "\n") * (dimensions))
 
@@ -46,7 +46,7 @@ while(True):
     print_grid(grid_size,unit_size)
 
     # exit the program or continue the loop
-    exit_program = input('Would you like to exit (y or n)')
+    exit_program = input('Would you like to exit? (y or n) ')
     if exit_program.lower() == 'y':
         break
     else:
