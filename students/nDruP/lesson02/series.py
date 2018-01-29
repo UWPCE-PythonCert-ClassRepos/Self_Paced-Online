@@ -1,3 +1,6 @@
+import random
+import timeit
+
 def fibonacci_recursive(n):
     """
     Recursively compute the nth Fibonacci number (where n>1).
@@ -11,7 +14,7 @@ def fibonacci_recursive(n):
         return 1
     return fibonacci_recursive(n-2)+fibonacci_recursive(n-1)
 
-def fibonacci_loop(n):
+def fibonacci(n):
     """
     Compute the nth fibonacci number with a loop (where n>1).
     The 0th fibonacci number is 0
@@ -30,12 +33,17 @@ def fibonacci_loop(n):
     return fibo[1]
 
 
-print('The first 10 fibonacci numbers (starting at 0): recursively')
-for x in range(10):
+n = 35
+start = timeit.default_timer()
+print('The first '+str(n)+' fibonacci numbers (starting at 0): recursively')
+for x in range(n):
     print(fibonacci_recursive(x), end=', ')
-print(fibonacci_recursive(10))
+print(fibonacci_recursive(n))
+print(timeit.default_timer()-start)
 
-print('The first 10 fibonacci numbers (starting at 0): w/ a loop')
-for x in range(10):
-    print(fibonacci_loop(x), end=', ')
-print(fibonacci_loop(10))
+start = timeit.default_timer()
+print('The first '+str(n)+' fibonacci numbers (starting at 0): w/ a loop')
+for x in range(n):
+    print(fibonacci(x), end=', ')
+print(fibonacci(n))
+print(timeit.default_timer()-start)
