@@ -25,7 +25,7 @@ def series2():
     print(fruits)
     fruits.pop()
     print(fruits)
-    toDelete = input("Which fruit do you want to delete? /n")
+    toDelete = input("Which fruit do you want to delete? \n")
     for f in fruits:
         if f == toDelete:
             fruits.remove(toDelete)
@@ -41,4 +41,13 @@ def series3():
 
     if ans == 'no':
         fruits.remove('Apples')
+    print(fruits)
+
+#Series #4
+def series4():
+    new_fruits = fruits
+    for i in range(len(new_fruits)):
+        new_fruits[i] = new_fruits[i][-1::-1]
+    fruits.pop()
+    print(new_fruits)
     print(fruits)
