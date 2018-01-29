@@ -50,18 +50,83 @@ def lucas(n):
         return luca[n]
     return luca[1]
 
+def sum_series(n, zeroth=0, first=1):
+    """
+    Compute the nth sum in the series with a loop (where n>1).
+    The 0th sum series number is zeroth
+    The 1st sum series number is first
+    The nth sum series number is the (n-2)th - (n-1)th sum series number
+    """
+    series = [zeroth,first]
+    swap = 0
+    if n > 1:
+        for x in range(n-1):
+            swap = series[1]
+            series[1] = series[0]+series[1]
+            series[0] = swap
+    else:
+        return series[n]
+    return series[1]
 
-n = 35
-start = timeit.default_timer()
-print('The first '+str(n)+' fibonacci numbers (starting at 0): recursively')
-for x in range(n):
-    print(fibonacci_recursive(x), end=', ')
-print(fibonacci_recursive(n))
-print(timeit.default_timer()-start)
+def testing(n=10):
+    #First 10 Fibonacci numbers for assert statements
+    fibonacciNums = [0,1,1,2,3,5,8,13,21,34,55]
+    #First 10 Lucas numbers for assert statements
+    lucasNums = [2,1,3,4,7,11,18,29,47,76,123]
+    #First 10 numbers of sum series starting w/ 12 and 7
+    weird  = [12,7,19,26,45,71,116,187,303,490,793]
 
-start = timeit.default_timer()
-print('The first '+str(n)+' fibonacci numbers (starting at 0): w/ a loop')
-for x in range(n):
-    print(fibonacci(x), end=', ')
-print(fibonacci(n))
-print(timeit.default_timer()-start)
+    #Check fibonacci_recursive fxn returns the correct fibo numbers
+    start = timeit.default_timer()
+    print('The first '+str(n)+' fibonacci numbers (starting at 0): recursively')
+    for x in range(n):
+        print(fibonacci_recursive(x), end=', ')
+        assert fibonacci_recursive(x)==fibonacciNums[x]
+        print(fibonacci_recursive(n))
+    assert fibonacci_recursive(n)==fibonacciNums[n]
+    print(timeit.default_timer()-start)
+
+    #Check fibonacci fxn returns the correct fibo numbers
+    start = timeit.default_timer()
+    print('The first '+str(n)+' fibonacci numbers (starting at 0): w/ a loop')
+    for x in range(n):
+        print(fibonacci(x), end=', ')
+        assert fibonacci(x)==fibonacciNums[x]
+    print(fibonacci(n))
+    assert fibonacci(n) == fibonacciNums[n]
+    print(timeit.default_timer()-start)
+
+    #Check lucas fxn returns the correct lucas numbers
+    print('The first '+str(n)+' lucas numbers (starting at 0): w/ a loop')
+    for x in range(n):
+        print(lucas(x), end=', ')
+        assert lucas(x)==lucasNums[x]
+    print(lucas(n))
+    assert lucas(n)==lucasNums[n]
+
+    #Check default sum_series fxn returns fibonacci numbers
+    print('The first '+str(n)+' fibo nums w/ sum_series')
+    for x in range(n):
+        print(sum_series(x), end=', ')
+        assert sum_series(x)==fibonacciNums[x]
+    print(sum_series(n))
+    assert sum_series(n)==fibonacciNums[n]
+
+    #Check sum_series w/ lucas parameters returns lucas series
+    print('The first '+str(n)+' lucas nums w/ sum_series')
+    for x in range(n):
+        print(sum_series(x,2,1), end=', ')
+        assert sum_series(x,2,1)==lucasNums[x]
+    print(sum_series(n,2,1))
+    assert sum_series(n,2,1)==lucasNums[n]
+
+    #Check sum_series w/ 12,7 as first 2 elements returns correct series
+    print('The first '+str(n)+' weird nums w/ sum_series: 12,7')
+    for x in range(n):
+        print(sum_series(x,12,7), end=', ')
+        assert sum_series(x,12,7)==weird[x]
+    print(sum_series(n,12,7))
+    assert sum_series(n,12,7)==weird[n]
+
+
+testing()
