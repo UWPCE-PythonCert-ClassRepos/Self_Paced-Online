@@ -32,6 +32,24 @@ def fibonacci(n):
         return fibo[n]
     return fibo[1]
 
+def lucas(n):
+    """
+    Compute the nth lucas number with a loop (where n>1).
+    The 0th Lucas number is 2
+    The 1st lucas number is 1
+    The nth lucas number is the (n-2)th - (n-1)th lucas number
+    """
+    luca = [2,1]
+    lastLuca = 0
+    if n > 1:
+        for x in range(n-1):
+            lastLuca = luca[1]
+            luca[1] = luca[0]+luca[1]
+            luca[0] = lastLuca
+    else:
+        return luca[n]
+    return luca[1]
+
 
 n = 35
 start = timeit.default_timer()
