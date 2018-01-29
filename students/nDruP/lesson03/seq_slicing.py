@@ -6,6 +6,8 @@ def swap_first_last(seq):
 def rm_every_other(seq):
     return seq[0:len(seq):2]
 
+
+
 one_element = [51]
 string_a = 'Love Galore'
 seq_a = [5,3,1,2,4,6]
