@@ -1,4 +1,3 @@
-import random
 import timeit
 
 def fibonacci_recursive(n):
