@@ -2,15 +2,16 @@
 
 
 def fizz_buzz(n):
-    '''
-    This function prints all integers from 1 to n inclusive with the following
-    rules:
+    """Print all integers from 1 to n inclusive with the following rules:
+
     * Integers that are multiples of 3: print "Fizz"
     * Integers that are multiples of 5: print "Buzz"
     * Integers that are multiples of both 3 and 5: print "FizzBuzz"
     * Print all other integers
-    '''
 
+    Args:
+        n (int): max value
+    """
     for i in range(1, n + 1):
         if (i % 15 == 0):
             print('FizzBuzz')
