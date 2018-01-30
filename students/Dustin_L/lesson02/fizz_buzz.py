@@ -13,7 +13,7 @@ def fizz_buzz(n):
         n (int): max value
     """
     for i in range(1, n + 1):
-        if (i % 15 == 0):
+        if i % 15 == 0:
             print('FizzBuzz')
         elif i % 3 == 0:
             print('Fizz')
