@@ -20,6 +20,12 @@ def rm_firstlast4_every_other(seq):
     seq = seq[4:len(seq)-4]
     return seq[0:len(seq):2]
 
+def reverse_seq(seq):
+    """
+    Reverse a given sequence
+    """
+    return seq[len(seq):0:-1]+seq[0:1]
+
 one_element = [51]
 string_a = 'Love Galore'
 seq_a = [5,3,1,2,4,6]
@@ -40,4 +46,9 @@ assert rm_firstlast4_every_other(string_a)==' a'
 assert rm_firstlast4_every_other(seq_a) == []
 assert rm_firstlast4_every_other(tuple_a) == ()
 assert rm_firstlast4_every_other(one_element) == []
-assert rm_firstlast4_every_other(long_seq)
+assert rm_firstlast4_every_other(long_seq) == [4,6,8,10,12]
+
+assert reverse_seq(string_a) == 'erolaG evoL'
+assert reverse_seq(seq_a) == [6,4,2,1,3,5]
+assert reverse_seq(tuple_a) == (6,4,2,1,3,5)
+assert reverse_seq(one_element) == [51]
