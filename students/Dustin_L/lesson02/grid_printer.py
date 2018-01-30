@@ -2,13 +2,18 @@
 
 
 def print_row(n, sz, bottom):
-    '''
-    This function prints a single row of n cells where each cell is of size sz.
-    The bottom line of the row is only printed if 'bottom' is True.
-    '''
+    """Print a single row
 
+    Print a single row of n cells of size sz. The bottom line of the row is only
+    printed if 'bottom' is True.
+
+    Args:
+        n (int): number of cells
+        sz (int): size of each cell
+        bottom (bool): include bottom line if True
+    """
     if n < 0 or sz < 0:
-        return None
+        return
 
     # Top and bottom line definition
     tb = ('+ ' + ('- ' * sz)) * n + '+' + '\n'
@@ -23,23 +28,21 @@ def print_row(n, sz, bottom):
 
 
 def print_fixed_grid():
-    '''
-    This function prints a 2 x 2 cell grid where length = width = 8
-    '''
-
-    tmb = '+ - - - - + - - - - +\n'
+    """Print a 2 x 2 cell grid where length = width = 0"""
+    tmb  = '+ - - - - + - - - - +\n'
     bars = '|         |         |\n'
 
     print(tmb + (4 * bars) + tmb + (4 * bars) + tmb)
 
 
 def print_grid(d):
-    '''
-    This function prints a 2 x 2 cell grid where length = width = d
-    '''
+    """Print a 2 x 2 cell grid where length = width = d
 
+    Args:
+        d (int): length and width of grid
+    """
     if d < 0:
-        return None
+        return
 
     print_row(2, int(d / 2), False)
     print_row(2, int(d / 2), True)
@@ -47,12 +50,14 @@ def print_grid(d):
 
 
 def print_grid2(n, sz):
-    '''
-    This function prints a n x n cell grid where each cell is of size sz.
-    '''
+    """Print a n x n cell grid where each cell is of size sz.
 
+    Args:
+        n (int): grid dimensions
+        sz (int): size of each cell
+    """
     if n < 0 or sz < 0:
-        return None
+        return
 
     for i in range(n):
         print_row(n, sz, True if (i == n - 1) else False)
