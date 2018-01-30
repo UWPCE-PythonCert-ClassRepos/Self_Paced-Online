@@ -7,7 +7,7 @@ def remove_every_other(seq):
     """remove every other item from sequence"""
 
 def remove_first_and_last_four(seq):
-    """remove the first and the last four of the sequence, return the middle"""
+    """remove the first four and the last four of the sequence, return the middle"""
 
 def reverse_seq(seq):
     """reverse a sequence"""

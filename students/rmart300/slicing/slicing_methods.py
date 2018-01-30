@@ -10,8 +10,8 @@ def remove_every_other(seq):
     return seq[::2]
 
 def remove_first_and_last_four(seq):
-    """remove the first and the last four of the sequence, return the middle"""
-    return seq[1:-4]
+    """remove the first four and the last four of the sequence, return the middle"""
+    return seq[4:-4]
 
 def reverse_seq(seq):
     """reverse a sequence"""
@@ -35,8 +35,8 @@ if __name__ == '__main__':
     assert remove_every_other(a_string) == "ti sasrn"
     assert remove_every_other(a_tuple) == (2, 13, 5)
 
-    assert remove_first_and_last_four(a_string) == "his is a st"
-    assert remove_first_and_last_four(a_tuple) == (54, )
+    assert remove_first_and_last_four(a_string) == " is a st"
+    assert remove_first_and_last_four(a_tuple) == ()
  
     assert reverse_seq(a_string) == "gnirts a si siht"
     assert reverse_seq(a_tuple) == (32, 5, 12, 13, 54, 2)
