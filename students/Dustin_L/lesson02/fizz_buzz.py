@@ -7,10 +7,10 @@ def fizz_buzz(n):
     * Integers that are multiples of 3: print "Fizz"
     * Integers that are multiples of 5: print "Buzz"
     * Integers that are multiples of both 3 and 5: print "FizzBuzz"
-    * Print all other integers
+    * Print all other integers as is
 
     Args:
-        n (int): max value
+        n (int): max integer value
     """
     for i in range(1, n + 1):
         if i % 15 == 0:
