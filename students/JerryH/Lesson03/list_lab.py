@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
 
-fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
 #Series 1
 def series1():
+    fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
     print(fruits)
-    addFruit = input("What fruit do you want to add?\n")
-    fruits.append(addFruit)
+    add_fruit = input("What fruit do you want to add?\n")
+    fruits.append(add_fruit)
     print(fruits)
-    num = int(input("Enter a number:\n"))
-    print(num)
-    print("The fruit is {}".format(fruits[num-1]))
-    someFruit = input("Add another fruit:\n")
-    fruits = [someFruit] + fruits
+    num = int(input("Enter a number to choose which fruit you want:\n"))
+    while num > len(fruits):
+        num = int(input("Enter a number less or equal than {}\n".format(len(fruits))))
+
+    print("The fruit you chose is {}".format(fruits[num-1]))
+    some_fruit = input("Add another fruit:\n")
+    fruits = [some_fruit] + fruits
     print(fruits)
-    anotherFruit = input("Add another fruit again:\n")
-    fruits.insert(0,anotherFruit)
+    another_fruit = input("Add another fruit again:\n")
+    fruits.insert(0,another_fruit)
     print(fruits)
     for i in range(len(fruits)):
         if fruits[i][0] == 'P':
@@ -22,30 +24,35 @@ def series1():
 
 #Series 2
 def series2():
+    fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
     print(fruits)
     fruits.pop()
-    print(fruits)
-    toDelete = input("Which fruit do you want to delete? \n")
+    print("Fruit list after pop() is {}".format(fruits))
+    to_delete = input("Which fruit do you want to delete? \n")
     for f in fruits:
-        if f == toDelete:
-            fruits.remove(toDelete)
-    print(fruits)
+        if f.lower() == to_delete.lower():
+            fruits.remove(f)
+    print("{} are left in your list".format(fruits))
 
 #Series #3
 def series3():
+    fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
+    fruit_list = fruits[:]
     print([f.lower() for f in fruits])
-    ans = input("Do you like apples?\n")
-    ans = ans.lower()
-    while ans != 'yes' and ans != 'no':
-        ans = input("Please answer yes or no.\n")
+    for f in fruits:
+        ans = input("Do you like {}?\n".format(f))
 
-    if ans == 'no':
-        fruits.remove('Apples')
-    print(fruits)
+        while ans.lower() != 'yes' and ans != 'no':
+            ans = input("Please answer yes or no.\n")
+        if ans.lower() == 'no':
+            fruit_list.remove(f)
+
+    print("Here are the fruits you like {}".format(fruit_list))
 
 #Series #4
 def series4():
-    new_fruits = fruits
+    fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
+    new_fruits = fruits[:]
     for i in range(len(new_fruits)):
         new_fruits[i] = new_fruits[i][-1::-1]
     fruits.pop()
