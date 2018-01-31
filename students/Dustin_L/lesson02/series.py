@@ -92,6 +92,35 @@ def lucas(n):
     return val
 
 
+def sum_series(n, firstVal=0, secondVal=1):
+    """Compute and return the nth value in a summing series.
+
+    The nth value is equal to the sum of the previous two values.
+
+    Args:
+        n (int): nth position in the summing series
+        firstVal (int, optional): Defaults to 0. First value in the series
+        secondVal (int, optional): Defaults to 1. Second value in the series
+
+    Returns:
+        int: nth value in the summing series
+    """
+    if n < 0:
+        return None
+    if n == 0:
+        return firstVal
+    if n == 1:
+        return secondVal
+
+    val  = secondVal
+    prev = firstVal
+
+    for _ in range(2, n + 1):
+        val, prev = val + prev, val
+
+    return val
+
+
 if __name__ == '__main__':
     lookUp = [None] * 11
 
