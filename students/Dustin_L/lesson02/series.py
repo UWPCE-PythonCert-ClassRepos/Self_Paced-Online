@@ -53,18 +53,7 @@ def fibonacci_iterative(n):
     Returns:
         int: nth value in the fibonacci sequence.
     """
-    if n < 0:
-        return None
-    if (n == 0) or (n == 1):
-        return n
-
-    val  = 1
-    prev = 0
-
-    for _ in range(2, n + 1):
-        val, prev = val + prev, val
-
-    return val
+    return sum_series(n, 0, 1)
 
 
 def lucas(n):
@@ -76,20 +65,7 @@ def lucas(n):
     Returns:
         int: nth value in the Lucas series
     """
-    if n < 0:
-        return None
-    if n == 0:
-        return 2
-    if n == 1:
-        return 1
-
-    val  = 1
-    prev = 2
-
-    for _ in range(2, n + 1):
-        val, prev = val + prev, val
-
-    return val
+    return sum_series(n, 2, 1)
 
 
 def sum_series(n, firstVal=0, secondVal=1):
