@@ -105,5 +105,3 @@ if __name__ == '__main__':
     print('MRc: ' + str(fibonacci_recursive_mem(10, lookUp)))
     print('Luc: ' + str(lucas(10)))
 
-    assert (fibonacci_iterative(10) == sum_series(10)), "Failed!"
-    assert (lucas(10) == sum_series(10, 2, 1)), "Failed!"
