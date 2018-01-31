@@ -14,14 +14,31 @@ def fruit_series1():
     print(fruits)
     fruits.insert(0,"Pancakes")
     print(fruits)
-    p_fruits = [p_fruit for p_fruit in fruits if p_fruit[0]=='P']
-    print(p_fruits)
+    #print([p_fruit for p_fruit in fruits if p_fruit[0]=='P'])
+    for p in fruits:
+        if p[0]=='P':
+            print(p, end = ' ')
+    print()
     return fruits
 
 def fruit_series2(fruits):
     print(fruits)
     fruits.pop(len(fruits)-1)
     print(fruits)
+    rm_fruit = input("I have too many fruit. Choose which fruit to ditch >")
+    while rm_fruit not in fruits:
+        print("I don't have that fruit!")
+        fruits = fruits*2
+        print(fruits)
+        rm_fruit = input("Oh god they're multiplying! Choose which fruit to ditch! >")
+    for ditch_fruit in fruits:
+        if ditch_fruit == rm_fruit:
+            fruits.remove(ditch_fruit)
+    print("My remaining fruit: ")
+    #print([chosen_fruit for chosen_fruit in fruits if chosen_fruit!=rm_fruit])
+    print(fruits)
+
 
 
 yummy = fruit_series1()
+fruit_series2(yummy)
