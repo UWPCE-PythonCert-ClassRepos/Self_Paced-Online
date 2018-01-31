@@ -67,9 +67,35 @@ def fibonacci_iterative(n):
     return val
 
 
+def lucas(n):
+    """Compute and return the nth value in the Lucas series via iteration.
+
+    Args:
+        n (int): nth position in the Lucas series
+
+    Returns:
+        int: nth value in the Lucas series
+    """
+    if n < 0:
+        return None
+    if n == 0:
+        return 2
+    if n == 1:
+        return 1
+
+    val  = 1
+    prev = 2
+
+    for _ in range(2, n + 1):
+        val, prev = val + prev, val
+
+    return val
+
+
 if __name__ == '__main__':
     lookUp = [None] * 11
 
     print('Rec: ' + str(fibonacci_recursive(10)))
     print('Itr: ' + str(fibonacci_iterative(10)))
     print('MRc: ' + str(fibonacci_recursive_mem(10, lookUp)))
+    print('Luc: ' + str(lucas(10)))
