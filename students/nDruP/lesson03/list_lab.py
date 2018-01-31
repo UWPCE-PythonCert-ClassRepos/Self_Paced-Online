@@ -10,7 +10,7 @@ def fruit_series1():
     while num<1 or num > 5:
         num = int(input("I have a normal hand. Guess how many fingers I'm holding up >"))
     print("{:d}: {}".format(num, fruits[num-1]))
-    fruits=["Tomato"]+fruits
+    fruits=["Tomatoes"]+fruits
     print(fruits)
     fruits.insert(0,"Pancakes")
     print(fruits)
@@ -31,14 +31,28 @@ def fruit_series2(fruits):
         fruits = fruits*2
         print(fruits)
         rm_fruit = input("Oh god they're multiplying! Choose which fruit to ditch! >")
-    for ditch_fruit in fruits:
-        if ditch_fruit == rm_fruit:
-            fruits.remove(ditch_fruit)
+    while rm_fruit in fruits:
+        fruits.remove(rm_fruit)
     print("My remaining fruit: ")
     #print([chosen_fruit for chosen_fruit in fruits if chosen_fruit!=rm_fruit])
     print(fruits)
 
-
-
+def fruit_series3(fruits):
+    no_fruits = []
+    for like_fruit in fruits:
+        yes_no = input("Do you like "+str(like_fruit.lower())+
+                       "? (yes/no) >").lower()
+        while yes_no not in ["yes","no"]:
+            print("Please answer yes or no")
+            yes_no = input("Do you like "+str(like_fruit.lower())+
+                           "? (yes/no) >").lower()
+        if yes_no=="no":
+            no_fruits+=[like_fruit]
+    for rm_fruit in no_fruits:
+        while rm_fruit in fruits:
+            fruits.remove(rm_fruit)
+    print(fruits)
+            
 yummy = fruit_series1()
-fruit_series2(yummy)
+#fruit_series2(yummy)
+fruit_series3(yummy)
