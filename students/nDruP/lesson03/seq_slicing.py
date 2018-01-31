@@ -40,6 +40,7 @@ def rearrange_thirds(seq):
 
 
 one_element = [51]
+nothin = []
 string_a = 'Love Galore'
 seq_a = [5,3,1,2,4,6]
 seq_b = [5,3,1,2,4,6,8]
@@ -50,7 +51,8 @@ long_seq = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
 assert swap_first_last(string_a) == 'eove GalorL'
 assert swap_first_last(seq_a) == [6,3,1,2,4,5]
 assert swap_first_last(tuple_a)==(6,3,1,2,4,5)
-print(swap_first_last(one_element))
+assert(swap_first_last(one_element))
+assert(swap_first_last(nothin))
 
 assert rm_every_other(string_a) == 'Lv aoe'
 assert rm_every_other(seq_a) == [5,1,4]
