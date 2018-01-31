@@ -3,8 +3,10 @@ def swap_first_last(seq):
     Swap the first and last elements in a sequence
     i.e. [1,2,3,4]->[4,2,3,1]
     """
-    return seq[]
-
+    if len(seq)>1:
+        return seq[len(seq)-1:]+seq[1:len(seq)-1]+seq[:1]
+    return seq
+    
 def rm_every_other(seq):
     """
     Return every other element in a sequence
@@ -14,7 +16,7 @@ def rm_every_other(seq):
 
 def rm_firstlast4_every_other(seq):
     """
-    Remove first and last four elements from sequence, then return every other 
+    Omit first and last four elements from sequence, and return every other 
     element in remaining sequence
     i.e. [0,1,2,3,4,5,6,7,8,9,10,11,12]->[4,6,8]
     """
@@ -48,6 +50,7 @@ long_seq = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
 assert swap_first_last(string_a) == 'eove GalorL'
 assert swap_first_last(seq_a) == [6,3,1,2,4,5]
 assert swap_first_last(tuple_a)==(6,3,1,2,4,5)
+print(swap_first_last(one_element))
 
 assert rm_every_other(string_a) == 'Lv aoe'
 assert rm_every_other(seq_a) == [5,1,4]
@@ -67,3 +70,4 @@ assert reverse_seq(one_element) == one_element
 
 assert rearrange_thirds(seq_a) == [1,2,4,6,5,3]
 assert rearrange_thirds(tuple_a) == (1,2,4,6,5,3)
+assert rearrange_thirds(one_element)==one_element
