@@ -14,10 +14,14 @@ def fruit_series1():
     print(fruits)
     fruits.insert(0,"Pancakes")
     print(fruits)
-    for fruit in fruits:
-        if fruit[0] == 'P':
-            print(fruit, end=' ')
-    print()
+    p_fruits = [p_fruit for p_fruit in fruits if p_fruit[0]=='P']
+    print(p_fruits)
     return fruits
 
-fruit_series1()
+def fruit_series2(fruits):
+    print(fruits)
+    fruits.pop(len(fruits)-1)
+    print(fruits)
+
+
+yummy = fruit_series1()
