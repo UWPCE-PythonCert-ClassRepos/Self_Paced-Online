@@ -10,7 +10,7 @@ def test_type_error():
 
 # Function to create SyntaxError exception
 def test_syntax_error():
-   # print("Hello"
+    print("Hello"
     return
 
 # Function to create AttributeError exception
