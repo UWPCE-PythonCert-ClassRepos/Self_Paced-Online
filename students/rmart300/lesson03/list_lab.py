@@ -98,10 +98,10 @@ def series4(fruit_list):
 
 if __name__ == '__main__':
     fruit_list = series1()
-    #fruit_list_copy = fruit_list[:]
-    #series2(fruit_list_copy)
-    #fruit_list_copy = fruit_list[:]
-    #series3(fruit_list_copy)
+    fruit_list_copy = fruit_list[:]
+    series2(fruit_list_copy)
+    fruit_list_copy = fruit_list[:]
+    series3(fruit_list_copy)
     fruit_list_copy = fruit_list[:]
     series4(fruit_list_copy)
 
