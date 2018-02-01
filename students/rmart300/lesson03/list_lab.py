@@ -83,13 +83,25 @@ def series3(fruit_list):
     print("Here's the fruit you like: ")
     print(fruit_list)
         
+def series4(fruit_list):
+    """
+    Once more, using the list from series 1:
+
+    Make a copy of the list and reverse the letters in each fruit in the copy.
+    Delete the last item of the original list. Display the original list and the copy.
+    """
+    fruit_list_copy = fruit_list[:]
+    fruit_list_copy.reverse()
+    fruit_list.pop()
+    print(fruit_list)
+    print(fruit_list_copy)
 
 if __name__ == '__main__':
     fruit_list = series1()
     #fruit_list_copy = fruit_list[:]
     #series2(fruit_list_copy)
-    fruit_list_copy = fruit_list[:]
-    series3(fruit_list_copy)
     #fruit_list_copy = fruit_list[:]
-    #series4(fruit_list_copy)
+    #series3(fruit_list_copy)
+    fruit_list_copy = fruit_list[:]
+    series4(fruit_list_copy)
 
