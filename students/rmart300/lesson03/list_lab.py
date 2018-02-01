@@ -38,5 +38,27 @@ for fruit in fruit_list:
     if fruit.startswith('P'):
         print(fruit)
 
+#series 2
+"""
+Using the list created in series 1 above:
+
+Display the list.
+Remove the last fruit from the list.
+Display the list.
+Ask the user for a fruit to delete, find it and delete it.
+(Bonus: Multiply the list times two. Keep asking until a match is found. Once found, delete all occurrences.)
+"""
+print(fruit_list)
+fruit_list.pop()
+print(fruit_list)
+fruit_to_remove = None
+while fruit_to_remove not in fruit_list:
+    fruit_to_remove = input("enter name of fruit to remove from list > ")
+
+fruit_list = fruit_list*2
+
+while fruit_to_remove in fruit_list:
+    fruit_list.remove(fruit_to_remove)
+print(fruit_list)
 
 
