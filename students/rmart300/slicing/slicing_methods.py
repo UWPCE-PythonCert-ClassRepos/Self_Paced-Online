@@ -18,8 +18,8 @@ def reverse_seq(seq):
     return seq[::-1]
 
 def switch_thirds(seq=[]):
-    """divide sequence into 3, return second third then last third then first third"""
-    """if thirds not equal in size, the last one will contain the extra columns"""
+    """divide sequence into 3, return second third then last third then first third
+       if thirds not equal in size, the last one will contain the extra columns"""
     third = int(len(seq) / 3)
     new_seq = seq[third:third*2] + seq[third*2:] + seq[:third]
     return new_seq
@@ -35,6 +35,7 @@ if __name__ == '__main__':
     assert remove_every_other(a_string) == "ti sasrn"
     assert remove_every_other(a_tuple) == (2, 13, 5)
 
+    #assert remove_first_and_last_four(a_string) == " sas"
     assert remove_first_and_last_four(a_string) == " is a st"
     assert remove_first_and_last_four(a_tuple) == ()
  
