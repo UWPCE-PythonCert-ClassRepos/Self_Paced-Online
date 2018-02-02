@@ -1,0 +1,8 @@
+#!/usr/bin/env python3
+
+
+def format_quadruple(file_num, float_2dec, sci_int, sci_3float):
+    return "{:03}: {.2%f}, {.2%d}, {3%f}".format(file_num, float_2dec, sci_int, sci_3float)
+
+print(format_quadruple(2, 123.4567, 10000, 12345.67))
+    
