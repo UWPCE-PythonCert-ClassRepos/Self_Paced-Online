@@ -33,25 +33,44 @@ def format_quintuple(quintuple):
     """
     Take quintuple (a,b,c,d,e) and return 'd e c a b' padded w/ a zero if any of the values are single-digits
     """
-    return "{:0d} {:0d} {:0d} {:0d} {:0d}".format(*quintuple)
+    return "{0[3]:02d} {0[4]:02d} {0[2]:02d} {0[0]:02d} {0[1]:02d}".format(quintuple)
 
+"""
+format_quadruple tests
+"""
 quadruple1 = (2,123.4567,10000,12345.67)
 quadruple2 = (12,3.141592654,-1234,.123456)
 quadruple3 = (100,13,0,0)
-
 assert format_quadruple(quadruple1) == 'file_002 :   123.46, 1.00e+04, 1.23e+04'
 assert format_quadruple(quadruple2) == 'file_012 :   3.14, -1.23e+03, 1.23e-01' 
 assert format_quadruple(quadruple3) == 'file_100 :   13.00, 0.00e+00, 0.00e+00'
 
+"""
+format_quadruple_alt tests
+"""
 assert format_quadruple_alt(quadruple1) == format_quadruple(quadruple1)
 assert format_quadruple_alt(quadruple2) == format_quadruple(quadruple2)
 assert format_quadruple_alt(quadruple3) == format_quadruple(quadruple3)
 
+"""
+disp_numbers tests
+"""
 nums0 = ()
 nums2 = (8,12)
 nums6 = (123,734,2346,2,666,30)
-
 assert disp_numbers(nums0) == 'There are no numbers given'
 assert disp_numbers(nums2) == 'The 2 numbers are: 8 and 12'
 assert disp_numbers(nums6) == 'The 6 numbers are: 123, 734, 2346, 2, 666, and 30'
+
+"""
+format_quintuple tests
+"""
+quint1 = (4,30,2017,2,27)
+quint2 = (1,2,3,4,5)
+quint3 = (10,11,12,13,14)
+quint4 = (100,201,302,403,504)
+assert format_quintuple(quint1) == '02 27 2017 04 30'
+assert format_quintuple(quint2) == '04 05 03 01 02'
+assert format_quintuple(quint3) == '13 14 12 10 11'
+assert format_quintuple(quint4) == '403 504 302 100 201'
 
