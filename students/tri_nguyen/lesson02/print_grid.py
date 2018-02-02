@@ -52,17 +52,17 @@ print_grid_p1()
 # prints a grid just like above, but the size of the grid is given
 # by the argument
 
-def print_grid_p2(spaces_between_pipes):
+def print_grid_p2(n):
     ''' This function takes an int argument
         and prints a grid
     '''
-    if spaces_between_pipes % 2 == 0:
+    if n % 2 == 0:
         # have to do this because if an even integer is provided
         # the grid will be crooked
-        spaces_between_pipes = spaces_between_pipes + 1
-        dashes = int((spaces_between_pipes / 2) - 0.5)
+        n = n + 1
+        dashes = int((n / 2) - 0.5)
     else:
-        dashes = int((spaces_between_pipes / 2) - 0.5)
+        dashes = int((n / 2) - 0.5)
     
     def print_plus_minus():
         ''' This function will print plus and minus'''
@@ -71,7 +71,7 @@ def print_grid_p2(spaces_between_pipes):
     def print_pipes_spaces():
         ''' This function will print pipes and spaces between '''
         for row in range(dashes):
-            print(pipe + spaces_between_pipes*space + pipe + spaces_between_pipes*space + pipe)
+            print(pipe + n*space + pipe + n*space + pipe)
     
     for i in range(2):
         print_plus_minus()
