@@ -14,7 +14,26 @@ def format_quadruple_alt(quadruple):
     Use an alternate type of format string to replicate results of format_quadruple. (keywords/f-strings)
     """
     prec = .2 
-    return f"file_{quadruple[0]:03} :   {quadruple[1]:{prec}f}, {quadruple[2]:{prec}e}, {quadruple[3]:{prec}e}" 
+    return f"file_{quadruple[0]:03} :   {quadruple[1]:{prec}f}, {quadruple[2]:{prec}e}, {quadruple[3]:{prec}e}"
+
+def disp_numbers(num_tuple):
+    """
+    Rewrite: "the 3 numbers are: {:d}, {:d}, {:d}".format(1,2,3)
+    to take an arbitrary number of values.
+    """
+    if num_tuple:
+        disp_string = "The "+str(len(num_tuple))+f" numbers are: "
+        for x in range(len(num_tuple)-1):
+            disp_string+="{:d}"+f"{',' if len(num_tuple)>2 else ''} "
+        disp_string+="and {:d}"
+        return disp_string.format(*num_tuple)
+    return "There are no numbers given"
+
+def format_quintuple(quintuple):
+    """
+    Take quintuple (a,b,c,d,e) and return 'd e c a b' padded w/ a zero if any of the values are single-digits
+    """
+    return "{:0d} {:0d} {:0d} {:0d} {:0d}".format(*quintuple)
 
 quadruple1 = (2,123.4567,10000,12345.67)
 quadruple2 = (12,3.141592654,-1234,.123456)
@@ -27,3 +46,12 @@ assert format_quadruple(quadruple3) == 'file_100 :   13.00, 0.00e+00, 0.00e+00'
 assert format_quadruple_alt(quadruple1) == format_quadruple(quadruple1)
 assert format_quadruple_alt(quadruple2) == format_quadruple(quadruple2)
 assert format_quadruple_alt(quadruple3) == format_quadruple(quadruple3)
+
+nums0 = ()
+nums2 = (8,12)
+nums6 = (123,734,2346,2,666,30)
+
+assert disp_numbers(nums0) == 'There are no numbers given'
+assert disp_numbers(nums2) == 'The 2 numbers are: 8 and 12'
+assert disp_numbers(nums6) == 'The 6 numbers are: 123, 734, 2346, 2, 666, and 30'
+
