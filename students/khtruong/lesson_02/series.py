@@ -4,18 +4,18 @@ lucas series, and sum series.
 """
 
 
-def fibonacci(nth_element):
-    """Return the nth value in the fibonacci series."""
+def fibonacci(nth):
+    """Return the value of nth element in the fibonacci series."""
+    return sum_series(nth)
 
-    return
 
-def lucas(nth_elemnent):
-    """Return the nth value in the lucas series."""
+def lucas(nth):
+    """Return the value of nth element in the lucas series."""
+    return sum_series(nth, 2, 1)
 
-    return
 
-def sum_series(nth_element, _1st=0, _2nd=1):
-    """Return the nth value in the sum series.
+def sum_series(nth, ref1=0, ref2=1):
+    """Return the value of nth element in the sum series.
 
     Calling this function with no optional parameters will produce
     numbers from the fibonacci series. Calling it with the optional
@@ -24,10 +24,30 @@ def sum_series(nth_element, _1st=0, _2nd=1):
     series.
 
     """
-    if nth_element == 1:
-        sum_series = _1st
-    elif nth_element == 2:
-        sum_series = _2nd
+    nth = int(round(abs(nth)))
+    if nth == 0:
+        value = ref1
+    elif nth == 1:
+        value = ref2
     else:
-        sum_series = 
-    return
+        for i in range(1, nth):
+            value = ref1 + ref2
+            ref1 = ref2
+            ref2 = value
+    return value
+
+
+# check optional inputs
+assert sum_series(5, 0, 1) == sum_series(5)
+# check decimal get rounded to integer
+assert sum_series(5.4) == sum_series(5)
+# check absolute value of integer
+assert sum_series(-5) == sum_series(5)
+# check if fibonacci is calling sum_series
+assert sum_series(5) == fibonacci(5)
+# check if lucas is calling sum_series
+assert sum_series(5, 2, 1) == lucas(5)
+# check fibonacci series for 5th element, zeroth element = 0
+assert fibonacci(5) == 5
+# check lucas series for 5th element, zeroth element = 2
+assert lucas(5) == 11
