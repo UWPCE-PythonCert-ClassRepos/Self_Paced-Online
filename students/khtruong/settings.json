@@ -1,0 +1,10 @@
+{"editor.detectIndentation": false,
+"editor.tabSize": 4,
+"[python]": {},
+"python.pythonPath": "C:\\Program Files\\Python36\\python.exe",
+"terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+"terminal.integrated.cursorStyle": "line",
+"terminal.integrated.cursorBlinking": true,
+"window.zoomLevel": 1,
+"editor.renderWhitespace": "boundary"
+}
