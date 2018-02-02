@@ -90,18 +90,20 @@ def series4(fruit_list):
     Make a copy of the list and reverse the letters in each fruit in the copy.
     Delete the last item of the original list. Display the original list and the copy.
     """
-    fruit_list_copy = fruit_list[:]
-    fruit_list_copy.reverse()
+    reverse_fruit_list = []
+    for fruit in fruit_list:
+        reverse_fruit_list.append(fruit[::-1])
+ 
     fruit_list.pop()
     print(fruit_list)
-    print(fruit_list_copy)
+    print(reverse_fruit_list)
 
 if __name__ == '__main__':
     fruit_list = series1()
-    fruit_list_copy = fruit_list[:]
-    series2(fruit_list_copy)
-    fruit_list_copy = fruit_list[:]
-    series3(fruit_list_copy)
+    #fruit_list_copy = fruit_list[:]
+    #series2(fruit_list_copy)
+    #fruit_list_copy = fruit_list[:]
+    #series3(fruit_list_copy)
     fruit_list_copy = fruit_list[:]
     series4(fruit_list_copy)
 
