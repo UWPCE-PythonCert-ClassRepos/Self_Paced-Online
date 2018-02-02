@@ -13,7 +13,8 @@ def format_quadruple_alt(quadruple):
     """
     Use an alternate type of format string to replicate results of format_quadruple. (keywords/f-strings)
     """
-    return f"file_{file_num:03} :   {floats_2dec:.2f}, {int_sci_2dec:.2e}, {float_sci_3sig:.2e}"
+    prec = .2 
+    return f"file_{quadruple[0]:03} :   {quadruple[1]:{prec}f}, {quadruple[2]:{prec}e}, {quadruple[3]:{prec}e}" 
 
 quadruple1 = (2,123.4567,10000,12345.67)
 quadruple2 = (12,3.141592654,-1234,.123456)
