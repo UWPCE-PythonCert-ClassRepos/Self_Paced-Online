@@ -117,9 +117,35 @@ def series_three(lst):
     return l
 
 
+def series_four(lst):
+    """Perform a set of operations on a list of fruit.
+
+    A deep copy of the passed list is made and each item in the copied list is
+    reversed. Finally, the reversed list and  the original list, sans last item,
+    is printed.
+
+    Args:
+        lst (list): List to be operated upon.
+
+    Returns:
+        list: Modified list.
+    """
+    l = copy.deepcopy(lst)
+
+    for i, fruit in enumerate(lst):
+        l[i] = fruit[::-1]
+
+    lst.pop()
+    print(f'Original list: {lst}')
+    print(f'Reversed list: {l}')
+
+    return l
+
+
 if __name__ == '__main__':
     fruit_list = ['Apples', 'Pears', 'Oranges', 'Peaches']
 
     series_one(fruit_list)
     series_two(fruit_list)
     series_three(fruit_list)
+    series_four(fruit_list)
