@@ -1,8 +1,8 @@
 def printer():
-    print('hallo printer')
+    print('hi printer')
 
 def testfunc():
-    print('hallo ich bin die testfunc')
+    print('hello i"m testfunc')
 
 def zwei():
     print('2222222')
