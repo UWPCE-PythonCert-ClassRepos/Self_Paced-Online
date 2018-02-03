@@ -54,6 +54,18 @@ def reverse(seq):
     return seq[::-1]
 
 
+def arrange_thirds(seq):
+    """Arrange sequence by middle third, last third and first third.
+
+    Args:
+        seq (sequence): Sequence to be operated upon.
+
+    Returns:
+        sequence: Copy of arranged sequence
+    """
+    third = int(len(seq) / 3)
+    return seq[third:third * 2] + seq[third * 2:] + seq[:third]
+
 
 if __name__ == '__main__':
     test_string = 'This is my test string'
@@ -66,3 +78,5 @@ if __name__ == '__main__':
         'first_last_four_every_other() failed'
     assert(reverse(test_string) == 'gnirts tset ym si sihT'), \
         'reverse() failed'
+    assert(arrange_thirds(test_string) == ' my test stringThis is'), \
+        'arrange_thirds() failed'
