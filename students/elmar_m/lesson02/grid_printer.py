@@ -1,6 +1,6 @@
 def gprint(number, unit):
     '''
-    print a grid with <number> rows and 
+    print a grid with <number> rows and
     columns and <unit> width and height.
     '''
 
