@@ -42,6 +42,19 @@ def first_last_four_every_other(seq):
     return seq[4:-4:2]
 
 
+def reverse(seq):
+    """Reverse the sequence.
+
+    Args:
+        seq (list): Sequence to be operated upon.
+
+    Returns:
+        list: Copy of reversed sequence.
+    """
+    return seq[::-1]
+
+
+
 if __name__ == '__main__':
     test_string = 'This is my test string'
 
@@ -51,3 +64,5 @@ if __name__ == '__main__':
         'remove_every_other() failed'
     assert(first_last_four_every_other(test_string) == ' sm ets'), \
         'first_last_four_every_other() failed'
+    assert(reverse(test_string) == 'gnirts tset ym si sihT'), \
+        'reverse() failed'
