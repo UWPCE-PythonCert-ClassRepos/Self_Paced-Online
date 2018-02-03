@@ -35,8 +35,9 @@ def list_all_donor_names(donor_list):
         print("{}".format(each_name))
 
 
-def main(op=0):
-    while op > 3 or op < 1:
+def main():
+    op = 0
+    while op != 3:
         op = prompt()
 
         if op == THANK_YOU_OPT:  # Append or list donors
@@ -56,7 +57,7 @@ def main(op=0):
                 # print(get_all_donor_names(donors).index(donor_name))
                 donors[get_all_donor_names(donors).index(donor_name)][1].append(donation)
             print("Thank You Email:  Thansk for the donation!\n\n")
-            main()
+            #main()
         elif op == REPORT_OPT:  # Create report
             print("\nDonor Name           |  Total Given | Num Gifts | Average Gift")
             print("---------------------------------------------------------------\n")
@@ -81,7 +82,7 @@ def main(op=0):
                     r_sorted[d][1]/r_sorted[d][2]))
 
             print("\n")
-            main()
+            #main()
 
         elif op == QUIT_OPT:   # To quit the script
             print("Thanks for using my script! Bye!")
