@@ -1,11 +1,21 @@
-def printer():
-    print('hi printer')
+def gprint(number, unit):
+    '''
+    print a grid with <number> rows and 
+    columns and <unit> width and height.
+    '''
 
-def testfunc():
-    print('hello i"m testfunc')
+    aPart = '+' + unit * '-'
+    bPart = '|' + unit * ' '
 
-def zwei():
-    print('2222222')
+    aFull = number * aPart + '+'
+    bFull = number * bPart + '|'
+
+    print(aFull)
+
+    for n in range(number):
+        for i in range(unit):
+            print(bFull)
+        print(aFull)
 
 if __name__ == '__main__':
     print('i wanna be a module, please import me!')
