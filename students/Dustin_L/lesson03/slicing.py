@@ -17,8 +17,22 @@ def first_and_last_swap(seq):
     return seq[-1:] + seq[1:-1] + seq[:1]
 
 
+def remove_every_other(seq):
+    """Remove every other item from sequence
+
+    Args:
+        seq (list): Sequence to be operated upon
+
+    Returns:
+        list: Copy of sequence with every other item removed
+    """
+    return seq[::2]
+
+
 if __name__ == '__main__':
     test_string = 'This is my test string'
 
     assert (first_and_last_swap(test_string) == 'ghis is my test strinT'), \
-        "first_and_last_swap() failed"
+        'first_and_last_swap() failed'
+    assert (remove_every_other(test_string) == 'Ti sm etsrn'), \
+        'remove_every_other() failed'
