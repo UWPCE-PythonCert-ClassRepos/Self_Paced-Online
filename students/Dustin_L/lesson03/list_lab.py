@@ -89,8 +89,37 @@ def series_two(lst):
     return l
 
 
+def series_three(lst):
+    """Performs a set of operations on a list of fruit.
+
+    A deep copy is made of the passed list. The user is then prompted to specify
+    which fruits in the list they like. For all that they do not like, those
+    fruits are removed from the list.
+
+    Args:
+        lst (list): List to be operated upon.
+
+    Returns:
+        list: Modified list
+    """
+    l = copy.deepcopy(lst)
+
+    for fruit in lst:
+        usr_in = input(f'Do you like {fruit.lower()} (Yes / No)?' + PROMPT).lower()
+
+        while (usr_in[0] != 'y') and (usr_in[0] != 'n'):
+            usr_in = input('Please enter "Yes" or "No"' + PROMPT).lower()
+
+        if usr_in.startswith('n'):
+            l.remove(fruit)
+
+    print(l)
+    return l
+
+
 if __name__ == '__main__':
     fruit_list = ['Apples', 'Pears', 'Oranges', 'Peaches']
 
     series_one(fruit_list)
     series_two(fruit_list)
+    series_three(fruit_list)
