@@ -63,8 +63,24 @@ def task_four(input_tuple):
     return '{3:02d} {4:02d} {2:04d} {0:02d} {1:02d}'.format(*input_tuple)
 
 
+def task_five():
+    """Return a formatted f-string."""
+    data = ['oranges', 1.3, 'lemons', 1.1]
+    return f'The weight of an {data[0][:-1]} is {data[1]} and the weight of '\
+           f'a {data[2][:-1]} is {data[3]}'
+
+
+def task_five_alt():
+    """Return a formatted f-string."""
+    data = ['oranges', 1.3, 'lemons', 1.1]
+    return f'The weight of an {data[0][:-1].upper()} is {data[1] * 1.2} '\
+           f'and the weight of a {data[2][:-1].upper()} is {data[3] * 1.2}'
+
+
 if __name__ == '__main__':
     print(task_one((2, 123.4567, 10000, 12345.67)))
     print(task_two((2, 123.4567, 10000, 12345.67)))
     print(task_three((1, 2, 3, 4, 5, 6, 7, 3, 1, 0, 100)))
     print(task_four((4, 30, 2017, 2, 27)))
+    print(task_five())
+    print(task_five_alt())
