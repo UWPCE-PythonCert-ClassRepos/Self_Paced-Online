@@ -48,7 +48,23 @@ def task_three(input_tup):
     return f'the {l} numbers are: {num_str}'
 
 
+def task_four(input_tuple):
+    """Return formatted string containing values from a tuple of size 5.
+
+    Args:
+        input_tuple (tuple): Tuple of size of digits.
+
+    Returns:
+        str: Formatted string if corrrect tuple size, empty string if not.
+    """
+    if len(input_tuple) != 5:
+        return ''
+
+    return '{3:02d} {4:02d} {2:04d} {0:02d} {1:02d}'.format(*input_tuple)
+
+
 if __name__ == '__main__':
     print(task_one((2, 123.4567, 10000, 12345.67)))
     print(task_two((2, 123.4567, 10000, 12345.67)))
     print(task_three((1, 2, 3, 4, 5, 6, 7, 3, 1, 0, 100)))
+    print(task_four((4, 30, 2017, 2, 27)))
