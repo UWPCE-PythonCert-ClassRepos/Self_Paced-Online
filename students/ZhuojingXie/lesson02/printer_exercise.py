@@ -2,7 +2,7 @@ def draw_line1(x=3, y =2):
     i = 0
     while i <y:
         print('+',end = ' ')
-        print('- '*x, end = ' ')
+        print('- '*x, end = '')
         i +=1
     print ('+')
 # draw first line, and set default size =3 and unit =2
@@ -12,7 +12,7 @@ def draw_line2(x=3, y=2):
     i=0
     while i<y:
         print('|', end = ' ')
-        print('  '*x, end =' ')
+        print('  '*x, end ='')
         i +=1
     print ('|')
 # draw second line, and set default size =3 and unit =2
