@@ -22,19 +22,21 @@ def series(n, v1=1, v2=2):
 def test():
     print('hello world')
 '''
+def create_series(n):
+    counter = 0
+    mylist = [0, 1]
+    c = None
 
-counter = 0
-mylist = [0, 1]
+    while counter <= n:
+        a = mylist[0]
+        b = mylist[1]
+        c = a + b
+        print(c)
+        mylist[0] = b
+        mylist[1] = c
+        counter += 1
 
-while counter < 10:
-    a = mylist[0]
-    b = mylist[1]
-    c = a + b
-    print(c)
-    mylist[0] = b
-    mylist[1] = c
-    counter += 1
-
+    print('result:', c)
 
 
 
