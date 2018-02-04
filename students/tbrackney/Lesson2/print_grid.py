@@ -1,5 +1,5 @@
 """
-File Name: Lesson2.py
+File Name: print_grid.py
 Author: Travis Brackney
 Class: Python 201 - Self paced online
 Date Created 2/3/2018
