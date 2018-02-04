@@ -5,5 +5,9 @@ Lesson02:  Fizz Buzz Exercise
 '''
 
 
+for i in range(1,101):
+    print(i)
+
+
 if __name__ == '__main__':
     print('i wanna be a module, please import me!')
