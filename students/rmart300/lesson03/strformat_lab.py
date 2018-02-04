@@ -51,6 +51,25 @@ def task4(a):
     print(out_string)
     return out_string
 
+def increase_weight(weight):
+    """multiply weight by 1.2"""
+    return '%.1f' % Decimal(weight * 1.2)
+
+def format_fruit(fruit):
+    """make fruit singular and make upper case"""
+    if fruit.endswith('s'):
+        fruit = fruit[:-1]
+    return fruit.upper()
+
+def task5(a):
+    """writes fstring that formats four element list ['oranges', 1.3, 'lemons', 1.1] as:
+       'The weight of an ORANGE is 1.6 and the weight of a LEMON is 1.3'
+       fruit names are changed to upper and weights increased by 20%"""
+    (fruit1, weight1, fruit2, weight2) = a
+    out_string = f"The weight of an {format_fruit(fruit1)} is {increase_weight(weight1)} and the weight of a {format_fruit(fruit2)} is {increase_weight(weight2)}"
+    print(out_string)
+    return(out_string)
+
 if __name__ == '__main__':
     a = ( 2, 123.4567, 10000, 12345.67 )
     assert task1(a) == 'file_002 :   123.46, 1.00e+04, 1.235e+04'
@@ -59,6 +78,9 @@ if __name__ == '__main__':
     assert task3(b) == 'the numbers are: 1, 2, 5, 7'
     c = ( 4, 30, 2017, 2, 27)
     assert task4(c) == '02 27 2017 04 30'
+    d = ['oranges', 1.3, 'lemons', 1.1]
+    assert task5(d) == 'The weight of an ORANGE is 1.6 and the weight of a LEMON is 1.3'
+
     print('all tests passed')
 
 
