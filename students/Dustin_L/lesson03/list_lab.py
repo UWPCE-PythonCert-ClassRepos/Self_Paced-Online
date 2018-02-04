@@ -46,7 +46,7 @@ def series_one(lst):
 
     # Display all fruit that start with 'P'
     for fruit in l:
-        if fruit.startswith('P'):
+        if fruit[0].lower() == 'p':
             print(fruit)
 
     return l
@@ -80,13 +80,12 @@ def series_two(lst):
         removed_lst = [i for i in l if i.lower() != usr_in.lower()]
 
         if removed_lst != l:
-            l = removed_lst
-            print(l)
+            print(removed_lst)
             break
         else:
             print('Specified fruit is NOT in list!')
 
-    return l
+    return removed_lst
 
 
 def series_three(lst):
@@ -104,7 +103,7 @@ def series_three(lst):
     """
     l = copy.deepcopy(lst)
 
-    for fruit in lst:
+    for fruit in l[:]:
         usr_in = input(f'Do you like {fruit.lower()} (Yes / No)?' + PROMPT).lower()
 
         while (usr_in[0] != 'y') and (usr_in[0] != 'n'):
@@ -143,9 +142,9 @@ def series_four(lst):
 
 
 if __name__ == '__main__':
-    fruit_list = ['Apples', 'Pears', 'Oranges', 'Peaches']
+    FRUIT_LIST = ['Apples', 'Pears', 'Oranges', 'Peaches']
 
-    series_one(fruit_list)
-    series_two(fruit_list)
-    series_three(fruit_list)
-    series_four(fruit_list)
+    series_one(FRUIT_LIST)
+    series_two(FRUIT_LIST)
+    series_three(FRUIT_LIST)
+    series_four(FRUIT_LIST)
