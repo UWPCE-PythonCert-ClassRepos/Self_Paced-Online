@@ -5,7 +5,7 @@ Lesson02:  Fizz Buzz Exercise
 '''
 
 
-for i in range(1,101):
+for i in range(1, 101):
     # print(i)
     # if i % 3 == 0:
     if i % 3 == 0 and i % 5 == 0:
