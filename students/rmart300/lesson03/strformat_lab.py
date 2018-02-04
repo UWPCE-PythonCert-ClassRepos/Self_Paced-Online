@@ -1,18 +1,18 @@
 from decimal import Decimal
 from collections import namedtuple
 
-def is_number(s):
-    """determines if string is number"""
-    try:
-        float(s)
-        return True
-    except ValueError:
-        return False
+#def is_number(s):
+#    """determines if string is number"""
+#    try:
+#        float(s)
+#        return True
+#    except ValueError:
+#        return False
 
 def format_numbers(a):
     """formats 4 number tuple to different number formats for each element"""
     if len(a) != 4: # or (lambda x: not is_number(x) for x in a):
-        print("tuple must have length 4 and be data type float")
+        print("tuple must have length 4")
 
     lead_zero = "%03d" % a[0]
     float_value = '%.2f' % Decimal(a[1])
