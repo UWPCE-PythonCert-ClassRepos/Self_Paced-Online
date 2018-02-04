@@ -1,4 +1,5 @@
 from decimal import Decimal
+from collections import namedtuple
 
 def is_number(s):
     """determines if string is number"""
@@ -70,16 +71,55 @@ def task5(a):
     print(out_string)
     return(out_string)
 
+def task6(a):
+    """print a table of several rows, a argument is list of tuples, each tuple with a name, an age and a cost"""
+    out_string = "{:20} {:3} {:5}".format('Name','Age','Cost') + '\n' 
+    for t in a:
+        out_string += "{:20} {:3} {:5}".format(t.name,t.age,t.cost) + '\n'
+        
+    print(out_string)
+    return out_string
+
+def extra_task(a):
+    """given a tuple with 10 consecutive numbers, can you work how to quickly print the tuple in columns that are 5 charaters wide"""
+    out_string = '\n'.join("{:5}".format(num) for num in a)
+    print(out_string)
+    return out_string
+
+
+
 if __name__ == '__main__':
+    print('task1')
     a = ( 2, 123.4567, 10000, 12345.67 )
     assert task1(a) == 'file_002 :   123.46, 1.00e+04, 1.235e+04'
+
+    print('task2')
     assert task2(a) == 'file_002 :   123.46, 1.00e+04, 1.235e+04'    
+
+    print('task3')
     b = ( 1, 2, 5, 7 )
     assert task3(b) == 'the numbers are: 1, 2, 5, 7'
+
+    print('task4')
     c = ( 4, 30, 2017, 2, 27)
     assert task4(c) == '02 27 2017 04 30'
+
+    print('task 5')
     d = ['oranges', 1.3, 'lemons', 1.1]
     assert task5(d) == 'The weight of an ORANGE is 1.6 and the weight of a LEMON is 1.3'
+
+    print('task 6')
+    SaleItem = namedtuple('SaleItem',['name','age','cost'])
+    item1 = SaleItem('Babe Ruth',80,5000)
+    item2 = SaleItem('Ken Griffey Jr',30,1000)
+    item3 = SaleItem('Mark McGuire',30,800)
+    item4 = SaleItem('Barry Bonds',25,1100)
+    item_list = [item1,item2,item3,item4]
+    task6(item_list)
+
+    print('extra task')
+    e = (100,120,150,900,1300,5000,10000,15000,85000,99000)
+    extra_task(e)
 
     print('all tests passed')
 
