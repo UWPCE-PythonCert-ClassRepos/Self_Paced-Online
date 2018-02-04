@@ -77,6 +77,32 @@ def task_five_alt():
            f'and the weight of a {data[2][:-1].upper()} is {data[3] * 1.2}'
 
 
+def task_six():
+    """Print a formatted table of local data.
+
+    Data will be printed with 4 rows and 3 columns all evenly aligned.
+    """
+    data = [['Bert',     33, '-$150,000'],\
+            ['Angelina', 37, '-$1,500,000.42'],\
+            ['Batman',   1,  '$10,000'],\
+            ['Lucy',     5,  '$35,500.99']]
+
+    max_name = len(max([name[0] for name in data], key=len))
+    max_cost = len(max([cost[2] for cost in data], key=len))
+    max_age  = 3
+
+    str_fmt = '{:<' + f'{max_name + 5}' + '}{:<' + f'{max_age + 5}' +\
+              '}{:<' + f'{max_cost + 5}' + '}'
+
+    for row in data:
+        print(str_fmt.format(row[0], row[1], row[2]))
+
+
+def task_six_extra(input_tuple):
+    """Return a string with each tuple element evenly spaced by 5."""
+    return ('{:5}' * len(input_tuple)).format(*input_tuple)
+
+
 if __name__ == '__main__':
     print(task_one((2, 123.4567, 10000, 12345.67)))
     print(task_two((2, 123.4567, 10000, 12345.67)))
@@ -84,3 +110,5 @@ if __name__ == '__main__':
     print(task_four((4, 30, 2017, 2, 27)))
     print(task_five())
     print(task_five_alt())
+    task_six()
+    print(task_six_extra((3, 2, 5, 4, 7, 1, 8, 9, 2, 10)))
