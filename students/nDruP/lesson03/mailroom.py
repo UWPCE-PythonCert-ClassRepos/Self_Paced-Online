@@ -10,6 +10,7 @@ to the original prompt
 
 import sys
 
+
 def send_thanks():
     """
     Prompt for a full name.
@@ -58,9 +59,11 @@ def create_report():
     """
     donation_list = list(enumerate([x[1] for x in donor_list]))
     donation_list = sorted(donation_list, key=sum_2ple_2, reverse=True)
-    name_col_len = max([len(x) for x in name_list])+2
-    headers = ["Donor Name", "Total Given", "# of Gifts", "Average Donation"]
-    cols = "{:<"+f"{name_col_len}"+"}|{:^13}\t\t|{:^12}\t|{:^18}"
+    name_col_len = max([len(x) for x in name_list])
+    money_col_len = 12
+    headers = ["Donor Name", "Total Given", "# of Gifts", "Avg Donation"]
+    cols = "{:<" + f"{name_col_len}" + "}\t|{:^" + f"{money_col_len+5}"
+    cols += "}|{:^10}|{:^" + f"{money_col_len+5}" + "}"
     cols = cols.format(*headers)
     print(cols)
     print("-"*len(cols))
@@ -69,8 +72,8 @@ def create_report():
         total = sum(donation)
         num_gift = len(donation)
         average = total/num_gift
-        row = f"{name:<{name_col_len}}|${total:<13.2f}\t|{num_gift:^12d}\t"
-        row += f"|${average:<18.2f}"
+        row = f"{name:<{name_col_len}}\t| ${total:>{money_col_len+3}.2f}|"
+        row += f"{num_gift:^10d}| ${average:>{money_col_len+3}.2f}"
         print(row)
     return
 
@@ -81,7 +84,11 @@ def sum_2ple_2(tuples):
     """
     return sum(tuples[1])
 
+
 def print_divider():
+    """
+    Prints a divider so user has better idea of when they enter a new screen.
+    """
     print("\n"+"*"*50+"\n")
 
 
@@ -120,5 +127,3 @@ while option != 3:
         create_report()
 print_divider()
 sys.exit()
-        
-        
