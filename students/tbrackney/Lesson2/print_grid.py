@@ -8,7 +8,7 @@ Python Version: 3.6.4
 
 
 def print_grid(n):
-    """ Prints a simple grid"""
+    """ Prints a 2 x 2 grid where total length is n"""
     spaces = n // 2
     segment = '+ ' + '- ' * spaces
     border = 2 * segment + '+'
@@ -22,6 +22,7 @@ def print_grid(n):
 
 
 def print_grid2(cell_count, cell_length):
+    """Prints a grid with variable number of cells and length"""
     spaces = cell_length
     segment = '+ ' + '- ' * spaces
     border = cell_count * segment + '+'
