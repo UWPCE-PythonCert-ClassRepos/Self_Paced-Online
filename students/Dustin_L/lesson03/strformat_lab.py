@@ -18,5 +18,18 @@ def task_one(quad):
     return fmt_str.format(*quad)
 
 
+def task_two(quad):
+    """Return formatted string.
+
+    Args:
+        quad (tuple): Tuple of 4 elements.
+
+    Returns:
+        str: Formatted string.
+    """
+    return f'file_{quad[0]:0>3d}: {quad[1]:.2f}, {quad[2]:.2e}, {quad[3]:.3e}'
+
+
 if __name__ == '__main__':
     print(task_one((2, 123.4567, 10000, 12345.67)))
+    print(task_two((2, 123.4567, 10000, 12345.67)))
