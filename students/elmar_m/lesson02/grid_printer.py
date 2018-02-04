@@ -10,6 +10,8 @@ Hardcoded and primitive, executed once when
 module is imported or file is executed doing a
 "python grid_printer.py".
 '''
+
+
 a_line_hardcoded = '+' + '----' + '+' + '----' + '+'
 b_line_hardcoded = '|' + '    ' + '|' + '    ' + '|'
 
@@ -26,6 +28,8 @@ A function with one argument. Recycling my function
 from part 3 by removing the second function argument
 and instead putting it hardcoded into the function body.
 '''
+
+
 def gprint_single(number):
     '''
     print a grid with <number> rows and
@@ -49,6 +53,8 @@ def gprint_single(number):
 '''
 Part 3:
 '''
+
+
 def gprint(number, unit):
     '''
     print a grid with <number> rows and
