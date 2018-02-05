@@ -1,6 +1,6 @@
 #with the first and last items exchanged.
 def exchange_first_last(seq):
-    return = seq[-1:]+seq[1:-1]+seq[:1]
+    return  seq[-1:]+seq[1:-1]+seq[:1]
 
 #with every other item removed.
 def remove_everyother_item(seq):
@@ -32,9 +32,9 @@ assert remove_everyother_item(a_string) == "ti sasrn"
 assert remove_everyother_item(a_tuple) == (2, 13, 5)
 assert remove_everyother_item(a_list) == [1, 3, 5, 7, 9, 11]
 
-assert rm4rm4_keep_other(a_string) == " sas"
-assert rm4rm4_keep_other(a_tuple) == ()
-assert rm4rm4_keep_other(a_list) == [5, 7]
+assert rm4_keep_other(a_string) == " sas"
+assert rm4_keep_other(a_tuple) == ()
+assert rm4_keep_other(a_list) == [5, 7]
 
 assert reverse(a_string) == "gnirts a si siht"
 assert reverse(a_tuple) == (32, 5, 12, 13, 54, 2)
