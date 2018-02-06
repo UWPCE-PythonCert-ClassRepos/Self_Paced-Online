@@ -1,14 +1,16 @@
 
 def exchange_first_last(seq):
+    if type(seq) is str:
+        y = seq[-1] + seq[1:-1] + seq[0]
+        new_sequence = y
+        return print(new_sequence)
 
-    if seq == type(str):
-        x = len(seq)
-        y = seq[1:x] + seq[0:1]
+    elif type(seq) is tuple:
+        x = list(seq)
+        y = x[1]
+        z = x[-1]
 
-    """x = (1,2,3,4)
-    z = "Hello World"
-    y = list(x)"""
-    return print(y)
+
 
 
 def remove_every_other():
@@ -27,5 +29,6 @@ def reverse():
 def middle_last_first():
     return
 
+hello = "hello world"
 
-exchange_first_last("hello world")
+exchange_first_last(hello)
