@@ -24,6 +24,26 @@ def fib(n):
 
         print('value', n,  'in Fibonacci series:', c)
 
+def lucas(n):
+    if n == 0:
+        print('value 0 in Lucas series: 2')
+    elif n == 1:
+        print('value 1 in Lucas series: 1')
+    else:
+        counter = 0
+        valuelist= [2, 1]
+        c = None
+
+        while counter <= n - 2:
+            a = valuelist[0]
+            b = valuelist[1]
+            c = a + b
+            print(c)
+            valuelist[0] = b
+            valuelist[1] = c
+            counter += 1
+
+        print('value', n,  'in Lucas series:', c)
 
 
 
