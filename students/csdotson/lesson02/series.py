@@ -21,13 +21,13 @@ def sum_series(n, first = 0, second = 1):
 
 
 # Assertion testing - Fibonacci series (providing one argument)
-assert sum_series(0) == 0
-assert sum_series(1) == 1
-assert sum_series(5) == 5
+assert fibonacci(0) == 0
+assert fibonacci(1) == 1
+assert fibonacci(5) == 5
 
 # Assertion testing - Lucas series
-assert sum_series(3, 2, 1) == 4
-assert sum_series(0, 2, 1) == 2
+assert lucas(3) == 4
+assert lucas(0) == 2
 
 # Assertion testing - providing random inputs
 assert sum_series(3, 4, 2) == 8
