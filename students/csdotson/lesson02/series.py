@@ -2,22 +2,22 @@
 
 def fibonacci(n):
     """Compute Fibonacci Series, return the nth value"""
-    first_num = 0
-    second_num = 1
-    # Return the nth value of Fib series
+    return sum_series(n)
 
 
 def lucas(n):
     """Compute Lucas Series, return the nth value"""
-    first_num = 2
-    second_num = 1
-    # Returns nth value of the lucas number Series
+    return sum_series(n, 2, 1)
 
 
-def sum_series(n, first_num = 0, second_num = 1):
-    # Add docstring
-    # Required parameter, n, specifies which element to return
-    # Optional parameters, first_num and second_num, sepcify the first two numbers of the series - whether we're looking at a Fib or Lucas series
+def sum_series(n, first = 0, second = 1):
+    """Compute generalized series, return nth value"""
+    if n == 0:
+        return first
+    elif n == 1:
+        return second
+    else:
+        return ( sum_series(n-1, first, second) + sum_series(n-2, first, second) )
 
 
 # Add block of code to test your functions - write a series of 'assert' statements to accomplish this
