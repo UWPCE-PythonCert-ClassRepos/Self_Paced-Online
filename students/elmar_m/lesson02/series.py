@@ -12,7 +12,6 @@ def fib(n):
     else:
         counter = 0
         valuelist= [0, 1]
-        c = None
 
         while counter <= n - 2:
             a = valuelist[0]
@@ -32,7 +31,6 @@ def lucas(n):
     else:
         counter = 0
         valuelist= [2, 1]
-        c = None
 
         while counter <= n - 2:
             a = valuelist[0]
