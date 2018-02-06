@@ -20,4 +20,17 @@ def sum_series(n, first = 0, second = 1):
         return ( sum_series(n-1, first, second) + sum_series(n-2, first, second) )
 
 
-# Add block of code to test your functions - write a series of 'assert' statements to accomplish this
+# Assertion tests - Fibonacci series (providing one argument)
+assert sum_series(0) == 0
+assert sum_series(1) == 1
+assert sum_series(5) == 5
+
+# Assertion tests - Lucas series
+assert sum_series(3, 2, 1) == 4
+assert sum_series(0, 2, 1) == 2
+
+# Assertion test - providing random inputs
+assert sum_series(3, 4, 2) == 8
+assert sum_series(1, 7, 8) == 8
+
+print("All tests passed!")
