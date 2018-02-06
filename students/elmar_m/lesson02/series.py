@@ -7,41 +7,50 @@ Lesson02:  Fibonacci Series Exercise
 def fib(n):
     if n == 0:
         print('value 0 in Fibonacci series: 0')
+        return 0
     elif n == 1:
         print('value 1 in Fibonacci series: 1')
-    else:
+        return 1
+    elif n > 1:
+        startvalues = [0, 1]
         counter = 0
-        valuelist= [0, 1]
-
         while counter <= n - 2:
-            a = valuelist[0]
-            b = valuelist[1]
+            a = startvalues[0]
+            b = startvalues[1]
             c = a + b
-            valuelist[0] = b
-            valuelist[1] = c
+            print(c)
+            startvalues[0] = b
+            startvalues[1] = c
             counter += 1
-
-        print('value', n,  'in Fibonacci series:', c)
+        return c
+    else:
+        print('This function requires a positive integer')
 
 def lucas(n):
     if n == 0:
-        print('value 0 in Lucas series: 2')
+        return 2
     elif n == 1:
-        print('value 1 in Lucas series: 1')
-    else:
+        return 1
+    elif n > 1:
+        startvalues = [2, 1]
         counter = 0
-        valuelist= [2, 1]
-
         while counter <= n - 2:
-            a = valuelist[0]
-            b = valuelist[1]
+            a = startvalues[0]
+            b = startvalues[1]
             c = a + b
-            print(c)
-            valuelist[0] = b
-            valuelist[1] = c
+            # print(c)
+            startvalues[0] = b
+            startvalues[1] = c
             counter += 1
+        return c
+    else:
+        print('This function requires a positive integer')
+        
 
-        print('value', n,  'in Lucas series:', c)
+
+
+
+
 
 
 
