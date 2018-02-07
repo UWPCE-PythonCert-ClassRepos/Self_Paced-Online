@@ -10,6 +10,12 @@ DONATION_DB = [['Toni Morrison',     [1000, 5000, 10000],           0, 0, 0],\
                ["Flannery O'Connor", [38734, 6273, 67520],          0, 0, 0],\
                ['Angela Davis',      [74846, 38470, 7570, 50],      0, 0, 0],\
                ['Bell Hooks',        [634547, 47498, 474729, 4567], 0, 0, 0]]
+NAME_IDX      = 0
+GIFTS_IDX     = 1
+NUM_GIFTS_IDX = 2
+TOTAL_IDX     = 3
+AVE_IDX       = 4
+
 THANK_YOU_OPT = 1
 REPORT_OPT    = 2
 QUIT_OPT      = 3
@@ -39,9 +45,74 @@ def get_usr_input():
     return usr_in
 
 
+def add_donation(idx, amount):
+    pass
+
+
+def send_thank_you():
+    """Send a thank you.
+
+    Prompt for a Full Name.
+    If the user types ‘list’, show them a list of the donor names and re-prompt
+    If the user types a name not in the list, add that name to the data structure
+    and use it.
+    If the user types a name in the list, use it.
+    Once a name has been selected, prompt for a donation amount.
+    Turn the amount into a number – it is OK at this point for the program to
+    crash if someone types a bogus amount.
+    Once an amount has been given, add that amount to the donation history of
+    the selected user.
+    Finally, use string formatting to compose an email thanking the donor for their
+    generous donation. Print the email to the terminal and return to the original prompt.
+    """
+    name_prompt   = '\nPlease enter name of "Thank You" recipient:\n'\
+                    '(Enter "list" to see all donors)\n'\
+                    ' --> '
+    amount_prompt = '\nPlease enter the donation amount:\n'\
+                    ' --> '
+    thank_you_fmt = '\nThank you {:s} for your generous donation of ${:d}!'
+    first_names   = [donor[NAME_IDX].lower().split()[NAME_IDX] for donor in DONATION_DB]
+
+    while True:
+        usr_in = input(name_prompt).strip().lower()
+
+        if usr_in == 'list':
+            print()
+            for dnr in DONATION_DB:
+                print(dnr[NAME_IDX])
+        else:
+            if usr_in in first_names:
+                for i, _ in enumerate(DONATION_DB):
+                    if usr_in in DONATION_DB[i][NAME_IDX].lower():
+                        donor     = DONATION_DB[i][NAME_IDX]
+                        donor_idx = i
+                        break
+            else:
+                donor = " ".join([name.capitalize() for name in usr_in.split()])
+                DONATION_DB.append([donor, [], 0, 0, 0])
+                donor_idx = len(DONATION_DB) - 1
+
+            donation = int(input(amount_prompt).strip())
+            add_donation(donor_idx, donation)
+            print(thank_you_fmt.format(DONATION_DB[donor_idx][NAME_IDX], donation))
+            break
+
+
+def create_report():
+    print('Report!')
+
+
 def main():
     """Main function"""
-    choice = get_usr_input()
+    while True:
+        choice = get_usr_input()
+
+        if choice == THANK_YOU_OPT:
+            send_thank_you()
+        elif choice == REPORT_OPT:
+            create_report()
+        else:
+            break
 
 
 if __name__ == '__main__':
