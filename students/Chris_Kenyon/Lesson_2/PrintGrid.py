@@ -6,7 +6,7 @@ m = "-"
 s = " "
 v = "|"
 
-###Activity 1: Brute force###
+###Part 1: Brute force###
 #create a 2x2 grid of pre-specified size using print commands
 print(p + (m*4) + p + (m*4) + p)
 for i in range(4):
@@ -16,7 +16,7 @@ for i in range(4):
 	print(v + (s *4) + v + (s*4) + v)
 print(p + (m*4) + p + (m*4) + p)
 
-###Activity 2: Making a basic function###
+###Part 2: Making a basic function###
 #create a 2x2 grid of defined size using a function
 
 def print_grid(GridSize):
@@ -29,7 +29,7 @@ def print_grid(GridSize):
 		print(v + (s *GridSize) + v + (s*GridSize) + v)
 	print(p + (m*GridSize) + p + (m*GridSize) + p)
 	
-###Activity 3: Two Part Function###
+###Part 3: Two Part Function###
 #create a grid with variable rows and columns of variable size
 
 def print_grid2(GridSize,RowCol):
@@ -40,15 +40,15 @@ def print_grid2(GridSize,RowCol):
 		for i in range(RowCol):
 			print((m*GridSize) + p, end = "")
 		#print the rest of the grid
-		for i in range(RowCol): #overall for each row specified by Row/Col
-			for i in range(GridSize): #add the "|" character spacing based on Grid Size
+		for i in range(RowCol): #for each row specified by Row/Col
+			for i in range(GridSize): #for each row specified to increase size add the "|" and " " spacing based on Grid Size
 				print()
 				print(v, end = "")
-				for i in range(RowCol):
+				for i in range(RowCol):#for each column
 					print((s*GridSize)+v, end = "")
 			print()
 			print(p, end = "")
-			for i in range(RowCol):#for each column, add the cross lines
+			for i in range(RowCol):#for each column, add the cross lines and "-" spacers
 				print((m*GridSize) + p, end = "")
 	else:
 		print("please specify valid integers greater than 0")
