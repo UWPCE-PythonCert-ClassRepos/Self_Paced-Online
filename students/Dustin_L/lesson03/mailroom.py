@@ -67,16 +67,21 @@ def send_thank_you():
     """
     name_prompt   = '\nPlease enter name of "Thank You" recipient:\n'\
                     '(Enter "list" to see all donors)\n'\
+                    '(Enter "quit" to return to main menu)\n'\
                     ' --> '
     amount_prompt = '\nPlease enter the donation amount:\n'\
+                    '(Enter "quit" to return to main menu)\n'\
                     ' --> '
-    thank_you_fmt = '\nThank you {:s} for your generous donation of ${:d}!'
+    thank_you_fmt = '\nThank you {:s} for your generous donation of ${:.2f}!'
     first_names   = [donor[NAME_IDX].lower().split()[NAME_IDX] for donor in DONATION_DB]
 
     while True:
-        usr_in = input(name_prompt).strip().lower()
+        new_donor = False
+        usr_in    = input(name_prompt).strip().lower()
 
-        if usr_in == 'list':
+        if usr_in.startswith('q'):
+            break
+        elif usr_in == 'list':
             print()
             for dnr in DONATION_DB:
                 print(dnr[NAME_IDX])
@@ -86,13 +91,20 @@ def send_thank_you():
                     if usr_in in DONATION_DB[i][NAME_IDX].lower():
                         donor     = DONATION_DB[i][NAME_IDX]
                         donor_idx = i
+            else:
+                donor     = " ".join([name.capitalize() for name in usr_in.split()])
+                new_donor = True
+
+            usr_in = input(amount_prompt).strip().lower()
+            if usr_in.startswith('q'):
                         break
             else:
-                donor = " ".join([name.capitalize() for name in usr_in.split()])
+                donation = float(usr_in)
+
+            if new_donor:
                 DONATION_DB.append([donor, [], 0, 0, 0])
                 donor_idx = len(DONATION_DB) - 1
 
-            donation = int(input(amount_prompt).strip())
             add_donation(donor_idx, donation)
             print(thank_you_fmt.format(DONATION_DB[donor_idx][NAME_IDX], donation))
             break
