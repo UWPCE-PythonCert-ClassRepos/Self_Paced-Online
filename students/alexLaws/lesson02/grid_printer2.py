@@ -1,13 +1,13 @@
-def prow(x,y=2):
+def prow(x, y=2):
     """print the horizontal rows"""
     for i in range(y):
-        print("+", "- " * x, end = "")
+        print("+", "- " * x, end="")
     print("+")
 
-def pcolumn(x,y=2):
+def pcolumn(x, y=2):
     """print the columns"""
     for i in range(y):
-        print("|", " " * x, end = "")
+        print("|", " " * x, end="")
     print("|")
 
 def print_grid(x):
@@ -23,10 +23,10 @@ def print_grid(x):
             pcolumn(col)
     prow(row)
 
-def print_grid2(y,z):
+def print_grid2(y, z):
     """print a y by y grid with squares of size z by z"""
     for i in range(y):
-        prow(z,y)
+        prow(z, y)
         for i in range(z):
-            pcolumn(z*2,y)
-    prow(z,y)
+            pcolumn(z*2, y)
+    prow(z, y)
