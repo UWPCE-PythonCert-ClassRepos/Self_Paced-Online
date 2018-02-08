@@ -48,7 +48,7 @@ def print_grid2(GridSize,RowCol):
 					print((s*GridSize)+v, end = "")
 			print()
 			print(p, end = "")
-			for i in range(RowCol):#for each column, add the cross lines and "-" spacers
+			for i in range(RowCol):#for each column, add the cross lines of "+" with "-" spacers
 				print((m*GridSize) + p, end = "")
 	else:
 		print("please specify valid integers greater than 0")
