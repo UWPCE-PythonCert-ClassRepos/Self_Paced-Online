@@ -41,7 +41,7 @@ def print_grid2(GridSize,RowCol):
 			print((m*GridSize) + p, end = "")
 		#print the rest of the grid
 		for i in range(RowCol): #for each row specified by Row/Col
-			for i in range(GridSize): #for each row specified to increase size add the "|" and " " spacing based on Grid Size
+			for i in range(GridSize): #for each row specified to increase size based on Grid Size
 				print()
 				print(v, end = "")
 				for i in range(RowCol):#for each column
