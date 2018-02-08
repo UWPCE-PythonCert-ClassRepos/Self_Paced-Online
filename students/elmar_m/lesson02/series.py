@@ -80,20 +80,20 @@ def sum_series(n, x=0, y=1):
     if x == 0 and y == 1:
         # print('Fibonacci series requested...')
         if n == 0:
-            print('value 0 in Fibonacci series: 0')
+            # print('value 0 in Fibonacci series: 0')
             return 0
         elif n == 1:
-            print('value 1 in Fibonacci series: 1')
+            # print('value 1 in Fibonacci series: 1')
             return 1
         else:
             calculate(n, x, y)
     elif x == 2 and y == 1:
         # print('Lucas series requested...') 
         if n == 0:
-            print('value 0 in Lucas series: 2')
+            # print('value 0 in Lucas series: 2')
             return 2
         elif n == 1:
-            print('value 1 in Lucas series: 1')
+            # print('value 1 in Lucas series: 1')
             return 1 
         else:
             calculate(n, x, y)
@@ -115,14 +115,17 @@ def calculate(n, x, y):
         b = startvalues[1]
         global c
         c = a + b
-        print(c)
+        # print(c)
         startvalues[0] = b
         startvalues[1] = c
-        counter += 1
-    # return c
+        counter += 1 
+    return c
     # print(c)
 
-# assert sum_series(9) == 34
+assert fib(9) == 34
+assert lucas(9) == 76
+assert calculate(9, 0, 1) == 34
+assert calculate(9, 2, 1) == 76
 
 
 
