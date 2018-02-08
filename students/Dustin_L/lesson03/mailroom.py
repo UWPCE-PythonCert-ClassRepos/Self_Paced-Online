@@ -46,7 +46,17 @@ def get_usr_input():
 
 
 def add_donation(idx, amount):
-    pass
+    """Add a new donation to the donation database.
+
+    Args:
+        idx (int): Index of donor in database.
+        amount (int): Amount to add to donation database.
+    """
+    DONATION_DB[idx][GIFTS_IDX].append(amount)
+    DONATION_DB[idx][NUM_GIFTS_IDX] += 1
+    DONATION_DB[idx][TOTAL_IDX]     += amount
+    DONATION_DB[idx][AVE_IDX]        = DONATION_DB[idx][TOTAL_IDX] /    \
+                                       DONATION_DB[idx][NUM_GIFTS_IDX]
 
 
 def send_thank_you():
@@ -97,7 +107,7 @@ def send_thank_you():
 
             usr_in = input(amount_prompt).strip().lower()
             if usr_in.startswith('q'):
-                        break
+                break
             else:
                 donation = float(usr_in)
 
