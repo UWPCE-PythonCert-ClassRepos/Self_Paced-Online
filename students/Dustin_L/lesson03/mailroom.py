@@ -5,10 +5,10 @@ This module contains all of the functions for the Mail Room module.
 """
 
 # Name, Gifts, Num Gifts, Total, Average
-DONATION_DB = [['Toni Morrison',     [1000, 5000, 10000],           0, 0, 0],\
-               ['Mike McHargue',     [12000, 50000, 27000],         0, 0, 0],\
-               ["Flannery O'Connor", [38734, 6273, 67520],          0, 0, 0],\
-               ['Angela Davis',      [74846, 38470, 7570, 50],      0, 0, 0],\
+DONATION_DB = [['Toni Morrison',     [1000, 5000, 10000],           0, 0, 0],
+               ['Mike McHargue',     [12000, 50000, 27000],         0, 0, 0],
+               ["Flannery O'Connor", [38734, 6273, 67520],          0, 0, 0],
+               ['Angela Davis',      [74846, 38470, 7570, 50],      0, 0, 0],
                ['Bell Hooks',        [634547, 47498, 474729, 4567], 0, 0, 0]]
 NAME_IDX      = 0
 GIFTS_IDX     = 1
@@ -19,6 +19,7 @@ AVE_IDX       = 4
 THANK_YOU_OPT = 1
 REPORT_OPT    = 2
 QUIT_OPT      = 3
+
 
 def get_usr_input():
     """Get input from user.
