@@ -1,14 +1,11 @@
-
-
-for i in range(100):
+for i in range(1,101):
     message = ''
-    if (i+1) % 3 == 0:
+    if i % 3 == 0:
         message += 'Fizz'
-    if (i+1) % 5 == 0:
+    if i % 5 == 0:
         message += 'Buzz'
-    #print('length',len(message))
     if len(message) == 0:
-        message = str(i + 1)
+        message = str(i)
 
     print(message)
 
