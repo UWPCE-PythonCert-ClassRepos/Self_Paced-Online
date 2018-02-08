@@ -1,8 +1,8 @@
 '''
+File: series.py
 elmar_m / 22e88@mailbox.org
 Lesson02:  Fibonacci Series Exercise
 -------------------------------
-File: series.py
 Python module containing functions to generate Fibonacci and Lucas series 
 of integers and return their n'th value. 
 Instead of Fibonacci or Lucas series start values (0 and 1 resp. 2 and 1)
@@ -78,7 +78,7 @@ def sum_series(n, x=0, y=1):
     Arguments have to be positive integers. 
     '''
     if x == 0 and y == 1:
-        print('Fibonacci series requested...')
+        # print('Fibonacci series requested...')
         if n == 0:
             print('value 0 in Fibonacci series: 0')
             return 0
@@ -88,7 +88,7 @@ def sum_series(n, x=0, y=1):
         else:
             calculate(n, x, y)
     elif x == 2 and y == 1:
-        print('Lucas series requested...') 
+        # print('Lucas series requested...') 
         if n == 0:
             print('value 0 in Lucas series: 2')
             return 2
@@ -109,15 +109,21 @@ def calculate(n, x, y):
     '''
     startvalues = [x, y]
     counter = 0
-    while counter <= n - 2:
+    # while counter <= n - 2:
+    for i in range(n - 1):
         a = startvalues[0]
         b = startvalues[1]
+        global c
         c = a + b
         print(c)
         startvalues[0] = b
         startvalues[1] = c
         counter += 1
-    return c
+    # return c
+    # print(c)
+
+# assert sum_series(9) == 34
+
 
 
 if __name__ == '__main__':
