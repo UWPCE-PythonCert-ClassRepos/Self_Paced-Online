@@ -102,7 +102,7 @@ def send_thank_you():
                         donor     = DONATION_DB[i][NAME_IDX]
                         donor_idx = i
             else:
-                donor     = " ".join([name.capitalize() for name in usr_in.split()])
+                donor     = " ".join([name.title() for name in usr_in.split()])
                 new_donor = True
 
             usr_in = input(amount_prompt).strip().lower()
