@@ -121,11 +121,49 @@ def send_thank_you():
 
 
 def create_report():
-    print('Report!')
+    """Generate and print a report of donors in the database
+
+    Prints a list of donors, sorted by total historical donation amount.
+    Includes Donor Name, total donated, number of donations and average donation
+    """
+    min_width = 12
+    def_space = 5
+    col_sep   = ' | '
+
+    donors    = sorted(DONATION_DB, key=lambda entry: entry[TOTAL_IDX], reverse=True)
+    max_name  = len(max([dnr[NAME_IDX] for dnr in DONATION_DB], key=len))           + def_space
+    max_total = len(max([str(dnr[TOTAL_IDX]) for dnr in DONATION_DB], key=len))     + def_space
+    max_gifts = len(max([str(dnr[NUM_GIFTS_IDX]) for dnr in DONATION_DB], key=len)) + def_space
+    max_ave   = max_total
+
+    if max_name < min_width:
+        max_name = min_width
+    if max_total < min_width:
+        max_total = max_ave = min_width
+    if max_gifts < min_width:
+        max_gifts = min_width
+
+    header  = f'\n{{:^{max_name}s}}{col_sep}{{:^{max_total}s}}{col_sep}'\
+              f'{{:^{max_gifts}s}}{col_sep}{{:^{max_ave}s}}\n'
+    header += '-' * (max_name + max_total + max_gifts + max_ave + len(col_sep) * 3)
+    header  = header.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift')
+    row_fmt = f'{{:<{max_name}s}}{col_sep}${{:>{max_total - 1}.2f}}{col_sep}'\
+              f'{{:>{max_gifts}d}}{col_sep}${{:>{max_ave - 1}.2f}}'
+
+    print(header)
+    for dnr in donors:
+        print(row_fmt.format(dnr[NAME_IDX], dnr[TOTAL_IDX], dnr[NUM_GIFTS_IDX], dnr[AVE_IDX]))
 
 
 def main():
     """Main function"""
+
+    # Initialize database
+    for dnr in DONATION_DB:
+        dnr[NUM_GIFTS_IDX] = len(dnr[GIFTS_IDX])
+        dnr[TOTAL_IDX]     = sum(dnr[GIFTS_IDX])
+        dnr[AVE_IDX]       = dnr[TOTAL_IDX] / dnr[NUM_GIFTS_IDX]
+
     while True:
         choice = get_usr_input()
 
