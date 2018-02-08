@@ -16,14 +16,27 @@ def printgrid(gridSize,cubesXY):
                 if cubesXY == 1:
                     print("| " + "  " * gridSize + "| ")
                 if cubesXY > 1:
-                    print(" " * gridSize + "| ", end="")
+                    if x == 0:
+                        print("| " + "- " * gridSize + "| ", end="")
+                    elif x < cubesXY - 1:
+                        print("  " * gridSize + "| ", end="")
+                    else:
+                        print("  " * gridSize + "| ")
+                    #print(" " * gridSize + "| ", end="")
 
 
             if y == gridSize - 1:
                 if cubesXY == 1:
                     print("+ " + "- " * gridSize + "+ ")
                 if cubesXY > 1:
-                    print("- " * gridSize + "+ ", end="")
+                    if x == 0:
+                        print("+ " + "- " * gridSize + "+ ", end="")
+                    elif x < cubesXY - 1:
+                        print("- " * gridSize + "+", end="")
+                    else:
+                        print("- " * gridSize + "+")
+                    #print("- " * gridSize + "+ ", e
+                        # nd="")
 
 
 
