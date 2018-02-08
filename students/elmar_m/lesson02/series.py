@@ -86,6 +86,7 @@ def sum_series(n, x=0, y=1):
             # print('value 1 in Fibonacci series: 1')
             return 1
         else:
+            print('mark1', n, x, y)
             calculate(n, x, y)
     elif x == 2 and y == 1:
         # print('Lucas series requested...') 
@@ -96,8 +97,10 @@ def sum_series(n, x=0, y=1):
             # print('value 1 in Lucas series: 1')
             return 1 
         else:
+            print('mark2', n, x, y)
             calculate(n, x, y)
     else:
+        print('mark3', n, x, y)
         calculate(n, x, y)
 
 
@@ -107,13 +110,14 @@ def calculate(n, x, y):
     calculated using x and y as start values according to the
     formula which is also used to create Fibonacci or Lucas series.
     '''
+    print('executing calculate function...', n, x, y)
     startvalues = [x, y]
     counter = 0
-    # while counter <= n - 2:
-    for i in range(n - 1):
+    while counter <= n - 2:
+    # for i in range(n - 1):
         a = startvalues[0]
         b = startvalues[1]
-        global c
+        # global c
         c = a + b
         # print(c)
         startvalues[0] = b
