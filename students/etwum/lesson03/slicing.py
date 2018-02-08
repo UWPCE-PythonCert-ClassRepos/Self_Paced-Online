@@ -39,8 +39,21 @@ def remove_every_other(seq):
         return print(new_list2)
 
 
-def first_last_four_every_other_remove():
-    return
+def first_last_four_every_other_remove(seq):
+    if type(seq) is str:
+        y = seq[4:-4:2]
+        new_string = y
+        return print(new_string)
+
+    elif type(seq) is tuple:
+        x = list(seq)
+        new_list = x[4:-4:2]
+        new_tuple = tuple(new_list)
+        return print(new_tuple)
+
+    else:
+        new_list2 = seq[4:-4:2]
+        return print(new_list2)
 
 
 def reverse(seq):
@@ -63,6 +76,6 @@ def reverse(seq):
 def middle_last_first():
     return
 
-hello = (1,2,3,4,5)
+hello = [1,2,3,4,5,5,6,6,74,54,342,45,66343,4]
 
-reverse(hello)
+first_last_four_every_other_remove(hello)
