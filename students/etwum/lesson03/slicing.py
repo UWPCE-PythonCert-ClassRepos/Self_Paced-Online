@@ -15,15 +15,28 @@ def exchange_first_last(seq):
         return print(new_tuple)
 
     else:
-        last_item2 = [seq[-1]]
+        last_item2 = seq[-1]
         middle_items2 = seq[1:-1]
-        first_item2 = [seq[0]]
+        first_item2 = seq[0]
         new_list2 = last_item2 + middle_items2 + first_item2
         return print(new_list2)
 
 
-def remove_every_other():
-    return
+def remove_every_other(seq):
+    if type(seq) is str:
+        y = seq[0::2]
+        new_string = y
+        return print(new_string)
+
+    elif type(seq) is tuple:
+        x = list(seq)
+        new_list = x[0::2]
+        new_tuple = tuple(new_list)
+        return print(new_tuple)
+
+    else:
+        new_list2 = seq[0::2]
+        return print(new_list2)
 
 
 def first_last_four_every_other_remove():
@@ -38,6 +51,6 @@ def reverse():
 def middle_last_first():
     return
 
-hello = [12,1,4,5,7,6,10]
+hello = "hello world"
 
-exchange_first_last(hello)
+remove_every_other(hello)
