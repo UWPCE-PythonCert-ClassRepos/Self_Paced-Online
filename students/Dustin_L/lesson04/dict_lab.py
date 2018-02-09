@@ -29,5 +29,17 @@ def dictionaries_one():
         print(False)
 
 
+def dictionaries_two():
+    """Find number of "t's" in a dictionary"""
+    d1 = {'name': 'Chris', 'city': 'Seattle', 'cake': 'Chocolate'}
+    d2 = {}
+
+    for k, v in d1.items():
+        d2[k] = v.lower().count('t')
+
+    print(d2)
+
+
 if __name__ == '__main__':
     dictionaries_one()
+    dictionaries_two()
