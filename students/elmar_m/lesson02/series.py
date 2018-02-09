@@ -2,7 +2,7 @@
 File: series.py
 elmar_m / 22e88@mailbox.org
 Lesson02:  Fibonacci Series Exercise
--------------------------------
+------------------------------------
 Python module containing functions to generate Fibonacci and Lucas series 
 of integers and return their n'th value. 
 Instead of Fibonacci or Lucas series start values (0 and 1 resp. 2 and 1)
@@ -86,8 +86,8 @@ def sum_series(n, x=0, y=1):
             # print('value 1 in Fibonacci series: 1')
             return 1
         else:
-            print('mark1', n, x, y)
-            calculate(n, x, y)
+            # print('mark1', n, x, y)
+            return calculate(n, x, y)
     elif x == 2 and y == 1:
         # print('Lucas series requested...') 
         if n == 0:
@@ -97,20 +97,26 @@ def sum_series(n, x=0, y=1):
             # print('value 1 in Lucas series: 1')
             return 1 
         else:
-            print('mark2', n, x, y)
-            calculate(n, x, y)
+            # print('mark2', n, x, y)
+            return calculate(n, x, y)
     else:
-        print('mark3', n, x, y)
-        calculate(n, x, y)
+        # print('mark3', n, x, y)
+        return calculate(n, x, y)
 
 
-def calculate(n, x, y):
+# def calculate(n, x, y):
+def calculate(n, x=0, y=1):
     '''
-    returns the n'th value of a series of natural numbers, 
+    calculate() returns the n'th value of a series of natural numbers, 
     calculated using x and y as start values according to the
     formula which is also used to create Fibonacci or Lucas series.
+    Defaults to Fibonacci series if x and y are not 
+    explicitly given. 
+    This function is meant to be called by sum_series().  
+    When called directly there would be an error when n == 0 or
+    n == 1. This scenario is only handled by sum_series().  
     '''
-    print('executing calculate function...', n, x, y)
+    # print('executing calculate function...', n, x, y)
     startvalues = [x, y]
     counter = 0
     while counter <= n - 2:
@@ -126,11 +132,26 @@ def calculate(n, x, y):
     return c
     # print(c)
 
-assert fib(9) == 34
-assert lucas(9) == 76
+'''
+assert statements ensure that functions work in a specified way. They are 
+executed immediately when a module is imported and throw AssertionError if
+their expression does not result to "True". So the following statements
+ensure that the calculated results are correct. 
+'''
+fib_results = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
+for i in range(0, 20):
+    assert fib(i) == fib_results[i]     
+    assert sum_series(i) == fib_results[i]
+    assert sum_series(i, 0, 1) == fib_results[i]
+
+lucas_results = [2, 1, 3, 4, 7, 11, 18, 29, 47, 76, 123, 199, 322, 521, 843, 1364, 2207, 3571, 5778, 9349, 15127]
+for i in range(0, 20):
+    assert lucas(i) == lucas_results[i]     
+    assert sum_series(i, 2, 1) == lucas_results[i]
+
+assert calculate(2, 0, 1) == 1
 assert calculate(9, 0, 1) == 34
 assert calculate(9, 2, 1) == 76
-
 
 
 if __name__ == '__main__':
