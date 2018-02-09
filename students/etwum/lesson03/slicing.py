@@ -28,7 +28,7 @@ def exchange_first_last(seq):
 
 
 def remove_every_other(seq):
-    # removes every other item in a string, list or tuple
+    # removes every other item in a string, list or tuple then returns a new sequence
 
     # performs this part of the if statement if the sequence is of type string
     # [0::2] slice starts at the beginning of the sequence then skips every other item
@@ -51,7 +51,8 @@ def remove_every_other(seq):
 
 
 def first_last_four_every_other_remove(seq):
-    #
+    # removes the first four and last four items in a sequence
+    # then skips every other item and returns a new sequence
 
     # performs this part of the if statement if the sequence is of type string
     if type(seq) is str:
@@ -73,30 +74,41 @@ def first_last_four_every_other_remove(seq):
 
 
 def reverse(seq):
+    # reverses the sequence and returns a new sequence
+
+    # performs this part of the if statement if the sequence is of type string
     if type(seq) is str:
         y = seq[::-1]
         new_string = y
         return new_string
 
+    # performs this part of the if statement if the sequence is of type tuple
     elif type(seq) is tuple:
         x = list(seq)
         new_list = x[::-1]
         new_tuple = tuple(new_list)
         return new_tuple
 
+    # performs this part of the if statement for everything else (list)
     else:
         new_list2 = seq[::-1]
         return new_list2
 
 
 def middle_last_first(seq):
+    # takes first, middle, and last third of sequence to reorder them into a new sequence
+
+    # variable used to identify a third of a sequence
     third = len(seq) // 3
+
+    # performs this part of the if statement if the sequence is of type string
     if type(seq) is str:
         third = len(seq)//3
         y = seq[third:-third] + seq[-third:] + seq[0:third]
         new_string = y
         return new_string
 
+    # performs this part of the if statement if the sequence is of type tuple
     elif type(seq) is tuple:
         x = list(seq)
         last_third = x[-third:]
@@ -106,6 +118,7 @@ def middle_last_first(seq):
         new_tuple = tuple(new_list)
         return new_tuple
 
+    # performs this part of the if statement for everything else (list)
     else:
         last_third2 = seq[-third:]
         middle_third2 = seq[third:-third]
