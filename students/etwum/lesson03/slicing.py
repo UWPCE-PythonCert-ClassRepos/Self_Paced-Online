@@ -1,10 +1,14 @@
 
 def exchange_first_last(seq):
+    # exchanges the first/last items in a sequence then copies the new sequence into a new string, list or tuple
+
+    # performs this part of the if statement if the sequence is of type string
     if type(seq) is str:
         y = seq[-1] + seq[1:-1] + seq[0]
         new_string = y
         return new_string
 
+    # performs this part of the if statement if the sequence is of type tuple
     elif type(seq) is tuple:
         x = list(seq)
         last_item = [x[-1]]
@@ -14,6 +18,7 @@ def exchange_first_last(seq):
         new_tuple = tuple(new_list)
         return new_tuple
 
+    # performs this part of the if statement for everything else (list)
     else:
         last_item2 = [seq[-1]]
         middle_items2 = seq[1:-1]
@@ -23,34 +28,45 @@ def exchange_first_last(seq):
 
 
 def remove_every_other(seq):
+    # removes every other item in a string, list or tuple
+
+    # performs this part of the if statement if the sequence is of type string
+    # [0::2] slice starts at the beginning of the sequence then skips every other item
     if type(seq) is str:
         y = seq[0::2]
         new_string = y
         return new_string
 
+    # performs this part of the if statement if the sequence is of type tuple
     elif type(seq) is tuple:
         x = list(seq)
         new_list = x[0::2]
         new_tuple = tuple(new_list)
         return new_tuple
 
+    # performs this part of the if statement for everything else (list)
     else:
         new_list2 = seq[0::2]
         return new_list2
 
 
 def first_last_four_every_other_remove(seq):
+    #
+
+    # performs this part of the if statement if the sequence is of type string
     if type(seq) is str:
         y = seq[4:-4:2]
         new_string = y
         return new_string
 
+    # performs this part of the if statement if the sequence is of type tuple
     elif type(seq) is tuple:
         x = list(seq)
         new_list = x[4:-4:2]
         new_tuple = tuple(new_list)
         return new_tuple
 
+    # performs this part of the if statement for everything else (list)
     else:
         new_list2 = seq[4:-4:2]
         return new_list2
