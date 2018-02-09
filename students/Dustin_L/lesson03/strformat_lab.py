@@ -91,8 +91,7 @@ def task_six():
     max_cost = len(max([cost[2] for cost in data], key=len))
     max_age  = 3
 
-    str_fmt = '{:<' + f'{max_name + 5}' + '}{:<' + f'{max_age + 5}' +\
-              '}{:<' + f'{max_cost + 5}' + '}'
+    str_fmt = f'{{:<{max_name + 5}}}{{:<{max_age + 5}}}{{:<{max_cost}}}'
 
     for row in data:
         print(str_fmt.format(row[0], row[1], row[2]))
