@@ -17,10 +17,8 @@ def fib(n):
     'n' is required to be a positive integer. 
     '''
     if n == 0:
-        # print('value 0 in Fibonacci series: 0')
         return 0
     elif n == 1:
-        # print('value 1 in Fibonacci series: 1')
         return 1
     elif n > 1:
         startvalues = [0, 1]
@@ -29,14 +27,12 @@ def fib(n):
             a = startvalues[0]
             b = startvalues[1]
             c = a + b
-            # print(c)
             startvalues[0] = b
             startvalues[1] = c
             counter += 1
         return c
     else:
         print('This function requires a positive integer')
-
 
 
 def lucas(n):
@@ -55,7 +51,6 @@ def lucas(n):
             a = startvalues[0]
             b = startvalues[1]
             c = a + b
-            # print(c)
             startvalues[0] = b
             startvalues[1] = c
             counter += 1
@@ -63,8 +58,6 @@ def lucas(n):
     else:
         print('This function requires a positive integer')
         
-
-
 
 def sum_series(n, x=0, y=1):
     '''
@@ -78,59 +71,45 @@ def sum_series(n, x=0, y=1):
     Arguments have to be positive integers. 
     '''
     if x == 0 and y == 1:
-        # print('Fibonacci series requested...')
         if n == 0:
-            # print('value 0 in Fibonacci series: 0')
             return 0
         elif n == 1:
-            # print('value 1 in Fibonacci series: 1')
             return 1
         else:
-            # print('mark1', n, x, y)
             return calculate(n, x, y)
     elif x == 2 and y == 1:
-        # print('Lucas series requested...') 
         if n == 0:
-            # print('value 0 in Lucas series: 2')
             return 2
         elif n == 1:
-            # print('value 1 in Lucas series: 1')
             return 1 
         else:
-            # print('mark2', n, x, y)
             return calculate(n, x, y)
     else:
-        # print('mark3', n, x, y)
         return calculate(n, x, y)
 
 
-# def calculate(n, x, y):
 def calculate(n, x=0, y=1):
     '''
-    calculate() returns the n'th value of a series of natural numbers, 
+    returns the n'th value of a series of natural numbers, 
     calculated using x and y as start values according to the
     formula which is also used to create Fibonacci or Lucas series.
     Defaults to Fibonacci series if x and y are not 
     explicitly given. 
+    Caveat:
     This function is meant to be called by sum_series().  
-    When called directly there would be an error when n == 0 or
-    n == 1. This scenario is only handled by sum_series().  
+    If called directly there would be an UnboundLocalError when n == 0 or
+    n == 1. This scenario is only handled correctly when called by sum_series().  
     '''
-    # print('executing calculate function...', n, x, y)
     startvalues = [x, y]
     counter = 0
     while counter <= n - 2:
-    # for i in range(n - 1):
         a = startvalues[0]
         b = startvalues[1]
-        # global c
         c = a + b
-        # print(c)
         startvalues[0] = b
         startvalues[1] = c
         counter += 1 
     return c
-    # print(c)
 
 '''
 assert statements ensure that functions work in a specified way. They are 
@@ -148,6 +127,9 @@ lucas_results = [2, 1, 3, 4, 7, 11, 18, 29, 47, 76, 123, 199, 322, 521, 843, 136
 for i in range(0, 20):
     assert lucas(i) == lucas_results[i]     
     assert sum_series(i, 2, 1) == lucas_results[i]
+
+# assert calculate(0, 0, 1) == 0
+# assert calculate(1, 0, 1) == 1
 
 assert calculate(2, 0, 1) == 1
 assert calculate(9, 0, 1) == 34
