@@ -40,6 +40,27 @@ def dictionaries_two():
     print(d2)
 
 
+def sets_one():
+    """Test basic set operations"""
+    s2 = set(range(0, 21, 2))
+    s3 = set(range(0, 21, 3))
+    s4 = set(range(0, 21, 4))
+
+    print(s2)
+    print(s3)
+    print(s4)
+
+    if s3.issubset(s2):
+        print(True)
+    else:
+        print(False)
+    if s4.issubset(s2):
+        print(True)
+    else:
+        print(False)
+
+
 if __name__ == '__main__':
     dictionaries_one()
     dictionaries_two()
+    sets_one()
