@@ -29,3 +29,10 @@ def sum_series(n, param1=0, param2=1):
         return sum_series(n-2, param1, param2) + sum_series(n-1, param1, param2)
 
 
+# Testing function implementations by comparing function results
+# with known values
+
+assert fibonacci(8) == 21
+assert lucas(5) == 11
+assert sum_series(10) == 55
+assert sum_series(4, 3, 4) == 18
