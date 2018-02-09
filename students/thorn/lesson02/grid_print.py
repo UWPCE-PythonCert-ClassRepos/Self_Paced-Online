@@ -1,7 +1,6 @@
 '''
 Thomas Horn
-Exercises for lesson 2:
-  Contains: Grid Printer, Fizz Buzz, Fibonacci
+Exercise for Less 2 - Part 1 (Grid)
 '''
 
 def main():
@@ -55,7 +54,7 @@ def part_3(grid_size, side_length):
 
     lines = ((corner + (flat*units_per_segment)) * lines_per_side + corner)
     vert_line = vert + (empty * (side_length*3))
-    
+
     # Loop through the number of lines and fill in the vertical lines each time.
     for i in range(lines_per_side):
         print(lines)
