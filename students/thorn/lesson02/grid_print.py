@@ -1,6 +1,6 @@
 '''
 Thomas Horn
-Exercise for Less 2 - Part 1 (Grid)
+Exercise for Lesson 2 - Part 1 (Grid)
 '''
 
 def main():
