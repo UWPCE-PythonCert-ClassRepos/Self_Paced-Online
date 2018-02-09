@@ -60,7 +60,18 @@ def sets_one():
         print(False)
 
 
+def sets_two():
+    """Test set union and intersection functionalities"""
+    s1 = set('Python')
+    s1.add('i')
+    s2 = frozenset('marathon')
+
+    print(s1.union(s2))
+    print(s1.intersection(s2))
+
+
 if __name__ == '__main__':
     dictionaries_one()
     dictionaries_two()
     sets_one()
+    sets_two()
