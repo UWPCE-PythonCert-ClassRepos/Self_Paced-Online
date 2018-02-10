@@ -127,19 +127,19 @@ def format_fruit_weights_test():
     fruits1=['oranges',1,'lemons',1.1]
     fruits2=['oRaNgE',1,'LeMoNS',1.1]
     fruits3=['pancakes',3,'PANCAKES',3]
-    fruits4=['pancakes',1,'PANCAKES',1]
+    fruits4=['pancakes',1,'APPLES',1]
     assert format_fruit_weights(fruits1) == 'The weight of an Orange is 1.2 and the weight of a Lemon is 1.32'
     assert format_fruit_weights(fruits2) == 'The weight of an Orange is 1.2 and the weight of a Lemon is 1.32'
     assert format_fruit_weights(fruits4) == 'The weight of a Pancake is 1.2 and the weight of a Pancake is 1.2'
     #assert disp_fruit_weights(fruits3) == 'The weight of a Pancake is 3.6 and the weight of a Pancake is 3.6'
     #The above assert statement is somehow wrong. Something about the IEEE-754 standard of a processor makes 1.2*3 = 3.599999999999...
     
-
 def format_decuple_test():
     decuple_list = [tuple(range(1,11)),tuple(range(10)),tuple(range(215,225)),tuple(range(5460, 5470)),tuple(range(80320, 80330))]
     for x in decuple_list:
         print(format_decuple(x))
 
+        
 format_quadruple_test()
 format_quadruple_alt_test()
 format_num_string_test()
