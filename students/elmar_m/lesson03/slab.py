@@ -1,5 +1,9 @@
-a = "this is a string"
-t = (2, 54, 13, 12, 5, 32)
+#!/usr/bin/env python3
+
+
+
+mystr = "this is a string"
+# t = (2, 54, 13, 12, 5, 32)
 
 '''
 first and last element exchanged: 
@@ -25,7 +29,7 @@ def withoutfl4(a):
 '''
 with the elements reversed:
 '''
-def rev(a):
+def reverse(a):
     return a[::-1]
 
 '''
@@ -41,10 +45,12 @@ def third(a):
 Assertions:
 '''
 # assert exchange_first_last(a) == "ghis is a strint"
-assert exfl(a) == "ghis is a strint"
+assert exfl(mystr) == "ghis is a strint"
 # assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
-assert exfl(t) == (32, 54, 13, 12, 5, 2)
+# assert exfl(t) == (32, 54, 13, 12, 5, 2)
 
 
 if __name__ == '__main__':
-    print('I dont wanna be executed directly, please import me as a module!')
+    print('__name__ is set to "__main__", you executed this directly as a script.')
+    print(exfl(mystr))
+    
