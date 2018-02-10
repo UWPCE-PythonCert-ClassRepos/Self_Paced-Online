@@ -11,13 +11,12 @@ to the original prompt
 import sys
 
 
-donor_list = {"Sleve McDichael": [86457.89, 2346.43, 9099.09],
+donor_dict = {"Sleve McDichael": [86457.89, 2346.43, 9099.09],
               "Willie Dustice": [505.05, 43.21],
               "Rey McScriff": [666.00],
               "Mike Truk": [70935.30, 12546.70, 312.00],
               "Bobson Dugnutt": [1234.56, 789.00],
               "Todd Bonzalez": [715867.83, 10352.07]}
-name_list = [x for x in donor_list]
 
 
 def main_menu():
@@ -27,6 +26,7 @@ def main_menu():
                      "3":send_all,
                      "4":sys.exit}
     while True:
+        print_divider()
         print("We're a Pyramid Scheme & So Are You! E-Mailroom")
         print_divider()
         while user_prompt not in valid_prompts:
@@ -37,6 +37,7 @@ def main_menu():
             print("4. Quit")
             user_prompt = input(">")
         valid_prompts.get(user_prompt)()
+        input("\nPress enter to continue...")
         user_prompt = None
 
 
@@ -52,31 +53,35 @@ def send_thanks():
     donor_name = "list"
     donation_amt = None
     while True:
+        print_divider()
         print("Let's craft a very personal thank you note for our donor!")
         print("Return to the main menu at any time by entering 'exit'")
+
         print("Pull up a list of donor names by entering 'list'")
         while donor_name == "list":
             donor_name = input("Enter Donor Name >")
             if donor_name.lower() == "list":
-                print(("{}\n"*len(name_list)).format(*name_list))
+                print(("{}\n"*len(donor_dict)).format(*donor_dict))
         if donor_name.lower() == "exit":
             break
+
         donation_amt = input("Enter their Donation Amount >")
         if donation_amt.lower() == "exit":
             break
         donation_amt = float(donation_amt)
-        if donor_name not in name_list:
-            donor_list[donor_name] = [donation_amt]
-        else:
-            donor_list[donor_name].append(donation_amt)
+
+        if donor_name not in donor_dict:
+            donor_list[donor_name] = []
+        donor_dict[donor_name].append(donation_amt)
+
         print_divider()
         message = f"Dearest {donor_name},\n"
         message += f"Thank you so much for donation of ${donation_amt:.2f}!\n"
-        message += "We will use for something wonderful. Something...\n"
-        message += "Fantastic.\n We're going to create a real living Pokemon."
+        message += "We will use your donation to create a real living Pokemon."
         message += f"\nSincerely,\n We're a Pyramid Scheme & so is {donor_name}"
         print(message)
         print_divider()
+        
         break
     return
 
@@ -86,10 +91,9 @@ def create_report():
     Print a list of donors sorted by total historical donation amount.
     Donor Name, Total Given, Num Gifts, Average Gift
     """
-    '''donation_list = sorted(donor_list, key=sum_donations, reverse=True)
+    ''' 
     name_col_len = max([len(x) for x in name_list])
     money_col_len = 12
-    headers = ["Donor Name", "Total Given", "# of Gifts", "Avg Donation"]
     cols = "{:<" + f"{name_col_len}" + "}\t|{:^" + f"{money_col_len+5}"
     cols += "}|{:^10}|{:^" + f"{money_col_len+5}" + "}"
     cols = cols.format(*headers)
@@ -104,13 +108,27 @@ def create_report():
         row += f"{num_gift:^10d}| ${average:>{money_col_len+3}.2f}"
         print(row)
     '''
-    
+    print_divider()
+    sort_donors = sorted(donor_dict.items(), key=sum_2tuple_by2, reverse=True)
+    name_list = [x for x,y in sort_donors]
+    donation_list = [y for x,y in sort_donors]
+    col_name_list = ["Donor Name", "Total Given", "# of Gifts", "Avg Donation"]
+
+    billi_len = 12
+    name_col_len = max([len(x) for x in name_list])
+    header_row = "{:<"
     return
 
 
 def send_all():
     return
 
+
+def sum_2tuple_by2(idx_set):
+    """
+    Returns sum of 2nd element of 2-element tuple
+    """
+    return sum(idx_set[1])
 
 
 
