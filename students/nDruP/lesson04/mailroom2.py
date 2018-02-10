@@ -8,7 +8,7 @@ to the original prompt
 """
 
 
-import sys
+import sys, os, datetime
 
 
 donor_dict = {"Sleve McDichael": [86457.89, 2346.43, 9099.09],
@@ -36,6 +36,7 @@ def main_menu():
             print("3. Send letters to everyone")
             print("4. Quit")
             user_prompt = input(">")
+        print_divider()
         valid_prompts.get(user_prompt)()
         input("\nPress enter to continue...")
         user_prompt = None
@@ -52,8 +53,8 @@ def send_thanks():
     """
     donor_name = "list"
     donation_amt = None
+    message = ''
     while True:
-        print_divider()
         print("Let's craft a very personal thank you note for our donor!")
         print("Return to the main menu at any time by entering 'exit'")
 
@@ -90,28 +91,9 @@ def create_report():
     """
     Print a list of donors sorted by total historical donation amount.
     Donor Name, Total Given, Num Gifts, Average Gift
-    """
-    ''' 
-    name_col_len = max([len(x) for x in name_list])
-    money_col_len = 12
-    cols = "{:<" + f"{name_col_len}" + "}\t|{:^" + f"{money_col_len+5}"
-    cols += "}|{:^10}|{:^" + f"{money_col_len+5}" + "}"
-    cols = cols.format(*headers)
-    print(cols)
-    print("-"*len(cols))
-    for index, donation in donation_list:
-        name = name_list[index]
-        total = sum(donation)
-        num_gift = len(donation)
-        average = total/num_gift
-        row = f"{name:<{name_col_len}}\t| ${total:>{money_col_len+3}.2f}|"
-        row += f"{num_gift:^10d}| ${average:>{money_col_len+3}.2f}"
-        print(row)
-    '''
-    print_divider()
+    """    
     sort_donors = sorted(donor_dict.items(), key=sum_2tuple_by2, reverse=True)
     col_name_list = ["Donor Name", "Total Given", "Gifts", "Avg Donation"]
-    
     billi_len = 12
     donor_col_len = max([len(name) for name, donations in sort_donors])
     donor_col = "{:<" + f"{donor_col_len}" + "}"
@@ -131,12 +113,37 @@ def create_report():
 
 
 def send_all():
+    """
+    Write a full set of letters to each donor to individual files on disk.
+    Go through all donors in donor_dict, generate a thank you letter, write to disk as a text file.
+    """
+    curdate = (datetime.datetime.now()).strftime("%Y_%m_%d")
+    print("Enter an existing directory to place the letters.")
+    print("Current working directory will be used if given directory is " +
+          "invalid")
+    write_dir = input(">")
+    if not os.path.isdir(write_dir):
+        write_dir = os.getcwd()
+    print(write_dir+curdate)
+    for donor, donations in donor_dict.items():
+        thank_you = "Dear " + donor + ",\n\t"
+        thank_you += "We are so grateful for your" + " immense generosity of "  
+        thank_you += f"${sum(donations):.2f}!"
+        thank_you += " You now have our eternal loyalty. Use it wisely."
+        thank_you += "\nSincerely, \n"
+        thank_you += "We're a pyramid scheme and so is " + donor
+        file_name = donor.replace(' ', '_') + "_" + curdate + ".txt"
+        letter = open(write_dir+"/"+file_name, 'w+')
+        letter.write(thank_you)
+        letter.close()
+    print("Finished writing the letters")
     return
 
 
 def sum_2tuple_by2(idx_set):
     """
-    Returns sum of 2nd element of 2-element tuple
+    Returns sum of 2nd element of 2-element tuple.
+    Used in create_report()
     """
     return sum(idx_set[1])
 
@@ -149,4 +156,5 @@ def print_divider():
     """
     print("\n"+"*"*50+"\n")
 
+                      
 main_menu()
