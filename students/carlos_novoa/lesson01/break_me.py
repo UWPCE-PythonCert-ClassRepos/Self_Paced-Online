@@ -6,7 +6,7 @@ Lesson1, Task 1: Explore Errors
 
 
 def name_error():
-    print('abc'+1)
+    print(error)
 
 
 def type_error():

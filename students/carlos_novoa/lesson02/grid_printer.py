@@ -32,26 +32,26 @@ def part2(n):
     if (n == 1):
         return False
     grid_size = 2  # 2x2 default size from lesson examples
-    hw_ratio = 1/2  # row height to unit width ratio
+    hw_ratio = 1 / 2  # row height to unit width ratio
     """
     Round odd units down to
     maintain uniformity of spaces/dashes,
     like print_grid(3) and print_grid(15)
     lesson examples
     """
-    inner_width = n-1 if n % 2 == 0 else n
-    inner_height = int(hw_ratio*n)
+    inner_width = n - 1 if n % 2 == 0 else n
+    inner_height = int(hw_ratio * n)
     borders_num = grid_size + 1
-    total_width = inner_width*grid_size+borders_num
-    total_height = inner_height*grid_size+borders_num
+    total_width = inner_width * grid_size + borders_num
+    total_height = inner_height * grid_size + borders_num
 
     # make rows string
     row = ''
     for i in range(total_width):
-        if (i == 0 or i == total_width-1):
+        if (i == 0 or i == total_width - 1):
             # left and right borders
             row += '+'
-        elif(i == int(total_width/2)):
+        elif(i == int(total_width / 2)):
             # center border
             row += '+'
         elif(i % 2 == 0):
@@ -64,10 +64,10 @@ def part2(n):
     # make columns string
     col = ''
     for i in range(total_width):
-        if (i == 0 or i == total_width-1):
+        if (i == 0 or i == total_width - 1):
             # left and right borders
             col += '|'
-        elif(i == int(total_width/2)):
+        elif(i == int(total_width / 2)):
             # center border
             col += '|'
         else:
@@ -79,10 +79,10 @@ def part2(n):
         if (i == 0):
             # top border
             print(row)
-        elif (i == int(total_height/2)):
+        elif (i == int(total_height / 2)):
             # middle border
             print(row)
-        elif (i == total_height-1):
+        elif (i == total_height - 1):
             # bottom border
             print(row)
         else:
@@ -94,14 +94,14 @@ def part2(n):
 
 
 def part3(xy, u):
-    borders_num = xy+1
-    inner_width = u*2+1
-    total_height = xy*u+borders_num
+    borders_num = xy + 1
+    inner_width = u * 2 + 1
+    total_height = xy * u + borders_num
     row_inner = ''
     col_inner = ''
 
     # make inner string
-    for i in range(1, inner_width+1):
+    for i in range(1, inner_width + 1):
         col_inner += ' '
         if (i % 2 == 0):
             row_inner += '-'
@@ -111,24 +111,24 @@ def part3(xy, u):
     # make rows string
     row = ''
     for i in range(borders_num):
-        if (i == borders_num-1):
+        if (i == borders_num - 1):
             row += '+'
         else:
-            row += '+'+row_inner
+            row += '+' + row_inner
 
     # make cols string
     col = ''
     for i in range(borders_num):
-        if (i == borders_num-1):
+        if (i == borders_num - 1):
             col += '|'
         else:
-            col += '|'+col_inner
+            col += '|' + col_inner
 
     # output grid
     for i in range(total_height):
-        if (i == 0 or i == total_height+1):
+        if (i == 0 or i == total_height + 1):
             print(row)
-        elif (i % (u+1) == 0):
+        elif (i % (u + 1) == 0):
             print(row)
         else:
             print(col)
