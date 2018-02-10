@@ -110,13 +110,23 @@ def create_report():
     '''
     print_divider()
     sort_donors = sorted(donor_dict.items(), key=sum_2tuple_by2, reverse=True)
-    name_list = [x for x,y in sort_donors]
-    donation_list = [y for x,y in sort_donors]
-    col_name_list = ["Donor Name", "Total Given", "# of Gifts", "Avg Donation"]
-
+    col_name_list = ["Donor Name", "Total Given", "Gifts", "Avg Donation"]
+    
     billi_len = 12
-    name_col_len = max([len(x) for x in name_list])
-    header_row = "{:<"
+    donor_col_len = max([len(name) for name, donations in sort_donors])
+    donor_col = "{:<" + f"{donor_col_len}" + "}"
+    money_col = "{:>" + f"{billi_len}" + "}"
+    
+    header_row = donor_col + "\t" + money_col + "\t{:}" + "\t" + money_col
+    print(header_row.format(*col_name_list))
+    money_col = money_col[:len(money_col)-1] + ".2f}"
+    
+    for name, donations in sort_donors:
+        row = donor_col.format(name)
+        row += "\t$ " + money_col.format(sum(donations))
+        row += f"\t {len(donations):>}"
+        row += "\t$ " + money_col.format(sum(donations)/len(donations))
+        print(row)
     return
 
 
