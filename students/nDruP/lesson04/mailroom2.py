@@ -26,9 +26,9 @@ def main_menu():
     Prompt user to send a Thank You, Create a report, create letters, or quit.
     """
     user_prompt = None
-    valid_prompts = {"1": send_thanks,
+    valid_prompts = {"1": craft_thank_u,
                      "2": create_report,
-                     "3": send_all,
+                     "3": create_letters,
                      "4": sys.exit}
     while True:
         print_divider()
@@ -47,7 +47,7 @@ def main_menu():
         user_prompt = None
 
 
-def send_thanks():
+def craft_thank_u():
     """
     Prompt for a full name.
     Prompt->"list": show a list of the donor names
@@ -116,7 +116,7 @@ def create_report():
     return
 
 
-def send_all():
+def create_letters():
     """
     Write a full set of letters to each donor to individual files on disk.
     Go through all donors in donor_dict, generate a thank you letter,
