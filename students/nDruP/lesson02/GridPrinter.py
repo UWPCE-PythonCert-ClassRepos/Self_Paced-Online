@@ -14,8 +14,10 @@ Print a grid that looks like:
 |         |         |
 + - - - - + - - - - +
 """
-#Print the above ^ grid.
+
+
 def print_grid1():
+    #Print the above ^ grid.
     print('Part 1 Grid Printer:')
     for x in range(2):
         printPlusMinus1()
@@ -25,29 +27,31 @@ def print_grid1():
         printBarSpace1()
     printPlusMinus1()
     return
-    
-#Print Top, Middle, and Bottom row of grid
+
+
 def printPlusMinus1():
+    #Print Top, Middle, and Bottom row of grid
     for x in range(11):
-        if x%5==0:
-            print('+ ',end='')
+        if x % 5 == 0:
+            print('+ ', end='')
         else:
-            print('- ',end='')
+            print('- ', end='')
     print()
     return
 
-#Print sides of grid
+
 def printBarSpace1():
+    #Print sides of grid
     for x in range(11):
-        if x%5==0:
-            print('| ',end='')
+        if x % 5 == 0:
+            print('| ', end='')
         else:
-            print('  ',end='')
+            print('  ', end='')
     print()
     return
+
 
 print_grid1()
-
 
 
 """
@@ -95,6 +99,7 @@ print_grid(15) prints:
 + - - - - - - - + - - - - - - - +
 """
 
+
 def print_grid2(n):
     #Print 2x2 grid of size n
     printTopBottomBorder2(n)
@@ -103,25 +108,28 @@ def print_grid2(n):
         printTopBottomBorder2(n)
     return
 
+
 def printTopBottomBorder2(n):
-    #Print 2*(n//2)+3 length Top/Bottom borders of grid spaces 
+    #Print 2*(n//2)+3 length Top/Bottom borders of grid spaces
     print('+', end='')
     for plus in range(2):
-        for minus in range(n//2):
-            print(' -',end='')
+        for minus in range(n // 2):
+            print(' -', end='')
         print(' +', end='')
     print()
     return
 
+
 def printSideBorder2(n):
     #Print n//2 length side borders of grid spaces
-    for x in range(n//2):
-        print('|',end='')
+    for x in range(n // 2):
+        print('|', end='')
         for bar in range(2):
-            print(' '*(n+(1-n%2)),end='')
-            print('|',end='')
+            print(' ' * (n + (1 - n % 2)), end='')
+            print('|', end='')
         print()
     return
+
 
 print('\n\nGrid Printer part 2:')
 print('print_grid(3)')
@@ -132,11 +140,11 @@ print('print_grid(15)')
 print_grid2(15)
 
 
-
 """
 Part 3
 
-Write a function that draws a similar grid with a specified number of rows and columns, and with each cell a given size.
+Write a function that draws a similar grid with a
+specified number of rows and columns, and with each cell a given size.
 
 For example, print_grid2(3,4) results in:
 
@@ -160,46 +168,49 @@ For example, print_grid2(3,4) results in:
 (three rows, three columns, and each grid cell four “units” in size)
 """
 
+
 def print_grid3(space, size):
     """
     Print a (space x space) grid with (size x size) grid spaces
     """
-    printTopBottomBorder3(space,size)
+    printTopBottomBorder3(space, size)
     for y in range(space):
-        printSideBorder3(space,size)
-        printTopBottomBorder3(space,size)
+        printSideBorder3(space, size)
+        printTopBottomBorder3(space, size)
     return
 
-def printTopBottomBorder3(space,size):
+
+def printTopBottomBorder3(space, size):
     """
-    Print a Top/Bottom border(s) for (space) amount of 
+    Print a Top/Bottom border(s) for (space) amount of
     (size x size) large grid spaces.
     """
     print('+', end='')
     for plus in range(space):
         for minus in range(size):
-            print(' -',end='')
+            print(' -', end='')
         print(' +', end='')
     print()
     return
 
-def printSideBorder3(space,size):
+
+def printSideBorder3(space, size):
     """
-    Print side border(s) for (space) amount of 
+    Print side border(s) for (space) amount of
     (size x size) large grid spaces
     """
     for x in range(size):
-        print('|',end='')
+        print('|', end='')
         for bar in range(space):
-            print('  '*size,end='')
-            print(' |',end='')
+            print('  ' * size, end='')
+            print(' |', end='')
         print()
     return
 
 print('\n\nGrid Printer Part 3:')
 print('print_grid(3.4)')
-print_grid3(3,4)
+print_grid3(3, 4)
 print('print_grid(2,4)')
-print_grid3(2,4)
+print_grid3(2, 4)
 print('print_grid(2,7)')
-print_grid3(2,7)
+print_grid3(2, 7)
