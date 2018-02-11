@@ -6,7 +6,8 @@ This module contains all of the functions for the updated Mail Room 2 module.
 
 THANK_YOU_OPT = 1
 REPORT_OPT = 2
-QUIT_OPT = 3
+LETTERS_OPT = 3
+QUIT_OPT = 4
 
 GIFTS_KEY = 'Gifts'
 NUM_GIFTS_KEY = 'Number of Gifts'
@@ -49,14 +50,15 @@ def get_usr_input():
     Returns:
         int: Value corresponding to user choice
     """
-    select_prompt = '\nPlease select from the following options:\n'\
-                    '\t1. Send a Thank You\n'\
-                    '\t2. Create a Report\n'\
-                    '\t3. quit\n'\
-                    ' --> '
+    select_prompt = ('\nPlease select from the following options:\n'
+                     '\t1. Send a Thank You\n'
+                     '\t2. Create a Report\n'
+                     '\t3. Send letters to all donors\n'
+                     '\t4. quit\n'
+                     ' --> ')
     usr_in = int(input(select_prompt))
 
-    while usr_in not in (THANK_YOU_OPT, REPORT_OPT, QUIT_OPT):
+    while usr_in not in (THANK_YOU_OPT, REPORT_OPT, LETTERS_OPT, QUIT_OPT):
         print('\nPlease enter either a "1", "2", or "3"')
         usr_in = int(input(select_prompt))
 
@@ -95,9 +97,9 @@ def send_thank_you():
     original prompt.
     """
     name_prompt = '\nPlease enter name of "Thank You" recipient:\n'\
-        '(Enter "list" to see all donors)\n'\
-        '(Enter "quit" to return to main menu)\n'\
-        ' --> '
+                  '(Enter "list" to see all donors)\n'\
+                  '(Enter "quit" to return to main menu)\n'\
+                  ' --> '
     amount_prompt = '\nPlease enter the donation amount:\n'\
                     '(Enter "quit" to return to main menu)\n'\
                     ' --> '
@@ -188,11 +190,17 @@ def quit_mailroom():
     print('Quitting mailroom...')
 
 
+def send_letters():
+    """Create a letter for each donor and write to disk as a text file"""
+    pass
+
+
 def main():
     """Main function"""
 
     opt_dict = {THANK_YOU_OPT: send_thank_you,
                 REPORT_OPT: create_report,
+                LETTERS_OPT: send_letters,
                 QUIT_OPT: quit_mailroom}
 
     # Initialize database
