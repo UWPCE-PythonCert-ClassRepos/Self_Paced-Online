@@ -97,7 +97,7 @@ def send_thank_you():
                     '(Enter "quit" to return to main menu)\n'\
                     ' --> '
     thank_you_fmt = '\nThank you {:s} for your generous donation of ${:.2f}!'
-    first_names = [donor.lower().split()[0] for donor in DONATION_DB]
+    names = [donor.lower() for donor in DONATION_DB]
 
     while True:
         new_donor = False
@@ -110,7 +110,7 @@ def send_thank_you():
             for dnr in DONATION_DB:
                 print(dnr)
         else:
-            if usr_in in first_names:
+            if usr_in in names:
                 for dnr in DONATION_DB:
                     if usr_in in dnr.lower():
                         donor = dnr
