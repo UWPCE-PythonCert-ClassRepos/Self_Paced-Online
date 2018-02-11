@@ -77,7 +77,7 @@ def craft_thank_u():
         donation_amt = float(donation_amt)
 
         if donor_name not in donor_dict:
-            donor_list[donor_name] = []
+            donor_dict[donor_name] = []
         donor_dict[donor_name].append(donation_amt)
         print_divider()
         message = f"Dearest {donor_name},\n"
@@ -145,6 +145,7 @@ def create_letters():
             letter.write(thank_you)
             letter.close()
         print("Finished writing the letters")
+        break
     return
 
 
