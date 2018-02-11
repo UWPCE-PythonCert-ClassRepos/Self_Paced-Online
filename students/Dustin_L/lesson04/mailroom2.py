@@ -179,24 +179,28 @@ def create_report():
                              dnr[NUM_GIFTS_IDX], dnr[AVE_IDX]))
 
 
+def quit_mailroom():
+    """Exit operations when quitting mail room"""
+    print('Quitting mailroom...')
+
+
 def main():
     """Main function"""
 
+    opt_dict = {THANK_YOU_OPT: send_thank_you,
+                REPORT_OPT: create_report,
+                QUIT_OPT: quit_mailroom}
+
     # Initialize database
     for dnr in DONATION_DB:
-        dnr[NUM_GIFTS_IDX] = len(dnr[GIFTS_IDX])
-        dnr[TOTAL_IDX] = sum(dnr[GIFTS_IDX])
-        dnr[AVE_IDX] = dnr[TOTAL_IDX] / dnr[NUM_GIFTS_IDX]
+        dnr[NUM_GIFTS_KEY] = len(dnr[GIFTS_KEY])
+        dnr[TOTAL_KEY] = sum(dnr[GIFTS_KEY])
+        dnr[AVE_KEY] = dnr[TOTAL_KEY] / dnr[NUM_GIFTS_KEY]
 
-    while True:
+    choice = ''
+    while choice != QUIT_OPT:
         choice = get_usr_input()
-
-        if choice == THANK_YOU_OPT:
-            send_thank_you()
-        elif choice == REPORT_OPT:
-            create_report()
-        else:
-            break
+        opt_dict.get(choice)()
 
 
 if __name__ == '__main__':
