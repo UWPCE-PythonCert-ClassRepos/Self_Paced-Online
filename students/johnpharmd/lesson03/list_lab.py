@@ -96,21 +96,39 @@ def series3():
     Ask the user for input displaying a line like “Do you like apples?”
     for each fruit in the list (making the fruit all lowercase).
     """
-    new_fruits = fruits
+    new_fruits = fruits[:]
     for item in new_fruits:
-        print('Do you eat {:s}?'.format(item).lower())
-        response = input('Enter "y" for yes or "n" for no: ')
-        
+        response = input('Do you eat ' + item.lower() + ', "y" or "n"? ')
         # For each “no”, delete that fruit from the list.
         if response == 'n':
             fruits.remove(item)
-        """
-        For any answer that is not “yes” or “no”, prompt the user to answer
-        with one of those two values (a while loop is good here).
-        """       
-        # while response is not 'y' or 'n':
-        #    response = input('Choose "y" for yes or "n" for no: ')
-        #    if response == 'y' or 'n':
-        #        break
+            continue
+        elif response == 'y':
+            continue
+        # For any answer that is not “yes” or “no”, prompt the user to answer
+        # with one of those two values (a while loop is good here).
+        while response is not 'y' or 'n':
+            response = input('Choose "y" for yes or "n" for no: ')
+            if response == 'y' or 'n':
+                break        
+           
     # Display the list.    
     print('List now contains:', fruits)
+
+
+def series4():
+    # Call get_fruits to create the fruits list.
+    fruits = get_fruits()
+
+    # Make a copy of the list and reverse the letters in each fruit
+    # in the copy.
+    copy_fruits = []
+    for item in fruits:
+        copy_fruits.append(item[::-1])
+
+    # Delete the last item of the original list.
+    fruits.pop()
+    print('Popped the last item out of "fruits".')
+    # Display the original list and the copy.
+    print('Here is "fruits"', fruits)
+    print('Here is the copy of "fruits"', copy_fruits)
