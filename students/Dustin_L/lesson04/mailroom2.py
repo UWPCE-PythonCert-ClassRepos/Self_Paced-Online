@@ -4,22 +4,34 @@
 This module contains all of the functions for the updated Mail Room 2 module.
 """
 
-
-# Name, Gifts, Num Gifts, Total, Average
-DONATION_DB = [['Toni Morrison', [1000, 5000, 10000], 0, 0, 0],
-               ['Mike McHargue', [12000, 50000, 27000], 0, 0, 0],
-               ["Flannery O'Connor", [38734, 6273, 67520], 0, 0, 0],
-               ['Angela Davis', [74846, 38470, 7570, 50], 0, 0, 0],
-               ['Bell Hooks', [634547, 47498, 474729, 4567], 0, 0, 0]]
-NAME_IDX = 0
-GIFTS_IDX = 1
-NUM_GIFTS_IDX = 2
-TOTAL_IDX = 3
-AVE_IDX = 4
-
 THANK_YOU_OPT = 1
 REPORT_OPT = 2
 QUIT_OPT = 3
+
+GIFTS_KEY = 'Gifts'
+NUM_GIFTS_KEY = 'Number of Gifts'
+TOTAL_KEY = 'Total'
+AVE_KEY = 'Average'
+DONATION_DB = {'Toni Morrison': {GIFTS_KEY: [1000, 5000, 10000],
+                                 NUM_GIFTS_KEY: 0,
+                                 TOTAL_KEY: 0,
+                                 AVE_KEY: 0},
+               'Mike McHargue': {GIFTS_KEY: [12000, 50000, 27000],
+                                 NUM_GIFTS_KEY: 0,
+                                 TOTAL_KEY: 0,
+                                 AVE_KEY: 0},
+               "Flannery O'Connor": {GIFTS_KEY: [38734, 6273, 67520],
+                                     NUM_GIFTS_KEY: 0,
+                                     TOTAL_KEY: 0,
+                                     AVE_KEY: 0},
+               'Angela Davis': {GIFTS_KEY: [74846, 38470, 7570, 50],
+                                NUM_GIFTS_KEY: 0,
+                                TOTAL_KEY: 0,
+                                AVE_KEY: 0},
+               'Bell Hooks': {GIFTS_KEY: [634547, 47498, 474729, 4567],
+                              NUM_GIFTS_KEY: 0,
+                              TOTAL_KEY: 0,
+                              AVE_KEY: 0}}
 
 
 def get_usr_input():
