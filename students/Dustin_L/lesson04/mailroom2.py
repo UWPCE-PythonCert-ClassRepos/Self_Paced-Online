@@ -58,18 +58,18 @@ def get_usr_input():
     return usr_in
 
 
-def add_donation(idx, amount):
+def add_donation(donor, amount):
     """Add a new donation to the donation database.
 
     Args:
-        idx (int): Index of donor in database.
+        donor (str): Name of donor in donation database.
         amount (int): Amount to add to donation database.
     """
-    DONATION_DB[idx][GIFTS_IDX].append(amount)
-    DONATION_DB[idx][NUM_GIFTS_IDX] += 1
-    DONATION_DB[idx][TOTAL_IDX] += amount
-    DONATION_DB[idx][AVE_IDX] = DONATION_DB[idx][TOTAL_IDX] / \
-        DONATION_DB[idx][NUM_GIFTS_IDX]
+    DONATION_DB[donor][GIFTS_KEY].append(amount)
+    DONATION_DB[donor][NUM_GIFTS_KEY] += 1
+    DONATION_DB[donor][TOTAL_KEY] += amount
+    DONATION_DB[donor][AVE_KEY] = DONATION_DB[donor][TOTAL_KEY] / \
+        DONATION_DB[donor][NUM_GIFTS_KEY]
 
 
 def send_thank_you():
@@ -97,8 +97,7 @@ def send_thank_you():
                     '(Enter "quit" to return to main menu)\n'\
                     ' --> '
     thank_you_fmt = '\nThank you {:s} for your generous donation of ${:.2f}!'
-    first_names = [donor[NAME_IDX].lower().split()[NAME_IDX]
-                   for donor in DONATION_DB]
+    first_names = [donor.lower().split()[0] for donor in DONATION_DB]
 
     while True:
         new_donor = False
@@ -109,13 +108,12 @@ def send_thank_you():
         elif usr_in == 'list':
             print()
             for dnr in DONATION_DB:
-                print(dnr[NAME_IDX])
+                print(dnr)
         else:
             if usr_in in first_names:
-                for i, row in enumerate(DONATION_DB):
-                    if usr_in in row[NAME_IDX].lower():
-                        donor = row[NAME_IDX]
-                        donor_idx = i
+                for dnr in DONATION_DB:
+                    if usr_in in dnr.lower():
+                        donor = dnr
             else:
                 donor = " ".join([name.title() for name in usr_in.split()])
                 new_donor = True
@@ -127,12 +125,13 @@ def send_thank_you():
                 donation = float(usr_in)
 
             if new_donor:
-                DONATION_DB.append([donor, [], 0, 0, 0])
-                donor_idx = len(DONATION_DB) - 1
+                DONATION_DB[donor] = {GIFTS_KEY: [],
+                                      NUM_GIFTS_KEY: 0,
+                                      TOTAL_KEY: 0,
+                                      AVE_KEY: 0}
 
-            add_donation(donor_idx, donation)
-            print(thank_you_fmt.format(
-                DONATION_DB[donor_idx][NAME_IDX], donation))
+            add_donation(donor, donation)
+            print(thank_you_fmt.format(donor, donation))
             break
 
 
@@ -147,14 +146,11 @@ def create_report():
     def_space = 5
     col_sep = ' | '
 
-    donors = sorted(
-        DONATION_DB, key=lambda entry: entry[TOTAL_IDX], reverse=True)
-    max_name = len(max([dnr[NAME_IDX]
-                        for dnr in DONATION_DB], key=len)) + def_space
-    max_total = len(max([str(dnr[TOTAL_IDX])
-                         for dnr in DONATION_DB], key=len)) + def_space
-    max_gifts = len(max([str(dnr[NUM_GIFTS_IDX])
-                         for dnr in DONATION_DB], key=len)) + def_space
+    max_name = len(max([dnr for dnr in DONATION_DB], key=len)) + def_space
+    max_total = len(max([str(val[TOTAL_KEY])
+                         for val in DONATION_DB.values()], key=len)) + def_space
+    max_gifts = len(max([str(val[NUM_GIFTS_KEY])
+                         for val in DONATION_DB.values()], key=len)) + def_space
     max_ave = max_total
 
     if max_name < min_width:
@@ -173,10 +169,14 @@ def create_report():
     row_fmt = (f'{{:<{max_name}s}}{col_sep}${{:>{max_total - 1}.2f}}{col_sep}'
                f'{{:>{max_gifts}d}}{col_sep}${{:>{max_ave - 1}.2f}}')
 
+    sorted_dnr_keys = sorted(
+        DONATION_DB, key=lambda dnr: DONATION_DB[dnr][TOTAL_KEY], reverse=True)
+
     print(header)
-    for dnr in donors:
-        print(row_fmt.format(dnr[NAME_IDX], dnr[TOTAL_IDX],
-                             dnr[NUM_GIFTS_IDX], dnr[AVE_IDX]))
+    for dnr in sorted_dnr_keys:
+        print(row_fmt.format(dnr, DONATION_DB[dnr][TOTAL_KEY],
+                             DONATION_DB[dnr][NUM_GIFTS_KEY],
+                             DONATION_DB[dnr][AVE_KEY]))
 
 
 def quit_mailroom():
@@ -192,10 +192,10 @@ def main():
                 QUIT_OPT: quit_mailroom}
 
     # Initialize database
-    for dnr in DONATION_DB:
-        dnr[NUM_GIFTS_KEY] = len(dnr[GIFTS_KEY])
-        dnr[TOTAL_KEY] = sum(dnr[GIFTS_KEY])
-        dnr[AVE_KEY] = dnr[TOTAL_KEY] / dnr[NUM_GIFTS_KEY]
+    for values in DONATION_DB.values():
+        values[NUM_GIFTS_KEY] = len(values[GIFTS_KEY])
+        values[TOTAL_KEY] = sum(values[GIFTS_KEY])
+        values[AVE_KEY] = values[TOTAL_KEY] / values[NUM_GIFTS_KEY]
 
     choice = ''
     while choice != QUIT_OPT:
