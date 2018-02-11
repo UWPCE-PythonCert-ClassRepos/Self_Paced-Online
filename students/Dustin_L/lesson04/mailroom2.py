@@ -33,6 +33,11 @@ DONATION_DB = {'Toni Morrison': {GIFTS_KEY: [1000, 5000, 10000],
                               TOTAL_KEY: 0,
                               AVE_KEY: 0}}
 
+THANK_YOU_FMT = ('\nDear {:s},\n'
+                 'Thank you for your generous donation of ${:.2f}.\n'
+                 '\t\tSincerely,\n'
+                 '\t\t  -Your conscience')
+
 
 def get_usr_input():
     """Get input from user.
@@ -96,7 +101,6 @@ def send_thank_you():
     amount_prompt = '\nPlease enter the donation amount:\n'\
                     '(Enter "quit" to return to main menu)\n'\
                     ' --> '
-    thank_you_fmt = '\nThank you {:s} for your generous donation of ${:.2f}!'
     names = [donor.lower() for donor in DONATION_DB]
 
     while True:
@@ -131,7 +135,7 @@ def send_thank_you():
                                       AVE_KEY: 0}
 
             add_donation(donor, donation)
-            print(thank_you_fmt.format(donor, donation))
+            print(THANK_YOU_FMT.format(donor, donation))
             break
 
 
