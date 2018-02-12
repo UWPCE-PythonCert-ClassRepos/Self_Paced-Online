@@ -32,10 +32,32 @@ def dictionary2(person_dict):
 
     print(person_dict)     
 
+def set1():
+    s2 = set()
+    s3 = set()
+    s4 = set()
+    for i in range(1,21):
+        if i % 2 == 0:
+           s2.add(i)
+        if i % 3 == 0:
+           s3.add(i)
+        if i % 4 == 0:
+           s4.add(i)
+
+    print("s2")
+    print(s2)
+    print("s3")
+    print(s3)
+    print("s4")
+    print(s4)
+
+    print("Is s3 a subset of s2? {}".format(s3.issubset(s2)))
+    print("Is s4 a subset of s2? {}".format(s4.issubset(s2)))
 
 if __name__ == '__main__':
 
     person_dict = { 'name':'Chris', 'city':'Seattle', 'cake':'Chocolate' }
     dictionary1(person_dict.copy())
     dictionary2(person_dict.copy())
+    set1()
 
