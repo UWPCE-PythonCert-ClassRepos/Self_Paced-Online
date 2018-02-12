@@ -1,5 +1,5 @@
 
-# Created by https://www.gitignore.io/api/python
+# Created by https://www.gitignore.io/api/vim,python
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -101,6 +101,18 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+### Vim ###
+# swap
+.sw[a-p]
+.*.sw[a-p]
+# session
+Session.vim
+# temporary
+.netrwhist
+*~
+# auto-generated tag files
+tags
 
-# End of https://www.gitignore.io/api/python
+
+# End of https://www.gitignore.io/api/vim,python
 

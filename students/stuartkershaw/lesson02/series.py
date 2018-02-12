@@ -1,5 +1,5 @@
 def fibonacci(n):
-    """Take integer input and return corresponding fibonacci value"""
+    """Takes integer and returns corresponding fibonacci value"""
     if n == 0:
         return 0
     elif n == 1:
@@ -8,11 +8,8 @@ def fibonacci(n):
         return fibonacci(n - 1) + fibonacci(n - 2)
 
 
-print(fibonacci(6))
-
-
 def lucas(n):
-    """Take integer input and return corresponding lucas value"""
+    """Takes integer and returns corresponding lucas value"""
     if n == 0:
         return 2
     elif n == 1:
@@ -21,11 +18,8 @@ def lucas(n):
         return lucas(n - 1) + lucas(n - 2)
 
 
-print(lucas(6))
-
-
 def sum_series(n, x=0, y=1):
-    """Take integer value and sequencing inputs and return value"""
+    """Takes required integer and optional start params."""
     if n == 0:
         return x
     elif n == 1:
@@ -34,4 +28,7 @@ def sum_series(n, x=0, y=1):
         return sum_series(n - 1, x, y) + sum_series(n - 2, x, y)
 
 
-print(sum_series(6, 2))
+if __name__ == "__main__":
+    assert fibonacci(6) == 8
+    assert lucas(6) == 18
+    assert sum_series(6, 2) == 18
