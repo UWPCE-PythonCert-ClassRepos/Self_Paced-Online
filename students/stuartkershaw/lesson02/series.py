@@ -29,6 +29,8 @@ def sum_series(n, x=0, y=1):
 
 
 if __name__ == "__main__":
+    # These tests assert that our functions return proper
+    # values given some example n positions in each algorithm
     assert fibonacci(6) == 8
     assert lucas(6) == 18
     assert sum_series(6, 2) == 18
