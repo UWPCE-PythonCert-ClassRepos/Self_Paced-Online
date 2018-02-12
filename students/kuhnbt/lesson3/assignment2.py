@@ -50,14 +50,28 @@ while True:
 # Series3
 fruits = list(set(fruits))
 
+print('Here is the list of unique fruits:\n', fruits)
 for fruit in fruits:
     while True:
         response = input('Do you like {}?'.format(fruit)).lower()
         if response == 'no':
             fruits.remove(fruit)
+            print('I removed {}'.format(fruit))
             break
         elif response == 'yes':
+            print('Ok')
             break
         else:
             print('Please answer yes or no')
+    print('Here is the list of fruits now:\n', fruits)
 
+# Series4
+
+fruits_copy = fruits.copy()
+fruits_copy = [i[::-1] for i in fruits_copy]
+fruits = fruits[:-1]
+
+print('This is the original list:\n', fruits)
+print('This is the copied list:\n', fruits_copy)
+
+print('')
