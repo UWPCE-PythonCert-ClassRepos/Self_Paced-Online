@@ -1,17 +1,23 @@
 def fib(n):
-    a,b = 1,0
-    for i in range(n-1):
-        a,b = b, a+b
-        print(a)
-    return
-#fib(5)
+    if n == 1:
+        return 0
+    if n == 2:
+        return 1
+    return fib(n - 1) + fib(n - 2)
+#print(fib(8))
 
 def lucas(n):
     a,b = -1,2
-    for i in range(n-1):
+    for i in range(n):
         a, b = b, a+b
-        print(a)
-    return
-#lucas(10)
+    return print(a)
+#lucas(5)
 
-def sum_series(a, b=0, c=1):
+def sum_series(n, a=0, b=1):
+    if a == 0:
+        if n == 1:
+            return 0
+        if n == 2:
+            return 1
+    return sum_series(n - 1) + sum_series(n - 2)
+print(sum_series(7))
