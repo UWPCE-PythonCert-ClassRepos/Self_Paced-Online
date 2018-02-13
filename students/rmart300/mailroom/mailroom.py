@@ -3,6 +3,13 @@ from datetime import date
 #dictionary to hold donors and list of donation amounts
 donation_dict = {}
 
+def is_number(n):
+    try: 
+        float(n)
+        return True
+    except:
+        return False
+
 def send_thank_you():
     """ 
         prompt user for name and donation amount, add to donation dictionary 
@@ -44,22 +51,18 @@ if __name__ == '__main__':
     donor_list = ['Fred Smith','Terrie Ann','Murray Martin','Josh Jones','Jane Doe']
     amount_list = [500,100,1000]
     for donor in donor_list:
-        if donor not in donation_dict:
-            donation_dict[donor]=[]
+        donation_dict[donor]=amount_list
     
-        for amount in amount_list:
-            donation_list = donation_dict[donor] 
-            donation_list.append(amount)
-            donation_dict[donor] = donation_list
 
     #prompt user for action and then call function
-    action = ''
-    while action != 'quit':
-        action = input("What would you like to do: \“Send a Thank You\”, \“Create a Report\” or \“quit\”\n")
+    action = 0
+    while not is_number(action) or int(action) != 3:
+        action = input('What would you like to do: 1 - \“Send a Thank You\”, 2 - \“Create a Report\” or 3 - \“quit\”\n')
         
-        if action.lower() == "send a thank you":
+        if not is_number(action) or int(action) < 1 or int(action) > 3:
+            print("please enter a number 1-3")
+        elif int(action) == 1:
             send_thank_you()
-        elif action.lower() == "create a report":
-            print("got here")
+        elif int(action) == 2:
             create_report()
     
