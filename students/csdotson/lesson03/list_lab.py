@@ -22,7 +22,7 @@ print("Adding fruit using '+':", fruit_list)
 fruit_list.insert(0, "Strawberries")
 print("Adding fruit using 'insert':", fruit_list)
 
-# Display all fruits beginning with "P" using a for loop
+# Display all fruits beginning with "P" using a 'for' loop
 p_fruits = []
 for item in fruit_list:
     if item[0] == "P":
@@ -31,8 +31,7 @@ for item in fruit_list:
 print("All fruits beginning with 'P':", p_fruits)
 
 
-### Series 2 #########################################################
-# Display list from Series 1
+### Series 2 ##########################################################
 print("*" * 5 + "Series 2" + "*" * 5)
 fruit_list = ["Apples", "Pears", "Oranges", "Peaches"]
 print("Starting with the list from Series 1:", fruit_list)
