@@ -29,9 +29,10 @@ for item in fruit_list:
         p_fruits.append(item)
 
 print("All fruits beginning with 'P':", p_fruits)
+print()
 
 
-### Series 2 ##########################################################
+### Series 2 #########################################################
 print("*" * 5 + "Series 2" + "*" * 5)
 fruit_list = ["Apples", "Pears", "Oranges", "Peaches"]
 print("Starting with the list from Series 1:", fruit_list)
@@ -54,6 +55,7 @@ while True:
         response = input("Sorry, that fruit isn't in the list, please try again: ")
 
 print("Doubled list with fruit removed:", fruit_list)
+print()
 
 
 ### Series 3 #########################################################
@@ -80,6 +82,7 @@ for item in fruit_list[:]:
                 continue
 
 print("Here's the fruit you like:", fruit_list)
+print()
 
 
 ### Series 4 #########################################################
