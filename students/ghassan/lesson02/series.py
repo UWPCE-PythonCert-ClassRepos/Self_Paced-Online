@@ -1,20 +1,24 @@
 #!/usr/bin/env python3
 
-def fibonacci(n, initials):
-    """ find fibonacci series for in order of n """
-    fib=list(initials)
-    total=0
-    for a in range(2, n+1):
-        fib.append(fib[a-2] + fib[a-1])
-    for i in fib:
-        total+=i
-    return i
 
-#fibonacci(8)
+def fib(n):
+    """ returns fibonacci series """
+    return sum_series(n)
 
-initials=(0, 1)
-lucas=(2, 1)
 
-assert fibonacci(7, initials)==fibonacci(6, initials)+fibonacci(5, initials)
-assert fibonacci(7, lucas) == fibonacci(
-    6, lucas) + fibonacci(5, lucas)
+def luc(n):
+    """ Returns Lucas series """
+    return sum_series(n, 2, 1)
+
+
+def sum_series(n, i=0, j=1):
+    if n == 1:
+        return i
+    elif n == 2:
+        return j
+    else:
+        return sum_series(n - 1, i, j) + sum_series(n - 2, i, j)
+
+
+assert sum_series(7) == sum_series(6)+sum_series(5)
+assert sum_series(7, 2, 1) == sum_series(6, 2, 1)+sum_series(5, 2, 1)
