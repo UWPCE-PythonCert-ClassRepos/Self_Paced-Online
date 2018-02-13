@@ -50,12 +50,33 @@ def sum_series(n, first=0, second=1):
         return first
 
 
-# Assertion tests are in the name==main block.
+if __name__ == "__main__":
+    # Test of fibonacci values. 
     print("Fibonacci: ")
-    assert fibonacci(10) ==  55, "correct"
-    
+    # Correct value.
+    try:
+        assert (fibonacci(10) ==  55)
+    except AssertionError:
+        print("Incorrect value.")
+    # Incorrect value.
+    try:
+        assert (fibonacci(8) ==  55)
+    except AssertionError:
+        print("Incorrect value.")
 
+    # Test of lucas values.
+    print("Lucas: ")
+    # Correct values.
+    assert (lucas(7) == 29)
+    assert (lucas(10) == 123)
+    # Incorrect value.
+    try: 
+        assert (lucas(10) == 29)
+    except AssertionError:
+        print("Incorrect value.")
 
-# n = 10
-# # print(f"{n}: {fibonacci(n)}")
-# print(f"{n}: {sum_series(n, 1, 2)}")
+    # Test to ensure sum_series is returning the correct value for the correct
+    #  sequence.
+    # Fibonacci value.
+    assert (sum_series(10) == 55)
+    assert (sum_series(10, 2, 1 == 123))
