@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # Lesson 3 - List Lab Excercise
 
-### Series 1 ##########################################################
+### Series 1 #########################################################
 # Create/dipslay list of fruit
+print("*" * 5 + "Series 1" + "*" * 5)
 fruit_list = ["Apples", "Pears", "Oranges", "Peaches"]
 print("Original list:", fruit_list)
 
@@ -26,11 +27,13 @@ p_fruits = []
 for item in fruit_list:
     if item[0] == "P":
         p_fruits.append(item)
+
 print("All fruits beginning with 'P':", p_fruits)
 
 
-### Series 2 ##########################################################
+### Series 2 #########################################################
 # Display list from Series 1
+print("*" * 5 + "Series 2" + "*" * 5)
 fruit_list = ["Apples", "Pears", "Oranges", "Peaches"]
 print("Starting with the list from Series 1:", fruit_list)
 
@@ -51,10 +54,11 @@ while True:
     else:
         response = input("Sorry, that fruit isn't in the list, please try again: ")
 
-print(fruit_list)
+print("Doubled list with fruit removed:", fruit_list)
 
 
-### Series 3 ##########################################################
+### Series 3 #########################################################
+print("*" * 5 + "Series 3" + "*" * 5)
 fruit_list = ["Apples", "Pears", "Oranges", "Peaches"]
 print("Starting with the list from Series 1:", fruit_list)
 
@@ -79,7 +83,8 @@ for item in fruit_list[:]:
 print("Here's the fruit you like:", fruit_list)
 
 
-### Series 4 ##########################################################
+### Series 4 #########################################################
+print("*" * 5 + "Series 4" + "*" * 5)
 fruit_list = ["Apples", "Pears", "Oranges", "Peaches"]
 print("Starting with the list from Series 1:", fruit_list)
 
