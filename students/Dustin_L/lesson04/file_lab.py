@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 import os
-import os.path as osp
 
 
 def print_local_dir():
     """Print the full path of all files in the current directory."""
     for path in os.listdir():
-        print(osp.abspath(path))
+        print(os.path.abspath(path))
 
 
 def file_copy(src_path, dst_path):
@@ -17,7 +16,7 @@ def file_copy(src_path, dst_path):
         dst_path (str): path to copy destination
     """
     chunk_size = 100
-    dst_path = osp.join(dst_path, osp.basename(src_path))
+    dst_path = os.path.join(dst_path, os.path.basename(src_path))
 
     with open(src_path, 'rb') as src_f:
         with open(dst_path, 'wb') as dst_f:
