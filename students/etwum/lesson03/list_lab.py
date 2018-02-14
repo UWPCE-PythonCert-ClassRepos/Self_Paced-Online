@@ -52,6 +52,12 @@ for x in fruit_list2:
         if y[0] == "P":
             print(x)
 
+# Series 2
+print(fruit_list2)
+
+fruit_list2.pop(-1)
+
+print(fruit_list2)
 
 
 
