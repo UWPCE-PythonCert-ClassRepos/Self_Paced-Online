@@ -186,7 +186,12 @@ def quit_mailroom():
 
 def send_letters():
     """Create a letter for each donor and write to disk as a text file"""
-    pass
+    now = datetime.datetime.today().strftime('%m-%d-%Y')
+
+    for donor, data in DONOR_DB.items():
+        f_name = f'{donor.replace(" ", "_")}_{now}.txt'
+        with open(f_name, 'w') as f:
+            f.write(THANK_YOU_FMT.format(donor, data[TOTAL_KEY]))
 
 
 def main():
