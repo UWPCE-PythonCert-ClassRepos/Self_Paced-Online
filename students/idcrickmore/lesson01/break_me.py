@@ -1,4 +1,4 @@
-#Lesson01 Break Me
+# Lesson01 Break Me
 
 
 def name_error():
@@ -18,7 +18,7 @@ def attribute_error():
     print(not_a_list.sort)
 
 
-#name_error()
-#type_error()
-#syntax_error()
-#attribute_error()
+# name_error()
+# type_error()
+# syntax_error()
+# attribute_error()
