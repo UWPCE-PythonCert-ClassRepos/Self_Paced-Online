@@ -32,6 +32,26 @@ while boolInput_Check == False:
 x = user_number - 1
 print("Here is your fruit selection: %d." % user_number, fruit_list[x])
 
+new_fruit_list = []
+new_fruit2 = str(input("Please input a second fruit to the list. "))
+
+new_fruit_list.append(new_fruit2.capitalize())
+
+fruit_list2 = new_fruit_list + fruit_list
+
+print(fruit_list2)
+
+new_fruit3 = str(input("Please input a third fruit to the list. "))
+
+fruit_list2.insert(0,new_fruit3.capitalize())
+
+print(fruit_list2)
+
+for x in fruit_list2:
+    for y in x:
+        if y[0] == "P":
+            print(x)
+
 
 
 
