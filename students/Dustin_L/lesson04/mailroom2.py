@@ -6,6 +6,7 @@ This module contains all of the functions for the updated Mail Room 2 module.
 
 from collections import defaultdict
 import datetime
+import copy
 
 THANK_YOU_OPT = 1
 REPORT_OPT = 2
@@ -20,7 +21,7 @@ DEFAULT_DICT = {GIFTS_KEY: [],
                 NUM_GIFTS_KEY: 0,
                 TOTAL_KEY: 0,
                 AVE_KEY: 0}
-DONOR_DB = defaultdict(lambda: DEFAULT_DICT,
+DONOR_DB = defaultdict(lambda: copy.deepcopy(DEFAULT_DICT),
                        {'Toni Morrison': {GIFTS_KEY: [1000, 5000, 10000],
                                           NUM_GIFTS_KEY: 0,
                                           TOTAL_KEY: 0,
