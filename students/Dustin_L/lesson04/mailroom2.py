@@ -4,6 +4,9 @@
 This module contains all of the functions for the updated Mail Room 2 module.
 """
 
+from collections import defaultdict
+import datetime
+
 THANK_YOU_OPT = 1
 REPORT_OPT = 2
 LETTERS_OPT = 3
@@ -13,26 +16,31 @@ GIFTS_KEY = 'Gifts'
 NUM_GIFTS_KEY = 'Number of Gifts'
 TOTAL_KEY = 'Total'
 AVE_KEY = 'Average'
-DONATION_DB = {'Toni Morrison': {GIFTS_KEY: [1000, 5000, 10000],
-                                 NUM_GIFTS_KEY: 0,
-                                 TOTAL_KEY: 0,
-                                 AVE_KEY: 0},
-               'Mike McHargue': {GIFTS_KEY: [12000, 50000, 27000],
-                                 NUM_GIFTS_KEY: 0,
-                                 TOTAL_KEY: 0,
-                                 AVE_KEY: 0},
-               "Flannery O'Connor": {GIFTS_KEY: [38734, 6273, 67520],
-                                     NUM_GIFTS_KEY: 0,
-                                     TOTAL_KEY: 0,
-                                     AVE_KEY: 0},
-               'Angela Davis': {GIFTS_KEY: [74846, 38470, 7570, 50],
-                                NUM_GIFTS_KEY: 0,
-                                TOTAL_KEY: 0,
-                                AVE_KEY: 0},
-               'Bell Hooks': {GIFTS_KEY: [634547, 47498, 474729, 4567],
-                              NUM_GIFTS_KEY: 0,
-                              TOTAL_KEY: 0,
-                              AVE_KEY: 0}}
+DEFAULT_DICT = {GIFTS_KEY: [],
+                NUM_GIFTS_KEY: 0,
+                TOTAL_KEY: 0,
+                AVE_KEY: 0}
+DONOR_DB = defaultdict(lambda: DEFAULT_DICT,
+                       {'Toni Morrison': {GIFTS_KEY: [1000, 5000, 10000],
+                                          NUM_GIFTS_KEY: 0,
+                                          TOTAL_KEY: 0,
+                                          AVE_KEY: 0},
+                        'Mike McHargue': {GIFTS_KEY: [12000, 50000, 27000],
+                                          NUM_GIFTS_KEY: 0,
+                                          TOTAL_KEY: 0,
+                                          AVE_KEY: 0},
+                        "Flannery O'Connor": {GIFTS_KEY: [38734, 6273, 67520],
+                                              NUM_GIFTS_KEY: 0,
+                                              TOTAL_KEY: 0,
+                                              AVE_KEY: 0},
+                        'Angela Davis': {GIFTS_KEY: [74846, 38470, 7570, 50],
+                                         NUM_GIFTS_KEY: 0,
+                                         TOTAL_KEY: 0,
+                                         AVE_KEY: 0},
+                        'Bell Hooks': {GIFTS_KEY: [634547, 47498, 474729, 4567],
+                                       NUM_GIFTS_KEY: 0,
+                                       TOTAL_KEY: 0,
+                                       AVE_KEY: 0}})
 
 THANK_YOU_FMT = ('\nDear {:s},\n'
                  'Thank you for your generous donation of ${:.2f}.\n'
@@ -72,11 +80,11 @@ def add_donation(donor, amount):
         donor (str): Name of donor in donation database.
         amount (int): Amount to add to donation database.
     """
-    DONATION_DB[donor][GIFTS_KEY].append(amount)
-    DONATION_DB[donor][NUM_GIFTS_KEY] += 1
-    DONATION_DB[donor][TOTAL_KEY] += amount
-    DONATION_DB[donor][AVE_KEY] = DONATION_DB[donor][TOTAL_KEY] / \
-        DONATION_DB[donor][NUM_GIFTS_KEY]
+    DONOR_DB[donor][GIFTS_KEY].append(amount)
+    DONOR_DB[donor][NUM_GIFTS_KEY] += 1
+    DONOR_DB[donor][TOTAL_KEY] += amount
+    DONOR_DB[donor][AVE_KEY] = DONOR_DB[donor][TOTAL_KEY] / \
+        DONOR_DB[donor][NUM_GIFTS_KEY]
 
 
 def send_thank_you():
@@ -103,38 +111,24 @@ def send_thank_you():
     amount_prompt = '\nPlease enter the donation amount:\n'\
                     '(Enter "quit" to return to main menu)\n'\
                     ' --> '
-    names = [donor.lower() for donor in DONATION_DB]
+    names = [donor.lower() for donor in DONOR_DB]
 
     while True:
-        new_donor = False
         usr_in = input(name_prompt).strip().lower()
 
         if usr_in.startswith('q'):
             break
         elif usr_in == 'list':
             print()
-            for dnr in DONATION_DB:
-                print(dnr)
+            [print(name.title()) for name in names]
         else:
-            if usr_in in names:
-                for dnr in DONATION_DB:
-                    if usr_in in dnr.lower():
-                        donor = dnr
-            else:
-                donor = " ".join([name.title() for name in usr_in.split()])
-                new_donor = True
-
+            donor = " ".join([name.title() for name in usr_in.split()])
             usr_in = input(amount_prompt).strip().lower()
+
             if usr_in.startswith('q'):
                 break
             else:
                 donation = float(usr_in)
-
-            if new_donor:
-                DONATION_DB[donor] = {GIFTS_KEY: [],
-                                      NUM_GIFTS_KEY: 0,
-                                      TOTAL_KEY: 0,
-                                      AVE_KEY: 0}
 
             add_donation(donor, donation)
             print(THANK_YOU_FMT.format(donor, donation))
@@ -152,11 +146,11 @@ def create_report():
     def_space = 5
     col_sep = ' | '
 
-    max_name = len(max([dnr for dnr in DONATION_DB], key=len)) + def_space
+    max_name = len(max([dnr for dnr in DONOR_DB], key=len)) + def_space
     max_total = len(max([str(val[TOTAL_KEY])
-                         for val in DONATION_DB.values()], key=len)) + def_space
+                         for val in DONOR_DB.values()], key=len)) + def_space
     max_gifts = len(max([str(val[NUM_GIFTS_KEY])
-                         for val in DONATION_DB.values()], key=len)) + def_space
+                         for val in DONOR_DB.values()], key=len)) + def_space
     max_ave = max_total
 
     if max_name < min_width:
@@ -176,13 +170,13 @@ def create_report():
                f'{{:>{max_gifts}d}}{col_sep}${{:>{max_ave - 1}.2f}}')
 
     sorted_dnr_keys = sorted(
-        DONATION_DB, key=lambda dnr: DONATION_DB[dnr][TOTAL_KEY], reverse=True)
+        DONOR_DB, key=lambda dnr: DONOR_DB[dnr][TOTAL_KEY], reverse=True)
 
     print(header)
     for dnr in sorted_dnr_keys:
-        print(row_fmt.format(dnr, DONATION_DB[dnr][TOTAL_KEY],
-                             DONATION_DB[dnr][NUM_GIFTS_KEY],
-                             DONATION_DB[dnr][AVE_KEY]))
+        print(row_fmt.format(dnr, DONOR_DB[dnr][TOTAL_KEY],
+                             DONOR_DB[dnr][NUM_GIFTS_KEY],
+                             DONOR_DB[dnr][AVE_KEY]))
 
 
 def quit_mailroom():
@@ -204,7 +198,7 @@ def main():
                 QUIT_OPT: quit_mailroom}
 
     # Initialize database
-    for values in DONATION_DB.values():
+    for values in DONOR_DB.values():
         values[NUM_GIFTS_KEY] = len(values[GIFTS_KEY])
         values[TOTAL_KEY] = sum(values[GIFTS_KEY])
         values[AVE_KEY] = values[TOTAL_KEY] / values[NUM_GIFTS_KEY]
