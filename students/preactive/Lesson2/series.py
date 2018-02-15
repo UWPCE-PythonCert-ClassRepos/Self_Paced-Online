@@ -23,15 +23,16 @@ def sum_series(n, a=0, b=1):
 
 
 def assert_testing():
+    """
+    Building arrays to test against in a loop
+
+    """
     fib_test_arr = [0, 1, 1, 2, 3, 5, 8, 13]
     lucas_test_arr = [2, 1, 3, 4, 7, 11, 18, 29]
     for fib_index, fib_test in enumerate(fib_test_arr):
-        assert(fib(fib_index + 1) == fib_test)
-        assert(sum_series(fib_index + 1, 0, 1) == fib_test)
+        assert fib(fib_index + 1) == fib_test, "Fib Fail"
+        assert sum_series(fib_index + 1, 0, 1) == fib_test, "Sum Series Fib Failed"
     for lucas_index, lucas_test in enumerate(lucas_test_arr):
-        assert(lucas(lucas_index + 1) == lucas_test)
-        assert(sum_series(lucas_index + 1, 2, 1) == lucas_test)
-
+        assert lucas(lucas_index + 1) == lucas_test, "Lucas Fail"
+        assert sum_series(lucas_index + 1, 2, 1) == lucas_test, "Sum Series Lucas Failed"
 assert_testing()
-
-
