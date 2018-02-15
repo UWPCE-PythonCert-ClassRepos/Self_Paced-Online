@@ -1,7 +1,7 @@
 '''
 Thomas Horn
 FizzBuzz:  Prints the numbers 1 through 100, substituting "Fizz" for multiples
-        of 3 and "Buzz" for multiples of three.  Multiples of 3 and 5 print
+        of 3 and "Buzz" for multiples of 5.  Multiples of 3 and 5 print
         "FizzBuzz".
 '''
 
