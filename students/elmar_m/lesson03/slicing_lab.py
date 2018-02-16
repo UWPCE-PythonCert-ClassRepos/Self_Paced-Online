@@ -18,12 +18,6 @@ def exfl(a):
     '''
     return a given sequence with the first and last item exchanged
     '''
-    # print(a)
-    # print(a[-1:])
-    # print(a[1:-1])
-    # print(a[0])
-    # print(a[-1] + a[1:-1] + a[0])
-
     # print(a[-1:] + a[1:-1] + a[:1])
     return a[-1:] + a[1:-1] + a[:1]
 
@@ -62,12 +56,30 @@ def third(a):
 '''
 Assertions:
 '''
+# a_string = "this is a string"
+# a_tuple = (2, 54, 13, 12, 5, 32)
+
 assert exfl(a_string) == "ghis is a strint"
 assert exfl(a_tuple) == (32, 54, 13, 12, 5, 2)
+ 
+assert onlyfl(a_string) == "tg"
+assert onlyfl(a_tuple) == (2, 32)
+ 
+assert withoutfl4(a_string) == " is a st"
+assert withoutfl4(a_tuple) == ()
+ 
+assert reverse(a_string) == "gnirts a si siht"
+assert reverse(a_tuple) == (32, 5, 12, 13, 54, 2)
+
+assert third(a_string) ==
+# assert third(a_tuple) ==
+
+
+
 
 
 if __name__ == '__main__':
-    # print('__name__ is set to "__main__", you executed this directly as a script.')
-    exfl(a_string)
-    exfl(a_tuple)
+    print('__name__ is set to "__main__", you executed this directly as a script.')
+    # exfl(a_string)
+    # exfl(a_tuple)
     
