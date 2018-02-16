@@ -45,7 +45,7 @@ print("----------------------------------------------------------------" + "\n")
 
 new_fruit3 = input("Please input a third fruit to add to the beginning of the list. ")
 
-fruit_list2.insert(0,new_fruit3.capitalize())
+fruit_list2.insert(0, new_fruit3.capitalize())
 
 print(fruit_list2)
 print("----------------------------------------------------------------" + "\n")
@@ -82,6 +82,39 @@ while boolDelete == False:
 
     if boolDelete == False:
         print("Fruit not found in list")
+
+
+# Series 3
+
+boolAnswer = False
+
+answer = " "
+answer2 = "no"
+
+
+while boolAnswer != True:
+    for x in fruit_list2:
+        answer = input("Do you like %s?" % x.lower())
+        try:
+            if answer == "yes":
+                print(fruit_list2)
+                boolAnswer == True
+            elif answer == "no":
+                fruit_list2.remove(x)
+                print(x, " removed")
+                boolAnswer == True
+            else:
+                raise Exception
+        except Exception:
+            print("Please input 'yes' or 'no'")
+        else:
+            boolAnswer = True
+
+print(fruit_list2)
+print("----------------------------------------------------------------" + "\n")
+
+
+
 
 
 
