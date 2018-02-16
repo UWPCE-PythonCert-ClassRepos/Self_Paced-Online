@@ -22,7 +22,6 @@ def prompt(which = 0):
             print("Goodbye Sir!")
             break
 
-
 def send_thank_you():
     response = input("Please enter full name of person you'd like to thank:\nBy the way, you can also type 'list' to get a list of donors or 'Q' to quit\n--> ")
 
@@ -41,13 +40,11 @@ def send_thank_you():
         donations.append([donor, float(donation_response)])
         print_email(donor, donation_response)
 
-
 def print_email(donor, amount):
     print()
     print(f"Dear {donor},\nThank you so very much for you kind donation of ${amount}. We can assure you that it will be put to great use.\nBest,\nChris")
     print()
     prompt(1)
-
 
 def list_donors():
     donor_list = donor_names()
@@ -58,7 +55,6 @@ def list_donors():
 
     print()
 
-
 def donor_names():
     name_list = []
     for i, j in donations:
@@ -66,7 +62,6 @@ def donor_names():
             name_list.append(i)
 
     return name_list
-
 
 def print_report():
     header = '{:20}|{:^15}|{:^15}|{:>15}'.format("Donor Name", "Total Given", "Num Gifts", "Average Gift")
@@ -78,7 +73,6 @@ def print_report():
 
     print()
     prompt(1)
-
 
 def total_given(donor):
     sum = 0
@@ -96,3 +90,8 @@ def num_gifts(donor):
 
 def avg_gift(donor):
     return (total_given(donor)/num_gifts(donor))
+
+
+if __name__ == "__main__":
+    # Will only execute if mailroom.py is run as a script
+    prompt()
