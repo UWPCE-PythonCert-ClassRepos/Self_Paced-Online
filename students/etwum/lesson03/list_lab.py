@@ -60,23 +60,23 @@ for x in fruit_list2:
 print("----------------------------------------------------------------" + "\n")
 
 # Series 2
-print(fruit_list2)
+print(fruit_list)
 print("Removing the last item from the list")
-fruit_list2.pop(-1)
+fruit_list.pop(-1)
 
-print(fruit_list2)
+print(fruit_list)
 print("----------------------------------------------------------------" + "\n")
 
 
 boolDelete = False
 while boolDelete == False:
-    delete_fruit = input("What fruit would you like to delete? ")
+    delete_fruit = input("What fruit would you like to delete from the list? ")
 
-    for x in fruit_list2:
+    for x in fruit_list:
         if x == delete_fruit.capitalize():
-            fruit_list2.remove(delete_fruit.capitalize())
+            fruit_list.remove(delete_fruit.capitalize())
             print("Fruit deleted from list!")
-            print(fruit_list2)
+            print(fruit_list)
             boolDelete = True
             print("----------------------------------------------------------------" + "\n")
 
@@ -86,32 +86,37 @@ while boolDelete == False:
 
 # Series 3
 
-boolAnswer = False
-
+boolValidInput = False
 answer = " "
-answer2 = "no"
+removal_list = []
+list_index = 0
 
 
-while boolAnswer != True:
-    for x in fruit_list2:
-        answer = input("Do you like %s?" % x.lower())
+while list_index != 2:
+
+    for x in fruit_list:
         try:
+            answer = input("Do you like %s?" % x.lower())
             if answer == "yes":
-                print(fruit_list2)
-                boolAnswer == True
+                print("Glad you like %s" % x)
             elif answer == "no":
-                fruit_list2.remove(x)
-                print(x, " removed")
-                boolAnswer == True
+                removal_list.append(x)
             else:
                 raise Exception
         except Exception:
-            print("Please input 'yes' or 'no'")
-        else:
-            boolAnswer = True
+            print("Please input yes or no")
+    list_index = fruit_list.index(x)
+    print(list_index)
 
-print(fruit_list2)
+for x in removal_list:
+    fruit_list.remove(x)
+
+print(fruit_list)
 print("----------------------------------------------------------------" + "\n")
+
+
+# Series 4
+
 
 
 
