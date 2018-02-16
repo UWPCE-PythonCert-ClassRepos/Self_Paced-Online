@@ -16,7 +16,7 @@ first_try = ['spam', 'cheese', 'mr death']
 
 try:
     joke = fun(first_try[0])
-except NameError as ne:
+except NameError:
     joke = fun(first_try[1])
 
 # Here is a try/except block. Add an else that prints not_joke
@@ -47,11 +47,10 @@ langs = ['java', 'c', 'python']
 
 try:
     more_joke = more_fun(langs[0])
-except IndexError as ie:
+except IndexError:
     next_joke = more_fun(langs[1])
 else:
     more_fun(langs[2])
 finally:
     last_fun()
-    pass
 
