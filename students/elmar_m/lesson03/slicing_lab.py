@@ -7,16 +7,28 @@ Lesson03: Slicing Lab Exercise
 Functions for slicing sequences.
 '''
 
-mystr = "this is a string"
-t = (2, 54, 13, 12, 5, 32)
+# mystr = "this is a string"
+# t = (2, 54, 13, 12, 5, 32)
+
+a_string = "this is a string"
+a_tuple = (2, 54, 13, 12, 5, 32)
 
 
 def exfl(a):
     '''
     return a given sequence with the first and last item exchanged
     '''
+    # print(a)
+    # print(a[-1:])
+    # print(a[1:-1])
+    # print(a[0])
     # print(a[-1] + a[1:-1] + a[0])
-    return a[-1:] + a[1:-1] + a[:0]
+
+    # print(a[-1:] + a[1:-1] + a[:1])
+    return a[-1:] + a[1:-1] + a[:1]
+
+    # print(a[-1:] + a[1:-1] + a[:1])
+    # return a[-1:] + a[1:-1] + a[:1]
 
 
 def onlyfl(a):
@@ -50,13 +62,12 @@ def third(a):
 '''
 Assertions:
 '''
-# assert exchange_first_last(a) == "ghis is a strint"
-assert exfl(mystr) == "ghis is a strint"
-# assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
-assert exfl(t) == (32, 54, 13, 12, 5, 2)
+assert exfl(a_string) == "ghis is a strint"
+assert exfl(a_tuple) == (32, 54, 13, 12, 5, 2)
 
 
 if __name__ == '__main__':
-    print('__name__ is set to "__main__", you executed this directly as a script.')
-    print(exfl(mystr))
+    # print('__name__ is set to "__main__", you executed this directly as a script.')
+    exfl(a_string)
+    exfl(a_tuple)
     
