@@ -23,12 +23,14 @@ def prompt(which = 0):
             break
 
 def send_thank_you():
-    response = input("Please enter full name of person you'd like to thank:\nBy the way, you can also type 'list' to get a list of donors or 'Q' to quit\n--> ")
+    response = input("Please enter full name of person you'd like to thank:\nBy the way, you can also type 'list' to get a list of donors or 'P' to return to the main prompt\n--> ")
 
     if response == "list":
         print()
         list_donors()
         send_thank_you()
+    elif response == "P":
+        prompt(1)
     elif response not in donor_names():
         new_donor = response
         donation_response = input(f"Please enter a donation amount for {new_donor}: ")
