@@ -12,10 +12,10 @@ print(output + '\n')
 
 
 ### Task 2 ############################################################
-# String formatting the following Tuple using named parameters
+# String formatting the following Tuple f-string
 a_tuple = (2, 123.4567, 10000, 12345.67)
 
-output = "file_{file_num}: {float_num}, {sci_int}, {sci_float}".format(file_num = 1, float_num = float(2), sci_int = 3, sci_float = 4)
+output = f"file_{a_tuple[0]:03d}: {a_tuple[1]:3.2f}, {a_tuple[2]:.2e}, {a_tuple[3]:.2e}"
 
 print("*" * 5 + "Task 2" + "*" * 5)
 print(output + '\n')
