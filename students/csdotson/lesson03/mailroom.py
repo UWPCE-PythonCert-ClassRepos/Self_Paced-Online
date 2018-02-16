@@ -71,10 +71,10 @@ def donor_names():
 def print_report():
     header = '{:20}|{:^15}|{:^15}|{:>15}'.format("Donor Name", "Total Given", "Num Gifts", "Average Gift")
     print(header)
-    print("-" * 68)
+    print("-" * len(header))
 
     for name in donor_names():
-        print('{:20}${:>15.2f}{:>15}{:>15.2f}'.format(name, total_given(name), num_gifts(name), avg_gift(name)))
+        print('{:21}{:>15.2f}{:>16}{:>16.2f}'.format(name, total_given(name), num_gifts(name), avg_gift(name)))
 
     print()
     prompt(1)
