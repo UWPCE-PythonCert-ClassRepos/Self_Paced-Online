@@ -8,6 +8,7 @@ Write a new text file based on the trigrams created from the text file.
 
 import os
 import random
+
 random.seed(51)
 
 
@@ -31,9 +32,7 @@ def pull_text(read_dir, bof = None, eof = None):
             all_text += line
         else:
             all_text += line[:len(line)-1] + ' '
-        print(line)
         end = orig_text.tell()
-        print(end)
     orig_text.close()
     return all_text
 
@@ -44,20 +43,19 @@ def build_trigram_dict(parsed_text):
     1. Take 3 words
     2. First 2 words are key, 3rd is value.
     3. Return dict of trigrams.
-    Ignore multiple spaces.
+    Ignore multiple spaces/dashes.
     """
     trigram_dict = {}
     key_word = [None, None]
     ignore_char = [' ', '-']
     word = ''
-    word_index = 0
+    word_idx = 0
     for x in parsed_text:
-        print(x)
         if x in ignore_char:
             if word != '':
                 if None in key_word:
-                    key_word[word_index] = word
-                    word_index = word_index + 1
+                    key_word[word_idx] = word
+                    word_idx = word_idx + 1
                 else:
                     bigram = key_word[0] + ' ' + key_word[1]
                     if not trigram_dict.get(bigram):
@@ -66,36 +64,43 @@ def build_trigram_dict(parsed_text):
                         trigram_dict[bigram] += [word]
                     key_word[0] = key_word[1]
                     key_word[1] = word
-                print(word)
-                print(key_word)
                 word = ''
         else:
             word += x
-        print(key_word)
-    print(trigram_dict.items())
     return trigram_dict
 
 def make_story(story_dict):
     """
     Generate a story based on trigram dict.
     1. Begin at random key.
-    2. Print key.
+    2. Append key to story.
     3. Choose random value.
-    4. Print value.
-    5. New key is 2nd word of key+value.
+    4. Append value to story.
+    5. New key is 2nd word of key+' '+value.
     If there is no value at new key, start at step 1.
     6. Return story
     """
-    keys = story_dict.keys()
-    start = round(random.random()*len(keys))
+    keys = list(story_dict.keys())
+    start = int(random.random()*len(keys))
     story = ''
+
+    story += keys[start]
+    key = keys[start]
+    while story_dict.get(key):
+        words = story_dict.get(key)
+        rand_word = int(random.random()*len(words))
+        story += ' ' + words[rand_word]
+        key = key[key.find(' ')+1:] + ' ' + words[rand_word]
     return story
 
 def write_story(story, orig, directory):
     """
     Write generated story to text file.
     """
-    print("New story saved in " + directory)
+    new_story = open(os.path.join(directory, 'trigram_'+orig), 'w+')
+    new_story.write(story)
+    new_story.close()
+    print("New story: trigram_" + orig  + " saved in " + directory)
     return
 
 
@@ -106,9 +111,10 @@ gtb_eof = "End of the Project Gutenberg"
 enjoy_story = None
 
 sample_story = pull_text(os.path.join(start_dir, 'sample.txt'))
-#guten_story = pull_text(os.path.join(start_dir, orig_story), gtb_bof, gtb_eof)
-#short_story = pull_text(os.path.join(start_dir, 'sherlock_small.txt'))
-parsed_story = sample_story
+guten_story = pull_text(os.path.join(start_dir, orig_story), gtb_bof, gtb_eof)
+short_story = pull_text(os.path.join(start_dir, 'sherlock_small.txt'))
+
+parsed_story = guten_story
 trigram_dict = build_trigram_dict(parsed_story)
 while enjoy_story != 'y':
     enjoy_story = None
