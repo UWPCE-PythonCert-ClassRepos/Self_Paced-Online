@@ -47,14 +47,10 @@ def build_trigram_dict(parsed_text):
     Ignore multiple spaces.
     """
     trigram_dict = {}
-    key_word = [None, None, None]
+    key_word = [None, None]
     ignore_char = [' ', '-']
     word = ''
     word_index = 0
-    #pull 3 words from text, ignore multiple spaces.
-    #Set first 2 words space-separated as key.
-    #Add 3rd as value
-    #pull next word, make current 2nd and 3rd words the key
     for x in parsed_text:
         print(x)
         if x in ignore_char:
@@ -65,12 +61,11 @@ def build_trigram_dict(parsed_text):
                 else:
                     bigram = key_word[0] + ' ' + key_word[1]
                     if not trigram_dict.get(bigram):
-                        trigram_dict[bigram] = [key_word[2]]
+                        trigram_dict[bigram] = [word]
                     else:
-                        trigram_dict[bigram] += [key_word[2]]
+                        trigram_dict[bigram] += [word]
                     key_word[0] = key_word[1]
-                    key_word[1] = key_word[2]
-                    key_word[2] = word
+                    key_word[1] = word
                 print(word)
                 print(key_word)
                 word = ''
