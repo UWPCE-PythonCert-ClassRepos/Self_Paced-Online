@@ -47,7 +47,7 @@ def series1():
     # fruit corresponding to that number (on a 1-is-first basis). Remember that
     # Python uses zero-based indexing, so you will need to correct.
     while True:
-        answer = int(input("Enter an integer between"
+        answer = int(input("Enter an integer between "
                            "1 and {:d}!> ".format(len(l))))
         if 1 <= answer <= 5:
             break
