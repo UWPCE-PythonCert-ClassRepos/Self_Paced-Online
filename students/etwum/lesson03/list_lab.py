@@ -117,6 +117,16 @@ print("----------------------------------------------------------------" + "\n")
 
 # Series 4
 
+copy_fruit_list = []
+
+for x in fruit_list:
+    y = x[::-1]
+    copy_fruit_list.append(y)
+
+print(copy_fruit_list)
+print(fruit_list)
+
+
 
 
 
