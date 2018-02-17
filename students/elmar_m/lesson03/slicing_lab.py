@@ -7,23 +7,16 @@ Lesson03: Slicing Lab Exercise
 Functions for slicing sequences.
 '''
 
-# mystr = "this is a string"
-# t = (2, 54, 13, 12, 5, 32)
-
 a_string = "this is a string"
+al_string = "this is an even longer string and it still goes on"
 a_tuple = (2, 54, 13, 12, 5, 32)
-
+al_tuple = (2, 54, 13, 12, 5, 32, 48, 102, 9, 11, 2056, 299)
 
 def exfl(a):
     '''
     return a given sequence with the first and last item exchanged
     '''
-    # print(a[-1:] + a[1:-1] + a[:1])
     return a[-1:] + a[1:-1] + a[:1]
-
-    # print(a[-1:] + a[1:-1] + a[:1])
-    # return a[-1:] + a[1:-1] + a[:1]
-
 
 def onlyfl(a):
     '''
@@ -48,7 +41,6 @@ def third(a):
     '''
     with the middle third, then last third, then the first third in the new order.
     '''
-    # thrd = len(a) // 3
     n = len(a) // 3
     return a[n:-n] + a[-n:] + a[:n]
 
@@ -56,9 +48,6 @@ def third(a):
 '''
 Assertions:
 '''
-# a_string = "this is a string"
-# a_tuple = (2, 54, 13, 12, 5, 32)
-
 assert exfl(a_string) == "ghis is a strint"
 assert exfl(a_tuple) == (32, 54, 13, 12, 5, 2)
  
@@ -71,15 +60,8 @@ assert withoutfl4(a_tuple) == ()
 assert reverse(a_string) == "gnirts a si siht"
 assert reverse(a_tuple) == (32, 5, 12, 13, 54, 2)
 
-assert third(a_string) ==
-# assert third(a_tuple) ==
-
-
-
-
+assert third(a_string) == "is a stringthis "
+assert third(al_tuple) == (5, 32, 48, 102, 9, 11, 2056, 299, 2, 54, 13, 12)
 
 if __name__ == '__main__':
     print('__name__ is set to "__main__", you executed this directly as a script.')
-    # exfl(a_string)
-    # exfl(a_tuple)
-    
