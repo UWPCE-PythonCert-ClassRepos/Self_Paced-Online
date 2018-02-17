@@ -9,10 +9,10 @@ Write a new text file based on the trigrams created from the text file.
 import os
 import random
 
-random.seed(51)
+random.seed()
 
 
-def pull_text(read_dir, bof = None, eof = None):
+def pull_text(read_dir, bof=None, eof=None):
     """
     Parse valid text from text file.
     """
@@ -69,6 +69,7 @@ def build_trigram_dict(parsed_text):
             word += x
     return trigram_dict
 
+
 def make_story(story_dict):
     """
     Generate a story based on trigram dict.
@@ -93,14 +94,15 @@ def make_story(story_dict):
         key = key[key.find(' ')+1:] + ' ' + words[rand_word]
     return story
 
-def write_story(story, orig, directory):
+
+def write_story(story, orig, w_dir=os.getcwd()):
     """
     Write generated story to text file.
     """
-    new_story = open(os.path.join(directory, 'trigram_'+orig), 'w+')
+    new_story = open(os.path.join(w_dir, 'trigram_'+orig), 'w+')
     new_story.write(story)
     new_story.close()
-    print("New story: trigram_" + orig  + " saved in " + directory)
+    print("New story: trigram_" + orig + " saved in " + w_dir)
     return
 
 
@@ -108,18 +110,22 @@ start_dir = os.getcwd()
 orig_story = 'TaoTeChing.txt'
 gtb_bof = "***"
 gtb_eof = "End of the Project Gutenberg"
-enjoy_story = None
 
+'''
 sample_story = pull_text(os.path.join(start_dir, 'sample.txt'))
-guten_story = pull_text(os.path.join(start_dir, orig_story), gtb_bof, gtb_eof)
 short_story = pull_text(os.path.join(start_dir, 'sherlock_small.txt'))
+'''
+guten_story = pull_text(os.path.join(start_dir, orig_story), gtb_bof, gtb_eof)
 
 parsed_story = guten_story
 trigram_dict = build_trigram_dict(parsed_story)
+enjoy_story = None
+
 while enjoy_story != 'y':
     enjoy_story = None
     built_story = make_story(trigram_dict)
     print(built_story)
     while enjoy_story not in ['y', 'n']:
         enjoy_story = input("Did you enjoy this story? (y/n)").lower()
-write_story(built_story, orig_story, start_dir)
+
+write_story(built_story, orig_story)
