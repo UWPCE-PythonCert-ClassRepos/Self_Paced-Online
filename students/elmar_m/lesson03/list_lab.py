@@ -51,14 +51,14 @@ fruits = fruits + fruits
 print(fruits)
 print()
 
-'''
 
 
 rmfruit = input('We have to remove some more. Please tell me which one: >')
 
-fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
+# fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
 while rmfruit not in fruits:
     print(rmfruit, 'is not in the list')
+    print('current list is: ', fruits)
     rmfruit = input('Please choose a fruit which is available in the list: >')
 
 print('Ok, will remove', rmfruit, 'from the list. Are you sure?')
@@ -70,21 +70,29 @@ while rmfruit in fruits:
 print('OK,', rmfruit, 'was removed.')
 print('Now this is still in the list:', fruits)
 print()
+'''
 
 '''
 series 3:
 '''
-for i in fruits:
-    answer = None
-    while not answer is 'yes' or not answer is 'no':
-        print('Do you like', i, '?')
-        answer = input('Type "yes" or "no":')
-    if answer is 'yes':
-        pass
-    else:
-        pass
+# fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
+fruits = ['Apples', 'Oranges', 'Peaches']
+for i in fruits[:]:
+    print('Do you like', i, '?', 'Type "yes" or "no"')
+    answer = input()
 
-print('juchhu ende')
+    while (answer != 'yes') and (answer != 'no'):
+        answer = input('Please type either "yes" or "no":')
+    
+    if (answer == 'yes'):
+        print('answer was yes,', i, 'remain in list')
+    elif (answer == 'no'):
+        print('answer was no, removing', i)
+        fruits.remove(i)
+        
+print(fruits)
+    
+
 
 
 
