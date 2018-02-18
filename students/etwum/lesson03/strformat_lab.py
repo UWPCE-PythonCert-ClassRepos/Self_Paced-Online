@@ -17,3 +17,13 @@ x4 = x[3]
 
 string = f"file{x1:03d}: {x2:.2f}, {x3:.2e}, {x4:.2e}"
 print(string)
+
+
+# Task Three
+
+def formatter(*tuple):
+
+    form_string = "the " + str(len(tuple)) + " numbers are " + ", ".join(["{}"]*len(tuple)).format(*tuple)
+    return print(form_string)
+
+formatter(1,2,3,4,5,6)
