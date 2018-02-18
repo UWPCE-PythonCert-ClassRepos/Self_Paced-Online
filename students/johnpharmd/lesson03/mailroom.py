@@ -10,6 +10,8 @@ donors_amts = [['Gates', 'Mr.', 150000, 3], ['Brin', 'Mr.', 150000, 3],
 # Processing
 def send_ty():
 	global donors_amts
+	donors = []
+	salutation = ''
 	while True:
 		print()
 		response = input('Enter full last name of Donor,'
@@ -27,29 +29,33 @@ def send_ty():
 			elif response != 'list':
 				response = response.capitalize()
 				for donor in donors_amts:
-					if donor[0] == response:
-						print('Donor found:', response)
-					else:
-						salutation = input('Salutation: "Ms." or "Mr."?: ')
-						print('Added to list of Donors:', salutation,
-							response)
-						donors_amts.append([response, salutation,
-							0, 0])
-				new_response = int(input('Enter a Donation amount' +
-					' (in USD): '))
-				print('Added to', response, '\'s Donations:',
-					new_response)
-				for donor in donors_amts:
-					if donor[0] == response:
-						donor[2] += new_response
-						donor[3] += 1
+					donors.append(donor[0])
+				if response in donors:
+					print('Donor found:', response)
+					new_response = int(input('Enter a Donation amount' +
+						' (in USD): '))
+					for donor in donors_amts:
+						if donor[0] == response:
+							donor[2] += new_response
+							donor[3] += 1
+							salutation = donor[1]
+					print('Added to', response, '\'s Donations:',
+						new_response, '\n')
+				elif response not in donors:
+					salutation = input('Salutation: "Ms." or "Mr."?: ')
+					new_response = int(input('Enter a Donation amount' +
+						' (in USD): '))
+					print('Added to list of Donors:', salutation,
+						response, new_response)
+					donors_amts.append([response, salutation,
+						new_response, 1])
 				print('Here is the full List:')
 				donors_amts.sort()
 				for donor in donors_amts:
-					print(donor[0])
+					print(donor)
 				form_st = 'Dear {} {}, Thank you for your generous donation in the amount of {} USD.'
-				print(form_st.format('Donor'
-					, response, new_response))
+				print(form_st.format(salutation,
+					response, new_response))
 
 
 def get_report():
