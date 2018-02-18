@@ -37,3 +37,16 @@ new_string = "{d:02d} {e} {c} {a:02d} {b}".format(a=y[0],b=y[1],c=y[2],d=y[3],e=
 print(new_string)
 
 # Task Five
+
+z = ['oranges', 1.3, 'lemons', 1.1]
+
+y1 = z[0]
+y2 = z[1]
+y3 = z[2]
+y4 = z[3]
+
+f_string = f"The weight of an {y1} is {y2} and the weight of a {y3} is {y4}"
+print(f_string)
+
+f_string2 = f"The weight of an {y1.upper()} is {y2*1.2} and the weight of a {y3.upper()} is {y4*1.2}"
+print(f_string2)
