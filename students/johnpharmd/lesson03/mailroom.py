@@ -9,27 +9,25 @@ donors_amts = [['Gates', 150000, 3], ['Brin', 150000, 3],
 
 # Processing
 def send_ty():
-    global donors_amts
-    while True:
-	    print()
-	    response = input('Enter full last name of Donor,'
-	        + ' "list" for List of Donors'
-	        + ', or "e" to Exit back to Main Menu: ')
-	    if response == 'e':
-	        break	
-	    if response.isalpha():
-	        if response == 'list':
-	            print('Here is the list of Donors: ')
-	            donors_amts.sort()
-	            for donor in donors_amts:
-	                print(donor[0])
-	        elif response != 'list':
-	            response = response.capitalize()
-	            for donor in donors_amts:
-	                if response == donor[0]:
-	                    print('Donor found:', response)
-	                else:
-	                    continue    
+	global donors_amts
+	while True:
+		print()
+		response = input('Enter full last name of Donor,'
+			+ ' "list" for List of Donors'
+			+ ', or "e" to Exit back to Main Menu: ')
+		if response == 'e':
+			break	
+		if response.isalpha():
+			if response == 'list':
+				print('Here is the list of Donors: ')
+				donors_amts.sort()
+				for donor in donors_amts:
+					print(donor[0])
+			elif response != 'list':
+				response = response.capitalize()
+				for donor in donors_amts:
+					if response in donor:
+						print('Donor found:', response)
 
 
 def get_report():
@@ -39,6 +37,7 @@ def get_report():
 # I/O
 if __name__ == '__main__':
     while True:
+        print('Main Menu:')
         response = input('Choose from the following: "1" - Send a "Thank You",'
             + ' "2" - Create a Report, or "q" to Quit: ')
         if response == '1':
@@ -60,7 +59,6 @@ if __name__ == '__main__':
             else:
                 print('That is not an option. Closing program.')
                 break	
-
 
 else:
     print('This module is not intended to be imported.')
