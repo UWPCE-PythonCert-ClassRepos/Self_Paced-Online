@@ -1,5 +1,5 @@
 def exchange_first_last(seq):
-    """Exchange first and last elements of input sequence with 
+    """Exchange first and last elements of input sequence with
     length>1"""
     return seq[-1:] + seq[1:-1] + seq[:1]
 
@@ -20,9 +20,12 @@ def reverse_seq(seq):
 
 
 def reorder_thirds(seq):
-    """Return middle third, then last third, then first third"""
+    """Return middle third, then last third, then first third.
+    For sequences not divisible by 3, rounds down, eg for a sequence of 
+    length 7, the first third will be 2 elements rather than 2.33"""
     seq_slice = len(seq)//3
     return seq[seq_slice:] + seq[:seq_slice]
+
 
 test_string = 'this is a test string'
 short_string = 'abc'
