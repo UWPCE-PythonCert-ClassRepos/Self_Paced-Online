@@ -50,3 +50,17 @@ print(f_string)
 
 f_string2 = f"The weight of an {y1.upper()} is {y2*1.2} and the weight of a {y3.upper()} is {y4*1.2}"
 print(f_string2)
+
+# Task Six
+
+list = [["name", "age", "cost"], ["Mike", "31", 999999.25],["Jordan", "23", 9999.99], ["Wayne", "25", 999],
+        ["Brady", "100", 9.99]]
+
+for x in list:
+    print('{:<15}{:<5}{:<5}'.format(*x))
+
+
+ten_numbers = (1,2,3,4,5,6,7,8,9,10)
+
+
+print('{:<5}{:<5}{:<5}{:<5}{:<5}\n{:<5}{:<5}{:<5}{:<5}{:<5}'.format(1,2,3,4,5,6,7,8,9,10))
