@@ -22,7 +22,7 @@ print(string)
 # Task Three
 
 def formatter(*tuple):
-
+    # creates a string which dynamically prints a string based on the numbers passed to the function
     form_string = "the " + str(len(tuple)) + " numbers are " + ", ".join(["{}"]*len(tuple)).format(*tuple)
     return print(form_string)
 
@@ -45,6 +45,7 @@ y2 = z[1]
 y3 = z[2]
 y4 = z[3]
 
+# use f-string to format the strings
 f_string = f"The weight of an {y1} is {y2} and the weight of a {y3} is {y4}"
 print(f_string)
 
@@ -53,14 +54,12 @@ print(f_string2)
 
 # Task Six
 
+# print a table of several rows, each with a name, an age and a cost
 list = [["name", "age", "cost"], ["Mike", "31", 999999.25],["Jordan", "23", 9999.99], ["Wayne", "25", 999],
         ["Brady", "100", 9.99]]
 
 for x in list:
     print('{:<15}{:<5}{:<5}'.format(*x))
 
-
-ten_numbers = (1,2,3,4,5,6,7,8,9,10)
-
-
+# print 10 numbers in two rows of 5
 print('{:<5}{:<5}{:<5}{:<5}{:<5}\n{:<5}{:<5}{:<5}{:<5}{:<5}'.format(1,2,3,4,5,6,7,8,9,10))
