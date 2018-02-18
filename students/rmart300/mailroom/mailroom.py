@@ -49,17 +49,15 @@ def create_report():
         print(data_row)
 
 def write_letters():
-   for donor in donor_dict:
-       temp_dict = donor_dict[donor]
-       first_name = temp_dict['firstname']
-       last_name = temp_dict['lastname']
+   for donor,name_dict in donor_dict.items():
+       first_name = name_dict['firstname']
+       last_name = name_dict['lastname']
        amount_list = donation_dict[donor]
        donation_num = 1
        for donation_amt in amount_list:      
            message = f"Dear {first_name} {last_name},\n\n    Thank you for your very kind donation of ${donation_amt}.\n\n    It will be put to very good use.\n\n    Sincerely,\n        -The Team"
-           f = open(f"{letter_directory}{first_name}_{last_name}_{donation_num}.txt",'w')
-           f.write(message)
-           f.close()
+           with open(f"{letter_directory}{first_name}_{last_name}_{donation_num}.txt",'w') as f:
+               f.write(message)
            donation_num += 1
 
 if __name__ == '__main__':
