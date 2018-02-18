@@ -72,28 +72,45 @@ print('Now this is still in the list:', fruits)
 print()
 '''
 
-'''
-series 3:
-'''
-# fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
-fruits = ['Apples', 'Oranges', 'Peaches']
-for i in fruits[:]:
-    print('Do you like', i, '?', 'Type "yes" or "no"')
-    answer = input()
+def print_list(l):
+    for i in l:
+        print(i, '', end='')     
 
-    while (answer != 'yes') and (answer != 'no'):
-        answer = input('Please type either "yes" or "no":')
-    
-    if (answer == 'yes'):
-        print('answer was yes,', i, 'remain in list')
-    elif (answer == 'no'):
-        print('answer was no, removing', i)
-        fruits.remove(i)
-        
-print(fruits)
-    
-
+def series3():
+    '''
+    series 3:
+    '''
+    fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
+    for i in fruits[:]:
+        print('Do you like', i, '?', 'Type "yes" or "no"\n')
+        answer = input()
+        while (answer != 'yes') and (answer != 'no'):
+            answer = input('Please type either "yes" or "no":\n')
+        if (answer == 'no'):
+            print('removing', i, 'from the list\n')
+            fruits.remove(i)
+    print('Keeping the fruits you like:')   
+    print_list(fruits)
 
 
+def series4():
+    '''
+    series 4:
+    '''
+    fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
+    print('original list:')
+    print_list(fruits)
+
+    cfruits = []
+    for i in fruits:
+        item = i[::-1]
+        cfruits.append(item)
+    print('\noriginal list items with reversed letters:')    
+    print_list(cfruits)
+
+    print('\noriginal list, last item removed:')
+    fruits.pop()
+    print_list(fruits)
+    # print_list(cfruits) 
 
 
