@@ -192,7 +192,7 @@ def main():
     opt_dict = dict(zip(PROMPT_OPTS, (send_thank_you, create_report,
                                       send_letters, quit_mailroom)))
     choice = ''
-    while choice != PROMPT_OPTS[-1:]:
+    while choice != PROMPT_OPTS[-1]:
         choice = get_usr_input()
         opt_dict.get(choice)()
 
