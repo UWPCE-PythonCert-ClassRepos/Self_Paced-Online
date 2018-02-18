@@ -27,9 +27,10 @@ def send_thank_you():
                 print(donor)
     
     amount = float(input("Provide a donation amount:"))
-    donation_list = donation_dict[name] if name in donation_dict else [] 
-    donation_list.append(amount)
-    donation_dict[name] = donation_list    
+    amount_list = donation_dict[name] if name in donation_dict else [] 
+    amount_list.append(amount)
+    donation_dict[name] = amount_list    
+    donor_dict[name] = { 'firstname': name.split(' ')[0], 'lastname': name.split(' ')[1] }
     thank_you_string = f"Hi {name}\nThank you for your donation of {amount} to the mailroom!\n"
     print(thank_you_string)    
 
@@ -40,9 +41,9 @@ def create_report():
     
     #sort the dictionary by descending order of the sum of values 
     sorted_dict = sorted(donation_dict.items(), key=lambda x: sum(int(v) for v in x[1]),reverse=True)
-    for donor, donation_list in sorted_dict:
-        donation_count = len(donation_list)
-        donation_total = sum(int(v) for v in donation_list)
+    for donor, amount_list in sorted_dict:
+        donation_count = len(amount_list)
+        donation_total = sum(int(v) for v in amount_list)
         donation_average = round(donation_total/donation_count,2)
         data_row = "{0:20}  ${1:>15}   {2:>10}   ${3:>15}".format(donor, str(donation_total), str(donation_count), str(donation_average))
         print(data_row)
@@ -52,10 +53,10 @@ def write_letters():
        temp_dict = donor_dict[donor]
        first_name = temp_dict['firstname']
        last_name = temp_dict['lastname']
-       donation_list = donation_dict[donor]
+       amount_list = donation_dict[donor]
        donation_num = 1
-       for donation_amt in donation_list:      
-           message = f"Dear {first_name} {last_name},\n\n    Thank you for your very kind donation of ${donation_amt}.\n\nIt will be put to very good use.\n\nSincerely,\n    -The Team"
+       for donation_amt in amount_list:      
+           message = f"Dear {first_name} {last_name},\n\n    Thank you for your very kind donation of ${donation_amt}.\n\n    It will be put to very good use.\n\n    Sincerely,\n        -The Team"
            f = open(f"{letter_directory}{first_name}_{last_name}_{donation_num}.txt",'w')
            f.write(message)
            f.close()
@@ -70,7 +71,7 @@ if __name__ == '__main__':
         first_name = donor.split(' ')[0]
         last_name = donor.split(' ')[1]
         donor_dict[donor] = { 'firstname': first_name, 'lastname': last_name }    
-        donation_dict[donor]= amount_list 
+        donation_dict[donor]= amount_list[:] 
     
 
     #prompt user for action and then call function
