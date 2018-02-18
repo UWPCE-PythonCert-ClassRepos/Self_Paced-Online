@@ -9,7 +9,7 @@ def read_book(book_file):
         for line in book:
             #need to remove punctuation from words
             punc = "\W"
-            line = re.sub(punc, ' ', line.strip())
+            line = re.sub(punc, ' ', line.strip().lower())
             words = line.split()
 
             for i in range(len(words)):
@@ -32,29 +32,23 @@ def write_book():
     cur_length = 0
     while cur_length < max_length:
         digram = random.choice(list(trigram_dict.keys()))
-        print('outer loop: ' + digram)
+        out.write(digram[0].upper() + digram[1:] + ' ')
         cur_length += 2
 
         while digram in trigram_dict and cur_length < max_length:
-            out.write(digram + ' ')
-            print('writing digram\ninner loop: ' + digram)
             num_words_used = trigram_usage_dict[digram]
             word_list = trigram_dict[digram]
             
-            print("{} {}".format(num_words_used,len(word_list)))
             if num_words_used < len(word_list):
                 third_word = word_list[num_words_used]
                 trigram_usage_dict[digram] = num_words_used + 1
                 out.write(third_word + ' ')
-                print('writing third word: ' + third_word)
                 cur_length += 1
             else:
                 break
 
             if len(digram.split()) > 0:
                 digram = digram.split()[1] + ' ' + third_word
-                print('end of loop ' + digram)
-            
 
         out.write('.')   
 
@@ -63,5 +57,4 @@ if __name__ == '__main__':
    
     book_file = sys.argv[1]
     read_book(book_file)   
-    #print(trigram_dict)
     write_book() 
