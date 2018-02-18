@@ -6,7 +6,7 @@ x = (2, 123.4567, 10000, 12345.67)
 
 file = "file{0:03d}: {1:.2f}, {2:.2e}, {3:.2e}".format(x[0],x[1],x[2],x[3])
 print(file)
-
+print("----------------------------------------------------------------")
 
 # Task Two
 
@@ -17,7 +17,7 @@ x4 = x[3]
 
 string = f"file{x1:03d}: {x2:.2f}, {x3:.2e}, {x4:.2e}"
 print(string)
-
+print("----------------------------------------------------------------")
 
 # Task Three
 
@@ -27,7 +27,7 @@ def formatter(*tuple):
     return print(form_string)
 
 formatter(1,2,3,4,5,6)
-
+print("----------------------------------------------------------------")
 # Task Four
 
 y = ( 4, 30, 2017, 2, 27)
@@ -35,6 +35,7 @@ y = ( 4, 30, 2017, 2, 27)
 new_string = "{d:02d} {e} {c} {a:02d} {b}".format(a=y[0],b=y[1],c=y[2],d=y[3],e=y[4])
 
 print(new_string)
+print("----------------------------------------------------------------")
 
 # Task Five
 
@@ -51,7 +52,7 @@ print(f_string)
 
 f_string2 = f"The weight of an {y1.upper()} is {y2*1.2} and the weight of a {y3.upper()} is {y4*1.2}"
 print(f_string2)
-
+print("----------------------------------------------------------------")
 # Task Six
 
 # print a table of several rows, each with a name, an age and a cost
@@ -60,6 +61,6 @@ list = [["name", "age", "cost"], ["Mike", "31", 999999.25],["Jordan", "23", 9999
 
 for x in list:
     print('{:<15}{:<5}{:<5}'.format(*x))
-
+print("----------------------------------------------------------------")
 # print 10 numbers in two rows of 5
 print('{:<5}{:<5}{:<5}{:<5}{:<5}\n{:<5}{:<5}{:<5}{:<5}{:<5}'.format(1,2,3,4,5,6,7,8,9,10))
