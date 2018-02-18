@@ -35,10 +35,10 @@ def init_donor_data(gifts=None):
     return {GIFTS_KEY: gifts,
             NUM_GIFTS_KEY: len(gifts),
             TOTAL_KEY: sum(gifts),
-            AVE_KEY: sum(gifts) / len(gifts)}
+            AVE_KEY: sum(gifts) / len(gifts) if gifts else 0}
 
 
-donor_db = defaultdict(lambda: init_donor_data,
+donor_db = defaultdict(lambda: init_donor_data(),
                        {'Toni Morrison': init_donor_data([1000, 5000, 10000]),
                         'Mike McHargue': init_donor_data([12000, 5000, 27000]),
                         "Flannery O'Connor": init_donor_data([38734, 6273, 67520]),
