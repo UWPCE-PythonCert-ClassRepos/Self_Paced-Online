@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 donor_info = [
              ['Ernest Hemingway',[35, 65.25, 40]],
              ['John Steinbeck',[25.50, 20, 10]], 
@@ -51,6 +52,7 @@ def send_thankyou():
 
 
 def create_report():
+    """Print summary report of donor info"""
     max_donor_width = 0
     for i in donor_info:
         if len(i[0])>max_donor_width:
@@ -62,6 +64,7 @@ def create_report():
         print('{:{}}|${:^11.2f}|{:^10}|${:^8.2f}'.format(donor[0], 
             max_donor_width, sum(donor[1]), len(donor[1]), 
             sum(donor[1])/len(donor[1])))
+
 
 if __name__ == '__main__':
     start_program()
