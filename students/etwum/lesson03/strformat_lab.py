@@ -27,3 +27,13 @@ def formatter(*tuple):
     return print(form_string)
 
 formatter(1,2,3,4,5,6)
+
+# Task Four
+
+y = ( 4, 30, 2017, 2, 27)
+
+new_string = "{d:02d} {e} {c} {a:02d} {b}".format(a=y[0],b=y[1],c=y[2],d=y[3],e=y[4])
+
+print(new_string)
+
+# Task Five
