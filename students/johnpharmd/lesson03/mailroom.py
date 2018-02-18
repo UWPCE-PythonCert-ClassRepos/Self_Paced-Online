@@ -49,17 +49,28 @@ def send_ty():
 						response, new_response)
 					donors_amts.append([response, salutation,
 						new_response, 1])
-				print('Here is the full List:')
-				donors_amts.sort()
-				for donor in donors_amts:
-					print(donor)
 				form_st = 'Dear {} {}, Thank you for your generous donation in the amount of {} USD.'
 				print(form_st.format(salutation,
 					response, new_response))
 
 
 def get_report():
-    pass
+	# print('Here is the full List:')
+	# donors_amts.sort()
+	# for donor in donors_amts:
+	# 	print(donor, '\n')
+	print()
+	psv = ['Donor Name', '| Total Given', '| Num Gifts',
+	'| Average Gift']
+	print('{:<15}{:>12}{:>12}{:>12}'.format(psv[0], psv[1],
+		psv[2], psv[3]))
+	for i in range(55):
+		print('-', end='')
+	print()
+	for donor in donors_amts:
+		print('{:<15}{}{:>10}{:>12}{}{:>11}'.format(donor[0], '  $',
+			donor[2], donor[3], '  $', donor[2] // donor[3]))
+	print()
 
 
 # I/O
@@ -69,11 +80,9 @@ if __name__ == '__main__':
         response = input('Choose from the following: "1" - Send a "Thank You",'
             + ' "2" - Create a Report, or "q" to Quit: ')
         if response == '1':
-            # call function
             send_ty()
-            # print('You chose "1".')
         elif response == '2':
-            pass
+            get_report()
         elif response == 'q':
             print('Program execution completed.')
             break
@@ -86,7 +95,7 @@ if __name__ == '__main__':
                 break
             else:
                 print('That is not an option. Closing program.')
-                break	
+                break
 
 else:
     print('This module is not intended to be imported.')
