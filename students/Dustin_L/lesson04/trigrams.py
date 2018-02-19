@@ -5,7 +5,16 @@ This module contains all the functions for the Trigrams module.
 """
 import os
 import pathlib
+import string
+import random
 from collections import defaultdict
+
+
+REPL_DICT = {punc: '' for punc in string.punctuation}
+REPL_DICT['-'] = ' '
+TRANS_TABLE = str.maketrans(REPL_DICT)
+
+
 def create_trigram_dict(file_path):
     """Create a trigram dictionary from the passed text file.
 
@@ -32,10 +41,35 @@ def create_trigram_dict(file_path):
     return tri_dict
 
 
+def create_trigram_text(tri_dict, max_len):
+    """Create a trigram text based upon the passed trigram dictionary.
+
+    Args:
+        tri_dict (dict): Trigram dicionary
+        max_len (int): Max number of words in trigram returned text
+
+    Returns:
+        str: Generated trigram text
+    """
+    if isinstance(tri_dict, defaultdict):
+        tri_dict.default_factory = None
+
+    tri_key = random.choice(list(tri_dict))
+    tri_txt = list(tri_key.split())
+
+    while tri_key in tri_dict and len(tri_txt) < max_len:
+        tri_txt.append(random.choice(tri_dict[tri_key]))
+        tri_key = f'{tri_txt[-2]} {tri_txt[-1]}'
+
+    return ' '.join(tri_txt)
+
+
 def main():
     """Main function."""
     corpus_path = pathlib.Path(os.path.join(os.getcwd(), 'sherlock.txt'))
     tri_dict = create_trigram_dict(corpus_path)
+    tri_text = create_trigram_text(tri_dict, 200)
+    print(tri_text)
 
 
 if __name__ == '__main__':
