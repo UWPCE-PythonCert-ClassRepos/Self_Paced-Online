@@ -8,6 +8,8 @@ Lesson03: String Formatting Lab Exercise
 
 a_tuple = ( 2, 123.4567, 10000, 12345.67)
 b_tuple = ( 999, 123.4567, 10000, 12345.67)
+l_tuple = ( 999, 123.4567, 10000, 12345.67, 28282, 5, 34.0887, 1)
+x_tuple = ( 999, 123.4567, 10000, 12345.67, 28282, 5, 34.0887, 1, 'abc', 'def', 12)
 
 
 
@@ -31,11 +33,19 @@ def task2(t):
     return 'file_{pos1:0>3d} {pos2:.2f} {pos3:.2e} {pos4:.3e}'.format(pos1=filename, pos2=n1, pos3=n2, pos4=n3)
 
 
-
-'''
-Task 3
-'''
-
+def task3(t):
+    '''
+    Task 3
+    '''
+    flist= []
+    for i in t:
+        # print('item:', i)
+        # print('{:d}', i)
+        # flist.append('{:d}')
+        flist.append('{}')
+    # print(' '.join(fstring))
+    fstring = ' '.join(flist)
+    return fstring.format(*t)
 
 
 
