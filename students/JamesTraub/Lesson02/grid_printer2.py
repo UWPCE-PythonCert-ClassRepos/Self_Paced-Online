@@ -1,21 +1,19 @@
 # chose to divide n by 2 to give columns an even width
 
-def print_grid(n):
+def print_grid(n,s):
     pls = '+'
     mns = '-'
     pl = '|'
     spc = ' '
-    dventry = n // 2
+    dventry = s
     grdsz = (dventry * mns)
     spcsz = (dventry * spc)
     plsln = (pls + grdsz + pls + grdsz + pls)
     plline = (pl + spcsz + pl + spcsz + pl)
-    print(plsln)
-    for i in range(dventry):
-        print(plline)
-    print(plsln)
-    for i in range(dventry):
-        print(plline)
+    for b in range(n):
+        print(plsln)
+        for r in range(n):
+            print(plline)
     print(plsln)
 
-print_grid(8)
+print_grid(4,6)
