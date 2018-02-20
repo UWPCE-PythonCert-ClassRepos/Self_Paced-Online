@@ -60,6 +60,8 @@ def task5():
 def task6():
     '''
     Task 6
+    dynamically format output of a given list of lists according to the number of digits/characters that
+    a certain element has, in this case the last element in the sub-list.
     '''
     folks = [
         ['bill', 58, 2556678.43],
