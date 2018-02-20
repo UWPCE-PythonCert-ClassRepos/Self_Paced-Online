@@ -46,6 +46,7 @@ assert reverse_sequence(a_string) == "gnirts a si siht",\
 
 
 def swap_thirds(seq):
+    """swap middle third of sequence to front followed by last and then first third"""
     # Used floored division to split into thirds
     thirds = len(seq) // 3
     return(seq[thirds:thirds*2] + seq[thirds*2:] + seq[:thirds])
