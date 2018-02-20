@@ -73,15 +73,41 @@ def task6():
     folks = [
         ['bill', 58, 2556678.43],
         ['steve', 62, 4573.56],
-        ['wladimir', 65, 2832845.50]
+        ['wladimir', 65, 2832845.50],
+        ['donald', 64, 845.50],
+        ['dagobert', 88, 7772832845.50],
         ]
 
     # costs = [row[2] for row in folks]     # OK
-    # print([row[2] for row in folks])
+    # print([row[2] for row in folks])      # OK
+    # print(len([row[2] for row in folks]))
+    # print([str(row[2]).count() for row in folks])
+    # print( [len(str(row[2])) for row in folks] ) # OK
+    # print( max([len(str(row[2])) for row in folks]) )  # OK
+    dcount = max([len(str(row[2])) for row in folks])   
+    # fstring = '{:>20} {:<3} {:>', dcount, '.2f}' # OK
 
-    for i in folks:
+    # fstringlist = ['{:>20} {:<3} {:>', dcount, '.2f}'] # OK
+    # print(fstringlist) # OK
+
+    # fstring = '{:>20} {:<3} {:>', str(dcount), '.2f}'     # OK
+    # print(fstring)    # OK
+
+    # fstring = '{:>20} {:<3} {:>', str(dcount), '.2f}'     # OK
+    fstring = '{:>20} {:<3} {:>' + str(dcount) + '.2f}'     
+    # fstring = "'{:>20} {:<3} {:>', str(dcount), '.2f}'"    
+    print(fstring)    
+    print(type(fstring))    
+    # print(''.join(fstring))    
+
+    for i in fstring:
+        print(i, '', end='')
+
+
+    #for i in folks:
         # print('{:>20} {:<3} {:<12.2f}'.format(*i))
-        print('{:>20} {:<3} {:>12.2f}'.format(*i))
+        # print('{:>20} {:<3} {:>12.2f}'.format(*i))
+        # print('{:>20} {:<3} {:>dcount.2f}'.format(*i)) # not OK
 
 
 
