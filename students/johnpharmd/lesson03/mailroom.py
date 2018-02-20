@@ -15,8 +15,8 @@ def send_ty():
 	while True:
 		print()
 		response = input('Enter full last name of Donor,'
-			+ ' "list" for List of Donors'
-			+ ', or "e" to Exit back to Main Menu: ')
+			+ '\n"list" for List of Donors'
+			+ ',\nor "e" to Exit back to Main Menu: ')
 		print()
 		if response == 'e':
 			break	
@@ -77,8 +77,8 @@ def get_report():
 if __name__ == '__main__':
     while True:
         print('Main Menu:')
-        response = input('Choose from the following: "1" - Send a "Thank You",'
-            + ' "2" - Create a Report, or "q" to Quit: ')
+        response = input('Choose from the following:\n"1" - Send a "Thank You",'
+            + '\n"2" - Create a Report, or\n"q" to Quit: ')
         if response == '1':
             send_ty()
         elif response == '2':
