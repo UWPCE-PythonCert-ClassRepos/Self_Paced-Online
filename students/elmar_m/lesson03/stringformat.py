@@ -14,13 +14,10 @@ x_tuple = (999, 123.4567, 10000, 12345.67, 28282, 5, 34.0887, 1, 'abc', 'def', 1
 items = ['orange', 1.3, 'lemon', 1.1]
 
 
-
 def task1(t):
     '''
     Task 1
     '''
-    # print('file_{} {} {} {}'.format(*t))  # OK
-    # print('file_{:0>3d} {:.2f} {:.2e} {:.3e}'.format(*t))
     return 'file_{:0>3d} {:.2f} {:.2e} {:.3e}'.format(*t)
 
 
@@ -30,8 +27,6 @@ def task2(t):
     '''
     filename, n1, n2, n3 = t
     print(filename, n1, n2, n3)
-    # return 'file_{:0>3d} {:.2f} {:.2e} {:.3e}'.format(*t)     # OK
-    # return 'file_{filename:0>3d} {n1:.2f} {n2:.2e} {n3:.3e}'.format(filename, n1, n2, n3)  # not ok
     return 'file_{pos1:0>3d} {pos2:.2f} {pos3:.2e} {pos4:.3e}'.format(pos1=filename, pos2=n1, pos3=n2, pos4=n3)
 
 
@@ -41,11 +36,7 @@ def task3(t):
     '''
     flist= []
     for i in t:
-        # print('item:', i)
-        # print('{:d}', i)
-        # flist.append('{:d}')
         flist.append('{}')
-    # print(' '.join(fstring))
     fstring = ' '.join(flist)
     return fstring.format(*t)
 
@@ -76,45 +67,14 @@ def task6():
         ['wladimir', 65, 2832845.50],
         ['donald', 64, 845.50],
         ['dagobert', 88, 7772832845.50],
+        ['klaas', 88, 7777882832845.50],
         ]
 
-    # costs = [row[2] for row in folks]     # OK
-    # print([row[2] for row in folks])      # OK
-    # print(len([row[2] for row in folks]))
-    # print([str(row[2]).count() for row in folks])
-    # print( [len(str(row[2])) for row in folks] ) # OK
-    # print( max([len(str(row[2])) for row in folks]) )  # OK
     dcount = max([len(str(row[2])) for row in folks])   
-    # fstring = '{:>20} {:<3} {:>', dcount, '.2f}' # OK
-
-    # fstringlist = ['{:>20} {:<3} {:>', dcount, '.2f}'] # OK
-    # print(fstringlist) # OK
-
-    # fstring = '{:>20} {:<3} {:>', str(dcount), '.2f}'     # OK
-    # print(fstring)    # OK
-
-    # fstring = '{:>20} {:<3} {:>', str(dcount), '.2f}'     # OK
+    dcount += 2
     fstring = '{:>20} {:<3} {:>' + str(dcount) + '.2f}'     
-    # fstring = "'{:>20} {:<3} {:>', str(dcount), '.2f}'"    
-    print(fstring)    
-    print(type(fstring))    
-    # print(''.join(fstring))    
-
-    for i in fstring:
-        print(i, '', end='')
-
-
-    #for i in folks:
-        # print('{:>20} {:<3} {:<12.2f}'.format(*i))
-        # print('{:>20} {:<3} {:>12.2f}'.format(*i))
-        # print('{:>20} {:<3} {:>dcount.2f}'.format(*i)) # not OK
-
-
-
-
-
-
-
+    for i in folks:
+        print(fstring.format(*i)) 
 
 
 if __name__ == '__main__':
