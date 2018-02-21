@@ -7,14 +7,16 @@ Lesson03: Mailroom Exercise Part 1
 '''
 
 donors = {
-    'bill' : ['2000', '7.5', '950000'],
-    'steve' : ['5.5', '234000', '928'],
-    'donald' : ['657', '234', '28.57', '90456'],
-    'angie' : ['2', '99', '297765', '47', '28346'],
-    'kim' : ['38982', '66.23', '9856', '0.1'],
+    'bill' : [2000, 7.5, 950000],
+    'steve' : [5.5, 234000, 928],
+    'donald' : [657, 234, 28.57, 90456],
+    'angie' : [2, 99, 297765, 47, 28346],
+    'kim' : [38982, 66.23, 9856, 0.1],
     }
-
-
+ 
+def mail(n, m):
+    # return('Dear', n, 'thank you very much for your donation of', m, 'dollars')
+    print('Dear {}, thank you very much for your donation of {} dollars.'.format(n, m))
 
 def thankyou():
     name = None
@@ -23,20 +25,39 @@ def thankyou():
         name = input('>> ')
         if name == 'l':
             print(' '.join(donors.keys()))
+        elif name == 'x':
+            break
         elif name in donors.keys():
             # print('>>', name, 'donated:', donors[name])
-            print('>>', name, 'already in list, please add current donation: ')
+            print('>>', name, 'already in list')
+            # donors[name].append('10')
+            donation = input('>> please add current donation:\n>> ')
+            donors[name].append(int(donation))
+            print('>>', donation, 'added to donation list of', name, 'thank you.\n')
+            mail(name, donation)
         elif not name in donors.keys():
             print('>>', name, 'not in list, adding it ')
+            donors[name] = [] 
             
-
 
 def report():
     print('>> generating report...')
     print('>> donors so far:', ' '.join(donors.keys()))
-    for i in donors.keys():
-        print('>>', i, 'donated:', donors[i])
 
+    print('Donor Name   | Total Given   | Num Gifts | Average Gift')
+
+    # get the highest number:
+    sumlist = []
+    for i in donors.keys():
+        sumlist.append(sum(donors[i]))
+    maxn = len(str(max(sumlist)))
+    print('maxwert', maxn)
+
+    fstring = '{:>20} {:<3} {:>' + str(dcount) + '.2f}'
+
+
+        # print('>>', i, 'donated:', donors[i])
+        print('{} $ {} {} $ {}'.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) ))
 
 def main():
     answer = None
