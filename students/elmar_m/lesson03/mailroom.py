@@ -24,15 +24,18 @@ def thankyou():
         if name == 'l':
             print(' '.join(donors.keys()))
         elif name in donors.keys():
-            print('>> ', name, 'donated:', donors[name])
-            # print(name, 'found in keys')
-        else:
-            break
+            # print('>>', name, 'donated:', donors[name])
+            print('>>', name, 'already in list, please add current donation: ')
+        elif not name in donors.keys():
+            print('>>', name, 'not in list, adding it ')
+            
 
 
 def report():
-    print('generating report...')
-    pass
+    print('>> generating report...')
+    print('>> donors so far:', ' '.join(donors.keys()))
+    for i in donors.keys():
+        print('>>', i, 'donated:', donors[i])
 
 
 def main():
