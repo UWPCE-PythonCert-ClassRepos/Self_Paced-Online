@@ -2,7 +2,7 @@
 
 
 def print_grid(x):
-    # defines the bits and bobs
+    # defines symbol components of the horizontal and vertical lines
     pipe = "|"
     horiz = " - "
     corner = "+"
