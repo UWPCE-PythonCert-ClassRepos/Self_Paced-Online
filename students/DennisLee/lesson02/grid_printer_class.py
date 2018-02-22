@@ -11,7 +11,7 @@ class TableGrid(object):
     :cell_size:  The height and width of a grid cell.
     """
 
-    def __init(self, rows_and_cols: int, cell_size: int):
+    def __init__(self, rows_and_cols: int, cell_size: int):
         self.rows_and_cols = rows_and_cols
         self.cell_size = cell_size
 
@@ -25,7 +25,7 @@ class TableGrid(object):
         horizontal_rule: str = self.build_line(True)
         interior_line: str = self.build_line(False)
 
-        print((horizontal_rule + (interior_line * cell_size)) * rows_and_cols
+        print((horizontal_rule + (interior_line * self.cell_size)) * self.rows_and_cols
              + horizontal_rule)
         return True
 
@@ -49,8 +49,8 @@ class TableGrid(object):
         if border:
             vertical_line_char, inside_char = PLUS, MINUS
         
-        return (vertical_line_char + SPACE + (inside_char + SPACE) * cell_size
-            ) * rows_and_cols + vertical_line_char + LINEFEED
+        return (vertical_line_char + SPACE + (inside_char + SPACE) * self.cell_size
+            ) * self.rows_and_cols + vertical_line_char + LINEFEED
 
 
 import argparse
@@ -65,14 +65,14 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.table_size:
-        rows_and_cols: int = args.table_size
+        rc: int = args.table_size
     else:
-        rows_and_cols = 4
+        rc = 4
 
     if args.cell_size:
-        cell_size: int = args.cell_size
+        cs: int = args.cell_size
     else:
-        cell_size = 6
+        cs = 6
 
-    tg = TableGrid()
+    tg = TableGrid(rc, cs)
     tg.print_grid()
