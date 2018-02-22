@@ -24,7 +24,8 @@ def first_last(slicer_input, for_type):
         assert swapped == (32, 54, 13, 12, 5, 2), "Tuple Failed"
     if for_type is list:
         assert swapped == ["!", "!", "tide", "pod", "challenge", "is",
-             "not", "for", "the", "weak", "!", "!"], "List failed"
+                           "not", "for", "the", "weak", "!", "!"], \
+            "List failed"
     return swapped
 
 
@@ -36,14 +37,15 @@ def odd_out(slicer_input, for_type):
     if for_type is tuple:
         assert evens == (2, 13, 5), "Tuple Failed"
     if for_type is list:
-        assert evens == ['!', 'tide', 'challenge', 'not', 'the', '!'], "List failed"
+        assert evens == ['!', 'tide', 'challenge', 'not', 'the', '!'], \
+            "List failed"
     return evens
 
 
 def ambigus_ao_fourth(slicer_input, for_type):
     # with the first 4 and the last 4 items removed,
     # and then every other item in between
-    ao_forths = odd_out(slicer_input[4:-4],None)
+    ao_forths = odd_out(slicer_input[4:-4], None)
     if for_type is str:
         assert ao_forths == " sas", "String Failed"
     if for_type is tuple:
@@ -62,8 +64,8 @@ def reversed(slicer_input, for_type):
         assert slicer_reversed == (32, 5, 12, 13, 54, 2), "Tuple Failed"
     if for_type is list:
         assert slicer_reversed == ['!', '!', 'weak', 'the', 'for', 'not',
-                                   'is', 'challenge', 'pod', 'tide', '!', '!'], \
-            "List failed"
+                                   'is', 'challenge', 'pod', 'tide', '!',
+                                   '!'], "List failed"
     return slicer_reversed
 
 
@@ -77,8 +79,8 @@ def thirds(s_i, for_type):
             assert s_i_complete == (13, 12, 5, 32, 2, 54), "Tuple Failed"
         if for_type is list:
             assert s_i_complete == ['challenge', 'is', 'not', 'for', 'the',
-                                    'weak', '!', '!', '!', '!', 'tide', 'pod'], \
-                "List failed"
+                                    'weak', '!', '!', '!', '!',
+                                    'tide', 'pod'], "List failed"
         return s_i_complete
     return "Not able to third"
 
