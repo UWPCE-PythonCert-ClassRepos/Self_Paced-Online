@@ -80,7 +80,7 @@ def create_report():
         print('{:<25} $ {:<20}{:^14} $ {:<15}'.format(*x))
 
 
-print("Welcome to the Mail Room")
+print("Welcome to the Charity Mail Room")
 print("------------------------------------------------------------------------")
 # ****Input/Output****
 while True:
