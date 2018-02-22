@@ -51,13 +51,30 @@ def report():
     for i in donors.keys():
         sumlist.append(sum(donors[i]))
     maxn = len(str(max(sumlist)))
+    maxn += 2
     print('maxwert', maxn)
 
-    fstring = '{:>20} {:<3} {:>' + str(dcount) + '.2f}'
+    # fstring = '{:<20} {:=$20} {:>' + str(dcount) + '.2f}'
+    # fstring = '{:<20} $ {:=20} {:>20} {:=20}'
+    # fstring = '{} ' + '{:>' + str(maxn) + '} ' + '{:>5} {:>20}' #  not OK
+    # fstring = '{:<20} ' + '{:>' + str(maxn) + '} ' + '{:>9} {:>20}' # OK
+    # fstring = '{:<20} ' + '|' + '{:>' + str(maxn) + '} ' + '|' + '{:>9}' + '|' + '{:>20}' # OK
+    fstring = '{:<14} ' + '|' + '{:>' + str(maxn) + '} ' + '|' + '{:>9}' + '|' + '{:>' + str(maxn) + '}'
+    print(fstring)
+    
+    # print header line:
+    # print(fstring.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift'))  # ~OK
+    print(fstring.format('Donor Name', 'Total', 'Num Gifts', 'Average Gift'))  
+    # print('-' * (maxn + 54)) # ~OK
+    print('-' * (2 * maxn + 26))
 
-
+    for i in donors.keys():
         # print('>>', i, 'donated:', donors[i])
-        print('{} $ {} {} $ {}'.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) ))
+        # print('{} $ {} {} $ {}'.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) ))
+        # print('{:<20} {:=$20} {:>20} {:=20}'.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) ))     # fail
+        # print('{:<20} $ {:=20} {:>20} {:=20}'.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) )) # OK
+        print(fstring.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) )) 
+
 
 def main():
     answer = None
