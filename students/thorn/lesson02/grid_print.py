@@ -18,7 +18,6 @@ def part_1():
     empty = ' '
     flat_row = (corner + (flat * 4) + corner + (flat * 4) + corner + "\n")
     vert_row = (vert + (empty * 12) + vert + (empty * 12) + vert + "\n")*4
-
     print(flat_row + vert_row + flat_row + vert_row + flat_row)
 
 
