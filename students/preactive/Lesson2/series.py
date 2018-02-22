@@ -7,6 +7,20 @@ def fib(n):
 # print(fib(8))
 
 
+a,b = 0,1
+def fib_gen():
+    global a, b
+    while True:
+        a, b = b, a + b
+        yield a
+f = fib_gen()
+next(f)
+next(f)
+next(f)
+next(f)
+print(next(f))
+
+
 def lucas(n):
     a, b = -1, 2
     for i in range(n):

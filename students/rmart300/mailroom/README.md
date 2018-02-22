@@ -13,3 +13,5 @@ def send_thank_you():
 def create_report():
     """ Print a list of donors, sorted by total historical donation amount"""
 
+def write_letters():
+    """ write letter to each donation """
