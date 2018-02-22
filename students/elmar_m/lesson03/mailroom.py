@@ -14,15 +14,21 @@ donors = {
     'kim' : [38982, 66.23, 9856, 0.1],
     }
  
+
+opts = '> Options: q == quit | t == thankyou | r == report'
+
+
 def mail(n, m):
     '''
     Create mail text.
     '''
     print('Dear {}, thank you very much for your donation of {} dollars.\n'.format(n, m))
 
+
 def thankyou():
     '''
-    Show list of known donors, add new donor to list, add new donation to donor 
+    Show list of known donors, add new donor to list, 
+    add new donation to donor and print letter of thanks.
     '''
     name = None
     while name != 'x':
@@ -34,68 +40,49 @@ def thankyou():
             break
         elif name in donors.keys():
             print('>>', name, 'already in list')
-
             donation = input('>> please add current donation:\n>> ')
             donors[name].append(int(donation))
             print('>>', donation, 'added to donation list of', name, 'thank you.\n')
-
             mail(name, donation)
-
         elif not name in donors.keys():
             print('>>', name, 'not in list, adding it ')
             donors[name] = [] 
-
             donation = input('>> please add current donation:\n>> ')
             donors[name].append(int(donation))
             print('>>', donation, 'added to donation list of', name, 'thank you.\n')
-
             mail(name, donation)
-           
-    print('> Options: 1 == quit | 2 == thankyou | 3 == report')
+    print(opts)
+
 
 def report():
     '''
     Show an overview of current donors and donations
     '''
-
-    # get the highest number:
+    # get the highest number of digits to create formatstring accordingly:
     sumlist = []
     for i in donors.keys():
         sumlist.append(sum(donors[i]))
     maxn = len(str(max(sumlist)))
     maxn += 2
 
-    fstring = '{:<20} ' + '|' + '{:>' + str(maxn) + '} ' + '|' + '{:>9}' + '|' + '{:>20}' # OK
-    
-    # print header line:
-    # print(fstring.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift'))  # ~OK
+    fstring = '{:<20} ' + '|' + '{:>' + str(maxn) + '} ' + '|' + '{:>9}' + '|' + '{:>20}' 
     print(fstring.format('Donor Name', 'Total', 'Num Gifts', 'Average Gift'))  
-    print('-' * (maxn + 54)) # ~OK
-
+    print('-' * (maxn + 54)) 
     for i in donors.keys():
-        # print('>>', i, 'donated:', donors[i])
-        # print('{} $ {} {} $ {}'.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) ))
-        # print('{:<20} {:=$20} {:>20} {:=20}'.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) ))     # fail
-        # print('{:<20} $ {:=20} {:>20} {:=20}'.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) )) # OK
         print(fstring.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) )) 
+    print(opts)
 
 
 def main():
     answer = None
-    print(
-        '> Options: 1 == quit | 2 == thankyou | 3 == report'
-        )
-        
-    while answer != 'quit' and answer != '1':
+    print(opts)
+    while answer != 'q':
         answer = input('> ')
-
-        if answer == 'thankyou' or answer == '2':
+        if answer == 't':
             thankyou()
-        elif answer == 'report' or answer == '3':
+        elif answer == 'r':
             report()
         
-        
-
 
 if __name__ == '__main__':
     main()
