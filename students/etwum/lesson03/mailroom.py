@@ -3,15 +3,26 @@
 if __name__ == "__main__":
     print()
 
+lstHeader = [["Donor Name", "| Total Donation(s)", "| # of Donations", "| Avg Donation"]]
+lstDonors = [["Lionel Messi", 1000000.00, 5, 20000.00],["Thierry Henry", 500, 1, 500], ["Michael Jordan", 45000, 3, 15000],
+        ["Kobe Bryant", 8000, 2, 4000]]
 
 def send_thank_you():
 
     return print("works")
 
+def sort_list(lstDonors):
+    # used to sort the donor list by the total donations column
+    return lstDonors[1]
 
 def create_report():
+    # creates a report of the the donors
+    for x in lstHeader:
+        print('{:<25}{:<20}{:<17}{:<15}'.format(*x))
+    print("----------------------------------------------------------------------------")
+    for x in sorted(lstDonors,key=(sort_list), reverse= True):
+        print('{:<25} $ {:<20}{:^14} $ {:<15}'.format(*x))
 
-    return print("works")
 
 print("Welcome to the Mail Room")
 print("------------------------------------------------------------------------")
@@ -41,4 +52,6 @@ while True:
         create_report()
         continue
     elif (strChoice == 3):
-        break 
+        break
+
+
