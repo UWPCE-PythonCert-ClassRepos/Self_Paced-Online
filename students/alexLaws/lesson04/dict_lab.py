@@ -3,7 +3,7 @@
 import os
 
 # Dictionaries 1
-'''
+
 person = {'name': 'Chris', 'city': 'Seattle', 'cake': 'Chocolate'}
 print(person)
 person.pop('cake')
@@ -50,7 +50,7 @@ print(char_Set.intersection(froz_set))
 
 # File Practice
 
-'''
+
 def print_dir():
     for i in os.listdir():
         print(i)
