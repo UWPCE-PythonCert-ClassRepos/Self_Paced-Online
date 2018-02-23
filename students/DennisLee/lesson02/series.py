@@ -10,19 +10,7 @@ def fibonacci(n: int) -> int:
               previous two numbers in the fibonacci series, and the
               1st two fibonacci numbers have values of **0** and **1**.
     """
-
-    x: int = 0
-    y: int = 1
-    if n < 0:
-        return -1  # error code - indexes can't be negative
-    elif n == 0:
-        return x
-    elif n == 1:
-        return y
-    else:
-        for i in range(n - 1):
-            x, y = y, x + y
-        return y
+    return sum_series(n)
 
 def lucas(n: int) -> int:
     """
@@ -36,19 +24,7 @@ def lucas(n: int) -> int:
               previous two numbers in the lucas series, and the
               1st two lucas numbers have values of **2** and **1**.
     """
-
-    x: int = 2
-    y: int = 1
-    if n < 0:
-        return -1  # error code - indexes can't be negative
-    elif n == 0:
-        return x
-    elif n == 1:
-        return y
-    else:
-        for i in range(n - 1):
-            x, y = y, x + y
-        return y
+    return sum_series(n, 2)
 
 def sum_series(index_num: int,
                index_0_value: int = 0,
@@ -89,14 +65,6 @@ if __name__ == '__main__':
     for a in range(50):
         print(lucas(a))
 
-    print('\nThe first 50 numbers of the sum_series function [#0==1,#1==2]:')
+    print('\nThe first 50 numbers of the sum_series function [#0=>1,#1=>2]:')
     for a in range(50):
         print(sum_series(a, 1, 2))
-
-    print('\nThe first 50 numbers of the sum_series function [defaults/fibonacci]:')
-    for a in range(50):
-        print(sum_series(a))
-
-    print('\nThe first 50 numbers of the sum_series function [series=lucas]:')
-    for a in range(50):
-        print(sum_series(a, 2))
