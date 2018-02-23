@@ -57,14 +57,30 @@ def sum_series(index_num: int,
         return y    
 
 if __name__ == '__main__':
+    # check correct fibonacci function values for index pos 5, 7, and 8
+    assert fibonacci(5) == 5
+    assert fibonacci(7) == 13
+    assert fibonacci(8) == 21
+
     print('The first 50 fibonacci numbers:')
     for a in range(50):
         print(fibonacci(a))
+
+    # check correct lucas function values for index pos 5, 7, and 8
+    assert lucas(5) == 11
+    assert lucas(7) == 29
+    assert lucas(8) == 47
 
     print('\nThe first 50 lucas numbers:')
     for a in range(50):
         print(lucas(a))
 
-    print('\nThe first 50 numbers of the sum_series function [#0=>1,#1=>2]:')
+    # check correct sum_series function values for index pos 5, 7, and 8
+    # for a series with seed values 4 and 9
+    assert sum_series(5, 4, 9) == 57
+    assert sum_series(7, 4, 9) == 149
+    assert sum_series(8, 4, 9) == 241
+
+    print('\nThe first 50 numbers of the sum_series function [#0=>4,#1=>9]:')
     for a in range(50):
-        print(sum_series(a, 1, 2))
+        print(sum_series(a, 4, 9))
