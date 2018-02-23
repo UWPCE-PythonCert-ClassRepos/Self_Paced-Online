@@ -85,7 +85,7 @@ def total_sort(x):
     ordered = []
     for num in amounts:
         for i in to_sort:
-            if i.get('Total') == num:
+            if i.get('Total') == num and i.get('Name') not in ordered:
                 ordered.append(i.get('Name'))
     return ordered
 
