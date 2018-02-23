@@ -19,8 +19,10 @@ def status(d):
     Display key value pairs of a dictionary
     '''
     print('Current dictionary:')
-    for i in d:
-        print(i, ':', d[i])
+    # for i in d:
+    #     print(i, ':', d[i])
+    for a, b in d.items():
+        print('{} : {}'.format(a, b))
 
 
 def dict1():
