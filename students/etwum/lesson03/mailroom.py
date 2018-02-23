@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
-if __name__ == "__main__":
-    print()
+
 
 # headers used in table
-lstHeader = [["Donor Name", "| Total Donation(s)", "| # of Donations", "| Avg Donation"]]
+lst_Header = [["Donor Name", "| Total Donation(s)", "| # of Donations", "| Avg Donation"]]
 
 # initial list of donors
-lstDonors = [["Lionel Messi", 1000000.00, 5, 20000.00],["Thierry Henry", 500, 1, 500], ["Michael Jordan", 45000, 3, 15000],
+lst_Donors = [["Lionel Messi", 1000000.00, 5, 20000.00],["Thierry Henry", 500, 1, 500], ["Michael Jordan", 45000, 3, 15000],
         ["Kobe Bryant", 8000, 2, 4000]]
 
 # used to add new donors
@@ -22,7 +21,7 @@ def send_thank_you():
     if view_donors == 'list':
         print()
         print("Below are the list of donors:")
-        for x in lstDonors:
+        for x in lst_Donors:
             print(x[0])
         print('----------------------------')
 
@@ -34,7 +33,7 @@ def send_thank_you():
     print()
 
     # prints an email if the donors name is currently in the list
-    for x in lstDonors:
+    for x in lst_Donors:
         if x[0] == donor_full_name:
             email = "Dear {a},\n\nThank you for your generous donation of ${b:.2f} to our charity.\n".format(a=x[0], b=x[1])
             print(email)
@@ -56,27 +55,27 @@ def send_thank_you():
             else:
                 boolValid = True
         new_donor.append([donor_full_name, new_donation_amount, 1, new_donation_amount])
-        lstDonors.extend(new_donor)
+        lst_Donors.extend(new_donor)
         print('-----------------------------------------------------')
-        for x in lstDonors:
+        for x in lst_Donors:
             if x[0] == donor_full_name:
                 email = "Dear {a},\n\nThank you for your generous donation of ${b:.2f} to our charity.\n".format(a=x[0],b=x[1])
                 print(email)
     print('-----------------------------------------------------')
 
 
-def sort_list(lstDonors):
+def sort_list(lst_Donors):
     # used to sort the donor list by the total donations column
 
-    return lstDonors[1]
+    return lst_Donors[1]
 
 def create_report():
     # creates a report of the the donors
 
-    for x in lstHeader:
+    for x in lst_Header:
         print('{:<25}{:<20}{:<17}{:<15}'.format(*x))
     print("----------------------------------------------------------------------------")
-    for x in sorted(lstDonors,key=(sort_list), reverse= True):
+    for x in sorted(lst_Donors,key=(sort_list), reverse= True):
         print('{:<25} $ {:<20}{:^14} $ {:<15}'.format(*x))
 
 
@@ -92,26 +91,27 @@ while True:
     2) Create Report
     3) Exit Program
     """)
-    strChoice = None
+    str_choice = None
 
     # try/except block to make sure the user inputs a valid option
     try:
-        strChoice = int(input("Which option would you like to perform? Input a number [1 to 3] "))
-        if strChoice == 1 or strChoice == 2 or strChoice == 3:
+        str_choice = int(input("Which option would you like to perform? Input a number [1 to 3] "))
+        if str_choice in (1,2,3):
             print()
         else:
             raise Exception
     except Exception:
         print("Please input a valid option: 1, 2, or 3")
 
-    if (strChoice == 1):
+    if str_choice == 1:
         send_thank_you()
-        continue
 
-    elif (strChoice == 2):
+    elif str_choice == 2:
         create_report()
-        continue
-    elif (strChoice == 3):
+
+    elif str_choice == 3:
         break
 
 
+if __name__ == "__main__":
+    print()
