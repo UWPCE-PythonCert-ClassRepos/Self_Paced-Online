@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 
 
-
-# headers used in table
-lst_Header = [["Donor Name", "| Total Donation(s)", "| # of Donations", "| Avg Donation"]]
-
 # initial list of donors
 lst_Donors = [["Lionel Messi", 1000000.00, 5, 20000.00],["Thierry Henry", 500, 1, 500], ["Michael Jordan", 45000, 3, 15000],
         ["Kobe Bryant", 8000, 2, 4000]]
@@ -12,10 +8,10 @@ lst_Donors = [["Lionel Messi", 1000000.00, 5, 20000.00],["Thierry Henry", 500, 1
 # used to add new donors
 new_donor = []
 
+
 def send_thank_you():
     # function creates a thank you email to current and new donors added to the list
     # add new donors and donations
-
     # print the names of the current donor if 'list' is input by the user
     view_donors = input("If you would like to see a list of donors please type 'list' or any key to continue. ")
     if view_donors == 'list':
@@ -83,6 +79,8 @@ def sort_list(lst_Donors):
 
 def create_report():
     # creates a report of the the donors
+    # headers used in table
+    lst_Header = [["Donor Name", "| Total Donation(s)", "| # of Donations", "| Avg Donation"]]
 
     for x in lst_Header:
         print('{:<25}{:<20}{:<17}{:<15}'.format(*x))
