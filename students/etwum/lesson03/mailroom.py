@@ -35,7 +35,19 @@ def send_thank_you():
     # prints an email if the donors name is currently in the list
     for x in lst_Donors:
         if x[0] == donor_full_name:
-            email = "Dear {a},\n\nThank you for your generous donation of ${b:.2f} to our charity.\n".format(a=x[0], b=x[1])
+            str_donation_choice = input("Would you like to add another donation? (yes or no) ")
+            print('-----------------------------------------------------')
+            print()
+            if str_donation_choice == 'yes':
+                donate_more = float(input("How much would you like to donate? "))
+                total_donations = x[1] + donate_more
+                count_donations = x[2] + 1
+                avg_donation = total_donations/count_donations
+                x[1] = total_donations
+                x[2] = count_donations
+                x[3] = '{:.2f}'.format(avg_donation)
+
+            email = "Dear {a},\n\nThank you for your generous donations of ${b:.2f} to our charity.\n".format(a=x[0], b=x[1])
             print(email)
             break
 
