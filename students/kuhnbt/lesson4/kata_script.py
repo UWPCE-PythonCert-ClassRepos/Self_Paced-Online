@@ -1,4 +1,4 @@
-# My book is Dante's inferno (technically an epic poem)
+# My book is Dante's inferno (technically a poem)
 import requests
 import string
 import random
@@ -40,4 +40,22 @@ def generate_text(trigrams_dict, length):
                                       len(next_word_choices)-1)]
         start_key = (start_key[1], next_word)
         results.append(next_word)
-    return ' '.join(results)
+        # Lines tend to be about 7 words long
+        reshaped_results = []
+        for i, j in enumerate(results):
+            if i>0 and i % 7 == 0:
+                reshaped_results.append('\n')
+                reshaped_results.append(j.title())
+            else:
+                reshaped_results.append(j.lower())
+    return ' '.join(reshaped_results)
+
+
+def print_chapter(length):
+    """Print chapter of inferno-like text with given length"""
+    trigrams_dict = generate_dict(full_text)
+    print(generate_text(trigrams_dict, length))
+
+
+if __name__ == '__main__':
+    print_chapter(100)
