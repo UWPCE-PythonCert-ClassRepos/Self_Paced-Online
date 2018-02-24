@@ -101,13 +101,13 @@ def send_thank_you():
     their generous donation. Print the email to the terminal and return to the
     original prompt.
     """
-    name_prompt = '\nPlease enter name of "Thank You" recipient:\n'\
-                  '(Enter "list" to see all donors)\n'\
-                  '(Enter "quit" to return to main menu)\n'\
-                  ' --> '
-    amount_prompt = '\nPlease enter the donation amount:\n'\
-                    '(Enter "quit" to return to main menu)\n'\
-                    ' --> '
+    name_prompt = ('\nPlease enter name of "Thank You" recipient:\n'
+                   '(Enter "list" to see all donors)\n'
+                   '(Enter "quit" to return to main menu)\n'
+                   ' --> ')
+    amount_prompt = ('\nPlease enter the donation amount:\n'
+                     '(Enter "quit" to return to main menu)\n'
+                     ' --> ')
     names = [donor.lower() for donor in donor_db]
 
     while True:
