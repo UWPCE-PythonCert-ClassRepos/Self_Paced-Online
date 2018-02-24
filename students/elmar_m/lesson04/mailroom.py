@@ -3,7 +3,7 @@
 '''
 file: mailroom.py
 elmar_m / 22e88@mailbox.org
-Lesson03: Mailroom Exercise Part 1
+Lesson04: Mailroom Exercise Part 2
 '''
 
 donors = {
