@@ -12,6 +12,7 @@ def send_ty():
     global donors_amts
     new_response = 0
     title = ''
+    donor_dict = {'title': '', 'last_name': '', 'donation': 0}
     print()
     response = input('Enter full last name of Donor,'
     + '\n"list" for List of Donors'
@@ -27,25 +28,33 @@ def send_ty():
             response = response.capitalize()
             if response in donors_amts:
                 print('Donor found:', response)
-                new_response = int(input('Enter a Donation amount' +
-                ' (in USD): '))
-                donors_amts[response][1] += new_response
-                donors_amts[response][2] += 1
-                print('Added to', response, '\'s Donations:',
+                new_response = input('Enter a Donation amount' +
+                ' (in USD): ')
+                if not new_response.isnumeric():
+                    send_ty()
+                else:
+                    new_response = int(new_response)
+                    donors_amts[response][1] += new_response
+                    donors_amts[response][2] += 1
+                    print('Added to', response, '\'s Donations:',
                     new_response, '\n')
             elif response not in donors_amts:
                 title = input('Title: "Ms." or "Mr."?: ')
-                new_response = int(input('Enter a Donation amount' +
-                    ' (in USD): '))
-                print('Added to list of Donors:', title,
-                    response, new_response)
-                donors_amts[response] = ([(title, ), new_response, 1])
+                new_response = input('Enter a Donation amount' +
+                    ' (in USD): ')
+                if not new_response.isnumeric():
+                    send_ty()
+                else:
+                    new_response = int(new_response)
+                    print('Added to list of Donors:', title,
+                        response, new_response)
+                    donors_amts[response] = ([(title, ), new_response, 1])
             title = str(donors_amts.get(response)[0])
             title = title.strip('(').strip(')').strip(',')
             title = title.strip('\'')
-            form_st = 'Dear {} {}, Thank you for your generous donation in the amount of {} USD.'
-            print(form_st.format(title,
-                response, new_response))
+            donor_dict = {'title': title,
+                    'last_name': response, 'donation': new_response}
+            print('Dear {title} {last_name}, Thank you for your generous donation in the amount of {donation} USD.'.format(**donor_dict))
             print()
     program_run()
 
