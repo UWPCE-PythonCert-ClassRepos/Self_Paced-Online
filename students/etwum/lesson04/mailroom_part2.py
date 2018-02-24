@@ -90,6 +90,11 @@ def create_report():
     for x in sorted(lst_Donors,key=(sort_list), reverse= True):
         print('{:<25} $ {:<20}{:^14} $ {:<15}'.format(*x))
 
+def send_letter_all():
+    # creates a letter to every donor by writing them to separate text files
+    
+    return
+
 
 print("Welcome to the Charity Mail Room")
 print("------------------------------------------------------------------------")
@@ -101,19 +106,20 @@ while True:
     Menu of Options
     1) Send Thank You Note
     2) Create Report
-    3) Exit Program
+    3) Send Letter to Everyone
+    4) Exit Program
     """)
     str_choice = None
 
     # try/except block to make sure the user inputs a valid option
     try:
-        str_choice = int(input("Which option would you like to perform? Input a number [1 to 3] "))
-        if str_choice in (1,2,3):
+        str_choice = int(input("Which option would you like to perform? Input a number [1 to 4] "))
+        if str_choice in (1,2,3,4):
             print()
         else:
             raise Exception
     except Exception:
-        print("Please input a valid option: 1, 2, or 3")
+        print("Please input a valid option: 1, 2, 3, or 4")
 
     if str_choice == 1:
         send_thank_you()
@@ -122,6 +128,9 @@ while True:
         create_report()
 
     elif str_choice == 3:
+        send_letter_all()
+
+    elif str_choice == 4:
         break
 
 
