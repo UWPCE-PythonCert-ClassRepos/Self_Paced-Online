@@ -70,6 +70,67 @@ def get_usr_input():
     return usr_in
 
 
+def get_donor_names():
+    """Return a list of all donor names."""
+    return [donor.lower() for donor in donor_db]
+
+
+def prompt_for_donor(prompt):
+    """Prompt user to enter a donor name.
+
+    Allows user the additional options of:
+     - 'quit': quit donor prompt
+     - 'list': list all current donors
+
+    Args:
+        prompt (str): String to prompt user with.
+
+    Returns:
+        str: Donor name.
+    """
+    names = get_donor_names()
+    donor = ''
+
+    while donor == '':
+        usr_in = input(prompt).strip().lower()
+
+        if usr_in.startswith('q'):
+            break
+        elif usr_in == 'list':
+            print()
+            for name in names:
+                print(name.title())
+        else:
+            donor = " ".join([name.title() for name in usr_in.split()])
+
+    return donor
+
+
+def prompt_for_donation(prompt):
+    """Prompt user for donation amount
+
+    Args:
+        prompt (str): String to prompt user with.
+
+    Returns:
+        float: Donation amount.
+    """
+    donation = 0
+
+    while donation == 0:
+        usr_in = input(prompt).strip().lower()
+
+        if usr_in.startswith('q'):
+            break
+        else:
+            try:
+                donation = float(usr_in)
+            except ValueError:
+                print('\nDonation amount must be a number')
+
+    return donation
+
+
 def add_donation(donor, amount):
     """Add a new donation to the donation database.
 
@@ -108,29 +169,17 @@ def send_thank_you():
     amount_prompt = ('\nPlease enter the donation amount:\n'
                      '(Enter "quit" to return to main menu)\n'
                      ' --> ')
-    names = [donor.lower() for donor in donor_db]
 
-    while True:
-        usr_in = input(name_prompt).strip().lower()
+    donor = prompt_for_donor(name_prompt)
+    if donor == '':
+        return
 
-        if usr_in.startswith('q'):
-            break
-        elif usr_in == 'list':
-            print()
-            for name in names:
-                print(name.title())
-        else:
-            donor = " ".join([name.title() for name in usr_in.split()])
-            usr_in = input(amount_prompt).strip().lower()
+    donation = prompt_for_donation(amount_prompt)
+    if donation == 0:
+        return
 
-            if usr_in.startswith('q'):
-                break
-            else:
-                donation = float(usr_in)
-
-            add_donation(donor, donation)
-            print(THANK_YOU_FMT.format(donor, donation))
-            break
+    add_donation(donor, donation)
+    print(THANK_YOU_FMT.format(donor, donation))
 
 
 def create_report():
