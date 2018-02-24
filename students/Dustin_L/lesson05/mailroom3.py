@@ -89,9 +89,9 @@ def prompt_for_donor(prompt):
         str: Donor name.
     """
     names = get_donor_names()
-    donor = ''
+    donor = None
 
-    while donor == '':
+    while not donor:
         usr_in = input(prompt).strip().lower()
 
         if usr_in.startswith('q'):
@@ -115,9 +115,9 @@ def prompt_for_donation(prompt):
     Returns:
         float: Donation amount.
     """
-    donation = 0
+    donation = None
 
-    while donation == 0:
+    while not donation:
         usr_in = input(prompt).strip().lower()
 
         if usr_in.startswith('q'):
@@ -171,11 +171,11 @@ def send_thank_you():
                      ' --> ')
 
     donor = prompt_for_donor(name_prompt)
-    if donor == '':
+    if not donor:
         return
 
     donation = prompt_for_donation(amount_prompt)
-    if donation == 0:
+    if not donation:
         return
 
     add_donation(donor, donation)
