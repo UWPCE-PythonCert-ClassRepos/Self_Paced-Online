@@ -56,11 +56,16 @@ def get_usr_input():
     Returns:
         int: Value corresponding to user choice
     """
-    usr_in = int(input(SELECT_PROMPT))
-
+    usr_in = ''
     while usr_in not in PROMPT_OPTS:
-        usr_in = int(
-            input(f'\nPlease try again. Valid options are: {PROMPT_OPTS}'))
+        try:
+            usr_in = int(input(SELECT_PROMPT))
+        except ValueError:
+            print(f'\nPlease try again. Valid options are: {PROMPT_OPTS}')
+        else:
+            if usr_in not in PROMPT_OPTS:
+                print(f'\nPlease select a number between {PROMPT_OPTS[0]}'
+                      f' and {PROMPT_OPTS[-1]}')
 
     return usr_in
 
