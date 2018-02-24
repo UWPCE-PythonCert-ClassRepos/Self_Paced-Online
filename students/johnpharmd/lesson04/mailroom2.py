@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import datetime
 
 # Data
 donors_amts = {'Gates': [('Mr.', ), 150000, 3], 'Brin': [('Mr.', ), 150000, 3], 
@@ -77,6 +78,30 @@ def get_report():
     program_run()
 
 
+def send_letters():
+    global donors_amts
+    d_a = donors_amts
+    now = datetime.datetime.now()
+    for donor in donors_amts:
+        title = str(d_a.get(donor)[0])
+        title = title.strip('(').strip(')').strip(',').strip('\'')
+        with open(donor + str(now.year) + str(now.month) +
+            str(now.day) + '.txt', 'w') as of:
+            donor_dict = {'title': title,
+                    'last_name': donor, 'donations': d_a.get(donor)[1]}
+            of.write(
+                'Dear {title} {last_name},\nThank you for your generous previous giving in the amount of {donations} USD.'.format(**donor_dict))
+            of.write('\nAttached is our most recent independent,'
+                + ' third party audit.\n')
+            of.write('\nWe hope you agree that we have been good'
+                + ' stewards of our donors\' funds,\nand that'
+                + ' you will consider donating'
+                + ' again to our project.\n')
+            of.write('\nBest wishes for continued success,')
+            of.write('\n[Signature]')
+            of.close()
+
+
 def quit_program():
     print('Program execution completed.')
     return
@@ -85,14 +110,16 @@ def quit_program():
 def program_run():
     print('Main Menu:')
     response = input('Choose from the following:\n"1" - Send a "Thank You",'
-        + '\n"2" - Create a Report, or\n"q" to Quit: ')
-    menu_dict = {'1': send_ty, '2': get_report, 'q': quit_program}
+        + '\n"2" - Create a Report,'
+        + '\n"3" - Send Letters to All Donors, or\n"q" to Quit: ')
+    menu_dict = {'1': send_ty, '2': get_report,
+        '3': send_letters, 'q': quit_program}
 
     if response in menu_dict:
         menu_dict.get(response)()
     else:
-        response = input('Choose "1", "2", or "q": ')
-        if response == '1' or response == '2' or response == 'q':
+        response = input('Choose "1", "2", "3", or "q": ')
+        if response in menu_dict:
             menu_dict.get(response)()
         else:
             print('That is not an option. Closing program.')
