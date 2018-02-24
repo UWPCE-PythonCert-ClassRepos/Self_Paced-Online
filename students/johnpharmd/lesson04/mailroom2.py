@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
 # Data
-# refactoring: can change to a dictionary and use OrderedDict from
-# 'collections' ('from collections import OrderedDict')
 donors_amts = {'Gates': [('Mr.', ), 150000, 3], 'Brin': [('Mr.', ), 150000, 3], 
 'Cerf': [('Mr.', ), 50000, 2], 'Musk': [('Mr.', ), 100000, 1], 
 'Berners-Lee': [('Mr.', ), 50000, 2], 
@@ -12,18 +10,16 @@ donors_amts = {'Gates': [('Mr.', ), 150000, 3], 'Brin': [('Mr.', ), 150000, 3],
 # Processing
 def send_ty():
     global donors_amts
+    new_response = 0
     title = ''
     print()
     response = input('Enter full last name of Donor,'
     + '\n"list" for List of Donors'
     + ',\nor "e" to Exit back to Main Menu: ')
     print()
-    # if response == 'e':
-    #    program_run()
     if response.isalpha():
         if response == 'list':
             print('Here is the list of Donors: ')
-            # donors_amts.sort()
             for donor in donors_amts:
                 print(donor)
             print()
@@ -55,10 +51,6 @@ def send_ty():
 
 
 def get_report():
-# print('Here is the full List:')
-# donors_amts.sort()
-# for donor in donors_amts:
-# print(donor, '\n')
     print()
     psv = ['Donor Name', '| Total Given', '| Num Gifts',
         '| Average Gift']
