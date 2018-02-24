@@ -8,8 +8,10 @@ throughout this program.
 
 def fibonacci(n):
     """ Returns the nth value in the fibonacci sequence. """
-    if n <= 1:
+    if n == 0:
         return 0
+    if n == 1:
+        return 1
     else:
         first, second = 0, 1
         while n > 0:
@@ -23,8 +25,10 @@ def lucas(n):
     """ Returns the nth value in the lucas sequence.   Identical to fibonacci
     except for different starting values. 
     """
-    if n < 1:
+    if n == 0:
         return 0
+    if n == 1:
+        return 1
     else:
         # This seems backwards but seems to works in this order.
         first, second = 2, 1
@@ -41,8 +45,10 @@ def sum_series(n, first=0, second=1):
     in a similar fashion to the lucas series beginning with the two optional
     parameters.
     """
-    if n < 1:
+    if first == 0 or second == 0:
         return 0
+    if first == 1 or second == 1:
+        return 1
     else:
         while n > 0:
             first, second = second, (first+second)

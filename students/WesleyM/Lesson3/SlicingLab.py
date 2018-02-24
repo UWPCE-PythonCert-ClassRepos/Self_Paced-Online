@@ -5,7 +5,7 @@ def floor(n):
     
 def exchange_first_last(seq):
     """Reverses the first and last letter or number in a tuple or string"""
-    seqfirst = seq[0:0]
+    seqfirst = seq[:1]
     seqlast = seq[-1:]
     remainder = seq[1:-1]
     a_new_sequence = seqlast + remainder + seqfirst
@@ -33,7 +33,7 @@ def thirds(seq):
     a_new_sequence = seq2 + seq1
     return a_new_sequence
 
-if __name__ != "__main__": 
+if __name__ == "__main__": 
     a_string = "this is a string"
     a_tuple = (2, 54, 13, 12, 5, 32)
 
