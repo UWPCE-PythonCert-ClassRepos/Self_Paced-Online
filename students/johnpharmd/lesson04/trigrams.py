@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Trigram analysis: Look at each *set* of three adjacent words in a document.
+Trigram analysis: Look at each set of three adjacent words in a document.
 Use the first two words of the set as a *key*, and remember the fact that
 the third word followed that key. Once you’ve finished, you know the *list*
 of individual words that can follow each two word sequence in the document.
@@ -32,8 +32,9 @@ s1 = ''
 s2 = ''
 s3 = ''
 count = 0
-st_set = set()
-st_dict = {}
+# st_set = set()
+st_lst = []
+new_st_lst = st_lst[:]
 pron_set = set(['I', 'you', 'she', 'he', 'it', 'we', 'they'])
 
 
@@ -45,13 +46,19 @@ for i, word in enumerate(st_split_lst):
         s1 = word
         s2 = st_split_lst[i + 1]
         s3 = st_split_lst[i + 2]
-        st_set.update([s1, s2])
-        st_dict[count] = {frozenset(st_set): s3}
-        # print('st_set:', st_set)
+        st_lst.append([s1 + ' ' + s2, s3])
         count += 1
         s1 = ''
         s2 = ''
         s3 = ''
-        st_set = set()
-for k, v in st_dict.items():
-    print(k, v, '\n')
+        
+# for i, lst in enumerate(new_st_lst):
+#     print(lst, '\n')
+#     if lst not in new_st_lst:
+#         new_st_lst.append(lst)
+#     else:
+#         st_lst[new_st_lst.index(lst)].append(lst[1])
+# print('st_lst:', st_lst)
+# print()
+# print('new_st_lst:', new_st_lst)
+print('st_lst:', st_lst)
