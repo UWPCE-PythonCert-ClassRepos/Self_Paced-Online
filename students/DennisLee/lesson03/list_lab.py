@@ -74,9 +74,9 @@ def series2(fruits):
 
     # Get rid of any remaining occurrences (caused by list doublings)
     while target in newlist:
-        fruit_del_index = newlist.index(target)
-        print(f'\nAnd deleting {target.lower()} from position {fruit_del_index+1}')
-        del newlist[fruit_del_index]
+        fruit_index = newlist.index(target)
+        print(f'\nAnd deleting {target.lower()} from position {fruit_index+1}')
+        del newlist[fruit_index]
         print_sequence(newlist)
 
 def series3(fruits):
@@ -90,24 +90,21 @@ def series3(fruits):
     print_sequence(newlist)
 
     # Ask whether the user likes each fruit.
-    i, already_asked, prompt = 0, [], "Do you like {} (yes/no)? "
+    i, prompt = 0, "Do you like {} (yes/no)? "
     while i < len(newlist):
         fruit = newlist[i]
 
-        # Get a yes/no answer from the user about a fruit we have not asked
-        # about yet
-        if fruit not in already_asked:
+        # Enforce a yes/no answer from the user
+        response = input(prompt.format(fruit.lower())).strip().lower()
+        while response not in ('yes', 'no'):
             response = input(prompt.format(fruit.lower())).strip().lower()
-            while response not in ('yes', 'no'):
-                response = input(prompt.format(fruit.lower())).strip().lower()
-            already_asked.append(fruit)
 
-            # Delete all instances if the answer is negative.
-            if response == 'no':
-                newlist.remove(fruit)
-                continue  # Do not increment counter, since the next item
-                          # will have the same index number now (as we deleted
-                          # what had been there)
+        # Delete fruit if the answer is negative.
+        if response == 'no':
+            newlist.remove(fruit)
+            continue  # Do not increment counter, since the next item
+                        # will have the same index number now (as we deleted
+                        # what had been there)
 
         i += 1
     
@@ -141,7 +138,8 @@ def print_sequence(seq):
     """
     print('\nTHE LIST:')
     for i, j in enumerate(seq):
-        print(i + 1, j)
+        #print(i + 1, j)
+        print(f"{i+1:>4d}: {j}")
 
 
 if __name__ == "__main__":
@@ -150,11 +148,14 @@ if __name__ == "__main__":
     print(linefeeds, '\tSERIES 1:')
     fruits1 = series1()
 
+    input('\nPress Enter to continue to series 2: ')
     print(linefeeds, '\tSERIES 2:')
     series2(fruits1)
 
+    input('\nPress Enter to continue to series 3: ')
     print(linefeeds, '\tSERIES 3:')
     series3(fruits1)
 
+    input('\nPress Enter to continue to series 4: ')
     print(linefeeds, '\tSERIES 4:')
     series4(fruits1)
