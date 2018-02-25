@@ -7,14 +7,15 @@ lst_Donors = [{"donor name": "Lionel Messi", "total donations": 1000000.00, "num
               {"donor name": "Michael Jordan", "total donations": 45000, "number donations": 3, "avg donation": 15000},
               {"donor name": "Kobe Bryant", "total donations": 8000, "number donations": 2, "avg donation": 4000}]
 
-# used to add new donors
-new_donor = []
-
 
 def send_thank_you():
+    # used to add new donors
+    new_donor = []
+
     # function creates a thank you email to current and new donors added to the list
     # add new donors and donations
     # print the names of the current donor if 'list' is input by the user
+    print('\n-----------------------------------------------------')
     view_donors = input("If you would like to see a list of donors please type 'list' or any key to continue. ")
     if view_donors == 'list':
         print()
@@ -82,9 +83,11 @@ def sort_list(lst_Donors):
 
     return lst_Donors["total donations"]
 
+
 def create_report():
     # creates a report of the the donors
     # headers used in table
+    print()
     lst_Header = [["Donor Name", "| Total Donation(s)", "| # of Donations", "| Avg Donation"]]
 
     for x in lst_Header:
@@ -93,17 +96,23 @@ def create_report():
     for x in sorted(lst_Donors,key=sort_list, reverse= True):
         print('{:<25} $ {:<20}{:^14} $ {:<15}'.format(*x.values()))
 
+
 def send_letter_all():
     # creates a letter to every donor by writing them to separate text files
+    with open('filename.txt', 'a') as file1, \
+        open('filename2.txt', 'a') as file2:
+        file1.write()
+        file2.write()
 
 
-    return
 
 
 print("Welcome to the Charity Mail Room")
 print("------------------------------------------------------------------------")
+
+str_choice = 0
 # ****Input/Output****
-while True:
+while str_choice != 4:
     # Option menu
 
     print("""
@@ -113,30 +122,21 @@ while True:
     3) Send Letter to Everyone
     4) Exit Program
     """)
-    str_choice = None
+
+    # dictionary used to run different functions of the program
+    User_Selection = {1: send_thank_you, 2: create_report, 3: send_letter_all}
 
     # try/except block to make sure the user inputs a valid option
     try:
         str_choice = int(input("Which option would you like to perform? Input a number [1 to 4] "))
-        if str_choice in (1,2,3,4):
-            print()
+        if str_choice in (1,2,3):
+            User_Selection[str_choice]()
+        elif str_choice == 4:
+            print("\nExiting Program")
         else:
             raise Exception
     except Exception:
         print("Please input a valid option: 1, 2, 3, or 4")
-
-    if str_choice == 1:
-        send_thank_you()
-
-    elif str_choice == 2:
-        create_report()
-
-    elif str_choice == 3:
-        send_letter_all()
-
-    elif str_choice == 4:
-        print("\nExiting Program")
-        break
 
 
 if __name__ == "__main__":
