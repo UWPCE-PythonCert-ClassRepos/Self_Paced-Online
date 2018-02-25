@@ -23,6 +23,8 @@ donor_list = [["Sleve McDichael", [86457.89, 2346.43, 9099.09]],
               ["Todd Bonzalez", [715867.83, 10352.07]]]
 for name, money in donor_list:
     donor_dict[name] = money
+exit_reminder = "Return to the main menu at any time by entering 'exit'"
+    
 
 def main_menu():
     """
@@ -66,7 +68,7 @@ def craft_thank_u():
     message = ''
     while True:
         print("Let's craft a very personal thank you note for our donor!")
-        print("Return to the main menu at any time by entering 'exit'")
+        print(exit_reminder)
 
         print("Pull up a list of donor names by entering 'list'")
         while donor_name == "list":
@@ -83,13 +85,14 @@ def craft_thank_u():
                 break
             except ValueError:
                 print("Invalid input")
+
         donor_dict[donor_name].append(donation_amt)
         print_divider()
-        message = f"""Dearest {donor_name},
-        Thank you so much for donation of ${donation_amt:.2f}!
-        We will use your donation to create a real living Pokemon.
-        Sincerely,
-        We're a Pyramid Scheme & so is {donor_name}"""
+        message = (f"Dearest {donor_name},\n"
+        f"Thank you so much for donation of ${donation_amt:.2f}!\n"
+        "We will use your donation to create a real living Pokemon.\n"
+        "Sincerely,\n"
+        f"We're a Pyramid Scheme & so is {donor_name}")
         print(message)
         print_divider()
 
@@ -130,18 +133,18 @@ def create_letters():
         curdate = (datetime.datetime.now()).strftime("%Y_%m_%d")
         print("Enter an existing directory to place the letters.")
         print("Current working directory will be used if input is invalid")
-        print("Enter exit to return to main menu.")
+        print(exit_reminder)
         write_dir = input(">")
         check_exit(write_dir)
         if not os.path.isdir(write_dir):
             write_dir = os.getcwd()
         for donor, donations in donor_dict.items():
-            thank_you = f"""Dear {donor},
-            \tWe are so grateful for your lifetime generosity of 
-            ${sum(donations):.2f}! 
-            You now have our eternal loyalty. Use it wisely.
-            Sincerely,
-            We're a pyramid scheme and so is {donor}"""
+            thank_you = (f"Dear {donor},\n"
+            "We are so grateful for your lifetime generosity of "
+            f"${sum(donations):.2f}!\n" 
+            "You now have our eternal loyalty. Use it wisely.\n"
+            "Sincerely,\n"
+            f"We're a pyramid scheme and so is {donor}")
             file_name = donor.replace(' ', '_') + "_" + curdate + ".txt"
             with open(os.path.join(write_dir,file_name), 'w+') as letter:
                 letter.write(thank_you)
