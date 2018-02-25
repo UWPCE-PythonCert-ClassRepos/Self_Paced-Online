@@ -6,6 +6,7 @@ def series1():
 
     :return:  The final fruit list.
     """
+    # Define and print the initial fruit list.
     fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
     print_sequence(fruits)
 
@@ -35,9 +36,13 @@ def series1():
 
 def series2(fruits):
     """
-
+    Remove the last fruit from a list of fruits, then allow the user to
+    specify another fruit to delete (but expand the list two-fold
+    whenever the user makes an incorrect selection).
 
     :fruits:  The initial fruit list.
+
+    :return:  The final fruit list.
     """
     # Make a copy of the fruit list and delete the last fruit
     newlist = fruits[:]
@@ -59,26 +64,76 @@ def series2(fruits):
 
     response = int(response)
     target = newlist[response-1]
-    print(f'\nDeleting fruit {newlist[response-1]} (position {response})')
+    print(f'\nDeleting fruit {target} (position {response})')
     del newlist[response-1]
     print_sequence(newlist)
 
     # Get rid of any remaining occurrences (caused by list doublings)
-    while newlist.count(target) > 0:
+    while target in newlist:
         fruit_del_index = newlist.index(target)
         print(f'\nAnd deleting {target} from position {fruit_del_index+1}')
         del newlist[fruit_del_index]
         print_sequence(newlist)
+
+    return newlist
+
+def series3(fruits):
+    """
+    Ask the user whether they like a fruit, and delete it if they do not.
+
+    :fruits:  The initial fruit list.
+
+    :return:  The final fruit list.
+    """
+    # Copy and print the initial fruit list.
+    newlist = fruits[:]
+    print_sequence(newlist)
+
+    # Ask whether the user likes each fruit.
+    i, already_asked, prompt = 0, [], "Do you like {} (yes/no)? "
+    while i < len(newlist):
+        fruit = newlist[i]
+
+        # Get a yes/no answer from the user about a fruit we have not asked
+        # about yet
+        if fruit not in already_asked:
+            response = input(prompt.format(fruit.lower())).strip().lower()
+            while response not in ('yes', 'no'):
+                response = input(prompt.format(fruit.lower())).strip().lower()
+            already_asked.append(fruit)
+
+            # Delete all instances if the answer is negative.
+            if response == 'no':
+                removals = newlist.count(fruit)
+                print(f"Deleting all {removals} instances of {fruit.lower()}.")
+                while fruit in newlist:
+                    newlist.remove(fruit)
+                continue  # Do not increment counter, since the next item
+                          # will have the same index number now (as we deleted
+                          # what had been there)
+
+        i += 1
     
+    print("Thank you for your responses.")
+    print_sequence(newlist)
+    return newlist
+
+
+        
+
+
 def print_sequence(seq):
     """
-    Pretty-print a sequence of items (such as a list of fruits).
+    Pretty-print a sequence of items (such as a list of fruits), using
+    base 1 notation for end-user benefit.
 
     :seq:  The sequence to print.
     """
     print('\n\nTHE LIST:')
     for i, j in enumerate(seq):
-        print(i + 1, j)  # Print using base 1 for end-user benefit
+        print(i + 1, j)
 
 if __name__ == "__main__":
-    series2(series1())
+    fruits1 = series1()
+    fruits2 = series2(fruits1)
+    fruits3 = series3(fruits2)
