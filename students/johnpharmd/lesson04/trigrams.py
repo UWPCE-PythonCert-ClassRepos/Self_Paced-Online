@@ -28,10 +28,10 @@ a potential next word based on these. Add this to the list, and so on.
 
 # Data
 sample_st = 'I wish I may I wish I might'
-count = 0
 s1 = ''
 s2 = ''
 s3 = ''
+count = 0
 st_set = set()
 st_dict = {}
 pron_set = set(['I', 'you', 'she', 'he', 'it', 'we', 'they'])
@@ -40,11 +40,11 @@ pron_set = set(['I', 'you', 'she', 'he', 'it', 'we', 'they'])
 # Processing
 st_split_lst = sample_st.split(' ')
 print('st_split_lst: ', st_split_lst, '\n')
-for word in st_split_lst:
-    if st_split_lst.index(word) + 2 < len(st_split_lst) - 2:
+for i, word in enumerate(st_split_lst):
+    if i + 2 < len(st_split_lst):
         s1 = word
-        s2 = st_split_lst[st_split_lst.index(word) + 1]
-        s3 = st_split_lst[st_split_lst.index(word) + 2]
+        s2 = st_split_lst[i + 1]
+        s3 = st_split_lst[i + 2]
         st_set.update([s1, s2])
         st_dict[count] = {frozenset(st_set): s3}
         # print('st_set:', st_set)
