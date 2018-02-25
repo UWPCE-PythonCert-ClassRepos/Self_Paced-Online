@@ -11,15 +11,18 @@ to the original prompt
 import sys
 import os
 import datetime
+from collections import defaultdict
 
 
-donor_dict = {"Sleve McDichael": [86457.89, 2346.43, 9099.09],
-              "Willie Dustice": [505.05, 43.21],
-              "Rey McScriff": [666.00],
-              "Mike Truk": [70935.30, 12546.70, 312.00],
-              "Bobson Dugnutt": [1234.56, 789.00],
-              "Todd Bonzalez": [715867.83, 10352.07]}
-
+donor_dict = defaultdict(list)
+donor_list = [["Sleve McDichael", [86457.89, 2346.43, 9099.09]],
+              ["Willie Dustice", [505.05, 43.21]],
+              ["Rey McScriff", [666.00]],
+              ["Mike Truk", [70935.30, 12546.70, 312.00]],
+              ["Bobson Dugnutt", [1234.56, 789.00]],
+              ["Todd Bonzalez", [715867.83, 10352.07]]]
+for name, money in donor_list:
+    donor_dict[name] = money
 
 def main_menu():
     """
@@ -70,26 +73,20 @@ def craft_thank_u():
             donor_name = input("Enter Donor Name >")
             if donor_name.lower() == "list":
                 print(("{}\n"*len(donor_dict)).format(*donor_dict))
-        if donor_name.lower() == "exit":
-            break
-
+        check_exit(donor_name)
         
         while True:
             donation_amt = input("Enter their Donation Amount >")
-            if donation_amt.lower() == "exit":
-                break
+            check_exit(donation_amt)
             try:
                 donation_amt = round(float(donation_amt),2)
-                print(f"${donation_amt}")
                 break
             except ValueError:
                 print("Invalid input")
-        if donor_name not in donor_dict:
-            donor_dict[donor_name] = []
         donor_dict[donor_name].append(donation_amt)
         print_divider()
         message = f"""Dearest {donor_name},
-        Thank you so much for donation of ${donation_amt:}!
+        Thank you so much for donation of ${donation_amt:.2f}!
         We will use your donation to create a real living Pokemon.
         Sincerely,
         We're a Pyramid Scheme & so is {donor_name}"""
@@ -121,7 +118,6 @@ def create_report():
         row += f"\t {len(donations):>}"
         row += "\t$ " + money_col.format(sum(donations)/len(donations))
         print(row)
-    return
 
 
 def create_letters():
@@ -136,8 +132,7 @@ def create_letters():
         print("Current working directory will be used if input is invalid")
         print("Enter exit to return to main menu.")
         write_dir = input(">")
-        if write_dir.lower() == 'exit':
-            break
+        check_exit(write_dir)
         if not os.path.isdir(write_dir):
             write_dir = os.getcwd()
         for donor, donations in donor_dict.items():
@@ -152,7 +147,6 @@ def create_letters():
                 letter.write(thank_you)
         print("Finished writing the letters")
         break
-    return
 
 
 def sum_2tuple_by2(idx_set):
@@ -168,6 +162,14 @@ def print_divider():
     Prints a divider so user has better idea of when they enter a new screen.
     """
     print("\n"+"*"*50+"\n")
+
+
+def check_exit(user_input):
+    """
+    Check if user_input is exit. If true, brings them back to main menu.
+    """
+    if user_input.lower() == "exit":
+        main_menu()
 
 
 main_menu()
