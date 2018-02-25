@@ -32,6 +32,12 @@ def series1():
     fruits.insert(0, 'Cranberries')
     print_sequence(fruits)
 
+    # Print all fruits in the list that start with 'P'
+    print("\nFruits that begin with the letter P:")
+    for fruit in fruits:
+        if fruit[0] == 'P':
+            print(fruit)
+
     return fruits
 
 def series2(fruits):
@@ -41,14 +47,12 @@ def series2(fruits):
     whenever the user makes an incorrect selection).
 
     :fruits:  The initial fruit list.
-
-    :return:  The final fruit list.
     """
     # Make a copy of the fruit list and delete the last fruit
     newlist = fruits[:]
     print_sequence(newlist)
 
-    print(f'\nRemoving the last fruit ({newlist[-1]})...')
+    print(f'\nRemoving the last fruit ({newlist[-1].lower()})...')
     newlist.pop()
     print_sequence(newlist)
 
@@ -64,26 +68,22 @@ def series2(fruits):
 
     response = int(response)
     target = newlist[response-1]
-    print(f'\nDeleting fruit {target} (position {response})')
+    print(f'\nDeleting fruit {target.lower()} (position {response})')
     del newlist[response-1]
     print_sequence(newlist)
 
     # Get rid of any remaining occurrences (caused by list doublings)
     while target in newlist:
         fruit_del_index = newlist.index(target)
-        print(f'\nAnd deleting {target} from position {fruit_del_index+1}')
+        print(f'\nAnd deleting {target.lower()} from position {fruit_del_index+1}')
         del newlist[fruit_del_index]
         print_sequence(newlist)
-
-    return newlist
 
 def series3(fruits):
     """
     Ask the user whether they like a fruit, and delete it if they do not.
 
     :fruits:  The initial fruit list.
-
-    :return:  The final fruit list.
     """
     # Copy and print the initial fruit list.
     newlist = fruits[:]
@@ -104,10 +104,7 @@ def series3(fruits):
 
             # Delete all instances if the answer is negative.
             if response == 'no':
-                removals = newlist.count(fruit)
-                print(f"Deleting all {removals} instances of {fruit.lower()}.")
-                while fruit in newlist:
-                    newlist.remove(fruit)
+                newlist.remove(fruit)
                 continue  # Do not increment counter, since the next item
                           # will have the same index number now (as we deleted
                           # what had been there)
@@ -116,11 +113,24 @@ def series3(fruits):
     
     print("Thank you for your responses.")
     print_sequence(newlist)
-    return newlist
 
+def series4(fruits):
+    """
+    Read each string within the fruit list backwards, delete the last
+    fruit, and print out the initial and final lists.
 
-        
+    :fruits:  The initial fruit list.
+    """
+    newlist = fruits[:]
+    for i in range(len(newlist)):
+        newlist[i] = newlist[i][::-1]
+    newlist.pop()
 
+    print("\n\nORIGINAL")
+    print_sequence(fruits)
+
+    print("\n\nMODIFIED")
+    print_sequence(newlist)
 
 def print_sequence(seq):
     """
@@ -129,11 +139,22 @@ def print_sequence(seq):
 
     :seq:  The sequence to print.
     """
-    print('\n\nTHE LIST:')
+    print('\nTHE LIST:')
     for i, j in enumerate(seq):
         print(i + 1, j)
 
+
 if __name__ == "__main__":
+    linefeeds = '\n' * 5
+
+    print(linefeeds, '\tSERIES 1:')
     fruits1 = series1()
-    fruits2 = series2(fruits1)
-    fruits3 = series3(fruits2)
+
+    print(linefeeds, '\tSERIES 2:')
+    series2(fruits1)
+
+    print(linefeeds, '\tSERIES 3:')
+    series3(fruits1)
+
+    print(linefeeds, '\tSERIES 4:')
+    series4(fruits1)
