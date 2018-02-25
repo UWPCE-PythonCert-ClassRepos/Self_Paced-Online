@@ -24,7 +24,7 @@ donor_list = [["Sleve McDichael", [86457.89, 2346.43, 9099.09]],
 for name, money in donor_list:
     donor_dict[name] = money
 exit_reminder = "Return to the main menu at any time by entering 'exit'"
-    
+
 
 def main_menu():
     """
@@ -41,7 +41,7 @@ def main_menu():
         print("We're a Pyramid Scheme & So Are You! E-Mailroom")
         print_divider()
         while user_prompt not in valid_prompts:
-            options_str =("{}" + (", {}") * (len(options)-1)).format(*options)
+            options_str = ("{}" + (", {}") * (len(options)-1)).format(*options)
             print(f"Please choose from the following options ({options_str}):")
             print("1. Send a Thank you")
             print("2. Create Donor Report")
@@ -76,12 +76,12 @@ def craft_thank_u():
             if donor_name.lower() == "list":
                 print(("{}\n"*len(donor_dict)).format(*donor_dict))
         check_exit(donor_name)
-        
+
         while True:
             donation_amt = input("Enter their Donation Amount >")
             check_exit(donation_amt)
             try:
-                donation_amt = round(float(donation_amt),2)
+                donation_amt = round(float(donation_amt), 2)
                 break
             except ValueError:
                 print("Invalid input")
@@ -89,10 +89,10 @@ def craft_thank_u():
         donor_dict[donor_name].append(donation_amt)
         print_divider()
         message = (f"Dearest {donor_name},\n"
-        f"Thank you so much for donation of ${donation_amt:.2f}!\n"
-        "We will use your donation to create a real living Pokemon.\n"
-        "Sincerely,\n"
-        f"We're a Pyramid Scheme & so is {donor_name}")
+                   f"Thank you so much for donation of ${donation_amt:.2f}!\n"
+                   "We will use your donation to create real living Pokemon.\n"
+                   "Sincerely,\n"
+                   f"We're a Pyramid Scheme & so is {donor_name}")
         print(message)
         print_divider()
 
@@ -140,13 +140,13 @@ def create_letters():
             write_dir = os.getcwd()
         for donor, donations in donor_dict.items():
             thank_you = (f"Dear {donor},\n"
-            "We are so grateful for your lifetime generosity of "
-            f"${sum(donations):.2f}!\n" 
-            "You now have our eternal loyalty. Use it wisely.\n"
-            "Sincerely,\n"
-            f"We're a pyramid scheme and so is {donor}")
+                         "We are so grateful for your lifetime generosity of "
+                         f"${sum(donations):.2f}!\n"
+                         "You now have our eternal loyalty. Use it wisely.\n"
+                         "Sincerely,\n"
+                         f"We're a pyramid scheme and so is {donor}")
             file_name = donor.replace(' ', '_') + "_" + curdate + ".txt"
-            with open(os.path.join(write_dir,file_name), 'w+') as letter:
+            with open(os.path.join(write_dir, file_name), 'w+') as letter:
                 letter.write(thank_you)
         print("Finished writing the letters")
         break
