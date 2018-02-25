@@ -56,7 +56,7 @@ def get_usr_input():
     Returns:
         int: Value corresponding to user choice
     """
-    usr_in = ''
+    usr_in = None
     while usr_in not in PROMPT_OPTS:
         try:
             usr_in = int(input(SELECT_PROMPT))
