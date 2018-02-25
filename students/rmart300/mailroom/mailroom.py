@@ -28,13 +28,21 @@ def send_thank_you():
             for donor in donation_dict:
                 print(donor)
     
-    amount = float(input("Provide a donation amount:"))
-    amount_list = donation_dict[name] if name in donation_dict else [] 
-    amount_list.append(amount)
-    donation_dict[name] = amount_list    
-    donor_dict[name] = { 'firstname': name.split(' ')[0], 'lastname': name.split(' ')[1] }
-    thank_you_string = f"Hi {name}\nThank you for your donation of {amount} to the mailroom!\n"
-    print(thank_you_string)    
+    try:
+        amount = float(input("Provide a donation amount:"))
+    except ValueError as e:
+        print('invalid donation amount: ' + str(e))
+    else:
+        try:
+            donor_dict[name] = { 'firstname': name.split()[0], 'lastname': name.split()[1] }
+        except IndexError as e:
+            print('first and last name must be provided')
+        else:
+            amount_list = donation_dict[name] if name in donation_dict else []
+            amount_list.append(amount)
+            donation_dict[name] = amount_list
+            thank_you_string = f"Hi {name}\nThank you for your donation of {amount} to the mailroom!\n"
+            print(thank_you_string)  
 
 def create_report():
 
