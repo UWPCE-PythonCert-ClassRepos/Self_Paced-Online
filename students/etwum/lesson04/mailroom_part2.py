@@ -46,8 +46,8 @@ def send_thank_you():
                 x["number donations"] = count_donations
                 x["avg donation"] = '{:.2f}'.format(avg_donation)
 
-            email = "Dear {a},\n\nThank you for your generous donations of ${b:.2f} to our charity.\n".format(a=x["donor name"],
-                                                                                                              b=x["total donations"])
+            email = "Dear {a},\n\nThank you for your generous donations of ${b:.2f} to our charity.\n".format(
+                a=x["donor name"],b=x["total donations"])
             print(email)
             break
 
@@ -60,7 +60,8 @@ def send_thank_you():
         boolValid = False
         while boolValid != True:
             try:
-                new_donation_amount = float(input("Please input a donation amount in order to add the donor to the list. "))
+                new_donation_amount = float(input("Please input a donation "
+                                                  "amount in order to add the donor to the list. "))
             except ValueError as e:
                 print(e)
                 print("Please input a valid number")
@@ -72,8 +73,8 @@ def send_thank_you():
         print('-----------------------------------------------------')
         for x in lst_Donors:
             if x["donor name"] == donor_full_name:
-                email = "Dear {a},\n\nThank you for your generous donations of ${b:.2f} to our charity.\n".format(a=x["donor name"],
-                    b=x["total donations"])
+                email = "Dear {a},\n\nThank you for your generous donations of ${b:.2f} to our charity.\n".format(
+                    a=x["donor name"],b=x["total donations"])
                 print(email)
     print('-----------------------------------------------------')
 
@@ -98,13 +99,21 @@ def create_report():
 
 
 def send_letter_all():
+    print('\n----------------------------------------------')
+    file = ()
     # creates a letter to every donor by writing them to separate text files
-    with open('filename.txt', 'a') as file1, \
-        open('filename2.txt', 'a') as file2:
-        file1.write()
-        file2.write()
+    for x in lst_Donors:
+        # opens or creates a new text file for writing based on the donor name
+        file = open('{a}.txt'.format(a = x['donor name']), 'w')
 
+        # writes a thank you letter to the text file
+        file.write('Dear {a},\n\nThank you for your generous donation(s) of ${b:.2f} to our charity.'.format(
+            a=x['donor name'], b=x['total donations']))
+        print('Letter sent to  {a}'.format(a=x['donor name']))
 
+    #closes and saves the file
+    file.close()
+    print('----------------------------------------------\n')
 
 
 print("Welcome to the Charity Mail Room")
@@ -130,6 +139,7 @@ while str_choice != 4:
     try:
         str_choice = int(input("Which option would you like to perform? Input a number [1 to 4] "))
         if str_choice in (1,2,3):
+            # runs a function selection from the dictionary
             User_Selection[str_choice]()
         elif str_choice == 4:
             print("\nExiting Program")
