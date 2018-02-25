@@ -30,12 +30,14 @@ def main_menu():
                      "2": create_report,
                      "3": create_letters,
                      "4": sys.exit}
+    options = list(valid_prompts.keys())
     while True:
         print_divider()
         print("We're a Pyramid Scheme & So Are You! E-Mailroom")
         print_divider()
         while user_prompt not in valid_prompts:
-            print("Please choose from the following options (1,2,3,4): ")
+            options_str =("{}" + (", {}") * (len(options)-1)).format(*options)
+            print(f"Please choose from the following options ({options_str}):")
             print("1. Send a Thank you")
             print("2. Create Donor Report")
             print("3. Send letters to everyone")
@@ -71,24 +73,30 @@ def craft_thank_u():
         if donor_name.lower() == "exit":
             break
 
-        donation_amt = input("Enter their Donation Amount >")
-        if donation_amt.lower() == "exit":
-            break
-        donation_amt = float(donation_amt)
-
+        
+        while True:
+            donation_amt = input("Enter their Donation Amount >")
+            if donation_amt.lower() == "exit":
+                break
+            try:
+                donation_amt = round(float(donation_amt),2)
+                print(f"${donation_amt}")
+                break
+            except ValueError:
+                print("Invalid input")
         if donor_name not in donor_dict:
             donor_dict[donor_name] = []
         donor_dict[donor_name].append(donation_amt)
         print_divider()
-        message = f"Dearest {donor_name},\n"
-        message += f"Thank you so much for donation of ${donation_amt:.2f}!\n"
-        message += "We will use your donation to create a real living Pokemon."
-        message += f"\nSincerely,\nWe're a Pyramid Scheme & so is {donor_name}"
+        message = f"""Dearest {donor_name},
+        Thank you so much for donation of ${donation_amt:}!
+        We will use your donation to create a real living Pokemon.
+        Sincerely,
+        We're a Pyramid Scheme & so is {donor_name}"""
         print(message)
         print_divider()
 
         break
-    return
 
 
 def create_report():
@@ -99,7 +107,7 @@ def create_report():
     sort_donors = sorted(donor_dict.items(), key=sum_2tuple_by2, reverse=True)
     col_name_list = ["Donor Name", "Total Given", "Gifts", "Avg Donation"]
     billi_len = 12
-    donor_col_len = max([len(name) for name, donations in sort_donors])
+    donor_col_len = max([len(name) for name, _ in sort_donors])
     donor_col = "{:<" + f"{donor_col_len}" + "}"
     money_col = "{:>" + f"{billi_len}" + "}"
 
@@ -125,8 +133,7 @@ def create_letters():
     while True:
         curdate = (datetime.datetime.now()).strftime("%Y_%m_%d")
         print("Enter an existing directory to place the letters.")
-        print("Current working directory will be used if given directory is " +
-              "invalid")
+        print("Current working directory will be used if input is invalid")
         print("Enter exit to return to main menu.")
         write_dir = input(">")
         if write_dir.lower() == 'exit':
@@ -134,16 +141,15 @@ def create_letters():
         if not os.path.isdir(write_dir):
             write_dir = os.getcwd()
         for donor, donations in donor_dict.items():
-            thank_you = "Dear " + donor + ",\n\t"
-            thank_you += "We are so grateful for your lifetime generosity of "
-            thank_you += f"${sum(donations):.2f}!"
-            thank_you += " You now have our eternal loyalty. Use it wisely."
-            thank_you += "\nSincerely, \n"
-            thank_you += "We're a pyramid scheme and so is " + donor
+            thank_you = f"""Dear {donor},
+            \tWe are so grateful for your lifetime generosity of 
+            ${sum(donations):.2f}! 
+            You now have our eternal loyalty. Use it wisely.
+            Sincerely,
+            We're a pyramid scheme and so is {donor}"""
             file_name = donor.replace(' ', '_') + "_" + curdate + ".txt"
-            letter = open(write_dir+"/"+file_name, 'w+')
-            letter.write(thank_you)
-            letter.close()
+            with open(os.path.join(write_dir,file_name), 'w+') as letter:
+                letter.write(thank_you)
         print("Finished writing the letters")
         break
     return
