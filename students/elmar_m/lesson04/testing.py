@@ -1,8 +1,18 @@
 #!/usr/bin/env python3
 
-# file: dispatcher_dict.py
+# file: testing.py
 
-ts = time.strftime('%Y%m%d-%H%M%S') 
+import time
+
+
+def writefile(name, text):
+    ts = time.strftime('%Y%m%d-%H%M%S')
+    # fname = '{}_{}'.format(name, ts)
+    fname = '{}.{}.txt'.format(name, ts)
+    f = open(fname, 'w')
+    f.write(text)
+    f.close
+    
 
 def one():
     print('executed one')
