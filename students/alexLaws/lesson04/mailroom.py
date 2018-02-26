@@ -2,7 +2,7 @@
 
 import os
 
-donor_dict = {
+donor_dictionary = {
     'Ryan Moore': [500, 250], 'Ted Laws': [1000, 100], 'Ben Snell': [150],
     'Andrew Crawford': [2000, 2000, 4000], 'Beth Ross': [400]}
 
@@ -15,18 +15,18 @@ prompt = ("\nWhat would you like to do\n"
           "4 - Quit\n")
 
 
-def menu_selection(prompt, dispatch_dict, donor_dictionary):
+def menu_selection(prompt, dispatch_dict):
     while True:
         response = input(prompt)
-        if dispatch_dict[response](donor_dictionary) == "Exit Menu":
+        if dispatch_dict[response]() == "Exit Menu":
             break
 
 
-def exit(a):
+def exit():
     return "Exit Menu"
 
 
-def send_to(donor_dictionary):
+def send_to():
     recipient = input("Who is the thank you note for?\n"
                       "Enter a full name or 'list' to see a list: ")
     if recipient.lower() == 'list':
@@ -39,16 +39,16 @@ def send_to(donor_dictionary):
         return recipient
 
 
-def thank_you(donor_dictionary, screen='y', recipient=None):
+def thank_you(screen='y', recipient=None):
     if recipient:
         name = recipient
     else:
-        name = send_to(donor_dictionary)
+        name = send_to()
     if name in donor_dictionary:
         amt = sum(donor_dictionary[name])
     else:
         amt = int(input("Wait, A new donation! How much: "))
-        donor_dict[name] = [amt]
+        donor_dictionary[name] = [amt]
     note = ("Dear {},\n"
             "Thank you for your recent donation. You have now donated ${}.\n"
             "Thank you so much!\n- Alex Laws")
@@ -58,7 +58,7 @@ def thank_you(donor_dictionary, screen='y', recipient=None):
     return note.format(name, amt)
 
 
-def report(donor_dictionary):
+def report():
     print("\nDonor Name       |  Total Given  |  Num Gifts  |  Average Gift")
     to_sort = {}
     for donor in donor_dictionary:
@@ -75,17 +75,18 @@ def report(donor_dictionary):
                                                          average))
 
 
-def thank_everyone(donor_dictionary):
+def thank_everyone():
     directory = input("Where would you like this file?\n"
                       "(Leave blank for this directory): ")
     for i in donor_dictionary:
         destination = os.path.join(directory,
                                    "{}.txt".format(i.replace(' ', '_')))
         with open(destination, 'w') as f:
-            f.write(thank_you(donor_dictionary, screen='n', recipient=i))
+            f.write(thank_you(screen='n', recipient=i))
+    print("\nFinished")
 
 
 menu_dict = {"1": thank_you, "2": thank_everyone, "3": report, "4": exit}
 
 if __name__ == '__main__':
-    menu_selection(prompt, menu_dict, donor_dict)
+    menu_selection(prompt, menu_dict)
