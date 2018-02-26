@@ -32,7 +32,7 @@ def donor_name_prompt():
 
 def get_all_donor_names():
     return list(donors)
-    
+
 
 def donation_prompt():
     return float(input("Please enter the donation amount:\n"))
@@ -57,7 +57,6 @@ def send_thank_you():
             donation = donation_prompt()
         except:
             print("Not a valid number! Please enter a valid number:\n")
-            donation = None
 
     # If the donnor doesn't exist in the donor dictionary - add his info
     # Using defaultdict
@@ -71,8 +70,9 @@ def create_report():
     report = []  # initialize report
 
     # for each_name in get_all_donor_names(donors):
-    for each_donor in donors.keys():
-        report.append([each_donor, sum(donors[each_donor]), len(donors[each_donor])])
+    #for each_donor in donors.keys():
+    #    report.append([each_donor, sum(donors[each_donor]), len(donors[each_donor])])
+    report = [[dk, sum(dv), len(dv)] for dk, dv in donors.items()]
 
     # sorting the report based on donations
     r_sorted = sorted(report, key=lambda r: r[1], reverse=True)
