@@ -52,13 +52,11 @@ except IndexError as e:
     log.write('caught the index error' + str(e))
     try:
         next_joke = more_fun(langs[1])
-        #print(next_joke)
-    except Exception:
+    except Exception e:
         log.write(e)
     else:
         last_joke = more_fun(langs[2])
 finally:
-    #pass
     last_fun()
 
 log.close()
