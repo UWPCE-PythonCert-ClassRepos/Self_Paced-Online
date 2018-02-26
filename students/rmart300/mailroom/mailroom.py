@@ -2,6 +2,7 @@ from datetime import date
 
 # dictionary to hold donors and list of donation amounts
 letter_directory = 'temp/'
+donor_list = ['Fred Smith', 'Terrie Ann', 'Murray Martin', 'Josh Jones', 'Jane Doe']
 donation_dict = {}
 donor_dict = {}
 
@@ -10,7 +11,7 @@ def is_number(n):
     try: 
         float(n)
         return True
-    except ValueError as e:
+    except ValueError:
         return False
 
 def send_thank_you():
@@ -28,21 +29,22 @@ def send_thank_you():
             for donor in donation_dict:
                 print(donor)
     
-    try:
-        amount = float(input("Provide a donation amount:"))
-    except ValueError as e:
+    amount = input("Provide a donation amount:")
+    if not is_number(amount):
         print('invalid donation amount: ' + str(e))
+        return
+    
+    try:
+        name.split()[1]
+    except IndexError as e:
+        print('Could not send thank you.  The first and last name of donor must be provided\n')
     else:
-        try:
-            donor_dict[name] = { 'firstname': name.split()[0], 'lastname': name.split()[1] }
-        except IndexError as e:
-            print('first and last name must be provided')
-        else:
-            amount_list = donation_dict[name] if name in donation_dict else []
-            amount_list.append(amount)
-            donation_dict[name] = amount_list
-            thank_you_string = f"Hi {name}\nThank you for your donation of {amount} to the mailroom!\n"
-            print(thank_you_string)  
+        donor_dict[name] = { 'firstname': name.split()[0], 'lastname': name.split()[1] }
+        amount_list = donation_dict[name] if name in donation_dict else []
+        amount_list.append(amount)
+        donation_dict[name] = amount_list
+        thank_you_string = f"Hi {name}\nThank you for your donation of {amount} to the mailroom!\n"
+        print(thank_you_string)  
 
 def create_report():
 
@@ -77,9 +79,7 @@ def write_letters():
 
 if __name__ == '__main__':
     # build initial dictionary of donors and donation amounts
-    donor_list = ['Fred Smith', 'Terrie Ann', 'Murray Martin', 'Josh Jones', 'Jane Doe']
     amount_list = [ 500, 100, 1000]
-    #donor_donation_dict = { datetime.date(2008, 6, 24): 500, datetime.date(2010, 8, 13): 100, datetime.date(2013, 1, 16),1000 }
     for donor in donor_list:
         first_name = donor.split(' ')[0]
         last_name = donor.split(' ')[1]
