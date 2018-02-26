@@ -30,35 +30,29 @@ a potential next word based on these. Add this to the list, and so on.
 sample_st = 'I wish I may I wish I might'
 s1 = ''
 s2 = ''
+st_key = ''
 s3 = ''
+st_dict = {}
 count = 0
-# st_set = set()
-st_lst = []
-new_st_lst = st_lst[:]
 pron_set = set(['I', 'you', 'she', 'he', 'it', 'we', 'they'])
 
 
 # Processing
+
+# lines between this and next comment line can be encapsulated into a fxn
 st_split_lst = sample_st.split(' ')
 print('st_split_lst: ', st_split_lst, '\n')
+
 for i, word in enumerate(st_split_lst):
     if i + 2 < len(st_split_lst):
         s1 = word
         s2 = st_split_lst[i + 1]
+        st_key = s1 + ' ' + s2
         s3 = st_split_lst[i + 2]
-        st_lst.append([s1 + ' ' + s2, s3])
+        if st_key not in st_dict:
+                st_dict[st_key] = [s3]
+        else:
+            st_dict[st_key] += [s3]
         count += 1
-        s1 = ''
-        s2 = ''
-        s3 = ''
-        
-# for i, lst in enumerate(new_st_lst):
-#     print(lst, '\n')
-#     if lst not in new_st_lst:
-#         new_st_lst.append(lst)
-#     else:
-#         st_lst[new_st_lst.index(lst)].append(lst[1])
-# print('st_lst:', st_lst)
-# print()
-# print('new_st_lst:', new_st_lst)
-print('st_lst:', st_lst)
+# see comment line above
+print('st_dict:', st_dict)
