@@ -6,6 +6,10 @@ elmar_m / 22e88@mailbox.org
 Lesson04: Mailroom Exercise Part 2
 '''
 
+import time
+
+# ts = time.strftime('%Y%m%d-%H%M%S') 
+
 donors = {
     'bill' : [2000, 7.5, 950000],
     'steve' : [5.5, 234000, 928],

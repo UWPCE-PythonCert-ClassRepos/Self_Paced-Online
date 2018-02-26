@@ -2,6 +2,7 @@
 
 # file: dispatcher_dict.py
 
+ts = time.strftime('%Y%m%d-%H%M%S') 
 
 def one():
     print('executed one')
@@ -12,19 +13,26 @@ def two():
     return 'executed two'
 
 def efunc():
-    # return 'exiting.\n'
+    print('exiting.\n')
     return 'exiting'
 
-prompt = 'please give an option, a or b, or q to exit menu: > '
+prompt = 'Options: a or b. Type "q" to exit. > '
 
 dispdict = {
     'a' : one,
     'b' : two,
-    # 'q' : 'exit menu',
     'q' : efunc,
     }
 
-def menusel(p, dd):
+def menusel(p, d):
+    '''
+    Display menu to user. 
+    This function uses a "dispatcher dictionary".
+
+    ARGS:
+    p:  prompt which is shown to the user
+    d:  the dispatcher dictionary which holds the menu options
+    '''
     while True:
         response = input(p)
         if dd[response]() == 'exiting':
