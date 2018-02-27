@@ -61,6 +61,16 @@ def dict2():
     print('s3 is a subset of s2: {}'.format(d['s3'].issubset(d['s2'])))
     print('s4 is a subset of s2: {}'.format(d['s4'].issubset(d['s2'])))
 
+    # Sets 2
+    # Create a set with the letters in ‘Python’ and add ‘i’ to the set.
+    s = set(('p', 'y', 't', 'h', 'o', 'n'))
+    s.add('i')
+    # Create a frozenset with the letters in ‘marathon’.
+    fs = frozenset(('m', 'a', 'r', 'a', 't', 'h', 'o', 'n'))
+    # display the union and intersection of the two sets.
+    print(s.union(fs))
+    print(s.intersection(fs))
+
 
 def divisible(number_tuple, div_by):
     """Return the value that is divisible by some integer."""
