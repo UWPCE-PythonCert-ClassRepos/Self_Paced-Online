@@ -12,14 +12,12 @@ import collections
 # ts = time.strftime('%Y%m%d-%H%M%S') 
 
 donors = collections.defaultdict(list)
-donors = {
-    'bill' : [2000, 7.5, 950000],
-    'steve' : [5.5, 234000, 928],
-    'donald' : [657, 234, 28.57, 90456],
-    'angie' : [2, 99, 297765, 47, 28346],
-    'kim' : [38982, 66.23, 9856, 0.1],
-    }
  
+donors['bill'] = [2000, 7.5, 950000]
+donors['steve'] = [5.5, 234000, 928]
+donors['donald'] = [657, 234, 28.57, 90456]
+donors['angie'] = [2, 99, 297765, 47, 28346]
+donors['kim'] = [38982, 66.23, 9856, 0.1]
 
 OPTS= '> Options: q == quit | t == thankyou | r == report'
 
@@ -37,26 +35,21 @@ def thankyou():
     add new donation to donor and print letter of thanks.
     '''
     name = None
-    # while name != 'x':
     while True:
         print('>> give me a donor name, or type "l" to see a list. Type "x" to exit.')
         name = input('>> ')
-        if name == 'l':
-            # print(' '.join(donors.keys()))
-            print('\n'.join(donors))
-        elif name == 'x':
+        if name == 'x':
             break
-        #elif name in donors.keys():
+        elif name == 'l':
+            print('\n'.join(donors))
         elif name in donors:
             print('>>', name, 'already in list')
             donation = input('>> please add current donation:\n>> ')
             donors[name].append(int(donation))
             print('>>', donation, 'added to donation list of', name, 'thank you.\n')
             mail(name, donation)
-        #elif not name in donors.keys():
         elif not name in donors:
             print('>>', name, 'not in list, adding it ')
-            # donors[name] = [] 
             donation = input('>> please add current donation:\n>> ')
             donors[name].append(int(donation))
             print('>>', donation, 'added to donation list of', name, 'thank you.\n')
