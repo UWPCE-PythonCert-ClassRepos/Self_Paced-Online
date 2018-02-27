@@ -7,9 +7,11 @@ Lesson04: Mailroom Exercise Part 2
 '''
 
 import time
+import collections
 
 # ts = time.strftime('%Y%m%d-%H%M%S') 
 
+donors = collections.defaultdict(list)
 donors = {
     'bill' : [2000, 7.5, 950000],
     'steve' : [5.5, 234000, 928],
@@ -19,7 +21,7 @@ donors = {
     }
  
 
-opts = '> Options: q == quit | t == thankyou | r == report'
+OPTS= '> Options: q == quit | t == thankyou | r == report'
 
 
 def mail(n, m):
@@ -35,27 +37,31 @@ def thankyou():
     add new donation to donor and print letter of thanks.
     '''
     name = None
-    while name != 'x':
+    # while name != 'x':
+    while True:
         print('>> give me a donor name, or type "l" to see a list. Type "x" to exit.')
         name = input('>> ')
         if name == 'l':
-            print(' '.join(donors.keys()))
+            # print(' '.join(donors.keys()))
+            print('\n'.join(donors))
         elif name == 'x':
             break
-        elif name in donors.keys():
+        #elif name in donors.keys():
+        elif name in donors:
             print('>>', name, 'already in list')
             donation = input('>> please add current donation:\n>> ')
             donors[name].append(int(donation))
             print('>>', donation, 'added to donation list of', name, 'thank you.\n')
             mail(name, donation)
-        elif not name in donors.keys():
+        #elif not name in donors.keys():
+        elif not name in donors:
             print('>>', name, 'not in list, adding it ')
-            donors[name] = [] 
+            # donors[name] = [] 
             donation = input('>> please add current donation:\n>> ')
             donors[name].append(int(donation))
             print('>>', donation, 'added to donation list of', name, 'thank you.\n')
             mail(name, donation)
-    print(opts)
+    print(OPTS)
 
 
 def report():
@@ -64,8 +70,13 @@ def report():
     '''
     # get the highest number of digits to create formatstring accordingly:
     sumlist = []
-    for i in donors.keys():
-        sumlist.append(sum(donors[i]))
+
+    # for i in donors.keys():
+    #    sumlist.append(sum(donors[i]))
+    for i in donors.values():
+        sumlist.append(sum(i))
+
+
     maxn = len(str(max(sumlist)))
     maxn += 2
 
@@ -74,12 +85,12 @@ def report():
     print('-' * (maxn + 54)) 
     for i in donors.keys():
         print(fstring.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) )) 
-    print(opts)
+    print(OPTS)
 
 
 def main():
     answer = None
-    print(opts)
+    print(OPTS)
     while answer != 'q':
         answer = input('> ')
         if answer == 't':
@@ -90,3 +101,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+	
