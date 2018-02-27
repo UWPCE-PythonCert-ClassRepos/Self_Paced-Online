@@ -66,15 +66,26 @@ def send_thank_you():
             donor_history.append([response])
 
         donation = '...'  # Seed donation variable to continue the while loop
-        # Make sure the donation amount is a positive number
+        # Make sure the donation amount is a valid, positive number
         while donation.count('.') > 1 or donation.strip('0123456789.'
                 ) != '' or float(donation) <= 0.0:
-            donation = input(f"Enter a new donation amount for '{response}': "
-                    ).strip()
-        donor_history[donors.index(response)].append(float(donation))
-        pass # Implement email thank you letter here
+            donation = input(
+                    f"Type amount donated by '{response}' (or type 'quit'): "
+                    ).strip().lower()
+            if donation == 'quit':
+                return
+
+        # Add the donation to the master donor history and print the letter
+        donation = float(donation)
+        donor_history[donors.index(response)].append(donation)
+        print(create_form_letter(response, donation))
 
 def create_a_report():
+    """
+    Print out statistics for the entire donor list.
+
+    :return:  None.
+    """
     print('\n')
     print('Donor name                |         Total given | '
             + 'Number of gifts |        Average gift')
@@ -87,6 +98,42 @@ def create_a_report():
         print('{:<25s} | ${:>18,.2f} | {:>15d} | ${:>18,.2f}'.format(
                 individual_donor[0], total_donation,
                 number_of_gifts, average_donation))
+
+def create_form_letter(donor_name, donor_amount):
+    """
+    Create the form letter using the donor name and amount.
+
+    :donor_name:  The name of the donor.
+
+    :donor_amount:  The amount given by the donor this time.
+
+    :return:  A string containing the filled-in form letter.
+    """
+    str = """\n\n\n
+            From:     Random Worthy Cause Foundation
+            To:       {0:s}
+            Subject:  Your generous donation
+
+            Dear {0:s},
+
+            We want to express our genuine gratitude for your donation of
+            ${1:,.2f} to the Random Worthy Cause Foundation.  To show our
+            appreciation, we have enclosed a set of address labels
+            and a custom tote bag that lets people know that you are a
+            generous supporter of our cause.
+            
+            Thank you again, and please think of us the next time you want
+            to give to a worthy cause.
+
+            Sincerely,
+
+
+
+            Mister E. Partner
+            Random Worthy Cause Foundation
+            """
+    
+    return str.format(donor_name, donor_amount)
 
 if __name__ == "__main__":
     manage_donors()
