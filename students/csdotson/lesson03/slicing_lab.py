@@ -2,17 +2,12 @@
 
 def exchange_first_last(seq):
     # Returns copy of sequence where first and last items exchanged
-    if type(seq) == list:
-        return [seq[-1]] + seq[1:-1] + [seq[0]]
-    elif type(seq) == tuple:
-        return (seq[-1],) + seq[1:-1] + (seq[0],)
-    else:
-        return seq[-1] + seq[1:-1] + seq[0]
+    return seq[-1:] + seq[1:-1] + seq[:1]
 
 
 def every_other_removed(seq):
     # Returns copy of sequence with every other item removed
-    return seq[0:len(seq):2]
+    return seq[::2]
 
 
 def first_4_last_4(seq):
@@ -31,12 +26,8 @@ def shuffle_thirds(seq):
     first_third = int(n/3)
     second_third = int(n/3 * 2)
 
-    if type(seq) == list:
-        return seq[first_third:second_third] + seq[second_third:n] + seq[0:first_third]
-    elif type(seq) == tuple:
-        return seq[first_third:second_third] + seq[second_third:n] + seq[0:first_third]
-    else:
-        return seq[first_third:second_third] + seq[second_third:n] + seq[0:first_third]
+    return seq[first_third:second_third] + seq[second_third:n] + seq[0:first_third]
+
 
 
 # Assertion Testing
