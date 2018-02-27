@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 """
 An exercise in playing with Exceptions.
@@ -18,8 +18,6 @@ try:
     joke = fun(first_try[0])
 except NameError:
     joke = fun(first_try[1])
-else:
-    print(joke)
 
 # Here is a try/except block. Add an else that prints not_joke
 try:
@@ -51,4 +49,8 @@ try:
     more_joke = more_fun(langs[0])
 except IndexError:
     next_joke = more_fun(langs[1])
+else:
+    more_fun(langs[2])
+finally:
     last_fun()
+
