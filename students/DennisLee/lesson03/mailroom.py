@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# List of donors and amounts they have donated
+# Initial donor list and the amounts they have donated
 donor_history = [
             ['Red Herring', 65820.5, 31126.37, 15000],
             ['Papa Smurf', 210.64, 1000],
@@ -11,16 +11,26 @@ donor_history = [
         ]
 
 def manage_donors():
+    """
+    Display the menu of choices for donor management.
+
+    :return:  None.
+    """
     choices = ("Send a Thank You", "Create a Report", "Quit")
-    while True:
+    while True:  # Infinite loop until user chooses to exit
+        # Print the menu list (with numbered choices)
         print()
         for i, j in enumerate(choices):
             print(i + 1, j)
+
+        # Get the selection number
         response = ''
-        while not response.isdigit() or int(response) not in range(
-                1, len(choices) + 1):
+        while not response.isdigit() or int(
+                response) not in range(1, len(choices) + 1):
             response = input("Type your selection: ").strip()
         response = int(response)
+
+        # Call helper functions or exit
         if response == 1:
             send_thank_you()
         elif response == 2:
@@ -30,23 +40,37 @@ def manage_donors():
             return
         
 def send_thank_you():
-    options = ('quit', 'list')
-    donors = [x[0] for x in donor_history]
+    """
+    Add new donations for new or existing donors, and send a thank-you
+    letter.
+
+    :return:  None.
+    """
+    donors = [x[0] for x in donor_history]  # Get list of donor names
+
+    # Get the donor name, show all donors, or quit
     response = input(
       "\nType the full donor name (or 'list' to show all donors, or 'quit'): "
       ).strip()
+
     if response.lower() == 'quit':
         return
+
     elif response.lower() == 'list':
         print("\nLIST OF DONORS:", donors)
-        send_thank_you()
+        send_thank_you()  # Try getting a donor name again
+
     else:
-        if response not in donors:
+        if response not in donors:  # Add to donor list if it's a new name
             donors.append(response)
             donor_history.append([response])
-        donation = ''
-        while not donation.isnumeric() or float(donation) <= 0.0:
-            donation = input(f"Enter a new donation amount for '{response}': ")
+
+        donation = '...'  # Seed donation variable to continue the while loop
+        # Make sure the donation amount is a positive number
+        while donation.count('.') > 1 or donation.strip('0123456789.'
+                ) != '' or float(donation) <= 0.0:
+            donation = input(f"Enter a new donation amount for '{response}': "
+                    ).strip()
         donor_history[donors.index(response)].append(float(donation))
         pass # Implement email thank you letter here
 
