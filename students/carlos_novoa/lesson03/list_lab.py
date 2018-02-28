@@ -27,24 +27,13 @@ def series1():
     print(fruits)
 
     # print fruit at inputted index
-    watch = False
-    prompt = 'Type a number to display a fruit at that place in the list: '
-    index = input(prompt)
-    while not isInt(index):
-        index = input(prompt)
-    index = int(index)
-    fl = len(fruits)
-    while not watch:
-        if 1 <= index <= fl:
-            index = 1 if index == 0 else index
-            print(fruits[index - 1])
-            watch = True
-        else:
-            str3 = "Type a number between 1 and {:d}: ".format(fl)
-            index = input(str3)
-            while not isInt(index):
-                index = input(prompt)
-            index = int(index)
+    fruit_number = 0
+    while not 1 <= fruit_number <= len(fruits):
+        try:
+            fruit_number = int(input("Enter a number: "))
+        except ValueError:
+            print("Not a valid number: ")
+    print(fruits[fruit_number - 1])
 
     # concat lists
     fruits = ['Grapes'] + fruits
