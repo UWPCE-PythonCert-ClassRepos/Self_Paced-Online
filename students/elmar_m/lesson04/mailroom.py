@@ -21,7 +21,8 @@ import collections
 
 # ts = time.strftime('%Y%m%d-%H%M%S') 
 
-p = '\n> Options: q == quit | t == thankyou | r == report\n'
+main_p = '\n> Main menu options: q == quit | t == thankyou | r == report\n'
+sub_p = '\n>> Sub menu options: give me a donor name, or type "l" to see a list. Type "x" to exit.\n'
 
 donors = collections.defaultdict(list)
  
@@ -49,27 +50,28 @@ def thankyou():
     Show list of known donors, add new donor to list, 
     add new donation to donor and print letter of thanks.
     '''
-    name = None
-    while True:
-        print('>> give me a donor name, or type "l" to see a list. Type "x" to exit.')
-        name = input('>> ')
-        if name == 'x':
-            break
-        elif name == 'l':
-            print('\n'.join(donors))
-        elif name in donors:
-            print('>>', name, 'already in list')
-            donation = input('>> please add current donation:\n>> ')
-            donors[name].append(int(donation))
-            print('>>', donation, 'added to donation list of', name, 'thank you.\n')
-            mail(name, donation)
-        elif not name in donors:
-            print('>>', name, 'not in list, adding it ')
-            donation = input('>> please add current donation:\n>> ')
-            donors[name].append(int(donation))
-            print('>>', donation, 'added to donation list of', name, 'thank you.\n')
-            mail(name, donation)
-    print(prompt)
+    menu(sub_p, sub_d)
+    #name = None
+    #while True:
+    #    print('>> give me a donor name, or type "l" to see a list. Type "x" to exit.')
+    #    name = input('>> ')
+    #    if name == 'x':
+    #        break
+    #    elif name == 'l':
+    #        print('\n'.join(donors))
+    #    elif name in donors:
+    #        print('>>', name, 'already in list')
+    #        donation = input('>> please add current donation:\n>> ')
+    #        donors[name].append(int(donation))
+    #        print('>>', donation, 'added to donation list of', name, 'thank you.\n')
+    #        mail(name, donation)
+    #    elif not name in donors:
+    #        print('>>', name, 'not in list, adding it ')
+    #        donation = input('>> please add current donation:\n>> ')
+    #        donors[name].append(int(donation))
+    #        print('>>', donation, 'added to donation list of', name, 'thank you.\n')
+    #        mail(name, donation)
+    #print(prompt)
 
 def report():
     '''
@@ -95,15 +97,26 @@ def efunc():
     return 'exiting'
 
 '''
-Dispatcher dictionary (menu entries)
+Dispatcher dictionary main menu
 '''
-d = {
+main_d = {
     't' : thankyou,
     'r' : report,
     'q' : efunc,
     }
 
-def menu():
+'''
+Dispatcher dictionary submenu
+'''
+sub_d= {
+    # 'l' : thankyou,
+    'l' : efunc,
+    'q' : efunc,
+    }
+
+#######################################################
+
+def menu(p, d):
     '''
     Display menu to user. 
     This function uses a "dispatcher dictionary".
@@ -117,7 +130,8 @@ def menu():
         if d[response]() == 'exiting':
             break
 
+#######################################################
 	
 if __name__ == '__main__':
-    menu()
+    menu(main_p, main_d)
 
