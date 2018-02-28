@@ -26,11 +26,30 @@ def efunc():
     print('exiting.\n')
     return 'exiting'
 
-prompt = 'Options: a or b. Type "q" to exit. > '
+def sub():
+    menusel(subp, subd)
+    
+def mfunc():
+    print('executed mfunc')
+    return 'executed mfunc'
 
-dispdict = {
+def nfunc():
+    print('executed nfunc')
+    return 'executed nfunc'
+
+subp = 'Submenu options: m or n. Type "q" to exit. '
+subd = {
+    'm' : mfunc,
+    'n' : nfunc,
+    'q' : efunc,
+    }
+
+prompt = 'Main menu options: a or b. Type "s" for submenu. Type "q" to exit. > '
+
+dd = {
     'a' : one,
     'b' : two,
+    's' : sub,
     'q' : efunc,
     }
 
@@ -45,10 +64,10 @@ def menusel(p, d):
     '''
     while True:
         response = input(p)
-        if dd[response]() == 'exiting':
+        if d[response]() == 'exiting':
             break
 
 
 if __name__ == '__main__':
-    menusel(prompt, dispdict)
+    menusel(prompt, dd)
 

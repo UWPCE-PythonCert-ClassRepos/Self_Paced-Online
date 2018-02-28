@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
 
+# def main():
+#     answer = None
+#     print(OPTS)
+#     while answer != 'q':
+#         answer = input('> ')
+#         if answer == 't':
+#             thankyou()
+#         elif answer == 'r':
+#             report()
+
 '''
 file: mailroom.py
 elmar_m / 22e88@mailbox.org
@@ -11,6 +21,8 @@ import collections
 
 # ts = time.strftime('%Y%m%d-%H%M%S') 
 
+p = '\n> Options: q == quit | t == thankyou | r == report\n'
+
 donors = collections.defaultdict(list)
  
 donors['bill'] = [2000, 7.5, 950000]
@@ -19,15 +31,18 @@ donors['donald'] = [657, 234, 28.57, 90456]
 donors['angie'] = [2, 99, 297765, 47, 28346]
 donors['kim'] = [38982, 66.23, 9856, 0.1]
 
-OPTS= '> Options: q == quit | t == thankyou | r == report'
-
+def writefile(name, text):
+    ts = time.strftime('%Y%m%d-%H%M%S')
+    fname = '{}.{}.txt'.format(name, ts)
+    f = open(fname, 'w')
+    f.write(text)
+    f.close
 
 def mail(n, m):
     '''
     Create mail text.
     '''
     print('Dear {}, thank you very much for your donation of {} dollars.\n'.format(n, m))
-
 
 def thankyou():
     '''
@@ -54,8 +69,7 @@ def thankyou():
             donors[name].append(int(donation))
             print('>>', donation, 'added to donation list of', name, 'thank you.\n')
             mail(name, donation)
-    print(OPTS)
-
+    print(prompt)
 
 def report():
     '''
@@ -63,36 +77,47 @@ def report():
     '''
     # get the highest number of digits to create formatstring accordingly:
     sumlist = []
-
-    # for i in donors.keys():
-    #    sumlist.append(sum(donors[i]))
     for i in donors.values():
         sumlist.append(sum(i))
-
-
     maxn = len(str(max(sumlist)))
     maxn += 2
-
     fstring = '{:<20} ' + '|' + '{:>' + str(maxn) + '} ' + '|' + '{:>9}' + '|' + '{:>20}' 
     print(fstring.format('Donor Name', 'Total', 'Num Gifts', 'Average Gift'))  
     print('-' * (maxn + 54)) 
-    for i in donors.keys():
+    # for i in donors.keys():
+    for i in donors:
         print(fstring.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) )) 
-    print(OPTS)
+    #print(OPTS)
+    # print(prompt)
 
+def efunc():
+    print('exiting.\n')
+    return 'exiting'
 
-def main():
-    answer = None
-    print(OPTS)
-    while answer != 'q':
-        answer = input('> ')
-        if answer == 't':
-            thankyou()
-        elif answer == 'r':
-            report()
-        
+'''
+Dispatcher dictionary (menu entries)
+'''
+d = {
+    't' : thankyou,
+    'r' : report,
+    'q' : efunc,
+    }
 
-if __name__ == '__main__':
-    main()
+def menu():
+    '''
+    Display menu to user. 
+    This function uses a "dispatcher dictionary".
+
+        ARGS:
+    p:  prompt which is shown to the user
+    d:  the dispatcher dictionary which holds the menu options
+    '''
+    while True:
+        response = input(p)
+        if d[response]() == 'exiting':
+            break
 
 	
+if __name__ == '__main__':
+    menu()
+
