@@ -39,9 +39,11 @@ def donation_prompt():
 
 
 def list_all_donor_names():
+    all_names = ""
     for each_name in sorted(get_all_donor_names()):
-        print("{}".format(each_name))
-
+        #print("{}".format(each_name))
+        all_names += "{}\n".format(each_name)
+    return(all_names)
 
 def send_thank_you():
     donor_name = None
@@ -49,7 +51,7 @@ def send_thank_you():
         donor_name = donor_name_prompt()
         if donor_name.lower() == "list":
             donor_name = None
-            list_all_donor_names()
+            print(list_all_donor_names())
 
     donation = None
     while not donation:
@@ -64,9 +66,7 @@ def send_thank_you():
     print("Thank You Email:  Thansk for the donation!\n\n")
 
 
-def create_report():
-    print("\nDonor Name           |  Total Given | Num Gifts | Average Gift")
-    print("---------------------------------------------------------------\n")
+def group_donations():
     report = []  # initialize report
 
     # for each_name in get_all_donor_names(donors):
@@ -75,10 +75,16 @@ def create_report():
     report = [[dk, sum(dv), len(dv)] for dk, dv in donors.items()]
 
     # sorting the report based on donations
-    r_sorted = sorted(report, key=lambda r: r[1], reverse=True)
+    return sorted(report, key=lambda r: r[1], reverse=True)
+
+
+def create_report():
+    print("\nDonor Name           |  Total Given | Num Gifts | Average Gift")
+    print("---------------------------------------------------------------\n")
+
 
     # Create the report
-    for donor_report in r_sorted:
+    for donor_report in group_donations():
         print("{:23}${:12.2f}{:10}   ${:12.2f}".format(donor_report[0],
             donor_report[1],
             donor_report[2],
