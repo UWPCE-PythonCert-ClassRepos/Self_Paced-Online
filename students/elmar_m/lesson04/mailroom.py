@@ -84,26 +84,33 @@ def list_donors():
 #    donors[dname].append(int(amount))
 #    print('>>', amount, 'added to donation list of', dname, 'thank you.\n')
 
-def add_donation():
+# def add_donation():
+def add():
     dname = input('>> Please give donor name: ')
 
     if dname in donors:
         print('>>', dname, 'already in list')
 
-        amount = input('>> please add current donation:\n>> ')
-        donors[dname].append(int(amount))
+        # amount = input('>> please add current donation:\n>> ')
+        # donors[dname].append(int(amount))
+        add_amount(dname)
 
         # print('>>', donation, 'added to donation list of', name, 'thank you.\n')
         # mail(name, donation)
     elif not dname in donors:
         print('>>', dname, 'not in list, adding it ')
 
-        amount = input('>> please add current donation:\n>> ')
-        donors[dname].append(int(amount))
+        # amount = input('>> please add current donation:\n>> ')
+        # donors[dname].append(int(amount))
+        add_amount(dname)
 
         # print('>>', donation, 'added to donation list of', name, 'thank you.\n')
         # mail(name, donation)
     # pass
+    
+def add_amount(donor):
+    amount = input('>> please add current donation:\n>> ')
+    donors[donor].append(int(amount))
     
 
 def report():
@@ -145,7 +152,7 @@ sub_d= {
     # 'l' : thankyou,
     'l' : list_donors,
     # 'a' : add_donor,
-    'a' : add_donation,
+    'a' : add,
     'x' : efunc,
     }
 
