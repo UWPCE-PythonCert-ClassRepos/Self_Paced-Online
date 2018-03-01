@@ -1,20 +1,10 @@
 #!/usr/bin/env python3
 import unittest
 from collections import defaultdict
-from mailroom4 import get_all_donor_names
-from mailroom4 import list_all_donor_names
-from mailroom4 import group_donations
+from mailroom4 import donors, get_all_donor_names, list_all_donor_names, group_donations
+
 
 # Test Functions:
-donors = defaultdict(list, {
-    "Bill Gates": [234.22, 45645.24, 43953.09, 98823],
-    'Jeff Bezo': [4564.23],
-    'Mike Dell': [299.09, 26273.67],
-    'Harry Potter': [8234.09, 83948.04, 7834.23],
-    'Ben Williams': [29283.00, 1334.34],
-    'Guy James': [93.00, 34.34]
-    })
-
 
 class TestMailRoom(unittest.TestCase):
     def test_get_all_donor_names(self):
@@ -23,6 +13,7 @@ class TestMailRoom(unittest.TestCase):
 
     def test_list_all_donor_names(self):
         self.assertEqual(list_all_donor_names(),'Ben Williams\nBill Gates\nGuy James\nHarry Potter\nJeff Bezo\nMike Dell\n')
+
 
     def test_group_donations(self):
         self.assertEqual(group_donations(), [['Bill Gates', 188655.55, 4],
