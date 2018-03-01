@@ -21,8 +21,10 @@ import collections
 
 # ts = time.strftime('%Y%m%d-%H%M%S') 
 
-main_p = '\n> Main menu options: q == quit | t == thankyou | r == report\n'
-sub_p = '\n>> Sub menu options: give me a donor name, or type "l" to see a list. Type "x" to exit.\n'
+main_p = '\n> Main menu. Options: t == thankyou | r == report | q == quit program\n'
+# sub_p = '\n>> Sub menu options: give me a donor name, or type "l" to see a list. Type "x" to exit.\n'
+# sub_p = '\n>> Sub menu "thankyou". Options: l == list current donors | a == add new donor |  d == add donation | x == exit submenu\n'
+sub_p = '\n>> Sub menu "thankyou". Options: l == list current donors | a == add donation / donor | x == exit submenu\n'
 
 donors = collections.defaultdict(list)
  
@@ -73,6 +75,37 @@ def thankyou():
     #        mail(name, donation)
     #print(prompt)
 
+def list_donors():
+    print('\n'.join(donors))
+    
+#def add_donor():
+#    dname = input('>> Please give donor name to add: ')
+#    amount = input('>> Please give donation amount: ')
+#    donors[dname].append(int(amount))
+#    print('>>', amount, 'added to donation list of', dname, 'thank you.\n')
+
+def add_donation():
+    dname = input('>> Please give donor name: ')
+
+    if dname in donors:
+        print('>>', dname, 'already in list')
+
+        amount = input('>> please add current donation:\n>> ')
+        donors[dname].append(int(amount))
+
+        # print('>>', donation, 'added to donation list of', name, 'thank you.\n')
+        # mail(name, donation)
+    elif not dname in donors:
+        print('>>', dname, 'not in list, adding it ')
+
+        amount = input('>> please add current donation:\n>> ')
+        donors[dname].append(int(amount))
+
+        # print('>>', donation, 'added to donation list of', name, 'thank you.\n')
+        # mail(name, donation)
+    # pass
+    
+
 def report():
     '''
     Show an overview of current donors and donations
@@ -110,8 +143,10 @@ Dispatcher dictionary submenu
 '''
 sub_d= {
     # 'l' : thankyou,
-    'l' : efunc,
-    'q' : efunc,
+    'l' : list_donors,
+    # 'a' : add_donor,
+    'a' : add_donation,
+    'x' : efunc,
     }
 
 #######################################################
@@ -125,10 +160,20 @@ def menu(p, d):
     p:  prompt which is shown to the user
     d:  the dispatcher dictionary which holds the menu options
     '''
-    while True:
-        response = input(p)
-        if d[response]() == 'exiting':
-            break
+    try:
+        while True:
+            response = input(p)
+            if d[response]() == 'exiting':
+                break
+    except KeyError:
+        print('sorry, unknown option:', response)
+        print(p)
+        menu(p, d)
+        # return None
+    # finally:
+    #     menu(p, d)
+
+
 
 #######################################################
 	
