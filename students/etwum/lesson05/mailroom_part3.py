@@ -24,9 +24,21 @@ def send_thank_you():
             print(x["donor name"])
         print('----------------------------')
 
-    # input donor name to print an email
-    donor_first_name = input("Please input the first name of the donor. ")
-    donor_last_name = input("Please input the last name of the donor. ")
+    while True:
+
+        # validates to make sure the user inputs a first and last name
+        try:
+            # input donor name to print an email
+            donor_first_name = input("Please input the first name of the donor. ")
+            donor_last_name = input("Please input the last name of the donor. ")
+            if donor_first_name == "" or donor_last_name == "":
+                raise Exception
+        except Exception:
+            print("\nPlease input a first and last name")
+            print()
+        else:
+            break
+
     donor_full_name = donor_first_name.capitalize() + " " + donor_last_name.capitalize()
     print('-----------------------------------------------------')
     print()
@@ -34,7 +46,19 @@ def send_thank_you():
     # prints an email if the donors name is currently in the list
     for x in lst_donors:
         if x["donor name"] == donor_full_name:
-            str_donation_choice = input("Would you like to add another donation? (yes or no) ")
+
+            while True:
+
+                # raise exception if the user inputs anything other than 'yes' or 'no'
+                try:
+                    str_donation_choice = input("Would you like to add another donation? (yes or no) ")
+                    if str_donation_choice not in ("yes","no"):
+                        raise Exception
+                except Exception:
+                    print("Please input 'yes' or 'no'")
+                else:
+                    break
+
             print('-----------------------------------------------------')
             print()
             if str_donation_choice == 'yes':
@@ -45,9 +69,9 @@ def send_thank_you():
                 x["total donations"] = total_donations
                 x["number donations"] = count_donations
                 x["avg donation"] = '{:.2f}'.format(avg_donation)
-
-            email = "Dear {a},\n\nThank you for your generous donations of ${b:.2f} to our charity.\n".format(
-                a=x["donor name"],b=x["total donations"])
+                print('-----------------------------------------------------\n')
+            email = "Dear {donor_name},\n\nThank you for your generous donations of ${donations:.2f} " \
+                    "to our charity.\n".format(donor_name=x["donor name"],donations=x["total donations"])
             print(email)
             break
 
@@ -57,8 +81,10 @@ def send_thank_you():
 
         print("Donor not found")
         new_donation_amount = None
-        boolValid = False
-        while boolValid != True:
+
+        while True:
+
+            # raises an exception if the user doesnt input a valid number
             try:
                 new_donation_amount = float(input("Please input a donation "
                                                   "amount in order to add the donor to the list. "))
@@ -66,15 +92,15 @@ def send_thank_you():
                 print(e)
                 print("Please input a valid number")
             else:
-                boolValid = True
+                break
         new_donor.append({"donor name": donor_full_name, "total donations": new_donation_amount, "number donations": 1,
                           "avg donation": new_donation_amount})
         lst_donors.extend(new_donor)
         print('-----------------------------------------------------')
         for x in lst_donors:
             if x["donor name"] == donor_full_name:
-                email = "Dear {a},\n\nThank you for your generous donations of ${b:.2f} to our charity.\n".format(
-                    a=x["donor name"],b=x["total donations"])
+                email = "Dear {donor_name},\n\nThank you for your generous donations of ${donations:.2f} " \
+                        "to our charity.\n".format(donor_name=x["donor name"],donations=x["total donations"])
                 print(email)
     print('-----------------------------------------------------')
 
@@ -89,9 +115,9 @@ def create_report():
     # creates a report of the the donors
     # headers used in table
     print()
-    lst_Header = [["Donor Name", "| Total Donation(s)", "| # of Donations", "| Avg Donation"]]
+    lst_headers = [["Donor Name", "| Total Donation(s)", "| # of Donations", "| Avg Donation"]]
 
-    for x in lst_Header:
+    for x in lst_headers:
         print('{:<25}{:<20}{:<17}{:<15}'.format(*x))
     print("----------------------------------------------------------------------------")
     for x in sorted(lst_donors,key=sort_list, reverse= True):
@@ -104,11 +130,11 @@ def send_letter_all():
     for x in lst_donors:
 
         # opens or creates a new text file for writing based on the donor name
-        with open('{a}.txt'.format(a = x['donor name']), 'w') as f1:
+        with open('{file_name}.txt'.format(file_name=x['donor name']), 'w') as f1:
 
             # writes a thank you letter to the text file
-            f1.write('Dear {a},\n\nThank you for your generous donation(s) of ${b:.2f} to our charity.'.format(
-                a=x['donor name'], b=x['total donations']))
+            f1.write('Dear {donor_name},\n\nThank you for your generous donation(s) of ${donations:.2f} to our charity.'.format(
+                donor_name=x['donor name'], donations=x['total donations']))
             print('Letter sent to  {a}'.format(a=x['donor name']))
 
     print('----------------------------------------------\n')
