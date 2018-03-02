@@ -5,6 +5,7 @@ Lesson 3 - List Lab
 
 def main():
     fruits = series1()
+    series2(fruits)
     
 
 def series1():
@@ -41,5 +42,7 @@ def series1():
     
     return fruits
 
+def series2(fruits):
+    print(fruits)
 
 main()
