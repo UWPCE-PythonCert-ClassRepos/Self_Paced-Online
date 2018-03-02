@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
 # Initial donor list and the amounts they have donated
-donor_history = [
-            ['Red Herring', 65820.5, 31126.37, 15000],
-            ['Papa Smurf', 210.64, 1000],
-            ['Pat Panda', 55324.4],
-            ['Karl-Heinz Berthold', 3545.2, 10579.31],
-            ['Mama Murphy', 156316.99, 8500.3, 12054.33],
-            ['Daphne Dastardly', 82]
-        ]
+donor_history = {
+            'Red Herring': [65820.5, 31126.37, 15000],
+            'Papa Smurf': [210.64, 1000],
+            'Pat Panda': [55324.4],
+            'Karl-Heinz Berthold': [3545.2, 10579.31],
+            'Mama Murphy': [156316.99, 8500.3, 12054.33],
+            'Daphne Dastardly': [82]
+        }
 
 def manage_donors():
     """
@@ -16,29 +16,34 @@ def manage_donors():
 
     :return:  None.
     """
-    choices = ("Send a Thank You", "Create a Report", "Quit")
-    while True:  # Infinite loop until user chooses to exit
+    # create a dictionary of menu items, menu text, and menu caller functions
+    choices = {'1': ("Send a Thank You", send_thank_you), 
+               '2': ("Create a Report", create_a_report),
+               '3': ("Quit", exit_screen)}
+    
+    response = ''
+    while response != '3':  # Show menu forever until user exits
         # Print the menu list (with numbered choices)
         print()
-        for i, j in enumerate(choices):
-            print(i + 1, j)
+        for i in choices:
+            print(i, choices[i][0])
 
         # Get the selection number
         response = ''
-        while not response.isdigit() or int(
-                response) not in range(1, len(choices) + 1):
+        while not response in choices:
             response = input("Type your selection: ").strip()
-        response = int(response)
 
-        # Call helper functions or exit
-        if response == 1:
-            send_thank_you()
-        elif response == 2:
-            create_a_report()
-        elif response == 3:
-            print("\nGoodbye.\n")
-            return
-        
+        choices[response][1]()  # Call helper function
+
+def exit_screen():
+    """
+    Simply print an exit message.
+
+    :return:  None.
+    """
+    print("\nExiting.\n")
+    return
+
 def send_thank_you():
     """
     Add new donations for new or existing donors, and send a thank-you
@@ -46,38 +51,39 @@ def send_thank_you():
 
     :return:  None.
     """
-    donors = [x[0] for x in donor_history]  # Get list of donor names
-
     # Get the donor name, show all donors, or quit
     response = input(
       "\nType the full donor name (or 'list' to show all donors, or 'quit'): "
       ).strip()
 
-    if response.lower() == 'quit':
+    if response.lower() in ('', 'quit'):
+        exit_screen()
         return
 
     elif response.lower() == 'list':
-        print("\nLIST OF DONORS:", donors)
+        print("\nLIST OF DONORS:")
+        for donor in donor_history:
+            print(donor)
         send_thank_you()  # Try getting a donor name again
 
     else:
-        if response not in donors:  # Add to donor list if it's a new name
-            donors.append(response)
-            donor_history.append([response])
-
-        donation = '...'  # Seed donation variable to continue the while loop
-        # Make sure the donation amount is a valid, positive number
-        while donation.count('.') > 1 or donation.strip('0123456789.'
-                ) != '' or float(donation) <= 0.0:
+        while True:  # Get the donation amount
             donation = input(
                     f"Type amount donated by '{response}' (or type 'quit'): "
                     ).strip().lower()
             if donation == 'quit':
+                exit_screen()
                 return
+            # Make sure the donation amount is a valid, positive number
+            elif donation.strip('0123456789.') == '' and len(
+                    donation) > 0 and donation.count('.') <= 1 and float(
+                    donation) > 0.0:
+                break
 
         # Add the donation to the master donor history and print the letter
         donation = float(donation)
-        donor_history[donors.index(response)].append(donation)
+        donor_history.setdefault(response, [])
+        donor_history[response].append(donation)
         print(create_form_letter(response, donation))
 
 def create_a_report():
@@ -91,12 +97,12 @@ def create_a_report():
             + 'Number of gifts |        Average gift')
     print('--------------------------|---------------------|-'
             + '----------------|--------------------')
-    for individual_donor in donor_history:
-        total_donation = sum(individual_donor[1:])
-        number_of_gifts = len(individual_donor) - 1
+    for individual_donor, donations in donor_history.items():
+        total_donation = sum(donations)
+        number_of_gifts = len(donations)
         average_donation = 1.0 * total_donation / number_of_gifts
         print('{:<25s} | ${:>18,.2f} | {:>15d} | ${:>18,.2f}'.format(
-                individual_donor[0], total_donation,
+                individual_donor, total_donation,
                 number_of_gifts, average_donation))
 
 def create_form_letter(donor_name, donor_amount):
