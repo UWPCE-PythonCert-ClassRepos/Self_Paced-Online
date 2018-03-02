@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
 
-# def main():
-#     answer = None
-#     print(OPTS)
-#     while answer != 'q':
-#         answer = input('> ')
-#         if answer == 't':
-#             thankyou()
-#         elif answer == 'r':
-#             report()
-
 '''
 file: mailroom.py
 elmar_m / 22e88@mailbox.org
@@ -19,12 +9,9 @@ Lesson04: Mailroom Exercise Part 2
 import time
 import collections
 
-# ts = time.strftime('%Y%m%d-%H%M%S') 
 
 main_p = '\n> Main menu. Options: t == thankyou | r == report | q == quit program\n'
-# sub_p = '\n>> Sub menu options: give me a donor name, or type "l" to see a list. Type "x" to exit.\n'
-# sub_p = '\n>> Sub menu "thankyou". Options: l == list current donors | a == add new donor |  d == add donation | x == exit submenu\n'
-sub_p = '\n>> Sub menu "thankyou". Options: l == list current donors | a == add donation / donor | x == exit submenu\n'
+sub_p = '\n>> Sub menu "thankyou". Options: l == list current donors | a == add donation / donor | m == send mail to every donor | x == exit submenu\n'
 
 donors = collections.defaultdict(list)
  
@@ -34,18 +21,36 @@ donors['donald'] = [657, 234, 28.57, 90456]
 donors['angie'] = [2, 99, 297765, 47, 28346]
 donors['kim'] = [38982, 66.23, 9856, 0.1]
 
-def writefile(name, text):
+
+def writefile(name, content):
+    '''
+    Create mail files
+    
+        ARGS:
+    name: filename / name of donor
+    content: mail body text
+    '''
     ts = time.strftime('%Y%m%d-%H%M%S')
     fname = '{}.{}.txt'.format(name, ts)
     f = open(fname, 'w')
-    f.write(text)
+    f.write(content)
     f.close
 
-def mail(n, m):
+
+def mail():
     '''
-    Create mail text.
+    Create mail body text for every donor
     '''
-    print('Dear {}, thank you very much for your donation of {} dollars.\n'.format(n, m))
+    for i in donors:
+        # print('Dear {}, thank you very much for your donation of {} dollars.\n'.format(i, donors[i][-1]))
+        text = '''Dear {},\n 
+    Thank you very much for your very kind donation of ${}.\n
+    It will be put to very good use.\n
+        Sincerely,
+             -The Team'''.format(i, donors[i][-1])
+        writefile(i, text)
+        print('mailfile created for', i, 'in your current working directory')
+
 
 def thankyou():
     '''
@@ -53,69 +58,42 @@ def thankyou():
     add new donation to donor and print letter of thanks.
     '''
     menu(sub_p, sub_d)
-    #name = None
-    #while True:
-    #    print('>> give me a donor name, or type "l" to see a list. Type "x" to exit.')
-    #    name = input('>> ')
-    #    if name == 'x':
-    #        break
-    #    elif name == 'l':
-    #        print('\n'.join(donors))
-    #    elif name in donors:
-    #        print('>>', name, 'already in list')
-    #        donation = input('>> please add current donation:\n>> ')
-    #        donors[name].append(int(donation))
-    #        print('>>', donation, 'added to donation list of', name, 'thank you.\n')
-    #        mail(name, donation)
-    #    elif not name in donors:
-    #        print('>>', name, 'not in list, adding it ')
-    #        donation = input('>> please add current donation:\n>> ')
-    #        donors[name].append(int(donation))
-    #        print('>>', donation, 'added to donation list of', name, 'thank you.\n')
-    #        mail(name, donation)
-    #print(prompt)
+
 
 def list_donors():
+    '''
+    Print list of donors
+    '''
     print('\n'.join(donors))
     
-#def add_donor():
-#    dname = input('>> Please give donor name to add: ')
-#    amount = input('>> Please give donation amount: ')
-#    donors[dname].append(int(amount))
-#    print('>>', amount, 'added to donation list of', dname, 'thank you.\n')
 
-# def add_donation():
 def add():
+    '''
+    Add new donation and / or donor
+    '''
     dname = input('>> Please give donor name: ')
-
     if dname in donors:
         print('>>', dname, 'already in list')
-
-        # amount = input('>> please add current donation:\n>> ')
-        # donors[dname].append(int(amount))
         add_amount(dname)
-
-        # print('>>', donation, 'added to donation list of', name, 'thank you.\n')
-        # mail(name, donation)
     elif not dname in donors:
         print('>>', dname, 'not in list, adding it ')
-
-        # amount = input('>> please add current donation:\n>> ')
-        # donors[dname].append(int(amount))
         add_amount(dname)
 
-        # print('>>', donation, 'added to donation list of', name, 'thank you.\n')
-        # mail(name, donation)
-    # pass
-    
+
 def add_amount(donor):
+    '''
+    Add donation amount
+        
+        ARGS:
+    donor: name of donor
+    '''
     amount = input('>> please add current donation:\n>> ')
     donors[donor].append(int(amount))
-    
+    print(amount, 'added to donation list of', donor, ', thank you')     
 
 def report():
     '''
-    Show an overview of current donors and donations
+    Print a formatted list of current donors and donations
     '''
     # get the highest number of digits to create formatstring accordingly:
     sumlist = []
@@ -126,37 +104,31 @@ def report():
     fstring = '{:<20} ' + '|' + '{:>' + str(maxn) + '} ' + '|' + '{:>9}' + '|' + '{:>20}' 
     print(fstring.format('Donor Name', 'Total', 'Num Gifts', 'Average Gift'))  
     print('-' * (maxn + 54)) 
-    # for i in donors.keys():
     for i in donors:
         print(fstring.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) )) 
-    #print(OPTS)
-    # print(prompt)
 
 def efunc():
+    '''
+    Exit menu
+    '''
     print('exiting.\n')
     return 'exiting'
 
-'''
-Dispatcher dictionary main menu
-'''
 main_d = {
+    # Dispatcher dictionary main menu
     't' : thankyou,
     'r' : report,
     'q' : efunc,
     }
 
-'''
-Dispatcher dictionary submenu
-'''
 sub_d= {
-    # 'l' : thankyou,
+    #Dispatcher dictionary submenu
     'l' : list_donors,
-    # 'a' : add_donor,
     'a' : add,
     'x' : efunc,
+    'm' : mail,
     }
 
-#######################################################
 
 def menu(p, d):
     '''
@@ -176,14 +148,7 @@ def menu(p, d):
         print('sorry, unknown option:', response)
         print(p)
         menu(p, d)
-        # return None
-    # finally:
-    #     menu(p, d)
 
-
-
-#######################################################
 	
 if __name__ == '__main__':
     menu(main_p, main_d)
-
