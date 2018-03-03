@@ -15,11 +15,9 @@ def is_number(n):
         return False
 
 def send_thank_you():
-
-    """ 
-        prompt user for name and donation amount, add to donation dictionary 
+    """
+        prompt user for name and donation amount, add to donation dictionary
         provide list of names if user enters \'list\' as name
-        send a thank you email to the donor for donation
     """
 
     name = 'list'
@@ -28,23 +26,27 @@ def send_thank_you():
         if name == 'list':
             for donor in donation_dict:
                 print(donor)
-    
+
     amount = input("Provide a donation amount:")
+    thank_you_message = validate_and_create_thank_you(name, amount)
+    print(thank_you_message)
+
+def validate_and_create_thank_you(name, amount):
+    """ send a thank you email to the donor for donation """
+
     if not is_number(amount):
-        print('invalid donation amount: ' + str(e))
-        return
-    
+        return 'invalid donation amount: ' + str(amount)  
+ 
     try:
         name.split()[1]
     except IndexError as e:
-        print('Could not send thank you.  The first and last name of donor must be provided\n')
+        return 'Could not send thank you.  The first and last name of donor must be provided\n'
     else:
         donor_dict[name] = { 'firstname': name.split()[0], 'lastname': name.split()[1] }
         amount_list = donation_dict[name] if name in donation_dict else []
         amount_list.append(amount)
         donation_dict[name] = amount_list
-        thank_you_string = f"Hi {name}\nThank you for your donation of {amount} to the mailroom!\n"
-        print(thank_you_string)  
+        return f"Hi {name}\nThank you for your donation of {amount} to the mailroom!\n"
 
 def create_report():
 
