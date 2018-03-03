@@ -1,6 +1,6 @@
 import mailroom
-import unittest, sys
-
+import unittest
+import sys, os 
 
 class test_mailroom(unittest.TestCase):
 
@@ -24,6 +24,26 @@ class test_mailroom(unittest.TestCase):
     def test_validate_and_create_thank_you_good_values(self):
         output = mailroom.validate_and_create_thank_you(self.good_name, self.good_amount)
         assert output == f"Hi {self.good_name}\nThank you for your donation of {self.good_amount} to the mailroom!\n"
+
+    def test_validate_user_selection(self):
+        valid_selection = mailroom.validate_user_selection(0)
+        assert not valid_selection
+
+        valid_selection = mailroom.validate_user_selection('a')
+        assert not valid_selection
+
+        valid_selection = mailroom.validate_user_selection(1)
+        assert valid_selection
+
+        valid_selection = mailroom.validate_user_selection(4)
+        assert valid_selection
+
+    def test_write_letters(self):
+        donor_count = len(mailroom.donor_dict.keys())
+        mailroom.write_letters()
+        letter_list = [f for f in os.listdir(mailroom.letter_directory) if '.txt' in f]
+
+        assert donor_count == len(letter_list) 
 
 
 if __name__ == '__main__':

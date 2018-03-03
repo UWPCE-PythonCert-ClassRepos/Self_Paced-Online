@@ -1,4 +1,5 @@
 from datetime import date
+import os
 
 # dictionary to hold donors and list of donation amounts
 letter_directory = 'temp/'
@@ -65,6 +66,13 @@ def create_report():
         print(data_row)
 
 def write_letters():
+    """ write letters to every donor in dict """
+
+    #clear files from directory before creating new ones
+    for f in os.listdir(letter_directory):
+        if '.txt' in f:
+            os.remove(letter_directory + f)
+
     for donor,name_dict in donor_dict.items():
         first_name = name_dict['firstname']
         last_name = name_dict['lastname']
@@ -79,6 +87,17 @@ def write_letters():
                 f.write(message)
             donation_num += 1
 
+def validate_user_selection(action):
+    """ validate the user selection versus available actions """
+
+    key_list = list(action_dict.keys())
+    if not is_number(action) or int(action) not in key_list:
+        return False
+    else:
+        return True
+
+action_dict = { 1: send_thank_you, 2: create_report, 3: write_letters, 4: exit }
+
 if __name__ == '__main__':
     # build initial dictionary of donors and donation amounts
     amount_list = [ 500, 100, 1000]
@@ -89,7 +108,6 @@ if __name__ == '__main__':
         donation_dict[donor]= amount_list[:] 
 
     # prompt user for action and then call function
-    action_dict = { 1: send_thank_you, 2: create_report, 3: write_letters, 4: quit }
     action = 0
     while not is_number(action) or int(action) != 4:
         prompt_message = 'What would you like to do: '
@@ -98,8 +116,9 @@ if __name__ == '__main__':
         prompt_message += '3 - \"Send letters to everyone\" or 4 - \“quit\”\n'
         action = input(prompt_message)
         
-        if not is_number(action) or int(action) < 1 or int(action) > 4:
-            print("please enter a number 1-4")
+        if not validate_user_selection(action):
+            key_list = list(action_dict.keys())
+            print("please enter a number {0}-{1}".format(key_list[0],key_list[-1]))
         else:
             action_dict[int(action)]()
 
