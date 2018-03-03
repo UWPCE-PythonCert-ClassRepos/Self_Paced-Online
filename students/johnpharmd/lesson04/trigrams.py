@@ -35,50 +35,43 @@ s3 = ''
 st_dict = {}
 count = 0
 pron_set = set(['I', 'you', 'she', 'he', 'it', 'we', 'they'])
-new_data = []
-final_data = []
 
 # Processing
 with open('sherlock_small.txt', 'r') as f:
     read_data = f.read()
-# lines between this and next comment line can be encapsulated into a fxn
-    # read_data = read_data.split(' ')
-# copy_read_data = read_data[:]
-# for i, st in enumerate(copy_read_data):
+
 read_data = ' '.join(read_data.split('\n'))
 read_data = ' '.join(read_data.split('--'))
 read_data = ' '.join(read_data.split('-'))
 read_data = ' '.join(read_data.split(', '))
 read_data = ' '.join(read_data.split('. '))
-read_data = ' '.join(read_data.split('('))
-read_data = ' '.join(read_data.split(')'))
+read_data = ''.join(read_data.split('('))
+read_data = ''.join(read_data.split(')'))
 read_data = read_data.strip('.')
 read_data = read_data.strip('  ')
 read_data = read_data.split(' ')
-# read_data = ' '.join(read_data.split(' '))
-# read_data = read_data.split(' ') 
-    # for st in read_data:
-    #    new_data.append(st.strip(',.()'))
 
 print('type(read_data):', type(read_data), '\n')
-print('read_data:', read_data)
-# for st in read_data:
-#    print(st)
-# for i, word in enumerate(st_split_lst):
-#     if i + 2 < len(st_split_lst):
-#         s1 = word
-#         s2 = st_split_lst[i + 1]
-#         st_key = (s1, s2)
-#         s3 = st_split_lst[i + 2]
-#         if st_key not in st_dict:
-#                 st_dict[st_key] = [s3]
-#         else:
-#             st_dict[st_key] += [s3]
-#         count += 1
+# print('read_data:', read_data)
+
+# lines between this and next comment line can be encapsulated into a fxn
+for i, word in enumerate(read_data):
+    if i + 2 < len(read_data):
+        s1 = word
+        s2 = read_data[i + 1]
+        st_key = (s1, s2)
+        s3 = read_data[i + 2]
+        if st_key not in st_dict:
+                st_dict[st_key] = [s3]
+        else:
+            st_dict[st_key] += [s3]
+        count += 1
 # see comment line above
-# print()
-# print('st_dict:', st_dict)
-# print('len(st_dict):', len(st_dict))
+print()
+print('st_dict:')
+for k, v in st_dict.items():
+	print(k, v, end='\n')
+print('len(st_dict):', len(st_dict))
 
 # rand_kv = st_dict.popitem()
 # print('rand_kv:', rand_kv)
