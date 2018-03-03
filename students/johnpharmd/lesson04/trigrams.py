@@ -35,6 +35,8 @@ s3 = ''
 st_dict = {}
 count = 0
 pron_set = set(['I', 'you', 'she', 'he', 'it', 'we', 'they'])
+n = 0
+new_st_lst= []
 
 # Processing
 with open('sherlock_small.txt', 'r') as f:
@@ -73,5 +75,14 @@ for k, v in st_dict.items():
 print('len(st_dict):', len(st_dict))
 
 rand_k = random.choice(list(st_dict))
-rand_v = st_dict[rand_k]
-print('\nrandom k, v:', rand_k, rand_v)
+rand_v = random.choice(st_dict[rand_k])
+# print('\nrandom k, v:', rand_k, rand_v)
+new_st_lst.extend([rand_k[0], rand_k[1], rand_v])
+potential_k = (new_st_lst[-3], new_st_lst[-2])
+while n < 10:  # len(st_dict) * 2:
+    # print('potential_k:', potential_k)	
+    if potential_k in st_dict:
+        new_st_lst.append(random.choice(st_dict[potential_k]))
+                   
+    n += 1
+print('new_st_lst:', new_st_lst)
