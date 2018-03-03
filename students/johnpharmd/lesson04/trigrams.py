@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import random
 """
 Trigram analysis: Look at each set of three adjacent words in a document.
 Use the first two words of the set as a *key*, and remember the fact that
@@ -67,12 +67,11 @@ for i, word in enumerate(read_data):
             st_dict[st_key] += [s3]
         count += 1
 # see comment line above
-print()
-print('st_dict:')
+print('\nst_dict:')
 for k, v in st_dict.items():
-	print(k, v, end='\n')
+    print(k, v, end='\n')
 print('len(st_dict):', len(st_dict))
 
-# rand_kv = st_dict.popitem()
-# print('rand_kv:', rand_kv)
-# print('st_dict:', st_dict)
+rand_k = random.choice(list(st_dict))
+rand_v = st_dict[rand_k]
+print('\nrandom k, v:', rand_k, rand_v)
