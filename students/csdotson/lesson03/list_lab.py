@@ -65,17 +65,17 @@ print("Starting with the list from Series 1:", fruit_list)
 
 # Ask user if they like each fruit, check answer, remove if 'no'
 for item in fruit_list[:]:
-    response = input("Do you like {}? ".format(item.lower()))
-    if response.lower() == "yes":
+    response = input("Do you like {}? ".format(item.lower())).lower()
+    if response == "yes":
         continue
-    elif response.lower() == "no":
+    elif response == "no":
         fruit_list.remove(item)
     else:
         while True:
-            response = input("That's not a valid answer, 'yes' or 'no' please... ")
-            if response.lower() == "yes":
+            response = input("That's not a valid answer, 'yes' or 'no' please... ").lower()
+            if response == "yes":
                 break
-            elif response.lower() == "no":
+            elif response == "no":
                 fruit_list.remove(item)
                 break
             else:
