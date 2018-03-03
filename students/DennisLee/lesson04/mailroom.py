@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import os
+import pathlib
+
 # Initial donor list and the amounts they have donated
 donor_history = {
             'Red Herring': [65820.5, 31126.37, 15000],
@@ -17,12 +20,13 @@ def manage_donors():
     :return:  None.
     """
     # create a dictionary of menu items, menu text, and menu caller functions
-    choices = {'1': ("Send a Thank You", send_thank_you), 
-               '2': ("Create a Report", create_a_report),
-               '3': ("Quit", exit_screen)}
+    choices = {'1': ("Send a thank you", send_thank_you), 
+               '2': ("Create a report", create_a_report),
+               '3': ("Send letters to everyone", send_all_letters),
+               '4': ("Quit", exit_screen)}
     
     response = ''
-    while response != '3':  # Show menu forever until user exits
+    while response != '4':  # Show menu forever until user exits
         # Print the menu list (with numbered choices)
         print()
         for i in choices:
@@ -105,6 +109,37 @@ def create_a_report():
                 individual_donor, total_donation,
                 number_of_gifts, average_donation))
 
+def send_all_letters():
+    """
+    Save all donor thank-you letters to disk.
+
+    :return:  None.
+    """
+    # Ask for the directory to save the letters to
+    cur_dir = os.getcwd()
+    print('\nThe current directory is %s' % cur_dir)
+    new_dir = input('\nType the directory to save the letters in '
+            '(leave empty to save in the current directory): ').strip()
+
+    if new_dir != '':  # Go to new directory (create if nonexistent)
+        os.mkdir(new_dir)
+        os.chdir(new_dir)
+        new_dir = os.getcwd()
+    else:
+        new_dir = cur_dir
+
+    # Save each letter, with the donor name in each file name
+    for k, v in donor_history.items():
+        letter = create_form_letter(k, v[-1])
+        with open('{:s}.txt'.format(k), 'w') as f:
+            for line in letter:
+                f.write(line)
+    
+    # Print the names of the saved letters and return to the original directory
+    print('New letters saved in %s:' % new_dir)
+    print(os.listdir())
+    os.chdir(cur_dir)
+
 def create_form_letter(donor_name, donor_amount):
     """
     Create the form letter using the donor name and amount.
@@ -122,8 +157,8 @@ def create_form_letter(donor_name, donor_amount):
 
             Dear {0:s},
 
-            We want to express our genuine gratitude for your donation of
-            ${1:,.2f} to the Random Worthy Cause Foundation.  To show our
+            We want to express our gratitude for your donation of ${1:,.2f}
+            {2:s}to the Random Worthy Cause Foundation.  To show our
             appreciation, we have enclosed a set of address labels
             and a custom tote bag that lets people know that you are a
             generous supporter of our cause.
@@ -139,7 +174,16 @@ def create_form_letter(donor_name, donor_amount):
             Random Worthy Cause Foundation
             """
     
-    return str.format(donor_name, donor_amount)
+    # If a donor has given before, add a parenthetical clause stating the
+    # total donation amount and the number of donations
+    str2 = ''
+    gifts = len(donor_history[donor_name])
+    if gifts > 1:
+        str2 = '(and total donations of ' \
+                '{0:,.2f} from {1:,d} gifts)\n            '.format(
+                sum(donor_history[donor_name]), gifts)
+    
+    return str.format(donor_name, donor_amount, str2)
 
 if __name__ == "__main__":
     manage_donors()
