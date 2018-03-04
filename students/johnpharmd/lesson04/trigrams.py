@@ -24,11 +24,15 @@ as a starting point. Use these to look up a random next word
 (using the table above) and append this new word to the text so far.
 This now gives you a new word pair at the end of the text, so look up
 a potential next word based on these. Add this to the list, and so on.
+
+In this kata, what we’re experimenting with is not just the code,
+but the heuristics of processing the text. What do we do with punctuation?
+Paragraphs? Do we have to implement backtracking if we chose
+a next word that turns out to be a dead end?
 """
 
 # Data
-sample_st = 'I wish I may I wish I might'
-pron_set = set(['I', 'you', 'she', 'he', 'it', 'we', 'they'])
+# no data
 
 
 # Processing
@@ -41,7 +45,7 @@ def clean_data():
     # header_size = 0
         read_data = f.read()
         # read_data = f.seek('To Sherlock Holmes she')
-    replace_map = {'': ('\r', '"', '(', ')'), ' ': ('"\r', '"\n',
+    replace_map = {'': ('\r', '"', '\'', '(', ')'), ' ': ('"\r', '"\n',
                 '.\r', '\n', '" ', '--', '-', ', ', '. ', '? ', '! ')}
     for new_char, chars in replace_map.items():
         for c in chars:
@@ -57,12 +61,11 @@ def clean_data():
     # read_data = ''.join(read_data.split(')'))
     read_data = read_data.strip('.')
     read_data = read_data.strip('  ')
-    read_data = read_data.split(' ')
+    read_data_list = read_data.split(' ')
 
-    print('type(read_data):', type(read_data), '\n')
-    # print('read_data:', read_data)
-    print(read_data)
-    return read_data
+    if len(read_data_list) < 200:
+        print(read_data_list)
+    return read_data_list
 
 
 def make_string_dict(lst):
@@ -94,8 +97,9 @@ def make_string_dict(lst):
 def print_string_dict(st_dictionary):
     st_dict = st_dictionary
     print('\nst_dict:')
-    for k, v in st_dict.items():
-        print(k, v, end='\n')
+    # for k, v in st_dict.items():
+    #     print(k, v, end='\n')
+    print('\nProcessing...\n')
     print('len(st_dict):', len(st_dict))
 
 
@@ -106,7 +110,7 @@ def count_empty_strings(st_dictionary):
     for lst in st_dict_vals:
         if '' in lst:
             count += 1
-    print('\ncount of \'\' in st_dict:', count)
+    print('count of \'\' in st_dict:', count)
 
 
 def make_new_string(st_dictionary):
@@ -115,22 +119,48 @@ def make_new_string(st_dictionary):
     rand_k = random.choice(list(st_dict))
     rand_v = random.choice(st_dict[rand_k])
     n = 0
+    sentence_frame = random.randrange(8, 13)
+    output = []
 
     new_st_lst.extend([rand_k[0], rand_k[1], rand_v])
-    print('initial new_st_lst:', new_st_lst)
+    print('\ninitial new_st_lst:', new_st_lst)
     potential_k = (new_st_lst[-2], new_st_lst[-1])
-    while potential_k in st_dict:  # len(st_dict) * 2:
-        # if potential_k in st_dict:
-        new_st_lst.append(random.choice(st_dict[potential_k]))
+    for i in range(len(st_dict) // 8):
+        if potential_k in st_dict:
+            new_st_lst.append(random.choice(st_dict[potential_k]))
         potential_k = (new_st_lst[-2], new_st_lst[-1])
-        n += 1
+        # n += 1
 
     print('len(new_st_lst):', len(new_st_lst))
-    print(new_st_lst)
+    # print(new_st_lst)
+    for i, s in enumerate(new_st_lst[:]):
+        if s == '':
+            continue
+        elif s == 'The' or s == 'A':
+             s = s.lower()
+             output.append(s)
+        else:
+            if i % sentence_frame == 2:
+                output.extend([s + '.'])
+                n += 1
+                sentence_frame = random.randrange(8, 13)
+                if n % 3 == 0:
+                   output.append('\n\n') 
+            else:
+                output.append(s)
+    output_string = ' '.join(output)
+    # for i, char in enumerate(output_string[:]):
+    #     if i == 0:  # or output_string[i - 2] == '.':
+    #         char.capitalize()
+    print('\nnew string:')
+    print(output_string)
 
 
+# I/O
 cleaned_data = clean_data()
 data_dict = make_string_dict(cleaned_data)
-print_string_dict(data_dict)
+if len(data_dict) < 200:
+    print_string_dict(data_dict)
 # print('\ncount of empty strings in string dictionary:')
 count_empty_strings(data_dict)
+make_new_string(data_dict)
