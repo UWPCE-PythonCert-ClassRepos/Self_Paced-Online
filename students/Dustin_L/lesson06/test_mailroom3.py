@@ -63,7 +63,16 @@ class TestMailRoom(unittest.TestCase):
             #                 print_results)
 
     def test_get_donor_names(self):
-        pass
+        """Test the get_donor_names() fxn"""
+
+        test_donor_db = {'Test Donor 1': 'na',
+                         'Test Donor 2': 'na',
+                         'Test Donor 3': 'na'}
+        with mock.patch.dict(mr.donor_db, test_donor_db, clear=True):
+            self.assertTrue(mr.get_donor_names() == ['test donor 1',
+                                                     'test donor 2',
+                                                     'test donor 3'],
+                            mr.get_donor_names())
 
     def test_prompt_for_donor(self):
         pass
