@@ -14,7 +14,30 @@ class TestMailRoom(unittest.TestCase):
         pass
 
     def test_init_donor_data(self):
-        pass
+        """Tests the init_donor_data() fxn"""
+
+        # Test with default parameter
+        ret_dict = mr.init_donor_data()
+        self.assertTrue(ret_dict[mr.GIFTS_KEY] == [],
+                        ret_dict[mr.GIFTS_KEY])
+        self.assertTrue(ret_dict[mr.NUM_GIFTS_KEY] == 0,
+                        ret_dict[mr.NUM_GIFTS_KEY])
+        self.assertTrue(ret_dict[mr.TOTAL_KEY] == 0,
+                        ret_dict[mr.TOTAL_KEY])
+        self.assertTrue(ret_dict[mr.AVE_KEY] == 0,
+                        ret_dict[mr.AVE_KEY])
+
+        # Test with argument
+        gifts = [5, 10, 20, 15]
+        ret_dict = mr.init_donor_data(gifts=gifts)
+        self.assertTrue(ret_dict[mr.GIFTS_KEY] == gifts,
+                        ret_dict[mr.GIFTS_KEY])
+        self.assertTrue(ret_dict[mr.NUM_GIFTS_KEY] == 4,
+                        ret_dict[mr.NUM_GIFTS_KEY])
+        self.assertTrue(ret_dict[mr.TOTAL_KEY] == 50,
+                        ret_dict[mr.TOTAL_KEY])
+        self.assertTrue(ret_dict[mr.AVE_KEY] == 12.5,
+                        ret_dict[mr.AVE_KEY])
 
     def test_get_usr_input(self):
         pass
