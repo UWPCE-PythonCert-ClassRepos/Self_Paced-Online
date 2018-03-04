@@ -62,24 +62,35 @@ class TestMailRoom(unittest.TestCase):
     def test_get_usr_input(self):
         """Tests the get_usr_input() fxn"""
 
-        with mock.patch('builtins.input') as fake_input:
-            # Test all valid user input prompts
+        # Test all valid user input prompts
+        with mock.patch('builtins.input') as mock_input:
             for prompt in mr.PROMPT_OPTS:
-                fake_input.return_value = prompt
+                mock_input.return_value = prompt
                 self.assertTrue(mr.get_usr_input() == prompt)
 
-            # CANNOT RUN THIS TEST AS IT get_usr_input() WILL BE IN AN
-            # INFINITE LOOP IF FAKE_INPUT IS NOT VALID...
-            # Test invalid input type
-            # fake_input.return_value = 'two'
-            # capturedPrint = io.StringIO()
-            # sys.stdout = capturedPrint
-            # mr.get_usr_input()
-            # sys.stdout = sys.__stdout__
-            # print_results = capturedPrint.getvalue()
-            # self.assertTrue(print_results == (f'\nPlease try again. Valid '
-            #                                   f'options are: {mr.PROMPT_OPTS}\n'),
-            #                 print_results)
+        # Test invalid input type
+        se = ['two', 1]
+        with mock.patch('builtins.input', side_effect=se) as mock_input:
+            capturedPrint = redirect_stdout()
+            mr.get_usr_input()
+            reset_stdout()
+
+            self.assertTrue(capturedPrint.getvalue() == (f'\nPlease try again. '
+                                                         f'Valid options are: '
+                                                         f'{mr.PROMPT_OPTS}\n'))
+
+        # Test valid input type, but not a valid option
+        se = [-5, 1]
+        with mock.patch('builtins.input', side_effect=se) as mock_input:
+            capturedPrint = redirect_stdout()
+            mr.get_usr_input()
+            reset_stdout()
+
+            self.assertTrue(capturedPrint.getvalue() == (f'\nPlease select a '
+                                                         f'number between '
+                                                         f'{mr.PROMPT_OPTS[0]}'
+                                                         f' and '
+                                                         f'{mr.PROMPT_OPTS[-1]}\n'))
 
     def test_get_donor_names(self):
         """Test the get_donor_names() fxn"""
