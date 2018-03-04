@@ -1,66 +1,51 @@
 #!/usr/bin/env python3
 
+import collections
+
 infile = './sherlock_small.txt'
 # infile = './sherlock.txt'
+oneline = './oneline.txt'
+struct = collections.defaultdict(list)
 
-wordlist = [] 
 
-with open(infile, 'r') as f:
-    # lines = f.readlines()
-    # lines = (l.strip('\n') for l in f)
-    # print('\n', type(lines), '\n')
+def create_oneline():
+    with open(infile, 'r') as f:
+        a = ' '.join(l.strip() for l in f)
+        with open(oneline, 'w') as o:
+            o.write(a)
 
-    # for i in lines:
-    #     print(i)
 
-    # for i in lines:
-    #     wordlist.append(i.split())
-    
-    # wordlist.append(i.split())
+def create_dict():
+    with open(oneline, 'r') as ofile:
+        wordlist = ofile.readline().split()
+        wordlist.reverse() 
+        # while wordlist: 
+        while wordlist[:]: 
+            
+            s = 0
+            e = s + 2
+            n = s + 2
+            # key = str(' '.join(wordlist[0:2]))
+            key = str(' '.join(wordlist[s:e]))
+            print(key)
+            # struct[key] = str(wordlist[n])
+            struct[key].append(str(wordlist[n]))
+            s += 1
+            wordlist.pop()
 
-    # lines = f.readlines()
-    # lines = f.readline()
-    # for i in lines:
-    #     i.strip('\n')
-    #     print(i, end='')
 
-    # for l in f:
-    #    line = f.readline()
-    #    # line.strip('\n')
-    #    line.strip()
-    #    print(line, end='')
-    
-    print(' '.join(l.strip() for l in f))
-    # print(''.join(l.replace('\n', ' ') for l in f))
-    
+def show_dict():
+    for i, v in struct:
+        print(i, v)
+        
 
-    
+    # print(struct)
 
-# for w in wordlist:
-#     print(w)
+def main():
+    create_oneline()
+    create_dict()
+    show_dict()
 
-#print('\n', type(lines), '\n')
-#print(lines)
-#print('\nnumber of elements:', len(lines), '\n')
-#
-#wordlist = [] 
-#
-#for i in lines:
-#    print('--- beginning ---')
-#    # wordlist = i.split()
-#    wordlist.append(i.split())
-#    print('--- end ---')
-#
-#for w in wordlist:
-#    print(w)
-#
-    
 
-# line = f.readline()
-# print('\n', type(line), '\n')
-# print(line)
-# print('\nnumber of elements:', len(line), '\n')
-# 
-# wordlist = line.split()
-# for i in wordlist:
-#     print(i)
+if __name__ == '__main__':
+    main()
