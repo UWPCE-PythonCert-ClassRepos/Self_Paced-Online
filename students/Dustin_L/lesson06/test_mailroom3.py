@@ -2,6 +2,7 @@
 """This is a test module that tests mailroom3.py"""
 
 import unittest
+from unittest import mock
 import mailroom3 as mr
 
 
@@ -40,7 +41,26 @@ class TestMailRoom(unittest.TestCase):
                         ret_dict[mr.AVE_KEY])
 
     def test_get_usr_input(self):
-        pass
+        """Tests the get_usr_input() fxn"""
+
+        with mock.patch('builtins.input') as fake_input:
+            # Test all valid user input prompts
+            for prompt in mr.PROMPT_OPTS:
+                fake_input.return_value = prompt
+                self.assertTrue(mr.get_usr_input() == prompt)
+
+            # Cannot run this test as it get_usr_input() will be in an
+            # infinite loop if fake_input is not valid...
+            # Test invalid input type
+            # fake_input.return_value = 'two'
+            # capturedPrint = io.StringIO()
+            # sys.stdout = capturedPrint
+            # mr.get_usr_input()
+            # sys.stdout = sys.__stdout__
+            # print_results = capturedPrint.getvalue()
+            # self.assertTrue(print_results == (f'\nPlease try again. Valid '
+            #                                   f'options are: {mr.PROMPT_OPTS}\n'),
+            #                 print_results)
 
     def test_get_donor_names(self):
         pass
