@@ -4,7 +4,7 @@ donors = ['papa', 'mama', 'bompa', 'bobonne', 'onbekende']
 donations = [[100, 5, 15], [12, 200, 2, 66], [1000], [500, 500], [1000000]]
 
 def thankyou():
-    '''If the user types ‘list’, show them a list of the donor names and re-prompt
+    """If the user types ‘list’, show them a list of the donor names and re-prompt
     If the user types a name not in the list, add that name to the data structure
     and use it.
     If the user types a name in the list, use it.
@@ -15,12 +15,14 @@ def thankyou():
     the selected user.
     Finally, use string formatting to compose an email thanking the donor for their
     generous donation. Print the email to the terminal and return to the original
-    prompt.'''
-    name = input('Please enter a name or type "list" to see a list of names > ')
-    while name == 'list':
-        print(donors)
+    prompt."""
+    while True:
         name = input('Please enter a name or type "list" to see a list of names > ')
-    if not name in donors:
+        if name == 'list':
+            print(donors)
+        else:
+            break
+    if name not in donors:
         donors.append(name)
         donations.append([])
     donation = input('Please enter a donation amount > ')
@@ -30,8 +32,9 @@ def thankyou():
     print(donors)
     print(donations)
 
+
 def report():
-    ''' If the user (you) selected “Create a Report”, print a list of your donors,
+    """ If the user (you) selected “Create a Report”, print a list of your donors,
      sorted by total historical donation amount.
      Include Donor Name, total donated, number of donations and average donation
      amount as values in each row. You do not need to print out all their
@@ -42,13 +45,11 @@ def report():
      After printing this report, return to the original prompt.
      At any point, the user should be able to quit their current task and return
      to the original prompt.
-     From the original prompt, the user should be able to quit the script cleanly.'''
+     From the original prompt, the user should be able to quit the script cleanly."""
     print(f'{"Donor Name":20s} {"|  Total Given":20s} {"|  Num Gifts  |":20s} {"Average Gift":20s}')
-    print(f'{"-"*80}')
+    print(f'{"-"*76}')
     for name in donors:
-        print(f'{name:20s} ${sum(donations[donors.index(name)]):20.2f}\
-        {len(donations[donors.index(name)]):12d}\
-        ${sum(donations[donors.index(name)])/len(donations[donors.index(name)]):20.2f}')
+        print(f'{name:20s} ${sum(int(i) for i in donations[donors.index(name)]):20.2f} {len(donations[donors.index(name)]):13d}${sum(int(i) for i in donations[donors.index(name)])/len(donations[donors.index(name)]):20.2f}')
 
 if __name__ == '__main__':
     response = input('Please choose between the following 3 actions:\
