@@ -1,9 +1,28 @@
 #!/usr/bin/env python3
 """This is a test module that tests mailroom3.py"""
 
+import sys
 import unittest
 from unittest import mock
+from io import StringIO
 import mailroom3 as mr
+
+
+def redirect_stdout():
+    """Redirect stdout to the returned StringIO object.
+
+    Returns:
+        StringIO: Object containing redirected stdout.
+    """
+    redirect = StringIO()
+    sys.stdout = redirect
+
+    return redirect
+
+
+def reset_stdout():
+    """Reset stdout back to default"""
+    sys.stdout = sys.__stdout__
 
 
 class TestMailRoom(unittest.TestCase):
@@ -49,8 +68,8 @@ class TestMailRoom(unittest.TestCase):
                 fake_input.return_value = prompt
                 self.assertTrue(mr.get_usr_input() == prompt)
 
-            # Cannot run this test as it get_usr_input() will be in an
-            # infinite loop if fake_input is not valid...
+            # CANNOT RUN THIS TEST AS IT get_usr_input() WILL BE IN AN
+            # INFINITE LOOP IF FAKE_INPUT IS NOT VALID...
             # Test invalid input type
             # fake_input.return_value = 'two'
             # capturedPrint = io.StringIO()
@@ -75,7 +94,40 @@ class TestMailRoom(unittest.TestCase):
                             mr.get_donor_names())
 
     def test_prompt_for_donor(self):
-        pass
+        """Test the prompt_for_donor() fxn"""
+
+        # Test when user enters a name
+        with mock.patch('builtins.input') as mock_input:
+            mock_input.return_value = 'mr. test donor'
+            result = mr.prompt_for_donor('')
+
+            self.assertTrue(result == 'Mr. Test Donor')
+
+        # Test when user enters "quit"
+        with mock.patch('builtins.input') as mock_input:
+            mock_input.return_value = 'quit'
+            capturedPrint = redirect_stdout()
+            result = mr.prompt_for_donor('')
+            reset_stdout()
+
+            self.assertTrue(result is None)
+            self.assertTrue(capturedPrint.getvalue() == '')
+
+        # Test when user enters "list"
+        test_donor_db = {'Test Donor 1': 'na',
+                         'Test Donor 2': 'na',
+                         'Test Donor 3': 'na'}
+        se = ['list', 'quit']
+        with mock.patch.dict(mr.donor_db, test_donor_db, clear=True):
+            with mock.patch('builtins.input', side_effect=se) as mock_input:
+                capturedPrint = redirect_stdout()
+                result = mr.prompt_for_donor('')
+                reset_stdout()
+
+                self.assertTrue(result is None)
+                self.assertTrue(capturedPrint.getvalue() == ('\nTest Donor 1\n'
+                                                             'Test Donor 2\n'
+                                                             'Test Donor 3\n'))
 
     def test_prompt_for_donation(self):
         pass
