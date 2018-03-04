@@ -28,35 +28,33 @@ a potential next word based on these. Add this to the list, and so on.
 
 # Data
 sample_st = 'I wish I may I wish I might'
-read_data = []
-s1 = ''
-s2 = ''
-st_key = ''
-s3 = ''
-st_dict = {}
-count = 0
 pron_set = set(['I', 'you', 'she', 'he', 'it', 'we', 'they'])
-n = 0
-new_st_lst= []
-testfile_dict = {1: 'sherlock_small.txt', 2: 'sherlock.txt'}
+
 
 # Processing
-def clean_data(choice=1):
-    # use 2 as param, if want to test with 'sherlock.txt'
-    with open(testfile_dict[choice], 'r') as f:
+def clean_data():
+    testfile_dict = {1: 'sherlock_small.txt', 2: 'sherlock.txt'}
+    read_data = ''
+    prompt = input('Enter "1" for short text file, '
+        + 'or "2" for longer text file: ')
+    with open(testfile_dict[int(prompt)], 'r') as f:
     # header_size = 0
-    # with open('sherlock.txt') as f:
         read_data = f.read()
         # read_data = f.seek('To Sherlock Holmes she')
-    read_data = ''.join(read_data.split('\r'))
-    read_data = ''.join(read_data.split('"'))
-    read_data = ' '.join(read_data.split('\n'))
-    read_data = ' '.join(read_data.split('--'))
-    read_data = ' '.join(read_data.split('-'))
-    read_data = ' '.join(read_data.split(', '))
-    read_data = ' '.join(read_data.split('. '))
-    read_data = ''.join(read_data.split('('))
-    read_data = ''.join(read_data.split(')'))
+    replace_map = {'': ('\r', '"', '(', ')'), ' ': ('"\r', '"\n',
+                '.\r', '\n', '" ', '--', '-', ', ', '. ', '? ', '! ')}
+    for new_char, chars in replace_map.items():
+        for c in chars:
+            read_data = read_data.replace(c, new_char)
+    # read_data = ''.join(read_data.split('\r'))
+    # read_data = ''.join(read_data.split('"'))
+    # read_data = ' '.join(read_data.split('\n'))
+    # read_data = ' '.join(read_data.split('--'))
+    # read_data = ' '.join(read_data.split('-'))
+    # read_data = ' '.join(read_data.split(', '))
+    # read_data = ' '.join(read_data.split('. '))
+    # read_data = ''.join(read_data.split('('))
+    # read_data = ''.join(read_data.split(')'))
     read_data = read_data.strip('.')
     read_data = read_data.strip('  ')
     read_data = read_data.split(' ')
@@ -67,10 +65,17 @@ def clean_data(choice=1):
     return read_data
 
 
-def make_st_dict(lst):
-# lines between this and next comment line can be encapsulated into a
-# separate fxn
-# possible name: def make_st_dict(lst):
+def make_string_dict(lst):
+    # lines between this and comment on line 86 can be encapsulated
+    # into a separate fxn
+    # possible name: def make_st_dict(lst):
+    read_data = lst
+    s1 = ''
+    s2 = ''
+    st_key = None
+    s3 = ''
+    st_dict = {}
+    # count = 0
     for i, word in enumerate(read_data):
         if i + 2 < len(read_data):
             s1 = word
@@ -81,21 +86,35 @@ def make_st_dict(lst):
                 st_dict[st_key] = [s3]
             else:
                 st_dict[st_key] += [s3]
-        # count += 1
-    print(st_dict)
+    # count += 1
+    return st_dict
 # see comment line above
 
 
-def print_st_dict(dictionary):
+def print_string_dict(st_dictionary):
+    st_dict = st_dictionary
     print('\nst_dict:')
     for k, v in st_dict.items():
         print(k, v, end='\n')
     print('len(st_dict):', len(st_dict))
 
 
-def make_new_st():
+def count_empty_strings(st_dictionary):
+    st_dict = st_dictionary
+    count = 0
+    st_dict_vals = st_dict.values()
+    for lst in st_dict_vals:
+        if '' in lst:
+            count += 1
+    print('\ncount of \'\' in st_dict:', count)
+
+
+def make_new_string(st_dictionary):
+    st_dict = st_dictionary
+    new_st_lst = []
     rand_k = random.choice(list(st_dict))
     rand_v = random.choice(st_dict[rand_k])
+    n = 0
 
     new_st_lst.extend([rand_k[0], rand_k[1], rand_v])
     print('initial new_st_lst:', new_st_lst)
@@ -104,10 +123,14 @@ def make_new_st():
         # if potential_k in st_dict:
         new_st_lst.append(random.choice(st_dict[potential_k]))
         potential_k = (new_st_lst[-2], new_st_lst[-1])
-        n += 1    
+        n += 1
+
     print('len(new_st_lst):', len(new_st_lst))
     print(new_st_lst)
 
 
-clean_data()
-make_st_dict(read_data)
+cleaned_data = clean_data()
+data_dict = make_string_dict(cleaned_data)
+print_string_dict(data_dict)
+# print('\ncount of empty strings in string dictionary:')
+count_empty_strings(data_dict)
