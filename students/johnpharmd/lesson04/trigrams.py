@@ -136,7 +136,7 @@ def make_new_string(st_dictionary):
     for i, s in enumerate(new_st_lst[:]):
         if s == '':
             continue
-        elif s == 'The' or s == 'A':
+        elif s == 'The' or s == 'A' or s == 'An':
              s = s.lower()
              output.append(s)
         else:
@@ -149,9 +149,6 @@ def make_new_string(st_dictionary):
             else:
                 output.append(s)
     output_string = ' '.join(output)
-    # for i, char in enumerate(output_string[:]):
-    #     if i == 0:  # or output_string[i - 2] == '.':
-    #         char.capitalize()
     print('\nnew string:')
     print(output_string)
 
@@ -161,6 +158,5 @@ cleaned_data = clean_data()
 data_dict = make_string_dict(cleaned_data)
 if len(data_dict) < 200:
     print_string_dict(data_dict)
-# print('\ncount of empty strings in string dictionary:')
 count_empty_strings(data_dict)
 make_new_string(data_dict)
