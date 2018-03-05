@@ -40,13 +40,13 @@ def clean_data():
     testfile_dict = {1: 'sherlock_small.txt', 2: 'sherlock.txt'}
     read_data = ''
     prompt = input('Enter "1" for short text file, '
-        + 'or "2" for longer text file: ')
+                   + 'or "2" for longer text file: ')
     with open(testfile_dict[int(prompt)], 'r') as f:
-    # header_size = 0
+        # header_size = 0
         read_data = f.read()
         # read_data = f.seek('To Sherlock Holmes she')
     replace_map = {'': ('\r', '"', '\'', '(', ')'), ' ': ('"\r', '"\n',
-                '.\r', '\n', '" ', '--', '-', ', ', '. ', '? ', '! ')}
+                   '.\r', '\n', '" ', '--', '-', ', ', '. ', '? ', '! ')}
     for new_char, chars in replace_map.items():
         for c in chars:
             read_data = read_data.replace(c, new_char)
@@ -137,15 +137,15 @@ def make_new_string(st_dictionary):
         if s == '':
             continue
         elif s == 'The' or s == 'A' or s == 'An':
-             s = s.lower()
-             output.append(s)
+            s = s.lower()
+            output.append(s)
         else:
             if i % sentence_frame == 2:
                 output.extend([s + '.'])
                 n += 1
                 sentence_frame = random.randrange(8, 13)
                 if n % 3 == 0:
-                   output.append('\n\n') 
+                    output.append('\n\n')
             else:
                 output.append(s)
     output_string = ' '.join(output)
