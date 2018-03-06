@@ -29,6 +29,15 @@ def add_donation():
          print_email(current_donor, new_donation)
 
 
+def write_letters():
+    # goes through all the donors in your donor data structure, generates a thank you letter, and writes it to disk as a text file
+    for donor in donations:
+        file_name = '_'.join(donor.split()) + ".txt"
+        with open(file_name, 'w') as f:
+            f.write(f"Dear {donor},\n\nThank you very much for your generosity! Your most recent gift of ${donations[donor][-1]} will be put to great use. So far, you've donated a total of ${sum(donations[donor])}!\n\nSincerely,\nThe Team")
+            print(f"\nCreated letter for {donor}!")
+
+
 def print_email(donor, amount):
     # Print formatted email thanking donor
     letter_details = {'name': donor, 'donation_amount': amount}
@@ -36,7 +45,7 @@ def print_email(donor, amount):
     print(letter)
 
 
-def print_report():
+def create_report():
     # Print formatted report showing donors and donation stats
     header = '{:20}|{:^15}|{:^15}|{:>15}'.format("Donor Name", "Total Given", "Num Gifts", "Average Gift")
     print()
@@ -64,6 +73,7 @@ def quit():
     return("quit")
 
 
+### Parameters ###
 donations = {"Bill Gates": [10.50, 123.45, 1111.11],
              "Jeff Bezos": [7.65, 1000],
              "Paul Allen": [145.90],
@@ -72,7 +82,8 @@ donations = {"Bill Gates": [10.50, 123.45, 1111.11],
 
 main_menu = {
     "1": send_thank_you,
-    "2": print_report,
+    "2": create_report,
+    "3": write_letters,
     "q": quit,
 }
 
@@ -82,9 +93,9 @@ thank_you_menu = {
     "q": quit,
 }
 
-main_prompt = ("\nWelcome to the Main Menu! What would you like to do?\n1 - Send a Thank You\n2 - Create a Report\nq - Quit\n--> ")
+main_prompt = ("\nWelcome to the Main Menu! What would you like to do?\n1 - Send a Thank You\n2 - Create a Report\n3 - Send letters to everyone\nq - Quit\n--> ")
 
-thank_you_prompt = ("\nPlease choose one of the following:\n1 - Add a donation and send thank you message\n2 - Display list of current donors\nq - quit\n--> ")
+thank_you_prompt = ("\nPlease choose one of the following:\n1 - Add a donation and send thank you message\n2 - Display list of current donors\nq - Quit\n--> ")
 
 
 if __name__ == "__main__":
