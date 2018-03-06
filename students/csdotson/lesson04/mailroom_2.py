@@ -3,7 +3,7 @@
 
 ### Function Definitions ###
 def prompt(prompt, menu):
-    # Original prompt for main menu selections
+    # Create menu based on arguments
     while True:
         response = input(prompt)
         if menu[response]() == "quit":
@@ -11,11 +11,12 @@ def prompt(prompt, menu):
 
 
 def send_thank_you():
-    # Add donor/donations and trigger thank you email
+    # Create sub_prompt for creating thank you's and adding new donors/donations
     prompt(thank_you_prompt, thank_you_menu)
 
 
 def add_donation():
+    # Append donation to existing donor, or add donor/donation to existing list
     response = input("\nPlease enter a donor name: ")
     if response not in donations.keys():
         new_donor = response
@@ -30,11 +31,11 @@ def add_donation():
 
 
 def write_letters():
-    # goes through all the donors in your donor data structure, generates a thank you letter, and writes it to disk as a text file
+    # For all donors, generates a thank you letter, and writes it to disk as a text file
     for donor in donations:
         file_name = '_'.join(donor.split()) + ".txt"
         with open(file_name, 'w') as f:
-            f.write(f"Dear {donor},\n\nThank you very much for your generosity! Your most recent gift of ${donations[donor][-1]} will be put to great use. So far, you've donated a total of ${sum(donations[donor])}!\n\nSincerely,\nThe Team")
+            f.write(f"Dear {donor},\n\nThank you very much for your generosity! Your most recent gift of ${(donations[donor][-1])} will be put to great use. So far, you've donated a total of ${sum(donations[donor])}!\n\nSincerely,\nThe Team")
             print(f"\nCreated letter for {donor}!")
 
 
@@ -70,16 +71,18 @@ def list_donors():
 
 
 def quit():
+    # Quit current menu
     return("quit")
 
 
 ### Parameters ###
 donations = {"Bill Gates": [10.50, 123.45, 1111.11],
-             "Jeff Bezos": [7.65, 1000],
+             "Jeff Bezos": [7.65, 1000.00],
              "Paul Allen": [145.90],
              "John Nordstrom": [45.67, 6519.65],
              "Mark Zuck": [789.12]}
 
+# Dictionaries for menu control flow
 main_menu = {
     "1": send_thank_you,
     "2": create_report,
@@ -93,11 +96,12 @@ thank_you_menu = {
     "q": quit,
 }
 
+# Prompts used
 main_prompt = ("\nWelcome to the Main Menu! What would you like to do?\n1 - Send a Thank You\n2 - Create a Report\n3 - Send letters to everyone\nq - Quit\n--> ")
 
 thank_you_prompt = ("\nPlease choose one of the following:\n1 - Add a donation and send thank you message\n2 - Display list of current donors\nq - Quit\n--> ")
 
 
+### Execution of file if run as a script ###
 if __name__ == "__main__":
-    # Will only execute if mailroom.py is run as a script
     prompt(main_prompt, main_menu)
