@@ -49,6 +49,9 @@ def get_stuff_generator(n, l):
         # print('|=', x, '=|', y)
         yield x
         n += 1
+        # create_dict(x, y)
+        # return(x, y)
+        # get_stuff(n + 1, l)     # start recursion / do it again...
 
 # for i in get_stuff_generator(0, biglist):
 #     print(i)
@@ -61,7 +64,6 @@ def create_dict(k, v):
 def show_dict():
     for i in the_dict:
         print('key:', i, 'value:', the_dict[i])
-    print('ende show_dict') 
 
 
 def main():
