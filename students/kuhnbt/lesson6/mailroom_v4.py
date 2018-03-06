@@ -15,6 +15,7 @@ for author, donation in [
     donor_info[author] = donation
 # Is there a simpler way to set initial values for a defaultdict?
 
+
 def start_program():
     """Prompt user for desired donor action and fulfill the request"""
     selection_dict = {'1': send_thankyou, '2': create_report,
@@ -33,6 +34,7 @@ def start_program():
 
 
 def quit_program():
+    """Exit program"""
     sys.exit()
 
 
@@ -48,7 +50,7 @@ def send_thankyou():
         else:
             while True:
                 try:
-                    donation = float(input('Please enter donation'\
+                    donation = float(input('Please enter donation'
                                            ' amount:\n'))
                     break
                 except ValueError:
@@ -62,13 +64,27 @@ def send_thankyou():
 def create_report():
     """Print summary report of donor info"""
     max_donor_width = max([len(name) for name in donor_info])
-    print('{:{}}|{:12}|{:10}|{:8}'.format('Donor Name', max_donor_width,
-          'Total Given', 'Num Gifts', 'Average Gift'))
+    print(get_report_header(max_donor_width))
     donor_list = list(donor_info.items())
     for donor in sorted(donor_list, key=lambda x: sum(x[1])):
-        print('{:{}}|${:^11.2f}|{:^10}|${:^8.2f}'.format(donor[0],
-              max_donor_width, sum(donor[1]), len(donor[1]),
-              sum(donor[1])/len(donor[1])))
+        print(get_report_row(donor, max_donor_width))
+
+
+def get_report_header(max_donor_width):
+    """Return string representing the header of the report"""
+    return '{:{}}|{:12}|{:10}|{:8}'.format('Donor Name',
+                                           max_donor_width, 'Total Given',
+                                           'Num Gifts', 'Average Gift')
+
+
+def get_report_row(donor, max_donor_width):
+    """Return string representing one row in report"""
+    return '{:{}}|${:^11.2f}|{:^10}|${:^8.2f}'.format(donor[0],
+                                                      max_donor_width,
+                                                      sum(donor[1]),
+                                                      len(donor[1]),
+                                                      sum(donor[1]) /
+                                                      len(donor[1]))
 
 
 def send_to_everyone(directory=os.getcwd()):
@@ -100,32 +116,17 @@ def get_thank_you(donor):
     donor_dict = {'name': donor, 'donation': donor_info[donor][-1],
                   'num_donations': len(donor_info[donor])}
     donor_dict['multiple'] = 's' if donor_dict['num_donations'] > 1 else ''
-    thankyou = '''Dear {name}:
-    Thank you for your generous donation of ${donation:.2f}.
-    I really appreciate your {num_donations}
-    donation{multiple} to our organization.
-    I assure you that your contributions will be put to
-    good use!
-    Regards,
-    Ben'''.format(**donor_dict)
 
-    return thankyou
-
-def get_thank_you(donor):
-    """Return text of thank you letter for given donor"""
-    donor_dict = {'name': donor, 'donation': donor_info[donor][-1],
-                  'num_donations': len(donor_info[donor])}
-    donor_dict['multiple'] = 's' if donor_dict['num_donations'] > 1 else ''
     thankyou = ('Dear {name}:\n'
-    'Thank you for your generous donation of ${donation:.2f}.\n'
-    'I really appreciate your {num_donations}\n'
-    'donation{multiple} to our organization.\n'
-    'I assure you that your contributions will be put to\n'
-    'good use!\n\n'
-    'Regards,\n'
-    'Ben').format(**donor_dict)
+                'Thank you for your generous donation of '
+                '${donation:.2f}.\nI really appreciate your '
+                '{num_donations}\n donation{multiple} to our '
+                'organization.\nI assure you that your contributions '
+                'will be put to\ngood use!\n\n'
+                'Regards,\nBen').format(**donor_dict)
 
     return thankyou
+
 
 if __name__ == '__main__':
     start_program()
