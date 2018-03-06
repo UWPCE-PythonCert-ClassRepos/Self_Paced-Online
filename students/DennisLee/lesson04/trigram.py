@@ -10,6 +10,8 @@ def build_text_databases(source_file):
 
     :return:  A dictionary of word pairs and paragraph starters.
     """
+    print("\n\nCreating text databases...")
+
     # Data structures, which will be compiled into a giant dict
     word_pairs = {}              # dict: key=2 consecutive words, value=following word
     paragraph_starters = list()  # list: 2 words that can begin a paragraph
@@ -78,6 +80,7 @@ def build_new_story(source_file, counter = 50):
         counter = 50  # Randomizer - any number will do
     db = build_text_databases(source_file)
     words, quote_opened, begin_paragraph, text = 0, False, True, []
+    next_word = ''
     pg_starters, word_pairs = db['ps'], db['wp']
 
     while True:
@@ -89,6 +92,7 @@ def build_new_story(source_file, counter = 50):
             quote_opened = quote_state(quote_opened, two_words[1])
             words += 2
             begin_paragraph = False
+            print(f"\n\nAdding new paragraph to story: {two_words:s}")
         else:  # Continue paragraph
             two_words = get_next_key(two_words, next_word)
 
@@ -96,6 +100,7 @@ def build_new_story(source_file, counter = 50):
         next_word = list(word_pairs[two_words]
                 )[counter % len(word_pairs[two_words])]
         text.append(next_word)
+        print(f"Adding word to paragraph: {next_word:s}")
 
         if quote_opened is None:  # Start over if quotation marks get screwy
             words, quote_opened, begin_paragraph, text = 0, False, True, []
