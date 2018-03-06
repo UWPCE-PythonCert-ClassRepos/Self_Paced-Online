@@ -1,0 +1,11 @@
+Dear {firstname} {lastname},
+
+Thank you for your recent donation of ${amount}. Your generosity changes the lives of many people. If 
+it weren't for the continuing support of courageous donors like you, the people we help would be
+miserable beyond despair, doing unmentionable things in vain. Your total donations of ${total} have
+touched the lives of countless folks. For what it's worth, those people at rock bottom thank you from
+the bottoms of their hearts.
+
+Yours Truly,
+Local Charity Staff
+ 
