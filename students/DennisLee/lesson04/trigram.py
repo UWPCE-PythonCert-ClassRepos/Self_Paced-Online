@@ -74,65 +74,103 @@ def build_new_story(source_file, counter = 50):
 
     :counter:  A miscellaneous number for randomizing the output text.
 
-    :return:  The output text, containing at least 200 words.
+    :return:  The output text string, containing at least 200 words.
     """
     if type(counter) != int:
         counter = 50  # Randomizer - any number will do
     db = build_text_databases(source_file)
+    text = []  # The story text (one list entry for every word)
+
+    # Add new sentences until the text length is at least 200 words
+    while len(text) < 200:
+        new_sentence = create_sentence(db, counter)
+        counter += 1
+        if new_sentence != None:
+            text.extend(new_sentence)
+
+    return ' '.join(text)
+
+def create_sentence(db, counter):
+    """
+    :db:  The database of word pair keys to subsequent word values, and
+          two-word sentence starters.
+
+    :counter:  A miscellaneous number for randomizing the output text.
+
+    :return:  The output sentence text, as a list of words. If there is
+              an error, **None** is returned.
+    """
+    result = None
     sentence_starters, word_pairs = db['ss'], db['wp']
     quote_opened, begin_sentence, err = False, True, False
     words, next_word, text = 0, '', []
 
     while True:
-        counter += 1
-        if begin_sentence:  # Get first 2 words in sentence
+        if begin_sentence:  # Randomly get the first 2 words in the sentence
+            begin_sentence = False
             two_words = sentence_starters[counter % len(sentence_starters)]
             text.extend(unpair_words(two_words))
-            quote_opened = quote_state(quote_opened, two_words[0])
-            quote_opened = quote_state(quote_opened, two_words[1])
             words += 2
-            begin_sentence = False
             print(f"\n\nAdding new sentence: {two_words:s}")
-        else:  # Continue sentence
+
+            # Get the text quotation state after the initial two words
+            quote_opened = quote_state(quote_opened, text[0])
+            quote_opened = quote_state(quote_opened, text[1])
+        else:  # Continue sentence by forming the next two-word key
             two_words = get_next_key(two_words, next_word)
 
         # Get a word to complete the trigram
         next_word = pick_from_choices(word_pairs[two_words], quote_opened)
         if next_word == None:
             err = True
-        else:
+        else:  # Add the next word to the list if there's no error
             text.append(next_word)
             words += 1
-            print(f"Adding word {words:d}: {next_word:s}")
+            print(f"Adding sentence word {words:d}: {next_word:s}")
             quote_opened = quote_state(quote_opened, next_word)
-            
-            if quote_opened == True:
+            print(f"Quotation state: {quote_opened}")
+
+            # Consider a long quotation as a single sentence
+            if quote_opened == True:  
                 continue
+            # Exit if there's a bad quotation state or a never-ending sentence
             elif quote_opened == None or words > 1000:
                 err = True
-            elif next_word[-1] not in '!"\'?.:':  # If not the end of a sentence
-                continue
-            elif words >= 200:  # Good to go
+            # Check punctuation for the sentence ending
+            elif next_word[-1] in '!"\'?.:':
+                result = text
                 break
-            elif words < 200:
-                begin_sentence = True
         
-        if err:  # Discard our story text if there's a quotation mark problem
-            ui = input(
-            "ERROR - BACKTRACKING - PRESS ENTER TO CONTINUE OR 'Q' TO QUIT:"
-            ).strip().upper()
-            if ui == 'Q':
-                return
-            quote_opened, begin_sentence, err = False, True, False
-            words, next_word, text = 0, '', []
+        if err:  # Discard sentence if there's a quotation mark problem
+            input("ERROR - BACKTRACKING - PRESS ENTER TO CONTINUE:")
+            return
             
-    return ' '.join(text)
-
+    return result
+    
 def pick_from_choices(word_choices, quote_opened):
+    """
+    Choose an appropriate word to add to the story, based on a specified
+    set of choices and the quotation state of the existing text. The
+    function prioritizes the choice in hopes of having a closed
+    quotation state after the word is chosen.
+
+    :word_choices:  The set of word choices for a given two-word key.
+
+    :quote_opened:  Whether the existing text is currently inside an
+                    open quotation (**True**), outside of an open
+                    quotation (**False**), or has an invalid quotation
+                    state (**None**).
+
+    :return:  The chosen word. If no appropriate word can be selected,
+              **None** is returned.
+    """
     filtered_choices, result = [], None
 
     # Word categories based on if a quotation mark precedes and/or succeeds it
-    d = {  
+    # The first value in the tuple key indicates whether there's a quotation
+    # mark before the word. The second value indicates whether a quotation mark
+    # follows the word.
+    d = { 
             (False, False): 'none',
             (True, False): 'open',
             (False, True): 'close',
@@ -144,20 +182,22 @@ def pick_from_choices(word_choices, quote_opened):
 
     # Fill in the word choices dict
     if word_choices is not None:
-        word_choices = list(word_choices)
+        word_choices = list(word_choices)  # Change set into an iterable list
         for word in word_choices:
             word_quotes = (start_quote(word), end_quote(word))
             if word_quotes in d:
                 categorized[d[word_quotes]].add(word)
 
     # Define the groups of words that can be chosen based on the previous
-    # text's quotation state (from most preferred to least preferred, with
-    # the preference being that the text quotation exit state is False)
+    # text's quotation state (from most preferred to least preferred)
     q = {True: ['close', 'none'], False: ['none', 'both', 'open']}
-    for i in q[quote_opened]:
+
+    # Add the words to the filtered choice list
+    for i in q[quote_opened]:  
         filtered_choices.extend(categorized[i])
-    
-    print(f"Filtered word choices: {filtered_choices}")
+
+    # Pick the first item in the list. (If we ever need to do a more
+    # sophisticated selection, the filtered list is still available here)    
     if len(filtered_choices) > 0:
         result = filtered_choices[0]
     return result
@@ -248,6 +288,8 @@ def start_quote(str):
     Show whether the current string begins with an opening quotation
     mark.
 
+    :str:  The specified string.
+
     :return:  **True** if the current string starts with a `"`;
               **False** otherwise.
     """
@@ -257,6 +299,8 @@ def end_quote(str):
     """
     Show whether the current string ends with a closing quotation mark.
 
+    :str:  The specified string.
+
     :return:  **True** if the current string ends with a `"`; **False**
               otherwise.
     """
@@ -264,4 +308,34 @@ def end_quote(str):
 
 
 if __name__ == '__main__':
-    print(build_new_story('sherlock_Ch1_portion.txt', 1000))
+    options = {
+            '1': 'Quit', 
+            '2': 'Enter source text filename', 
+            '3': 'Enter number for random text seeding'
+    }
+    counter = 50  # Initial random number
+
+    while True:
+        # Print menu
+        print('\n\n')
+        for k, v in options.items():  
+            print(k, v)
+        
+        ui = input("\nType a menu number: ")
+        if ui == '1':
+            print("\n\nGoodbye!")
+            break
+        elif ui == '2':
+            file_name = input(
+                    '\n\nType the name of the file to mutate using trigrams: '
+                    ).strip()
+            print(build_new_story(file_name, counter))
+        elif ui == '3':
+            num = input('Type a random number to seed mutated text: ').strip()
+            if num.isdigit():
+                counter = int(num)
+                print(f'\n\nSeed number is now {counter:d}')
+
+            else:
+                print(f'\n\nInvalid entry - seed number remains {counter:d}')
+        
