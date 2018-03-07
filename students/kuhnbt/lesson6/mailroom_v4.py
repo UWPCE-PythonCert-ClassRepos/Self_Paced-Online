@@ -4,16 +4,11 @@ import datetime
 import sys
 from collections import defaultdict
 
-donor_info = defaultdict(list)
-for author, donation in [
-             ('Ernest Hemingway', [35, 65.25, 40]),
-             ('John Steinbeck', [25.50, 20, 10]),
-             ('Joseph Heller', [45, 20, 105.50]),
-             ('Kurt Vonnegut', [60, 40, 400]),
-             ('Michael Chabon', [100, 200, 300, 400])
-             ]:
-    donor_info[author] = donation
-# Is there a simpler way to set initial values for a defaultdict?
+donor_info = defaultdict(list, {'Ernest Hemingway': [35, 65.25, 40],
+                                'John Steinbeck': [25.50, 20, 10],
+                                'Joseph Heller': [45, 20, 105.50],
+                                'Kurt Vonnegut': [60, 40, 400],
+                                'Michael Chabon': [100, 200, 300, 400]})
 
 
 def start_program():
@@ -120,7 +115,7 @@ def get_thank_you(donor):
     thankyou = ('Dear {name}:\n'
                 'Thank you for your generous donation of '
                 '${donation:.2f}.\nI really appreciate your '
-                '{num_donations}\n donation{multiple} to our '
+                '{num_donations}\ndonation{multiple} to our '
                 'organization.\nI assure you that your contributions '
                 'will be put to\ngood use!\n\n'
                 'Regards,\nBen').format(**donor_dict)
