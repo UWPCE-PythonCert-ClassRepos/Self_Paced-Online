@@ -17,6 +17,7 @@ first_try = ['spam', 'cheese', 'mr death']
 try:
     joke = fun(first_try[0])
 except NameError:
+    print("Whoops, there's no joke for {}".format(first_try[0]))
     joke = fun(first_try[1])
 
 # Here is a try/except block. Add an else that prints not_joke
@@ -50,4 +51,5 @@ try:
 except IndexError:
     next_joke = more_fun(langs[1])
     more_fun(langs[2])
+finally:
     last_fun()
