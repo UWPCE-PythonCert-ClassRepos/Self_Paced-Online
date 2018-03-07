@@ -44,14 +44,16 @@ def thirds(seq):
     # first third in the new order
     if len(seq) % 3 == 0:
         seq_len = round(len(seq) / 3)
-        seq_complete = seq[seq_len:seq_len * 2] + seq[seq_len * 2:seq_len * 3] \
-                       + seq[:seq_len]
+        seq_complete = seq[seq_len:seq_len * 2] \
+            + seq[seq_len * 2:seq_len * 3] \
+            + seq[:seq_len]
         return seq_complete
     return "Not able to third"
 
 
 if __name__ == '__main__':
     slicer()
+
 
     def testing():
         a_string = "this is a string"
@@ -74,17 +76,18 @@ if __name__ == '__main__':
 
         # test Lists
         assert first_last(a_arr) == ["!", "!", "tide", "pod", "challenge", "is",
-                           "not", "for", "the", "weak", "!", "!"], \
+                                     "not", "for", "the", "weak", "!", "!"], \
             "List failed"
         assert odd_out(a_arr) == ['!', 'tide', 'challenge', 'not', 'the', '!'], \
             "List failed"
         assert ambigus_ao_fourth(a_arr) == ['challenge', 'not'], "List failed"
         assert slice_reversed(a_arr) == ['!', '!', 'weak', 'the', 'for', 'not',
-                                   'is', 'challenge', 'pod', 'tide', '!',
-                                   '!'], "List failed"
+                                         'is', 'challenge', 'pod', 'tide', '!',
+                                         '!'], "List failed"
         assert thirds(a_arr) == ['challenge', 'is', 'not', 'for', 'the',
-                                'weak', '!', '!', '!', '!',
-                                'tide', 'pod'], "List failed"
+                                 'weak', '!', '!', '!', '!',
+                                 'tide', 'pod'], "List failed"
         return
+
 
     testing()
