@@ -24,20 +24,21 @@ def fib_gen_teacher():
 def fib_gen_two():
     a, b, n = 0, 1, 0
     while True:
-        n += 1
-        if n == 1:
+        if n == 0:
+            n = True
             yield 0
         a, b = b, a + b
         yield a
 
 def fib_gen_call():
-    f = fib_gen_teacher()
-    print(next(f))
-    print(next(f))
-    print(next(f))
-    print(next(f))
-    print(next(f))
-    print(next(f))
+    fib_teach = fib_gen_teacher()
+    fib_mez = fib_gen_two()
+    print(str(next(fib_teach)) + " " + str(next(fib_mez)))
+    print(str(next(fib_teach)) + " " + str(next(fib_mez)))
+    print(str(next(fib_teach)) + " " + str(next(fib_mez)))
+    print(str(next(fib_teach)) + " " + str(next(fib_mez)))
+    print(str(next(fib_teach)) + " " + str(next(fib_mez)))
+    print(str(next(fib_teach)) + " " + str(next(fib_mez)))
 
 fib_gen_call()
 
