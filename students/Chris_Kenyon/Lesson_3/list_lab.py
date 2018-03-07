@@ -31,7 +31,7 @@ print(series_1)
 
 # add string to fruont of list using insert
 add_fruit_3 = input("Enter another fruit to add"
-					" to the front of the list: ")
+                    " to the front of the list: ")
 series_1.insert(0, add_fruit_3)
 print(series_1)
 
