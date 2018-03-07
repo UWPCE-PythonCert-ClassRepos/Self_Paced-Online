@@ -8,13 +8,13 @@ def build_text_databases(source_file):
     :source_file:  The source file of prose text to process into the
                    database.
 
-    :return:  A dictionary of word pairs and paragraph starters.
+    :return:  A dictionary of word pairs and sentence starters.
     """
     print("\n\nCreating text databases...")
 
     # Data structures, which will be compiled into a giant dict
     word_pairs = {}              # dict: key=2 consecutive words, value=following word
-    paragraph_starters = list()  # list: 2 words that can begin a paragraph
+    sentence_starters = list()  # list: 2 words that can begin a paragraph
 
     with open(source_file, 'r') as f:
         # Build the paragraph list
@@ -26,12 +26,12 @@ def build_text_databases(source_file):
                 # contain an empty string for the dict key's value.
                 pg += line.strip() + ' '
                 continue
-            paragraphs.append(pg)
+            paragraphs.append(pg.strip())
             pg = ''
         
         # If final line contains text, add the last paragraph manually
         if pg != '':
-            paragraphs.append(pg)
+            paragraphs.append(pg.strip())
 
     # Creating a temp paragraph file for debugging - can comment out
     with open('_paragraphs.txt', 'w') as f:
@@ -47,23 +47,23 @@ def build_text_databases(source_file):
             word_pairs.setdefault(key, set())
             word_pairs[key].add(value)
                 
-    # Isolate keys that can function as paragraph starters
+    # Isolate keys that can function as sentence starters
     for k in word_pairs:
         if k[0] == k[0].upper():
-            paragraph_starters.append(k)
+            sentence_starters.append(k)
 
     # Creating a temp word pair file for debugging - can comment out
     with open('_word_pairs.txt', 'w') as f:
         for k, v in word_pairs.items():
             f.write(f'Key: {k:30s}  Value: {v}\n')
 
-    # Creating a temp paragraph starter file for debugging - can comment out
-    with open('_paragraph_starters.txt', 'w') as f:
-        for k in paragraph_starters:
+    # Creating a temp sentence starter file for debugging - can comment out
+    with open('_sentence_starters.txt', 'w') as f:
+        for k in sentence_starters:
             f.write(k + '\n')
 
     return {'wp': word_pairs,
-            'ps': paragraph_starters}
+            'ss': sentence_starters}
 
 def build_new_story(source_file, counter = 50):
     """
@@ -79,42 +79,88 @@ def build_new_story(source_file, counter = 50):
     if type(counter) != int:
         counter = 50  # Randomizer - any number will do
     db = build_text_databases(source_file)
-    words, quote_opened, begin_paragraph, text = 0, False, True, []
-    next_word = ''
-    pg_starters, word_pairs = db['ps'], db['wp']
+    sentence_starters, word_pairs = db['ss'], db['wp']
+    quote_opened, begin_sentence, err = False, True, False
+    words, next_word, text = 0, '', []
 
     while True:
         counter += 1
-        if begin_paragraph:  # Get first 2 words in paragraph
-            two_words = pg_starters[counter % len(pg_starters)]
+        if begin_sentence:  # Get first 2 words in sentence
+            two_words = sentence_starters[counter % len(sentence_starters)]
             text.extend(unpair_words(two_words))
             quote_opened = quote_state(quote_opened, two_words[0])
             quote_opened = quote_state(quote_opened, two_words[1])
             words += 2
-            begin_paragraph = False
-            print(f"\n\nAdding new paragraph to story: {two_words:s}")
-        else:  # Continue paragraph
+            begin_sentence = False
+            print(f"\n\nAdding new sentence: {two_words:s}")
+        else:  # Continue sentence
             two_words = get_next_key(two_words, next_word)
 
         # Get a word to complete the trigram
-        next_word = list(word_pairs[two_words]
-                )[counter % len(word_pairs[two_words])]
-        text.append(next_word)
-        print(f"Adding word to paragraph: {next_word:s}")
-
-        if quote_opened is None:  # Start over if quotation marks get screwy
-            words, quote_opened, begin_paragraph, text = 0, False, True, []
-            continue
-        elif next_word != '':  # Word == empty string means paragraph ended
+        next_word = pick_from_choices(word_pairs[two_words], quote_opened)
+        if next_word == None:
+            err = True
+        else:
+            text.append(next_word)
             words += 1
+            print(f"Adding word {words:d}: {next_word:s}")
             quote_opened = quote_state(quote_opened, next_word)
-        elif words >= 200 and quote_opened == False:  # Good to go
-            break
-        elif words < 200 and quote_opened == False:  # Start new paragraph
-            text.append('\n\n')
-            begin_paragraph = True
-
+            
+            if quote_opened == True:
+                continue
+            elif quote_opened == None or words > 1000:
+                err = True
+            elif next_word[-1] not in '!"\'?.:':  # If not the end of a sentence
+                continue
+            elif words >= 200:  # Good to go
+                break
+            elif words < 200:
+                begin_sentence = True
+        
+        if err:  # Discard our story text if there's a quotation mark problem
+            ui = input(
+            "ERROR - BACKTRACKING - PRESS ENTER TO CONTINUE OR 'Q' TO QUIT:"
+            ).strip().upper()
+            if ui == 'Q':
+                return
+            quote_opened, begin_sentence, err = False, True, False
+            words, next_word, text = 0, '', []
+            
     return ' '.join(text)
+
+def pick_from_choices(word_choices, quote_opened):
+    filtered_choices, result = [], None
+
+    # Word categories based on if a quotation mark precedes and/or succeeds it
+    d = {  
+            (False, False): 'none',
+            (True, False): 'open',
+            (False, True): 'close',
+            (True, True): 'both'
+    }
+
+    # Create dict of available words based on those categories
+    categorized = {val: set() for val in d.values()}
+
+    # Fill in the word choices dict
+    if word_choices is not None:
+        word_choices = list(word_choices)
+        for word in word_choices:
+            word_quotes = (start_quote(word), end_quote(word))
+            if word_quotes in d:
+                categorized[d[word_quotes]].add(word)
+
+    # Define the groups of words that can be chosen based on the previous
+    # text's quotation state (from most preferred to least preferred, with
+    # the preference being that the text quotation exit state is False)
+    q = {True: ['close', 'none'], False: ['none', 'both', 'open']}
+    for i in q[quote_opened]:
+        filtered_choices.extend(categorized[i])
+    
+    print(f"Filtered word choices: {filtered_choices}")
+    if len(filtered_choices) > 0:
+        result = filtered_choices[0]
+    return result
 
 def pair_words(word1, word2):
     """
@@ -158,7 +204,7 @@ def get_next_key(previous_key, next_word):
     """
     result = None
     words = unpair_words(previous_key)
-    if words is not None and len(next_word.split(' ')) == 1:
+    if words != None and len(next_word.split(' ')) == 1:
         result = pair_words(words[1], next_word)
     return result
 
@@ -173,8 +219,12 @@ def quote_state(previous_state, word):
 
     :word:  The next word to be added.
 
-    :return:  The state of the quotation text after adding the next
-              word.
+    :return:  The state of the quotation text (**True**/**False**) after
+              adding the next word.  It returns **None** if the state is
+              not valid (if an open quotation mark follows
+              an unended quotation mark, or if a closed quotation mark
+              is the first quotation mark or follows another closed
+              quotation mark).
     """
     new_state = None
     if word[1:-1].count('"') > 0:  # Disqualify interior quotation marks
@@ -189,7 +239,7 @@ def quote_state(previous_state, word):
             pass
         else:
             new_state = start_quote(word) and not end_quote(word)
-    elif previous_state is None:
+    elif previous_state == None:
         pass
     return new_state
 
@@ -214,4 +264,4 @@ def end_quote(str):
 
 
 if __name__ == '__main__':
-    print(build_new_story('sherlock_Ch1_portion.txt', 0))
+    print(build_new_story('sherlock_Ch1_portion.txt', 1000))
