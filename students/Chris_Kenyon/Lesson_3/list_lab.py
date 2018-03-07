@@ -1,4 +1,4 @@
-##!/usr/bin/env python3
+#!/usr/bin/env python3
 # Lesson_3 Activity 2 List Lab
 
 # Series 1
