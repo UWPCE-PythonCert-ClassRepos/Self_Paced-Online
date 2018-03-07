@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import os
+
 def build_text_databases(source_file):
     """
     Create a database for processing using the original text within a
@@ -13,7 +15,7 @@ def build_text_databases(source_file):
     print("\n\nCreating text databases...")
 
     # Data structures, which will be compiled into a giant dict
-    word_pairs = {}              # dict: key=2 consecutive words, value=following word
+    word_pairs = {}  # dict: key=2 consecutive words, value=following word
     sentence_starters = list()  # list: 2 words that can begin a paragraph
 
     with open(source_file, 'r') as f:
@@ -21,9 +23,6 @@ def build_text_databases(source_file):
         pg, paragraphs = '', []
         for line in f:
             if line.strip() != '':
-                # Note that the trailing space at the end of the string
-                # will cause the final word pair for a paragraph to
-                # contain an empty string for the dict key's value.
                 pg += line.strip() + ' '
                 continue
             paragraphs.append(pg.strip())
@@ -68,7 +67,8 @@ def build_text_databases(source_file):
 def build_new_story(source_file, counter = 50):
     """
     Create a random story based on two-word keys and the possible words
-    that follow the keys.
+    that follow the keys. Although the process of adding sentences to
+    the story may sometimes fail, eventually a full story will be built.
 
     :source_file:  The file containing the original story text.
 
@@ -76,9 +76,10 @@ def build_new_story(source_file, counter = 50):
 
     :return:  The output text string, containing at least 200 words.
     """
+    print('\n\nBuilding the story...')
     if type(counter) != int:
         counter = 50  # Randomizer - any number will do
-    db = build_text_databases(source_file)
+    db = build_text_databases(source_file)  # Build text processing db
     text = []  # The story text (one list entry for every word)
 
     # Add new sentences until the text length is at least 200 words
@@ -92,6 +93,9 @@ def build_new_story(source_file, counter = 50):
 
 def create_sentence(db, counter):
     """
+    Build a sentence to add to the story. Note that the sentence
+    building may fail on occasion (even frequently).
+
     :db:  The database of word pair keys to subsequent word values, and
           two-word sentence starters.
 
@@ -128,7 +132,6 @@ def create_sentence(db, counter):
             words += 1
             print(f"Adding sentence word {words:d}: {next_word:s}")
             quote_opened = quote_state(quote_opened, next_word)
-            print(f"Quotation state: {quote_opened}")
 
             # Consider a long quotation as a single sentence
             if quote_opened == True:  
@@ -141,7 +144,7 @@ def create_sentence(db, counter):
                 result = text
                 break
         
-        if err:  # Discard sentence if there's a quotation mark problem
+        if err:  # Discard sentence if there's a problem
             input("ERROR - BACKTRACKING - PRESS ENTER TO CONTINUE:")
             return
             
@@ -192,14 +195,16 @@ def pick_from_choices(word_choices, quote_opened):
     # text's quotation state (from most preferred to least preferred)
     q = {True: ['close', 'none'], False: ['none', 'both', 'open']}
 
-    # Add the words to the filtered choice list
-    for i in q[quote_opened]:  
-        filtered_choices.extend(categorized[i])
+    if quote_opened != None:
+        # Add the words to the filtered choice list
+        for i in q[quote_opened]:  
+            filtered_choices.extend(categorized[i])
 
-    # Pick the first item in the list. (If we ever need to do a more
-    # sophisticated selection, the filtered list is still available here)    
-    if len(filtered_choices) > 0:
-        result = filtered_choices[0]
+        # Pick the first item in the list. (If we ever need to do a more
+        # sophisticated selection, the filtered list is still available here)    
+        if len(filtered_choices) > 0:
+            result = filtered_choices[0]
+
     return result
 
 def pair_words(word1, word2):
@@ -240,7 +245,8 @@ def get_next_key(previous_key, next_word):
                  text.
 
     :return:  A two-word key string beginning with the second word of
-              the previous string and the following word.
+              the previous string and the following word. If there is
+              a problem, **None** is returned.
     """
     result = None
     words = unpair_words(previous_key)
@@ -266,21 +272,22 @@ def quote_state(previous_state, word):
               is the first quotation mark or follows another closed
               quotation mark).
     """
+    # Code is verbose here because of confusing multi-case boolean logic
     new_state = None
-    if word[1:-1].count('"') > 0:  # Disqualify interior quotation marks
-        pass
+    if word[1:-1].count('"') > 0:  
+        pass  # Disqualify interior quotation marks
     elif previous_state == True:
-        if start_quote(word):
-            pass
+        if start_quote(word):  
+            pass  # Quotation mark can't precede next word if prev state==True
         else:
             new_state = not end_quote(word)
     elif previous_state == False:
         if not start_quote(word) and end_quote(word):
-            pass
+            pass  # If prev state==False, quot marks can't only follow word
         else:
             new_state = start_quote(word) and not end_quote(word)
     elif previous_state == None:
-        pass
+        pass  # If prev state was already invalid, reflect that
     return new_state
 
 def start_quote(str):
@@ -322,15 +329,16 @@ if __name__ == '__main__':
             print(k, v)
         
         ui = input("\nType a menu number: ")
-        if ui == '1':
+        if ui == '1':  # Quit
             print("\n\nGoodbye!")
             break
-        elif ui == '2':
+        elif ui == '2':  # Run the mutator with the specified filename
+            print(f'\n\nCurrent directory is {os.getcwd():s}')
             file_name = input(
                     '\n\nType the name of the file to mutate using trigrams: '
                     ).strip()
-            print(build_new_story(file_name, counter))
-        elif ui == '3':
+            print('\n\n', build_new_story(file_name, counter))
+        elif ui == '3':  # Change the seed number without running the mutator
             num = input('Type a random number to seed mutated text: ').strip()
             if num.isdigit():
                 counter = int(num)
