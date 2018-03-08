@@ -1,4 +1,4 @@
-# author: githubtater
+# Author: Roy Tate (githubtater)
 
 def fizz_buzz():
     '''A classic, simple computer science problem'''
