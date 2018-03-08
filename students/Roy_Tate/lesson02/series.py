@@ -21,13 +21,13 @@ def lucas(n):
 
 
 
-def sum_series(n, **kwargs):
+def sum_series(n, y=0, z=1):
     '''
         Return the nth position in the fibonacci series if no optional arguments are
         provided. Return the nth position of the lucas series if the optional arguments
         equal 2 and 1. Other optional arguments can be handled at a later time.
     '''
-    if kwargs == 2: ## This needs revamped (instructions clearly said not to do this)
+    if y == 2 and z == 1: ## This needs revamped (instructions clearly said not to do this)
         return lucas(n)
     else:
         return fibonacci(n)
