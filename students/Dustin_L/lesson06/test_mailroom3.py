@@ -141,7 +141,28 @@ class TestMailRoom(unittest.TestCase):
                                                              'Test Donor 3\n'))
 
     def test_prompt_for_donation(self):
-        pass
+        """Test the prompt_for_donation() fxn"""
+
+        # Test when user enters donation attempts
+        se = ['foufty', '50']
+        with mock.patch('builtins.input', side_effect=se):
+            capturedPrint = redirect_stdout()
+            result = mr.prompt_for_donation('')
+            reset_stdout()
+
+            self.assertTrue(result == 50.0, msg=result)
+            self.assertTrue(capturedPrint.getvalue() ==
+                            '\nDonation amount must be a number\n')
+
+        # Test when user enters 'quit'
+        with mock.patch('builtins.input') as mock_input:
+            mock_input.return_value = 'quit'
+            capturedPrint = redirect_stdout()
+            result = mr.prompt_for_donation('')
+            reset_stdout()
+
+            self.assertTrue(result is None, msg=result)
+            self.assertTrue(capturedPrint.getvalue() == '')
 
     def test_add_donation(self):
         pass
