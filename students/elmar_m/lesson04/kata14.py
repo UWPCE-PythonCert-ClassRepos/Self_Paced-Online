@@ -8,6 +8,14 @@ infile = './sherlock.txt'
 oneline = './oneline.txt'
 pool = collections.defaultdict(list)
 
+def cleanup(l):
+    l = l.replace('-', ' ')
+    l = l.replace('.', ' ')
+    l = l.replace(',', ' ')
+    # l = l.replace('\n', ' ')
+    l = l.strip()
+    print(l)
+    #return l 
 
 def create_oneline(f):
     '''
@@ -18,9 +26,17 @@ def create_oneline(f):
     f: file with the line breaks you want to remove.
     '''
     with open(f, 'r') as myfile:
+        # for l in myfile.readlines():
+            # a = l.replace('-', ' ')
+            # b = a.replace('.', ' ')
+            # print(b, end=' ')
+            # ' '.join(l.strip()
+            # cleanup(l)
+            # print(l, end = 'X')
         a = ' '.join(l.strip() for l in myfile)
         with open(oneline, 'w') as o:
             o.write(a)
+            # o.write(l)
 
 
 def create_biglist(f):
@@ -81,8 +97,8 @@ def main():
     create_biglist(oneline)
     # get_stuff()
     # create_dict()
-    # show_dict(pool)
-    new_text(pool)
+    show_dict(pool)
+    # new_text(pool)
 
 if __name__ == '__main__':
     main()
