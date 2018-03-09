@@ -47,7 +47,7 @@ def main_menu(user_prompt = None):
     return valid_prompts.get(user_prompt)
 
 
-def craft_thank_u():
+def craft_thank_u(donor_name = "list"):
     """
     Prompt for a full name.
     Prompt->"list": show a list of the donor names
@@ -56,6 +56,7 @@ def craft_thank_u():
     Compose and print an email thanking the donor for their donation.
     Return to main
     """
+    print(divider)
     print("Let's craft a very personal thank you note for our donor!")
 
     while donor_name == "list":
@@ -169,19 +170,23 @@ def thank_u_str(thank_name, thank_gift):
             + divider)
 
 
-def user_input():
-    print(exit_reminder)
-    something = input(">")
-    if something.lower() == "exit":
-        return None
-    return something
+def user_input(something = ""):
+    if not something:
+        print(exit_reminder)
+        something = input(">")
+    return check_not_exit(something) * something
+
+
+def check_not_exit(check_str):
+    return not check_str.lower() == "exit"
 
 
 def list_of_keys(list_dict = donor_dict):
     return ("{}\n"*len(list_dict)).format(*list_dict)
 
-
+"""
 while True:
     main_menu()()
     print("\nReturning to main menu..........")
     input("Press enter to continue...")
+"""
