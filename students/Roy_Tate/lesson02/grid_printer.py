@@ -3,7 +3,6 @@
 
 # PART 1
 
-
 plus = '+ '
 minus = '- '
 bar = '| '

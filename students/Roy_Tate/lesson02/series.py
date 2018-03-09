@@ -20,7 +20,6 @@ def lucas(n):
         return lucas(n-1) + lucas(n-2)
 
 
-
 def sum_series(n, y=0, z=1):
     '''
         Return the nth position in the fibonacci series if no optional arguments are
