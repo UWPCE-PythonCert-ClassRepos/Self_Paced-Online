@@ -137,3 +137,107 @@ def front3(str):
 #print(front3('Java'))
 #print(front3('Chcolate'))
 #print(front3('ac'))
+
+# string_times
+def string_times(str, n):
+    return str * n
+
+#print(string_times('Hi', 2))
+#print(string_times('Hi', 3))
+#print(string_times('Hi', 1))
+
+# front_times
+def front_times(str, n):
+    if len(str) > 3:
+        repeat = str[0:3]
+    else:
+        repeat = str
+    return n * repeat
+
+#print(front_times('Chocolate', 2))
+#print(front_times('Chocolate', 3))
+#print(front_times('Abc', 3))
+
+# string_bits
+def string_bits(str):
+    strnew = ''
+    for i in range(len(str)):
+        if i == 0:
+            strnew += str[i]
+        elif i % 2 == 0:
+            strnew += str[i]
+        else:
+            pass
+    return strnew
+
+#print(string_bits('Hello'))
+#print(string_bits('Hi'))
+#print(string_bits('Heeololeo'))
+
+# string_splosion
+def string_splosion(str):
+    strnew = ''
+    for i in range(len(str)+1):
+        strnew += str[0:i]
+    return strnew
+
+#print(string_splosion('Code'))
+#print(string_splosion('abc'))
+#print(string_splosion('ab'))
+
+# last2
+def last2(str):
+    last = str[len(str)-2:len(str)]
+    count = 0
+    for i in range(len(str)-3):
+        if (str[i] + str[i+1]) == last:
+            count = count + 1
+        else:
+            pass
+    return count
+
+#print(last2('hixxhi'))
+#print(last2('xaxxaxaxx'))
+#print(last2('axxxaaxx'))
+
+# array_count9
+def array_count9(nums):
+    count = 0
+    for i in nums:
+        if i == 9:
+            count = count + 1
+        else:
+            pass
+    return count
+
+#print(array_count9([1, 2, 9]))
+#print(array_count9([1, 9, 9]))
+#print(array_count9([1, 9, 9, 3, 9]))
+
+# array_front9
+def array_front9(nums):
+    for i in range(0, 3, 1):
+        if nums[i] == 9:
+            found = True
+            break
+        else:
+            found = False
+    return found
+
+#print(array_front9([1, 2, 9, 3, 4]))
+#print(array_front9([1, 2, 3, 4, 9]))
+#print(array_front9([1, 2, 3, 4, 5]))
+
+# array123
+def array123(nums):
+    for i in range(len(nums)-2):
+        if (nums[i] == 1) and (nums[i+1] == 2) and (nums[i+2] == 3):
+            found = True
+            break
+        else:
+            found = False
+    return found
+
+#print(array123([1, 1, 2, 3, 1]))
+#print(array123([1, 1, 2, 4, 1]))
+#print(array123([1, 1, 2, 1, 2, 3]))
