@@ -137,6 +137,6 @@ def series_four():
 
 if __name__ == "__main__":
     # series_one()
-    # series_two()
-    # series_three()
+    series_two()
+    series_three()
     series_four()
