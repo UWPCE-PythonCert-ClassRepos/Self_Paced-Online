@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 def series_one():
     # Create a list that contains “Apples”, “Pears”, “Oranges” and “Peaches”.
     # Display the list (plain old print() is fine…).
@@ -21,11 +22,11 @@ def series_one():
     response_two = input(response_two_txt)
     try:
         response_two_int = int(response_two)
-        if response_two_int not in range(1,num_fruits + 1):
+        if response_two_int not in range(1, num_fruits + 1):
             print("Not in range. Try again, mouth breather.")
             series_one()
         else:
-            print(response_two + ": " + str(fruits[response_two_int-1]))
+            print(response_two + ": " + str(fruits[response_two_int - 1]))
     except:
         print("Not in ranges. Try again, mouth breather.")
         series_one()
@@ -37,7 +38,7 @@ def series_one():
 
     # Add another fruit to the beginning of the list
     # using insert() and display the list.
-    fruits.insert(len(fruits),"banana")
+    fruits.insert(len(fruits), "banana")
     print(fruits)
 
     # Display all the fruits that begin with “P”, using a for loop.
@@ -47,14 +48,13 @@ def series_one():
                 print(fruit)
         except:
             print("Something went wrong with lower method. "
-                "But did you know you could save 15% or more "
-                "on your car insurance by switching to Geiko?")
+                  "But did you know you could save 15% or more "
+                  "on your car insurance by switching to Geiko?")
     return fruits
+
 
 def series_two():
     series_one_stub = series_one()
-        # ['tomato', 'Apples', 'Peaches', 'Pears',
-        # 'Oranges', 'Peaches', 'kiwi', 'banana']
 
     # Display the list.
     print(series_one_stub)
@@ -78,18 +78,18 @@ def series_two():
     # a match is found. Once found, delete all occurrences.)
     doubled_list = []
     for fruit in series_one_stub:
-        doubled_list.append(fruit*2)
-    print(doubled_list)
+        doubled_list.append(fruit * 2)
     processable = True
     while processable:
         delete_fruit = input("enter a times two fruit item to remove."
                              " CaSe SeNsItIvE:\n>")
         if delete_fruit in doubled_list:
             doubled_list = list(filter(lambda a: a != delete_fruit, doubled_list))
-            print(doubled_list)
             processable = False
         else:
             print("Bro Do you even, try again?!")
+    print(doubled_list)
+
 
 def series_three():
     # Ask the user for input displaying a line like “Do you like apples?”
@@ -119,10 +119,11 @@ def series_three():
     # Display the list.
     print(series_one_stub)
 
+
 def series_four():
     # Make a copy of the list and reverse the letters in each fruit in the copy.
     series_one_stub = series_one()
-    
+
     fruits_reversed = []
     for fruit in series_one_stub:
         fruits_reversed.append(fruit[::-1])
@@ -134,7 +135,7 @@ def series_four():
     print(fruits_reversed)
 
 
-if __name__== "__main__":
+if __name__ == "__main__":
     # series_one()
     # series_two()
     # series_three()
