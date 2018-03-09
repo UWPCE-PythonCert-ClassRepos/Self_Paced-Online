@@ -2,62 +2,48 @@
 # Lesson 4 - Trigrams # Be warned that these files have DOS line endings (carriage return followed by newline)
 import random
 
-punctuation_keep = [',', '.', ';', '--', '?', '!', ' '] # White list?
-punctuations_remove ['\n', '(', ')']
+ending_punctuation = [',', '.', ';', '?', '!']
+other_punctuation = []
+punctuation_remove = ['\n', '(', ')']  # text = text.replace('\n', ' ')
 
-input_file = 'wish.txt'
+input_file_switch = {
+    1: 'wish.txt',
+    2: 'sherlock_small.txt'
+}
+
+input_file = input_file_switch[1]
 
 with open(input_file, 'r') as f:
     text = f.read()
-
-    text = text.replace('\n', ' ')
-    text = text.replace('(', '')
-    text = text.replace(')', '')
-    text = text.replace(',', ' ,')
-    text = text.replace('.', ' .')
+    for entry in punctuation_remove:
+        text = text.replace(entry, '')
+    for entry in ending_punctuation or other_punctuation:
+        text = text.replace(entry, f' {entry}')
     text = text.split(' ')
 
 
-
-text = 'I wish I may I wish I might'
-text_array = text.split(' ')
-# text_array = ['I', 'wish', 'I', 'may', 'I', 'wish', 'I', 'might']
-
-
-two_word_array = []
-for index, word in enumerate(range(len(text_array) - 1)):
-    two_word_array.append(text_array[index:index+2])
-# two_word_array = [['I', 'wish'], ['wish', 'I'], ['I', 'may'], ['may', 'I'], ['I', 'wish'], ['wish', 'I'], ['I', 'might']]
-
-new_array = []
-for index, word in enumerate(range(len(text_array) - 1)):
-    new_array.append(text_array[index] + " " + text_array[index + 1])
-# new_array = ['I wish', 'wish I', 'I may', 'may I', 'I wish', 'wish I', 'I might']
-
-
 text_hash = {}
-for index, elem in enumerate(new_array):
-    text_hash[elem] = []
-# text_hash = {'I may': [], 'I might': [], 'I wish': [], 'may I': [], 'wish I': [1]}
-
-for i in range(len(two_word_array)-1):
-    pattern = text_array[i:i+2]
-    text_hash[' '.join(pattern)].append(two_word_array[i+1][1])
-    print(text_hash)
-# text_hash =  {'I wish': ['I', 'I'], 'wish I': ['may', 'might'], 'may I': ['wish'], 'I may': ['I'], 'I might': []}
+for index in range(len(text) - 1):
+    key = ' '.join(text[index:index+2])
+    text_hash[key] = []  # text_hash = {'I may': [], 'I might': []...
 
 
-
+for index in range(len(text)-2):
+    pattern = text[index:index+2]
+    text_hash[' '.join(pattern)].append(text[index+2]) # {'I wish': ['I', 'I']..
 
 
 def create_trigram():
     sentence = 'wish I'
-    while True: # While count < sum limit or text_hash[next_key] != []
+    count = 0
+    while True:
         next_key = ' '.join(sentence.split(' ')[-2:])
-        if text_hash[next_key] == []:
+        if text_hash[next_key] == [] or count > 100:
             break
         else:
             sentence += ' '
             sentence += text_hash[next_key][random.randint(0,len(text_hash[next_key])-1)]
+            count += 1
     return(sentence)
+
 # create_trigram() --> 'wish I may I wish I may I wish I might'
