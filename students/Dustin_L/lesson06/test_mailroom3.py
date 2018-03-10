@@ -32,7 +32,11 @@ class TestMailRoom(unittest.TestCase):
         pass
 
     def tearDown(self):
-        pass
+        # Reset global donation database
+        mr.donor_db = defaultdict(lambda: mr.init_donor_data(),
+                                  {'Test Donor 1': mr.init_donor_data([1000, 5000, 10000]),
+                                   'Test Donor 2': mr.init_donor_data([12000, 5000, 27000]),
+                                   "Test Donor 3": mr.init_donor_data([38734, 6273, 67520])})
 
     def test_init_donor_data(self):
         """Tests the init_donor_data() fxn"""
@@ -202,7 +206,19 @@ class TestMailRoom(unittest.TestCase):
                             mr.THANK_YOU_FMT.format('Bert', 1000) + '\n')
 
     def test_create_report(self):
-        pass
+        """Test create_report() fxn"""
+        captured_print = redirect_stdout()
+        mr.create_report()
+        reset_stdout()
+        report_lines = captured_print.getvalue().split('\n')
+
+        self.assertTrue(report_lines[0] == '')
+        self.assertTrue(report_lines[1] == '   Donor Name     | Total Given  |  Num Gifts   | Average Gift')
+        self.assertTrue(report_lines[2] == '--------------------------------------------------------------')
+        self.assertTrue(report_lines[3] == 'Test Donor 3      | $  112527.00 |            3 | $   37509.00')
+        self.assertTrue(report_lines[4] == 'Test Donor 2      | $   44000.00 |            3 | $   14666.67')
+        self.assertTrue(report_lines[5] == 'Test Donor 1      | $   16000.00 |            3 | $    5333.33')
+        self.assertTrue(report_lines[6] == '')
 
     def test_quit_mailroom(self):
         pass
