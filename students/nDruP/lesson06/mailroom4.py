@@ -142,7 +142,7 @@ def create_report():
     Print a list of donors sorted by total historical donation amount.
     Donor Name, Total Given, Num Gifts, Average Gift
     """
-    sort_donors = sorted(donor_dict.items(), key=sum_2tuple_by2, reverse=True)
+    sort_donors = sort_donor_dict()
 
     col_name_list = ["Donor Name", "Total Given", "Gifts", "Avg Donation"]
 
@@ -177,6 +177,10 @@ def sum_2tuple_by2(idx_set):
     i.e. (a, b) assuming b is a list of numbers should return sum(b)
     """
     return sum(idx_set[1])
+
+
+def sort_donor_dict(rich_dict = donor_dict):
+    return sorted(rich_dict.items(), key=sum_2tuple_by2, reverse=True)
 
 
 def create_letters(write_dir = ""):

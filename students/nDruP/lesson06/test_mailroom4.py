@@ -57,8 +57,16 @@ def test_thank_u_str():
             + divider)
 
 
-def test_report():
-    x = "a"
+def test_sum_2tuple_by2():
+    assert sum_2tuple_by2((1, [1, 2, 3])) == 6
+    assert sum_2tuple_by2(("1", [1, 1, 1])) == 3
+    assert sum_2tuple_by2((None, [0])) == 0
+
+
+def test_sort_donor_dict():
+    sample_dict = {"1": [2, 4, 6], "2": [1, 2, 3]}
+    assert sort_donor_dict(sample_dict)[0][0] == "1"
+    assert sort_donor_dict(sample_dict)[1][0] == "2"
 
 
 def test_write_letter_to_dir():
