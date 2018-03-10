@@ -29,14 +29,18 @@ def reset_stdout():
 class TestMailRoom(unittest.TestCase):
 
     def setUp(self):
-        pass
-
-    def tearDown(self):
-        # Reset global donation database
+        # Reset global donation database after each test case
         mr.donor_db = defaultdict(lambda: mr.init_donor_data(),
                                   {'Test Donor 1': mr.init_donor_data([1000, 5000, 10000]),
                                    'Test Donor 2': mr.init_donor_data([12000, 5000, 27000]),
                                    "Test Donor 3": mr.init_donor_data([38734, 6273, 67520])})
+
+    def tearDown(self):
+        # Remove any added thank you letters
+        files = os.listdir(os.getcwd())
+        for f in files:
+            if f.startswith('Test_Donor'):
+                os.remove(os.path.join(os.getcwd(), f))
 
     def test_init_donor_data(self):
         """Tests the init_donor_data() fxn"""
