@@ -4,11 +4,11 @@ from datetime import date
 """This module runs the mailroom script.
 """
 
-data = [['Alpha', 3.65, 54.50],
-        ['Beta', 36.54, 1.25, 54.87],
-        ['Gamma', 17.38],
-        ['Delta', 25.55, 33.33, 78.14],
-        ['Epsilon', 65.40]]
+data_dict = {'Jeff Bezos': [3.65, 54.50],
+             'Mark Zuckerberg': [36.54, 1.25, 54.87],
+             'Paul Allen': [17.38],
+             'William Gates III': [25.55, 33.33, 78.14]
+             }
 
 
 def menu_selection(prompt, selection_dict):
@@ -35,43 +35,48 @@ def send_thankyou_email():
 
 def list_donors():
     """Return all donors name."""
-    [print(subdata[0]) for subdata in data]
+    [print(donor) for donor in data_dict.keys()]
 
 
 def donor_and_amount():
     """Return prompt for donor name and donation amount and print to screen."""
-    name = input('Enter a donor name > ').title()  # 'Title' checking
-    for subdata in data:  # search for existing donor
-        if name == subdata[0]:
-            amount = float(add_donation())
-            subdata.append(amount)
-            print(format_letter(name, amount))
-            break
-    else:  # add new donor
-        data.append([name])
-        amount = float(add_donation())
-        data[-1].append(amount)
-        print(format_letter(name, amount))
+    fullname = fullname_input()
+    amount = float(amount_input())
+    data_dict.setdefault(fullname, [])  # add name to key if doesn't exist
+    data_dict[fullname].append(amount)
+    print(format_letter(fullname, amount))
 
 
-def add_donation():
+def amount_input():
     """Return prompt asking for donation amount."""
     return input('Enter donation amount! > ')
 
 
+def fullname_input():
+    """Return prompt asking for full name."""
+    return input('Enter a donor first and last name > ').title()
+
+
 def summarize_donation():
     '''Return total given, number of gifts, and average gifts for each donor'''
-    summary = []
-    for subdata in data:
-        total_given = sum(subdata[1:])
-        num_gifts = len(subdata[1:])
-        summary.append([subdata[0],
-                        total_given,
-                        num_gifts,
-                        total_given/max(num_gifts, 1)
-                        ])
-    summary.sort(key=lambda x: x[1], reverse=True)
-    return summary
+    summarized_list = []
+    for donor_name in data_dict.keys():
+        value = data_dict.get(donor_name)
+        total_given = sum(value)
+        num_gifts = len(value)
+        avg_gifts = total_given/max(num_gifts, 1)
+        summarized_list.append({'donor_name': donor_name,
+                                'total_given': total_given,
+                                'num_gifts': num_gifts,
+                                'avg_gifts': avg_gifts,
+                                }
+                               )
+    # sort by total given
+    summarized_list = sorted(summarized_list,
+                             key=lambda k: k['total_given'],
+                             reverse=True
+                             )
+    return summarized_list
 
 
 def create_report():
@@ -81,26 +86,33 @@ def create_report():
              ' Num Gifts | Average Gift'
     print(header)
     print('-'*len(header))
-    for item in summary:
-        print('{:<26} ${:>11,.2f} {:>11d}  ${:>12,.2f}'.format(*item))
+    for donor_dict in summary:
+        print('{donor_name:<26} '
+              '${total_given:>11,.2f} '
+              '{num_gifts:>11d}  '
+              '${avg_gifts:>12,.2f}'.format(**donor_dict)
+              )
 
 
-def format_letter(name, amount):
+def format_letter(fullname, amount):
     """Return formatted letter with donor name and donated amount"""
     return ('Dear {},\n\n'
             '    Thank you for your very kind donation of $${:,.2f}.\n\n'
             '    It will be put to very good use.\n\n'
             '                   Sincerely,\n'
-            '                   -The Team'.format(name, amount))
+            '                   -The Team'.format(fullname, amount))
 
 
 def send_letters():
     """Create thank you letter for each donor and save as text files"""
-    summary = summarize_donation()
-    for item in summary:
-        filename = ''.join([item[0], ' ', str(date.today()), '.txt'])
+    for donor_name in data_dict.keys():
+        filename = ''.join([donor_name, ' ', str(date.today()), '.txt'])
         with open(filename, 'w') as outfile:
-            outfile.write(format_letter(item[0], item[1]))
+            # use last donated amount
+            outfile.write(format_letter(donor_name,
+                                        data_dict.get(donor_name)[-1]
+                                        )
+                          )
 
 
 main_prompt = ('\nEnter "q" to "Exit Menu" \n'
