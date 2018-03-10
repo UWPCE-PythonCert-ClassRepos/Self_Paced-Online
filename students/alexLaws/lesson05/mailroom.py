@@ -32,19 +32,17 @@ def exit():
 
 def report():
     print("\nDonor Name       |  Total Given  |  Num Gifts  |  Average Gift")
-    to_sort = {}
-    for donor in donor_dictionary:
-        total = sum(donor_dictionary[donor])
-        to_sort[donor] = total
-    in_order = sorted(to_sort, key=to_sort.__getitem__, reverse=True)
-    for donor in in_order:
-        total = to_sort[donor]
-        number = len(donor_dictionary[donor])
-        average = total / number
-        print("{:17} ${:14,.2f} {:13} ${:13,.2f}".format(donor,
-                                                         total,
-                                                         number,
-                                                         average))
+    donor_info = [{'name': i,
+                   'tot': sum(donor_dictionary[i]),
+                   'num': len(donor_dictionary[i]),
+                   'avg':sum(donor_dictionary[i]) / len(donor_dictionary[i])}
+                  for i in donor_dictionary]
+    from operator import itemgetter
+    for donor in sorted(donor_info, key=itemgetter('tot'), reverse=True):
+        print("{:17} ${:14,.2f} {:13} ${:13,.2f}".format(donor['name'],
+                                                         donor['tot'],
+                                                         donor['num'],
+                                                         donor['avg']))
 
 
 def generate_note(name, all_time_total, curr_donate=0):
