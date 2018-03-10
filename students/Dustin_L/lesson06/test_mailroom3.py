@@ -72,26 +72,26 @@ class TestMailRoom(unittest.TestCase):
         # Test invalid input type
         se = ['two', 1]
         with mock.patch('builtins.input', side_effect=se) as mock_input:
-            capturedPrint = redirect_stdout()
+            captured_print = redirect_stdout()
             mr.get_usr_input()
             reset_stdout()
 
-            self.assertTrue(capturedPrint.getvalue() == (f'\nPlease try again. '
-                                                         f'Valid options are: '
-                                                         f'{mr.PROMPT_OPTS}\n'))
+            self.assertTrue(captured_print.getvalue() == (f'\nPlease try again. '
+                                                          f'Valid options are: '
+                                                          f'{mr.PROMPT_OPTS}\n'))
 
         # Test valid input type, but not a valid option
         se = [-5, 1]
         with mock.patch('builtins.input', side_effect=se) as mock_input:
-            capturedPrint = redirect_stdout()
+            captured_print = redirect_stdout()
             mr.get_usr_input()
             reset_stdout()
 
-            self.assertTrue(capturedPrint.getvalue() == (f'\nPlease select a '
-                                                         f'number between '
-                                                         f'{mr.PROMPT_OPTS[0]}'
-                                                         f' and '
-                                                         f'{mr.PROMPT_OPTS[-1]}\n'))
+            self.assertTrue(captured_print.getvalue() == (f'\nPlease select a '
+                                                          f'number between '
+                                                          f'{mr.PROMPT_OPTS[0]}'
+                                                          f' and '
+                                                          f'{mr.PROMPT_OPTS[-1]}\n'))
 
     def test_get_donor_names(self):
         """Test the get_donor_names() fxn"""
@@ -117,12 +117,12 @@ class TestMailRoom(unittest.TestCase):
         # Test when user enters "quit"
         with mock.patch('builtins.input') as mock_input:
             mock_input.return_value = 'quit'
-            capturedPrint = redirect_stdout()
+            captured_print = redirect_stdout()
             result = mr.prompt_for_donor('')
             reset_stdout()
 
             self.assertTrue(result is None)
-            self.assertTrue(capturedPrint.getvalue() == '')
+            self.assertTrue(captured_print.getvalue() == '')
 
         # Test when user enters "list"
         test_donor_db = {'Test Donor 1': 'na',
@@ -131,14 +131,14 @@ class TestMailRoom(unittest.TestCase):
         se = ['list', 'quit']
         with mock.patch.dict(mr.donor_db, test_donor_db, clear=True):
             with mock.patch('builtins.input', side_effect=se) as mock_input:
-                capturedPrint = redirect_stdout()
+                captured_print = redirect_stdout()
                 result = mr.prompt_for_donor('')
                 reset_stdout()
 
                 self.assertTrue(result is None)
-                self.assertTrue(capturedPrint.getvalue() == ('\nTest Donor 1\n'
-                                                             'Test Donor 2\n'
-                                                             'Test Donor 3\n'))
+                self.assertTrue(captured_print.getvalue() == ('\nTest Donor 1\n'
+                                                              'Test Donor 2\n'
+                                                              'Test Donor 3\n'))
 
     def test_prompt_for_donation(self):
         """Test the prompt_for_donation() fxn"""
@@ -146,23 +146,23 @@ class TestMailRoom(unittest.TestCase):
         # Test when user enters donation attempts
         se = ['foufty', '50']
         with mock.patch('builtins.input', side_effect=se):
-            capturedPrint = redirect_stdout()
+            captured_print = redirect_stdout()
             result = mr.prompt_for_donation('')
             reset_stdout()
 
             self.assertTrue(result == 50.0, msg=result)
-            self.assertTrue(capturedPrint.getvalue() ==
+            self.assertTrue(captured_print.getvalue() ==
                             '\nDonation amount must be a number\n')
 
         # Test when user enters 'quit'
         with mock.patch('builtins.input') as mock_input:
             mock_input.return_value = 'quit'
-            capturedPrint = redirect_stdout()
+            captured_print = redirect_stdout()
             result = mr.prompt_for_donation('')
             reset_stdout()
 
             self.assertTrue(result is None, msg=result)
-            self.assertTrue(capturedPrint.getvalue() == '')
+            self.assertTrue(captured_print.getvalue() == '')
 
     def test_add_donation(self):
         """Test the add_donation() fxn"""
@@ -189,7 +189,17 @@ class TestMailRoom(unittest.TestCase):
                         mr.donor_db['Test Donor 3'])
 
     def test_send_thank_you(self):
-        pass
+        """Test send_thank_you() fxn"""
+
+        # Test output thank you string
+        se = ['Bert', '1000']
+        with mock.patch('builtins.input', side_effect=se):
+            captured_print = redirect_stdout()
+            mr.send_thank_you()
+            reset_stdout()
+
+            self.assertTrue(captured_print.getvalue() ==
+                            mr.THANK_YOU_FMT.format('Bert', 1000) + '\n')
 
     def test_create_report(self):
         pass
