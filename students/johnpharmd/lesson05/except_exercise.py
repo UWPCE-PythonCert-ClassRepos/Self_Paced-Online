@@ -56,4 +56,5 @@ except IndexError:
     except IndexError:
         print('Another IndexError!')
     finally:
-        still_another_joke = more_fun(langs[2])
+        more_fun(langs[2])
+        last_fun()
