@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+'''
+file: kata14.py
+elmar_m / 22e88@mailbox.org
+Lesson04: Kata Fourteen: Tom Swift Under Milk Wood
+'''
+
 import collections
 import random
 
@@ -105,21 +111,18 @@ def make_new_text(x):
     x: a dictionary. Each key is expected to have a list of values.
     '''
     for i in x:
-        print('{} {}'.format(i, random.choice(x[i])))     
-    
+        print('{} {}'.format(i, random.choice(x[i])), end = ' ')     
+            
 
 #######################################################################
 
 def main():
     infile = './sherlock.txt'
-    oneline = './oneline.txt'
     mydict = collections.defaultdict(list)
-
     oneline = make_oneline(infile)
     cleaner_oneline = cleanup(oneline)
-
     biglist = create_biglist(cleaner_oneline)
-    
+
     for slice in get_stuff_generator(biglist):
         append_to_dict(mydict, slice)
     
