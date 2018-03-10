@@ -221,7 +221,12 @@ class TestMailRoom(unittest.TestCase):
         self.assertTrue(report_lines[6] == '')
 
     def test_quit_mailroom(self):
-        pass
+        """Test quit_mailroom() fxn"""
+        captured_print = redirect_stdout()
+        mr.quit_mailroom()
+        reset_stdout()
+
+        self.assertTrue(captured_print.getvalue() == 'Quitting mailroom...\n')
 
     def test_send_letters(self):
         pass
