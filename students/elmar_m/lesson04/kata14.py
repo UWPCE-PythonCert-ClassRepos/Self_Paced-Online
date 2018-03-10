@@ -3,102 +3,132 @@
 import collections
 import random
 
-# infile = './sherlock_small.txt'
-infile = './sherlock.txt'
-oneline = './oneline.txt'
-pool = collections.defaultdict(list)
 
-def cleanup(l):
-    l = l.replace('-', ' ')
-    l = l.replace('.', ' ')
-    l = l.replace(',', ' ')
-    # l = l.replace('\n', ' ')
-    l = l.strip()
-    print(l)
-    #return l 
-
-def create_oneline(f):
+def cleanup(x):
     '''
-    Remove line breaks from file given as an input argument and write 
-    output to another file ('oneline')
+    Substitute certain characters in a string by whitespace. 
+    Return the cleaned string. 
     
         ARGS:
-    f: file with the line breaks you want to remove.
+    x: a string object
     '''
-    with open(f, 'r') as myfile:
-        # for l in myfile.readlines():
-            # a = l.replace('-', ' ')
-            # b = a.replace('.', ' ')
-            # print(b, end=' ')
-            # ' '.join(l.strip()
-            # cleanup(l)
-            # print(l, end = 'X')
-        a = ' '.join(l.strip() for l in myfile)
-        with open(oneline, 'w') as o:
-            o.write(a)
-            # o.write(l)
+    x = x.replace('-', ' ')
+    x = x.replace('.', ' ')
+    x = x.replace(',', ' ')
+    x = x.replace('"', ' ')
+    x = x.replace("'", ' ')
+    x = x.replace(":", ' ')
+    x = x.replace('?', ' ')
+    x = x.replace('!', ' ')
+    x = x.lower()
+    return x 
 
 
-def create_biglist(f):
+def make_oneline(x):
     '''
-    Create a list out of the single words of a given file.
+    Remove line breaks from a file. 
+    Return the files content as a string respectively one long line.
     
         ARGS:
-    f: file to read
+    x: the file to operate on
+    ''' 
+    with open(x, 'r') as myfile:
+        l = ' '.join(l.strip() for l in myfile)
+        return l
+
+
+def create_biglist(x):
     '''
-    with open(f, 'r') as ofile:
-        biglist = ofile.readline().split()
-
-    for i in get_stuff_generator(0, biglist):
-        # print(i)
-        create_dict(i)
-
-
-def get_stuff_generator(n, l):
+    Create a list out of a string by breaking it up on 
+    whitespace.
+    Return the list.
+   
+        ARGS:
+    x: the string to break up 
     '''
-    Iterate over a list of arbitrary length and get a slice of 3 elements out
-    of it with every iteration. The slice and it's predecessor overlap by 
+    y = x.split()
+    return y
+
+
+def get_stuff_generator(x):
+    '''
+    Generator to iterate over a list of arbitrary length. Get a slice of 3 elements out
+    of the list with every iteration. The slice and it's predecessor overlap by 
     2 elements (the last 2 elements of one slice are the first 2 of the 
-    following slice). Return the slice.
+    following slice). 
+    Return the slice.
+    
+        ARGS:
+    x: the list to operate on
     '''
-    try:
-        while n >= 0:
-            e = n + 3
-            k = l[n:e]
-            y = l[e] 
-            x = ' '.join(k)
-            yield k
-            n += 1
-    except IndexError:
-        return
+    n = 0
+    end = len(x) - 3
+    while n <= end:
+        e = n + 3
+        s = x[n:e]
+        yield s
+        n += 1
 
 
-def create_dict(l):
-        k = ' '.join(l[0:2])
-        v = l[2]
-        pool[k].append(str(v))    # put key and value in dictionary
-
-
-def show_dict(d):
-    for i in d:
-        print('{} --> {}'.format(i, d[i]))
-
-def new_text(d):
+def append_to_dict(x, y):
     '''
-    Given a dictionary which values are lists (defaultdict(list)), by random
-    choose one single value out of the value list of each key. Print the key 
-    and the choosen value.
+    Append items to a dictionary. 
+
+        ARGS:
+    x: the dictionary to append to
+    y: the item. Item is expected to be a list of 3 elements. The  
+       first two are joined by whitespace and built the new key. 
+       The third element then builts the value of that key.
     '''
-    for i in d:
-        print('{} {}'.format(i, random.choice(d[i])))
+    k = ' '.join(y[0:2])
+    v = y[2]
+    x[k].append(str(v))    # put key and value in dictionary
+
+
+def show_dict(x):
+    '''
+    Show key and values of a dictionary. Helper function for debugging.
+
+        ARGS:
+    x: the dictionary to show
+    '''
+    for i in x:
+        print('{} --> {}'.format(i, x[i]))
+
+
+def make_new_text(x):
+    '''
+    Print every key of a dictionary and one of it's (randomly chosen)
+    values. 
+    
+        ARGS:
+    x: a dictionary. Each key is expected to have a list of values.
+    '''
+    for i in x:
+        print('{} {}'.format(i, random.choice(x[i])))     
+    
+
+#######################################################################
 
 def main():
-    create_oneline(infile)
-    create_biglist(oneline)
-    # get_stuff()
-    # create_dict()
-    show_dict(pool)
-    # new_text(pool)
+    infile = './sherlock.txt'
+    oneline = './oneline.txt'
+    mydict = collections.defaultdict(list)
+
+    oneline = make_oneline(infile)
+    cleaner_oneline = cleanup(oneline)
+
+    biglist = create_biglist(cleaner_oneline)
+    
+    for slice in get_stuff_generator(biglist):
+        append_to_dict(mydict, slice)
+    
+    # show_dict(mydict)
+    make_new_text(mydict)
+    
+#######################################################################
+
 
 if __name__ == '__main__':
     main()
+

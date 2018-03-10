@@ -45,6 +45,8 @@ def main():
     are used and put together; where interconnecting steps glue them
     together and other intermediate variables are used when
     necessary.
+    Use variables to get the results of functions described above. Pass
+    this variables here from step to step.
     The end of the main function should be the end of the program. Not
     necessarily ending in a 'return' statement.
     '''
