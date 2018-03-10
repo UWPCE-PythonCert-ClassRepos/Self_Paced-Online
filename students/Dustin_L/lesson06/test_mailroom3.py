@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """This is a test module that tests mailroom3.py"""
 
+import os
 import sys
+import datetime
 import unittest
 from unittest import mock
 from io import StringIO
@@ -233,7 +235,31 @@ class TestMailRoom(unittest.TestCase):
         self.assertTrue(captured_print.getvalue() == 'Quitting mailroom...\n')
 
     def test_send_letters(self):
-        pass
+        """Test send_letters() fxn"""
+        now = datetime.datetime.today().strftime('%m-%d-%Y')
+        mr.send_letters()
+        files = os.listdir()
+
+        # Check the file names are correct
+        self.assertTrue(f'Test_Donor_1_{now}.txt' in files)
+        self.assertTrue(f'Test_Donor_2_{now}.txt' in files)
+        self.assertTrue(f'Test_Donor_3_{now}.txt' in files)
+
+        # Check the file contents are correct
+        with open(f'Test_Donor_1_{now}.txt', 'r') as f:
+            contents = f.read(105)
+            self.assertTrue(contents == mr.THANK_YOU_FMT.format(
+                'Test Donor 1', 16000))
+
+        with open(f'Test_Donor_2_{now}.txt', 'r') as f:
+            contents = f.read(105)
+            self.assertTrue(contents == mr.THANK_YOU_FMT.format(
+                'Test Donor 2', 44000))
+
+        with open(f'Test_Donor_3_{now}.txt', 'r') as f:
+            contents = f.read(106)
+            self.assertTrue(contents == mr.THANK_YOU_FMT.format(
+                'Test Donor 3', 112527))
 
 
 if __name__ == '__main__':
