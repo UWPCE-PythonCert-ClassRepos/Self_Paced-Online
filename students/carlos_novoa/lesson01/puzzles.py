@@ -16,11 +16,11 @@ def monkey_trouble(a_smile, b_smile):
 
 
 def sum_double(a, b):
-    return (a+b)*2 if a == b else a+b
+    return (a + b) * 2 if a == b else a + b
 
 
 def diff21(n):
-    return (n - 21)*2 if n > 21 else 21 - n
+    return (n - 21) * 2 if n > 21 else 21 - n
 
 
 def parrot_trouble(talking, hour):
@@ -55,7 +55,7 @@ def not_string(str):
 
 
 def missing_char(str, n):
-    return '{}{}'.format(str[:n], str[n+1:])
+    return '{}{}'.format(str[:n], str[n + 1:])
 
 
 def front_back(str):
@@ -77,7 +77,7 @@ def string_times(str, n):
 
 
 def front_times(str, n):
-    return str[:3]*n
+    return str[:3] * n
 
 
 def string_bits(str):
@@ -87,18 +87,18 @@ def string_bits(str):
 def string_splosion(str):
     result = ""
     for i in range(len(str)):
-        result = result + str[:i+1]
+        result = result + str[:i + 1]
     return result
 
 
 def last2(str):
     if len(str) < 4:
         return 0
-    substr = str[0:len(str)-2]
-    last2 = str[len(str)-2:]
+    substr = str[0:len(str) - 2]
+    last2 = str[len(str) - 2:]
     count = 0
     for i in range(len(substr)):
-        sub = str[i:i+2]
+        sub = str[i:i + 2]
         if sub == last2:
             count = count + 1
 
@@ -114,8 +114,8 @@ def array_front9(nums):
 
 
 def array123(nums):
-    for i in range(len(nums)-2):
-        if nums[i] == 1 and nums[i+1] == 2 and nums[i+2] == 3:
+    for i in range(len(nums) - 2):
+        if nums[i] == 1 and nums[i + 1] == 2 and nums[i + 2] == 3:
             return True
     return False
 
@@ -124,9 +124,9 @@ def string_match(a, b):
     shorter = min(len(a), len(b))
     count = 0
 
-    for i in range(shorter-1):
-        a_sub = a[i:i+2]
-        b_sub = b[i:i+2]
+    for i in range(shorter - 1):
+        a_sub = a[i:i + 2]
+        b_sub = b[i:i + 2]
         if a_sub == b_sub:
             count = count + 1
     return count
@@ -148,12 +148,12 @@ def make_tags(tag, word):
 
 
 def make_out_word(out, word):
-    index = len(out)/2
+    index = len(out) / 2
     return out[:index] + word + out[index:]
 
 
 def extra_end(str):
-    return str[len(str)-2:len(str)]*3
+    return str[len(str) - 2:len(str)] * 3
 
 
 def first_two(str):
@@ -172,7 +172,7 @@ def without_end(str):
 
 
 def non_start(a, b):
-    return a[1:]+b[1:]
+    return a[1:] + b[1:]
 
 
 def combo_string(a, b):
@@ -182,18 +182,18 @@ def combo_string(a, b):
 
 
 def left2(str):
-    return str[2:]+str[0:2]
+    return str[2:] + str[0:2]
 
 
 # ::::: List-1 ::::: #
 
 
 def first_last6(nums):
-    return (nums[0] == 6 or nums[len(nums)-1] == 6)
+    return (nums[0] == 6 or nums[len(nums) - 1] == 6)
 
 
 def same_first_last(nums):
-    return (len(nums) > 0 and (nums[0] == nums[len(nums)-1]))
+    return (len(nums) > 0 and (nums[0] == nums[len(nums) - 1]))
 
 
 def make_pi():
@@ -210,9 +210,9 @@ def sum3(nums):
 
 def rotate_left3(nums):
     result = list()
-    for i in range(len(nums)+2):
-        result.insert(i, nums[i-2])
-        if (i == len(nums)-1):
+    for i in range(len(nums) + 2):
+        result.insert(i, nums[i - 2])
+        if (i == len(nums) - 1):
             break
     return result
 
@@ -237,7 +237,7 @@ def middle_way(a, b):
 
 
 def make_ends(nums):
-    return [nums[0], nums[len(nums)-1]]
+    return [nums[0], nums[len(nums) - 1]]
 
 
 def has23(nums):
@@ -271,7 +271,7 @@ def squirrel_play(temp, is_summer):
 
 
 def caught_speeding(speed, is_birthday):
-    speed = speed-5 if is_birthday else speed
+    speed = speed - 5 if is_birthday else speed
     if (speed <= 60):
         return 0
     elif (speed >= 81):
@@ -298,7 +298,7 @@ def alarm_clock(day, vacation):
 def love6(a, b):
     if (a == 6 or b == 6):
         return True
-    if (abs(a-b) == 6 or a+b == 6):
+    if (abs(a - b) == 6 or a + b == 6):
         return True
     else:
         return False
@@ -319,7 +319,7 @@ def near_ten(num):
 
 
 def make_bricks(small, big, goal):
-    if (small+big*5 < goal):
+    if (small + big * 5 < goal):
         return False
     if (small < goal % 5):
         return False
@@ -336,7 +336,7 @@ def lone_sum(a, b, c):
     elif (a == c):
         return b
     else:
-        return a+b+c
+        return a + b + c
 
 
 def lucky_sum(a, b, c):
@@ -345,7 +345,7 @@ def lucky_sum(a, b, c):
     for i in range(len(ll)):
         if (ll[i] == 13):
             break
-        l_s = l_s+ll[i]
+        l_s = l_s + ll[i]
     return l_s
 
 
