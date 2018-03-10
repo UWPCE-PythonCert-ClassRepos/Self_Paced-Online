@@ -33,7 +33,7 @@ def middlelast_lastfirst_firstmiddle(sequence):
     """ 
     Moves the first third to the middle third's position, middle third to last
     third, and last third to first third.  Each third should be 
-    len(sequence)//3 * Position
+    len(sequence)//3 * Position.                                
     """
     third = len(sequence) // 3
     print(f"crazy mixup {sequence[third*2:] + sequence[:third] + sequence[third:third*2]}")
