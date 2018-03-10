@@ -48,4 +48,12 @@ else:
 
 langs = ['java', 'c', 'python']
 
-more_joke = more_fun(langs[0])
+try:
+    more_joke = more_fun(langs[0])
+except IndexError:
+    try:
+        next_joke = more_fun(langs[1])
+    except IndexError:
+        print('Another IndexError!')
+    finally:
+        still_another_joke = more_fun(langs[2])
