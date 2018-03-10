@@ -47,6 +47,36 @@ def main_menu(user_prompt = None):
     return valid_prompts.get(user_prompt)
 
 
+def user_input(something = ""):
+    """
+    Display exit reminder and prompt user for input.
+    """
+    while not something:
+        print(exit_reminder)
+        something = input(">")
+    return check_not_exit(something) * something
+
+
+def check_not_exit(check_str):
+    """
+    Check whether or not given string is "exit"
+    """
+    return not check_str.lower() == "exit"
+
+
+def thank_u_str(thank_name, thank_gift):
+    """
+    Return personalized thank you message.
+    """
+    return (divider + f"Dearest {thank_name},\n"
+            f"\tThank you for donation(s) of ${thank_gift:.2f}!\n"
+            "We will use your donation(s) to create real living Pokemon.\n"
+            "You now have our eternal loyalty. Use it wisely.\n"
+            "Sincerely,\n"
+            f"We're a Pyramid Scheme & so is {thank_name}"
+            + divider)
+
+
 def craft_thank_u(donor_name = "list"):
     """
     Prompt for a full name.
@@ -68,22 +98,43 @@ def craft_thank_u(donor_name = "list"):
             return
         if donor_name.lower() == "list":
             print(divider)
-            print(list_of_keys())
+            print(fstr_keylist())
 
     while True:
         print("\nEnter Donation Amount:")
-        donation_amt = user_input()
-        try:
-            donation_amt = round(float(donation_amt), 2)
-            break
-        except ValueError:
-            print("Invalid input")
-        except TypeError:
+        donation_amt_str = user_input()
+        if not donation_amt_str:
             return
+        donation_amt_float = conv_str_money(donation_amt_str)
+        if donation_amt_str != donation_amt_float:
+            break
 
     add_new_donation(donor_name, donation_amt)
     
     print(thank_u_str(donor_name, donation_amt))
+
+
+def add_new_donation(add_name, add_donation):
+    donor_dict[add_name].append(add_donation)
+
+
+def fstr_keylist(list_dict = donor_dict):
+    """
+    Format dict_keys into a readable string.
+    """
+    return ("{}\n"*len(list_dict)).format(*list_dict)
+
+
+def conv_str_money(conv_str):
+    """
+    Convert string to a float rounded to the Hundredth.
+    If it's unable to convert, return original string.
+    """
+    try:
+        conv_float = round(float(conv_str), 2)
+        return conv_float
+    except:
+        return conv_str
 
 
 def create_report():
@@ -120,6 +171,14 @@ def create_report():
     print(report)
 
 
+def sum_2tuple_by2(idx_set):
+    """
+    Return sum of 2nd element of 2-element tuple.
+    i.e. (a, b) assuming b is a list of numbers should return sum(b)
+    """
+    return sum(idx_set[1])
+
+
 def create_letters(write_dir = ""):
     """
     Write a full set of letters to each donor to individual files on disk.
@@ -128,11 +187,11 @@ def create_letters(write_dir = ""):
     """
     while not os.path.isdir(write_dir):
         print("Enter an existing directory to place the letters.")
-        print("Press Enter or input 'cwd' to use Current Working Directory")
+        print("Input 'cwd' to use Current Working Directory")
         write_dir = user_input()
         if not write_dir:
             return
-        if write_dir == '' or write_dir.lower() == "cwd":
+        if write_dir.lower() == "cwd":
             write_dir = os.getcwd()
     for donor, donations in donor_dict.items():
         print(write_letter_to_dir(donor, donations, write_dir))
@@ -140,53 +199,13 @@ def create_letters(write_dir = ""):
 
 
 def write_letter_to_dir(name, gifts, letter_dir=os.getcwd()):
+    """
+    Write a personalized thank you letter for all the donors.
+    Letters will be written to letter_dir.
+    """
     curdate = (datetime.datetime.now()).strftime("%Y_%m_%d")
     file_name = name.replace(' ', '_') + "_" + curdate + ".txt"
     file_path = os.path.join(letter_dir, file_name)
     with open(file_path, 'w+') as letter:
-        letter.write(thank_u_str(letter_name, sum(gifts)))
+        letter.write(thank_u_str(name, sum(gifts)))
     return "Wrote to " + file_path
-
-
-def sum_2tuple_by2(idx_set):
-    """
-    Returns sum of 2nd element of 2-element tuple.
-    Used in create_report()
-    """
-    return sum(idx_set[1])
-
-
-def add_new_donation(add_name, add_donation):
-    donor_dict[add_name].append(add_donation)
-
-
-def thank_u_str(thank_name, thank_gift):
-    return (divider + f"Dearest {thank_name},\n"
-            f"\tThank you for donation(s) of ${thank_gift:.2f}!\n"
-            "We will use your donation(s) to create real living Pokemon.\n"
-            "You now have our eternal loyalty. Use it wisely.\n"
-            "Sincerely,\n"
-            f"We're a Pyramid Scheme & so is {thank_name}"
-            + divider)
-
-
-def user_input(something = ""):
-    if not something:
-        print(exit_reminder)
-        something = input(">")
-    return check_not_exit(something) * something
-
-
-def check_not_exit(check_str):
-    return not check_str.lower() == "exit"
-
-
-def list_of_keys(list_dict = donor_dict):
-    return ("{}\n"*len(list_dict)).format(*list_dict)
-
-"""
-while True:
-    main_menu()()
-    print("\nReturning to main menu..........")
-    input("Press enter to continue...")
-"""
