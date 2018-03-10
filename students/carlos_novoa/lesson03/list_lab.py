@@ -5,7 +5,7 @@ Lesson3, List Lab Excercises
 """
 
 
-def isInt(str):
+def is_int(str):
     """Helper function to check that input can be cast into int"""
     try:
         int(str)
