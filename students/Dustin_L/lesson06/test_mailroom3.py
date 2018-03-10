@@ -5,6 +5,7 @@ import sys
 import unittest
 from unittest import mock
 from io import StringIO
+from collections import defaultdict
 import mailroom3 as mr
 
 
@@ -94,7 +95,6 @@ class TestMailRoom(unittest.TestCase):
 
     def test_get_donor_names(self):
         """Test the get_donor_names() fxn"""
-
         test_donor_db = {'Test Donor 1': 'na',
                          'Test Donor 2': 'na',
                          'Test Donor 3': 'na'}
@@ -165,7 +165,28 @@ class TestMailRoom(unittest.TestCase):
             self.assertTrue(capturedPrint.getvalue() == '')
 
     def test_add_donation(self):
-        pass
+        """Test the add_donation() fxn"""
+        mr.donor_db = defaultdict(lambda: mr.init_donor_data(),
+                                  {'Test Donor 1': {},
+                                   'Test Donor 2': {}})
+
+        # Test adding new donor
+        test_results = {mr.GIFTS_KEY: [500],
+                        mr.NUM_GIFTS_KEY: 1,
+                        mr.TOTAL_KEY: 500,
+                        mr.AVE_KEY: 500}
+        mr.add_donation('Test Donor 3', 500)
+        self.assertTrue(mr.donor_db['Test Donor 3'] == test_results,
+                        msg=mr.donor_db['Test Donor 3'])
+
+        # Test adding to existing donor
+        test_results = {mr.GIFTS_KEY: [500, 1000],
+                        mr.NUM_GIFTS_KEY: 2,
+                        mr.TOTAL_KEY: 1500,
+                        mr.AVE_KEY: 750}
+        mr.add_donation('Test Donor 3', 1000)
+        self.assertTrue(mr.donor_db['Test Donor 3'] == test_results,
+                        mr.donor_db['Test Donor 3'])
 
     def test_send_thank_you(self):
         pass
