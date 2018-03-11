@@ -28,35 +28,36 @@ class TestHtmlRender(unittest.TestCase):
         """Test the render method with def indentation"""
         self.element.tag = 'html'
         self.element.append('Testing the render method...')
-        result = ('<html>\n'
+        answer = ('<html>\n'
                   '    Testing the render method...\n'
                   '<\\html>\n')
 
         with open('unit_test_render.txt', 'w+') as f:
             self.element.render(f)
             f.seek(0)
-            self.assertTrue(f.read(50) == result)
+            result = f.read(50)
+            self.assertTrue(result == answer, msg=result)
 
     def test_render_custom_indent(self):
         """Test the render method with custom indentation"""
         self.element.tag = 'html'
         self.element.append('Testing the render method...')
-        result = ('    <html>\n'
+        answer = ('    <html>\n'
                   '        Testing the render method...\n'
                   '    <\\html>\n')
 
         with open('unit_test_render.txt', 'w+') as f:
             self.element.render(f, '    ')
             f.seek(0)
-            self.assertTrue(f.read(60) == result)
+            result = f.read(60)
+            self.assertTrue(result == answer, msg=result)
 
     def test_render_nested(self):
         """Test the render method with nested elements"""
         self.element.tag = 'html'
         self.element.append(hr.HeadElement(hr.TitleElement('This is a title')))
-        self.element.append(hr.BodyElement())
-        self.element.append(hr.ParagraphElement(500))
-        result = ('<html>\n'
+        self.element.append(hr.BodyElement(hr.ParagraphElement(500)))
+        answer = ('<html>\n'
                   '    <head>\n'
                   '        <title> This is a title <\\title>\n'
                   '    <\\head>\n'
@@ -70,7 +71,30 @@ class TestHtmlRender(unittest.TestCase):
         with open('unit_test_render.txt', 'w+') as f:
             self.element.render(f)
             f.seek(0)
-            self.assertTrue(f.read(100), msg=result)
+            result = f.read(200)
+            self.assertTrue(result == answer, msg=result)
+
+    def test_render_nested_with_attrs(self):
+        """Test the render method with nested elements"""
+        self.element.tag = 'html'
+        self.element.append(hr.HeadElement(hr.TitleElement('This is a title')))
+        self.element.append(hr.BodyElement(hr.ParagraphElement(500, style='Bold', cls='Intro')))
+        answer = ('<html>\n'
+                  '    <head>\n'
+                  '        <title> This is a title <\\title>\n'
+                  '    <\\head>\n'
+                  '    <body>\n'
+                  '        <p style="Bold" cls="Intro">\n'
+                  '            500\n'
+                  '        <\\p>\n'
+                  '    <\\body>\n'
+                  '<\\html>\n')
+
+        with open('unit_test_render.txt', 'w+') as f:
+            self.element.render(f)
+            f.seek(0)
+            result = f.read(200)
+            self.assertTrue(result == answer, msg=result)
 
 
 if __name__ == '__main__':

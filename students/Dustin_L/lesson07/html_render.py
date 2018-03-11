@@ -10,8 +10,9 @@ class Element(object):
     tag = ''
     indent = '    '
 
-    def __init__(self, content=None):
+    def __init__(self, content=None, **attrs):
         self.content = [content] if content else []
+        self.attrs = attrs
 
     def append(self, content):
         """Adds a content to the element.
@@ -28,7 +29,8 @@ class Element(object):
             file_out (file): Writable file-like object to recieve rendered data.
             cur_ind (str, optional): Defaults to ''. Indentation of current element.
         """
-        file_out.write(cur_ind + f'<{self.tag}>\n')
+        attrs = ' ' + ' '.join(f'{k}="{v}"' for k, v in self.attrs.items())
+        file_out.write(cur_ind + f'<{self.tag}{attrs if self.attrs else ""}>\n')
 
         for item in self.content:
             if hasattr(item, 'render'):
