@@ -27,6 +27,21 @@ class Element(object):
         file_out.write(cur_ind + f'<\\{self.tag}>\n')
 
 
+class HtmlElement(Element):
+    """HTML type Element"""
+    tag = 'html'
+
+
+class BodyElement(Element):
+    """Body type Element"""
+    tag = 'body'
+
+
+class ParagraphElement(Element):
+    """Paragraph type Element"""
+    tag = 'p'
+
+
 def main():
     """Main function"""
     pass
