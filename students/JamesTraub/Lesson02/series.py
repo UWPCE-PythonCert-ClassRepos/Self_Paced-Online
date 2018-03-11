@@ -7,52 +7,54 @@
 
 # fib(n) = fib(n-2) + fib(n-1)
 
+# def fibonacci(n):
+#     """
+#     Return the nth value in the Fibonacci series. If parameter
+#     is greater than 1 use recursion to find the nth value
+#     shown in the else statement below.
+#     """
+#     if n == 1:
+#         print(0)
+#         return 0
+#     elif n == 2:
+#         print(1)
+#         return 1
+#     else:
+#         return fibonacci(n-2) + fibonacci(n-1)
+#
+#
+# fibonacci(4)
+#
+#
+# def lucas(n):
+#     """
+#     Return the nth value in the Lucas series. If parameter
+#     is greater than 1 use recursion to find the nth value
+#     shown in the else statement below.
+#     """
+#     if n == 1:
+#         print(2)
+#         return 2
+#     elif n == 2:
+#         print(1)
+#         return 1
+#     else:
+#         return lucas(n-2) + lucas(n-1)
+#
+#
+# lucas(4)
 
-def sum_series(n, x=0, y=1):
+
+def sum_series(n, param1=0, param2=1):
     """Return the nth value in the Fibonacci or Lucas series based on parameter input"""
-    if (x == 0) and (y == 1):
-        # Return the nth value in the Fibonacci series
-        fibi = [0, 1]
-        if n == 0:
-            print(0)
-            return 0
-        elif n == 1:
-            print(1)
-            return 1
-        else:
-            for i in range(n):
-                # create Fibonacci series
-                small_fib = fibi[i]
-                range_plus1 = i + 1
-                big_fib = fibi[range_plus1]
-                next_fib = small_fib + big_fib
-                fibi.append(next_fib)
-            fib_nth = fibi[n-2] + fibi[n-1]
-            print(fib_nth)
-            return fib_nth
-    elif (x == 2) and (y == 1):
-        # Return the nth value in the Lucas series
-        lucas_tuple = [2, 1]
-        if n == 0:
-            print(2)
-            return 2
-        elif n == 1:
-            print(1)
-            return 1
-        else:
-            for i in range(n):
-                # create Lucas series
-                small_luc = lucas_tuple[i]
-                luc_plus1 = i + 1
-                big_luc = lucas_tuple[luc_plus1]
-                next_luc = small_luc + big_luc
-                lucas_tuple.append(next_luc)
-            lucas_nth = lucas_tuple[n - 2] + lucas_tuple[n - 1]
-            print(lucas_nth)
-            return lucas_nth
+    if n == 1:
+        print(param1)
+        return param1
+    elif n == 2:
+        print(param2)
+        return param2
     else:
-        print("Series not defined. Please enter Fibonacci or Lucas series parameters.")
-        return
+        return sum_series(n - 2, param1, param2) + sum_series(n - 1, param1, param2)
 
 
-sum_series(6, 2, 1)
+sum_series(6, 0, 1)
