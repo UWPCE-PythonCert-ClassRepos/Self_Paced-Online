@@ -18,8 +18,13 @@ class Element(object):
         self.content.append(s)
 
     def render(self, file_out, cur_ind=''):
-        """Renders the tag and strings in the element content"""
-        pass
+        """Renders the tag and strings from the element content"""
+        file_out.write(cur_ind + f'<{self.tag}>\n')
+
+        for item in self.content:
+            file_out.write(cur_ind + self.indent + item + '\n')
+
+        file_out.write(cur_ind + f'<\\{self.tag}>\n')
 
 
 def main():
