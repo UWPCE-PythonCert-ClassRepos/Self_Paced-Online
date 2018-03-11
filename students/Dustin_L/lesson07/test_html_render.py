@@ -5,7 +5,7 @@ import unittest
 import html_render as hr
 
 
-class TestElement(unittest.TestCase):
+class TestHtmlRender(unittest.TestCase):
     """Test class containing all unit tests for the Element class"""
     def setUp(self):
         self.element = hr.Element()
@@ -53,9 +53,13 @@ class TestElement(unittest.TestCase):
     def test_render_nested(self):
         """Test the render method with nested elements"""
         self.element.tag = 'html'
+        self.element.append(hr.HeadElement(hr.TitleElement('This is a title')))
         self.element.append(hr.BodyElement())
         self.element.append(hr.ParagraphElement(500))
         result = ('<html>\n'
+                  '    <head>\n'
+                  '        <title> This is a title <\\title>\n'
+                  '    <\\head>\n'
                   '    <body>\n'
                   '        <p>\n'
                   '            500\n'

@@ -30,58 +30,60 @@ def render_page(page, filename):
         outfile.write(f.getvalue())
 
 
-# Step 1
-#########
+# # Step 1
+# #########
 
-page = hr.Element()
+# page = hr.Element()
 
-page.append("Here is a paragraph of text -- there could be more of them, "
-            "but this is enough  to show that we can do some text")
+# page.append("Here is a paragraph of text -- there could be more of them, "
+#             "but this is enough  to show that we can do some text")
 
-page.append("And here is another piece of text -- you should be able to add any number")
+# page.append("And here is another piece of text -- you should be able to add any number")
 
-render_page(page, "test_html_output1.html")
+# render_page(page, "test_html_output1.html")
 
-# The rest of the steps have been commented out.
-#  Uncomment them as you move along with the assignment.
+# # The rest of the steps have been commented out.
+# #  Uncomment them as you move along with the assignment.
 
-# Step 2
+# # Step 2
+# ##########
+
+# page = hr.HtmlElement()
+
+# body = hr.BodyElement()
+
+# body.append(hr.ParagraphElement("Here is a paragraph of text -- there could be"
+#                                 " more of them, but this is enough  to show "
+#                                 "that we can do some text"))
+
+# body.append(hr.ParagraphElement("And here is another piece of text -- you "
+#                                 "should be able to add any number"))
+
+# page.append(body)
+
+# render_page(page, "test_html_output2.html")
+
+# Step 3
 ##########
 
 page = hr.HtmlElement()
+
+head = hr.HeadElement()
+head.append(hr.TitleElement("PythonClass = Revision 1087:"))
+
+page.append(head)
 
 body = hr.BodyElement()
 
 body.append(hr.ParagraphElement("Here is a paragraph of text -- there could be"
                                 " more of them, but this is enough  to show "
                                 "that we can do some text"))
-
 body.append(hr.ParagraphElement("And here is another piece of text -- you "
                                 "should be able to add any number"))
 
 page.append(body)
 
-render_page(page, "test_html_output2.html")
-
-# # Step 3
-# ##########
-
-# page = hr.Html()
-
-# head = hr.Head()
-# head.append(hr.Title("PythonClass = Revision 1087:"))
-
-# page.append(head)
-
-# body = hr.Body()
-
-# body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-#                  "but this is enough  to show that we can do some text"))
-# body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
-
-# page.append(body)
-
-# render_page(page, "test_html_output3.html")
+render_page(page, "test_html_output3.html")
 
 # # Step 4
 # ##########

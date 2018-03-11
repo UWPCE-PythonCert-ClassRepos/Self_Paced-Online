@@ -54,6 +54,36 @@ class ParagraphElement(Element):
     tag = 'p'
 
 
+class HeadElement(Element):
+    """Head type Element"""
+    tag = 'head'
+
+
+class OneLineElement(Element):
+    """One line type Element. Overrides Element.render()"""
+    def render(self, file_out, cur_ind=''):
+        """Renders the tag and strings from the element content onto one line.
+
+        Args:
+            file_out (file): Writable file-like object to recieve rendered data.
+            cur_ind (str, optional): Defaults to ''. Indentation of current element.
+        """
+        file_out.write(cur_ind + f'<{self.tag}> ')
+
+        for item in self.content:
+            if hasattr(item, 'render'):
+                item.render(file_out, cur_ind + self.indent)
+            else:
+                file_out.write(str(item) + ' ')
+
+        file_out.write(f'<\\{self.tag}>\n')
+
+
+class TitleElement(OneLineElement):
+    """Title type Element"""
+    tag = 'title'
+
+
 def main():
     """Main function"""
     pass
