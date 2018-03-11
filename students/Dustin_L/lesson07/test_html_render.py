@@ -50,6 +50,24 @@ class TestElement(unittest.TestCase):
             f.seek(0)
             self.assertTrue(f.read(60) == result)
 
+    def test_render_nested(self):
+        """Test the render method with nested elements"""
+        self.element.tag = 'html'
+        self.element.append(hr.BodyElement())
+        self.element.append(hr.ParagraphElement(500))
+        result = ('<html>\n'
+                  '    <body>\n'
+                  '        <p>\n'
+                  '            500\n'
+                  '        <\\p>\n'
+                  '    <\\body>\n'
+                  '<\\html>\n')
+
+        with open('unit_test_render.txt', 'w+') as f:
+            self.element.render(f)
+            f.seek(0)
+            self.assertTrue(f.read(100), msg=result)
+
 
 if __name__ == '__main__':
     unittest.main()

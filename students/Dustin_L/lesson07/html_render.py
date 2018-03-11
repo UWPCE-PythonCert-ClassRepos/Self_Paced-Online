@@ -13,16 +13,28 @@ class Element(object):
     def __init__(self, content=None):
         self.content = [content] if content else []
 
-    def append(self, s):
-        """Adds a string to the element content"""
-        self.content.append(s)
+    def append(self, content):
+        """Adds a content to the element.
+
+        Args:
+            content (str or Element): Content to be appended.
+        """
+        self.content.append(content)
 
     def render(self, file_out, cur_ind=''):
-        """Renders the tag and strings from the element content"""
+        """Renders the tag and strings from the element content.
+
+        Args:
+            file_out (file): Writable file-like object to recieve rendered data.
+            cur_ind (str, optional): Defaults to ''. Indentation of current element.
+        """
         file_out.write(cur_ind + f'<{self.tag}>\n')
 
         for item in self.content:
-            file_out.write(cur_ind + self.indent + item + '\n')
+            if hasattr(item, 'render'):
+                item.render(file_out, cur_ind + self.indent)
+            else:
+                file_out.write(cur_ind + self.indent + str(item) + '\n')
 
         file_out.write(cur_ind + f'<\\{self.tag}>\n')
 
