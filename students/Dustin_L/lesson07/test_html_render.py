@@ -8,7 +8,7 @@ import html_render as hr
 class TestHtmlRender(unittest.TestCase):
     """Test class containing all unit tests for the Element class"""
     def setUp(self):
-        self.element = hr.Element()
+        self.html = hr.HtmlElement()
 
     def tearDown(self):
         # Remove any unit test generated files
@@ -19,81 +19,136 @@ class TestHtmlRender(unittest.TestCase):
 
     def test_append(self):
         """Test the append method"""
-        self.element.append('Testing the append method...')
-        self.assertTrue(self.element.content == [
+        self.html.append('Testing the append method...')
+        self.assertTrue(self.html.content == [
                         'Testing the append method...'],
-                        msg=self.element.content)
+                        msg=self.html.content)
 
     def test_render_def_indent(self):
         """Test the render method with def indentation"""
-        self.element.tag = 'html'
-        self.element.append('Testing the render method...')
+        self.html.append('Testing the render method...')
         answer = ('<html>\n'
                   '    Testing the render method...\n'
-                  '<\\html>\n')
+                  '</html>\n')
 
         with open('unit_test_render.txt', 'w+') as f:
-            self.element.render(f)
+            self.html.render(f)
             f.seek(0)
             result = f.read(50)
             self.assertTrue(result == answer, msg=result)
 
     def test_render_custom_indent(self):
         """Test the render method with custom indentation"""
-        self.element.tag = 'html'
-        self.element.append('Testing the render method...')
+        self.html.append('Testing the render method...')
         answer = ('    <html>\n'
                   '        Testing the render method...\n'
-                  '    <\\html>\n')
+                  '    </html>\n')
 
         with open('unit_test_render.txt', 'w+') as f:
-            self.element.render(f, '    ')
+            self.html.render(f, '    ')
             f.seek(0)
             result = f.read(60)
             self.assertTrue(result == answer, msg=result)
 
     def test_render_nested(self):
         """Test the render method with nested elements"""
-        self.element.tag = 'html'
-        self.element.append(hr.HeadElement(hr.TitleElement('This is a title')))
-        self.element.append(hr.BodyElement(hr.ParagraphElement(500)))
+        self.html.append(hr.HeadElement(hr.TitleElement('This is a title')))
+        self.html.append(hr.BodyElement(hr.ParagraphElement(500)))
         answer = ('<html>\n'
                   '    <head>\n'
-                  '        <title> This is a title <\\title>\n'
-                  '    <\\head>\n'
+                  '        <title> This is a title </title>\n'
+                  '    </head>\n'
                   '    <body>\n'
                   '        <p>\n'
                   '            500\n'
-                  '        <\\p>\n'
-                  '    <\\body>\n'
-                  '<\\html>\n')
+                  '        </p>\n'
+                  '    </body>\n'
+                  '</html>\n')
 
         with open('unit_test_render.txt', 'w+') as f:
-            self.element.render(f)
+            self.html.render(f)
             f.seek(0)
             result = f.read(200)
             self.assertTrue(result == answer, msg=result)
 
     def test_render_nested_with_attrs(self):
         """Test the render method with nested elements"""
-        self.element.tag = 'html'
-        self.element.append(hr.HeadElement(hr.TitleElement('This is a title')))
-        self.element.append(hr.BodyElement(hr.ParagraphElement(500, style='Bold', cls='Intro')))
+        self.html.append(hr.HeadElement(hr.TitleElement('This is a title')))
+        self.html.append(hr.BodyElement(hr.ParagraphElement(500, style='Bold', cls='Intro')))
         answer = ('<html>\n'
                   '    <head>\n'
-                  '        <title> This is a title <\\title>\n'
-                  '    <\\head>\n'
+                  '        <title> This is a title </title>\n'
+                  '    </head>\n'
                   '    <body>\n'
                   '        <p style="Bold" cls="Intro">\n'
                   '            500\n'
-                  '        <\\p>\n'
-                  '    <\\body>\n'
-                  '<\\html>\n')
+                  '        </p>\n'
+                  '    </body>\n'
+                  '</html>\n')
 
         with open('unit_test_render.txt', 'w+') as f:
-            self.element.render(f)
+            self.html.render(f)
             f.seek(0)
             result = f.read(200)
+            self.assertTrue(result == answer, msg=result)
+
+    def test_render_self_closing(self):
+        """Test the render method with self closing elements"""
+        head = hr.HeadElement(hr.TitleElement('This is a title'))
+        body = hr.BodyElement()
+        para = hr.ParagraphElement(500, style='Bold', cls='Intro')
+        horz = hr.HrElement('Test')
+        body.append(para)
+        body.append(horz)
+        self.html.append(head)
+        self.html.append(body)
+        answer = ('<html>\n'
+                  '    <head>\n'
+                  '        <title> This is a title </title>\n'
+                  '    </head>\n'
+                  '    <body>\n'
+                  '        <p style="Bold" cls="Intro">\n'
+                  '            500\n'
+                  '        </p>\n'
+                  '        <hr />\n'
+                  '    </body>\n'
+                  '</html>\n')
+
+        with open('unit_test_render.txt', 'w+') as f:
+            self.html.render(f)
+            f.seek(0)
+            result = f.read(250)
+            self.assertTrue(result == answer, msg=result)
+
+    def test_render_self_closing_with_content(self):
+        """Test the render method with self closing elements and attempt
+           to manipulate the content attribute
+        """
+        head = hr.HeadElement(hr.TitleElement('This is a title'))
+        body = hr.BodyElement()
+        para = hr.ParagraphElement(500, style='Bold', cls='Intro')
+        horz = hr.HrElement('Test')
+        horz.content = ['Attempt to adjust content']
+        body.append(para)
+        body.append(horz)
+        self.html.append(head)
+        self.html.append(body)
+        answer = ('<html>\n'
+                  '    <head>\n'
+                  '        <title> This is a title </title>\n'
+                  '    </head>\n'
+                  '    <body>\n'
+                  '        <p style="Bold" cls="Intro">\n'
+                  '            500\n'
+                  '        </p>\n'
+                  '        <hr />\n'
+                  '    </body>\n'
+                  '</html>\n')
+
+        with open('unit_test_render.txt', 'w+') as f:
+            self.html.render(f)
+            f.seek(0)
+            result = f.read(250)
             self.assertTrue(result == answer, msg=result)
 
 

@@ -29,8 +29,7 @@ class Element(object):
             file_out (file): Writable file-like object to recieve rendered data.
             cur_ind (str, optional): Defaults to ''. Indentation of current element.
         """
-        attrs = ' ' + ' '.join(f'{k}="{v}"' for k, v in self.attrs.items())
-        file_out.write(cur_ind + f'<{self.tag}{attrs if self.attrs else ""}>\n')
+        file_out.write(f'{cur_ind}<{self.tag}{self.fmt_attrs()}>\n')
 
         for item in self.content:
             if hasattr(item, 'render'):
@@ -38,7 +37,15 @@ class Element(object):
             else:
                 file_out.write(cur_ind + self.indent + str(item) + '\n')
 
-        file_out.write(cur_ind + f'<\\{self.tag}>\n')
+        file_out.write(cur_ind + f'</{self.tag}>\n')
+
+    def fmt_attrs(self):
+        if self.attrs:
+            attrs = ' ' + ' '.join(f'{k}="{v}"' for k, v in self.attrs.items())
+        else:
+            attrs = ''
+
+        return attrs
 
 
 class HtmlElement(Element):
@@ -70,7 +77,7 @@ class OneLineElement(Element):
             file_out (file): Writable file-like object to recieve rendered data.
             cur_ind (str, optional): Defaults to ''. Indentation of current element.
         """
-        file_out.write(cur_ind + f'<{self.tag}> ')
+        file_out.write(f'{cur_ind}<{self.tag}> ')
 
         for item in self.content:
             if hasattr(item, 'render'):
@@ -78,12 +85,46 @@ class OneLineElement(Element):
             else:
                 file_out.write(str(item) + ' ')
 
-        file_out.write(f'<\\{self.tag}>\n')
+        file_out.write(f'</{self.tag}>\n')
 
 
 class TitleElement(OneLineElement):
     """Title type Element"""
     tag = 'title'
+
+
+class SelfClosingElement(Element):
+    """Self-Closing type Element"""
+    def __init__(self, content=None, **attrs):
+        super().__init__(content=None, **attrs)
+
+    # Overwrite content attribute to prevent use
+    @property
+    def content(self):
+        return None
+
+    @content.setter
+    def content(self, value):
+        pass
+
+    def render(self, file_out, cur_ind=''):
+        """Renders the tag and attrs as self-closing element.
+
+        Args:
+            file_out (file): Writable file-like object to recieve rendered data.
+            cur_ind (str, optional): Defaults to ''. Indentation of current element.
+        """
+        file_out.write(f'{cur_ind}<{self.tag}{self.fmt_attrs()} />\n')
+
+
+class HrElement(SelfClosingElement):
+    """hr type self-closing element"""
+    tag = 'hr'
+
+
+class BrElement(SelfClosingElement):
+    """br type self-closing element"""
+    tag = 'br'
 
 
 def main():
