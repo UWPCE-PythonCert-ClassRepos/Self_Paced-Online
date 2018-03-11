@@ -17,11 +17,11 @@ def main():
                           'Enter "1" to "Send a Thank You" \n'
                           'Enter "2" to "Create a Report" \n'
                           'What do you want to do? > ')
-        if int(userinput) == 0:
+        if userinput == '0':
             break
-        elif int(userinput) == 1:
+        elif userinput == '1':
             thankyou()
-        elif int(userinput) == 2:
+        elif userinput == '2':
             report()
         else:
             print('\n{} is not a valid option. '
