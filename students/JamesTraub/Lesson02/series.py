@@ -55,4 +55,4 @@ def sum_series(n, x=0, y=1):
         return
 
 
-sum_series(5)
+sum_series(6, 2, 1)
