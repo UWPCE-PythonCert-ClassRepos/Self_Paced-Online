@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import pathlib
 
 # Initial donor list and the amounts they have donated
 donor_history = {
@@ -34,7 +33,7 @@ def manage_donors():
 
         # Get the selection number
         response = ''
-        while not response in choices:
+        while response not in choices:
             response = input("Type your selection: ").strip()
 
         choices[response][1]()  # Call helper function
@@ -65,9 +64,7 @@ def send_thank_you():
         return
 
     elif response.lower() == 'list':
-        print("\nLIST OF DONORS:")
-        for donor in donor_history:
-            print(donor)
+        print_donor_list()
         send_thank_you()  # Try getting a donor name again
 
     else:
@@ -89,6 +86,11 @@ def send_thank_you():
         donor_history.setdefault(response, [])
         donor_history[response].append(donation)
         print(create_form_letter(response, donation))
+
+def print_donor_list():
+    print("\nLIST OF DONORS:")
+    for donor in donor_history:
+        print(donor)
 
 def create_a_report():
     """
