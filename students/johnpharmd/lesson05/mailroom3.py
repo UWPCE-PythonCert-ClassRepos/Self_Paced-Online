@@ -4,16 +4,25 @@ import datetime
 # Data
 # refactor from tuple to no tuple (see Natasha's comments on
 # mailroom2 assignment)
-donors_amts = {'Gates': [('Mr.', ), 150000, 3], 'Brin': [('Mr.', ), 150000, 3],
-               'Cerf': [('Mr.', ), 50000, 2], 'Musk': [('Mr.', ), 100000, 1],
-               'Berners-Lee': [('Mr.', ), 50000, 2],
-               'Wojcicki': [('Ms.', ), 125000, 1],
-               'Avey': [('Ms.', ), 200000, 2]}
+donors_amts = {'Gates': {'title': 'Mr.', 'donations': 150000,
+                         'num_of_donations': 3},
+               'Brin': {'title': 'Mr.', 'donations': 150000,
+                        'num_of_donations': 3},
+               'Cerf': {'title': 'Mr.', 'donations': 50000,
+                        'num_of_donations': 2},
+               'Musk': {'title': 'Mr.', 'donations': 100000,
+                        'num_of_donations': 1},
+               'Berners-Lee': {'title': 'Mr.', 'donations':
+                               50000, 'num_of_donations': 2},
+               'Wojcicki': {'title': 'Ms.', 'donations': 125000,
+                            'num_of_donations': 1},
+               'Avey': {'title': 'Ms.', 'donations': 200000,
+                        'num_of_donations': 2}}
 
 
 # Processing
 def send_ty():
-    global donors_amts
+    # global donors_amts
     new_response = 0
     title = ''
     donor_dict = {'title': '', 'last_name': '', 'donation': 0}
@@ -94,6 +103,7 @@ def get_report():
 def send_letters():
     global donors_amts
     d_a = donors_amts
+    # Natasha recommended datetime.datetime.now().strftime('%Y%m%d')
     now = datetime.datetime.now()
     for donor in donors_amts:
         title = str(d_a.get(donor)[0])
@@ -114,7 +124,6 @@ def send_letters():
                      + ' again to our project.\n')
             of.write('\nBest wishes for continued success,')
             of.write('\n[Signature]')
-            of.close()
 
 
 def quit_program():
@@ -131,14 +140,15 @@ def program_run():
     menu_dict = {'1': send_ty, '2': get_report,
                  '3': send_letters, 'q': quit_program}
     # add try-catch block here
-    if response in menu_dict:
+    # if response in menu_dict:
+    try:
         menu_dict.get(response)()
-    else:
-        response = input('Choose "1", "2", "3", or "q": ')
-        # add try-catch block here
-        if response in menu_dict:
+    except TypeError:
+        print('\nThat selection is invalid. Please try again.')
+        try:
+            response = input('Choose "1", "2", "3", or "q": ')
             menu_dict.get(response)()
-        else:
+        except TypeError:
             print('That is not an option. Closing program.')
             return
 
