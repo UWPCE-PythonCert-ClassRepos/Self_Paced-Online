@@ -77,7 +77,7 @@ class OneLineElement(Element):
             file_out (file): Writable file-like object to recieve rendered data.
             cur_ind (str, optional): Defaults to ''. Indentation of current element.
         """
-        file_out.write(f'{cur_ind}<{self.tag}> ')
+        file_out.write(f'{cur_ind}<{self.tag}{self.fmt_attrs()}> ')
 
         for item in self.content:
             if hasattr(item, 'render'):
