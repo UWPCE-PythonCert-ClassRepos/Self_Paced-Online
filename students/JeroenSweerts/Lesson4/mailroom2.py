@@ -31,7 +31,9 @@ def thankyou():
         donations[name] = []
     donation = input('Please enter a donation amount > ')
     donations[name].append(int(donation))
-    print(f'Dear {name} , thank you very much for your generous donation of {donation}. Looking forward receiving even more money next time.')
+    d = {'name':name, 'donation':donation}
+    #print(f'Dear {name} , thank you very much for your generous donation of {donation}. Looking forward receiving even more money next time.')
+    print("Dear {name} , thank you very much for your generous donation of {donation}. Looking forward receiving even more money next time.".format(**d))
     print(donations.keys())
     print(donations.values())
 
@@ -50,7 +52,7 @@ def report():
      to the original prompt.
      From the original prompt, the user should be able to quit the script cleanly."""
     print(f'{"Donor Name":20s} {"|  Total Given":20s} {"|  Num Gifts  |":20s} {"Average Gift":20s}')
-    print(f'{"-"*76}')   
+    print(f'{"-"*76}')
     for name in donations.keys():
         print(f'{name:20s} ${sum(donations[name]):20.2f} {len(donations[name]):13d}${sum(donations[name])/len(donations[name]):20.2f}')
 
