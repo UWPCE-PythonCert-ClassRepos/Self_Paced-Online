@@ -9,6 +9,10 @@ class TestHtmlRender(unittest.TestCase):
     """Test class containing all unit tests for the Element class"""
     def setUp(self):
         self.html = hr.HtmlElement()
+        self.head = hr.HeadElement(hr.TitleElement('This is a title'))
+        self.body = hr.BodyElement()
+        self.para = hr.ParagraphElement(500, style='Bold', cls='Intro')
+        self.horz = hr.HrElement()
 
     def tearDown(self):
         # Remove any unit test generated files
@@ -52,8 +56,9 @@ class TestHtmlRender(unittest.TestCase):
 
     def test_render_nested(self):
         """Test the render method with nested elements"""
-        self.html.append(hr.HeadElement(hr.TitleElement('This is a title')))
-        self.html.append(hr.BodyElement(hr.ParagraphElement(500)))
+        self.body.append(hr.ParagraphElement(500))
+        self.html.append(self.head)
+        self.html.append(self.body)
         answer = ('<html>\n'
                   '    <head>\n'
                   '        <title> This is a title </title>\n'
@@ -73,8 +78,9 @@ class TestHtmlRender(unittest.TestCase):
 
     def test_render_nested_with_attrs(self):
         """Test the render method with nested elements"""
-        self.html.append(hr.HeadElement(hr.TitleElement('This is a title')))
-        self.html.append(hr.BodyElement(hr.ParagraphElement(500, style='Bold', cls='Intro')))
+        self.body.append(self.para)
+        self.html.append(self.head)
+        self.html.append(self.body)
         answer = ('<html>\n'
                   '    <head>\n'
                   '        <title> This is a title </title>\n'
@@ -94,14 +100,10 @@ class TestHtmlRender(unittest.TestCase):
 
     def test_render_self_closing(self):
         """Test the render method with self closing elements"""
-        head = hr.HeadElement(hr.TitleElement('This is a title'))
-        body = hr.BodyElement()
-        para = hr.ParagraphElement(500, style='Bold', cls='Intro')
-        horz = hr.HrElement('Test')
-        body.append(para)
-        body.append(horz)
-        self.html.append(head)
-        self.html.append(body)
+        self.body.append(self.para)
+        self.body.append(self.horz)
+        self.html.append(self.head)
+        self.html.append(self.body)
         answer = ('<html>\n'
                   '    <head>\n'
                   '        <title> This is a title </title>\n'
@@ -124,15 +126,11 @@ class TestHtmlRender(unittest.TestCase):
         """Test the render method with self closing elements and attempt
            to manipulate the content attribute
         """
-        head = hr.HeadElement(hr.TitleElement('This is a title'))
-        body = hr.BodyElement()
-        para = hr.ParagraphElement(500, style='Bold', cls='Intro')
-        horz = hr.HrElement('Test')
-        horz.content = ['Attempt to adjust content']
-        body.append(para)
-        body.append(horz)
-        self.html.append(head)
-        self.html.append(body)
+        self.body.append(self.para)
+        self.body.append(self.horz)
+        self.html.append(self.head)
+        self.html.append(self.body)
+        self.horz.content = ['Attempt to adjust content']
         answer = ('<html>\n'
                   '    <head>\n'
                   '        <title> This is a title </title>\n'
