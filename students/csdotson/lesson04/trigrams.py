@@ -8,6 +8,7 @@ def run():
 
 
 def read_file(input_file):
+    # Read input_file, scrub for punctuation, create array of words/punctuation
     with open(input_file, 'r') as f:
         text = f.read()
         for entry in punctuation_remove:
@@ -22,6 +23,7 @@ def read_file(input_file):
 
 
 def create_hash(text):
+    # Create hash needed to produce trigrams
     text_hash = {}
     for index in range(len(text) - 1):
         key = ' '.join(text[index:index+2])
@@ -33,6 +35,7 @@ def create_hash(text):
 
 
 def make_story(text, text_hash):
+    # Generate story from word hash
     random_starting_point = random.randint(0,len(text)-1)
     story = ' '.join(text[random_starting_point:random_starting_point+2])
     while True:
@@ -47,6 +50,7 @@ def make_story(text, text_hash):
 
 
 def fix_punctuation_and_display(story):
+    # Capitalize beginning of story, remove spacing around punctuation, capitalize after ending punctuation
     story = story.capitalize()
     for entry in other_punctuation:
         story = story.replace(f' {entry}', entry)
@@ -55,7 +59,7 @@ def fix_punctuation_and_display(story):
 
     word_array = story.split()
     for index in range(len(word_array)-1):
-        if '.' in word_array[index]:
+        if '.' in word_array[index] or '!' in word_array[index] or '?' in word_array[index]:
             word_array[index+1] = word_array[index+1].capitalize()
     story = ' '.join(word_array)
 
