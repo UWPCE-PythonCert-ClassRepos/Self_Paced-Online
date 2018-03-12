@@ -19,14 +19,8 @@ def dictionaries_one():
 
     print(d1.keys())
     print(d1.values())
-    if 'cake' in d1:
-        print(True)
-    else:
-        print(False)
-    if 'Mango' in d1.values():
-        print(True)
-    else:
-        print(False)
+    print('cake' in d1)
+    print('Mango' in d1.values())
 
 
 def dictionaries_two():
@@ -49,15 +43,8 @@ def sets_one():
     print(s2)
     print(s3)
     print(s4)
-
-    if s3.issubset(s2):
-        print(True)
-    else:
-        print(False)
-    if s4.issubset(s2):
-        print(True)
-    else:
-        print(False)
+    print(s3.issubset(s2))
+    print(s4.issubset(s2))
 
 
 def sets_two():
