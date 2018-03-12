@@ -127,12 +127,33 @@ class BrElement(SelfClosingElement):
     tag = 'br'
 
 
+# NOTE: Shouldn't this sublclass maintain the same init params as Element
+#       in order to adhere to the Liskov Substitution principle?
 class AnchorElement(OneLineElement):
     """Anchor link type element"""
     tag = 'a'
 
-    def __init__(self, link, contents):
-        super().__init__(contents, href=link)
+    def __init__(self, link, content):
+        super().__init__(content, href=link)
+
+
+class UlElement(Element):
+    """Unorder list type element"""
+    tag = 'ul'
+
+
+class LiElement(Element):
+    """List type element"""
+    tag = 'li'
+
+
+# NOTE: Shouldn't this sublclass maintain the same init params as Element
+#       in order to adhere to the Liskov Substitution principle?
+class HeaderElement(OneLineElement):
+    """Header type element"""
+    def __init__(self, level, content):
+        super().__init__(content)
+        self.tag = f'h{level}'
 
 
 def main():

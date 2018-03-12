@@ -13,6 +13,9 @@ class TestHtmlRender(unittest.TestCase):
         self.body = hr.BodyElement()
         self.para = hr.ParagraphElement(500, style='Bold', cls='Intro')
         self.horz = hr.HrElement()
+        self.anch = hr.AnchorElement('http://google.com', 'link')
+        self.unli = hr.UlElement(id="TheList", style="line-height:200%")
+        self.hdr2 = hr.HeaderElement(2, 'Header 2 Example')
 
     def tearDown(self):
         # Remove any unit test generated files
@@ -153,7 +156,7 @@ class TestHtmlRender(unittest.TestCase):
         """Test the render method with the anchor one line element"""
         self.body.append(self.para)
         self.body.append(self.horz)
-        self.body.append(hr.AnchorElement('http://google.com', 'link'))
+        self.body.append(self.anch)
         self.html.append(self.head)
         self.html.append(self.body)
         answer = ('<html>\n'
@@ -173,6 +176,67 @@ class TestHtmlRender(unittest.TestCase):
             self.html.render(f)
             f.seek(0)
             result = f.read(250)
+            self.assertTrue(result == answer, msg=result)
+
+    def test_render_lists(self):
+        """Test the render method with the unordered list and list elements"""
+        self.unli.append(hr.LiElement("List item one"))
+        self.unli.append(hr.LiElement("List item two"))
+        self.body.append(self.para)
+        self.body.append(self.horz)
+        self.body.append(self.unli)
+        self.html.append(self.head)
+        self.html.append(self.body)
+        answer = ('<html>\n'
+                  '    <head>\n'
+                  '        <title> This is a title </title>\n'
+                  '    </head>\n'
+                  '    <body>\n'
+                  '        <p style="Bold" cls="Intro">\n'
+                  '            500\n'
+                  '        </p>\n'
+                  '        <hr />\n'
+                  '        <ul id="TheList" style="line-height:200%">\n'
+                  '            <li>\n'
+                  '                List item one\n'
+                  '            </li>\n'
+                  '            <li>\n'
+                  '                List item two\n'
+                  '            </li>\n'
+                  '        </ul>\n'
+                  '    </body>\n'
+                  '</html>\n')
+
+        with open('unit_test_render.txt', 'w+') as f:
+            self.html.render(f)
+            f.seek(0)
+            result = f.read(500)
+            self.assertTrue(result == answer, msg=result)
+
+    def test_render_header(self):
+        """Test the render method with the header element"""
+        self.body.append(self.hdr2)
+        self.body.append(self.para)
+        self.body.append(self.horz)
+        self.html.append(self.head)
+        self.html.append(self.body)
+        answer = ('<html>\n'
+                  '    <head>\n'
+                  '        <title> This is a title </title>\n'
+                  '    </head>\n'
+                  '    <body>\n'
+                  '        <h2> Header 2 Example </h2>\n'
+                  '        <p style="Bold" cls="Intro">\n'
+                  '            500\n'
+                  '        </p>\n'
+                  '        <hr />\n'
+                  '    </body>\n'
+                  '</html>\n')
+
+        with open('unit_test_render.txt', 'w+') as f:
+            self.html.render(f)
+            f.seek(0)
+            result = f.read(500)
             self.assertTrue(result == answer, msg=result)
 
 

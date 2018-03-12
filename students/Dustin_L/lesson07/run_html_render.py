@@ -129,7 +129,34 @@ def render_page(page, filename):
 
 # render_page(page, "test_html_output5.html")
 
-# Step 6
+# # Step 6
+# #########
+
+# page = hr.HtmlElement()
+
+# head = hr.HeadElement()
+# head.append(hr.TitleElement("PythonClass = Revision 1087:"))
+
+# page.append(head)
+
+# body = hr.BodyElement()
+
+# body.append(hr.ParagraphElement("Here is a paragraph of text -- there could be "
+#                                 "more of them, but this is enough  to show that "
+#                                 "we can do some text",
+#                                 style="text-align: center; font-style: oblique;"))
+
+# body.append(hr.HrElement())
+
+# body.append("And this is a ")
+# body.append(hr.AnchorElement("http://google.com", "link"))
+# body.append("to google")
+
+# page.append(body)
+
+# render_page(page, "test_html_output6.html")
+
+# Step 7
 #########
 
 page = hr.HtmlElement()
@@ -141,58 +168,31 @@ page.append(head)
 
 body = hr.BodyElement()
 
-body.append(hr.ParagraphElement("Here is a paragraph of text -- there could be "
-                                "more of them, but this is enough  to show that "
-                                "we can do some text",
-                                style="text-align: center; font-style: oblique;"))
+body.append(hr.HeaderElement(2, "PythonClass - Class 6 example"))
+
+body.append(hr.ParagraphElement("Here is a paragraph of text -- there could be more of them, "
+                 "but this is enough  to show that we can do some text",
+              style="text-align: center; font-style: oblique;"))
 
 body.append(hr.HrElement())
 
-body.append("And this is a ")
-body.append(hr.AnchorElement("http://google.com", "link"))
-body.append("to google")
+list = hr.UlElement(id="TheList", style="line-height:200%")
+
+list.append(hr.LiElement("The first item in a list"))
+list.append(hr.LiElement("This is the second item", style="color: red"))
+
+item = hr.LiElement()
+item.append("And this is a ")
+item.append(hr.AnchorElement("http://google.com", "link"))
+item.append("to google")
+
+list.append(item)
+
+body.append(list)
 
 page.append(body)
 
-render_page(page, "test_html_output6.html")
-
-# # Step 7
-# #########
-
-# page = hr.Html()
-
-# head = hr.Head()
-# head.append(hr.Title("PythonClass = Revision 1087:"))
-
-# page.append(head)
-
-# body = hr.Body()
-
-# body.append( hr.H(2, "PythonClass - Class 6 example") )
-
-# body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-#                  "but this is enough  to show that we can do some text",
-#               style="text-align: center; font-style: oblique;"))
-
-# body.append(hr.Hr())
-
-# list = hr.Ul(id="TheList", style="line-height:200%")
-
-# list.append( hr.Li("The first item in a list") )
-# list.append( hr.Li("This is the second item", style="color: red") )
-
-# item = hr.Li()
-# item.append("And this is a ")
-# item.append( hr.A("http://google.com", "link") )
-# item.append("to google")
-
-# list.append(item)
-
-# body.append(list)
-
-# page.append(body)
-
-# render_page(page, "test_html_output7.html")
+render_page(page, "test_html_output7.html")
 
 # # Step 8
 # ########
