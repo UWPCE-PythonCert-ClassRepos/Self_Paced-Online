@@ -127,6 +127,14 @@ class BrElement(SelfClosingElement):
     tag = 'br'
 
 
+class AnchorElement(OneLineElement):
+    """Anchor link type element"""
+    tag = 'a'
+
+    def __init__(self, link, contents):
+        super().__init__(contents, href=link)
+
+
 def main():
     """Main function"""
     pass

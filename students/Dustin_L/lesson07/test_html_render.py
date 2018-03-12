@@ -149,6 +149,32 @@ class TestHtmlRender(unittest.TestCase):
             result = f.read(250)
             self.assertTrue(result == answer, msg=result)
 
+    def test_render_anchor(self):
+        """Test the render method with the anchor one line element"""
+        self.body.append(self.para)
+        self.body.append(self.horz)
+        self.body.append(hr.AnchorElement('http://google.com', 'link'))
+        self.html.append(self.head)
+        self.html.append(self.body)
+        answer = ('<html>\n'
+                  '    <head>\n'
+                  '        <title> This is a title </title>\n'
+                  '    </head>\n'
+                  '    <body>\n'
+                  '        <p style="Bold" cls="Intro">\n'
+                  '            500\n'
+                  '        </p>\n'
+                  '        <hr />\n'
+                  '        <a href="http://google.com"> link </a>\n'
+                  '    </body>\n'
+                  '</html>\n')
+
+        with open('unit_test_render.txt', 'w+') as f:
+            self.html.render(f)
+            f.seek(0)
+            result = f.read(250)
+            self.assertTrue(result == answer, msg=result)
+
 
 if __name__ == '__main__':
     unittest.main()
