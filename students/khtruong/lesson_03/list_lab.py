@@ -17,20 +17,14 @@ def add_fruit():
 def remove_fruit(l):
     '''Return user input for type of fruit to delete.'''
     keepgoing = True
-    while keepgoing:
+    while keepgoing:  # looking for valid item...keeps asking user until do
         del_item = input('Enter a type of fruit to remove from list> ')
-        # looking for valid item...keeps asking user until do
-        for item in l:
-            if item == del_item:
-                keepgoing = False
-                break
+        if del_item in l:
+            while del_item in l:
+                l.remove(del_item)
+            keepgoing = False
         else:
             print('{} is not found...try again!'.format(del_item))
-
-        # actually delete the item in list for all occurrences
-        for item in l:
-            if item == del_item:
-                l.remove(item)
 
 
 def series1():
@@ -62,7 +56,7 @@ def series1():
     print(l)
     # Display all the fruits that begin with “P”, using a for loop.
     for item in l:
-        if item[0] == 'P':
+        if item[0].lower() == 'p':
             print(item)
 
 
@@ -81,7 +75,7 @@ def series2():
     print(l)
     # (Bonus: Multiply the list times two. Keep asking until a match is found.
     # Once found, delete all occurrences.)
-    l = 2*l
+    l = 2 * l
     print(l)
     remove_fruit(l)
     print(l)
