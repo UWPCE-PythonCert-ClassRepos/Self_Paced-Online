@@ -1,5 +1,5 @@
 def exchange_first_last(seq):
-    seq[0], seq[-1] = seq[-1], seq[0]
+    seq[-1], seq[0] = seq[::len(seq) - 1]
     return seq
 
 def remove_nth_even(seq):
@@ -13,9 +13,10 @@ def reverse_sequence(seq):
 
 def return_specified_thirds(seq):
     index = int(len(seq) / 3)
-    seg_end = seq[:index]
-    seg_start = seq[index:]
-    return seg_start + seg_end
+    seg_start = seq[:index]
+    seg_middle = seq[index:len(seq) - index]
+    seg_end = seq[index * 2::]
+    return seg_middle + seg_end + seg_start
 
 
 if __name__ == "__main__":
@@ -27,5 +28,5 @@ if __name__ == "__main__":
 
     assert reverse_sequence([1,2,3,4]) == [4,3,2,1]
 
-    print(return_specified_thirds([1,2,3,4,5,6]))
-    #assert return_specified_thirds([1,2,3,4,5,6]) == [3,4,5,6,1,2]
+    assert return_specified_thirds([1,2,3,4,5,6]) == [3,4,5,6,1,2]
+
