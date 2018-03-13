@@ -22,16 +22,15 @@ def manage_donors():
     options = ("Send a thank you", "Create a report", 
                "Send letters to everyone", "Quit")
     funcs = (send_thank_you, create_a_report, send_all_letters, exit_screen)
-    choices = {str(x):y for x, y in zip(range(1, 5),
-            [(a, b) for a, b in zip(options, funcs)])}
+    choices = {str(x):y for x, y in zip(range(1, len(options) + 1),
+            [{'option': a, 'function': b} for a, b in zip(options, funcs)])}
     
-    while True:
-        # Print the menu list (with numbered choices)
+    while True:  # Print the menu list (with numbered choices)
         print("\nMENU:")
-        [print(i, choices[i][0]) for i in choices]
+        [print(i, choices[i]['option']) for i in choices]
         try:  # Get the selection number and call helper function
             response = input("Type a menu selection number: ").strip()
-            choices[response][1]()
+            choices[response]['function']()
         except KeyError:
             print("\nInvalid response - try again.")
         else:
@@ -104,17 +103,16 @@ def create_a_report():
     :return:  None.
     """
     print('\n')
-    print('Donor name                |         Total given | '
-            + 'Number of gifts |        Average gift')
-    print('--------------------------|---------------------|-'
-            + '----------------|--------------------')
-    for individual_donor, donations in donor_history.items():
-        total_donation = sum(donations)
-        number_of_gifts = len(donations)
-        average_donation = 1.0 * total_donation / number_of_gifts
+    print('{:<25s} |  {:>18s} | {:>15s} |  {:>18s}'.format(
+        'Donor name', 'Total given', 'Number of gifts', 'Average gift'))
+    print('-'*25 + '-|--' + '-'*18 + '-|-' + '-'*15 + '-|--' + '-'*18)
+
+    donor_stats = [{'name': k, 'donations': sum(v), 'gifts': len(v),
+            'average': (1.0 * sum(v) / len(v))}
+            for k, v in donor_history.items()]
+    for i in donor_stats:
         print('{:<25s} | ${:>18,.2f} | {:>15d} | ${:>18,.2f}'.format(
-                individual_donor, total_donation,
-                number_of_gifts, average_donation))
+                i['name'], i['donations'], i['gifts'], i['average']))
 
 def send_all_letters():
     """
