@@ -24,8 +24,7 @@ def manage_donors():
                '3': ("Send letters to everyone", send_all_letters),
                '4': ("Quit", exit_screen)}
     
-    response = ''
-    while response != '4':  # Show menu forever until user exits
+    while True:
         # Print the menu list (with numbered choices)
         print()
         for i in choices:
@@ -37,6 +36,8 @@ def manage_donors():
             response = input("Type your selection: ").strip()
 
         choices[response][1]()  # Call helper function
+        if response = '4':
+            return
 
 def exit_screen():
     """
