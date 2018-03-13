@@ -59,17 +59,16 @@ print(fruit)
 
 #Series 3
 
-restart = True
-while restart:
-    restart = False
-    for el in fruit:
-        prompt = input('Do you like {}? '.format(el.lower()))
-        if prompt == 'yes':
-            continue
-        elif prompt == 'no':
-            for i in fruit:
-                if i == el:
-                    fruit.remove(i)
-            restart = True
+liked = []
+disliked = []
 
-print(fruit)
+for el in fruit:
+    if not el in liked and not el in disliked:
+        prompt = input('Do you like {}? '.format(el.lower()))
+        while not prompt == 'yes' and not prompt == 'no':
+            prompt = input('Do you like {}? (yes/no)'.format(el.lower()))
+        if prompt == 'yes':
+            liked.append(el)
+        else:
+            disliked.append(el)
+print(liked)
