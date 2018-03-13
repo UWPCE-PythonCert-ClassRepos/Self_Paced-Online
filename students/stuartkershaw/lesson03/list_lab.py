@@ -66,9 +66,24 @@ for el in fruit:
     if not el in liked and not el in disliked:
         prompt = input('Do you like {}? '.format(el.lower()))
         while not prompt == 'yes' and not prompt == 'no':
-            prompt = input('Do you like {}? (yes/no)'.format(el.lower()))
+            prompt = input('Do you like {}? (yes/no) '.format(el.lower()))
         if prompt == 'yes':
             liked.append(el)
         else:
             disliked.append(el)
+
 print(liked)
+
+#Series 4
+
+fruit_copy = liked[:]
+fruit_reversed = []
+
+for fruit in fruit_copy:
+    fruit_reversed.append(fruit[::-1])
+
+del liked[-1]
+
+print(liked)
+print(fruit_reversed)
+
