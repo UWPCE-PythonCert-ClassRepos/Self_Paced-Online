@@ -2,14 +2,10 @@
 
 class Donor:
 
-    # Class Variables
-    #num_of_donors = 0
-
     def __init__(self, first, last, donations = None):
         self.first = first
         self.last = last
         self.donations = donations
-        # num_of_donors += 1
 
     @property
     def full_name(self):
@@ -42,6 +38,11 @@ class DonorBook:
             all_names += "{}\n".format(each_donor_name)
         return(all_names)
 
+    @staticmethod
+    def donation_prompt():
+        return float(input("Please enter the donation amount:\n"))
+
+    @staticmethod
     def donor_name_prompt():
         return input("Send a Thank You - Please enter a full name or type \"list\""
             "to list the current donors:\n")
@@ -58,7 +59,7 @@ class DonorBook:
         while not donation:
             try:
                 donation = self.donation_prompt()
-            except:
+            except ValueError:
                 print("Not a valid number! Please enter a valid number:\n")
 
         # If the donnor doesn't exist in the donor dictionary - add his info
@@ -78,43 +79,40 @@ class DonorBook:
     def quit_program(self):
     	print("Thanks for using my script! Bye!")
 
-    def prompt():
-        menu = {
-            'op1': "Send a Thank You",
-            'op2': "Create a Report",
-            'op3': "Send Letters To Everyone",
-            'op4': "Quit"
-            }
+d1 = Donor("Bill", "Gates", [234.22, 45645.24, 43953.09, 98823])
+d2 = Donor("Jeff", "Bezo", [4564.23])
+d3 = Donor("Mike", "Dell", [299.09, 26273.67])
+d4 = Donor("Harry", "Potter", [8234.09, 83948.04, 7834.23])
+d5 = Donor("Ben", "Williams", [29283.00, 1334.34])
+d6 = Donor("Guy", "James", [93.00, 34.34])
 
-        return input("Please choose the following options:\n1) {op1}.\n2) {op2}.\n3)"
-            " {op3}.\n4) {op4}\n".format(**menu))
+db = DonorBook([d1, d2, d3, d4, d5, d6])
 
+QUIT_OPT = '4'
+
+selection_map = {
+    "1": db.send_thank_you(),
+    "2": db.create_report(),
+    "3": db.send_letters(),
+    "4": db.quit_program()
+	}
+
+menu = {
+    'op1': "Send a Thank You",
+    'op2': "Create a Report",
+    'op3': "Send Letters To Everyone",
+    'op4': "Quit"
+    }
+
+def prompt():
+    return input("Please choose the following options:\n1) {op1}.\n2) {op2}.\n3)"
+        " {op3}.\n4) {op4}\n".format(**menu))
 
 def main():
-    d1 = Donor("Bill", "Gates", [234.22, 45645.24, 43953.09, 98823])
-    d2 = Donor("Jeff", "Bezo", [4564.23])
-    d3 = Donor("Mike", "Dell", [299.09, 26273.67])
-    d4 = Donor("Harry", "Potter", [8234.09, 83948.04, 7834.23])
-    d5 = Donor("Ben", "Williams", [29283.00, 1334.34])
-    d6 = Donor("Guy", "James", [93.00, 34.34])
-
-    db = DonorBook([d1, d2, d3, d4, d5, d6])
-
-
-
-    QUIT_OPT = '4'
-
-    selection_map = {
-        "1": db.send_thank_you(),
-        "2": db.create_report(),
-        "3": db.send_letters(),
-        "4": db.quit_program()
-    	}
-
     option_value = 0
     while option_value != QUIT_OPT:
         try:
-            option_value = db.prompt()
+            option_value = prompt()
             selection_map[option_value]()
         except KeyError:
             print("%s is not a valid option! Please try again.\n" % option_value)
@@ -123,13 +121,3 @@ def main():
 # start the script
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-# start the script
-# if __name__ == "__main__":
-#     main()
