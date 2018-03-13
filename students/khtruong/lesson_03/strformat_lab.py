@@ -34,7 +34,7 @@ def task3(t):
     Dynamically Rewrite: the 3 numbers are: {:d}, {:d}, {:d}".format(1,2,3)
     """
     strformat = ''.join(['the ', '{:d} ', 'numbers are: ',
-                         ', '.join(['{:d}']*len(t))
+                         ', '.join(['{:d}'] * len(t))
                          ]
                         )
     return strformat.format(len(t), *t)
