@@ -58,13 +58,13 @@ def send_ty():
                                      ' (in USD): ')
                 try:
                     int(new_response)
-                except TypeError:
-                    print('Enter a numeric value.')
+                except ValueError:
+                    print('\nEnter a numeric value.')
                     new_response = input('Enter a Donation amount' +
                                          ' (in USD): ')
                     try:
                         int(new_response)
-                    except TypeError:
+                    except ValueError:
                         print('That is not a valid input. Closing program.')
                         return
                 else:
