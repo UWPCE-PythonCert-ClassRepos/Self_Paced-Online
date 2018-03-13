@@ -37,6 +37,17 @@ def thankyou():
     print(donations.keys())
     print(donations.values())
 
+def thankyoueveryone():
+    for name in donations.keys():
+        d = {'name':name, 'donation':donations[name][-1]}
+        outfile = open(name+'.txt', 'w')
+        outfile.write("Dear {name} , \n\n".format(**d))
+        outfile.write("\t Thank you very much for your generous donation of ${donation}. \n\n".format(**d))
+        outfile.write("\t It will be put to very good use. \n\n")
+        outfile.write("\t\t Sincerely, \n")
+        outfile.write("\t\t   -The Team \n")
+        outfile.close()
+
 
 def report():
     """ If the user (you) selected “Create a Report”, print a list of your donors,
@@ -59,10 +70,10 @@ def report():
 
 if __name__ == '__main__':
     response = input('Please choose between the following 3 actions:\
-    1. Send a Thank You; 2. Create a Report; 3. quit >  ')
-    arg_dict = {1:thankyou, 2:report}
+    1. Send a Thank You; 2. Create a Report; 3. Send letters to everyone; 4. quit >  ')
+    arg_dict = {1:thankyou, 2:report, 3:thankyoueveryone}
 
-    while int(response) != 3:
+    while int(response) != 4:
         arg_dict.get(int(response))()
         response = input('Please choose between the following 3 actions:\
-            1. Send a Thank You; 2. Create a Report; 3. quit >  ')
+            1. Send a Thank You; 2. Create a Report; 3. Send letters to everyone; 4. quit >   ')
