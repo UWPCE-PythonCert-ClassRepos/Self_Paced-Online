@@ -22,19 +22,20 @@ def manage_donors():
     options = ("Send a thank you", "Create a report", 
                "Send letters to everyone", "Quit")
     funcs = (send_thank_you, create_a_report, send_all_letters, exit_screen)
-    choices = {str(x):y for x, y in zip(range(1, len(options) + 1),
-            [{'option': a, 'function': b} for a, b in zip(options, funcs)])}
+    choices = {str(x): {'option': y, 'function': z}
+               for x, y, z in zip(range(1, len(options) + 1), options, funcs)}
     
     while True:  # Print the menu list (with numbered choices)
         print("\nMENU:")
         [print(i, choices[i]['option']) for i in choices]
+        response = input("Type a menu selection number: ").strip()
+
         try:  # Get the selection number and call helper function
-            response = input("Type a menu selection number: ").strip()
             choices[response]['function']()
         except KeyError:
             print("\nInvalid response - try again.")
         else:
-            if response == '4':
+            if response == '4':  # Exit if "Quit" is chosen
                 return
 
 def exit_screen():
@@ -58,34 +59,47 @@ def send_thank_you():
       "\nType the full donor name (or 'list' to show all donors, or 'quit'): "
       ).strip()
 
-    if response.lower() in ('', 'quit'):
-        exit_screen()
-        return
-    elif response.lower() == 'list':
-        print_donor_list()
-        send_thank_you()  # Try getting a donor name again
+    alt_choices = {x: y for x, y in zip(('', 'quit', 'list'),
+                   (exit_screen, exit_screen, print_donor_list))}
+    try:  # Respond to the quit or list option
+        alt_choices[response.lower()]()
+    except KeyError:  # Key exception means a donor name was specified
+        get_donation_amount(response)
     else:
-        while True:  # Get the donation amount
-            donation = input(
-                    f"Type amount donated by '{response}' (or type 'quit'): "
-                    ).strip().lower()
-            if donation == 'quit':
-                exit_screen()
-                return
+        if response.lower() == 'list':
+            send_thank_you()  # Still want to get a donor to thank
 
-            try:  # Add donation to master donor history + print letter
-                donation = float(donation)
-            except ValueError:
-                print('\nNot a valid number - try again.\n')
+def get_donation_amount(donor):
+    """
+    Ask user for a donation amount and add for the specified user.
+
+    :donor:  The donor name for which to add a donation amount.
+
+    :return:  The donation amount, or `None` if not specified.
+    """
+    while True:  # Get the donation amount
+        donation = input(
+                f"Type amount donated by '{donor}' (or type 'quit'): "
+                ).strip().lower()
+        if donation in ('', 'quit'):
+            exit_screen()
+            return None
+
+        try:  # Add donation to master donor history + print letter
+            donation = float(donation)
+        except ValueError:
+            print('\nNot a valid number - try again.\n')
+        else:
+            if donation > 0.0:
+                donor_history.setdefault(donor, [])
+                donor_history[donor].append(donation)
+                text = create_form_letter(donor, donation)
+                print(text)
+                return donation
             else:
-                if donation > 0.0:
-                    donor_history.setdefault(response, [])
-                    donor_history[response].append(donation)
-                    print(create_form_letter(response, donation))
-                    return
-                else:
-                    print(
-                    '\nNegative/zero donation amounts disallowed - try again.')
+                print(
+                '\nNegative/zero donation amounts not permitted - try again.')
+    
 
 def print_donor_list():
     """
@@ -135,15 +149,18 @@ def send_all_letters():
     finally:  # Save each letter, with the donor name in each file name
         os.chdir(new_dir)
         new_dir = os.getcwd()
-        for k, v in donor_history.items():
-            letter = create_form_letter(k, v[-1])
-            with open('_{:s}.txt'.format(k), 'w') as f:
-                for line in letter:
-                    f.write(line)
-        
-        # Print the names of the saved letters and return to the original directory
-        print('New letters saved in %s:' % new_dir)
-        print(os.listdir())
+        print(f'Saving to directory {new_dir}')
+
+        # Create dict of letter names and letter texts, then write files
+        letters = {f'_{k}.txt': create_form_letter(k, v[-1])
+                  for k, v in donor_history.items()}
+        for letter in letters:
+            with open(letter, 'w') as f:
+                [f.write(line) for line in letters[letter]]
+
+        # Print names of saved letters and return to original directory
+        print('The following new letters have been saved in '
+                f'{new_dir}:\n\t{tuple(letters.keys())}')
         os.chdir(cur_dir)
 
 def create_form_letter(donor_name, donor_amount):
@@ -186,7 +203,7 @@ def create_form_letter(donor_name, donor_amount):
     gifts = len(donor_history[donor_name])
     if gifts > 1:
         str2 = '(and total donations of ' \
-                '{0:,.2f} from {1:,d} gifts)\n            '.format(
+                '${0:,.2f} from {1:,d} gifts)\n            '.format(
                 sum(donor_history[donor_name]), gifts)
     
     return str.format(donor_name, donor_amount, str2)
