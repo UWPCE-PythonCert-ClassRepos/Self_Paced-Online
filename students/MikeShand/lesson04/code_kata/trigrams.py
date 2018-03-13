@@ -20,23 +20,28 @@ def make_dict():
     book_list = text_import().split()
     book_dict = defaultdict(list, {})
     for i in range(len(book_list)-2):
-        book_dict[f'{book_list[i]} {book_list[i+1]}'].append(book_list[i+2])
+        book_dict[(book_list[i], book_list[i+1])].append(book_list[i+2])
     return book_dict
 
 
 def new_story():
     new_list = []
-    flat_list = []
-    new_story = []
+    book_list = text_import().split()
     book_dict = make_dict()
-    key_list = book_dict.keys()
-    magic_key = random.sample(key_list, 100)
-    for keys in magic_key:
-        new_list.append(book_dict[keys])
-        flat_list = list(itertools.chain(*new_list))
-    new_story = list(zip(magic_key, flat_list))
-    new_master = list(itertools.chain(*new_story))
-    machine_masterpiece = ' '.join(new_master)
+    lucky_number = random.randint(0, len(book_list))
+    magic_key = (book_list[lucky_number], book_list[lucky_number+1],)
+    new_list.append(magic_key)
+    length = len(book_list) - lucky_number
+    for i in range(length-2):
+        try:
+            new_word = random.choice(book_dict[magic_key])
+            new_word = (new_word,)
+            new_list.append(new_word)
+            magic_key = magic_key[1:] + new_word
+        except IndexError:
+            return
+    flat_list = list(itertools.chain(*new_list))
+    machine_masterpiece = ' '.join(flat_list)
     return machine_masterpiece
 
 
