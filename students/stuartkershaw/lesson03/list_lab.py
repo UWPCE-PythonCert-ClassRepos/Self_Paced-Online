@@ -57,3 +57,19 @@ for el in fruit:
 
 print(fruit)
 
+#Series 3
+
+restart = True
+while restart:
+    restart = False
+    for el in fruit:
+        prompt = input('Do you like {}? '.format(el.lower()))
+        if prompt == 'yes':
+            continue
+        elif prompt == 'no':
+            for i in fruit:
+                if i == el:
+                    fruit.remove(i)
+            restart = True
+
+print(fruit)
