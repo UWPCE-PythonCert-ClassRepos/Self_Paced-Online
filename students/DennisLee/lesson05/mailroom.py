@@ -19,25 +19,24 @@ def manage_donors():
     :return:  None.
     """
     # create a dictionary of menu items, menu text, and menu caller functions
-    choices = {'1': ("Send a thank you", send_thank_you), 
-               '2': ("Create a report", create_a_report),
-               '3': ("Send letters to everyone", send_all_letters),
-               '4': ("Quit", exit_screen)}
+    options = ("Send a thank you", "Create a report", 
+               "Send letters to everyone", "Quit")
+    funcs = (send_thank_you, create_a_report, send_all_letters, exit_screen)
+    choices = {str(x):y for x, y in zip(range(1, 5),
+            [(a, b) for a, b in zip(options, funcs)])}
     
     while True:
         # Print the menu list (with numbered choices)
-        print()
-        for i in choices:
-            print(i, choices[i][0])
-
-        # Get the selection number
-        response = ''
-        while response not in choices:
-            response = input("Type your selection: ").strip()
-
-        choices[response][1]()  # Call helper function
-        if response = '4':
-            return
+        print("\nMENU:")
+        [print(i, choices[i][0]) for i in choices]
+        try:  # Get the selection number and call helper function
+            response = input("Type a menu selection number: ").strip()
+            choices[response][1]()
+        except KeyError:
+            print("\nInvalid response - try again.")
+        else:
+            if response == '4':
+                return
 
 def exit_screen():
     """
@@ -63,11 +62,9 @@ def send_thank_you():
     if response.lower() in ('', 'quit'):
         exit_screen()
         return
-
     elif response.lower() == 'list':
         print_donor_list()
         send_thank_you()  # Try getting a donor name again
-
     else:
         while True:  # Get the donation amount
             donation = input(
@@ -76,22 +73,29 @@ def send_thank_you():
             if donation == 'quit':
                 exit_screen()
                 return
-            # Make sure the donation amount is a valid, positive number
-            elif donation.strip('0123456789.') == '' and len(
-                    donation) > 0 and donation.count('.') <= 1 and float(
-                    donation) > 0.0:
-                break
 
-        # Add the donation to the master donor history and print the letter
-        donation = float(donation)
-        donor_history.setdefault(response, [])
-        donor_history[response].append(donation)
-        print(create_form_letter(response, donation))
+            try:  # Add donation to master donor history + print letter
+                donation = float(donation)
+            except ValueError:
+                print('\nNot a valid number - try again.\n')
+            else:
+                if donation > 0.0:
+                    donor_history.setdefault(response, [])
+                    donor_history[response].append(donation)
+                    print(create_form_letter(response, donation))
+                    return
+                else:
+                    print(
+                    '\nNegative/zero donation amounts disallowed - try again.')
 
 def print_donor_list():
+    """
+    Print the full list of donors.
+
+    :return:  None.
+    """
     print("\nLIST OF DONORS:")
-    for donor in donor_history:
-        print(donor)
+    [print(donor) for donor in donor_history]
 
 def create_a_report():
     """
@@ -121,27 +125,28 @@ def send_all_letters():
     # Ask for the directory to save the letters to
     cur_dir = os.getcwd()
     print('\nThe current directory is %s' % cur_dir)
-    new_dir = input('\nType the directory to save the letters in '
-            '(leave empty to save in the current directory): ').strip()
-
-    if new_dir != '':  # Go to new directory (create if nonexistent)
+    new_dir = input('\nType the directory to save the letters in: ').strip()
+    try:
         os.mkdir(new_dir)
+    except FileNotFoundError:
+        print(f'\nCannot find or create directory "{new_dir}".')
+        print('Will use the current directory instead.\n')
+        new_dir = cur_dir
+    except FileExistsError:
+        print(f'\nFound directory "{new_dir}".\n')
+    finally:  # Save each letter, with the donor name in each file name
         os.chdir(new_dir)
         new_dir = os.getcwd()
-    else:
-        new_dir = cur_dir
-
-    # Save each letter, with the donor name in each file name
-    for k, v in donor_history.items():
-        letter = create_form_letter(k, v[-1])
-        with open('{:s}.txt'.format(k), 'w') as f:
-            for line in letter:
-                f.write(line)
-    
-    # Print the names of the saved letters and return to the original directory
-    print('New letters saved in %s:' % new_dir)
-    print(os.listdir())
-    os.chdir(cur_dir)
+        for k, v in donor_history.items():
+            letter = create_form_letter(k, v[-1])
+            with open('_{:s}.txt'.format(k), 'w') as f:
+                for line in letter:
+                    f.write(line)
+        
+        # Print the names of the saved letters and return to the original directory
+        print('New letters saved in %s:' % new_dir)
+        print(os.listdir())
+        os.chdir(cur_dir)
 
 def create_form_letter(donor_name, donor_amount):
     """
