@@ -21,7 +21,7 @@ class Circle:
 
     @classmethod
     def from_diameter(cls, diameter):
-        return cls.diameter
+        return cls(diameter/2)
 
     def __repr__(self):
         return "Circle({})".format(self.radius)
