@@ -2,8 +2,6 @@
 import datetime
 
 # Data
-# refactor from tuple to no tuple (see Natasha's comments on
-# mailroom2 assignment)
 donors_amts = {'Gates': {'title': 'Mr.', 'donations': 150000,
                          'num_of_donations': 3},
                'Brin': {'title': 'Mr.', 'donations': 150000,
@@ -32,15 +30,19 @@ def send_ty():
                      + ',\nor "e" to Exit back to Main Menu: ')
     print()
     try:
-        response.isalpha()
-    except ValueError:
-        print('Use English letters only please.')
+        for char in response:
+            if char.isdigit():
+                int(char) / 0
+    except ZeroDivisionError:
+        print('Use English letters only please.\n')
         try:
             response = input('Enter full last name of Donor,'
                              + '\n"list" for List of Donors'
                              + ',\nor "e" to Exit back to Main Menu: ')
-            response.isalpha()
-        except ValueError:
+            for char in response:
+                if char.isdigit():
+                    int(char) / 0
+        except ZeroDivisionError:
             print('That is not a valid input. Closing program.')
             return
     else:
@@ -55,14 +57,14 @@ def send_ty():
                 new_response = input('Enter a Donation amount' +
                                      ' (in USD): ')
                 try:
-                    new_response.isnumeric()
-                except ValueError:
+                    int(new_response)
+                except TypeError:
                     print('Enter a numeric value.')
                     new_response = input('Enter a Donation amount' +
                                          ' (in USD): ')
                     try:
-                        new_response.isnumeric()
-                    except ValueError:
+                        int(new_response)
+                    except TypeError:
                         print('That is not a valid input. Closing program.')
                         return
                 else:
@@ -89,14 +91,14 @@ def send_ty():
                         new_response = input('Enter a Donation amount' +
                                              ' (in USD): ')
                         try:
-                            new_response.isnumeric()
-                        except ValueError:
+                            int(new_response)
+                        except TypeError:
                             print('Enter a numeric value.')
                             new_response = input('Enter a Donation amount' +
                                                  ' (in USD): ')
                             try:
-                                new_response.isnumeric()
-                            except ValueError:
+                                int(new_response)
+                            except TypeError:
                                 print('That is not a valid input.'
                                       + 'Closing program.')
                                 return
@@ -123,8 +125,8 @@ def send_ty():
                               + ' of {donation} USD.'.format(**donor_dict))
                         print()
     program_run()
-    # lines 34-122 are written for this program
-    # lines 128-174 were original code from mailroom2.py
+    # lines 33-127 are written for this program
+    # lines 130-176 were original code from mailroom2.py
     # if response.isalpha():
     #     if response == 'list':
     #         print('Here is the list of Donors: ')
