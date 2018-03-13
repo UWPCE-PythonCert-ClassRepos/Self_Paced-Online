@@ -22,7 +22,7 @@ def send_thank_you():
     # print the names of the current donor if 'list' is input by the user
     print('\n-----------------------------------------------------')
     view_donors = input("If you would like to see a list of donors please type 'list' or any key to continue. ")
-    if view_donors == 'list':
+    if view_donors.lower() == 'list':
         print()
         print("Below are the list of donors:")
         for x in dict_donors.values():
@@ -54,20 +54,23 @@ def send_thank_you():
 
             while True:
 
-                # raise exception if the user inputs anything other than 'yes' or 'no'
-                try:
-                    str_donation_choice = input("Would you like to add another donation? (yes or no) ")
-                    if str_donation_choice not in ("yes","no"):
-                        raise Exception
-                except Exception:
-                    print("Please input 'yes' or 'no'")
+                str_donation_choice = input("Would you like to add another donation? (yes or no) ")
+                if str_donation_choice not in ("yes","no"):
+                    print("Please input 'yes' or 'no' ")
+                    continue
                 else:
                     break
 
             print('-----------------------------------------------------')
             print()
             if str_donation_choice == 'yes':
-                donate_more = float(input("How much would you like to donate? "))
+                while True:
+                    try:
+                        donate_more = float(input("How much would you like to donate? "))
+                    except ValueError:
+                        print("Please input a valid value")
+                    else:
+                        break
                 total_donations = x["total donations"] + donate_more
                 count_donations = x["number donations"] + 1
                 avg_donation = total_donations/count_donations
