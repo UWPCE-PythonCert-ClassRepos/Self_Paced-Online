@@ -42,8 +42,8 @@ class TestCircle(unittest.TestCase):
     def test_operator(self):
         c1 = Circle(2)
         c2 = Circle(4)
-        self.assertEqual(c1 + c2, 'Circle(6)')
-        self.assertEqual(c1 * 4, 'Circle(8)')
+        self.assertEqual(c1 + c2, Circle(6))
+        self.assertEqual(c1 * 4, Circle(8))
 
     def test_compare(self):
         c1 = Circle(2)
