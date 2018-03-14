@@ -17,17 +17,13 @@ def send_thank_you():
 
 def add_donation():
     # Append donation to existing donor, or add donor/donation to existing list
-    response = input("\nPlease enter a donor name: ")
-    if response not in donations.keys():
-        new_donor = response
-        new_donation = input(f"Please enter a donation amount for {new_donor}: ")
-        donations[new_donor] = [float(new_donation)]
-        print_email(new_donor, new_donation)
+    donor_name = input("\nPlease enter a donor name: ")
+    new_donation = input(f"Please enter a donation amount for {donor_name}: ")
+    if donor_name not in donations.keys():
+        donations[donor_name] = [float(new_donation)]
     else:
-         current_donor = response
-         new_donation = input(f"Please enter a donation amount for {current_donor}: ")
-         donations[current_donor].append(float(new_donation))
-         print_email(current_donor, new_donation)
+         donations[donor_name].append(float(new_donation))
+    print_email(donor_name, new_donation)
 
 
 def write_letters():
@@ -53,12 +49,11 @@ def create_report():
     print(header)
     print("-" * len(header))
 
-    for donor in donations:
-        name = donor
-        total_given = sum(donations[donor])
-        num_gifts = len(donations[donor])
+    for donor, donor_data in donations.items():
+        total_given = sum(donor_data)
+        num_gifts = len(donor_data)
         avg_gift = total_given / num_gifts
-        print('{:21}{:>15.2f}{:>16}{:>16.2f}'.format(name, total_given, num_gifts, avg_gift))
+        print('{:21}{:>15.2f}{:>16}{:>16.2f}'.format(donor, total_given, num_gifts, avg_gift))
     print()
 
 
@@ -70,7 +65,7 @@ def list_donors():
     print()
 
 
-def quit():
+def quit_menu():
     # Quit current menu
     return("quit")
 
@@ -87,13 +82,13 @@ main_menu = {
     "1": send_thank_you,
     "2": create_report,
     "3": write_letters,
-    "q": quit,
+    "q": quit_menu,
 }
 
 thank_you_menu = {
     "1": add_donation,
     "2": list_donors,
-    "q": quit,
+    "q": quit_menu,
 }
 
 # Prompts used
