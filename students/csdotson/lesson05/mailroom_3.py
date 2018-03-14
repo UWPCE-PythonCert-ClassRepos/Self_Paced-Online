@@ -5,7 +5,7 @@
 def prompt(prompt, menu):
     # Create menu based on arguments
     while True:
-        response = input(prompt)
+        response = input(prompt) # Exception to handle bad input
         if menu[response]() == "quit":
             break
 
@@ -19,10 +19,10 @@ def add_donation():
     # Append donation to existing donor, or add donor/donation to existing list
     donor_name = input("\nPlease enter a donor name: ")
     new_donation = input(f"Please enter a donation amount for {donor_name}: ")
-    if donor_name not in donations.keys():
+    if donor_name not in donations:
         donations[donor_name] = [float(new_donation)]
     else:
-         donations[donor_name].append(float(new_donation))
+        donations[donor_name].append(float(new_donation))
     print_email(donor_name, new_donation)
 
 
@@ -31,7 +31,13 @@ def write_letters():
     for donor in donations:
         file_name = '_'.join(donor.split()) + ".txt"
         with open(file_name, 'w') as f:
-            f.write(f"Dear {donor},\n\nThank you very much for your generosity! Your most recent gift of ${(donations[donor][-1])} will be put to great use. So far, you've donated a total of ${sum(donations[donor])}!\n\nSincerely,\nThe Team")
+            f.write(f"""Dear {donor},
+
+            Thank you very much for your generosity! Your most recent gift of ${(donations[donor][-1])} will be put to great use. So far, you've donated a total of ${sum(donations[donor])}!
+
+            Sincerely,
+            The Team""")
+
             print(f"\nCreated letter for {donor}!")
 
 
@@ -92,9 +98,9 @@ thank_you_menu = {
 }
 
 # Prompts used
-main_prompt = ("\nWelcome to the Main Menu! What would you like to do?\n1 - Send a Thank You\n2 - Create a Report\n3 - Send letters to everyone\nq - Quit\n--> ")
+main_prompt = ("\nWelcome to the Main Menu! What would you like to do?\n1 - Send a Thank You\n2 - Create a Report\n3 - Send letters to everyone\nq - Quit and exit\n--> ")
 
-thank_you_prompt = ("\nPlease choose one of the following:\n1 - Add a donation and send thank you message\n2 - Display list of current donors\nq - Quit\n--> ")
+thank_you_prompt = ("\nPlease choose one of the following:\n1 - Add a donation and send thank you message\n2 - Display list of current donors\nq - Quit current menu\n--> ")
 
 
 ### Execution of file if run as a script ###
