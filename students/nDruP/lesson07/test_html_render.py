@@ -9,7 +9,7 @@ def test_step1():
     a = hr.Element("Test_A")
     a.render(f, "    ")
     assert "html" == a.tag
-    assert "" == a.indent
+    assert 0 == a.indent
     assert ("Test_A",) == a.substance
     assert ("<html>\n    Test_A\n</html>\n") == f.getvalue()
     
@@ -20,3 +20,18 @@ def test_step1():
     assert ("<html>\n    Test_A\n    Test_B\n</html>\n") == g.getvalue()
 
 
+def test_step2():
+    f = StringIO()
+    a = hr.Html()
+    b = hr.Body()
+    p = hr.P()
+
+    assert "html" == a.tag
+    assert "body" == b.tag
+    assert "p" == p.tag
+    p.append("Test")
+    b.append(p)
+    assert ("Test",) == p.substance
+    b.render(f, "    ")
+    print(f.getvalue())
+    assert "<body>\n    <p>\n        Test\n    </p>\n</body>\n" == f.getvalue()
