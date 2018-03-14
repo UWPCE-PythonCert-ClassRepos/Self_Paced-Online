@@ -16,6 +16,7 @@ class TestHtmlRender(unittest.TestCase):
         self.anch = hr.AnchorElement('http://google.com', 'link')
         self.unli = hr.UlElement(id="TheList", style="line-height:200%")
         self.hdr2 = hr.HeaderElement(2, 'Header 2 Example')
+        self.meta = hr.MetaElement(charset="UTF-8")
 
     def tearDown(self):
         # Remove any unit test generated files
@@ -34,27 +35,29 @@ class TestHtmlRender(unittest.TestCase):
     def test_render_def_indent(self):
         """Test the render method with def indentation"""
         self.html.append('Testing the render method...')
-        answer = ('<html>\n'
+        answer = ('<!DOCTYPE html>\n'
+                  '<html>\n'
                   '    Testing the render method...\n'
                   '</html>\n')
 
         with open('unit_test_render.txt', 'w+') as f:
             self.html.render(f)
             f.seek(0)
-            result = f.read(50)
+            result = f.read(100)
             self.assertTrue(result == answer, msg=result)
 
     def test_render_custom_indent(self):
         """Test the render method with custom indentation"""
         self.html.append('Testing the render method...')
-        answer = ('    <html>\n'
+        answer = ('    <!DOCTYPE html>\n'
+                  '    <html>\n'
                   '        Testing the render method...\n'
                   '    </html>\n')
 
         with open('unit_test_render.txt', 'w+') as f:
             self.html.render(f, '    ')
             f.seek(0)
-            result = f.read(60)
+            result = f.read(100)
             self.assertTrue(result == answer, msg=result)
 
     def test_render_nested(self):
@@ -62,7 +65,8 @@ class TestHtmlRender(unittest.TestCase):
         self.body.append(hr.ParagraphElement(500))
         self.html.append(self.head)
         self.html.append(self.body)
-        answer = ('<html>\n'
+        answer = ('<!DOCTYPE html>\n'
+                  '<html>\n'
                   '    <head>\n'
                   '        <title> This is a title </title>\n'
                   '    </head>\n'
@@ -84,7 +88,8 @@ class TestHtmlRender(unittest.TestCase):
         self.body.append(self.para)
         self.html.append(self.head)
         self.html.append(self.body)
-        answer = ('<html>\n'
+        answer = ('<!DOCTYPE html>\n'
+                  '<html>\n'
                   '    <head>\n'
                   '        <title> This is a title </title>\n'
                   '    </head>\n'
@@ -107,7 +112,8 @@ class TestHtmlRender(unittest.TestCase):
         self.body.append(self.horz)
         self.html.append(self.head)
         self.html.append(self.body)
-        answer = ('<html>\n'
+        answer = ('<!DOCTYPE html>\n'
+                  '<html>\n'
                   '    <head>\n'
                   '        <title> This is a title </title>\n'
                   '    </head>\n'
@@ -134,7 +140,8 @@ class TestHtmlRender(unittest.TestCase):
         self.html.append(self.head)
         self.html.append(self.body)
         self.horz.content = ['Attempt to adjust content']
-        answer = ('<html>\n'
+        answer = ('<!DOCTYPE html>\n'
+                  '<html>\n'
                   '    <head>\n'
                   '        <title> This is a title </title>\n'
                   '    </head>\n'
@@ -159,7 +166,8 @@ class TestHtmlRender(unittest.TestCase):
         self.body.append(self.anch)
         self.html.append(self.head)
         self.html.append(self.body)
-        answer = ('<html>\n'
+        answer = ('<!DOCTYPE html>\n'
+                  '<html>\n'
                   '    <head>\n'
                   '        <title> This is a title </title>\n'
                   '    </head>\n'
@@ -187,7 +195,8 @@ class TestHtmlRender(unittest.TestCase):
         self.body.append(self.unli)
         self.html.append(self.head)
         self.html.append(self.body)
-        answer = ('<html>\n'
+        answer = ('<!DOCTYPE html>\n'
+                  '<html>\n'
                   '    <head>\n'
                   '        <title> This is a title </title>\n'
                   '    </head>\n'
@@ -220,7 +229,8 @@ class TestHtmlRender(unittest.TestCase):
         self.body.append(self.horz)
         self.html.append(self.head)
         self.html.append(self.body)
-        answer = ('<html>\n'
+        answer = ('<!DOCTYPE html>\n'
+                  '<html>\n'
                   '    <head>\n'
                   '        <title> This is a title </title>\n'
                   '    </head>\n'
@@ -237,6 +247,47 @@ class TestHtmlRender(unittest.TestCase):
             self.html.render(f)
             f.seek(0)
             result = f.read(500)
+            self.assertTrue(result == answer, msg=result)
+
+    def test_render_html(self):
+        """Test the render method with the html element"""
+        answer = ('<!DOCTYPE html>\n'
+                  '<html>\n'
+                  '</html>\n')
+
+        with open('unit_test_render.txt', 'w+') as f:
+            self.html.render(f)
+            f.seek(0)
+            result = f.read(100)
+            self.assertTrue(result == answer, msg=result)
+
+    def test_render_meta(self):
+        """Test the render method with the meta element"""
+        self.head.append(self.meta)
+        self.body.append(self.hdr2)
+        self.body.append(self.para)
+        self.body.append(self.horz)
+        self.html.append(self.head)
+        self.html.append(self.body)
+        answer = ('<!DOCTYPE html>\n'
+                  '<html>\n'
+                  '    <head>\n'
+                  '        <title> This is a title </title>\n'
+                  '        <meta charset="UTF-8" />\n'
+                  '    </head>\n'
+                  '    <body>\n'
+                  '        <h2> Header 2 Example </h2>\n'
+                  '        <p style="Bold" cls="Intro">\n'
+                  '            500\n'
+                  '        </p>\n'
+                  '        <hr />\n'
+                  '    </body>\n'
+                  '</html>\n')
+
+        with open('unit_test_render.txt', 'w+') as f:
+            self.html.render(f)
+            f.seek(0)
+            result = f.read(len(answer))
             self.assertTrue(result == answer, msg=result)
 
 

@@ -52,6 +52,16 @@ class HtmlElement(Element):
     """HTML type Element"""
     tag = 'html'
 
+    def render(self, file_out, cur_ind=''):
+        """Renders the tag and strings from the element content.
+
+        Args:
+            file_out (file): Writable file-like object to recieve rendered data.
+            cur_ind (str, optional): Defaults to ''. Indentation of current element.
+        """
+        file_out.write(f'{cur_ind}<!DOCTYPE html>\n')
+        super().render(file_out, cur_ind)
+
 
 class BodyElement(Element):
     """Body type Element"""
@@ -154,6 +164,11 @@ class HeaderElement(OneLineElement):
     def __init__(self, level, content):
         super().__init__(content)
         self.tag = f'h{level}'
+
+
+class MetaElement(SelfClosingElement):
+    """Meta type element"""
+    tag = 'meta'
 
 
 def main():
