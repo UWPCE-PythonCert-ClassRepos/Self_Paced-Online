@@ -1,5 +1,6 @@
 import unittest
 import html_render as hr
+from io import StringIO
 
 class HtmlTest(unittest.TestCase):
     def setUp(self):
@@ -13,7 +14,15 @@ class HtmlTest(unittest.TestCase):
 
     def test_render(self):
         self.page.content = ['Some content.', 'Some more content.']
-        expected_text = "<html>\n    Some content. Some more content.\n"\
-                        "</html>"
-        self.page.render('',' ')
-        self.assertEqual(self.page.text, expected_text)
+        expected_text = "<>\n    Some content.\n    Some more content.\n"\
+                        "</>"
+        f = StringIO()
+        self.page.render(f, 0)
+        self.assertEqual(f.getvalue(), expected_text)
+
+    def test_render_title(self):
+        self.title = hr.Title('This is a test title')
+        f = StringIO()
+        self.title.render(f, 0)
+        expected_text = '<title>This is a test title</title>'
+        self.assertEqual(f.getvalue(), expected_text)
