@@ -30,7 +30,7 @@ def render_page(page, filename):
         outfile.write(f.getvalue())
 
 
-# Step 1 Make an Element Class with an append function
+# Step 1
 #########
 
 page = hr.Element()
@@ -45,7 +45,7 @@ render_page(page, "test_html_output1.html")
 # The rest of the steps have been commented out.
 #  Uncomment them as you move along with the assignment.
 
-# ## Step 2 Make an Html, Body, and P subclass of Element.
+# ## Step 2
 # ##########
 
 # page = hr.Html()

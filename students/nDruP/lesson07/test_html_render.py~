@@ -1,0 +1,11 @@
+import html_render as hr
+from io import StringIO
+
+def test_Element():
+    f = StringIO()
+    a = hr.Element("Test_A")
+    a.render(f, "    ")
+    assert "html" == a.tag
+    assert "" == a.indent
+    assert ("Test_A",) == a.substance
+    assert ("<html>\n    Test_A\n</html>\n") == f.getvalue()
