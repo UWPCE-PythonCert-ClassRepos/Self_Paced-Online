@@ -24,3 +24,15 @@ out_msg_alt = f"{file_out_alt}: {float_dec_out_alt}, {sci_out_alt}, {sci_sig_out
 
 print(out_msg_alt)
 
+#Task Three
+
+def formatter(tuple_in):
+    t = tuple_in
+    fstring = []
+    for i in t:
+        fstring.append('{:d}')
+    out_msg = 'the {} numbers are: '.format(len(t))
+    return out_msg + ', '.join(fstring).format(*t)
+
+print(formatter((2,3,5,7,9)))
+
