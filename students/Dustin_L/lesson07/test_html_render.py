@@ -43,7 +43,7 @@ class TestHtmlRender(unittest.TestCase):
         with open('unit_test_render.txt', 'w+') as f:
             self.html.render(f)
             f.seek(0)
-            result = f.read(100)
+            result = f.read(len(answer))
             self.assertTrue(result == answer, msg=result)
 
     def test_render_custom_indent(self):
@@ -57,7 +57,7 @@ class TestHtmlRender(unittest.TestCase):
         with open('unit_test_render.txt', 'w+') as f:
             self.html.render(f, '    ')
             f.seek(0)
-            result = f.read(100)
+            result = f.read(len(answer))
             self.assertTrue(result == answer, msg=result)
 
     def test_render_nested(self):
@@ -80,7 +80,7 @@ class TestHtmlRender(unittest.TestCase):
         with open('unit_test_render.txt', 'w+') as f:
             self.html.render(f)
             f.seek(0)
-            result = f.read(200)
+            result = f.read(len(answer))
             self.assertTrue(result == answer, msg=result)
 
     def test_render_nested_with_attrs(self):
@@ -103,7 +103,7 @@ class TestHtmlRender(unittest.TestCase):
         with open('unit_test_render.txt', 'w+') as f:
             self.html.render(f)
             f.seek(0)
-            result = f.read(200)
+            result = f.read(len(answer))
             self.assertTrue(result == answer, msg=result)
 
     def test_render_self_closing(self):
@@ -128,7 +128,7 @@ class TestHtmlRender(unittest.TestCase):
         with open('unit_test_render.txt', 'w+') as f:
             self.html.render(f)
             f.seek(0)
-            result = f.read(250)
+            result = f.read(len(answer))
             self.assertTrue(result == answer, msg=result)
 
     def test_render_self_closing_with_content(self):
@@ -156,7 +156,7 @@ class TestHtmlRender(unittest.TestCase):
         with open('unit_test_render.txt', 'w+') as f:
             self.html.render(f)
             f.seek(0)
-            result = f.read(250)
+            result = f.read(len(answer))
             self.assertTrue(result == answer, msg=result)
 
     def test_render_anchor(self):
@@ -183,7 +183,7 @@ class TestHtmlRender(unittest.TestCase):
         with open('unit_test_render.txt', 'w+') as f:
             self.html.render(f)
             f.seek(0)
-            result = f.read(250)
+            result = f.read(len(answer))
             self.assertTrue(result == answer, msg=result)
 
     def test_render_lists(self):
@@ -219,7 +219,7 @@ class TestHtmlRender(unittest.TestCase):
         with open('unit_test_render.txt', 'w+') as f:
             self.html.render(f)
             f.seek(0)
-            result = f.read(500)
+            result = f.read(len(answer))
             self.assertTrue(result == answer, msg=result)
 
     def test_render_header(self):
@@ -246,7 +246,7 @@ class TestHtmlRender(unittest.TestCase):
         with open('unit_test_render.txt', 'w+') as f:
             self.html.render(f)
             f.seek(0)
-            result = f.read(500)
+            result = f.read(len(answer))
             self.assertTrue(result == answer, msg=result)
 
     def test_render_html(self):
@@ -258,7 +258,7 @@ class TestHtmlRender(unittest.TestCase):
         with open('unit_test_render.txt', 'w+') as f:
             self.html.render(f)
             f.seek(0)
-            result = f.read(100)
+            result = f.read(len(answer))
             self.assertTrue(result == answer, msg=result)
 
     def test_render_meta(self):
