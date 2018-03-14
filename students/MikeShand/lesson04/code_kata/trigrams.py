@@ -1,18 +1,14 @@
 #!/usr/bin/env python3
 import random
 import itertools
+import string
 from collections import defaultdict
 
 
 def text_import():
     with open('sherlock_small.txt', "r") as book_text:
-        book_string = book_text.read().replace('\n', ' ')
-        book_string = book_string.replace(',', ' ')
-        book_string = book_string.replace('.', ' ')
-        book_string = book_string.replace('-', ' ')
-        book_string = book_string.replace('(', '')
-        book_string = book_string.replace(')', '')
-        book_string = book_string.lower()
+        book_string = book_text.read().replace('\n', ' ').lower()
+        book_string = book_string.replace(string.punctuation, ' ')
         return book_string
 
 
