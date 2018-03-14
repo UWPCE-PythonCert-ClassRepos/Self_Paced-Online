@@ -20,6 +20,7 @@ except NameError:
     print('Whoops! there is no joke for: spam')
     second_try = fun(first_try[1])
 
+
 # Here is a try/except block. Add an else that prints not_joke
 try:
     not_joke = fun(first_try[2])
@@ -40,7 +41,6 @@ else:
 # Finally, while still in the try/except block and regardless of whether
 # there were any exceptions, call the function last_fun with no
 # parameters. (pun intended)
-
 langs = ['java', 'c', 'python']
 
 try:

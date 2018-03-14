@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin  /env python3
 
 """
 silly little test module that is designed to trigger Exceptions when
