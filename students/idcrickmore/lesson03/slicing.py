@@ -42,7 +42,7 @@ assert remove_every_other(a_list) == [0, 2, 4, 6, 8, 10, 12, 14]
 
 assert remove_first_last_4_every_other(a_string) == " sas"
 assert remove_first_last_4_every_other(a_tuple) == ("cashew",)
-# I'm actually not sure why there needs to be a left over comma here
+# I'm actually not sure why there needs to be a leftover comma after "cashew"
 # it seems like it should just be a tuple with a single item "cashew"
 assert remove_first_last_4_every_other(a_list) == [4, 6, 8, 10]
 
