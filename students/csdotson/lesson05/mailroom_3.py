@@ -27,7 +27,7 @@ def add_donation():
 
 
 def write_letters():
-    # For all donors, generates a thank you letter, and writes it to disk as a text file
+    # For all donors, generate a thank you letter, and write it to disk as a text file
     for donor in donations:
         file_name = '_'.join(donor.split()) + ".txt"
         with open(file_name, 'w') as f:
@@ -66,8 +66,7 @@ def create_report():
 def list_donors():
     # Formatted print of donor names
     print("\nList of donors:")
-    for donor in donations:
-        print(donor)
+    [print(donor) for donor in donations]
     print()
 
 
