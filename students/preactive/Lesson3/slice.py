@@ -6,81 +6,88 @@ def slicer():
     three_types = (a_string, a_tuple, a_arr)
 
     for slice_item in three_types:
-        for_type = type(slice_item)
-        first_last(slice_item, for_type)
-        odd_out(slice_item, for_type)
-        ambigus_ao_fourth(slice_item, for_type)
-        reversed(slice_item, for_type)
-        thirds(slice_item, for_type)
+        first_last(slice_item)
+        odd_out(slice_item)
+        ambigus_ao_fourth(slice_item)
+        slice_reversed(slice_item)
+        thirds(slice_item)
 
 
-def first_last(slicer_input, for_type):
+def first_last(slicer_input):
     # with the first and last items exchanged
-    swapped = slicer_input[-1:] + slicer_input[1:len(slicer_input) - 1] \
+    swapped = slicer_input[-1:] + slicer_input[1:-1] \
               + slicer_input[:1]
-    if for_type is str:
-        assert swapped == "ghis is a strint", "String Failed"
-    if for_type is tuple:
-        assert swapped == (32, 54, 13, 12, 5, 2), "Tuple Failed"
-    if for_type is list:
-        assert swapped == ["!", "!", "tide", "pod", "challenge", "is",
-             "not", "for", "the", "weak", "!", "!"], "List failed"
     return swapped
 
 
-def odd_out(slicer_input, for_type):
+def odd_out(slicer_input):
     # with every other item removed
     evens = slicer_input[::2]
-    if for_type is str:
-        assert evens == "ti sasrn", "String Failed"
-    if for_type is tuple:
-        assert evens == (2, 13, 5), "Tuple Failed"
-    if for_type is list:
-        assert evens == ['!', 'tide', 'challenge', 'not', 'the', '!'], "List failed"
     return evens
 
 
-def ambigus_ao_fourth(slicer_input, for_type):
+def ambigus_ao_fourth(slicer_input):
     # with the first 4 and the last 4 items removed,
     # and then every other item in between
-    ao_forths = odd_out(slicer_input[4:-4],None)
-    if for_type is str:
-        assert ao_forths == " sas", "String Failed"
-    if for_type is tuple:
-        assert ao_forths == (), "Tuple Failed"
-    if for_type is list:
-        assert ao_forths == ['challenge', 'not'], "List failed"
+    ao_forths = odd_out(slicer_input[4:-4])
     return ao_forths
 
 
-def reversed(slicer_input, for_type):
+def slice_reversed(slicer_input):
     # with the elements reversed (just with slicing)
     slicer_reversed = slicer_input[::-1]
-    if for_type is str:
-        assert slicer_reversed == "gnirts a si siht", "String Failed"
-    if for_type is tuple:
-        assert slicer_reversed == (32, 5, 12, 13, 54, 2), "Tuple Failed"
-    if for_type is list:
-        assert slicer_reversed == ['!', '!', 'weak', 'the', 'for', 'not',
-                                   'is', 'challenge', 'pod', 'tide', '!', '!'], \
-            "List failed"
     return slicer_reversed
 
 
-def thirds(s_i, for_type):
+def thirds(seq):
     # with the middle third, then last third, then the
     # first third in the new order
-    if len(s_i) % 3 == 0:
-        L = round(len(s_i) / 3)
-        s_i_complete = s_i[L:L * 2] + s_i[L * 2:L * 3] + s_i[:L]
-        if for_type is tuple:
-            assert s_i_complete == (13, 12, 5, 32, 2, 54), "Tuple Failed"
-        if for_type is list:
-            assert s_i_complete == ['challenge', 'is', 'not', 'for', 'the',
-                                    'weak', '!', '!', '!', '!', 'tide', 'pod'], \
-                "List failed"
-        return s_i_complete
+    if len(seq) % 3 == 0:
+        seq_len = round(len(seq) / 3)
+        seq_complete = seq[seq_len:seq_len * 2] \
+            + seq[seq_len * 2:seq_len * 3] \
+            + seq[:seq_len]
+        return seq_complete
     return "Not able to third"
 
 
-slicer()
+if __name__ == '__main__':
+    slicer()
+
+
+    def testing():
+        a_string = "this is a string"
+        a_tuple = (2, 54, 13, 12, 5, 32)
+        a_arr = ["!", "!", "tide", "pod", "challenge", "is",
+                 "not", "for", "the", "weak", "!", "!"]
+
+        # test Strings
+        assert first_last(a_string) == "ghis is a strint", "String Failed"
+        assert odd_out(a_string) == "ti sasrn", "String Failed"
+        assert ambigus_ao_fourth(a_string) == " sas", "String Failed"
+        assert slice_reversed(a_string) == "gnirts a si siht", "String Failed"
+
+        # test Tuples
+        assert first_last(a_tuple) == (32, 54, 13, 12, 5, 2), "Tuple Failed"
+        assert odd_out(a_tuple) == (2, 13, 5), "Tuple Failed"
+        assert ambigus_ao_fourth(a_tuple) == (), "Tuple Failed"
+        assert slice_reversed(a_tuple) == (32, 5, 12, 13, 54, 2), "Tuple Failed"
+        assert thirds(a_tuple) == (13, 12, 5, 32, 2, 54), "Tuple Failed"
+
+        # test Lists
+        assert first_last(a_arr) == ["!", "!", "tide", "pod", "challenge", "is",
+                                     "not", "for", "the", "weak", "!", "!"], \
+            "List failed"
+        assert odd_out(a_arr) == ['!', 'tide', 'challenge', 'not', 'the', '!'], \
+            "List failed"
+        assert ambigus_ao_fourth(a_arr) == ['challenge', 'not'], "List failed"
+        assert slice_reversed(a_arr) == ['!', '!', 'weak', 'the', 'for', 'not',
+                                         'is', 'challenge', 'pod', 'tide', '!',
+                                         '!'], "List failed"
+        assert thirds(a_arr) == ['challenge', 'is', 'not', 'for', 'the',
+                                 'weak', '!', '!', '!', '!',
+                                 'tide', 'pod'], "List failed"
+        return
+
+
+    testing()
