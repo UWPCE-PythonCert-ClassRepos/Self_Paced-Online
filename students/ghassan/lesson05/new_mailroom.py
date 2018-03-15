@@ -25,12 +25,12 @@ def send_thankyou():
             print(z)
         send_thankyou()
     try:
+        donation_amount = input('Please enter a donation amount: ')
+        donors[donor_name].append(float(donation_amount))
         print('Thank you {} for your generous donation of {}'.format(
             donor_name, sum(donors[donor_name])))
     except KeyError:
-        donors[donor_name] = []
-        donation_amount = input('Please enter a donation amount: ')
-        donors[donor_name].append(float(donation_amount))
+        donors[donor_name] = [float(donation_amount)]
         print('Thank you {} for your generous donation of {}'.format(
             donor_name, sum(donors[donor_name])))
 
@@ -68,10 +68,10 @@ def main():
             '4': quittt
         }
         try:
-            selection.get(users_choice)()
+            selection[users_choice]()
         except KeyError:
             print('Choose 1 to 4')
-            main_menu()
+            pass
 
 
 if __name__ == '__main__':
