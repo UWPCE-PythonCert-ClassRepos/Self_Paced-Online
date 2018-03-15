@@ -2,76 +2,74 @@
 # Lesson 4 - Trigrams
 import random
 
-def run():
+ENDING_PUNC = [".", "?", "!"]
+OTHER_PUNC = [",", ";", ":"]
+BLACK_LIST = ["(", ")", "[", "]", '"', "#", "'"]
+REPLACE = ["\n", "--"]
+
+
+def main():
     input_file = input("Please enter the name of a file (with extension):\n")
-    read_file(input_file)
+    text = read_file(input_file)
+    story_dict = create_story_dict(text)
+    story = make_story(text, story_dict)
+    story = fix_punctuation_and_display(story)
+    print("\nAnd, here's your story:\n\n", story)
 
 
 def read_file(input_file):
     # Read input_file, scrub for punctuation, create array of words/punctuation
     with open(input_file, 'r') as f:
         text = f.read()
-        for entry in punctuation_remove:
+        for entry in BLACK_LIST:
             text = text.replace(entry, '')
-        for entry in replace_with_space:
+        for entry in REPLACE:
             text = text.replace(entry, ' ')
-        for entry in other_punctuation:
+        for entry in OTHER_PUNC + ENDING_PUNC:
             text = text.replace(entry, f" {entry}")
-        for entry in ending_punctuation:
-            text = text.replace(entry, f" {entry}")
-        create_hash(text.split())
+        return(text.split())
 
 
-def create_hash(text):
-    # Create hash needed to produce trigrams
-    text_hash = {}
+def create_story_dict(text):
+    # Create dictionary needed to produce trigrams
+    story_dict = {}
     for index in range(len(text) - 1):
         key = ' '.join(text[index:index+2])
-        text_hash[key] = []
-    for index in range(len(text)-2):
-        pattern = text[index:index+2]
-        text_hash[' '.join(pattern)].append(text[index+2])
-    make_story(text, text_hash)
+        story_dict[key] = []
+    # for index in range(len(text)-2):
+    #     pattern = text[index:index+2]
+    #     story_dict[' '.join(pattern)].append(text[index+2])
+    return(story_dict)
 
 
-def make_story(text, text_hash):
-    # Generate story from word hash
+def make_story(text, story_dict):
+    # Generate story from word dict
     random_starting_point = random.randint(0,len(text)-1)
     story = ' '.join(text[random_starting_point:random_starting_point+2])
     while True:
-        next_key = ' '.join(story.split(' ')[-2:])
-        if text_hash[next_key] == [] or len(story) > 500:
+        next_key = ' '.join(story.split()[-2:])
+        if story_dict[next_key] == [] or len(story) > 500:
             story += '...'
             break
         else:
             story += ' '
-            story += text_hash[next_key][random.randint(0,len(text_hash[next_key])-1)]
-    fix_punctuation_and_display(story)
+            story += story_dict[next_key][random.randint(0,len(story_dict[next_key])-1)]
+    return(story)
 
 
 def fix_punctuation_and_display(story):
     # Capitalize beginning of story, remove spacing around punctuation, capitalize after ending punctuation
     story = story.capitalize()
-    for entry in other_punctuation:
+    for entry in OTHER_PUNC + ENDING_PUNC:
         story = story.replace(f' {entry}', entry)
-    for entry in ending_punctuation:
-        story = story.replace(f' {entry}', entry)
-
     word_array = story.split()
     for index in range(len(word_array)-1):
         if '.' in word_array[index] or '!' in word_array[index] or '?' in word_array[index]:
             word_array[index+1] = word_array[index+1].capitalize()
     story = ' '.join(word_array)
-
-    print("\nAnd, here's your story:\n\n", story)
-
-
-ending_punctuation = [".", "?", "!"]
-other_punctuation = [",", ";", ":"]
-punctuation_remove = ["(", ")", "[", "]", '"', "#", "'"]
-replace_with_space = ["\n", "--"]
+    return(story)
 
 
 ### Execution of file if run as a script ###
 if __name__ == "__main__":
-    run()
+    main()
