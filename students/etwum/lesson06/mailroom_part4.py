@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
 
-
 # initial list of donors
 dict_donors = {1: {"donor name": "Lionel Messi", "total donations": 1000000.00, "number donations": 5,
-                   "avg donation": 20000.00},
-              2: {"donor name": "Thierry Henry", "total donations": 500, "number donations":1, "avg donation": 500},
-              3: {"donor name": "Michael Jordan", "total donations": 45000, "number donations": 3,
-                  "avg donation": 15000},
-              4: {"donor name": "Kobe Bryant", "total donations": 8000, "number donations": 2, "avg donation": 4000}}
+                       "avg donation": 20000.00},
+                   2: {"donor name": "Thierry Henry", "total donations": 500, "number donations": 1,
+                       "avg donation": 500},
+                   3: {"donor name": "Michael Jordan", "total donations": 45000, "number donations": 3,
+                       "avg donation": 15000},
+                   4: {"donor name": "Kobe Bryant", "total donations": 8000, "number donations": 2,
+                       "avg donation": 4000}}
+
+
+def get_donor_list():
+    return dict_donors
 
 
 def send_thank_you():
@@ -15,7 +20,7 @@ def send_thank_you():
     new_donor = {}
 
     # donor number
-    donor_number = len(dict_donors) + 1
+    donor_number = len(get_donor_list()) + 1
 
     # function creates a thank you email to current and new donors added to the list
     # add new donors and donations
@@ -25,7 +30,7 @@ def send_thank_you():
     if view_donors.lower() == 'list':
         print()
         print("Below are the list of donors:")
-        for x in dict_donors.values():
+        for x in get_donor_list().values():
             print(x["donor name"])
         print('----------------------------')
 
@@ -49,7 +54,7 @@ def send_thank_you():
     print()
 
     # prints an email if the donors name is currently in the list
-    for x in dict_donors.values():
+    for x in get_donor_list().values():
         if x["donor name"] == donor_full_name:
 
             while True:
@@ -101,12 +106,12 @@ def send_thank_you():
                 print("Please input a valid number")
             else:
                 break
-        len(dict_donors)
+        len(get_donor_list())
         new_donor = {donor_number: {"donor name": donor_full_name, "total donations": new_donation_amount,
                                     "number donations": 1, "avg donation": new_donation_amount}}
         dict_donors.update(new_donor)
         print('-----------------------------------------------------')
-        for x in dict_donors.values():
+        for x in get_donor_list().values():
             if x["donor name"] == donor_full_name:
                 email = "Dear {donor_name},\n\nThank you for your generous donations of ${donations:.2f} " \
                         "to our charity.\n".format(donor_name=x["donor name"],donations=x["total donations"])
@@ -123,14 +128,14 @@ def create_report():
     for x in lst_headers:
         print('{:<25}{:<20}{:<17}{:<15}'.format(*x))
     print("----------------------------------------------------------------------------")
-    for x,y in sorted(dict_donors.items(),key=lambda x: x[1]['total donations'], reverse= True):
+    for x,y in sorted(get_donor_list().items(),key=lambda x: x[1]['total donations'], reverse= True):
         print('{:<25} $ {:<20}{:^14} $ {:<15}'.format(*y.values()))
 
 
 def send_letter_all():
     print('\n----------------------------------------------')
     # creates a letter to every donor by writing them to separate text files
-    for x in dict_donors.values():
+    for x in get_donor_list().values():
 
         # opens or creates a new text file for writing based on the donor name
         with open('{file_name}.txt'.format(file_name=x['donor name']), 'w') as f1:
@@ -143,32 +148,34 @@ def send_letter_all():
     print('----------------------------------------------\n')
 
 
+def options():
+    # function for returning a user selection
+    user_selection = {1: send_thank_you, 2: create_report, 3: send_letter_all}
+
+    return user_selection
+
 def main():
     print("Welcome to the Charity Mail Room")
     print("------------------------------------------------------------------------")
-
     str_choice = 0
     # ****Input/Output****
     while str_choice != 4:
         # Option menu
-
         print("""
-        Menu of Options
-        1) Send Thank You Note
-        2) Create Report
-        3) Send Letter to Everyone
-        4) Exit Program
-        """)
-
-        # dictionary used to run different functions of the program
-        user_selection = {1: send_thank_you, 2: create_report, 3: send_letter_all}
+            Menu of Options
+            1) Send Thank You Note
+            2) Create Report
+            3) Send Letter to Everyone
+            4) Exit Program
+            """)
 
         # try/except block to make sure the user inputs a valid option
         try:
             str_choice = int(input("Which option would you like to perform? Input a number [1 to 4] "))
-            if str_choice in user_selection:
-                # runs a function selection from the dictionary
-                user_selection[str_choice]()
+            if str_choice in options():
+                # returns a value from user_selection dictionary in the options function
+                # then runs the function from the dictionary
+                options()[str_choice]()
             elif str_choice == 4:
                 print("\nExiting Program")
             else:
