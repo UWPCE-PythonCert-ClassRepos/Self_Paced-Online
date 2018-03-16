@@ -92,26 +92,3 @@ if __name__ == "__main__":
             break
 
     
-
-"""
-    - Ex:
-Donor Name                | Total Given | Num Gifts | Average Gift
-------------------------------------------------------------------
-William Gates, III         $  653784.49           2  $   326892.24
-Mark Zuckerberg            $   16396.10           3  $     5465.37
-Jeff Bezos                 $     877.33           1  $      877.33
-Paul Allen                 $     708.42           3  $      236.14
-    """
-
-
-"""First, factor your script into separate functions. Each of the above tasks can be accomplished by a series of steps. Write discreet functions that accomplish individual steps and call them.
-
-Second, use loops to control the logical flow of your program. Interactive programs are a classic use-case for the while loop.
-
-Of course, input() will be useful here.
-
-Put the functions you write into the script at the top.
-
-Put your main interaction into an if __name__ == '__main__' block.
-
-Finally, use only functions and the basic Python data types you’ve learned about so far. There is no need to go any farther than that for this assignment."""
