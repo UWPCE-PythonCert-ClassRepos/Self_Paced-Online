@@ -30,9 +30,10 @@ def send_ty():
                      + ',\nor "e" to Exit back to Main Menu: ')
     print()
     try:
-        for char in response:
-            if char.isdigit():
-                int(char) / 0
+        # for char in response:
+        #     if char.isdigit():
+        #         int(char) / 0
+        [int(char)/0 for char in response if char.isdigit()]
     except ZeroDivisionError:
         print('Use English letters only please.\n')
         try:
