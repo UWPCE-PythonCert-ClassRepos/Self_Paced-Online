@@ -15,6 +15,9 @@ class Donor:
     def donor_history(self):
         return sum(self.donations)
 
+    def add_donation(self, amount):
+        return self.donations.append(amount)
+
 
 class DonorBook:
 
@@ -25,56 +28,77 @@ class DonorBook:
             self.donors = donors
 
     def add_donor(self, donor):
-        if donor not in self.donors:
-            self.donors.append(donor)
+        # if donor not in self.donors:
+        self.donors.append(donor)
 
     def get_all_donor_names(self):
+        donor_name_list = []
         for donor in self.donors:
-            print("-->" + donor.full_name)
+            #print("-->" + donor.full_name)
+            donor_name_list.append(donor.full_name)
+        return donor_name_list
 
     def list_all_donor_names_sorted(self):
         all_names = ""
-        for each_donor_name in sorted(self.donors):
+        for each_donor_name in sorted(self.get_all_donor_names()):
             all_names += "{}\n".format(each_donor_name)
         return(all_names)
-
-    @staticmethod
-    def donation_prompt():
-        return float(input("Please enter the donation amount:\n"))
-
-    @staticmethod
-    def donor_name_prompt():
-        return input("Send a Thank You - Please enter a full name or type \"list\""
-            "to list the current donors:\n")
 
     def send_thank_you(self):
         donor_name = None
         while not donor_name:
-            donor_name = DonorBook.donor_name_prompt()
+            donor_name = donor_name_prompt()
             if donor_name.lower() == "list":
-                print(self.get_all_donor_names())
+                print(self.list_all_donor_names_sorted())
                 donor_name = None
 
         donation = None
         while not donation:
             try:
-                donation = self.donation_prompt()
+                donation = donation_prompt()
             except ValueError:
                 print("Not a valid number! Please enter a valid number:\n")
 
-        # If the donnor doesn't exist in the donor dictionary - add his info
-        # Using defaultdict
-        donors[donor_name].append(donation)
-        print("Thank You Email:  Thansk for the donation!\n\n")
+        # If the donnor doesn't exist in the donor list - add his info
+        if donor_name not in self.get_all_donor_names():
+            try:
+                first, last = donor_name.split(" ")
+                self.add_donor(Donor(first, last, [donation]))
+            except ValueError:
+                print("Please enter both of your \"First Name\" and \"Last Name\"")
+        else:
+            for donor in self.donors:
+                if donor.full_name == donor_name:
+                    donor.add_donation(donation)
 
+        print("Thank You Email:  Thanks for the donation!\n\n")
+
+    def group_donations(self):
+        report = []  # initialize report
+        for donor in self.donors:
+            report.append([donor.full_name, sum(donor.donations), len(donor.donations)])
+
+        # Sort the report based on donations
+        return sorted(report, key=lambda r: r[1], reverse=True)
 
     def create_report(self):
-        pass
+        print("\nDonor Name           |  Total Given | Num Gifts | Average Gift")
+        print("---------------------------------------------------------------\n")
 
+        # Create the report
+        for donor_report in self.group_donations():
+            print("{:23}${:12.2f}{:10}   ${:12.2f}".format(donor_report[0],
+                donor_report[1],
+                donor_report[2],
+                donor_report[1] / donor_report[2]))
+        print("\n")
 
     def send_letters(self):
-        pass
-
+        for donor in self.donors:
+            file_name = donor.full_name.lower().replace(' ', '_', 3) + '.txt'
+            with open(file_name, "w") as fh: # fh: file handle
+                fh.write("Dear {},\n\tThank you for your very kind donations: {}\n\tIt will "
+                        "be put to very good use.\n\t\tSincerely,\n\t\t\t-The Team".format(donor.full_name, donor.donations))
 
     def quit_program(self):
     	print("Thanks for using my script! Bye!")
@@ -91,10 +115,10 @@ db = DonorBook([d1, d2, d3, d4, d5, d6])
 QUIT_OPT = '4'
 
 selection_map = {
-    "1": db.send_thank_you(),
-    "2": db.create_report(),
-    "3": db.send_letters(),
-    "4": db.quit_program()
+    "1": db.send_thank_you,
+    "2": db.create_report,
+    "3": db.send_letters,
+    "4": db.quit_program
 	}
 
 menu = {
@@ -107,6 +131,15 @@ menu = {
 def prompt():
     return input("Please choose the following options:\n1) {op1}.\n2) {op2}.\n3)"
         " {op3}.\n4) {op4}\n".format(**menu))
+
+
+def donation_prompt():
+    return float(input("Please enter the donation amount:\n"))
+
+
+def donor_name_prompt():
+    return input("Send a Thank You - Please enter a full name or type \"list\""
+        "to list the current donors:\n")
 
 def main():
     option_value = 0
