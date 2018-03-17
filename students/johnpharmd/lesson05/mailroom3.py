@@ -40,9 +40,10 @@ def send_ty():
             response = input('Enter full last name of Donor,'
                              + '\n"list" for List of Donors'
                              + ',\nor "e" to Exit back to Main Menu: ')
-            for char in response:
-                if char.isdigit():
-                    int(char) / 0
+            # for char in response:
+            #     if char.isdigit():
+            #         int(char) / 0
+            [int(char)/0 for char in response if char.isdigit()]
         except ZeroDivisionError:
             print('That is not a valid input. Closing program.')
             return
@@ -58,18 +59,18 @@ def send_ty():
                 new_response = input('Enter a Donation amount' +
                                      ' (in USD): ')
                 try:
-                    int(new_response)
+                    new_response = int(new_response)
                 except ValueError:
                     print('\nEnter a numeric value.')
                     new_response = input('Enter a Donation amount' +
                                          ' (in USD): ')
                     try:
-                        int(new_response)
+                        new_response = int(new_response)
                     except ValueError:
                         print('That is not a valid input. Closing program.')
                         return
                 else:
-                    new_response = int(new_response)
+                    # new_response = int(new_response)
                     donors_amts[response]['donations'] += new_response
                     donors_amts[response]['num_of_donations'] += 1
                     print('Added to', response, '\'s Donations:',
@@ -78,33 +79,41 @@ def send_ty():
                 # new function?: add_donor()?
                 title = input('Title: "Ms." or "Mr."?: ')
                 try:
-                    title == 'Ms.' or title == 'Mr.'
-                except TypeError:
-                    print('Choose a title.')
-                except ValueError:
-                    print('Choose a title.')
-                finally:
+                    # [int(char)/0 for char in title if char.isdigit()]
+                    if title != 'Ms.' or 'Mr.':
+                        # if title[0] != 'M':
+                        print(n)  # triggers a NameError
+                    # elif title[1] != 's' or title[1] != 'r':
+                    #     pass
+                    # elif len(title) > 3:
+                    #     pass
+                # except ZeroDivisionError:
+                #     print('Choose a title (no digits, please).\n')
+                except NameError:
+                    print('Choose a title ("Ms." or "Mr.").\n')
+                # finally:
+                else:
                     try:
-                        title = input('Title: "Ms." or "Mr."?: ')
-                        if title != 'Ms.' or title != 'Mr.':
-                            print('Invalid input. Closing program.')
-                            return
+                        # title = input('Title: "Ms." or "Mr."?: ')
+                        # if title != 'Ms.' or 'Mr.':
+                        #     print('Invalid input. Closing program.')
+                        #     return
                         new_response = input('Enter a Donation amount' +
                                              ' (in USD): ')
                         try:
-                            int(new_response)
-                        except TypeError:
-                            print('Enter a numeric value.')
+                            new_response = int(new_response)
+                        except ValueError:
+                            print('Numeric value only, please.')
                             new_response = input('Enter a Donation amount' +
                                                  ' (in USD): ')
                             try:
-                                int(new_response)
-                            except TypeError:
+                                new_response = int(new_response)
+                            except ValueError:
                                 print('That is not a valid input.'
                                       + 'Closing program.')
                                 return
                             else:
-                                new_response = int(new_response)
+                                # new_response = int(new_response)
                                 print('Added to list of Donors:', title,
                                       response, new_response)
                                 # add comprehension(s) here?
@@ -126,8 +135,8 @@ def send_ty():
                               + ' of {donation} USD.'.format(**donor_dict))
                         print()
     program_run()
-    # lines 33-127 are written for this program
-    # lines 130-176 were original code from mailroom2.py
+    # lines 33-135 are written for this program
+    # lines 138-184 were original code from mailroom2.py
     # if response.isalpha():
     #     if response == 'list':
     #         print('Here is the list of Donors: ')
@@ -186,7 +195,7 @@ def get_report():
     for i in range(55):
         print('-', end='')
     print()
-    # add comprehension here
+    # add comprehension here?
     for donor in donors_amts:
         d1 = donors_amts[donor][1]
         d2 = donors_amts[donor][2]
