@@ -65,3 +65,27 @@ fstring_text = f"The weight of an {fstring_list[0][:-1].upper()} " \
                f"{fstring_list[2][:-1].upper()} is {fstring_list[3] * 1.2}"
 
 print(fstring_text)
+
+# Task Six
+
+
+def set_table(list_in):
+    rows = list_in
+    for row in rows:
+        print('{:20}{:>10}{:>10}'.format(*row))
+
+
+test_list = [
+    ('Standard Aged', '5 years', '$25'),
+    ('Middle Aged', '15 years', '$300'),
+    ('Rediculously Aged', '100 years', '$14000')
+]
+
+set_table(test_list)
+
+
+# Task Six (Extra)
+
+nums = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+print(('{:5d}' * len(nums)).format(*nums))
