@@ -30,10 +30,13 @@ def send_ty():
                      + ',\nor "e" to Exit back to Main Menu: ')
     print()
     try:
+        if response == 'e':
+            program_run()
         # for char in response:
         #     if char.isdigit():
         #         int(char) / 0
-        [int(char)/0 for char in response if char.isdigit()]
+        else:
+            [int(char)/0 for char in response if char.isdigit()]
     except ZeroDivisionError:
         print('Use English letters only please.\n')
         try:
@@ -52,6 +55,7 @@ def send_ty():
             for donor in donors_amts:
                 print(donor)
             print()
+            send_ty()
         else:
             response = response.capitalize()
             if response in donors_amts:
@@ -75,20 +79,21 @@ def send_ty():
                     donors_amts[response]['num_of_donations'] += 1
                     print('Added to', response, '\'s Donations:',
                           new_response, '\n')
-            else:
+                send_ty()
+            elif response not in donors_amts:
                 # new function?: add_donor()?
                 title = input('Title: "Ms." or "Mr."?: ')
                 try:
-                    # [int(char)/0 for char in title if char.isdigit()]
-                    if title != 'Ms.' or 'Mr.':
-                        # if title[0] != 'M':
-                        print(n)  # triggers a NameError
+                    [int(char)/0 for char in title if char.isdigit()]
+                    # if title != 'Ms.' or 'Mr.':
+                    # if title[0] != 'M':
+                    #     print(n)  # triggers a NameError
                     # elif title[1] != 's' or title[1] != 'r':
                     #     pass
                     # elif len(title) > 3:
                     #     pass
-                # except ZeroDivisionError:
-                #     print('Choose a title (no digits, please).\n')
+                except ZeroDivisionError:
+                    print('Choose a title (no digits, please).\n')
                 except NameError:
                     print('Choose a title ("Ms." or "Mr.").\n')
                 # finally:
@@ -112,17 +117,17 @@ def send_ty():
                                 print('That is not a valid input.'
                                       + 'Closing program.')
                                 return
-                            else:
-                                # new_response = int(new_response)
-                                print('Added to list of Donors:', title,
-                                      response, new_response)
-                                # add comprehension(s) here?
-                                donors_amts[response] = {'title': title,
-                                                         'donations':
-                                                         new_response,
-                                                         'num_of_donations': 1}
+                        else:
+                            # new_response = int(new_response)
+                            print('Added to list of Donors:', title,
+                                  response, new_response)
+                            # add comprehension(s) here?
+                            donors_amts[response] = {'title': title,
+                                                     'donations':
+                                                     new_response,
+                                                     'num_of_donations': 1}
                     finally:
-                        title = donors_amts.get(response).get('title')
+                        title = donors_amts[response]['title']
                         title = title.strip('\'')
                         donor_dict = {'title': title,
                                       'last_name': response,
@@ -197,8 +202,8 @@ def get_report():
     print()
     # add comprehension here?
     for donor in donors_amts:
-        d1 = donors_amts[donor][1]
-        d2 = donors_amts[donor][2]
+        d1 = donors_amts[donor]['donations']
+        d2 = donors_amts[donor]['num_of_donations']
         print('{:<15}{}{:>10}{:>12}{}{:>11}'.format(donor, '  $',
               d1, d2, '  $', d1 // d2))
     print()
@@ -206,17 +211,19 @@ def get_report():
 
 
 def send_letters():
-    global donors_amts
+    # global donors_amts
     d_a = donors_amts
+    title = ''
     # Natasha recommended datetime.datetime.now().strftime('%Y%m%d')
     now = datetime.datetime.now()
-    for donor in donors_amts:
-        title = str(d_a.get(donor)[0])
-        title = title.strip('(').strip(')').strip(',').strip('\'')
-        with open(donor + str(now.year) + str(now.month) +
-                  str(now.day) + '.txt', 'w') as of:
+    for donor in d_a:
+        # title = str(d_a.get(donor)['title'])
+        title = d_a[donor]['title'].strip('\'')
+        with open(donor + datetime.datetime.now().strftime('%Y%m%d')
+                  + '.txt', 'w') as of:
             donor_dict = {'title': title,
-                          'last_name': donor, 'donations': d_a.get(donor)[1]}
+                          'last_name': donor,
+                          'donations': d_a[donor]['donations']}
             of.write(
                 'Dear {title} {last_name},\n'.format(**donor_dict)
                 + 'Thank you for your generous previous giving'
@@ -229,6 +236,8 @@ def send_letters():
                      + ' again to our project.\n')
             of.write('\nBest wishes for continued success,')
             of.write('\n[Signature]')
+    print('A letter was generated, just now, for each of the donors in db.\n')
+    program_run()
 
 
 def quit_program():
