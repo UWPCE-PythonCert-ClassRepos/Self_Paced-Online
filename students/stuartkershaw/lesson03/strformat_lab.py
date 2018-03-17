@@ -55,3 +55,13 @@ def formatter_four(tuple_in):
 
 
 print(formatter_four((4, 30, 2017, 2, 27)))
+
+# Task Five
+
+fstring_list = ['oranges', 1.3, 'lemons', 1.1]
+
+fstring_text = f"The weight of an {fstring_list[0][:-1].upper()} " \
+               f"is {fstring_list[1] * 1.2} and the weight of a " \
+               f"{fstring_list[2][:-1].upper()} is {fstring_list[3] * 1.2}"
+
+print(fstring_text)
