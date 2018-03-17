@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
+import sys
 from collections import defaultdict
 
-# donors = {'Andy': [10.00], 'Bill': [15.00, 25.00], 'Chuck': [20.00, 30.00, 40.00]}
+donors = defaultdict(list, {'Andy': [10.00], 'Bill': [15.00, 25.00], 'Chuck': [20.00, 30.00, 40.00]})
 
-donors = defaultdict(list)
-donor_list = [['Andy', [10.00]], ['Bill', [15.00, 25.00]], ['Chuck', [20.00, 30.00, 40.00]]]
-for name, data in donor_list:
-    donors[name] = data
+# donors = defaultdict(list)
+# donor_list = [['Andy', [10.00]], ['Bill', [15.00, 25.00]], ['Chuck', [20.00, 30.00, 40.00]]]
+# for name, data in donor_list:
+#     donors[name] = data
 
 
 def menu_selection(prompt, dispatch_dict):
     while True:
         response = input(prompt)
-        if dispatch_dict[response]() == "exit menu":
-            break
+        dispatch_dict[response]()
+        # if dispatch_dict[response]() == "exit menu":
+        #    break
 
 
 def donor_list():
@@ -61,13 +63,15 @@ def batch_file():
         filename = donor_data.replace(" ", "_") + ".txt"
         total_donation = sum(donors[donor_data])
         letter = ('Thank you {} for you generous contributions totalling {:.2f}!'.format(donor_data, total_donation))
-        open(filename, 'w').write(letter)
+        with open(filename, 'w') as file:
+            file.write(letter)
         print(f"{donor_data}'s letter has been saved to " + filename)
 
 
 def quit_console():
-    print("Exiting the program")
-    return "exit menu"
+    sys.exit("Exiting the program")
+    # print("Exiting the program")
+    # return "exit menu"
 
 
 console_prompt = ("\nWelcome to the Donor Tracking System\n"

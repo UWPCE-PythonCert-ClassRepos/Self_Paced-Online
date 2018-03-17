@@ -4,7 +4,7 @@ class Circle:
 
     def __init__(self, radius):
         self.radius = radius
-        self._area = radius ** 2 * math.pi
+        self.__area = radius ** 2 * math.pi
 
     @property
     def diameter(self):
@@ -17,15 +17,11 @@ class Circle:
     @property
     def area(self):
         """ Read Only """
-        return self._area
+        return self.__area
 
-    @property
-    def from_diameter(self):
-        return self.diameter
-
-    #@from_diameter.setter
-    def from_diameter(self, diameter):
-        self.diameter = diameter
+    @classmethod
+    def from_diameter(cls, diameter):
+        return cls(diameter/2)
 
     def __repr__(self):
         return "Circle({})".format(self.radius)
@@ -34,10 +30,10 @@ class Circle:
         return "Circle with radius: {}".format(self.radius)
 
     def __add__(self, other):
-        return "Circle({})".format(self.radius + other.radius)
+        return Circle(self.radius + other.radius)
 
     def __mul__(self, other):
-        return "Circle({})".format(self.radius * other)
+        return Circle(self.radius * other)
 
     def __lt__(self, other):
         return self.radius < other.radius

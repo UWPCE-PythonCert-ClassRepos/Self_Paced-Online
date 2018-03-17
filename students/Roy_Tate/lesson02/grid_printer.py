@@ -3,11 +3,11 @@
 
 # PART 1
 
-
 plus = '+ '
 minus = '- '
 bar = '| '
 space = '  '
+
 
 def print_basic_grid():
     multiplier = 4
@@ -46,6 +46,7 @@ print_grid_with_variable(3)
 
 
 def print_grid_two_variables(var1, var2):
+    '''Prints a grid that is var1 x var1 in size. The size of the individual cells are based on var2'''
     horiz_string = plus + minus * var2
     vert_string = bar + space * var2
     for x in range(0, var1):
