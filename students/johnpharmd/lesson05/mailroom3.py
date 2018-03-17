@@ -20,7 +20,6 @@ donors_amts = {'Gates': {'title': 'Mr.', 'donations': 150000,
 
 # Processing
 def send_ty():
-    # global donors_amts
     new_response = 0
     title = ''
     donor_dict = {'title': '', 'last_name': '', 'donation': 0}
@@ -43,9 +42,6 @@ def send_ty():
             response = input('Enter full last name of Donor,'
                              + '\n"list" for List of Donors'
                              + ',\nor "e" to Exit back to Main Menu: ')
-            # for char in response:
-            #     if char.isdigit():
-            #         int(char) / 0
             [int(char)/0 for char in response if char.isdigit()]
         except ZeroDivisionError:
             print('That is not a valid input. Closing program.')
@@ -56,7 +52,7 @@ def send_ty():
                 print(donor)
             print()
             send_ty()
-        else:
+        elif response != 'e' and response != 'list' and response != 'q':
             response = response.capitalize()
             if response in donors_amts:
                 print('Donor found:', response)
@@ -74,7 +70,6 @@ def send_ty():
                         print('That is not a valid input. Closing program.')
                         return
                 else:
-                    # new_response = int(new_response)
                     donors_amts[response]['donations'] += new_response
                     donors_amts[response]['num_of_donations'] += 1
                     print('Added to', response, '\'s Donations:',
@@ -118,7 +113,6 @@ def send_ty():
                                       + 'Closing program.')
                                 return
                         else:
-                            # new_response = int(new_response)
                             print('Added to list of Donors:', title,
                                   response, new_response)
                             # add comprehension(s) here?
@@ -139,9 +133,12 @@ def send_ty():
                               + ' amount'
                               + ' of {donation} USD.'.format(**donor_dict))
                         print()
-    program_run()
-    # lines 33-135 are written for this program
-    # lines 138-184 were original code from mailroom2.py
+                send_ty()
+        # else:
+        #     program_run()
+    # program_run()
+    # lines 33-138 are written for this program
+    # lines 142-188 were original code from mailroom2.py
     # if response.isalpha():
     #     if response == 'list':
     #         print('Here is the list of Donors: ')
@@ -211,15 +208,13 @@ def get_report():
 
 
 def send_letters():
-    # global donors_amts
     d_a = donors_amts
     title = ''
     # Natasha recommended datetime.datetime.now().strftime('%Y%m%d')
     now = datetime.datetime.now()
     for donor in d_a:
-        # title = str(d_a.get(donor)['title'])
         title = d_a[donor]['title'].strip('\'')
-        with open(donor + datetime.datetime.now().strftime('%Y%m%d')
+        with open(donor + now.strftime('%Y%m%d')
                   + '.txt', 'w') as of:
             donor_dict = {'title': title,
                           'last_name': donor,
