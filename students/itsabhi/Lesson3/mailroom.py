@@ -4,7 +4,6 @@
 def sending_thanks(d):
     donor_hist = d
     unique_donors = []
-    i = 0
     for entry in donor_hist:
         name = entry[0]
         if name not in unique_donors:
@@ -16,18 +15,17 @@ def sending_thanks(d):
         donor = input("Type the Full Name of the donor here: ")
     if donor not in unique_donors:
         donor_hist.append([donor])
-        amount = input("Enter Donation amount: ")
+        amount = input("Enter Donation value: ")
         donor_hist[-1].append([amount])
 #        print(donor_hist)
 
     else:                       #donor appears in list of donors
         for entry in donor_hist:
             if donor == entry[0]:
-                amount = input("Enter Donation amount: ")
-                donor_hist[i][1].append(int(amount))
+                amount = input("Enter Donation value: ")
+                entry[1].append(int(amount))
                 continue
-            i += 1
-#       print(donor_hist)
+    #       print(donor_hist)
     print("Hello {}, Just wanted to drop a note of thanks for your recent donation of ${}.".format(donor, amount))
     return 1
 
