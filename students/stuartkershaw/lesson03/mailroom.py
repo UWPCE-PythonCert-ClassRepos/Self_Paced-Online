@@ -62,10 +62,36 @@ def get_donor_name():
         set_donation(donors, donors.index(name_input))
 
 
+def show_donor_table(donor_list):
+    dl = donor_list
+    donor_names = dl[:-1]
+    donations = donor_list[-1]
+    formatted = []
+    for d in donations:
+        rollup = []
+        total = str(sum(d))
+        rollup.append(total)
+        num = str(len(d))
+        rollup.append(num)
+        avg = format(sum(d) / len(d), '.2f')
+        rollup.append(avg)
+        formatted.append(rollup)
+
+    print(donor_names, formatted)
+
+    headings = ('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift')
+    print('{:20}{:<15}{:<15}{:<15}'.format(*headings))
+    print('{:_<65}'.format(''))
+    for dn, d in zip(donor_names, formatted):
+        print('{:<20}'.format(dn), ('{:<15}' * len(d)).format(*d))
+
+
 def main():
     selection = get_selection()
     if selection == 'a':
         get_donor_name()
+    elif selection == 'b':
+        show_donor_table(donors)
     else:
         quit()
 
