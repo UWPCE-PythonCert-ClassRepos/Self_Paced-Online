@@ -56,3 +56,19 @@ class P(Element):
     _tag = 'p'
     _cur_ind = ' '*8
 
+class Head(Element):
+    _tag = 'head'
+    _cur_ind = ''*4
+
+class OneLineTag(Element):
+
+    _tag = 'head'
+    _cur_ind = ''*4
+
+    def render(self, file_out, cur_ind = ""):
+        file_out.write(f"{self.cur_ind}<{self.tag}>" + '\n'.join(self.content_list) + f"{self.cur_ind}</{self.tag}>\n")
+
+class Title(OneLineTag):
+
+    _tag = 'title'
+    _cur_ind = ''*4
