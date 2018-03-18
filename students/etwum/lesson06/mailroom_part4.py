@@ -2,16 +2,17 @@
 
 # initial list of donors
 dict_donors = {1: {"donor name": "Lionel Messi", "total donations": 1000000.00, "number donations": 5,
-                       "avg donation": 20000.00},
-                   2: {"donor name": "Thierry Henry", "total donations": 500, "number donations": 1,
-                       "avg donation": 500},
-                   3: {"donor name": "Michael Jordan", "total donations": 45000, "number donations": 3,
-                       "avg donation": 15000},
-                   4: {"donor name": "Kobe Bryant", "total donations": 8000, "number donations": 2,
-                       "avg donation": 4000}}
+                   "avg donation": 20000.00},
+               2: {"donor name": "Thierry Henry", "total donations": 500, "number donations": 1,
+                   "avg donation": 500},
+               3: {"donor name": "Michael Jordan", "total donations": 45000, "number donations": 3,
+                   "avg donation": 15000},
+               4: {"donor name": "Kobe Bryant", "total donations": 8000, "number donations": 2,
+                   "avg donation": 4000}}
 
 
 def get_donor_list():
+    # function for returning the donor list
     return dict_donors
 
 
@@ -148,11 +149,13 @@ def send_letter_all():
     print('----------------------------------------------\n')
 
 
+user_selection = {1: send_thank_you, 2: create_report, 3: send_letter_all}
+
+
 def options():
     # function for returning a user selection
-    user_selection = {1: send_thank_you, 2: create_report, 3: send_letter_all}
-
     return user_selection
+
 
 def main():
     print("Welcome to the Charity Mail Room")
