@@ -7,8 +7,6 @@ donors = [
      [75, 125], [1000], [20, 15, 30]]
 ]
 
-updated_donors = []
-
 
 def get_selection():
     options = 'Please select a, b, or c:\n\
@@ -44,6 +42,8 @@ def main():
     selection = get_selection()
     if selection == 'a':
         send_thank_you()
+    if selection == 'c':
+        quit()
 
 
 if __name__ == "__main__":
