@@ -95,11 +95,10 @@ def prepare_ty():
                                 print('That is not a valid input.'
                                       + ' Restarting program.')
                                 break
-                        else:
-                            donors_amts[response]['donations'] += new_response
-                            donors_amts[response]['num_of_donations'] += 1
-                            print('Added to', response, '\'s Donations:',
-                                  new_response, '\n')
+                        donors_amts[response]['donations'] += new_response
+                        donors_amts[response]['num_of_donations'] += 1
+                        print('Added to', response, '\'s Donations:',
+                              new_response, '\n')
                     elif response not in donors_amts:
                         add_donor(response)
                         break
@@ -132,16 +131,15 @@ def get_report():
     for i in range(55):
         print('-', end='')
     print()
-    new_dict = {donor: [donor['donations'], donor['num_of_donations']]
-                for donor in donors_amts}
+    new_dict = {donor: [donors_amts[donor]['donations'],
+                donors_amts[donor]['num_of_donations']] for
+                donor in donors_amts}
     for donor in donors_amts:
-        # d1 = donors_amts[donor]['donations']
-        # d2 = donors_amts[donor]['num_of_donations']
-        print('{:<15}'.format(**new_dict)
-              + '{}{:>10}'.format(' $', **new_dict)
-              + '{:>12}'.format(**new_dict)
-              + '{}{:>11}'.format(' $', **new_dict)
-              + new_dict[donor][0] // new_dict[donor][1])
+        print('{:<15}'.format(donor)
+              + '{}{:>10}'.format(' $', new_dict[donor][0])
+              + '{:>12}'.format(new_dict[donor][1])
+              + '{}{:>11}'.format(' $',
+              new_dict[donor][0] // new_dict[donor][1]))
     print()
 
 
