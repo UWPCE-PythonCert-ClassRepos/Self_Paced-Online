@@ -16,12 +16,17 @@ def get_donor_list():
     return dict_donors
 
 
+def create_donor():
+    donor_number = len(get_donor_list()) + 1
+    return donor_number
+
+
 def send_thank_you():
     # used to add new donors
     new_donor = {}
 
     # donor number
-    donor_number = len(get_donor_list()) + 1
+    # donor_number = len(get_donor_list()) + 1
 
     # function creates a thank you email to current and new donors added to the list
     # add new donors and donations
@@ -108,7 +113,7 @@ def send_thank_you():
             else:
                 break
         len(get_donor_list())
-        new_donor = {donor_number: {"donor name": donor_full_name, "total donations": new_donation_amount,
+        new_donor = {create_donor(): {"donor name": donor_full_name, "total donations": new_donation_amount,
                                     "number donations": 1, "avg donation": new_donation_amount}}
         dict_donors.update(new_donor)
         print('-----------------------------------------------------')
