@@ -24,28 +24,22 @@ def get_donor_list():
         print(donor)
 
 
-def add_donor():
-    title = input('Title: "Ms." or "Mr."?: ')
+def add_donor(donor_name):
+    title_list = ['Prof.', 'Dr.', 'Ms.', 'Mr.']
+    title = input('Title: "Prof.", "Dr.", "Ms." or "Mr."?: ')
     try:
-        [int(char)/0 for char in title if char.isdigit()]
-        # if title != 'Ms.' or 'Mr.':
-        # if title[0] != 'M':
-        #     print(n)  # triggers a NameError
-        # elif title[1] != 's' or title[1] != 'r':
-        #     pass
-        # elif len(title) > 3:
-        #     pass
-    except ZeroDivisionError:
-        print('Choose a title (no digits, please).\n')
-    except NameError:
-        print('Choose a title ("Ms." or "Mr.").\n')
-    # finally:
+        title_list.remove(str(title))
+        title_list.append(str(title))
+    except ValueError:
+        print('Not a valid title.\n')
+        try:
+            input('Enter donor\'s title: ')
+            title_list.remove(str(title))
+            title_list.append(str(title))
+        except ValueError:
+            program_run()
     else:
         try:
-            # title = input('Title: "Ms." or "Mr."?: ')
-            # if title != 'Ms.' or 'Mr.':
-            #     print('Invalid input. Closing program.')
-            #     return
             new_response = input('Enter a Donation amount' +
                                  ' (in USD): ')
             new_response = int(new_response)
@@ -56,16 +50,15 @@ def add_donor():
             try:
                 new_response = int(new_response)
             except ValueError:
-                print('That is not a valid input.'
-                      + 'Closing program.')
-                return
+                print('That is not a valid input.')
+                program_run()
         else:
             print('Added to list of Donors:', title,
-                  response, new_response)
-            donors_amts[response] = {'title': title,
-                                     'donations':
-                                     new_response,
-                                     'num_of_donations': 1}
+                  donor_name, new_response)
+            donors_amts[donor_name] = {'title': title,
+                                       'donations':
+                                       new_response,
+                                       'num_of_donations': 1}
 
 
 def send_ty():
@@ -105,14 +98,12 @@ def send_ty():
                         print('Added to', response, '\'s Donations:',
                               new_response, '\n')
                 elif response not in donors_amts:
-                    add_donor()
+                    add_donor(response)
                 title = donors_amts[response]['title']
                 title = title.strip('\'')
                 donor_dict = {'title': title,
                               'last_name': response,
                               'donation': new_response}
-                # if format string is separated, it breaks so that
-                # title and last_name are not formatted
                 print('Dear {title} {last_name},'.format(**donor_dict)
                       + ' Thank you for your generous donation in the'
                       + ' amount'
@@ -141,7 +132,6 @@ def get_report():
 def send_letters():
     d_a = donors_amts
     title = ''
-    # Natasha recommended datetime.datetime.now().strftime('%Y%m%d')
     now = datetime.datetime.now()
     for donor in d_a:
         title = d_a[donor]['title'].strip('\'')
