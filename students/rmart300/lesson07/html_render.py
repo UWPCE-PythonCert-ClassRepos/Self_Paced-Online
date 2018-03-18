@@ -1,13 +1,23 @@
-
 class Element:
-    
+   
+    _tag = ''
+    _cur_ind = ''    
+
     def __init__(self, content=None):
-        self.content = content
+        self.content_list = []
+        if content is not None:
+            self.append(content)
+        #self.tag = Element.tag
+
+    @property
+    def tag(self):
+        return self._tag
+    @property
+    def cur_ind(self):
+        return self._cur_ind
 
     def append(self, more_content):
-        if self.content is None:
-            self.content = []
-        self.content.append(more_content)
+        self.content_list.append(more_content)
 
     def render(self, file_out, cur_ind = ""):
 
@@ -19,28 +29,30 @@ class Element:
             cur_ind is a string with the current level of indentation in it: the amount that the entire tag 
             should be indented for pretty printing
         """
-
-        file_out.write('<html>\n')
-        file_out.write(cur_ind.join(self.content) + '\n')
-        file_out.write('</html>\n')
+        
+        #print(type(self))
+        if len(self.tag) > 0:
+            file_out.write(f"{self.cur_ind}<{self.tag}>\n")
+        for element in self.content_list:
+            if isinstance(element,str):
+                file_out.write(self.cur_ind + element + '\n')
+            else:
+                element.render(file_out,element.cur_ind)
+        if len(self.tag) > 0:
+            file_out.write(f"{self.cur_ind}</{self.tag}>\n")
 
 class Html(Element):
     
-    def render(self, file_out, cur_ind = ""):
-        file_out.write('<html>\n')
-        file_out.write(cur_ind.join(self.content) + '\n')
-        file_out.write('</html>\n')
-
+    _tag = 'html'
+    _cur_ind = ''
+    
 class Body(Element):
 
-    def render(self, file_out, cur_ind = ""):
-        file_out.write('<body>\n')
-        file_out.write(cur_ind.join(self.content) + '\n')
-        file_out.write('</body>\n')
+    _tag = 'body'
+    _cur_ind = ' '*4
 
 class P(Element):
 
-    def render(self, file_out, cur_ind = ""):
-        file_out.write('<p>\n')
-        file_out.write(cur_ind.join(self.content) + '\n')
-        file_out.write('</p>\n')
+    _tag = 'p'
+    _cur_ind = ' '*8
+
