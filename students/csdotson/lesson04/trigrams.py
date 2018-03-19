@@ -13,8 +13,8 @@ def main():
     text = read_file(input_file)
     story_dict = create_story_dict(text)
     story = make_story(text, story_dict)
-    story = fix_punctuation_and_display(story)
-    print("\nAnd, here's your story:\n\n", story)
+    final_story = fix_punctuation_and_display(story)
+    print("\nAnd, here's your story:\n\n", final_story)
 
 
 def read_file(input_file):
@@ -36,9 +36,9 @@ def create_story_dict(text):
     for index in range(len(text) - 1):
         key = ' '.join(text[index:index+2])
         story_dict[key] = []
-    # for index in range(len(text)-2):
-    #     pattern = text[index:index+2]
-    #     story_dict[' '.join(pattern)].append(text[index+2])
+    for index in range(len(text)-2):
+        pattern = text[index:index+2]
+        story_dict[' '.join(pattern)].append(text[index+2])
     return(story_dict)
 
 
@@ -59,15 +59,15 @@ def make_story(text, story_dict):
 
 def fix_punctuation_and_display(story):
     # Capitalize beginning of story, remove spacing around punctuation, capitalize after ending punctuation
-    story = story.capitalize()
+    final_story = story.capitalize()
     for entry in OTHER_PUNC + ENDING_PUNC:
-        story = story.replace(f' {entry}', entry)
-    word_array = story.split()
+        final_story = final_story.replace(f' {entry}', entry)
+    word_array = final_story.split()
     for index in range(len(word_array)-1):
         if '.' in word_array[index] or '!' in word_array[index] or '?' in word_array[index]:
             word_array[index+1] = word_array[index+1].capitalize()
-    story = ' '.join(word_array)
-    return(story)
+    final_story = ' '.join(word_array)
+    return(final_story)
 
 
 ### Execution of file if run as a script ###
