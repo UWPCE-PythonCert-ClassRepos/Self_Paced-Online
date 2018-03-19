@@ -62,6 +62,7 @@ class P(Element):
     _cur_ind = ' '*8
 
 class Head(Element):
+
     _tag = 'head'
     _cur_ind = ''*4
 
@@ -77,3 +78,26 @@ class Title(OneLineTag):
 
     _tag = 'title'
     _cur_ind = ''*4
+
+class SelfClosingTag(Element):
+
+    _tag=''
+    _cur_ind=''
+
+    def render(self, file_out, cur_ind = ""):
+
+        if len(self.content_list) > 0:
+            raise TypeError
+        file_out.write(f"{self.cur_ind}<{self.tag} />\n")
+        
+
+class Hr(SelfClosingTag):
+
+    _tag = 'hr'
+    _cur_ind = ' '*8
+
+class Br(SelfClosingTag):
+    _tag = 'br'
+    _cur_ind = ' '*8
+
+
