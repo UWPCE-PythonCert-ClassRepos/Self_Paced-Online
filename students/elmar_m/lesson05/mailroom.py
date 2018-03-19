@@ -15,6 +15,7 @@ sub_p = '\n>> Sub menu "thankyou". Options: l == list current donors | a == add 
 
 donors = collections.defaultdict(list)
  
+donors['berta'] = [90, 9.01, 0.99]
 donors['bill'] = [2000, 7.5, 950000]
 donors['steve'] = [5.5, 234000, 928]
 donors['donald'] = [657, 234, 28.57, 90456]
@@ -87,9 +88,19 @@ def add_amount(donor):
         ARGS:
     donor: name of donor
     '''
-    amount = input('>> please add current donation:\n>> ')
-    donors[donor].append(int(amount))
+    while True:
+        amount = input('>> please add current donation (int or float):\n>> ')
+        print(type(amount))
+        
+        # Throw exception and ask again, if given value is not int or float:
+        try:
+            donors[donor].append(float(amount))
+            break
+        except ValueError:
+            print('>> numerical value required, please try again')
+        
     print(amount, 'added to donation list of', donor, ', thank you')     
+
 
 def report():
     '''
@@ -106,6 +117,7 @@ def report():
     print('-' * (maxn + 54)) 
     for i in donors:
         print(fstring.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) )) 
+
 
 def efunc():
     '''
