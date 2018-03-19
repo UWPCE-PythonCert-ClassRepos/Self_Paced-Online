@@ -90,7 +90,12 @@ def add_amount(donor):
     '''
     while True:
         amount = input('>> please add current donation (int or float):\n>> ')
-        print(type(amount))
+        # print(type(amount))
+        
+        # make sure given donation values are positive: 
+        if '-' in amount:
+            print('>> only positive values allowed, please try again')
+            continue
         
         # Throw exception and ask again, if given value is not int or float:
         try:
