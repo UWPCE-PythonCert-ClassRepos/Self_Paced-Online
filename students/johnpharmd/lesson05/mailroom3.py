@@ -2,8 +2,6 @@
 import datetime
 
 # Data
-# refactor from tuple to no tuple (see Natasha's comments on
-# mailroom2 assignment)
 donors_amts = {'Gates': {'title': 'Mr.', 'donations': 150000,
                          'num_of_donations': 3},
                'Brin': {'title': 'Mr.', 'donations': 150000,
@@ -21,157 +19,107 @@ donors_amts = {'Gates': {'title': 'Mr.', 'donations': 150000,
 
 
 # Processing
-def send_ty():
-    # global donors_amts
+def get_donor_list():
+    donor_list = [donor for donor in donors_amts]
+    print(donor_list)
+
+
+def add_donor(donor_name):
+    title_tup = ('Prof.', 'Dr.', 'Ms.', 'Mr.')
+    title = input('Title: "Prof.", "Dr.", "Ms." or "Mr."?: ')
+    while True:
+        try:
+            title_tup.index(title)
+        except ValueError:
+            print('Not a valid title.\n')
+            title = input('Enter donor\'s title: ')
+            try:
+                title_tup.index(title)
+            except ValueError:
+                print('Invalid entry. Returning to main menu.')
+                break
+        try:
+            new_response = input('Enter a Donation amount' +
+                                 ' (in USD): ')
+            new_response = int(new_response)
+        except ValueError:
+            print('Numeric value only, please.')
+            new_response = input('Enter a Donation amount' +
+                                 ' (in USD): ')
+            try:
+                new_response = int(new_response)
+            except ValueError:
+                print('That is not a valid input.')
+                break
+        print('Added to list of Donors:', title,
+              donor_name, new_response)
+        donors_amts[donor_name] = {'title': title,
+                                   'donations':
+                                   new_response,
+                                   'num_of_donations': 1}
+        title = donors_amts[donor_name]['title']
+        send_ty(title, donor_name, new_response)
+        break
+
+
+def prepare_ty():
     new_response = 0
     title = ''
     donor_dict = {'title': '', 'last_name': '', 'donation': 0}
-    print()
-    response = input('Enter full last name of Donor,'
-                     + '\n"list" for List of Donors'
-                     + ',\nor "e" to Exit back to Main Menu: ')
-    print()
-    try:
-        response.isalpha()
-    except ValueError:
-        print('Use English letters only please.')
-        try:
-            response = input('Enter full last name of Donor,'
-                             + '\n"list" for List of Donors'
-                             + ',\nor "e" to Exit back to Main Menu: ')
-            response.isalpha()
-        except ValueError:
-            print('That is not a valid input. Closing program.')
-            return
-    else:
-        if response == 'list':
-            for donor in donors_amts:
-                print(donor)
-            print()
+    while True:
+        response = input('Enter full last name of Donor,'
+                         + '\n"list" for List of Donors'
+                         + ',\nor "e" to Exit back to Main Menu: ')
+        if response == 'e' or response == 'q':
+            break
         else:
-            response = response.capitalize()
-            if response in donors_amts:
-                print('Donor found:', response)
-                new_response = input('Enter a Donation amount' +
-                                     ' (in USD): ')
-                try:
-                    new_response.isnumeric()
-                except ValueError:
-                    print('Enter a numeric value.')
-                    new_response = input('Enter a Donation amount' +
-                                         ' (in USD): ')
-                    try:
-                        new_response.isnumeric()
-                    except ValueError:
-                        print('That is not a valid input. Closing program.')
-                        return
-                else:
-                    new_response = int(new_response)
-                    donors_amts[response]['donations'] += new_response
-                    donors_amts[response]['num_of_donations'] += 1
-                    print('Added to', response, '\'s Donations:',
-                          new_response, '\n')
+            if response == 'list':
+                get_donor_list()
+                print()
             else:
-                # new function?: add_donor()?
-                title = input('Title: "Ms." or "Mr."?: ')
-                try:
-                    title == 'Ms.' or title == 'Mr.'
-                except TypeError:
-                    print('Choose a title.')
-                except ValueError:
-                    print('Choose a title.')
-                finally:
-                    try:
-                        title = input('Title: "Ms." or "Mr."?: ')
-                        if title != 'Ms.' or title != 'Mr.':
-                            print('Invalid input. Closing program.')
-                            return
+                if response.isalpha():
+                    response = response.capitalize()
+                    if response in donors_amts:
+                        print('Donor found:', response)
                         new_response = input('Enter a Donation amount' +
                                              ' (in USD): ')
                         try:
-                            new_response.isnumeric()
+                            new_response = int(new_response)
                         except ValueError:
-                            print('Enter a numeric value.')
+                            print('\nEnter a numeric value.')
                             new_response = input('Enter a Donation amount' +
                                                  ' (in USD): ')
                             try:
-                                new_response.isnumeric()
+                                new_response = int(new_response)
                             except ValueError:
                                 print('That is not a valid input.'
-                                      + 'Closing program.')
-                                return
-                            else:
-                                new_response = int(new_response)
-                                print('Added to list of Donors:', title,
-                                      response, new_response)
-                                # add comprehension(s) here?
-                                donors_amts[response] = {'title': title,
-                                                         'donations':
-                                                         new_response,
-                                                         'num_of_donations': 1}
-                    finally:
-                        title = donors_amts.get(response).get('title')
-                        title = title.strip('\'')
-                        donor_dict = {'title': title,
-                                      'last_name': response,
-                                      'donation': new_response}
-                        # if format string is separated, it breaks so that
-                        # title and last_name are not formatted
-                        print('Dear {title} {last_name},'.format(**donor_dict)
-                              + ' Thank you for your generous donation in the'
-                              + ' amount'
-                              + ' of {donation} USD.'.format(**donor_dict))
-                        print()
-    program_run()
-    # lines 34-122 are written for this program
-    # lines 128-174 were original code from mailroom2.py
-    # if response.isalpha():
-    #     if response == 'list':
-    #         print('Here is the list of Donors: ')
-    #         for donor in donors_amts:
-    #             print(donor)
-    #         print()
-    #     else:
-    #         response = response.capitalize()
-    #         if response in donors_amts:
-    #             print('Donor found:', response)
-    #             new_response = input('Enter a Donation amount' +
-    #                                  ' (in USD): ')
-    #             # add try-except catch block(s)
-    #             if not new_response.isnumeric():
-    #                 send_ty()
-    #             else:
-    #                 new_response = int(new_response)
-    #                 # add comprehension(s) here?
-    #                 donors_amts[response][1] += new_response
-    #                 donors_amts[response][2] += 1
-    #                 print('Added to', response, '\'s Donations:',
-    #                       new_response, '\n')
-    #         elif response not in donors_amts:
-    #             title = input('Title: "Ms." or "Mr."?: ')
-    #             new_response = input('Enter a Donation amount' +
-    #                                  ' (in USD): ')
-    #             # add try-except catch block here
-    #             if not new_response.isnumeric():
-    #                 send_ty()
-    #             else:
-    #                 new_response = int(new_response)
-    #                 print('Added to list of Donors:', title,
-    #                       response, new_response)
-    #                 # add comprehension(s) here?
-    #                 donors_amts[response] = ([(title, ), new_response, 1])
-    #         title = str(donors_amts.get(response)[0])
-    #         title = title.strip('(').strip(')').strip(',')
-    #         title = title.strip('\'')
-    #         donor_dict = {'title': title,
-    #                       'last_name': response, 'donation': new_response}
-    #         # separating format string breaks it so that title and
-    #         # last_name are not formatted
-    #         print('Dear {title} {last_name},'.format(**donor_dict)
-    #               + ' Thank you for your generous donation in the'
-    #               + ' amount of {donation} USD.'.format(**donor_dict))
-    #         print()
-    # program_run()
+                                      + ' Restarting program.')
+                                break
+                        donors_amts[response]['donations'] += new_response
+                        donors_amts[response]['num_of_donations'] += 1
+                        print('Added to', response, '\'s Donations:',
+                              new_response, '\n')
+                    elif response not in donors_amts:
+                        add_donor(response)
+                        break
+                    title = donors_amts[response]['title']
+                    send_ty(title, response, new_response)
+                elif not response.isalpha():
+                    print('Your response has digit(s).'
+                          + ' Returning to main menu.')
+                    break
+                print()
+
+
+def send_ty(title, name, donation):
+    title = title.strip('\'')
+    donor_dict = {'title': title,
+                  'last_name': name,
+                  'donation': donation}
+    print('Dear {title} {last_name},'.format(**donor_dict)
+          + ' Thank you for your generous donation in the'
+          + ' amount'
+          + ' of {donation} USD.'.format(**donor_dict))
 
 
 def get_report():
@@ -183,28 +131,29 @@ def get_report():
     for i in range(55):
         print('-', end='')
     print()
-    # add comprehension here
+    new_dict = {donor: [donors_amts[donor]['donations'],
+                donors_amts[donor]['num_of_donations']] for
+                donor in donors_amts}
     for donor in donors_amts:
-        d1 = donors_amts[donor][1]
-        d2 = donors_amts[donor][2]
-        print('{:<15}{}{:>10}{:>12}{}{:>11}'.format(donor, '  $',
-              d1, d2, '  $', d1 // d2))
+        print('{:<15}'.format(donor)
+              + '{}{:>10}'.format(' $', new_dict[donor][0])
+              + '{:>12}'.format(new_dict[donor][1])
+              + '{}{:>11}'.format(' $',
+              new_dict[donor][0] // new_dict[donor][1]))
     print()
-    program_run()
 
 
 def send_letters():
-    global donors_amts
     d_a = donors_amts
-    # Natasha recommended datetime.datetime.now().strftime('%Y%m%d')
+    title = ''
     now = datetime.datetime.now()
-    for donor in donors_amts:
-        title = str(d_a.get(donor)[0])
-        title = title.strip('(').strip(')').strip(',').strip('\'')
-        with open(donor + str(now.year) + str(now.month) +
-                  str(now.day) + '.txt', 'w') as of:
+    for donor in d_a:
+        title = d_a[donor]['title'].strip('\'')
+        with open(donor + now.strftime('%Y%m%d')
+                  + '.txt', 'w') as of:
             donor_dict = {'title': title,
-                          'last_name': donor, 'donations': d_a.get(donor)[1]}
+                          'last_name': donor,
+                          'donations': d_a[donor]['donations']}
             of.write(
                 'Dear {title} {last_name},\n'.format(**donor_dict)
                 + 'Thank you for your generous previous giving'
@@ -217,30 +166,38 @@ def send_letters():
                      + ' again to our project.\n')
             of.write('\nBest wishes for continued success,')
             of.write('\n[Signature]')
-
-
-def quit_program():
-    print('Program execution completed.')
-    return
+    print('A letter was generated, just now, for each of the donors in db.\n')
 
 
 def program_run():
-    print('Main Menu:')
-    response = input('Choose from the following:\n"1" - Send a "Thank You",'
-                     + '\n"2" - Create a Report,'
-                     + '\n"3" - Send Letters to All Donors, or\n"q" to Quit: ')
-    menu_dict = {'1': send_ty, '2': get_report,
-                 '3': send_letters, 'q': quit_program}
-    try:
-        menu_dict.get(response)()
-    except TypeError:
-        print('\nThat selection is invalid. Please try again.')
+    while True:
+        print('\nMain Menu:')
+        response = input('Choose from the following:'
+                         + '\n"1" - Send a "Thank You",'
+                         + '\n"2" - Create a Report,'
+                         + '\n"3" - Send Letters to All Donors,'
+                         + '\nor "q" to Quit: ')
+        print()
+        menu_dict = {'1': prepare_ty, '2': get_report,
+                     '3': send_letters}
         try:
-            response = input('Choose "1", "2", "3", or "q": ')
-            menu_dict.get(response)()
+            if response == 'q':
+                print('Program execution completed.')
+                break
+            else:
+                menu_dict.get(response)()
         except TypeError:
-            print('That is not an option. Closing program.')
-            return
+            print('\nThat selection is invalid. Please try again.')
+            try:
+                response = input('Choose "1", "2", "3", or "q": ')
+                if response == 'q':
+                    print('Program execution completed.')
+                    break
+                else:
+                    menu_dict.get(response)()
+            except TypeError:
+                print('That is not an option. Closing program.')
+                break
 
 
 # I/O
