@@ -5,9 +5,12 @@
 def prompt(prompt, menu):
     # Create menu based on arguments
     while True:
-        response = input(prompt) # Exception to handle bad input
-        if menu[response]() == "quit":
-            break
+        try:
+            response = input(prompt)
+            if menu[response]() == "quit":
+                break
+        except KeyError:
+            print('Please enter a valid selection')
 
 
 def send_thank_you():
@@ -17,13 +20,18 @@ def send_thank_you():
 
 def add_donation():
     # Append donation to existing donor, or add donor/donation to existing list
-    donor_name = input("\nPlease enter a donor name: ")
-    new_donation = input(f"Please enter a donation amount for {donor_name}: ")
-    if donor_name not in donations:
-        donations[donor_name] = [float(new_donation)]
+    try:
+        donor_name = input("\nPlease enter a donor name: ")
+        new_donation = input(f"Please enter a donation amount for {donor_name}: ")
+        if donor_name not in donations:
+            donations[donor_name] = [float(new_donation)]
+        else:
+            donations[donor_name].append(float(new_donation))
+    except ValueError:
+        print("Please enter a numeric value for 'new_donation'")
+        add_donation()
     else:
-        donations[donor_name].append(float(new_donation))
-    print_email(donor_name, new_donation)
+        print_email(donor_name, new_donation)
 
 
 def write_letters():
@@ -99,7 +107,7 @@ thank_you_menu = {
 # Prompts used
 main_prompt = ("\nWelcome to the Main Menu! What would you like to do?\n1 - Send a Thank You\n2 - Create a Report\n3 - Send letters to everyone\nq - Quit and exit\n--> ")
 
-thank_you_prompt = ("\nPlease choose one of the following:\n1 - Add a donation and send thank you message\n2 - Display list of current donors\nq - Quit current menu\n--> ")
+thank_you_prompt = ("\nPlease choose one of the following:\n1 - Add a donation and send thank you message\n2 - Display list of current donors\nq - Return to main menu\n--> ")
 
 
 ### Execution of file if run as a script ###
