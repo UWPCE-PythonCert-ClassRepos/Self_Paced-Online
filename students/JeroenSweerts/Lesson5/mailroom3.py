@@ -42,16 +42,21 @@ def thankyou():
     print(donations.keys())
     print(donations.values())
 
+
+def createfile(name):
+    '''create .txt file containing thank you letter for each person who made a donation'''
+    d = {'name':name, 'donation':donations[name][-1]}
+    outfile = open(name+'.txt', 'w')
+    outfile.write("Dear {name} , \n\n".format(**d))
+    outfile.write("\t Thank you very much for your generous donation of ${donation}. \n\n".format(**d))
+    outfile.write("\t It will be put to very good use. \n\n")
+    outfile.write("\t\t Sincerely, \n")
+    outfile.write("\t\t   -The Team \n")
+    outfile.close()
+
+
 def thankyoueveryone():
-    for name in donations.keys():
-        d = {'name':name, 'donation':donations[name][-1]}
-        outfile = open(name+'.txt', 'w')
-        outfile.write("Dear {name} , \n\n".format(**d))
-        outfile.write("\t Thank you very much for your generous donation of ${donation}. \n\n".format(**d))
-        outfile.write("\t It will be put to very good use. \n\n")
-        outfile.write("\t\t Sincerely, \n")
-        outfile.write("\t\t   -The Team \n")
-        outfile.close()
+    [createfile(name) for name in donations.keys()]
 
 
 def report():
@@ -69,8 +74,7 @@ def report():
      From the original prompt, the user should be able to quit the script cleanly."""
     print(f'{"Donor Name":20s} {"|  Total Given":20s} {"|  Num Gifts  |":20s} {"Average Gift":20s}')
     print(f'{"-"*76}')
-    for name in donations.keys():
-        print(f'{name:20s} ${sum(donations[name]):20.2f} {len(donations[name]):13d}${sum(donations[name])/len(donations[name]):20.2f}')
+    [print(f'{name:20s} ${sum(donations[name]):20.2f} {len(donations[name]):13d}${sum(donations[name])/len(donations[name]):20.2f}') for name in donations.keys()]
 
 
 if __name__ == '__main__':
