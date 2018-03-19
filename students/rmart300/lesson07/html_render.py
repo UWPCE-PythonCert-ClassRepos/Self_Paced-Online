@@ -3,11 +3,12 @@ class Element:
     _tag = ''
     _cur_ind = ''    
 
-    def __init__(self, content=None):
+    def __init__(self, content=None, **attrs):
         self.content_list = []
         if content is not None:
             self.append(content)
         #self.tag = Element.tag
+        self.attrs = attrs
 
     @property
     def tag(self):
@@ -32,7 +33,11 @@ class Element:
         
         #print(type(self))
         if len(self.tag) > 0:
-            file_out.write(f"{self.cur_ind}<{self.tag}>\n")
+            attr_str = ''
+            for k,v in self.attrs.items():
+                attr_str += f"{k}=\"{v}\""
+            attr_str = ' ' + attr_str if len(attr_str) > 0 else attr_str
+            file_out.write(f"{self.cur_ind}<{self.tag}{attr_str}>\n")
         for element in self.content_list:
             if isinstance(element,str):
                 file_out.write(self.cur_ind + element + '\n')
