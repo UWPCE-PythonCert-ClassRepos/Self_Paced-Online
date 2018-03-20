@@ -33,11 +33,14 @@ class Element:
         
         #print(type(self))
         if len(self.tag) > 0:
-            attr_str = ''
-            for k,v in self.attrs.items():
-                attr_str += f"{k}=\"{v}\""
-            attr_str = ' ' + attr_str if len(attr_str) > 0 else attr_str
-            file_out.write(f"{self.cur_ind}<{self.tag}{attr_str}>\n")
+            file_out.write(f"{self.cur_ind}<{self.tag}")
+            if hasattr(self, 'attrs'):
+                attr_str = ''
+                for k,v in self.attrs.items():
+                    attr_str += f"{k}=\"{v}\""
+                attr_str = ' ' + attr_str if len(attr_str) > 0 else attr_str
+                file_out.write(f" {attr_str}>")
+            file_out.write('\n')
         for element in self.content_list:
             if isinstance(element,str):
                 file_out.write(self.cur_ind + element + '\n')
@@ -100,4 +103,14 @@ class Br(SelfClosingTag):
     _tag = 'br'
     _cur_ind = ' '*8
 
+class A(Element):
+
+    _tag = 'a'
+    _cur_ind = ' '*8
+
+    def __init__(self, link, content):
+        self.content_list = []
+        if content is not None:
+            self.append(content)
+        self.attrs = { 'href':link } 
 
