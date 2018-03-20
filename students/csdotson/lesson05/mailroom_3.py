@@ -10,7 +10,7 @@ def prompt(prompt, menu):
             if menu[response]() == "quit":
                 break
         except KeyError:
-            print('Please enter a valid selection')
+            print('Please enter a valid selection!')
 
 
 def send_thank_you():
@@ -28,7 +28,7 @@ def add_donation():
         else:
             donations[donor_name].append(float(new_donation))
     except ValueError:
-        print("Please enter a numeric value for 'new_donation'")
+        print("Please enter a numeric value for 'donation'!")
         add_donation()
     else:
         print_email(donor_name, new_donation)
