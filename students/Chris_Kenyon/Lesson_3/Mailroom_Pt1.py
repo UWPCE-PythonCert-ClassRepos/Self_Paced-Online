@@ -112,7 +112,7 @@ def create_report():
         max_donl = len(col_lab[1])
     format_col = "\n{:<" + "{}".format(max_name+5) + "}|{:^"
     format_col += "{}".format(max_donl+5)
-    format_col += "}|{:^" + "{}".format(max_gift+5) +
+    format_col += "}|{:^" + "{}".format(max_gift+5)
     format_col += "}|{:>" + "{}".format(max_donl+5) + "}"
     print(format_col.format(*col_lab))
     print("-"*len(format_col.format(*col_lab)))
