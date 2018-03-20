@@ -19,16 +19,18 @@ def manage_donors():
     :return:  None.
     """
     # create a dictionary of menu items, menu text, and menu caller functions
-    options = ("Send a thank you", "Create a report", 
-               "Send letters to everyone", "Quit")
-    funcs = (send_thank_you, create_a_report, send_all_letters, exit_screen)
-    choices = {str(x): {'option': y, 'function': z}
-               for x, y, z in zip(range(1, len(options) + 1), options, funcs)}
+    choices = {
+    '1': {'option': 'Send a thank you', 'function': send_thank_you},
+    '2': {'option': 'Create a report', 'function': create_a_report},
+    '3': {'option': 'Send letters to everyone', 'function': send_all_letters},
+    '4': {'option': 'Quit', 'function': exit_screen}
+    }    
     
     while True:  # Print the menu list (with numbered choices)
         print("\nMENU:")
-        [print(i, choices[i]['option']) for i in choices]
-        response = input("Type a menu selection number: ").strip()
+        for i in choices:
+            print(i, choices[i]['option'])
+        response = prompt_user("Type a menu selection number: ").strip()
 
         try:  # Get the selection number and call helper function
             choices[response]['function']()
@@ -37,6 +39,20 @@ def manage_donors():
         else:
             if response == '4':  # Exit if "Quit" is chosen
                 return
+
+def prompt_user(str):
+    """
+    Prompt the user for input.
+
+    When you perform unit tests, reassign the function name to another
+    function that provides automated input.
+
+    :str:  The string prompt to the user.
+
+    :return:  The user's response.
+    """
+    result = input(str)
+    return result
 
 def exit_screen():
     """
@@ -55,12 +71,15 @@ def send_thank_you():
     :return:  None.
     """
     # Get the donor name, show all donors, or quit
-    response = input(
+    response = prompt_user(
       "\nType the full donor name (or 'list' to show all donors, or 'quit'): "
       ).strip()
 
-    alt_choices = {x: y for x, y in zip(('', 'quit', 'list'),
-                   (exit_screen, exit_screen, print_donor_list))}
+    alt_choices = {  # Dict of functions to show donor list or to quit
+            '': exit_screen,
+            'quit': exit_screen,
+            'list': print_donor_list
+    }
     try:  # Respond to the quit or list option
         alt_choices[response.lower()]()
     except KeyError:  # Key exception means a donor name was specified
@@ -78,7 +97,7 @@ def get_donation_amount(donor):
     :return:  The donation amount, or `None` if not specified.
     """
     while True:  # Get the donation amount
-        donation = input(
+        donation = prompt_user(
                 f"Type amount donated by '{donor}' (or type 'quit'): "
                 ).strip().lower()
         if donation in ('', 'quit'):
@@ -108,7 +127,8 @@ def print_donor_list():
     :return:  None.
     """
     print("\nLIST OF DONORS:")
-    [print(donor) for donor in donor_history]
+    for donor in donor_history:
+        print(donor)
 
 def create_a_report():
     """
@@ -125,8 +145,8 @@ def create_a_report():
             'average': (1.0 * sum(v) / len(v))}
             for k, v in donor_history.items()]
     for i in donor_stats:
-        print('{:<25s} | ${:>18,.2f} | {:>15d} | ${:>18,.2f}'.format(
-                i['name'], i['donations'], i['gifts'], i['average']))
+        print('{name:<25s} | ${donations:>18,.2f} | {gifts:>15d} | '
+                '${average:>18,.2f}'.format(**i))
 
 def send_all_letters():
     """
@@ -137,7 +157,8 @@ def send_all_letters():
     # Ask for the directory to save the letters to
     cur_dir = os.getcwd()
     print('\nThe current directory is %s' % cur_dir)
-    new_dir = input('\nType the directory to save the letters in: ').strip()
+    new_dir = prompt_user(
+            '\nType the directory to save the letters in: ').strip()
     try:
         os.mkdir(new_dir)
     except FileNotFoundError:
@@ -156,7 +177,8 @@ def send_all_letters():
                   for k, v in donor_history.items()}
         for letter in letters:
             with open(letter, 'w') as f:
-                [f.write(line) for line in letters[letter]]
+                for line in letters[letter]:
+                    f.write(line)
 
         # Print names of saved letters and return to original directory
         print('The following new letters have been saved in '
