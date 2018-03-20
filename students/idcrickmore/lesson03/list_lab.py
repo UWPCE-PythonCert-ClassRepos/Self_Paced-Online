@@ -35,38 +35,81 @@ def series_1():
     # and using insert()
     fruit.insert(0,fruit_response3[0])
     
+    # display the list
+    print(fruit)
+    
     # just the 'P' fruits
     for x in fruit:
         if(x[0]) == "P":
-            print(x)
+            print(x, end=' ')
+    print("start with P")
     
 
 def series_2():
     # This function references the global 'fruit' variable 
     # But only modifies a local version, 'fruit_2'
     global fruit
-    fruit_2 = fruit
+    fruit_2 = fruit[:]
     print(fruit_2)
     
     # remove the last item from the fruit list
     fruit_2 = fruit_2[0:-1]
     print(fruit_2)
     
-    # Ask the user for a fruit to delete and remove it from the list
-    def delete_fruit():
-        fruit_deleted = False
+    # set 'fruite_deleted' sentinel to false
+    fruit_deleted = False
+    
+    # Ask the user for a fruit to delete...
+    while fruit_deleted == False:
         delete_response = input("Which fruit would you like to delete? > ")
+        # ... and remove it from the list
         for x in fruit_2:
             if x == delete_response:
                 fruit_2.remove(delete_response)
                 fruit_deleted = True
-            if fruit_deleted == False:
-                print("{} is not a fruit in the list. Try again." .format(delete_response))
-                print (fruit_2)
-                delete_fruit()
-            print(fruit_2)
-            
-    delete_fruit()
-                
+        # if user input is bunk ask again
+        if fruit_deleted == False:
+            print("{} is not a fruit in the list. Try again." .format(delete_response))
+            print (fruit_2)
+               
+    print(fruit_2)
+
     
+def series_3():
+    # populate local 'fruit_3' variable from global 'fruit' list
+    global fruit
+    fruit_3 = fruit[:]
+    # create an empty 'bad_fruit' list to be populated by user
+    bad_fruit = []
+  
+    
+    for x in fruit:
+        # ask the user if they like the fruit. Ask and assign in lowercase
+        like_fruit = input("Do you like {}?(yes/no) > ".format(str(x.lower()))).lower()
+        # if input anything other than yes/no keep asking
+        while like_fruit not in ['yes','no']:
+            print ("Please respond with 'yes' or 'no'")
+            like_fruit = input("Do you like {}?(yes/no) > ".format(str(x.lower()))).lower()    
+        # if they don't like the fruit add it to the bad_fruit list
+        if like_fruit == 'no':
+            bad_fruit += [x]
+    
+    # remove all the nasty fruit from the bad_fruit list...
+    for nasty in bad_fruit:
+        fruit_3.remove(nasty)
+    
+    # ...and print the resulting list of non-nasty fruit
+    print(fruit_3)
+
+    
+def series_4():
+    # copy global 'fruit' list to fruit_4 variable
+    fruit_4 = fruit[:]
+    print(fruit_4)
+    
+    for name in fruit_4:
+        fruit_4[name] = name[::-1]
+    print(fruit_4)
+        
+
     
