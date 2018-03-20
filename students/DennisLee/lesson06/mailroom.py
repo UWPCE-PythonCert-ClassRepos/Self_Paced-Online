@@ -96,29 +96,27 @@ def get_donation_amount(donor):
 
     :return:  The donation amount, or `None` if not specified.
     """
-    while True:  # Get the donation amount
-        donation = prompt_user(
-                f"Type amount donated by '{donor}' (or type 'quit'): "
-                ).strip().lower()
-        if donation in ('', 'quit'):
-            exit_screen()
-            return None
+    donation = prompt_user(
+            f"Type amount donated by '{donor}' (or type 'quit'): "
+            ).strip().lower()
+    if donation in ('', 'quit'):
+        exit_screen()
+        return None
 
-        try:  # Add donation to master donor history + print letter
-            donation = float(donation)
-        except ValueError:
-            print('\nNot a valid number - try again.\n')
+    try:  # Add donation to master donor history + print letter
+        donation = float(donation)
+    except ValueError:
+        print('\nNot a valid number.\n')
+    else:
+        if donation > 0.0:
+            donor_history.setdefault(donor, [])
+            donor_history[donor].append(donation)
+            text = create_form_letter(donor, donation)
+            print(text)
+            return donation
         else:
-            if donation > 0.0:
-                donor_history.setdefault(donor, [])
-                donor_history[donor].append(donation)
-                text = create_form_letter(donor, donation)
-                print(text)
-                return donation
-            else:
-                print(
-                '\nNegative/zero donation amounts not permitted - try again.')
-    
+            print(
+            '\nNegative/zero donation amounts not permitted.')
 
 def print_donor_list():
     """
@@ -141,12 +139,27 @@ def create_a_report():
         'Donor name', 'Total given', 'Number of gifts', 'Average gift'))
     print('-'*25 + '-|--' + '-'*18 + '-|-' + '-'*15 + '-|--' + '-'*18)
 
-    donor_stats = [{'name': k, 'donations': sum(v), 'gifts': len(v),
-            'average': (1.0 * sum(v) / len(v))}
-            for k, v in donor_history.items()]
-    for i in donor_stats:
+    for i in donor_history:
+        stats = calc_donor_stats(i)
         print('{name:<25s} | ${donations:>18,.2f} | {gifts:>15d} | '
-                '${average:>18,.2f}'.format(**i))
+                '${average:>18,.2f}'.format(**stats))
+
+def calc_donor_stats(donor):
+    """
+    Calculate the donation history for a particular donor.
+
+    :donor:  The name of the donor.
+
+    :return:  A dictionary that contains the name, cumulative donation
+              amount, number of donations, and average donation from
+              that donor.
+    """
+    d = donor_history[donor]
+    donations = sum(d)
+    gifts = len(d)
+    average = 1.0 * donations / gifts
+    return {'name': donor, 'donations': donations,
+            'gifts': gifts, 'average': average}
 
 def send_all_letters():
     """
