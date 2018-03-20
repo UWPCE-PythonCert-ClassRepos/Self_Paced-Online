@@ -18,8 +18,8 @@ def sending_thanksv2(donor_hist):
     print("Hello {name}, Just wanted to drop a note of thanks for your recent donation of ${charity}.".format(**send_to))
     return True
 
-def second_integer(list):
-    return list[1]
+def second_integer(donor_summary_list):
+    return donor_summary_list[1]
 
 
 def create_report(donor_hist):
