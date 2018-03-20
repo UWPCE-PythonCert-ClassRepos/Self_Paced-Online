@@ -1,4 +1,4 @@
-#!/usr/bin/ python3
+#!/usr/bin/env python3
 
 # Establish a global 'fruit' list variable
 fruit = ["Apples", "Pears", "Oranges", "Peaches"]
@@ -6,6 +6,7 @@ fruit = ["Apples", "Pears", "Oranges", "Peaches"]
 def series_1():
 
     # This function modifies the global 'fruit' variable
+    print("Task 4")
     global fruit
     print("the list is {}".format(fruit))
     
@@ -36,7 +37,11 @@ def series_1():
     fruit.insert(0,fruit_response3[0])
     
     # display the list
-    print(fruit)
+    print("the full list is:", end = ' ')
+    
+    for x in fruit:
+        print (x, end = ' ')
+    print("")
     
     # just the 'P' fruits
     for x in fruit:
@@ -46,6 +51,7 @@ def series_1():
     
 
 def series_2():
+    print("Task 2")
     # This function references the global 'fruit' variable 
     # But only modifies a local version, 'fruit_2'
     global fruit
@@ -76,6 +82,7 @@ def series_2():
 
     
 def series_3():
+    print("Task 3")
     # populate local 'fruit_3' variable from global 'fruit' list
     global fruit
     fruit_3 = fruit[:]
@@ -103,13 +110,24 @@ def series_3():
 
     
 def series_4():
-    # copy global 'fruit' list to fruit_4 variable
-    fruit_4 = fruit[:]
-    print(fruit_4)
+    print("Task 4")
+    # create an empty 'fruit_4' list to be populated in the following loop
+    fruit_4 = []
     
-    for name in fruit_4:
-        fruit_4[name] = name[::-1]
+    # for every name in 'fruit' reverse it, and add it it to 'fruit_4'
+    for name in fruit:
+        fruit_4 += [name[::-1]]
+    
+    # copy 'fruit' list and remove last item
+    chopped_fruit = fruit[:-1]
+    
+    # print the reversed list and the original list without the last item
     print(fruit_4)
-        
-
+    print(chopped_fruit)
+    
+    
+series_1()
+series_2()
+series_3()
+series_4()
     
