@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
+
 if __name__ == "__main__":
-	#this will only run if run as a script
+	#this will only run if run as a script.
     print("This is inside the name:main block.")
 
-donors = [['Luke Rodriguez', [12.75, 50.31, 42.59]], ['Emma Burgess', [390.87, 30.00]], ['Greg Cayetano', [875.60, 1120.00]],
-          ['Hannah Watson', [20.58, 1120.14]], ['Emily Connor', [10.00]], ['Catherine Davis', [400.00]],
-          ['River Tails', [63.56, 1200.00, 300.65]], ['Virginia Ferdinand', [350.35, 5000.00]], ['Joseph Kibson', [3498.00, 5.50]],]
+donors = [["Luke Rodriguez", [12.75, 50.31, 42.59]], ['Emma Burgess', [390.87, 30.00]], ['Greg Cayetano', [875.60, 1120.00]],
+          ["Hannah Watson", [20.58, 1120.14]], ['Emily Connor', [10.00]], ['Catherine Davis', [400.00]],
+          ["River Tails", [63.56, 1200.00, 300.65]], ['Virginia Ferdinand', [350.35, 5000.00]], ['Joseph Kibson', [3498.00, 5.50]],]
 
 
 def donor_list():
@@ -55,9 +56,10 @@ def thank_you():
         else:
             donors.append([answer, [donation]])
 
-        print("Dear {}, \nThank you for your donation to The Nature Conservancy in the amount of ${:.2f}.".format(answer, donation))
+        print('\n'"Dear {}, \nThank you for your donation to The Nature Conservancy in the amount of ${:.2f}.".format(answer, donation))
         print("We are extremely appreciative of your contribution and your dedication to saving the environment.")
-        print("Sincerely,\nThe Nature Conservancy")
+        print("Sincerely,\nThe Nature Conservancy"'\n')
+
 def donor_report():
     print("Here is a list of donors and the amount they have contributed.")
     print("|     Donor Name     |     Total Given    |  Number of Gifts   |   Average Gift     |")
