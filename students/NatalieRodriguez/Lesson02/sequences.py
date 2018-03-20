@@ -3,7 +3,7 @@
 # 3/8/2018
 
 def fib_seq(n):
-#using recursion to calculate the Fibonnaci Sequence
+#using recursion to calculate the Fibonacci Sequence
 #have the user call the function to name the 'n'th term
 #of the sequence.
 
@@ -33,7 +33,7 @@ def lucas(n):
 
 input("press enter to exit") #to see that it reaches the end of the program
 
-#_________________________________________________________________-
+#_________________________________________________________________
 # General Function
 # Natalie Rodriguez
 # 3/8/2018
@@ -48,13 +48,13 @@ def sum_series(n, y=0, z=1):
 
 input("press enter to exit")  # to see that it reaches the end of the program
 
-#________________________________________________________________________-
+#________________________________________________________________________
 # Assert Testing
 # Natalie Rodriguez
 # 3/9/2018
 
 #Create assert statements for the functions to test if it comes out as true or not.
-#If the statement reads as false, it will wrote an assert exception.
+#If the statement reads as false, it will throw an assert exception.
 #I tested instances of different 'n'th terms.
 
 assert fib_seq(3) == 2
