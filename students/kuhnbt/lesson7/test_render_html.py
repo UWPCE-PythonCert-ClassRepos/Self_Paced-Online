@@ -12,6 +12,10 @@ class HtmlTest(unittest.TestCase):
         expected_values = ["Here's a new line", "And another"]
         self.assertEqual(self.page.content, expected_values)
 
+    def test_append_2(self):
+        with self.assertRaises(TypeError):
+            self.page.append(256)
+
     def test_render(self):
         self.page.content = ['Some content.', 'Some more content.']
         expected_text = "<>\n    Some content.\n    Some more content.\n"\
@@ -36,15 +40,19 @@ class HtmlTest(unittest.TestCase):
             '\n</p>'
         self.assertEqual(f.getvalue(), expected_text)
 
+    def test_keywords_type(self):
+        with self.assertRaises(TypeError):
+            self.tag = hr.P('Test html', keywords = "id='tag_id'")
+
     def test_self_closing_tag(self):
         with self.assertRaises(TypeError):
             self.tag = hr.SelfClosingTag(content = 'Test Content')
 
-    def test_charset(self):
+    def test_meta(self):
         f = StringIO()
-        self.charset = hr.Charset()
+        self.meta = hr.Meta(charset = "UTF-8")
         expected_text = '<meta charset="UTF-8" />'
-        self.charset.render(f, 0)
+        self.meta.render(f, 0)
         self.assertEqual(f.getvalue(), expected_text)
 
     def test_a(self):
@@ -68,7 +76,7 @@ class HtmlTest(unittest.TestCase):
 
     def test_header(self):
         f = StringIO()
-        self.header = hr.Header(3, 'header content')
+        self.header = hr.H(3, 'header content')
         self.header.render(f, 0)
         self.assertEqual(f.getvalue(), '<h3>header content</h3>')
 
