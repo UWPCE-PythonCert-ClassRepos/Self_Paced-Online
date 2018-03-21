@@ -3,11 +3,12 @@
 '''
 file: mailroom.py
 elmar_m / 22e88@mailbox.org
-Lesson04: Mailroom Exercise Part 2
+Lesson05: Mailroom Exercise Part 3
 '''
 
-import time
-import collections
+# import time
+# import collections
+import time, collections, sys
 
 
 main_p = '\n> Main menu. Options: t == thankyou | r == report | q == quit program\n'
@@ -31,11 +32,22 @@ def writefile(name, content):
     name: filename / name of donor
     content: mail body text
     '''
-    ts = time.strftime('%Y%m%d-%H%M%S')
+    # ts = time.strftime('%Y%m%d-%H%M%S')
+    ts = time.strftime('%Y%m%d')
     fname = '{}.{}.txt'.format(name, ts)
-    f = open(fname, 'w')
-    f.write(content)
-    f.close
+
+    # f = open(fname, 'w')
+    # f.write(content)
+    # f.close
+
+    try:
+        with open(fname, 'w') as f:
+            f.write(content)
+    # except (OSError, FileExistsError, IsADirectoryError, PermissionError) as e:
+    except PermissionError as e:
+        # print('Sorry, something went wrong:', e,  e.args[0])
+        print('Sorry, something went wrong:', e)
+        return None
 
 
 def mail():
@@ -49,8 +61,15 @@ def mail():
     It will be put to very good use.\n
         Sincerely,
              -The Team'''.format(i, donors[i][-1])
-        writefile(i, text)
-        print('mailfile created for', i, 'in your current working directory')
+        # writefile(i, text)
+        # print('mailfile created for', i, 'in your current working directory')
+
+        if writefile(i, text):
+            print('mailfile created for', i, 'in your current working directory')
+        else:
+            # sys.exit('Exiting because of previous errors.')
+            print('something weird going on with:', i)
+            
 
 
 def thankyou():
@@ -72,7 +91,15 @@ def add():
     '''
     Add new donation and / or donor
     '''
-    dname = input('>> Please give donor name: ')
+   
+    while True: 
+        dname = input('>> Please give donor name: ')
+        if not dname.isalpha():
+            print('>> only alphabetical characters in donor name allowed, please try again')
+            continue
+        else:
+            break
+
     if dname in donors:
         print('>>', dname, 'already in list')
         add_amount(dname)
@@ -89,12 +116,13 @@ def add_amount(donor):
     donor: name of donor
     '''
     while True:
-        amount = input('>> please add current donation (int or float):\n>> ')
+        amount = input('>> please add current donation (int or float, use \'.\' as decimal separator):\n>> ')
         # print(type(amount))
         
         # make sure given donation values are positive: 
         if '-' in amount:
-            print('>> only positive values allowed, please try again')
+            # print('>> only positive values allowed, please try again')
+            print('>> only positive integers or floats allowed.')
             continue
         
         # Throw exception and ask again, if given value is not int or float:
@@ -102,7 +130,7 @@ def add_amount(donor):
             donors[donor].append(float(amount))
             break
         except ValueError:
-            print('>> numerical value required, please try again')
+            print('>> only numerical values allowed, please try again')
         
     print(amount, 'added to donation list of', donor, ', thank you')     
 
