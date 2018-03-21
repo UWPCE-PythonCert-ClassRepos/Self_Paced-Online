@@ -5,8 +5,8 @@
 def prompt(prompt, menu):
     # Create menu based on arguments
     while True:
+        response = input(prompt)
         try:
-            response = input(prompt)
             if menu[response]() == "quit":
                 break
         except KeyError:
@@ -22,15 +22,15 @@ def add_donation():
     # Append donation to existing donor, or add donor/donation to existing list
     try:
         donor_name = input("\nPlease enter a donor name: ")
-        new_donation = input(f"Please enter a donation amount for {donor_name}: ")
-        if donor_name not in donations:
-            donations[donor_name] = [float(new_donation)]
-        else:
-            donations[donor_name].append(float(new_donation))
+        new_donation = float(input(f"Please enter a donation amount for {donor_name}: "))
     except ValueError:
         print("Please enter a numeric value for 'donation'!")
         add_donation()
     else:
+        if donor_name not in donations:
+            donations[donor_name] = [new_donation]
+        else:
+            donations[donor_name].append(new_donation)
         print_email(donor_name, new_donation)
 
 
@@ -74,7 +74,8 @@ def create_report():
 def list_donors():
     # Formatted print of donor names
     print("\nList of donors:")
-    [print(donor) for donor in donations]
+    for donor in donations:
+        print(donor)
     print()
 
 
