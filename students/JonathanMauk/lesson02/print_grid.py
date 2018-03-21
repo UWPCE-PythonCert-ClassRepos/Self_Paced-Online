@@ -34,5 +34,10 @@ def print_grid2(n):  # single parameter version
         print("+" + (" -" * borders * 2) + " +")
 
 
-cell_size = int(input("Please enter the desired size of your grid cells: "))
-print_grid2(cell_size)
+def print_grid3(rc, s):  # two parameter version, rc = rows and columns, s = size of cells
+    cell_space = s * 2 + 1
+    for i in range(rc):
+        print("+" + ((" -" * s) + " +") * rc)
+        for i in range(s):
+            print("|" + ((" " * cell_space) + "|") * rc)
+    print("+" + ((" -" * s) + " +") * rc)
