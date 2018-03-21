@@ -63,14 +63,16 @@ def close_program():
 choices = {1: send_ty, 2: report, 3: letters, 4: close_program}
 
 def use_input():
-  action = ''
+  action = 0
   while action not in choices:
     try:
       action = int(input("\nChoose one of four actions: \n 1. Send a Thank You \n 2. Create a Report \n 3. Send Letter to Everyone \n 4. Quit \n>"))
     except ValueError:
       print("\nEnter 1 to 'Send a Thank You', 2 to 'Create a Report',\n3 to 'Send Letter to Everyone', or 4 to 'Quit'\n")
     else:
-      choices[action]()
+      if action not in choices:
+        print("\nEnter 1 to 'Send a Thank You', 2 to 'Create a Report',\n3 to 'Send Letter to Everyone', or 4 to 'Quit'\n")
+  choices[action]()
 
 
 if __name__ == '__main__':
