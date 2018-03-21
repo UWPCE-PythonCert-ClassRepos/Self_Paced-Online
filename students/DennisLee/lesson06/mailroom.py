@@ -24,35 +24,48 @@ def manage_donors():
     '2': {'option': 'Create a report', 'function': create_a_report},
     '3': {'option': 'Send letters to everyone', 'function': send_all_letters},
     '4': {'option': 'Quit', 'function': exit_screen}
-    }    
+    }
     
     while True:  # Print the menu list (with numbered choices)
         print("\nMENU:")
         for i in choices:
             print(i, choices[i]['option'])
-        response = prompt_user("Type a menu selection number: ").strip()
+        response = input("Type a menu selection number: ").strip()
+        call_menu_function(choices, response, respond_to_bad_main_menu_choice)
+        if response == '4':  # Exit if "Quit" is chosen
+            return
 
-        try:  # Get the selection number and call helper function
-            choices[response]['function']()
-        except KeyError:
-            print("\nInvalid response - try again.")
-        else:
-            if response == '4':  # Exit if "Quit" is chosen
-                return
-
-def prompt_user(str):
+def call_menu_function(choice_dict, choice, unfound_key_handler, **kwargs):
     """
-    Prompt the user for input.
+    Call a menu function with a dict.
 
-    When you perform unit tests, reassign the function name to another
-    function that provides automated input.
+    :choice_dict:  Dict containing the `choice` string, with the dict
+                   value being a another dict that contains a 'function'
+                   key whose value is the function to call for `choice`.
 
-    :str:  The string prompt to the user.
+    :choice:  A string that may or may not be a key in the choice_dict
+              dictionary.
 
-    :return:  The user's response.
+    :unfound_key_handler:  The function to call if the specified choice
+                           is not a key in the dictionary.
+
+    :kwargs:  Additional keyword arguments to pass to the unfound key
+              handler.
+
+    :return:  `True` if a menu function was successfully called;
+              `False` otherwise (which also can be the desired result).
     """
-    result = input(str)
-    return result
+    try:  # Get the selection number and call helper function
+        choice_dict[choice]['function']()
+    except KeyError:
+        unfound_key_handler(choice, **kwargs)
+        return False
+    else:
+        return True
+
+def respond_to_bad_main_menu_choice(choice):
+    """Shows error message if the user's main menu choice is invalid."""
+    print(f"\n'{choice}' is in invalid response.")
 
 def exit_screen():
     """
@@ -70,23 +83,18 @@ def send_thank_you():
 
     :return:  None.
     """
-    # Get the donor name, show all donors, or quit
-    response = prompt_user(
+    alt_choices = {  # Dict of functions to show donor list or to quit
+            '': {'function': exit_screen},
+            'quit': {'function': exit_screen},
+            'list': {'function': print_donor_list}
+    }
+    response = input(  # Get the donor name, show all donors, or quit
       "\nType the full donor name (or 'list' to show all donors, or 'quit'): "
       ).strip()
 
-    alt_choices = {  # Dict of functions to show donor list or to quit
-            '': exit_screen,
-            'quit': exit_screen,
-            'list': print_donor_list
-    }
-    try:  # Respond to the quit or list option
-        alt_choices[response.lower()]()
-    except KeyError:  # Key exception means a donor name was specified
-        get_donation_amount(response)
-    else:
-        if response.lower() == 'list':
-            send_thank_you()  # Still want to get a donor to thank
+    call_menu_function(alt_choices, response, get_donation_amount)
+    if response == 'list':
+        send_thank_you()  # Still want to get a donor to thank
 
 def get_donation_amount(donor):
     """
@@ -96,22 +104,32 @@ def get_donation_amount(donor):
 
     :return:  The donation amount, or `None` if not specified.
     """
-    donation = prompt_user(
+    donation_choices = {  # Dict of functions if user wants to quit
+            '': {'function': exit_screen},
+            'quit': {'function': exit_screen}
+    }
+    donation = input(
             f"Type amount donated by '{donor}' (or type 'quit'): "
             ).strip().lower()
-    if donation in ('', 'quit'):
-        exit_screen()
-        return None
+    # if donation in ('', 'quit'):
+    #     exit_screen()
+    #     return None
+    call_menu_function(donation_choices, donation, add_donation,
+            donor_name=donor)
 
+def add_donation(donation, donor_name):
+    """
+    :return:  The donation amount, or `None` if not specified.
+    """
     try:  # Add donation to master donor history + print letter
         donation = float(donation)
     except ValueError:
         print('\nNot a valid number.\n')
     else:
         if donation > 0.0:
-            donor_history.setdefault(donor, [])
-            donor_history[donor].append(donation)
-            text = create_form_letter(donor, donation)
+            donor_history.setdefault(donor_name, [])
+            donor_history[donor_name].append(donation)
+            text = create_form_letter(donor_name, donation)
             print(text)
             return donation
         else:
@@ -170,8 +188,7 @@ def send_all_letters():
     # Ask for the directory to save the letters to
     cur_dir = os.getcwd()
     print('\nThe current directory is %s' % cur_dir)
-    new_dir = prompt_user(
-            '\nType the directory to save the letters in: ').strip()
+    new_dir = input('\nType the directory to save the letters in: ').strip()
     try:
         os.mkdir(new_dir)
     except FileNotFoundError:
