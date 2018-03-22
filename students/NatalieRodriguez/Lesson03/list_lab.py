@@ -94,7 +94,7 @@ del yes[-1]
 print("Your full fruit list:", fruit_copy)
 print("Your fruit list, backwards!", fruit_reversed)
 
-
+input("Press enter to exit.")
 
 
 
