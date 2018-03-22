@@ -2,23 +2,28 @@ def fibonacci(n):
     """Function that returns the nth term in the Fibonacci sequence, per F(n) = (n-1) + (n-2)."""
     if n < 0:
         print("Error: the first term in the Fibonacci sequence is 0. Please try again.")
-    elif n == 0:
-        return 0
-    elif n == 1:
-        return 1
     else:
-        return fibonacci(n-1) + fibonacci(n-2)
+        return sum_series(n)
 
 
 def lucas(n):
     """Function that returns the nth term in the Lucas series, per F(n) = (n-1) + (n-2)."""
     if n < 0:
         print("Error: the first term in the Lucas series is 2. Please try again.")
-    elif n == 0:
-        return 2
-    elif n == 1:
-        return 1
     else:
-        return lucas(n-1) + lucas(n-2)
+        return sum_series(n, 2, 1)
 
-print(lucas(2))
+
+def sum_series(n, x=0, y=1):
+    """
+    Generalized function that returns nth term in recursive sequences like Fibonacci and Lucas.
+    Defaults to Fibonacci sequence.
+    """
+    if n == 0:
+        return x
+    if n == 1:
+        return y
+    else:
+        return sum_series(n-1, x, y) + sum_series(n-2, x, y)
+
+print(sum_series(4, 2, 1))
