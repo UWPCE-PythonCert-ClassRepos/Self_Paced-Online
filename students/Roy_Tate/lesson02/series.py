@@ -20,16 +20,26 @@ def lucas(n):
         return lucas(n-1) + lucas(n-2)
 
 
-def sum_series(n, y=0, z=1):
+def sum_series(n, x=0, y=1):
     '''
         Return the nth position in the fibonacci series if no optional arguments are
         provided. Return the nth position of the lucas series if the optional arguments
         equal 2 and 1. Other optional arguments can be handled at a later time.
     '''
-    if y == 2 and z == 1: ## This needs revamped (instructions clearly said not to do this)
-        return lucas(n)
+    # if y == 2 and z == 1: ## This needs revamped (instructions clearly said not to do this)
+    #     return lucas(n)
+    # else:
+    #     return fibonacci(n)
+    if n < 0:
+        print('Negative numbers are not allowed. Integers only.')
+        return None
+
+    elif n == 0:
+        return x
+    elif n == 1:
+        return y
     else:
-        return fibonacci(n)
+        return sum_series(n-1, x, y) + sum_series(n-2, x, y)
 
 
 if __name__ == "__main__":
@@ -49,83 +59,3 @@ if __name__ == "__main__":
     assert fibonacci(6) == 8  # The 6th position in the fibonacci series (starting from 0) is always 13
     assert lucas(6) == 18  # The 6th position of the lucas series should always be 18
     print('\tAll assertion tests passed.')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# author: githubtater
