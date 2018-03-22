@@ -25,8 +25,8 @@ def menu():
         elif choice[0] == '2' or choice[0] == 'c':
             report()
         elif choice[0] == '3' or choice[0] == 'q':
-            print("you chose 'quit'")
-            # break
+            print("quiting")
+            quit()
         else:
             # if the user input does not match one of the 3 options,
             # call the menu function again
@@ -38,24 +38,23 @@ def menu():
 def thankyou():
     global donors
     print("\n------------------ THANK YOU ------------------\n")
-    
-    
+    print("- type 'list' to to see a complete list of donors -")
+    print("- type 'menu' at any time to return to the menu -\n")
+
     # simple function to list all the donors
     # calls the 'thankyou' function at the end to ask for user input
     def list():
         print("\n------------------ DONOR LIST ------------------\n")
-        
+
         for name in donors:
             print(name[0])
-            
+
         thankyou()
 
-        
-    # asks for a name from the user, or for the 'list' prompt 
-    name_check = input("Enter the first and last name of a donor" +
-                 "(type 'list' to see options)\n\n-> ").lower()
+    # asks for a name from the user, or for the 'list' prompt
+    name_check = input("Enter first and last name of a donor\n\n-> ").lower()
 
-    if name_check == 'quit':
+    if name_check == 'menu':
         menu()
     if name_check == 'list':
         list()
@@ -63,64 +62,70 @@ def thankyou():
         # 'new' sentinel check to see if the user input already
         # exists in the 'donors' list
         new = True
-        name_location = -1
-        
+        name_loc = -1
+
         for name in donors:
             if name_check == name[0].lower():
                 # if the name is already a recorded donor
                 # the 'new' sentinel is set to False.
                 new = False
-            # update the 'name_location' counter
-            name_location += 1
-    
+            # update the 'name_loc' counter
+            name_loc += 1
+            # if the 'name_check is false jump out of the loop
+            if new is False:
+                break
+
         # a false sentinel value will append the donor list
         # with the new name in title caps
         if new is True:
             donors.append([name_check.title()])
-            # sets the name location to he last spot 'donors' 
-            name_location = len(donors)-1
-            
+            # sets the name location to he last spot 'donors'
+            name_loc = len(donors)-1
+
         # promp the user for a donation amount
         donation = input("What is the donation amount? -> ")
-        if donation == 'quit':
+        if donation == 'menu':
             menu()
         donation = float(donation)
-        donors[name_location].append(donation)
-        #print(donors[name_location])
-        
+        donors[name_loc].append(donation)
+
         print("\n---------------------------------------------\n")
         print(("\nDear {},\n\nYou rock.\nYour fat contribution" +
-              " of ${:,}\nwill go a long way to lining my pockets." +
-              "\n\nSincerely,\nScrooge McDuck").format(donors
-              [name_location][0], donation))
-        
+               " of ${:,.2f}\nwill go a long way to lining my pockets." +
+               "\n\nSincerely," +
+               "\nScrooge McDuck").format(donors[name_loc][0], donation))
+
         menu()
-        
+
+
 def report():
-    column = ["Donor Name", "| Total Given", "| Num Gifts", "| Average Gift"]   
-    name_location = 0
-    donors_report = []    
-    
+    print("\n-------------------- REPORT --------------------\n")
+
+    column = ["Donor Name", "| Total Given", "| Num Gifts", "| Average Gift"]
+    name_loc = 0
+    donors_report = []
+
     for name in donors:
-        sum_don = sum(donors[name_location][1:])
-        num_don = len(donors[name_location])-1
+        sum_don = sum(donors[name_loc][1:])
+        num_don = len(donors[name_loc])-1
         ave_don = sum_don / num_don
-        donors_report += [[donors[name_location][0], sum_don, num_don, ave_don]]
-        name_location += 1
-    
-    second_value = lambda donation: donation[1]
-    donors_report.sort(key = second_value, reverse = True)
-    
-    print(donors_report)
-    
-    print("{:<25}{:<15}{:<12}{:<15}".format(*column))
+        donors_report += [[donors[name_loc][0], sum_don, num_don, ave_don]]
+        name_loc += 1
+
+    # sorts the donors report by the second column "donation[1] using 'lambda'
+    # and reverses the order from largest to smallest
+    donors_report.sort(key=lambda donation: donation[1], reverse=True)
+
+    print("{:<15}{:>17}{:>15}{:>10}".format(*column))
     print("---------------------------------------------------------------")
-    
-    #for name in donors_report:    
-    #    print("{:<25}{:<15}{:<12}{:<15}".format(*donors_report))
+
+    # loops through 'donors_report' and
+    # dumps all values for 'name' into .format
+    for name in donors_report:
+        print('{:<20} ${:>13.2f}{:>12}  ${:>10.2f}'.format(*name))
 
     menu()
 
 
-
-menu()
+if __name__ == '__main__':
+    menu()
