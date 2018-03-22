@@ -27,16 +27,16 @@ def sum_series(n, x=0, y=1):
         return sum_series(n-1, x, y) + sum_series(n-2, x, y)
 
 # Assert statements: Fibonacci edition
-print(fibonacci(0))
-print(fibonacci(2))
-print(fibonacci(15))
+assert fibonacci(1)
+assert fibonacci(5)
+assert fibonacci(15)
 
 # Assert statements: Lucas edition
-print(lucas(0))
-print(lucas(3))
-print(lucas(8))
+assert lucas(0)
+assert lucas(3)
+assert lucas(8)
 
 # Assert statements: sum series edition
-print(sum_series(4))  # defaults to Fibonacci
-print(sum_series(5, 2, 1))  # Lucas series
-print(sum_series(8, 7, 5))  # random
+assert sum_series(4)  # defaults to Fibonacci
+assert sum_series(5, 2, 1)  # Lucas series
+assert sum_series(8, 7, 5)  # random
