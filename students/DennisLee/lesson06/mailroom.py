@@ -98,7 +98,7 @@ def send_thank_you():
 
 def get_donation_amount(donor):
     """
-    Ask user for a donation amount and add for the specified user.
+    Ask user for a donation amount from the specified donor.
 
     :donor:  The donor name for which to add a donation amount.
 
@@ -119,6 +119,12 @@ def get_donation_amount(donor):
 
 def add_donation(donation, donor_name):
     """
+    Add the donation and donor (if new) to the donor history dict.
+
+    :donation:  The amount to be donated.
+
+    :donor_name:  The name of the person making the donation.
+
     :return:  The donation amount, or `None` if not specified.
     """
     try:  # Add donation to master donor history + print letter
@@ -170,14 +176,19 @@ def calc_donor_stats(donor):
 
     :return:  A dictionary that contains the name, cumulative donation
               amount, number of donations, and average donation from
-              that donor.
+              that donor. If the donor does not exist, `None` is
+              returned.
     """
-    d = donor_history[donor]
-    donations = sum(d)
-    gifts = len(d)
-    average = 1.0 * donations / gifts
-    return {'name': donor, 'donations': donations,
-            'gifts': gifts, 'average': average}
+    try:
+        d = donor_history[donor]
+    except KeyError:
+        print(f"\nThere is no donor '{donor}' in the donor history.\n")
+    else:
+        donations = round(sum(d), 2)
+        gifts = len(d)
+        average = round(1.0 * donations / gifts, 2)
+        return {'name': donor, 'donations': donations,
+                'gifts': gifts, 'average': average}
 
 def send_all_letters():
     """
@@ -223,7 +234,10 @@ def create_form_letter(donor_name, donor_amount):
 
     :donor_amount:  The amount given by the donor this time.
 
-    :return:  A string containing the filled-in form letter.
+    :return:  A string containing the filled-in form letter. If the
+              donor name is not in the donor history or an invalid or
+              nonpositive donor amount is specified, `None` is returned
+              instead.
     """
     str = """\n\n\n
             From:     Random Worthy Cause Foundation
@@ -248,17 +262,32 @@ def create_form_letter(donor_name, donor_amount):
             Mister E. Partner
             Random Worthy Cause Foundation
             """
-    
-    # If a donor has given before, add a parenthetical clause stating the
-    # total donation amount and the number of donations
-    str2 = ''
-    gifts = len(donor_history[donor_name])
-    if gifts > 1:
-        str2 = '(and total donations of ' \
-                '${0:,.2f} from {1:,d} gifts)\n            '.format(
-                sum(donor_history[donor_name]), gifts)
-    
-    return str.format(donor_name, donor_amount, str2)
+    try:
+        d = donor_history[donor_name]
+    except KeyError:
+        print(f"\nThere is no donor '{donor_name}' in the donor history.\n")
+    else:
+        try:
+            amt = round(donor_amount, 2)
+        except TypeError:
+            print(f"\nAmount '{donor_amount} is not a number.'\n")
+        else:
+            if amt <= 0.0:
+                print(f"\n{donor_amount} is not a valid donation amount.\n")
+            elif amt not in d:
+                print(f"\n{donor_amount} is not in the donation history of "
+                        f"{donor_name}.\n")
+            else:
+                # If a donor has given before, add a parenthetical clause 
+                # stating the total donation amount and number of donations
+                str2 = ''
+                gifts = len(d)
+                if gifts > 1:
+                    str2 = '(and total donations of ${0:,.2f} ' \
+                            'from {1:,d} gifts)\n            '.format(
+                            sum(d), gifts)
+                
+                return str.format(donor_name, amt, str2)
 
 if __name__ == "__main__":
     manage_donors()
