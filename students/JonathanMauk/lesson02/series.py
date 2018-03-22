@@ -7,7 +7,7 @@ def fibonacci(n):
 
 
 def lucas(n):
-    """Function that returns the nth term in the Lucas series, per F(n) = (n-1) + (n-2)."""
+    """Function that returns the nth term in the Lucas series, per F(n) = (n-1) + (n-2), and F(0) = 2 while F(1) = 1."""
     if n < 0:
         print("Error: the first term in the Lucas series is 2. Please try again.")
     else:
@@ -26,4 +26,17 @@ def sum_series(n, x=0, y=1):
     else:
         return sum_series(n-1, x, y) + sum_series(n-2, x, y)
 
-print(sum_series(4, 2, 1))
+# Assert statements: Fibonacci edition
+print(fibonacci(0))
+print(fibonacci(2))
+print(fibonacci(15))
+
+# Assert statements: Lucas edition
+print(lucas(0))
+print(lucas(3))
+print(lucas(8))
+
+# Assert statements: sum series edition
+print(sum_series(4))  # defaults to Fibonacci
+print(sum_series(5, 2, 1))  # Lucas series
+print(sum_series(8, 7, 5))  # random
