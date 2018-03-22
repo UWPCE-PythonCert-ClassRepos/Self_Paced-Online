@@ -59,34 +59,21 @@ def thankyou():
     if name_check == 'list':
         list()
     else:
-        # 'new' sentinel check to see if the user input already
-        # exists in the 'donors' list
-        new = True
-        name_loc = -1
+        name_loc = 0
 
         for name in donors:
             if name_check == name[0].lower():
-                # if the name is already a recorded donor
-                # the 'new' sentinel is set to False.
-                new = False
-            # update the 'name_loc' counter
-            name_loc += 1
-            # if the 'name_check is false jump out of the loop
-            if new is False:
                 break
+            name_loc += 1
 
-        # a false sentinel value will append the donor list
-        # with the new name in title caps
-        if new is True:
-            donors.append([name_check.title()])
-            # sets the name location to he last spot 'donors'
-            name_loc = len(donors)-1
 
         # promp the user for a donation amount
         donation = input("What is the donation amount? -> ")
         if donation == 'menu':
             menu()
         donation = float(donation)
+        if name_loc == len(donors):
+            donors.append([name_check.title()])
         donors[name_loc].append(donation)
 
         print("\n---------------------------------------------\n")
