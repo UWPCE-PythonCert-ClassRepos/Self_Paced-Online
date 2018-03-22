@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
+import os
 import mailroom as m
 import pytest
+
 
 choices = {  # Dict of command text and functions in the main menu
 '1': {'option': 'Send a thank you', 'function': m.send_thank_you},
@@ -19,9 +21,12 @@ alt_choices = {
 
 
 def test_manage_donors_1():
+    # An I/O error occurs because the function prompts for menu choice
     with pytest.raises(IOError):
         m.manage_donors()
 
+# Simulate and test function calls that occur in the code 
+# after the input() function that causes the I/O error
 def test_call_menu_function_1():
     assert m.call_menu_function(
             choices, '0', m.respond_to_bad_main_menu_choice) == False
@@ -50,6 +55,10 @@ def test_call_menu_function_7():
     assert m.call_menu_function(
             choices, 'a', m.respond_to_bad_main_menu_choice) == False
 
+def test_call_menu_function_8():
+    assert m.call_menu_function(
+            choices, '', m.respond_to_bad_main_menu_choice) == False
+
 
 
 def test_respond_to_bad_main_menu_choice():
@@ -61,9 +70,13 @@ def test_exit_screen_1():
 
 
 def test_send_thank_you():
+    # An I/O error occurs because the function prompts for donor name,
+    # donor list display, or quitting
     with pytest.raises(IOError):
         m.send_thank_you()
 
+# Simulate and test function calls that occur in the code 
+# after the input() function that causes the I/O error
 def test_call_menu_function_100():
     assert m.call_menu_function(alt_choices, '', m.get_donation_amount) == True
 
@@ -76,15 +89,26 @@ def test_call_menu_function_102():
             ) == True
 
 def test_call_menu_function_103():
+    # An I/O error occurs because the function prompts for donation amt
     with pytest.raises(IOError):
         m.call_menu_function(alt_choices, 'C. N. Emone', m.get_donation_amount)
 
+def test_call_menu_function_104():
+    # An I/O error occurs because the function prompts for donation amt
+    with pytest.raises(IOError):
+        m.call_menu_function(alt_choices, 'Papa Smurf', m.get_donation_amount)
+
 
 def test_get_donation_amount():
+    # An I/O error occurs because the function prompts for a donation
+    # amount or to quit
     with pytest.raises(IOError):
         m.get_donation_amount('C. N. Enome')
     
+# Simulate and test function calls that occur in the code 
+# after the input() function that causes the I/O error
 def test_call_menu_function_200():
+    # re-use the donor name dict, except without the 'list' function
     donation_choices = alt_choices.copy()
     donation_choices.pop('list')
     assert m.call_menu_function(donation_choices, '', m.add_donation,
@@ -102,7 +126,7 @@ def test_call_menu_function_202():
     assert m.call_menu_function(donation_choices, '50', m.add_donation,
             donor_name='C. N. Enome') == False
     del m.donor_history['C. N. Enome']  # restore dict for next tests
-    
+
 def test_call_menu_function_203():
     donation_choices = alt_choices.copy()
     donation_choices.pop('list')
@@ -126,6 +150,7 @@ def test_add_donation_1():
     assert m.add_donation(50, 'C. N. Enome') == 50
     del m.donor_history['C. N. Enome']  # restore dict for next tests
 
+# Non-numeric, zero, or negative donation amounts are not allowed   
 def test_add_donation_2():
     assert m.add_donation(0, 'C. N. Enome') == None
 
@@ -153,6 +178,8 @@ def test_add_donation_9():
     assert 'C. N. Enome' in m.donor_history
     del m.donor_history['C. N. Enome']  # restore dict for next tests
 
+# Since non-numeric, zero, or negative donation amounts are not allowed,
+# the new donor is not added to the donor history dict
 def test_add_donation_10():
     m.add_donation(0, 'C. N. Enome')
     assert 'C. N. Enome' not in m.donor_history
@@ -238,13 +265,68 @@ def test_calc_donor_stats_6():
             'gifts': 1, 
             'average': 82.00}
 
+# Nothing is returned from calc fn if an invalid donor is specified
 def test_calc_donor_stats_7():
     assert m.calc_donor_stats('Who Me') == None
 
 
-def test_send_all_letters():
+def test_send_all_letters_1():
+    # An I/O error occurs because the function prompts for menu choice
     with pytest.raises(IOError):
         m.send_all_letters()
+
+
+def save_letters_helper(folder):
+    donor_and_last_donation = {
+                'Red Herring': 15000,
+                'Papa Smurf': 1000,
+                'Pat Panda': 55324.4,
+                'Karl-Heinz Berthold': 10579.31,
+                'Mama Murphy': 12054.33,
+                'Daphne Dastardly': 82
+            }
+    dir_name = m.save_letters(folder)
+    assert os.path.isdir(dir_name)
+    for donor, gift in donor_and_last_donation.items():
+        full_name = os.path.join(dir_name, f'_{donor}.txt')
+        assert os.path.isfile(full_name) == True
+        with open(full_name, 'r') as f:
+            file_content = f.read()
+            form_letter = m.create_form_letter(donor, gift)
+            assert file_content.splitlines() == form_letter.splitlines() 
+            assert len(form_letter) > 500
+        os.remove(full_name)
+
+def test_save_letters_1():  # User specifies no directory
+    save_letters_helper('')
+
+def test_save_letters_2():  # User tries to save to an illegal directory
+    save_letters_helper('u:\\')
+
+def test_save_letters_3():  # User saves to a new dir, relative path
+    i = 0
+    while os.path.isdir('test' + str(i)) == True:
+        i += 1
+    folder = 'test' + str(i)
+    save_letters_helper(folder)
+    os.rmdir(folder)
+
+def test_save_letters_4():  # User saves to a preexisting relative dir
+    os.mkdir('PreexistingFolder')
+    save_letters_helper('PreexistingFolder')
+
+def test_save_letters_5():  # User saves to a new dir, absolute path
+    i = 0
+    while os.path.isdir(os.path.join(os.path.expanduser('~'), 'test' + str(i))
+            ) == True:
+        i += 1
+    folder = os.path.join(os.path.expanduser('~'), 'test' + str(i))
+    os.mkdir(folder)
+    save_letters_helper(folder)
+    os.rmdir(folder)
+
+def test_save_letters_6():  # User saves to a preexisting absolute dir
+    save_letters_helper(os.path.expanduser('~'))
 
 
 def test_create_form_letter_1():
@@ -256,11 +338,16 @@ def test_create_form_letter_2():
 def test_create_form_letter_3():
     assert m.create_form_letter('Papa Smurf', 0) == None
 
-def test_create_form_letter_3():
+def test_create_form_letter_4():
     # Form letter should not be produced if the specified donor amount
     # is not in the donor name's history
     assert m.create_form_letter('Papa Smurf', 75.86) == None
 
-def test_create_form_letter_4():
+def test_create_form_letter_5():
+    # Check that form letter is not be produced if the specified donor
+    # amount is in the donor history dict but not for this donor
+    assert m.create_form_letter('Papa Smurf', 10579.31) == None
+
+def test_create_form_letter_6():
     result = m.create_form_letter('Papa Smurf', 1000)
     assert isinstance(result, str) == True and len(result) > 500

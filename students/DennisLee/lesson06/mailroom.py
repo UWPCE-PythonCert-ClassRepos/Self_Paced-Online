@@ -28,8 +28,8 @@ def manage_donors():
     
     while True:  # Print the menu list (with numbered choices)
         print("\nMENU:")
-        for i in choices:
-            print(i, choices[i]['option'])
+        for k, v in choices.items():
+            print(k, v['option'])
         response = input("Type a menu selection number: ").strip()
         call_menu_function(choices, response, respond_to_bad_main_menu_choice)
         if response == '4':  # Exit if "Quit" is chosen
@@ -64,7 +64,13 @@ def call_menu_function(choice_dict, choice, unfound_key_handler, **kwargs):
         return True
 
 def respond_to_bad_main_menu_choice(choice):
-    """Shows error message if the user's main menu choice is invalid."""
+    """
+    Show error message if the user's main menu choice is invalid.
+    
+    :choice:  The menu choice string as entered by the user.
+
+    :return:  None.
+    """
     print(f"\n'{choice}' is in invalid response.")
 
 def exit_screen():
@@ -192,39 +198,53 @@ def calc_donor_stats(donor):
 
 def send_all_letters():
     """
-    Save all donor thank-you letters to disk.
+    Create all of the donor thank-you letters.
 
-    :return:  None.
+    :return:  The folder containing the thank-you letters.
     """
     # Ask for the directory to save the letters to
+    print('\nThe current directory is %s' % os.getcwd())
+    new_dir = input('\nType the directory to save the letters in'
+                    ' (invalid entry defaults to the current directory): '
+                    ).strip()
+    return save_letters(new_dir)
+
+def save_letters(folder):
+    """
+    Save the donor thank-you letters to disk.
+
+    :folder:  The folder in which to save the files.
+
+    :return:  The folder containing the thank-you letters.
+    """
     cur_dir = os.getcwd()
-    print('\nThe current directory is %s' % cur_dir)
-    new_dir = input('\nType the directory to save the letters in: ').strip()
     try:
-        os.mkdir(new_dir)
+        os.mkdir(folder)
     except FileNotFoundError:
-        print(f'\nCannot find or create directory "{new_dir}".')
+        print(f'\nCannot find or create directory "{folder}".')
         print('Will use the current directory instead.\n')
-        new_dir = cur_dir
+        folder = cur_dir
     except FileExistsError:
-        print(f'\nFound directory "{new_dir}".\n')
+        print(f'\nFound directory "{folder}".\n')
     finally:  # Save each letter, with the donor name in each file name
-        os.chdir(new_dir)
-        new_dir = os.getcwd()
-        print(f'Saving to directory {new_dir}')
+        os.chdir(folder)
+        folder = os.getcwd()  # Set folder name to the full OS path
+        print(f'Saving to directory {folder}')
 
         # Create dict of letter names and letter texts, then write files
         letters = {f'_{k}.txt': create_form_letter(k, v[-1])
                   for k, v in donor_history.items()}
-        for letter in letters:
-            with open(letter, 'w') as f:
-                for line in letters[letter]:
-                    f.write(line)
+        for filename, text in letters.items():
+            lines = text.splitlines()
+            with open(filename, 'w') as f:
+                for line in lines:
+                    f.write(line + '\n')
 
         # Print names of saved letters and return to original directory
         print('The following new letters have been saved in '
-                f'{new_dir}:\n\t{tuple(letters.keys())}')
+                f'{folder}:\n\t{tuple(letters.keys())}')
         os.chdir(cur_dir)
+        return folder
 
 def create_form_letter(donor_name, donor_amount):
     """
