@@ -27,6 +27,9 @@ def test_manage_donors_1():
 
 # Simulate and test function calls that occur in the code 
 # after the input() function that causes the I/O error
+# There aren't menu options for 0', '5', 'a', & '', so they return False
+# '1' and '3' lead to user prompts, so catch those
+# '2' and '4' go to functions w/o user prompts, so they return True
 def test_call_menu_function_1():
     assert m.call_menu_function(
             choices, '0', m.respond_to_bad_main_menu_choice) == False
@@ -77,6 +80,10 @@ def test_send_thank_you():
 
 # Simulate and test function calls that occur in the code 
 # after the input() function that causes the I/O error
+# '', 'quit', and 'list' are in the choice dict, so they return True
+# Any new or preexisting donor name entered will not be in the choice
+# dict, so they return False, which isn't a problem since that is
+# expected and is actually the reason for the menu option
 def test_call_menu_function_100():
     assert m.call_menu_function(alt_choices, '', m.get_donation_amount) == True
 
@@ -107,6 +114,10 @@ def test_get_donation_amount():
     
 # Simulate and test function calls that occur in the code 
 # after the input() function that causes the I/O error
+# '' and 'quit' are in the choice dict, so they return True
+# All other simulated input for the `call_menu_function` call returns
+# False from that function, regardless of whether the `add_donation`
+# call successfully adds a donation amount to the donor history list
 def test_call_menu_function_200():
     # re-use the donor name dict, except without the 'list' function
     donation_choices = alt_choices.copy()
@@ -146,6 +157,8 @@ def test_call_menu_function_205():
             donor_name='C. N. Enome') == False
 
 
+# For the `add_donation` call, only positive numbers are added
+# successfully to the donor history list and are returned back
 def test_add_donation_1():
     assert m.add_donation(50, 'C. N. Enome') == 50
     del m.donor_history['C. N. Enome']  # restore dict for next tests
@@ -276,6 +289,8 @@ def test_send_all_letters_1():
         m.send_all_letters()
 
 
+# This is a helper function for the `save_letters` test functions that
+# follow - it is not run directly by pytest
 def save_letters_helper(folder):
     donor_and_last_donation = {
                 'Red Herring': 15000,
@@ -286,13 +301,17 @@ def save_letters_helper(folder):
                 'Daphne Dastardly': 82
             }
     dir_name = m.save_letters(folder)
-    assert os.path.isdir(dir_name)
+    assert os.path.isdir(dir_name)  # Make sure folder exists now
     for donor, gift in donor_and_last_donation.items():
         full_name = os.path.join(dir_name, f'_{donor}.txt')
+
+        # Make sure each letter file is saved
         assert os.path.isfile(full_name) == True
         with open(full_name, 'r') as f:
             file_content = f.read()
             form_letter = m.create_form_letter(donor, gift)
+
+            # Make sure the letter content is as expected
             assert file_content.splitlines() == form_letter.splitlines() 
             assert len(form_letter) > 500
         os.remove(full_name)
@@ -304,18 +323,33 @@ def test_save_letters_2():  # User tries to save to an illegal directory
     save_letters_helper('u:\\')
 
 def test_save_letters_3():  # User saves to a new dir, relative path
+    cur_dir = os.getcwd()
+
+    # Come up with a folder name that doesn't currently exist
     i = 0
     while os.path.isdir('test' + str(i)) == True:
         i += 1
     folder = 'test' + str(i)
     save_letters_helper(folder)
     os.rmdir(folder)
+    assert os.getcwd() == cur_dir  # Ensure fn goes back to old dir
 
 def test_save_letters_4():  # User saves to a preexisting relative dir
-    os.mkdir('PreexistingFolder')
-    save_letters_helper('PreexistingFolder')
+    cur_dir = os.getcwd()
+    letter_dir = 'PreexistingFolder'
+    delete_later = False
+    if os.path.isdir(letter_dir) == False:
+        os.mkdir(letter_dir)
+        delete_later = True
+    save_letters_helper(letter_dir)
+    assert os.getcwd() == cur_dir  # Ensure fn goes back to old dir
+    if delete_later:
+        os.rmdir(letter_dir)
 
 def test_save_letters_5():  # User saves to a new dir, absolute path
+    cur_dir = os.getcwd()
+
+    # Come up with a folder name that doesn't currently exist
     i = 0
     while os.path.isdir(os.path.join(os.path.expanduser('~'), 'test' + str(i))
             ) == True:
@@ -324,11 +358,17 @@ def test_save_letters_5():  # User saves to a new dir, absolute path
     os.mkdir(folder)
     save_letters_helper(folder)
     os.rmdir(folder)
+    assert os.getcwd() == cur_dir  # Ensure fn goes back to old dir
 
 def test_save_letters_6():  # User saves to a preexisting absolute dir
+    cur_dir = os.getcwd()
     save_letters_helper(os.path.expanduser('~'))
+    assert os.getcwd() == cur_dir  # Ensure fn goes back to old dir
 
 
+# Form letter creation only succeeds if donor name is in the donor
+# history list and the donor amount is a positive number that is already
+# in that donor's donation history
 def test_create_form_letter_1():
     assert m.create_form_letter('Daffy Doo', 1000) == None
 
@@ -344,7 +384,7 @@ def test_create_form_letter_4():
     assert m.create_form_letter('Papa Smurf', 75.86) == None
 
 def test_create_form_letter_5():
-    # Check that form letter is not be produced if the specified donor
+    # Check that form letter is not produced if the specified donor
     # amount is in the donor history dict but not for this donor
     assert m.create_form_letter('Papa Smurf', 10579.31) == None
 

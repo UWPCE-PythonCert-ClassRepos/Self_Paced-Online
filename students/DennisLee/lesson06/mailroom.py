@@ -108,7 +108,7 @@ def get_donation_amount(donor):
 
     :donor:  The donor name for which to add a donation amount.
 
-    :return:  The donation amount, or `None` if not specified.
+    :return:  None.
     """
     donation_choices = {  # Dict of functions if user wants to quit
             '': {'function': exit_screen},
@@ -117,9 +117,6 @@ def get_donation_amount(donor):
     donation = input(
             f"Type amount donated by '{donor}' (or type 'quit'): "
             ).strip().lower()
-    # if donation in ('', 'quit'):
-    #     exit_screen()
-    #     return None
     call_menu_function(donation_choices, donation, add_donation,
             donor_name=donor)
 
@@ -140,7 +137,7 @@ def add_donation(donation, donor_name):
     else:
         if donation > 0.0:
             donor_history.setdefault(donor_name, [])
-            donor_history[donor_name].append(donation)
+            donor_history[donor_name].append(round(donation, 2))
             text = create_form_letter(donor_name, donation)
             print(text)
             return donation
@@ -200,20 +197,22 @@ def send_all_letters():
     """
     Create all of the donor thank-you letters.
 
-    :return:  The folder containing the thank-you letters.
+    :return:  None.
     """
     # Ask for the directory to save the letters to
     print('\nThe current directory is %s' % os.getcwd())
     new_dir = input('\nType the directory to save the letters in'
                     ' (invalid entry defaults to the current directory): '
                     ).strip()
-    return save_letters(new_dir)
+    save_letters(new_dir)
 
 def save_letters(folder):
     """
     Save the donor thank-you letters to disk.
 
-    :folder:  The folder in which to save the files.
+    :folder:  The folder in which to save the files. If an invalid
+              folder is specified or no folder is specified, the current
+              folder is used.
 
     :return:  The folder containing the thank-you letters.
     """
@@ -255,9 +254,9 @@ def create_form_letter(donor_name, donor_amount):
     :donor_amount:  The amount given by the donor this time.
 
     :return:  A string containing the filled-in form letter. If the
-              donor name is not in the donor history or an invalid or
-              nonpositive donor amount is specified, `None` is returned
-              instead.
+              donor name is not in the donor history or an invalid,
+              nonpositive, or unrecorded donor amount is specified, 
+              `None` is returned instead.
     """
     str = """\n\n\n
             From:     Random Worthy Cause Foundation
