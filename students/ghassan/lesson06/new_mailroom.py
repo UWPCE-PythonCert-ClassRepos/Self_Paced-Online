@@ -27,12 +27,19 @@ def send_thankyou():
     try:
         donation_amount = input('Please enter a donation amount: ')
         donors[donor_name].append(float(donation_amount))
-        print('Thank you {} for your generous donation of {}'.format(
-            donor_name, sum(donors[donor_name])))
+        print(thank_you_msg(donor_name))
     except KeyError:
-        donors[donor_name] = [float(donation_amount)]
-        print('Thank you {} for your generous donation of {}'.format(
-            donor_name, sum(donors[donor_name])))
+        add_donor(donor_name, donation_amount)
+        print(thank_you_msg(donor_name))
+
+
+def add_donor(donor_name, donation_amount):
+    donors[donor_name] = [float(donation_amount)]
+
+
+def thank_you_msg(donor_name):
+    return 'Thank you {} for your generous donation of {}'.format(
+        donor_name, sum(donors[donor_name]))
 
 
 def create_report():
