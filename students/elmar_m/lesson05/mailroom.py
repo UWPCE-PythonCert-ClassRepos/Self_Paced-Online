@@ -41,13 +41,19 @@ def writefile(name, content):
     # f.close
 
     try:
-        with open(fname, 'w') as f:
+        # with open(fname, 'w') as f:
+        with open(fname, 'x') as f:     # intentionally doing it with 'x' to test a FileExistsError
             f.write(content)
-    # except (OSError, FileExistsError, IsADirectoryError, PermissionError) as e:
-    except PermissionError as e:
-        # print('Sorry, something went wrong:', e,  e.args[0])
-        print('Sorry, something went wrong:', e)
-        return None
+            return True
+    except (OSError, FileExistsError, IsADirectoryError, PermissionError) as e:
+    # except (OSError, FileExistsError, IsADirectoryError, PermissionError):
+    # except PermissionError as e:
+        # print('ALERT: exception found:', fname, ':', e,  e.args[0])
+        # print('>> EXCEPTION ALERT:', fname, ':', e, e.with_traceback,  e.args[0])
+        # print('>> EXCEPTION ALERT:', fname, ':', e.with_traceback)
+        print('>> EXCEPTION ALERT trying to write', fname, ':', e)
+        # print('ALERT: exception found:', fname)
+        return False
 
 
 def mail():
@@ -65,17 +71,18 @@ def mail():
         # print('mailfile created for', i, 'in your current working directory')
 
         if writefile(i, text):
-            print('mailfile created for', i, 'in your current working directory')
+            print('>> mailfile created for', i, 'in your current working directory')
         else:
             # sys.exit('Exiting because of previous errors.')
-            print('something weird going on with:', i)
+            print('>> ERROR: could not create mailfile for', i)
             
 
 
 def thankyou():
     '''
-    Show list of known donors, add new donor to list, 
-    add new donation to donor and print letter of thanks.
+    # Show list of known donors, add new donor to list, 
+    # add new donation to donor and print letter of thanks.
+    Start submenu
     '''
     menu(sub_p, sub_d)
 
@@ -85,6 +92,7 @@ def list_donors():
     Print list of donors
     '''
     print('\n'.join(donors))
+    return '\n'.join(donors)
     
 
 def add():
@@ -103,7 +111,8 @@ def add():
     if dname in donors:
         print('>>', dname, 'already in list')
         add_amount(dname)
-    elif not dname in donors:
+    # elif not dname in donors:
+    else:
         print('>>', dname, 'not in list, adding it ')
         add_amount(dname)
 
