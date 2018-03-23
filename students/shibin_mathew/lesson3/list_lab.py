@@ -48,11 +48,7 @@ list_copy = []
 str_ = ''
 for item in list_:
 	for i in range(len(item)-1,-1,-1):
-			# print(i)
-			if i == 0:
-				str_+=item[i]
-			else:
-				str_+=item[i]
+			str_+=item[i]
 	list_copy.append(str_)
 	str_=''
 list_copy= list_copy[:-1]
