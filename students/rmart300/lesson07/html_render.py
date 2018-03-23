@@ -114,3 +114,26 @@ class A(Element):
             self.append(content)
         self.attrs = { 'href':link } 
 
+class Ul(Element):
+
+    _tag = 'ul'
+    _cur_ind = ''
+
+class Li(Element):
+
+    _tag = 'li'
+    _cur_ind = ''
+
+class H(OneLineTag):
+
+    _tag = 'h'
+    _cur_ind = ''
+
+    def __init__(self,number,content):
+
+        self._tag = f"h{number}"
+       
+        self.content_list = []
+        if content is not None:
+            self.append(content)
+        super()
