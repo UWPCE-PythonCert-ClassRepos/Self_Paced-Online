@@ -63,7 +63,7 @@ def create_report():
     Prints a list of donors sorted by total historical donation amount.
     - Includes donor name, total donated, number of donations, average donation
       amount.
-    - $ Total - 27 spaces in, right justified
+    - $ Total - 27 spaces in, right justified   
     """
     print("Donor:                    |    $ Total     |   Donations   |   $ Average   |")
     print("-"*76)    
