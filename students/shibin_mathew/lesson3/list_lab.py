@@ -51,12 +51,8 @@ for item in list_:
 			# print(i)
 			if i == 0:
 				str_+=item[i]
-			# 	# list_copy.append(item[i])
-			# 	# list_copy.append(',')
-
 			else:
 				str_+=item[i]
-			# 	list_copy.append(item[i])
 	list_copy.append(str_)
 	str_=''
 list_copy= list_copy[:-1]
