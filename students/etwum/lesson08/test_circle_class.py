@@ -11,3 +11,7 @@ class TestCircle(TestCase):
     def test_diameter(self):
         c = Circle(3)
         self.assertEqual(c.diameter, 6)
+
+    def test_area(self):
+        c = Circle(3)
+        self.assertEqual(c.area, 28.274333882308138)
