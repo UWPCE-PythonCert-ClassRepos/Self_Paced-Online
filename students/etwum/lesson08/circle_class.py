@@ -23,8 +23,12 @@ class Circle():
     def get_diameter(cls,diameter):
         return cls(diameter/2)
 
+    def __str__(self):
+        return "Circle with radius: {x:.1f}".format(x=self.radius)
 
-c = Circle.get_diameter(6)
+    def __repr__(self):
+        return 'Circle({x})'.format(x=self.radius)
 
-print(c.diameter)
-print(c.radius)
+c = Circle(3)
+
+print(c)

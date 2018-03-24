@@ -20,3 +20,11 @@ class TestCircle(TestCase):
         c = Circle.get_diameter(6)
         self.assertEqual(c.radius, 3)
         self.assertEqual(c.diameter, 6)
+
+    def test_repr(self):
+        c = Circle(3)
+        self.assertEqual(repr(c), 'Circle(3)')
+
+    def test_str(self):
+        c = Circle(3)
+        self.assertEqual(str(c), "Circle with radius: 3.0")
