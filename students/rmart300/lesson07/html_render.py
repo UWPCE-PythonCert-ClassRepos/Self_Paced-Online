@@ -17,6 +17,31 @@ class Element:
     def cur_ind(self):
         return self._cur_ind
 
+    @property
+    def opening_tag(self):
+        opening_tag = ''
+        if len(self.tag) > 0:
+            if self.tag == 'html': opening_tag = '<!DOCTYPE html>\n'
+            opening_tag += f"{self.cur_ind}<{self.tag}"
+            opening_tag += f"{self.attr_str}>\n"
+        return opening_tag
+
+    @property
+    def closing_tag(self):
+        closing_tag = ''
+        if len(self.tag) > 0:
+            closing_tag = f"{self.cur_ind}</{self.tag}>\n"
+        return closing_tag
+
+    @property
+    def attr_str(self):
+        attr_str = ''
+        if hasattr(self, 'attrs'):
+            for k,v in self.attrs.items():
+                attr_str += f"{k}=\"{v}\""
+                attr_str = ' ' + attr_str if len(attr_str) > 0 else attr_str
+        return attr_str
+
     def append(self, more_content):
         self.content_list.append(more_content)
 
@@ -31,29 +56,21 @@ class Element:
             should be indented for pretty printing
         """
         
-        #print(type(self))
-        if len(self.tag) > 0:
-            file_out.write(f"{self.cur_ind}<{self.tag}")
-            if hasattr(self, 'attrs'):
-                attr_str = ''
-                for k,v in self.attrs.items():
-                    attr_str += f"{k}=\"{v}\""
-                attr_str = ' ' + attr_str if len(attr_str) > 0 else attr_str
-                file_out.write(f" {attr_str}>")
-            file_out.write('\n')
+        file_out.write(self.opening_tag)
+
         for element in self.content_list:
             if isinstance(element,str):
-                file_out.write(self.cur_ind + element + '\n')
+                file_out.write(self.cur_ind + ' '*4 + element + '\n')
             else:
                 element.render(file_out,element.cur_ind)
-        if len(self.tag) > 0:
-            file_out.write(f"{self.cur_ind}</{self.tag}>\n")
+
+        file_out.write(self.closing_tag)
 
 class Html(Element):
     
     _tag = 'html'
     _cur_ind = ''
-    
+
 class Body(Element):
 
     _tag = 'body'
@@ -91,7 +108,7 @@ class SelfClosingTag(Element):
 
         if len(self.content_list) > 0:
             raise TypeError
-        file_out.write(f"{self.cur_ind}<{self.tag} />\n")
+        file_out.write(f"{self.cur_ind}<{self.tag}{self.attr_str} />\n")
         
 
 class Hr(SelfClosingTag):
@@ -117,17 +134,17 @@ class A(Element):
 class Ul(Element):
 
     _tag = 'ul'
-    _cur_ind = ''
+    _cur_ind = ' '*12
 
 class Li(Element):
 
     _tag = 'li'
-    _cur_ind = ''
+    _cur_ind = ' '*16
 
 class H(OneLineTag):
 
     _tag = 'h'
-    _cur_ind = ''
+    _cur_ind = ' '*8
 
     def __init__(self,number,content):
 
@@ -137,3 +154,12 @@ class H(OneLineTag):
         if content is not None:
             self.append(content)
         super()
+
+class Meta(SelfClosingTag):
+
+    _tag = 'meta'
+    _cur_ind = ''
+
+    def __init__(self, charset='UTF-8'):
+        self.content_list = []
+        self.attrs =  { 'charset': charset } 
