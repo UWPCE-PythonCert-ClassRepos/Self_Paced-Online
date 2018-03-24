@@ -51,6 +51,7 @@ try:
     more_joke = more_fun(langs[0])
 except IndexError:
     more_joke = more_fun(langs[1])
-finally:
+else:
     more_joke = more_fun(langs[2])
+finally:
     last_fun()
