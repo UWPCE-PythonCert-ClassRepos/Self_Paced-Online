@@ -1,7 +1,9 @@
+import os
+
 ################################################################################
 # Revision 1
-# - Use dicts where appropriate
-# - Use a dict to switch between user selections
+# - Use dicts where appropriate*
+# - Use a dict to switch between user selections*
 # - Use a dict & format method to do the letter as one big template
 #       .format(**dict) -> passes in dict as keyword args
 ################################################################################
@@ -9,7 +11,7 @@
 ################################################################################
 # Revision 2
 # - Adds a menu item to send a letter to all donors and writes a multi-line
-# thank you letter to the disk as a text file -> fname_lname.tx
+# thank you letter to the disk as a text file -> fname_lname.txt
 ################################################################################
 
 """
@@ -17,8 +19,8 @@ Thomas Horn
 mailroom.py
 Tracks donor information and automates the sending of thank you notes.
 """
-
-# Original Global that holds donor history and the amounts donated.
+################################################################################
+# Original global list that holds donor history and the amounts donated.
 # donors = [
 #     ['Tom Horn',        [599.23, 1000.00]],
 #     ['Theo Hartwell',   [0.01, 0.01, 0.1]],
@@ -26,8 +28,11 @@ Tracks donor information and automates the sending of thank you notes.
 #     ['Paul Hubbell',    [90012.32, 2312.24]],
 #     ['David Beckham',   [1817266.11, 123123.66, 111335.112]]
 # ]
+###############################################################################
 
-# Dict version of above var.
+# Revised dictionary version of above container.
+# Adding a donation -> donors[donor].append()
+# Adding a donor/donation -> donors[donor] = [donation]
 donors = {
     'Tom Horn':        [599.23, 1000.00],
     'Theo Hartwell':   [0.01, 0.01, 0.1],
@@ -60,20 +65,27 @@ def send_thanks():
     if name_request.lower() == 'list':
         for donor in donors:
             print(donor)
+        return
 
     name_request = name_request.title()
     donation_amount = float(input(("Please enter a donation amount for {}: ".format(name_request))))
+    print()
+    # TODO: reword the message format - maybe read it from a file.  Super awk.
+    message = f"""Dear {name_request},
+        Thank you for you generous donation of ${donation_amount:.2f}.
+It will truly help the children.
+
+        Sincerely,
+        Donation Recievers
+    """
 
     # Add to existing donor or put new donor and amount in the list.
     if name_request in donors.keys():
-        donations = list(donors.get(name_request))
-        donations.append(donation_amount)
-        donors[name_request] = donations
-        print(f"Thank you {name_request.title()} for your donation of ${donation_amount:.2f}.\n")
-        return
-
-    donors[name_request] = [donation_amount]
-    print(f"Thank you {name_request.title()} for your donation of ${donation_amount:.2f}.\n")
+        donors[name_request].append(donation_amount)
+        print(message)
+    else:
+        donors[name_request] = [donation_amount]
+        print(message)
 
 
 def create_report():
@@ -93,6 +105,34 @@ def create_report():
     print('\n')
 
 
+def send_letters():
+    """ 
+    Creates a letter for every donor and saves it to the root directory. 
+    Letter will contain the donors name and total donation amount.
+    """
+    cwd = os.getcwd()
+    for donor in donors:
+        # Get total donations for the donor.
+        total = 0
+        for donation in donors[donor]:
+            total += donation
+        outletter = open(os.path.join(cwd, f'{donor}_ty_letter.txt'), 'w+')
+        message = f"""Dear {donor},
+        Thank you for you generous donation of ${total:.2f}.
+It will truly help the children.
+
+
+        Sincerely,
+        Donation Recievers
+    """
+        outletter.write(message)
+        outletter.close()
+        
+
+def quitter():
+    print("Exiting")
+    quit()
+
 if __name__ == "__main__":
     # Select from options.  No checks to sanatize input.
     while True:
@@ -100,13 +140,16 @@ if __name__ == "__main__":
         "Please select an option:\n\
         1 - Send Thanks\n\
         2 - Create Donor Report\n\
-        3 - Quit\n")
+        3 - Send Letters\n\
+        4 - Quit\n")
         print()
-        if choice == "1":
-            send_thanks()
-        elif choice == "2":
-            create_report()
-        elif choice == "3":
-            print("Quitting.")
-            break
+        user_choices = {
+            '1':  send_thanks,
+            '2':  create_report,
+            '3':  send_letters,
+            '4':  quitter
+        }
+        if choice in user_choices:
+            user_choices[choice]()
+
 
