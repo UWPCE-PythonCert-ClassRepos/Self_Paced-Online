@@ -12,7 +12,7 @@ class Donor:
         return "{} {}".format(self.first, self.last)
 
     @property
-    def donor_history(self):
+    def total_donation(self):
         return sum(self.donations)
 
     def add_donation(self, amount):
@@ -21,7 +21,7 @@ class Donor:
 
 class DonorBook:
 
-    def __init__(self, donors = []):
+    def __init__(self, donors = None):
         if donors is None:
             self.donors = []
         else:
@@ -32,17 +32,10 @@ class DonorBook:
         self.donors.append(donor)
 
     def get_all_donor_names(self):
-        donor_name_list = []
-        for donor in self.donors:
-            #print("-->" + donor.full_name)
-            donor_name_list.append(donor.full_name)
-        return donor_name_list
+        return [donor.full_name for donor in self.donors]
 
     def list_all_donor_names_sorted(self):
-        all_names = ""
-        for each_donor_name in sorted(self.get_all_donor_names()):
-            all_names += "{}\n".format(each_donor_name)
-        return(all_names)
+        return "\n".join(sorted(self.get_all_donor_names()))
 
     def send_thank_you(self):
         donor_name = None

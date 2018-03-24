@@ -5,7 +5,8 @@ os.chdir(os.path.dirname(__file__))
 cwd = os.getcwd()
 
 #open the text file and read it into a list of words
-f = open(cwd + '\sherlock.txt','rb')
+
+f = open(cwd + '\sherlock.txt','r')
 text = f.read()
 words = text.split()
 words = [str(i) for i in words]
