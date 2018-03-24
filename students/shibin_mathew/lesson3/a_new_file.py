@@ -18,43 +18,44 @@ def exchange_first_last(seq):
 
 def every_other_removed(seq):
 	#Every other item removed
-	tup_b=()
-	str_length = len(seq)
-	new_str = ''
-	if isinstance(seq, str): #if sequence is a string
-		for i, item in enumerate(seq): #loop over the sequence and extract every other value
-			if i % 2 == 0: #even value
-				new_str+=item #concatenate every other values
-		return new_str #return new string
-	else:
-		for i, item in enumerate(seq):
-			if i%2 ==0:
-				tup_b = tup_b+(item,)
-		return tup_b
+
+	return seq[:-1:2]
+	# tup_b=()
+	# str_length = len(seq)
+	# new_str = ''
+	# if isinstance(seq, str): #if sequence is a string
+	# 	for i, item in enumerate(seq): #loop over the sequence and extract every other value
+	# 		if i % 2 == 0: #even value
+	# 			new_str+=item #concatenate every other values
+	# 	return new_str #return new string
+	# else:
+	# 	for i, item in enumerate(seq):
+	# 		if i%2 ==0:
+	# 			tup_b = tup_b+(item,)
+	# 	return tup_b
 
 
 def first_last_four_removed(seq):
 	#First 4 and last 4 items removed, and then every other item in between
-	str_ = ''
-	str_ = seq[4:-4]
-	str_ = str_[0:-1:2]
-	return str_
+	# str_ = ''
+	return seq[4:-4:2]
+	# str_ = str_[0:-1:2]
+	# return str_
 
 
 
 def elements_reversed(seq):
 	#elements reversed
-	str_ = ""
-	tup = ()
+	return seq[::-1]
 	
-	if isinstance(seq, str):
-		for i in range(len(seq)-1,-1,-1):
-			str_+=seq[i]
-		return str_
-	else:
-		for i in range(len(seq)-1,-1,-1):
-			tup = tup + (seq[i],)
-		return tup
+	# if isinstance(seq, str):
+	# 	for i in range(len(seq)-1,-1,-1):
+	# 		str_+=seq[i]
+	# 	return str_
+	# else:
+	# 	for i in range(len(seq)-1,-1,-1):
+	# 		tup = tup + (seq[i],)
+	# 	return tup
 
 
 def new_order(seq):
