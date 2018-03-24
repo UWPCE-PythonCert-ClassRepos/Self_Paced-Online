@@ -18,10 +18,15 @@ class Donor:
     def add_donation(self, amount):
         return self.donations.append(amount)
 
-    def mult_donations(self, factor, min_donation = 1000):
-        filtered_min_list = filter(lambda x: x > min_donation, self.donations)
-        return list(map(lambda x: x * factor, filtered_min_list))
+    def mult_donations(self, factor, donation_list):
+        # filtered_min_list = filter(lambda x: x > min_donation, self.donations)
+        return list(map(lambda x: x * factor, donation_list))
 
+    def list_min_donations(self, min_donation = 1000):
+        return list(filter(lambda x: x > min_donation, self.donations))
+
+    def donations_to_double(self, min):
+        return list(filter(lambda x: x < min, self.donations))
 
 class DonorBook:
 
@@ -92,9 +97,16 @@ class DonorBook:
 
     def challenge_report(self):
         factor = challenge_prompt()
-        min_donation = min_donation_prompt()
+        try:
+            min_donation = min_donation_prompt()
+        except ValueError:
+            min_donation = 1000
+
+        print("Challenge Report: \n")
+
         for donor in self.donors:
-            print("{}: {}".format(donor.full_name, donor.mult_donations(factor, min_donation)))
+            new_db.append(Donor(donor.full_name, donor.mult_donations(factor, donor.list_min_donations(min_donation))))
+            print("{}: {}".format(donor.full_name, donor.mult_donations(factor, donor.list_min_donations(min_donation))))
 
     def send_letters(self):
         for donor in self.donors:
@@ -103,17 +115,27 @@ class DonorBook:
                 fh.write("Dear {},\n\tThank you for your very kind donations: {}\n\tIt will "
                         "be put to very good use.\n\t\tSincerely,\n\t\t\t-The Team".format(donor.full_name, donor.donations))
 
+    def projections(self):
+        for donor in self.donors:
+            print("{}:'s list of current donations: {}".format(donor.full_name, donor.donations))
+            print("Current total donation so far is: {}".format(donor.total_donation))
+            print("{}'s total donation projection if double the donations that are less than $100: {}".
+                format(donor.full_name, donor.total_donation + sum(donor.donations_to_double(100))))
+            print("If double the donations that are less than $50: {}\n".
+                format(donor.total_donation + sum(donor.donations_to_double(50))))
+
     def quit_program(self):
     	print("Thanks for using my script! Bye!")
 
-d1 = Donor("Bill", "Gates", [234.22, 45645.24, 43953.09, 98823])
-d2 = Donor("Jeff", "Bezo", [4564.23])
-d3 = Donor("Mike", "Dell", [299.09, 26273.67])
-d4 = Donor("Harry", "Potter", [8234.09, 83948.04, 7834.23])
-d5 = Donor("Ben", "Williams", [29283.00, 1334.34])
+d1 = Donor("Bill", "Gates", [234.22, 45.24, 453.09, 923.01])
+d2 = Donor("Jeff", "Bezo", [464.23])
+d3 = Donor("Mike", "Dell", [299.09, 73.67])
+d4 = Donor("Harry", "Potter", [834.09, 48.04, 34.23])
+d5 = Donor("Ben", "Williams", [83.00, 1334.34])
 d6 = Donor("Guy", "James", [93.00, 34.34])
 
 db = DonorBook([d1, d2, d3, d4, d5, d6])
+new_db =[] # New donor list for storing in Challenge Report
 
 QUIT_OPT = '4'
 
@@ -122,7 +144,8 @@ selection_map = {
     "2": db.create_report,
     "3": db.send_letters,
     "4": db.quit_program,
-    "5": db.challenge_report
+    "5": db.challenge_report,
+    "6": db.projections
 	}
 
 menu = {
@@ -130,12 +153,13 @@ menu = {
     'op2': "Create a Report",
     'op3': "Send Letters To Everyone",
     'op4': "Quit",
-    'op5': "Challenge"
+    'op5': "Challenge",
+    'op6': "Run Projections"
     }
 
 def prompt():
-    return input("Please choose the following options:\n1) {op1}.\n2) {op2}.\n3)"
-        " {op3}.\n4) {op4}.\n5) {op5}.\n".format(**menu))
+    return input("\nPlease choose the following options:\n1) {op1}.\n2) {op2}.\n3)"
+        " {op3}.\n4) {op4}.\n5) {op5}.\n6) {op6}.\n".format(**menu))
 
 
 def donation_prompt():
