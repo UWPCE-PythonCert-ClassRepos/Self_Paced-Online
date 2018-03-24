@@ -19,7 +19,12 @@ class Circle():
     def area(self):
         return self.__area
 
-c = Circle(3)
+    @classmethod
+    def get_diameter(cls,diameter):
+        return cls(diameter/2)
 
 
-print(c.area)
+c = Circle.get_diameter(6)
+
+print(c.diameter)
+print(c.radius)
