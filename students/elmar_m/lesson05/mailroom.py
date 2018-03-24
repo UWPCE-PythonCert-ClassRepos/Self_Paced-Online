@@ -5,11 +5,7 @@ file: mailroom.py
 elmar_m / 22e88@mailbox.org
 Lesson05: Mailroom Exercise Part 3
 '''
-
-# import time
-# import collections
 import time, collections, sys
-
 
 main_p = '\n> Main menu. Options: t == thankyou | r == report | q == quit program\n'
 sub_p = '\n>> Sub menu "thankyou". Options: l == list current donors | a == add donation / donor | m == send mail to every donor | x == exit submenu\n'
@@ -32,27 +28,15 @@ def writefile(name, content):
     name: filename / name of donor
     content: mail body text
     '''
-    # ts = time.strftime('%Y%m%d-%H%M%S')
-    ts = time.strftime('%Y%m%d')
+    ts = time.strftime('%Y%m%d-%H%M%S')
     fname = '{}.{}.txt'.format(name, ts)
-
-    # f = open(fname, 'w')
-    # f.write(content)
-    # f.close
-
     try:
         # with open(fname, 'w') as f:
-        with open(fname, 'x') as f:     # intentionally doing it with 'x' to test a FileExistsError
+        with open(fname, 'x') as f:     # intentionally doing it with 'x' to be able to test a FileExistsError
             f.write(content)
             return True
     except (OSError, FileExistsError, IsADirectoryError, PermissionError) as e:
-    # except (OSError, FileExistsError, IsADirectoryError, PermissionError):
-    # except PermissionError as e:
-        # print('ALERT: exception found:', fname, ':', e,  e.args[0])
-        # print('>> EXCEPTION ALERT:', fname, ':', e, e.with_traceback,  e.args[0])
-        # print('>> EXCEPTION ALERT:', fname, ':', e.with_traceback)
         print('>> EXCEPTION ALERT trying to write', fname, ':', e)
-        # print('ALERT: exception found:', fname)
         return False
 
 
@@ -61,19 +45,14 @@ def mail():
     Create mail body text for every donor
     '''
     for i in donors:
-        # print('Dear {}, thank you very much for your donation of {} dollars.\n'.format(i, donors[i][-1]))
         text = '''Dear {},\n 
     Thank you very much for your very kind donation of ${}.\n
     It will be put to very good use.\n
         Sincerely,
              -The Team'''.format(i, donors[i][-1])
-        # writefile(i, text)
-        # print('mailfile created for', i, 'in your current working directory')
-
         if writefile(i, text):
             print('>> mailfile created for', i, 'in your current working directory')
         else:
-            # sys.exit('Exiting because of previous errors.')
             print('>> ERROR: could not create mailfile for', i)
             
 
@@ -99,7 +78,6 @@ def add():
     '''
     Add new donation and / or donor
     '''
-   
     while True: 
         dname = input('>> Please give donor name: ')
         if not dname.isalpha():
@@ -107,11 +85,9 @@ def add():
             continue
         else:
             break
-
     if dname in donors:
         print('>>', dname, 'already in list')
         add_amount(dname)
-    # elif not dname in donors:
     else:
         print('>>', dname, 'not in list, adding it ')
         add_amount(dname)
@@ -126,21 +102,16 @@ def add_amount(donor):
     '''
     while True:
         amount = input('>> please add current donation (int or float, use \'.\' as decimal separator):\n>> ')
-        # print(type(amount))
-        
         # make sure given donation values are positive: 
         if '-' in amount:
-            # print('>> only positive values allowed, please try again')
             print('>> only positive integers or floats allowed.')
             continue
-        
         # Throw exception and ask again, if given value is not int or float:
         try:
             donors[donor].append(float(amount))
             break
         except ValueError:
             print('>> only numerical values allowed, please try again')
-        
     print(amount, 'added to donation list of', donor, ', thank you')     
 
 
@@ -168,12 +139,14 @@ def efunc():
     print('exiting.\n')
     return 'exiting'
 
+
 main_d = {
     # Dispatcher dictionary main menu
     't' : thankyou,
     'r' : report,
     'q' : efunc,
     }
+
 
 sub_d= {
     #Dispatcher dictionary submenu
