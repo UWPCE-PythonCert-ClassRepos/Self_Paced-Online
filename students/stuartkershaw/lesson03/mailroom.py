@@ -14,6 +14,7 @@ def compose_email(index):
     message = f"Dear {donors[index][0]}, thanks so much \
 for your generous donation in the amount of: ${donors[index][1][-1]}."
     print(message)
+    get_selection()
 
 
 def get_selection():
@@ -24,9 +25,14 @@ a) send a thank you\nb) create a report\nc) quit\n'
             selection = input(options)
             while selection not in ['a', 'b', 'c']:
                 selection = input(options)
-            return selection
+            if selection == 'a':
+                get_donor_name()
+            elif selection == 'b':
+                show_donor_table()
+            else:
+                quit()
         except ValueError:
-            print(options)
+            input(options)
 
 
 def set_donation(index):
@@ -67,7 +73,10 @@ def show_donor_table():
         num = str(len(donor[1]))
         total = str(sum(donor[1]))
         avg = format(sum(donor[1]) / len(donor[1]), '.2f')
-        donor.append([total, num, avg])
+        if (len(donor) < 3):
+            donor.append([total, num, avg])
+        else:
+            donor[2] = [total, num, avg]
 
     print(donors)
 
@@ -77,16 +86,11 @@ def show_donor_table():
     for donor in donors:
         print('{:<20}'.format(donor[0]),
                              ('{:<15}' * len(donor[2])).format(*donor[2]))
+    get_selection()
 
 
 def main():
-    selection = get_selection()
-    if selection == 'a':
-        get_donor_name()
-    elif selection == 'b':
-        show_donor_table()
-    else:
-        quit()
+    get_selection()
 
 
 if __name__ == "__main__":
