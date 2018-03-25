@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import datetime
-import mailroomtest
+# import mailroomtest
 import sys
 
 # Data
@@ -22,8 +22,8 @@ donors_amts = {'Gates': {'title': 'Mr.', 'donations': 150000,
 
 # Processing
 def get_donor_list():
-    donor_list = list(donors_amts)
-    print(donor_list)
+    return list(donors_amts)
+    # print(donor_list)
 
 
 def prompt_title():
@@ -89,7 +89,6 @@ def prepare_ty():
             add_donation_amt(response, donation_amt)
 
             send_ty(title, response, donation_amt)
-            print()
             break
 
 
@@ -107,6 +106,10 @@ def send_ty(title, name, donation_amt):
 
 
 def get_report():
+    # note: per office hrs convo with NA, need to sort donors in
+    # order from highest to lowest donation total;
+    # so iterate over a sorted list, rather than dict, in for
+    # loop below
     print()
     psv = ['Donor Name', '| Total Given', '| Num Gifts',
            '| Average Gift']
@@ -157,7 +160,9 @@ def send_letters():
 
 
 def test():
-    pass
+    test_list = get_donor_list()
+    a_test = mailroomtest.MailroomTest()
+    a_test.test_get_donor_list(test_list)
 
 
 def program_run():
@@ -184,8 +189,8 @@ def program_run():
 
 
 # I/O
-if __name__ == '__main__':
-    program_run()
+# if __name__ != '__main__':
+#     program_run()
 
-else:
-    print('This module is not intended to be imported.')
+# else:
+#     print('This module is intended to be imported.')
