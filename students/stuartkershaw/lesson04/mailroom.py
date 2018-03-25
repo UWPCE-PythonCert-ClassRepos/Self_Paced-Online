@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import pathlib
+pth = pathlib.Path('./')
+
 donors = {
     'Anne Hathaway': {
         'donations': [
@@ -43,27 +46,38 @@ donors = {
 
 
 def compose_email(donor):
-    message = f"Dear {donor}, thanks so much "\
-              f"for your generous donation in the amount of: "\
-              f"${donors[donor]['donations'][-1]}."
-    print(message)
-    get_selection()
+    message_obj = {
+        'donor_name': donor,
+        'donation': donors[donor]['donations'][-1]
+    }
+    message = 'Dear {donor_name}, thanks so much '\
+              'for your generous donation in the amount of: '\
+              '${donation}.'.format(**message_obj)
+    return message
+
+
+def apply_selection(selection):
+    arg_dict = {
+        '1': get_donor_name,
+        '2': show_donor_table,
+        '3': generate_letters,
+        '4': quit
+    }
+    arg_dict.get(selection)()
 
 
 def get_selection():
-    options = 'Please select a, b, or c:\n'\
-              'a) send a thank you\nb) create a report\nc) quit\n'
+    options = 'Please select 1, 2, 3, or 4:\n'\
+              '1) send a thank you\n'\
+              '2) create a report\n'\
+              '3) send letters to everyone\n'\
+              '4) quit\n'
     while True:
         try:
             selection = input(options)
-            while selection not in ['a', 'b', 'c']:
+            while selection not in ['1', '2', '3', '4']:
                 selection = input(options)
-            if selection == 'a':
-                get_donor_name()
-            elif selection == 'b':
-                show_donor_table()
-            else:
-                quit()
+            apply_selection(selection)
         except ValueError:
             input(options)
 
@@ -83,7 +97,8 @@ def set_donation(donor):
             print('Please provide a whole number greater than zero.')
             set_donation(donor)
         break
-    compose_email(donor)
+    print(compose_email(donor))
+    get_selection()
 
 
 def get_donor_name():
@@ -100,7 +115,7 @@ def get_donor_name():
         set_donation(name_input)
 
 
-def show_donor_table():
+def generate_rollup():
     for donor in donors:
         cur_donor = donors[donor]
         if 'rollup' not in cur_donor:
@@ -117,6 +132,9 @@ def show_donor_table():
                 )
             )
 
+
+def show_donor_table():
+    generate_rollup()
     headings = ('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift')
     print('{:20}{:<15}{:<15}{:<15}'.format(*headings))
     print('{:_<65}'.format(''))
@@ -125,6 +143,17 @@ def show_donor_table():
         print('{:<20}'.format(donor), ('{:<15}' * len(cur_donor['rollup']))
               .format(*cur_donor['rollup'].values()))
     get_selection()
+
+
+def generate_letters():
+    generate_rollup()
+    for donor in donors:
+        with open(donor.replace(' ', '_') + '.txt', 'w') as outfile:
+            outfile.write(compose_email(donor))
+    print('Letters generated: ')
+    for f in pth.iterdir():
+        if '.txt' in str(f):
+            print(f)
 
 
 def main():
