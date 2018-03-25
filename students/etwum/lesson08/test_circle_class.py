@@ -48,3 +48,12 @@ class TestCircle(TestCase):
         c = Circle(3)
         c2 = Circle(3)
         self.assertEqual(c == c2, True)
+
+    def test_sort(self):
+        c = Circle(3)
+        c2 = Circle(4)
+        c3 = Circle(2)
+
+        list1 = [c,c3,c2]
+        list1.sort()
+        self.assertListEqual(list1, [Circle(2), Circle(3), Circle(4)])

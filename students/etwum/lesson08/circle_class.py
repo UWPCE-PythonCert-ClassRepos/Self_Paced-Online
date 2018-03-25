@@ -45,3 +45,8 @@ class Circle():
 
     def __eq__(self, other):
         return self.radius == other.radius
+
+    def sort(self):
+        return sorted(self.radius)
+
+
