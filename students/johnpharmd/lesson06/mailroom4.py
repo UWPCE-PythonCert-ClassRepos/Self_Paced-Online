@@ -28,8 +28,8 @@ def get_donor_list():
 
 def prompt_title():
     title_tup = ('Prof.', 'Dr.', 'Ms.', 'Mr.')
-    title = input('Title: "Prof.", "Dr.", "Ms." or "Mr."?: ')
     while True:
+        title = input('Title: "Prof.", "Dr.", "Ms." or "Mr."?: ')
         try:
             title_tup.index(title)
             return title
@@ -38,46 +38,30 @@ def prompt_title():
 
 
 def prompt_donation():
-    # donation = 0
     while True:
         try:
-            donation = input('Enter a Donation amount' +
-                             ' (in USD): ')
-            donation = int(donation)
+            donation = int(input('Enter a Donation amount' +
+                                 ' (in USD): '))
             return donation
         except ValueError:
             print('Numeric value only, please.')
 
 
 def add_donor(donor_name):
-    # title_tup = ('Prof.', 'Dr.', 'Ms.', 'Mr.')
-    # title = input('Title: "Prof.", "Dr.", "Ms." or "Mr."?: ')
-    while True:
-        try:
-            # title_tup.index(title)
-            prompt_title()
-        except ValueError:
-            print('Not a valid title.\n')
-        try:
-            # new_response = input('Enter a Donation amount' +
-            #                      ' (in USD): ')
-            # new_response = int(new_response)
-            prompt_donation()
-        except ValueError:
-            print('Numeric value only, please.')
-        print('Added to list of Donors:', title,
-              donor_name, new_response)
-        donors_amts[donor_name] = {'title': title,
-                                   'donations':
-                                   donation,
-                                   'num_of_donations': 1}
-        # title = donors_amts[donor_name]['title']
-        send_ty(title, donor_name, donation)
-        break
+    title = prompt_title()
+    print('Added to list of Donors:', title, donor_name)
+    donors_amts[donor_name] = {'title': title,
+                               'donations': 0,
+                               'num_of_donations': 1}
+    return title
+
+
+def add_donation_amt(name, donation_amt):
+    donors_amts[name]['donations'] += donation_amt
+    donors_amts[name]['num_of_donations'] += 1
 
 
 def prepare_ty():
-    new_response = 0
     response_text = '\n'.join((
         'Enter full last name of Donor,',
         '"list" for List of Donors,',
@@ -94,20 +78,19 @@ def prepare_ty():
             print()
         else:
             response = response.capitalize()
-            is_new = False
             if response not in donors_amts:
-                print('This is a new donor.')
-                title = prompt_title()
-                is_new = True
+                print('\nThis is a new donor.')
+                title = add_donor(response)
             else:
                 print('Donor found:', response)
                 title = donors_amts[response]['title']
             donation_amt = prompt_donation()
 
-            add_donation_amt(title, response, is_new, donation_amt)
+            add_donation_amt(response, donation_amt)
 
             send_ty(title, response, donation_amt)
             print()
+            break
 
 
 def send_ty(title, name, donation_amt):
@@ -141,7 +124,6 @@ def get_report():
               + '{:>12}'.format(new_dict[donor][1])
               + '{}{:>11}'.format(' $',
               new_dict[donor][0] // new_dict[donor][1]))
-    print()
 
 
 def send_letters():
@@ -171,18 +153,6 @@ def send_letters():
             [Signature]
             """
             of.write(letter_text.format(**donor_dict))
-            # of.write(
-            #     'Dear {title} {last_name},\n'.format(**donor_dict)
-            #     + 'Thank you for your generous previous giving'
-            #     + ' in the amount of {donations} USD.'.format(**donor_dict))
-            # of.write('\nAttached is our most recent independent,'
-            #          + ' third party audit.\n')
-            # of.write('\nWe hope you agree that we have been good'
-            #          + ' stewards of our donors\' funds,\nand that'
-            #          + ' you will consider donating'
-            #          + ' again to our project.\n')
-            # of.write('\nBest wishes for continued success,')
-            # of.write('\n[Signature]')
     print('Generated a letter, just now, for each of the donors in the db.\n')
 
 
@@ -210,7 +180,6 @@ def program_run():
                 print('Program execution completed.')
             menu_dict[response]()
         except KeyError:
-            print('KeyError occurred.')
             print('\nThat selection is invalid. Please try again.')
 
 
