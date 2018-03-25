@@ -29,6 +29,15 @@ class Circle():
     def __repr__(self):
         return 'Circle({x})'.format(x=self.radius)
 
+    def __add__(self, other):
+        total_radius = self.radius + other.radius
+        return total_radius
+
+    def __mul__(self, other):
+        multiply_radius = self.radius * other
+        return multiply_radius
+
+
 c = Circle(3)
 
 print(c)

@@ -28,3 +28,12 @@ class TestCircle(TestCase):
     def test_str(self):
         c = Circle(3)
         self.assertEqual(str(c), "Circle with radius: 3.0")
+
+    def test_add(self):
+        c = Circle(3)
+        c2 = Circle(5)
+        self.assertEqual(c+c2, 8)
+
+    def test_mul(self):
+        c = Circle(3)
+        self.assertEqual(c*5, 15)
