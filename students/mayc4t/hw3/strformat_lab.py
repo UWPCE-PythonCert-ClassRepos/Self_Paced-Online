@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
+# ###############################################################################
+# Written by: Mayc4t
+# March 19, 2018
 
-# `
-# `Dynamically Building up Format Strings
 def task_3_dynamic_formatter(seq):
+    """ Dynamically Building up Format Strings. """
+
     # this is just note to myself
     # hint build from the video
 
@@ -25,6 +28,7 @@ def task_3_dynamic_formatter(seq):
     
 
 
+# ###############################################################################
 if __name__ == "__main__":
     
     print ("\n\n\nTASK 1")

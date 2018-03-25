@@ -1,23 +1,10 @@
 #!/usr/bin/env python3
-
-
 # ##########################################################################
 # Written : mayc4t
 # Self-paced Python, March 2018
 
 # Goal:
-# 
 # Learn the basic ins and outs of Python lists.
-# 
-# Hint
-# 
-# to query the user for info at the command line, you use:
-# 
-# inp = input("a prompt for the user > ")
-# inp will be a string of whatever the user types (until a <return>).
-# 
-# Procedure
-
 
 # ##########################################################################
 # Series 1
@@ -59,8 +46,6 @@ def make_series_1(l1):
     fruit_l1.insert(0, inp)
     print ("\t2--> using INSERT : {}".format(fruit_l1))
     
-    
-    
     # Display all the fruits that begin with “P”, using a for loop.
     print ("\n\n\t{}".format(fruit_l1))
     print ("\t: Fruits that begin with P")
@@ -74,17 +59,11 @@ def make_series_1(l1):
 
 
 # ##########################################################################
-# Series 2
-# 
-# Using the list created in series 1 above:
-# 
-# Display the list.
-# Display the list.
 def make_series_2(ll):
     
     fruit_list = list(ll)
-
     print ("====Original List\n{}".format(fruit_list))
+    
     # Remove the last fruit from the list.
     fruit_list.pop()
     print ("\n\n\tRemove the last fruit in the list")
@@ -102,11 +81,11 @@ def make_series_2(ll):
     print ("\n\n\t {}".format(fruit_list))
     fruit_list = fruit_list * 2
     print ("\t1. List (x2) : {}".format(fruit_list))
-    inp = input("\t2. Input the fruit NAME to remove it from the list : ")
+    inp = input("\t2. Input the fruit NAME (case sensitive) to remove it from the list : ")
     inp = inp.strip() # to remove extra prefix, postfix white space
     finp_cnt = fruit_list.count(inp)
     while( finp_cnt < 1 ):
-        inp = input("\t2. REPEAT: Input the fruit NAME to remove it from the list : ")
+        inp = input("\t2. REPEAT: Input the fruit NAME (case sensitive) to remove it from the list : ")
         inp = inp.strip() # to remove extra prefix, postfix white space
         finp_cnt = fruit_list.count(inp)
     
@@ -119,15 +98,6 @@ def make_series_2(ll):
 
 
 # ##########################################################################
-# Series 3
-# 
-# Again, using the list from series 1:
-# 
-# Ask the user for input displaying a line like “Do you like apples?” for each fruit in the list (making the fruit all lowercase).
-# For each “no”, delete that fruit from the list.
-# For any answer that is not “yes” or “no”, prompt the user to answer with one of those two values (a while loop is good here)
-# Display the list.
-
 def make_series_3(l1):
     print ("List from series 1", end='')
     print ( l1 )
@@ -138,18 +108,14 @@ def make_series_3(l1):
     
     for idx,fruit in enumerate( l1 ):
         fruit = fruit.lower()
-        #print ("\n\tNew Iterary: idx : {} and fruit {}".format(idx, fruit))
         inp = input( "\tDo you like \"{}\" : ".format( fruit))
-        #print ("\tinput :" , inp)
         inp = inp.strip()
 
         while not (inp.lower() == "no" or inp.lower() == "yes"):
-            #print ("\tidx : {} --- fruit {}".format(idx, fruit))
             inp = input( "\tREPEAT: Do you like {} ".format( fruit))
             inp = inp.strip()
       
         if inp == "no":
-            #print ("\n\t-- to test out ot bound: idx : {} -- fruit {}".format(idx, fruit))
             fruit_list.remove(fruit)
             print ("\t-->", fruit, "has been delelte")
         
