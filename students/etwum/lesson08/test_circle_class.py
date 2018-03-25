@@ -37,3 +37,14 @@ class TestCircle(TestCase):
     def test_mul(self):
         c = Circle(3)
         self.assertEqual(c*5, 15)
+
+    def test_gt_lt(self):
+        c = Circle(3)
+        c2 = Circle(4)
+        self.assertFalse(c > c2, False)
+        self.assertTrue(c < c2, True)
+
+    def test_equals(self):
+        c = Circle(3)
+        c2 = Circle(3)
+        self.assertEqual(c == c2, True)

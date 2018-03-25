@@ -37,7 +37,11 @@ class Circle():
         multiply_radius = self.radius * other
         return multiply_radius
 
+    def __gt__(self, other):
+        return self.radius > other.radius
 
-c = Circle(3)
+    def __lt__(self, other):
+        return self.radius < other.radius
 
-print(c)
+    def __eq__(self, other):
+        return self.radius == other.radius
