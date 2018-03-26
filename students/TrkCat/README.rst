@@ -1,1 +1,1 @@
-Python code for UWPCE-PythonCert Python 210 online class. Alias TrkCat[D[D[D[D[D[D[D[D[D[D[Code by alias TrkCat, J. Rhode.
+Python code for UWPCE-PythonCert Python 210 online class. Code by alias TrkCat, J. Rhode.
