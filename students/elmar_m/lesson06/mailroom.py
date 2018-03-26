@@ -18,6 +18,7 @@ donors['steve'] = [5.5, 234000, 928]
 donors['donald'] = [657, 234, 28.57, 90456]
 donors['angie'] = [2, 99, 297765, 47, 28346]
 donors['kim'] = [38982, 66.23, 9856, 0.1]
+# donors = {} 
 
 
 def writefile(name, content):
@@ -29,6 +30,7 @@ def writefile(name, content):
     content: mail body text
     '''
     ts = time.strftime('%Y%m%d-%H%M%S')
+    # ts = time.strftime('%Y%m%d')
     fname = '{}.{}.txt'.format(name, ts)
     try:
         # with open(fname, 'w') as f:
@@ -49,12 +51,23 @@ def mail():
     Thank you very much for your very kind donation of ${}.\n
     It will be put to very good use.\n
         Sincerely,
-             -The Team'''.format(i, donors[i][-1])
+             -The Team\n'''.format(i, donors[i][-1])
+
         if writefile(i, text):
             print('>> mailfile created for', i, 'in your current working directory')
         else:
             print('>> ERROR: could not create mailfile for', i)
-            
+            return False
+    return True
+
+# def mail(name, donation):
+#     text = '''Dear {},\n 
+# Thank you very much for your very kind donation of ${}.\n
+# It will be put to very good use.\n
+#     Sincerely,
+#          -The Team'''.format(name, donation)
+#     return text        
+    
 
 
 def thankyou():
@@ -70,8 +83,12 @@ def list_donors():
     '''
     Print list of donors
     '''
-    print('\n'.join(donors))
-    return '\n'.join(donors)
+    # print('\n'.join(donors))
+    # return '\n'.join(donors)
+    the_donors = '\n'.join(donors)
+    if the_donors:
+        print(the_donors)
+        return True
     
 
 def add():
@@ -88,9 +105,11 @@ def add():
     if dname in donors:
         print('>>', dname, 'already in list')
         add_amount(dname)
+        
     else:
         print('>>', dname, 'not in list, adding it ')
         add_amount(dname)
+    return True
 
 
 def add_amount(donor):
@@ -109,10 +128,11 @@ def add_amount(donor):
         # Throw exception and ask again, if given value is not int or float:
         try:
             donors[donor].append(float(amount))
-            break
+            print(amount, 'added to donation list of', donor, ', thank you')     
+            return True
+            # break
         except ValueError:
             print('>> only numerical values allowed, please try again')
-    print(amount, 'added to donation list of', donor, ', thank you')     
 
 
 def report():
@@ -130,9 +150,15 @@ def report():
 
     print(fstring.format('Donor Name', 'Total', 'Num Gifts', 'Average Gift'))  
     print('-' * (maxn + 54)) 
-    for i in donors:
-        print(fstring.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) )) 
 
+    for i in donors:
+        a = fstring.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) ) 
+        # print(fstring.format(i, sum(donors[i]), len(donors[i]),  sum(donors[i])//len(donors[i]) )) 
+        if a:
+            print(a)
+        else:
+            break
+    return True
 
 def efunc():
     '''
