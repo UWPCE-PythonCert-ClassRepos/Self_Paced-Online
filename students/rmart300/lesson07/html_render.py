@@ -18,12 +18,23 @@ class Element:
         return self._cur_ind
 
     @property
+    def attr_str(self):
+        attr_str = ''
+        if hasattr(self, 'attrs'):
+            for k,v in self.attrs.items():
+                attr_str += f" {k}=\"{v}\"" if len(attr_str) > 0 else f"{k}=\"{v}\"" 
+        return attr_str
+
+    @property
     def opening_tag(self):
         opening_tag = ''
         if len(self.tag) > 0:
             if self.tag == 'html': opening_tag = '<!DOCTYPE html>\n'
-            opening_tag += f"{self.cur_ind}<{self.tag}"
-            opening_tag += f"{self.attr_str}>\n"
+
+            if len(self.attr_str) > 0: 
+                opening_tag += f"{self.cur_ind}<{self.tag} {self.attr_str}>\n"
+            else:
+                opening_tag += f"{self.cur_ind}<{self.tag}>\n"
         return opening_tag
 
     @property
@@ -32,15 +43,6 @@ class Element:
         if len(self.tag) > 0:
             closing_tag = f"{self.cur_ind}</{self.tag}>\n"
         return closing_tag
-
-    @property
-    def attr_str(self):
-        attr_str = ''
-        if hasattr(self, 'attrs'):
-            for k,v in self.attrs.items():
-                attr_str += f"{k}=\"{v}\""
-                attr_str = ' ' + attr_str if len(attr_str) > 0 else attr_str
-        return attr_str
 
     def append(self, more_content):
         self.content_list.append(more_content)
@@ -62,7 +64,7 @@ class Element:
             if isinstance(element,str):
                 file_out.write(self.cur_ind + ' '*4 + element + '\n')
             else:
-                element.render(file_out,element.cur_ind)
+                element.render(file_out,self.cur_ind)
 
         file_out.write(self.closing_tag)
 
@@ -84,31 +86,40 @@ class P(Element):
 class Head(Element):
 
     _tag = 'head'
-    _cur_ind = ''*4
+    _cur_ind = ' '*4
 
 class OneLineTag(Element):
 
-    _tag = 'head'
-    _cur_ind = ''*4
+    _tag = ''
+    _cur_ind = ''
+
+    @property
+    def one_line_tag(self):
+        return f"{self.cur_ind}<{self.tag}>" + ' '.join(self.content_list) + f"</{self.tag}>\n"
 
     def render(self, file_out, cur_ind = ""):
-        file_out.write(f"{self.cur_ind}<{self.tag}>" + '\n'.join(self.content_list) + f"{self.cur_ind}</{self.tag}>\n")
+        file_out.write(one_line_tag)
 
 class Title(OneLineTag):
 
     _tag = 'title'
-    _cur_ind = ''*4
+    _cur_ind = ' '*8
 
 class SelfClosingTag(Element):
 
     _tag=''
     _cur_ind=''
+    
+    @property
+    def closed_tag(self):
+        return f"{self.cur_ind}<{self.tag} {self.attr_str} />\n"
+
 
     def render(self, file_out, cur_ind = ""):
 
         if len(self.content_list) > 0:
             raise TypeError
-        file_out.write(f"{self.cur_ind}<{self.tag}{self.attr_str} />\n")
+        file_out.write(closed_tag)
         
 
 class Hr(SelfClosingTag):
@@ -123,7 +134,7 @@ class Br(SelfClosingTag):
 class A(Element):
 
     _tag = 'a'
-    _cur_ind = ' '*8
+    _cur_ind = ' '*16
 
     def __init__(self, link, content):
         self.content_list = []
@@ -134,12 +145,12 @@ class A(Element):
 class Ul(Element):
 
     _tag = 'ul'
-    _cur_ind = ' '*12
+    _cur_ind = ' '*8
 
 class Li(Element):
 
     _tag = 'li'
-    _cur_ind = ' '*16
+    _cur_ind = ' '*12
 
 class H(OneLineTag):
 
@@ -158,7 +169,7 @@ class H(OneLineTag):
 class Meta(SelfClosingTag):
 
     _tag = 'meta'
-    _cur_ind = ''
+    _cur_ind = ' '*8
 
     def __init__(self, charset='UTF-8'):
         self.content_list = []
