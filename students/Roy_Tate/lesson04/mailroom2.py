@@ -1,20 +1,21 @@
 # author/student: Roy Tate (githubtater)
 
-import collections
-from collections import defaultdict, Counter
+from collections import Counter
 
 import sys
 import os
 import os.path
 
 
-# Create the donor_dict
+# Create the donor_dict and manually add a few entries
 donor_dict = {}
 donor_dict['Bill'] = [1100, 2100, 3100]
 donor_dict['Mark'] = [1000, 300000.23, 2000]
 donor_dict['Jeff'] = [50, 450.355]
 donor_dict['Roy'] = [4500, 7500, 11221, 30232, 323]
 
+# This is the standard template to be used when sending thank you emails. Ideally this would be saved
+# externally as a template file.
 email_str_ty = '''\n
         From:     A Worthwhile Cause
         To:       {0}
@@ -30,6 +31,7 @@ email_str_ty = '''\n
         The Boss
         '''
 
+# Email template used for generating thank you emails to all donors.
 email_str_annual = '''\n
         From:    A Charity Thankful For Your Kindness
         To:      {0}
@@ -51,6 +53,7 @@ email_str_annual = '''\n
         
         The good guys at the best organization'''
 
+
 # Prints the list of keys from donor_dict (in this case, the donor names)
 def print_list():
     print('{:*^50}'.format('DONOR LIST'))
@@ -58,7 +61,7 @@ def print_list():
         print(donor)
 
 
-# Helper function to add donations to appropriate user account
+# Helper function to add donations to appropriate donor's account
 def add_donation(name, new_donation):
     if name in donor_dict.keys():
         donor_dict[name].append(new_donation)
@@ -78,18 +81,16 @@ def email_all():
                   'Press Enter to save to the current directory: ')
     print('Generating emails for all donors...')
     count = 0
-    if not os.path.exists(save_path):
-        pass
-    else:
-        os.system('mkdir -p ' + save_path)
+    os.system('mkdir -p ' + save_path)
     for donor, donations in donor_dict.items():
         filename = save_path + donor + '.txt'.strip()
-        os.system('touch .' + filename)
+        os.system('touch ' + filename)
         with open(filename, 'w') as f:
             f.write(email_str_annual.format(donor.title(), sum(donations)))
             print('[SUCCESS] Output file -->  ' + str(os.path.abspath(filename)))
             count += 1
-    print('Successfully generated {} emails.'.format(str(count)))
+    print('[DONE] Successfully generated {} emails.'.format(str(count)))
+
 
 def send_thank_you():
     # Obtain the name of the donor, the contribution amount, add the donation to the list, and generate
@@ -122,6 +123,11 @@ def send_thank_you():
     # print(email_str.format(name.title(), donation_amount))
 
 
+# helper function
+def sum_donations(donor_dict):
+    return donor_dict[1]
+
+
 def create_report():
     # generate a report of the current donor list, the total donation amounts, avg donation amt, and # of donations
     header = '{:<20}|{:^15}|{:^10}|{:>15}'.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift')
@@ -130,20 +136,26 @@ def create_report():
     print(header + dotted_line)
     donor_str_fmt = '{:<20} ${:>13.2f}{:>11}    ${:>11.2f}'
     all_str = ''
+    sort_list = []
     for name, donations in donor_dict.items():
-
         num_gifts = len(Counter(donations))
         total_given = sum(donations)
         avg_gift = total_given / num_gifts
-        all_str += donor_str_fmt.format(name, total_given, num_gifts, avg_gift) + '\n'
+        sort_list.append([name, total_given, num_gifts, avg_gift])
+    sort_list.sort(key=sum_donations, reverse=True)
+    for donors in sort_list:
+        all_str += donor_str_fmt.format(donors[0], donors[1], donors[2], donors[3]) + '\n'
     print(all_str)
 
 
+# take a prompt as a string and a list of options/arguments as a dict
 def menu_selection(prompt, arg_dict):
     while True:
-        response = input(prompt)
-        if arg_dict[response]() == 'Invalid Response11':
-            print('Invalid response. Try again22.')
+        try:
+            response = input(prompt)
+            arg_dict[response]() == ''
+        except:
+            print('Invalid Response. Try again.')
 
 
 def die():
@@ -151,10 +163,6 @@ def die():
     return sys.exit(0)
 
 def main():
-    # main function contains the original donor list and calls other functions.
-    # print(donor_dict)
-    # print(donor_dict.items())
-    # print(donor_dict.values())
     arg_dict = {
         '1':send_thank_you,
         '2':create_report,
@@ -162,10 +170,7 @@ def main():
         '4':die,
     }
 
-    thank_you_dict = {
-                   'list': print_list,
-                   '1': main,
-    }
+
     prompt = '\nSelect an option:\n'\
                  '[1] Send a Thank You\n'\
                  '[2] Create a Report\n' \
@@ -173,10 +178,7 @@ def main():
                  '[4] Quit\n'\
                  '--> '
 
-
     menu_selection(prompt, arg_dict)
-
-
 
 
 
