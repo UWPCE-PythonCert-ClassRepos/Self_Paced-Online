@@ -24,9 +24,9 @@ def fruit1():
     response = input("Input another fruit > ")
     fruit.insert(0, response)
 
-    for i in fruit:
-        if i[0] == ('P'):
-            print(i, end = ' ')
+    for f in fruit:
+        if f[0].lower() == 'p':
+            print(f, end = ' ')
     print()
     return fruit
 

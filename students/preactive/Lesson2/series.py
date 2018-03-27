@@ -13,12 +13,34 @@ def fib_gen():
     while True:
         a, b = b, a + b
         yield a
-f = fib_gen()
-next(f)
-next(f)
-next(f)
-next(f)
-print(next(f))
+
+
+def fib_gen_teacher():
+    a,b = 0,1
+    while True:
+        a, b = b, a + b
+        yield a
+
+def fib_gen_two():
+    a, b, n = 0, 1, 0
+    while True:
+        if n == 0:
+            n = True
+            yield 0
+        a, b = b, a + b
+        yield a
+
+def fib_gen_call():
+    fib_teach = fib_gen_teacher()
+    fib_mez = fib_gen_two()
+    print(str(next(fib_teach)) + " " + str(next(fib_mez)))
+    print(str(next(fib_teach)) + " " + str(next(fib_mez)))
+    print(str(next(fib_teach)) + " " + str(next(fib_mez)))
+    print(str(next(fib_teach)) + " " + str(next(fib_mez)))
+    print(str(next(fib_teach)) + " " + str(next(fib_mez)))
+    print(str(next(fib_teach)) + " " + str(next(fib_mez)))
+
+fib_gen_call()
 
 
 def lucas(n):
@@ -54,3 +76,5 @@ def assert_testing():
         assert sum_series(lucas_index + 1, 2, 1) == lucas_test, \
             "Sum Series Lucas Failed"
 assert_testing()
+
+
