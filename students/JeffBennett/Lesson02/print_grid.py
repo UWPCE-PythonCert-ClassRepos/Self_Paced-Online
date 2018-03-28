@@ -5,7 +5,7 @@ cell size to print a two-row by two-column grid of arbitrary size.
 
 
 def print_grid(cell_length):
-    """Print a 2-row by 2-column grid of integer cell length."""
+    """print a 2-row by 2-column grid of integer cell length."""
     plus = '+'
     pipe = '|'
 

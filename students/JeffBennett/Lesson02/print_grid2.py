@@ -5,7 +5,7 @@ rows and n columns, and by integer cell length.
 
 
 def print_grid2(n, cell_length):
-    """Print an n-row by n-column grid of integer cell length."""
+    """print an n-row by n-column grid of integer cell length."""
     plus = '+'
     pipe = '|'
 
