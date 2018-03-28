@@ -132,7 +132,7 @@ def generate_rollup():
                     ), '.2f'
                 )
             )
-        cur_donor['rollup'] = dict(zip(('number','total','average'), (number, total, average)))
+        cur_donor['rollup'] = dict(zip(('number', 'total', 'average'), (number, total, average)))
 
 
 def show_donor_table():
