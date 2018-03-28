@@ -1,11 +1,11 @@
 """
-Write a two-parameter function which prints a grid, parameterized by integer n
-rows and n columns, and integer cell length.
+Write a two-parameter function which prints a grid parameterized by integer n
+rows and n columns, and by integer cell length.
 """
 
 
 def print_grid2(n, cell_length):
-    """Print an n by n cell grid with integer cell length."""
+    """Print an n-row by n-column grid of integer cell length."""
     plus = '+'
     pipe = '|'
 

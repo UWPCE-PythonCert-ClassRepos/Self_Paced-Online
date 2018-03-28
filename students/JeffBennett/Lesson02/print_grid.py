@@ -1,13 +1,11 @@
 """
-Create a function that takes one integer argument and prints a grid.
-The grid has a two-by-two cellular structure and is parameterized by
-cell length.  Cell length refers to total pipes on a left cell edge or total
-minus signs on a top cell edge.  All cells are equal squares.
+Generalize base_grid.py by writing a function parameterized by integer
+cell size to print a two-row by two-column grid of arbitrary size.
 """
 
 
 def print_grid(cell_length):
-    """Print a 2-row by 2-column grid with integer cell length."""
+    """Print a 2-row by 2-column grid of integer cell length."""
     plus = '+'
     pipe = '|'
 
@@ -18,4 +16,4 @@ def print_grid(cell_length):
     print(2*(plus + ' ' + cell_length*('- ')) + plus)
 
 
-print_grid(6)
+print_grid(7)

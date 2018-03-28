@@ -1,7 +1,8 @@
-"""base_grid.py
-Print a two cell by two cell grid of cell length 4.  Cell length refers to
-total pipes on a left cell edge or total minus signs on a top cell edge.  All
-cells are equal squares.
+"""
+Print a two-row by two-column grid of cells of length 4.
+Cell length refers to number of pipes on a left cell edge or number of
+minus signs on a top cell edge.  Cells are formed by the intersection of
+rows and columns.
 """
 plus = '+'
 pipe = '|'
