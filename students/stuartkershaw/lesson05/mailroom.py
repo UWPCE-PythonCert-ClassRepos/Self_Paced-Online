@@ -101,12 +101,16 @@ def set_donation(donor):
             get_selection()
 
 
+def list_donors():
+    for name in donors:
+        print(name)
+
+
 def get_donor_name():
     instruction = 'Please enter a full name or type \'list\' to see donors:\n'
     name_input = input(instruction)
     if name_input == 'list':
-        for name in donors:
-            print(name)
+        list_donors()
         get_donor_name()
     elif name_input in donors:
         set_donation(name_input)
@@ -118,12 +122,9 @@ def get_donor_name():
 def generate_rollup():
     for donor in donors:
         cur_donor = donors[donor]
-        if 'rollup' not in cur_donor:
-            cur_donor['rollup'] = {}
-        cur_rollup = cur_donor['rollup']
-        cur_rollup['number'] = len(cur_donor['donations'])
-        cur_rollup['total'] = sum(cur_donor['donations'])
-        cur_rollup['average'] = float(
+        number = len(cur_donor['donations'])
+        total = sum(cur_donor['donations'])
+        average = float(
             format(
                 sum(
                     cur_donor['donations']) / len(
@@ -131,6 +132,7 @@ def generate_rollup():
                     ), '.2f'
                 )
             )
+        cur_donor['rollup'] = dict(zip(('number','total','average'), (number, total, average)))
 
 
 def show_donor_table():
