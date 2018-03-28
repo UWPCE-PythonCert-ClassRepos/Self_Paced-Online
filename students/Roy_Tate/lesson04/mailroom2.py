@@ -6,7 +6,6 @@ import sys
 import os
 import os.path
 
-
 # Create the donor_dict and manually add a few entries
 donor_dict = {}
 donor_dict['Bill'] = [1100, 2100, 3100]
@@ -36,21 +35,21 @@ email_str_annual = '''\n
         From:    A Charity Thankful For Your Kindness
         To:      {0}
         Subject:  This Year's Challenge!
-        
+
         Dear {0},
-        
+
         First, we would like to thank you for your continued generosity throughout the 
         years. Without contributions like yours, the good things that we are able to do 
         simply would not be possible. 
-        
+
         Your contributions to date have totaled ${1:.2f}. 
-        
+
         This years challenge is to see if you can donate more than your current total
         in one year. This would effectively double your current donations to the 
         organization!  Remember, it is for a good cause!
-        
+
         Sincerely,
-        
+
         The good guys at the best organization'''
 
 
@@ -78,7 +77,7 @@ def print_email(email_str, donor_name, donation_amount):
 # Send an email to all donors listing the sum of their donations.
 def email_all():
     save_path = input('Enter the full path to the directory to save the files.\n'
-                  'Press Enter to save to the current directory: ')
+                      'Press Enter to save to the current directory: ')
     print('Generating emails for all donors...')
     count = 0
     os.system('mkdir -p ' + save_path)
@@ -162,24 +161,23 @@ def die():
     print('Exiting the mailroom2.')
     return sys.exit(0)
 
+
 def main():
     arg_dict = {
-        '1':send_thank_you,
-        '2':create_report,
-        '3':email_all,
-        '4':die,
+        '1': send_thank_you,
+        '2': create_report,
+        '3': email_all,
+        '4': die,
     }
 
-
-    prompt = '\nSelect an option:\n'\
-                 '[1] Send a Thank You\n'\
-                 '[2] Create a Report\n' \
-                 '[3] Send letters to everyone\n'\
-                 '[4] Quit\n'\
-                 '--> '
+    prompt = '\nSelect an option:\n' \
+             '[1] Send a Thank You\n' \
+             '[2] Create a Report\n' \
+             '[3] Send letters to everyone\n' \
+             '[4] Quit\n' \
+             '--> '
 
     menu_selection(prompt, arg_dict)
-
 
 
 if __name__ == "__main__":
