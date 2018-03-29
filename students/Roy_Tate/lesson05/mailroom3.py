@@ -88,7 +88,6 @@ def email_all():
             os.system('mkdir -p ' + save_path + '> /dev/null 2>&1')
             for donor, donations in donor_dict.items():
                 filename = save_path + donor + '.txt'.strip()
-                os.system('touch ' + filename)
                 with open(filename, 'w') as f:
                     f.write(email_str_annual.format(donor.title(), sum(donations)))
                     print('Output file -->  ' + str(os.path.abspath(filename)))
@@ -136,7 +135,7 @@ def create_report():
     header_len = len(header)
     dotted_line = '\n{:<20}'.format('-' * header_len)
     print(header + dotted_line)
-    donor_str_fmt = '{:<20} ${:>13.2f}{:>11}    ${:>11.2f}'
+    donor_str_fmt = '{:<20} ${:>13.2f}{:>11}    ${:>11.2f}'  # I don't like the way this is spaced out, but it works
     sort_list = []
     for name, donations in donor_dict.items():
         num_gifts = len(Counter(donations))
@@ -159,6 +158,7 @@ def menu_selection(prompt, arg_dict):
         except KeyError as e:
             print('Invalid Response: ' + str(e))
 
+
 # All good things come to an end.
 def die():
     print('Exiting the mailroom3.')
@@ -173,19 +173,20 @@ def main():
         '3': email_all,
         '4': die,
     }
-
-    prompt = '\nMain Menu\n'\
+    prompt = '\n***** Main Menu *****\n'\
              'Select an option:\n' \
              '[1] Send a Thank You\n' \
              '[2] Create a Report\n' \
              '[3] Send letters to everyone\n' \
              '[4] Quit\n' \
              '--> '
-
     menu_selection(prompt, arg_dict)
 
 
 if __name__ == "__main__":
+    print('\n{:+^50}'.format(''))
+    print('{:+^50}'.format(' Welcome to the Mailroom '))
+    print('{:+^50}'.format(''))
     main()
 
 
