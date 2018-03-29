@@ -40,25 +40,38 @@ class ElementTestCase(unittest.TestCase):
     def test_render_4(self):
         self.assertFalse(self.e.render(100, 5))
     def test_render_100(self):
-        self.render_helper('test_html_file.html', -11)
+        self.assertTrue(self.render_helper('test_html_file.html', -11))
     def test_render_101(self):
-        self.render_helper('test_html_file.html', 0)
+        self.assertTrue(self.render_helper('test_html_file.html', 0))
     def test_render_102(self):
-        self.render_helper('test_html_file.html', 10)
+        self.assertTrue(self.render_helper('test_html_file.html', 10))
+    def test_render_103(self):
+        self.assertTrue(self.render_helper('test_html_file.html', 'dfafd'))
+    def test_render_104(self):
+        self.assertTrue(self.render_helper('test_html_file.html', '   -9 \n '))
+    def test_render_105(self):
+        self.assertTrue(self.render_helper('test_html_file.html', '  0 \t   '))
+    def test_render_106(self):
+        self.assertTrue(self.render_helper('test_html_file.html', ' \n  6 '))
     def render_helper(self, filename, ind):
         for str in self.strs_before:
             self.e.append(str)
-        self.assertTrue(self.e.render(filename, ind))
-        if (isinstance(ind, int) or isinstance(ind, float)) and int(ind) <= 0:
-            ind = 2
-        with open(filename, 'r') as f:
-            self.strs_out = f.readlines()
-        self.assertEqual(len(self.strs_out), 3)
-        self.assertEqual(self.strs_out[0], "<html>\n")
-        self.assertEqual(self.strs_out[2], "</html>\n")
-        self.assertEqual(self.strs_out[1], 
-                         ' '*ind + ' '.join(self.strs_after) + ' \n')
-        
+        result = self.e.render(filename, ind)
+        if result:
+            if not isinstance(ind, int):
+                ind = 2
+            else:
+                ind = int(ind)
+                if ind <= 0:
+                    ind = 2
+            with open(filename, 'r') as f:
+                self.strs_out = f.readlines()
+            self.assertEqual(len(self.strs_out), 3)
+            self.assertEqual(self.strs_out[0], "<html>\n")
+            self.assertEqual(self.strs_out[2], "</html>\n")
+            self.assertEqual(self.strs_out[1], 
+                            ' '*ind + ' '.join(self.strs_after) + ' \n')
+        return result
         
 
 if __name__ == '__main__':
