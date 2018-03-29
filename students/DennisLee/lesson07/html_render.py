@@ -12,11 +12,11 @@ class Element():
 				for i in content:
 					self.append(str(i))
 	def append(self, in_str):
-		# try:  # Remove leading/trailing whitespace & multi-whitespaces
+		try:  # Remove leading/trailing whitespace & multi-whitespaces
 			self.clean_str = ' '.join(in_str.split())
-		# except AttributeError:
-		# 	print(f"{in_str} is not a string - not added to element.")
-		# else:
+		except AttributeError:
+			print(f"{in_str} is not a string - not added to element.")
+		else:
 			self.contents.append(self.clean_str)
 	def render(self, file_out, cur_ind=""):
 		self.indent, result = 0, False
@@ -25,19 +25,23 @@ class Element():
 				self.indent = int(cur_ind)
 			except ValueError:
 				print(
-				  f"'{cur_ind}' is not a number - indent defaults to 2.")
+				  f"\n\t'{cur_ind}' is not a number - indent defaults to 2.\n")
 		if self.indent <= 0:
-			print(f"'{cur_ind}' is not a valid indent value - "
-			      "indent defaults to 2.")
+			print(f"\n\t'{cur_ind}' is not a valid indent value - "
+			      "indent defaults to 2.\n")
 			self.indent = 2
 		if file_out:
-			file_out.write('<html>\n')
-			file_out.write(' ' * self.indent)
-			for i in self.contents:
-				file_out.write(i + ' ')
-			file_out.write('\n</html>\n')
-			file_out.close()
-			result = True
+			try:
+				file_out.write('<html>\n')
+			except AttributeError:
+				print(f"\n\tWritable file-like object not given - aborting.\n")
+			else:
+				file_out.write(' ' * self.indent)
+				for i in self.contents:
+					file_out.write(i + ' ')
+				file_out.write('\n</html>\n')
+				file_out.close()
+				result = True
 		return result
 
 
