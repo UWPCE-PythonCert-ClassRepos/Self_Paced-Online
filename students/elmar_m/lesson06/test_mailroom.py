@@ -3,10 +3,6 @@
 # from mailroom import efunc
 import mailroom as m
 
-def test_efunc_1():
-    assert m.efunc() == 'exiting'
-
-
 def test_writefile():
     content = 'This is a test\n'
     assert m.writefile('test', content) is True
@@ -15,6 +11,9 @@ def test_writefile():
 def test_mail():
     assert m.mail() is True
 
+
+# def test_thankyou():
+    
 
 def test_list_donors():
     # a = m.list_donors()
@@ -25,12 +24,19 @@ def test_list_donors():
     assert m.list_donors() is True
 
 
-# def test_add():
-#     assert m.add() is True
+def test_add():
+    assert m.add() is True
 
 
 #def test_add_amount():
 #    assert m.add_amount('testdonor') is True
 
+
 def test_report():
     assert m.report() is True
+
+
+def test_efunc_1():
+    assert m.efunc() == 'exiting'
+
+# def test_menu():
