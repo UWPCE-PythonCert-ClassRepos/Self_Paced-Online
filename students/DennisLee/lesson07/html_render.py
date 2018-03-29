@@ -19,7 +19,7 @@ class Element():
 		# else:
 			self.contents.append(self.clean_str)
 	def render(self, file_out, cur_ind=""):
-		self.indent, f, result = 0, None, False
+		self.indent, result = 0, False
 		if cur_ind:
 			try:
 				self.indent = int(cur_ind)
@@ -30,23 +30,15 @@ class Element():
 			print(f"'{cur_ind}' is not a valid indent value - "
 			      "indent defaults to 2.")
 			self.indent = 2
-		try:
-			f = open(file_out, 'w')
-		except FileNotFoundError:
-			print(f"'{file_out}' cannot be accessed ... skipping.")
-		except OSError:
-			print(f"'{file_out}' is an invalid handle ... skipping.")
-		else:
-			f.write('<html>\n')
-			f.write(' ' * self.indent)
+		if file_out:
+			file_out.write('<html>\n')
+			file_out.write(' ' * self.indent)
 			for i in self.contents:
-				f.write(i + ' ')
-			f.write('\n</html>\n')
-		finally:
-			if f:
-				f.close()
-				result = True
-			return result
+				file_out.write(i + ' ')
+			file_out.write('\n</html>\n')
+			file_out.close()
+			result = True
+		return result
 
 
 def render_page(element, file_name):
