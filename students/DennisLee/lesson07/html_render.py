@@ -3,14 +3,13 @@
 import io
 
 class Element():
+	tag = ""
 	def __init__(self, content=None):
 		self.contents = []
-		if content:
-			if isinstance(content, str):
-				self.append(content)
-			elif isinstance(content, list) or isinstance(content, tuple):
-				for i in content:
-					self.append(str(i))
+		if content and isinstance(content, str):
+			self.append(content)
+		else:
+			print("Content not added - must specify a string.")
 	def append(self, in_str):
 		try:  # Remove leading/trailing whitespace & multi-whitespaces
 			self.clean_str = ' '.join(in_str.split())
@@ -32,14 +31,14 @@ class Element():
 			self.indent = 2
 		if file_out:
 			try:
-				file_out.write('<html>\n')
+				file_out.write('<{0}>\n'.format(self.tag))
 			except AttributeError:
 				print(f"\n\tWritable file-like object not given - aborting.\n")
 			else:
 				file_out.write(' ' * self.indent)
 				for i in self.contents:
 					file_out.write(i + ' ')
-				file_out.write('\n</html>\n')
+				file_out.write('\n</{0}>\n'.format(self.tag))
 				file_out.close()
 				result = True
 		return result

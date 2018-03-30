@@ -6,6 +6,7 @@ import html_render as hr
 class ElementTestCase(unittest.TestCase):
     def setUp(self):
         self.e = hr.Element()
+        hr.Element.tag = "html"
         self.strs_before = (
                 "  \n Why  am   \n\tI here?     \t",
                 "\n\t  \n  Here's   that rainy   day...   \t  \n",
@@ -18,20 +19,30 @@ class ElementTestCase(unittest.TestCase):
         )
     def tearDown(self):
         del self.e
-    def test_init(self):
+
+    def test_init_1(self):
         x = hr.Element(self.strs_before[0])
         self.assertEqual(x.contents, [self.strs_after[0]])
-        x = hr.Element(self.strs_before)
-        self.assertEqual(x.contents, list(self.strs_after))
         del x
+    def test_init_2(self):
+        x = hr.Element(70)
+        self.assertEqual(x.contents, [])
+        del x
+    def test_init_3(self):
+        x = hr.Element('')
+        self.assertEqual(x.contents, [])
+        del x
+
     def test_append_internal(self):
         self.assertEqual(len(self.strs_before), len(self.strs_after))
     def test_append_1(self):
-        self.assertRaises(AttributeError, self.e.append, 50)
+        self.e.append(50)
+        self.assertEqual(self.e.contents, [])
     def test_append_2(self):
         for i in range(len(self.strs_before)):
             self.e.append(self.strs_before[i])
             self.assertEqual(self.e.contents, list(self.strs_after[:i+1]))
+
     def test_render_1(self):
         self.assertFalse(self.e.render('', 5))
     def test_render_2(self):
@@ -85,6 +96,7 @@ class ElementTestCase(unittest.TestCase):
                     self.assertEqual(self.strs_out[2], "</html>\n")
                     self.assertEqual(self.strs_out[1], 
                             ' '*ind + ' '.join(self.strs_after) + ' \n')
+            fobj.close()
         finally:
             return result
         
