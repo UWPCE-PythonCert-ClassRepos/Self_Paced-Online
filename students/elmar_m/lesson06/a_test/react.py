@@ -12,11 +12,10 @@ def react_correct():
             print('answer was no')
             return 'NOOO'
         else:
-            print('answer was another bullshit')
+            print('BULLSHIT')
+            return 'BULLSHIT'
     except ValueError:
         print('ValueError exception raised !!')
-    # finally:   
-    #     return 
 
 
 def main():
