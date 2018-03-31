@@ -1,3 +1,5 @@
+import math
+
 class Circle(object):
 
     def __init__(self, radius):
@@ -24,4 +26,10 @@ class Circle(object):
             self._radius = 0
         else:
             self._radius = diameter / 2
+
+    @property
+    def area(self):
+        return math.pow(self._radius,2) * math.pi
+
+
 
