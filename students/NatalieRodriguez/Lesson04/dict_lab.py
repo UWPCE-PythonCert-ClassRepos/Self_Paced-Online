@@ -1,8 +1,10 @@
 #$ chmod +x dict_lab.py
 
-#Lesson 04: Dictionary Lab
+#Lesson 04: Dictionary Labs
 #Natalie Rodriguez
 # March 28, 2018
+
+#Dictionaries1
 
 d = {} #created a blank dictionary to populate
 d['Name'] = 'Chris'
@@ -32,7 +34,16 @@ if 'Mango' == value:
 else: print("there are no mangos in this dictionary.")
 
 
-print("you've reached the end of the code")
+#Dictionaries2
+
+dict_two = {'Name': 'Natalie Rodriguez', 'City': 'Kansas City', 'Cake': 'Funfetti'}
+
+new_dict = {'Name': dict_two['Name'].lower().count('t'),
+            'City': dict_two['City'].lower().count('t'),
+            'Cake': dict_two['Cake'].lower().count('t')}
+print('\n', new_dict, '\n')
+
+print("You've reached the end of the code.")
 
 
 
