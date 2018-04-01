@@ -7,9 +7,11 @@ def react_correct():
         if response == 'yes':
             # print('answer was yes')
             print('JAAA')
-            return 'JAAA' 
+            # print('answer was yes, will return secondfunc()')
+            # return 'JAAA' 
+            return secondfunc()
         elif response == 'no':
-            print('answer was no')
+            print('NOOO')
             return 'NOOO'
         else:
             print('BULLSHIT')
@@ -17,6 +19,10 @@ def react_correct():
     except ValueError:
         print('ValueError exception raised !!')
 
+
+def secondfunc():
+    print('this is secondfunc() executed...')
+    return 'HAHAHA'
 
 def main():
     print('starting my program...')

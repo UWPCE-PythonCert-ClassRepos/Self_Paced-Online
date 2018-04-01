@@ -2,6 +2,8 @@
 
 # from mailroom import efunc
 import mailroom as m
+import unittest.mock
+import pytest
 
 def test_writefile():
     content = 'This is a test\n'
@@ -24,8 +26,21 @@ def test_list_donors():
     assert m.list_donors() is True
 
 
-def test_add():
-    assert m.add() is True
+@pytest.mark.parametrize("test_input, expected", [('johndoe', m.add_amount('johndoe') )])
+
+# def test_add():
+def test_add(test_input, expected):
+    # @pytest.mark.parametrize("test_input, expected", [(1, fun1()), (2, fun2()), (3, fun3())])
+    # # ---------------------------------------
+    # # test_input |   1    |   2    |   3    |
+    # # ---------------------------------------
+    # #   expected | fun1() | fun2() | fun3() |
+    # # ---------------------------------------
+    # def test_my_fun(test_input, expected):
+    #     assert my_fun(test_input) == expected
+
+    assert m.add() == expected 
+    # assert m.add() is True
 
 
 #def test_add_amount():
