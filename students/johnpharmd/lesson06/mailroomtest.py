@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import unittest
 import mailroom4
-import datetime
 import os
+import datetime
 
 
 class MailroomTest(unittest.TestCase):
@@ -66,7 +66,6 @@ class MailroomTest(unittest.TestCase):
     def test_send_letters(self):
         mailroom4.send_letters()
         cwd_list = os.listdir(os.getcwd())
-        print(cwd_list)
         today = datetime.date.today()
         for donor in mailroom4.get_donors_amts():
             donor_letter = donor + today.strftime('%Y%m%d') + '.txt'
