@@ -28,11 +28,24 @@ class MailroomTest(unittest.TestCase):
         self.test_donation = mailroom4.prompt_donation()
         assert str(self.test_donation).isdigit()
 
-    def test_5(self):
-        pass
+    def test_add_donor(self):
+        self.new_donor = mailroom4.add_donor('Anderson', 'Mr.')
+        donors_amts = mailroom4.get_donors_amts()
+        try:
+            assert 'Anderson' in donors_amts
+        except KeyError:
+            print('"Anderson" not in donors_amts.')
+        assert donors_amts['Anderson'] == {'title': 'Mr.', 'donations': 0,
+                                           'num_of_donations': 0}
 
-    def test_6(self):
-        pass
+    def test_add_donation_amt(self):
+        donors_amts = mailroom4.get_donors_amts()
+        self.donation = mailroom4.add_donation_amt('Anderson',
+                                                   title='Mr.',
+                                                   new_donor=True,
+                                                   donation_amt=2000)
+        assert donors_amts['Anderson']['donations'] == 2000
+        assert donors_amts['Anderson']['num_of_donations'] == 1
 
     def test_7(self):
         pass
