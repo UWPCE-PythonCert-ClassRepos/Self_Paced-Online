@@ -34,11 +34,11 @@ Tracks donor information and automates the sending of thank you notes.
 # Adding a donation -> donors[donor].append()
 # Adding a donor/donation -> donors[donor] = [donation]
 donors = {
-    'Tom Horn':        [599.23, 1000.00],
-    'Theo Hartwell':   [0.01, 0.01, 0.1],
-    'Bailey Kimmitt':  [8723.22, 27167.22, 91817.66],
-    'Paul Hubbell':    [90012.32, 2312.24],
-    'David Beckham':   [1817266.11, 123123.66, 111335.112]
+    'Tom Horn': [599.23, 1000.00],
+    'Theo Hartwell': [0.01, 0.01, 0.1],
+    'Bailey Kimmitt': [8723.22, 27167.22, 91817.66],
+    'Paul Hubbell': [90012.32, 2312.24],
+    'David Beckham': [1817266.11, 123123.66, 111335.112]
 }
 
 def send_thanks():
@@ -144,10 +144,10 @@ if __name__ == "__main__":
         4 - Quit\n")
         print()
         user_choices = {
-            '1':  send_thanks,
-            '2':  create_report,
-            '3':  send_letters,
-            '4':  quitter
+            '1': send_thanks,
+            '2': create_report,
+            '3': send_letters,
+            '4': quitter
         }
         if choice in user_choices:
             user_choices[choice]()
