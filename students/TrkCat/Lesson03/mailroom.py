@@ -3,27 +3,44 @@
 def send_thank_you():
     """Print a thank you email"""
     while True:
-        full_name = input("Please enter donor's full name: ")
-        if full_name.lower() == 'list'
-            print(donor_names)
-        elif full_name.lower() == 'quit'
+        donor_name = input("Please enter donor's full name: ")
+        if donor_name.lower() == 'list':
+            print('\nCurrent Donors:')
+            print(donor_names,'\n')
+        elif donor_name.lower() == 'quit':
             return
-        elif not full_name in donor_names:
-            add_donor(full_name)
+        elif not donor_name in donor_names:
+            add_donor(donor_name)
             break
         else:
             break
       
     donation = float(input('Enter the donation amount: '))
-    add_donation(full_name,donation)
+    add_donation(donor_name,donation)
 
-    write_email(full_name,donation)
+    write_email(donor_name,donation)
   
   
 def create_report():
     """Print a donation report"""
-    #Print header
-
+    donors_report = create_donor_summary()
+    #Add in dynamic column widths in future iteration
+    header = ' | '.join(('Donor Name' + ' ' * 10,'Total Given','Num Gifts',
+             'Average Gift'))
+    print('\n' + header)
+    print('-' * len(header))
+    for donor in donors_report:
+        print('{:20s}  $ {:>10.2f}   {:>9d}  $ {:>11.2f}'.format(*donor))
+    
+    
+def create_donor_summary():
+    donors_report = []  
+    for donor in donors:
+        num_don = len(donor[1:])
+        tot_don = sum(donor[1:])
+        donors_report.append([donor[0], tot_don, num_don, tot_don/num_don])
+    return sorted(donors_report, key=lambda v:v[1], reverse=True)
+  
   
 def add_donor(donor_name):
     """Add a donor to donor list"""
@@ -34,20 +51,20 @@ def add_donor(donor_name):
 def add_donation(donor_name, amount):
     """Add donation amount to list under donors name"""
     for donor in donors:
-    if donor[0] == donor_name
-        donor.append(amount)
-        return
+        if donor[0] == donor_name:
+            donor.append(amount)
+            return
 
-    
+        
 def write_email(donor_name, amount):
     """Print a thank you email"""
-    print('FROM: Your friendly local charity mailroom.')
+    print('\nFROM: Your friendly local charity mailroom.')
     print('TO: {}'.format(donor_name))
     print('RE: Your recent donation')
     print('\nThank you so much for your recent donation of ${:,.2f}. This will'
           ' go a long way towards helping to save the pythons. Your generosity'
           ' is most appreciated!'.format(amount))
-    print('\nBest Regards,\nSave The Pythons\n\n')
+    print('\nBest Regards,\nSave The Pythons\n')
   
   
 if __name__ == '__main__':
@@ -57,13 +74,13 @@ if __name__ == '__main__':
     donor_names = [donor[0] for donor in donors]
 
     while True:
-        main_menu = input('Select an option: "Send a Thank You", '
+        main_menu = input('\nSelect an option: "Send a Thank You", '
                           '"Create Report", "quit" > ')
         if main_menu.lower() == 'send a thank you':
             send_thank_you()
         elif main_menu.lower() == 'create report':
             create_report()
-        elif main_menu.lower() == 'quit'
+        elif main_menu.lower() == 'quit':
             break
         else:
-            print('Please select an option from the list.\n')
+            print('Please select an option from the list.')
