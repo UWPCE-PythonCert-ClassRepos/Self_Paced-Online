@@ -44,21 +44,21 @@ class ElementTestCase(unittest.TestCase):
             self.assertEqual(self.e.contents, list(self.strs_after[:i+1]))
 
     def test_render_1(self):
-        self.assertFalse(self.e.render('', 5))
+        self.assertFalse(self.e.render('', '  '))
     def test_render_2(self):
-        self.assertFalse(self.e.render('Bogus2\\Bogus3\\Bogosity.txt', 5))
+        self.assertFalse(self.e.render('Bogus2\\Bogus3\\Bogosity.txt', '  '))
     def test_render_3(self):
-        self.assertFalse(self.e.render('R:\\Bogus2\\Bogus3\\Bogosity.txt', 5))
+        self.assertFalse(self.e.render('R:\\Bogus2\\Bogus3\\Bogosity.txt', '  '))
     def test_render_4(self):
-        self.assertFalse(self.e.render(100, 5))
+        self.assertFalse(self.e.render(100, '  '))
     def test_render_5(self):
-        self.assertFalse(self.e.render('cannot_overwrite.txt', 5))
+        self.assertFalse(self.e.render('cannot_overwrite.txt', '  '))
     def test_render_100(self):
-        self.assertTrue(self.render_helper('test_html_file.html', -11))
+        self.assertTrue(self.render_helper('test_html_file.html', ''))
     def test_render_101(self):
-        self.assertTrue(self.render_helper('test_html_file.html', 0))
+        self.assertTrue(self.render_helper('test_html_file.html', '  '))
     def test_render_102(self):
-        self.assertTrue(self.render_helper('test_html_file.html', 10))
+        self.assertTrue(self.render_helper('test_html_file.html', '    '))
     def test_render_103(self):
         self.assertTrue(self.render_helper('test_html_file.html', 'dfafd'))
     def test_render_104(self):
