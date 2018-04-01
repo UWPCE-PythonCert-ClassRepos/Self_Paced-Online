@@ -51,3 +51,9 @@ class Circle(object):
         return self
 
     __rmul__ = __mul__
+
+    def __lt__(self, other_circle):
+        return True if self._radius < other_circle.radius else False        
+
+    def __eq__(self, other_circle):
+        return True if self._radius == other_circle.radius else False 

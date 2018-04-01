@@ -61,5 +61,22 @@ class TestCircle(unittest.TestCase):
         d = 3 * c
         self.assertEqual(d.radius,12)
 
+    def test_gt_lt(self):
+        c1 = Circle(4)
+        c2 = Circle(5)
+        self.assertEqual(c1 > c2,False)    
+        self.assertEqual(c1 < c2, True)
+        self.assertEqual(c1 == c2, False)
+
+        c3 = Circle(4)
+        self.assertEqual(c1 == c3, True)
+
+    def test_sort(self):
+        circles = [Circle(6), Circle(7), Circle(8), Circle(4), Circle(0), Circle(2), Circle(3), Circle(5), Circle(9), Circle(1)]
+        circles.sort()
+        self.assertEqual(circles,[Circle(0), Circle(1), Circle(2), Circle(3), Circle(4), Circle(5), Circle(6), Circle(7), Circle(8), Circle(9)])
+
+
+
 if __name__ == '__main__':
     unittest.main() 
