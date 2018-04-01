@@ -31,5 +31,10 @@ class TestCircle(unittest.TestCase):
         with self.assertRaises(AttributeError):
             c.area = 10
 
+    def test_from_diameter(self):
+        c = Circle.from_diameter(8)
+        self.assertEqual(c.radius, 4)
+        self.assertEqual(c.diameter, 8)
+
 if __name__ == '__main__':
     unittest.main() 
