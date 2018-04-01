@@ -43,8 +43,16 @@ class Circle(object):
         return f"Circle({self._radius})" 
 
     def __add__(self, other_circle):
-        self._radius += other_circle.radius
-        return self
+       self._radius += other_circle.radius if isinstance(other_circle,Circle) else other_circle
+       return self
+
+    __iadd__ = __add__
+
+    def __sub__(self, other_circle):
+       self._radius -= other_circle.radius if isinstance(other_circle,Circle) else other_circle
+       return self
+
+    __isub__ = __sub__
 
     def __mul__(self, factor):
         self._radius *= factor
@@ -56,4 +64,9 @@ class Circle(object):
         return True if self._radius < other_circle.radius else False        
 
     def __eq__(self, other_circle):
-        return True if self._radius == other_circle.radius else False 
+        return True if self._radius == other_circle.radius else False
+
+    def __truediv__(self, divisor):
+        self._radius = self._radius / divisor
+        return self
+

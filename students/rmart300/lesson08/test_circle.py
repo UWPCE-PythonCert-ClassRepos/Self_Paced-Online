@@ -76,7 +76,29 @@ class TestCircle(unittest.TestCase):
         circles.sort()
         self.assertEqual(circles,[Circle(0), Circle(1), Circle(2), Circle(3), Circle(4), Circle(5), Circle(6), Circle(7), Circle(8), Circle(9)])
 
+    def test_reflected(self):
+        c = Circle(2)
+        self.assertEqual(c * 3,3 * c)
 
+    def test_div(self):
+        c = Circle(4)
+        d = c / 2
+        self.assertEqual(d.radius, 2)
+
+    def test_aug_add(self):
+        c = Circle(4)
+        c += 6
+        self.assertEqual(c.radius, 10)
+
+    def test_aug_subtract(self):
+        c = Circle(4)
+        c -= 2
+        self.assertEqual(c.radius,2)
+
+    def test_aug_mul(self):
+        c = Circle(9)
+        c *= 2
+        self.assertEqual(c.radius, 18)
 
 if __name__ == '__main__':
     unittest.main() 
