@@ -21,9 +21,14 @@ donors_amts = {'Gates': {'title': 'Mr.', 'donations': 150000,
 
 
 # Processing
+def get_donors_amts():
+    return donors_amts
+
+
 def get_donor_list():
+    if __name__ == '__main__':
+        print(list(donors_amts))
     return list(donors_amts)
-    # print(donor_list)
 
 
 def prompt_title():
@@ -47,16 +52,16 @@ def prompt_donation():
             print('Numeric value only, please.')
 
 
-def add_donor(donor_name):
-    title = prompt_title()
+def add_donor(donor_name, title):
     print('Added to list of Donors:', title, donor_name)
     donors_amts[donor_name] = {'title': title,
                                'donations': 0,
-                               'num_of_donations': 1}
-    return title
+                               'num_of_donations': 0}
 
 
-def add_donation_amt(name, donation_amt):
+def add_donation_amt(name, title, new_donor, donation_amt):
+    if new_donor:
+        add_donor(name, title)
     donors_amts[name]['donations'] += donation_amt
     donors_amts[name]['num_of_donations'] += 1
 
@@ -78,15 +83,17 @@ def prepare_ty():
             print()
         else:
             response = response.capitalize()
+            new_donor = False
             if response not in donors_amts:
+                new_donor = True
                 print('\nThis is a new donor.')
-                title = add_donor(response)
+                title = prompt_title()
             else:
                 print('Donor found:', response)
                 title = donors_amts[response]['title']
             donation_amt = prompt_donation()
 
-            add_donation_amt(response, donation_amt)
+            add_donation_amt(response, title, new_donor, donation_amt)
 
             send_ty(title, response, donation_amt)
             break
@@ -106,10 +113,6 @@ def send_ty(title, name, donation_amt):
 
 
 def get_report():
-    # note: per office hrs convo with NA, need to sort donors in
-    # order from highest to lowest donation total;
-    # so iterate over a sorted list, rather than dict, in for
-    # loop below
     print()
     psv = ['Donor Name', '| Total Given', '| Num Gifts',
            '| Average Gift']
@@ -118,15 +121,16 @@ def get_report():
     for i in range(55):
         print('-', end='')
     print()
-    new_dict = {donor: [donors_amts[donor]['donations'],
+    new_list = [[donors_amts[donor]['donations'], donor,
                 donors_amts[donor]['num_of_donations']] for
-                donor in donors_amts}
-    for donor in donors_amts:
-        print('{:<15}'.format(donor)
-              + '{}{:>10}'.format(' $', new_dict[donor][0])
-              + '{:>12}'.format(new_dict[donor][1])
+                donor in donors_amts]
+    new_list.sort(reverse=True)
+    for donor_list in new_list:
+        print('{:<15}'.format(donor_list[1])
+              + '{}{:>10}'.format(' $', donor_list[0])
+              + '{:>12}'.format(donor_list[2])
               + '{}{:>11}'.format(' $',
-              new_dict[donor][0] // new_dict[donor][1]))
+              donor_list[0] // donor_list[2]))
 
 
 def send_letters():
@@ -189,8 +193,8 @@ def program_run():
 
 
 # I/O
-# if __name__ != '__main__':
-#     program_run()
+if __name__ == '__main__':
+    program_run()
 
 # else:
 #     print('This module is intended to be imported.')
