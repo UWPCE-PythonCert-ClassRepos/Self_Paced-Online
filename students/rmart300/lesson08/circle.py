@@ -42,3 +42,12 @@ class Circle(object):
     def __repr__(self):
         return f"Circle({self._radius})" 
 
+    def __add__(self, other_circle):
+        self._radius += other_circle.radius
+        return self
+
+    def __mul__(self, factor):
+        self._radius *= factor
+        return self
+
+    __rmul__ = __mul__

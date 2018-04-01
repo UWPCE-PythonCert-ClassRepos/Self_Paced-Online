@@ -45,5 +45,21 @@ class TestCircle(unittest.TestCase):
         self.assertEqual(repr(c), "Circle(4)")
         self.assertEqual(type(eval(repr(c))),type(Circle(4)))
 
+    def test_add(self):
+        c = Circle(4)
+        d = Circle(6)
+        e = c + d
+        self.assertEqual(e.radius, 10)
+
+    def test_mul(self):
+        c = Circle(4)
+        d = c * 3
+        self.assertEqual(d.radius,12)
+
+    def test_rmul(self):
+        c = Circle(4)
+        d = 3 * c
+        self.assertEqual(d.radius,12)
+
 if __name__ == '__main__':
     unittest.main() 
