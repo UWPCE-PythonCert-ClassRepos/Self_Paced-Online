@@ -29,7 +29,7 @@ class Circle(object):
 
     @property
     def area(self):
-        return math.pow(self._radius,2) * math.pi
+        return self._radius**2 * math.pi
 
     @classmethod
     def from_diameter(cls, diameter):
@@ -43,10 +43,11 @@ class Circle(object):
         return f"Circle({self._radius})" 
 
     def __add__(self, other_circle):
-       self._radius += other_circle.radius if isinstance(other_circle,Circle) else other_circle
-       return self
+        return Circle(self.radius + other_circle.radius) 
 
-    __iadd__ = __add__
+    def __iadd__(self, other_circle):
+        self._radius += other_circle.radius if isinstance(other_circle,Circle) else other_circle
+        return self
 
     def __sub__(self, other_circle):
        self._radius -= other_circle.radius if isinstance(other_circle,Circle) else other_circle
