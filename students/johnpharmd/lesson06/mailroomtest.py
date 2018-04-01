@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import unittest
 import mailroom4
+import datetime
+import os
 
 
 class MailroomTest(unittest.TestCase):
@@ -37,6 +39,7 @@ class MailroomTest(unittest.TestCase):
             print('"Anderson" not in donors_amts.')
         assert donors_amts['Anderson'] == {'title': 'Mr.', 'donations': 0,
                                            'num_of_donations': 0}
+        donors_amts.pop('Anderson')
 
     def test_add_donation_amt(self):
         donors_amts = mailroom4.get_donors_amts()
@@ -46,6 +49,7 @@ class MailroomTest(unittest.TestCase):
                                                    donation_amt=2000)
         assert donors_amts['Anderson']['donations'] == 2000
         assert donors_amts['Anderson']['num_of_donations'] == 1
+        donors_amts.pop('Anderson')
 
     def test_7(self):
         pass
@@ -59,5 +63,12 @@ class MailroomTest(unittest.TestCase):
     def test_10(self):
         pass
 
-    def test_11(self):
-        pass
+    def test_send_letters(self):
+        mailroom4.send_letters()
+        cwd_list = os.listdir(os.getcwd())
+        print(cwd_list)
+        today = datetime.date.today()
+        for donor in mailroom4.get_donors_amts():
+            donor_letter = donor + today.strftime('%Y%m%d') + '.txt'
+            donor_letter = donor_letter.strip('\'')
+            assert donor_letter in cwd_list
