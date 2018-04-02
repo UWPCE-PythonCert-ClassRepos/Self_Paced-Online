@@ -7,7 +7,7 @@ Tracks donor information and automates the sending of thank you notes.
 """
 
 # Global that holds donor history and the amounts donated.
-DONOR_HISTORY = [
+donors = [
     ['Tom Horn',        [599.23, 1000.00]],
     ['Theo Hartwell',   [0.01, 0.01, 0.1]],
     ['Bailey Kimmitt',  [8723.22, 27167.22, 91817.66]],
@@ -37,26 +37,24 @@ def send_thanks():
 
     # List request - only donors returned.
     if name_request.lower() == 'list':
-        for donors in DONOR_HISTORY:
-            print(donors[0])
+        for donor in donors:
+            print(donor[0])
         return
 
     name_request = name_request.title()
-    donation_amount = float(input(("Please enter a donation amount for {}: ".format(name_request.title()))))
+    donation_amount = float(input(("Please enter a donation amount for {}: ".format(name_request))))
 
-    # Add to existing donor.  i is the donor location in the nested list.
-    for i, donors in enumerate(DONOR_HISTORY):
-        if donors[0].title() == name_request.title():
-            DONOR_HISTORY[i][1].append(donation_amount)
-            # Break to stop it from creating i numbers of the person.
-            break
-        # Create new donor.
-        else:
-            DONOR_HISTORY.append([name_request.title(), [donation_amount]])
-            break
+    # Add to existing donor or put new donor and amount in the list.
+    for donor in donors:
+        if donor[0].title() == name_request:
+            donor[1].append(donation_amount)
+            print(f"Thank you {name_request.title()} for your donation of ${donation_amount:.2f}.")
+            return
+
+    donors.append([name_request, [donation_amount]])
 
     print(f"Thank you {name_request.title()} for your donation of ${donation_amount:.2f}.")
-    
+
 
 def create_report():
     """
@@ -66,13 +64,12 @@ def create_report():
     - $ Total - 27 spaces in, right justified
     """
     print("Donor:                    |    $ Total     |   Donations   |   $ Average   |")
-    print("-"*76)    
-    for item in DONOR_HISTORY:
+    print("-"*76)
+    for item in donors:
         amt_total = float(sum(item[1]))
         num_total = int(len(item[1]))
         # Thousand separator as default. Careful with the space if we get some big donors.
         print("{:<26}|${:>15,.2f}|{:>15}|{:>15,.2f}".format(item[0], amt_total, num_total, amt_total/num_total))
-    return
 
 
 if __name__ == "__main__":
@@ -85,10 +82,9 @@ if __name__ == "__main__":
         3 - Quit\n")
         if choice == "1":
             send_thanks()
-        if choice == "2":
+        elif choice == "2":
             create_report()
-        if choice == "3":
+        elif choice == "3":
             print("Quitting.")
             break
 
-    
