@@ -6,19 +6,21 @@ class Element():
 	tag = ""
 	def __init__(self, content=None):
 		self.contents = []
-		if content and (isinstance(content, str)
-			         or isinstance(content, Element)):
+		if content is not None:
 			self.append(content)
-		else:
-			print("Content not added - must specify a string or an element.")
-	def append(self, in_str):
-		try:  # Remove leading/trailing whitespace & multi-whitespaces
-			self.clean_str = ' '.join(in_str.split())
-		except AttributeError:
-			print(f"{in_str} is not a string - not added to element.")
-		else:
+	def append(self, content):
+		if isinstance(content, Element) and len(content.strip()):
+			self.contents.append(content)
+		elif isinstance(content, str):
+			self.clean_str = ' '.join(content.split())
 			self.contents.append(self.clean_str)
-	def render(self, file_out, cur_ind=""):
+		elif isinstance(content, list) or isinstance(content, tuple):
+			for i in content:
+				self.append(i)
+		else:
+			print(f"{content} not added - must be string, element, "
+			      "list, or tuple.")
+	def render(self, file_out, cur_ind=""):  # REVISIT
 		self.indent, result = 0, False
 		self.indent = len(cur_ind)
 		if file_out:
@@ -36,3 +38,12 @@ class Element():
 				file_out.write('\n</{0}>\n'.format(self.tag))
 				result = True
 		return result
+
+class Html(Element):
+	tag = "html"
+
+class Body(Element):
+	tag = "body"
+
+class P(Element):
+	tag = "p"
