@@ -16,3 +16,4 @@ The class repo has three top level directories:
 
 
 
+My name is William White. I like to ski, play soccer, hang out with my dogs, and travel. I currently work in finance and am hoping this course will better help me analyze data.
