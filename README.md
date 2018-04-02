@@ -15,4 +15,8 @@ The class repo has three top level directories:
 `students`: Used for the students to submit their work. Each student will create a directory in the students directory in which to put their work.
 
 
+## For Students:
 
+If you are a student in the class, you should create a fork of this repo, add your work to your fork, and use Pull Requests to submit your work for review:
+
+https://uwpce-pythoncert.github.io/PythonCertDevel/modules/Git.html#setting-up-your-fork-of-the-class-repository
