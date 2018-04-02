@@ -8,7 +8,8 @@ def test_react_correct():
     '''
     test if function reacts according to input 
     '''
-    action_result= {'yes' : 'JAAA', 'no' : 'NOOO', 'wiwiwi' : 'BULLSHIT' }
+    # action_result= {'yes' : 'JAAA', 'no' : 'NOOO', 'wiwiwi' : 'BULLSHIT' }
+    action_result= {'yes' : 'BUBU', 'no' : 'NOOO', 'wiwiwi' : 'BULLSHIT' }
     # action_result= { 'no' : 'NOOO', 'wiwiwi' : 'BULLSHIT' }
     for key in action_result:
         '''
@@ -38,9 +39,10 @@ def test_react_correct():
                 specified return_value without really being executed:
                 '''
                 # r.secondfunc = unittest.mock.MagicMock(return_value = 'HAHAHA')
-                r.secondfunc = unittest.mock.MagicMock(return_value = 'BUBU')
+                r.secondfunc = unittest.mock.MagicMock(return_value = 'BUBU')     # good one
                 # assert r.secondfunc() == 'HAHAHA'
-                assert r.secondfunc() == 'BUBU'
+                # assert r.secondfunc() == 'BUBU'
+                assert r.react_correct() == action_result[key]
 
 
                 # r.secondfunc.assert_called_with(key)      # FAIL

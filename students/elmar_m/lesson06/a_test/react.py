@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import time
+
 def react_correct():
     response = input('Please type yes or no\n')
 
@@ -22,7 +24,15 @@ def react_correct():
 
 def secondfunc():
     print('this is secondfunc() executed...')
+    ts = time.strftime('%Y%m%d-%H%M%S')
+    filename = 'foo.{}.txt'.format(ts)
+    try:
+        with open(filename, 'w') as f:
+            f.write('helloworld\n')
+    except:
+        print('f**king exception caught')
     return 'HAHAHA'
+    # return None
 
 def main():
     print('starting my program...')
