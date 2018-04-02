@@ -18,7 +18,18 @@ def lucas(n):
         x = luc_list[i-2] + luc_list[i-1]
         luc_list.append(x)
     #printed to test if I'm getting the index number
-    #print(luc_list[n])
+    print(luc_list[n])
     return luc_list[n]
 
-lucas(5)
+def sum_series (n,a = 0,b = 1):
+    sum_list = [a,b]
+    for i in range(2, n+1):
+        x = sum_list[i-2] + sum_list[i-1]
+        sum_list.append(x)
+    #print (sum_list[n])
+    return sum_list[n]
+
+
+assert fibonacci(12) == 144
+assert lucas(4) == 7
+assert sum_series(6) == 8
