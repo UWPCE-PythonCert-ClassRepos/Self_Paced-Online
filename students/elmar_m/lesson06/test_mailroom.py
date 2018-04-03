@@ -58,13 +58,13 @@ def test_add():
     for name in test_names:
         with unittest.mock.patch('builtins.input') as fake_input:
             '''
-            Mocking m.add_amount to return True or something arbitrary prevents it from
-            actually being executed when running this test. Executing it would result
+            Mocking m.add_amount to return True or something arbitrary here prevents it from
+            really being executed when running this test. Executing it would result
             in being caught in m.add_amount's while loop (until i find out how 
-            to use this 'side_effect' parameter of mock.patch ...:)
+            to prevent this (maybe using 'side_effect' parameter of mock.patch...?))
             '''
-            m.add_amount = unittest.mock.MagicMock(return_value = 'BUBU')
-            # m.add_amount = unittest.mock.MagicMock(return_value = True)
+            # m.add_amount = unittest.mock.MagicMock(return_value = 'BUBU')
+            m.add_amount = unittest.mock.MagicMock(return_value = True)
             fake_input.return_value = name
             assert m.add() is True
 
@@ -74,8 +74,10 @@ def test_add_amount():
     with unittest.mock.patch('builtins.input') as fake_input:
         fake_input.return_value = '100'
         '''
-        Note: m.add_amount is still mocked / patched to return the faked return_value 
-        from the stanza above !!
+        Note: at this point, m.add_amount is still mocked / patched to return the  
+        faked return_value from the stanza above, so it is not REALLY executed here !! 
+        This can lead to misleading test results at this point!
+        Possible workaround: put test_add_amount() before test_add().
         '''
         assert m.add_amount(test_donor) is True
 
