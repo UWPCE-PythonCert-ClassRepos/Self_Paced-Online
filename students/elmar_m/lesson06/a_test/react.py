@@ -22,7 +22,7 @@ def react_correct():
         print('ValueError exception raised !!')
 
 
-def secondfunc():
+def recondfunc():
     print('this is secondfunc() executed...')
     ts = time.strftime('%Y%m%d-%H%M%S')
     filename = 'foo.{}.txt'.format(ts)
@@ -31,7 +31,7 @@ def secondfunc():
             f.write('helloworld\n')
     except:
         print('f**king exception caught')
-    return 'HAHAHA'
+    # return 'HAHAHA'
     # return None
 
 def main():

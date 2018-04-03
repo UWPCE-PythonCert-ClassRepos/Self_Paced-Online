@@ -104,11 +104,15 @@ def add():
             break
     if dname in donors:
         print('>>', dname, 'already in list')
-        return add_amount(dname)
+        # return add_amount(dname)
+        add_amount(dname)
+        return True
         
     else:
         print('>>', dname, 'not in list, adding it ')
-        return add_amount(dname)
+        # return add_amount(dname)
+        add_amount(dname)
+        return True
     # return True
 
 
