@@ -1,6 +1,6 @@
-# Self Paced Online Class Repository
+# Self_Paced-Online
+Class repository for the self paced online class 2018
 
-This is a repository used by the UWPCE Python Certificate Program Self Paced Online Class
 
 It can be used by the class to share information and for students to submit their work.
 
@@ -15,4 +15,8 @@ The class repo has three top level directories:
 `students`: Used for the students to submit their work. Each student will create a directory in the students directory in which to put their work.
 
 
+## For Students:
 
+If you are a student in the class, you should create a fork of this repo, add your work to your fork, and use Pull Requests to submit your work for review:
+
+https://uwpce-pythoncert.github.io/PythonCertDevel/modules/Git.html#setting-up-your-fork-of-the-class-repository
