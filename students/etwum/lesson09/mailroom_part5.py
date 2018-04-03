@@ -20,30 +20,11 @@ class Donor_Data:
             return x
 
 
-
-
-
 class Interaction:
-
     def __init__(self, donor_list):
         self.donor_list = donor_list
 
-
-    def get_donor_list(self):
-        # function for returning the donor list
-        return self.donor_list
-
-    def create_donor(self):
-        donor_number = len(self.donor_list()) + 1
-        return donor_number
-
     def send_thank_you(self):
-        # used to add new donors
-        new_donor = {}
-
-        # donor number
-        # donor_number = len(get_donor_list()) + 1
-
         # function creates a thank you email to current and new donors added to the list
         # add new donors and donations
         # print the names of the current donor if 'list' is input by the user
@@ -52,7 +33,7 @@ class Interaction:
         if view_donors.lower() == 'list':
             print()
             print("Below are the list of donors:")
-            for x in Interaction.get_donor_list:
+            for x in self.donor_list:
                 print(x["donor name"])
             print('----------------------------')
 
@@ -76,7 +57,7 @@ class Interaction:
         print()
 
         # prints an email if the donors name is currently in the list
-        for x in Interaction.get_donor_list().values():
+        for x in self.donor_list:
             if x["donor name"] == donor_full_name:
 
                 while True:
@@ -128,12 +109,12 @@ class Interaction:
                     print("Please input a valid number")
                 else:
                     break
-            len(get_donor_list())
-            new_donor = {create_donor(): {"donor name": donor_full_name, "total donations": new_donation_amount,
-                                        "number donations": 1, "avg donation": new_donation_amount}}
-            dict_donors.update(new_donor)
+
+            new_donor = {"donor name": donor_full_name, "total donations": new_donation_amount,
+                                        "number donations": 1, "avg donation": new_donation_amount}
+            self.donor_list.update(new_donor)
             print('-----------------------------------------------------')
-            for x in get_donor_list().values():
+            for x in self.donor_list:
                 if x["donor name"] == donor_full_name:
                     email = "Dear {donor_name},\n\nThank you for your generous donations of ${donations:.2f} " \
                             "to our charity.\n".format(donor_name=x["donor name"],donations=x["total donations"])
@@ -141,6 +122,11 @@ class Interaction:
         print('-----------------------------------------------------')
 
     @staticmethod
+    def sort_list(self):
+        # used to sort the donor list by the total donations column
+
+        return self.donor_list["total donations"]
+
     def create_report(self):
         # creates a report of the the donors
         # headers used in table
@@ -150,14 +136,13 @@ class Interaction:
         for x in lst_headers:
             print('{:<25}{:<20}{:<17}{:<15}'.format(*x))
         print("----------------------------------------------------------------------------")
-        for x,y in sorted(get_donor_list().items(),key=lambda x: x[1]['total donations'], reverse= True):
-            print('{:<25} $ {:<20}{:^14} $ {:<15}'.format(*y.values()))
+        for x in sorted(self.donor_list, key=Interaction.sort_list, reverse= True):
+            print('{:<25} $ {:<20}{:^14} $ {:<15}'.format(*x.values()))
 
-    @staticmethod
     def send_letter_all(self):
         print('\n----------------------------------------------')
         # creates a letter to every donor by writing them to separate text files
-        for x in get_donor_list().values():
+        for x in self.donor_list:
 
             # opens or creates a new text file for writing based on the donor name
             with open('{file_name}.txt'.format(file_name=x['donor name']), 'w') as f1:
@@ -169,16 +154,16 @@ class Interaction:
 
         print('----------------------------------------------\n')
 
-donor1 = Donor_Data({1:{"donor name": "Lionel Messi", "total donations": 1000000.00, "number donations": 5,
-                   "avg donation": 20000.00}})
-donor2 = Donor_Data({2: {"donor name": "Thierry Henry", "total donations": 500, "number donations": 1,
-                   "avg donation": 500}})
-donor3 = Donor_Data({3: {"donor name": "Michael Jordan", "total donations": 45000, "number donations": 3,
-                   "avg donation": 15000}})
-donor4 = Donor_Data({4: {"donor name": "Kobe Bryant", "total donations": 8000, "number donations": 2,
-                   "avg donation": 4000}})
+donor1 = Donor_Data({"donor name": "Lionel Messi", "total donations": 1000000.00, "number donations": 5,
+                   "avg donation": 20000.00})
+donor2 = Donor_Data({"donor name": "Thierry Henry", "total donations": 500, "number donations": 1,
+                   "avg donation": 500})
+donor3 = Donor_Data({"donor name": "Michael Jordan", "total donations": 45000, "number donations": 3,
+                   "avg donation": 15000})
+donor4 = Donor_Data({"donor name": "Kobe Bryant", "total donations": 8000, "number donations": 2,
+                   "avg donation": 4000})
 
-d = Interaction({donor1, donor2, donor3, donor4})
+d = Interaction([donor1, donor2, donor3, donor4])
 
 user_selection = {1: Interaction.send_thank_you, 2: Interaction.create_report, 3: Interaction.send_letter_all}
 
@@ -206,7 +191,7 @@ def main():
         # try/except block to make sure the user inputs a valid option
         try:
             str_choice = int(input("Which option would you like to perform? Input a number [1 to 4] "))
-            if str_choice in options():
+            if str_choice in user_selection:
                 # returns a value from user_selection dictionary in the options function
                 # then runs the function from the dictionary
                 options()[str_choice]()
