@@ -1,5 +1,5 @@
 '''
-    File Name: fizzbuzz.py
+    File Name: series.py
     Author: Matt Hudgins
     Date created: 4/2/2018
     Date last modified: 4/2/2018
