@@ -5,11 +5,12 @@ Lesson 2 Part 3
 Making an adjustable grid
 Brandon added comments 4/1/18
 '''
-################################            add comments
+# add comments
 # create a function with two variables
+
+
 def print_grid2(n, v):
-######################################      define all the needed characters
-# define the plus symbol
+    # define the plus symbol
     plus = '+'
 # define the minus symbol
     minus = ' - '
@@ -29,4 +30,4 @@ def print_grid2(n, v):
         for i in range(v):
             print(middle)
         print(top1)
-print_grid2(4,4)
+print_grid2(4, 4)
