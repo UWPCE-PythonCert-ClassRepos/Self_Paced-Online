@@ -38,7 +38,7 @@ def print_grid(num):
     print(line1)
 print_grid(5)
 
-def print_grid(row_col, num):
+def print_grid2(row_col, num):
     """prints a 2x2 block grid (4 cells).  Parameter 'num' is the number of
     - vertical and | horizontal symbols for each cell"""
     plus = "+"
@@ -63,4 +63,4 @@ def print_grid(row_col, num):
             print((line_2_add_rep + '\n') * num, end='')
             print(line_1 + (line_1_add*(row_col-1)))
         
-print_grid(3, 7)
+print_grid2(3, 7)
