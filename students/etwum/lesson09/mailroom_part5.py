@@ -14,15 +14,16 @@ class Donor_Data:
     def __init__(self,donors):
         self.donor = donors
 
-    @property
     def donor_data(self):
-        for x in self.donor.values():
-            return x
+        return self.donor
 
 
 class Interaction:
     def __init__(self, donor_list):
         self.donor_list = donor_list
+
+    def get_list(self):
+        return self.donor_list
 
     def send_thank_you(self):
         # function creates a thank you email to current and new donors added to the list
@@ -33,6 +34,7 @@ class Interaction:
         if view_donors.lower() == 'list':
             print()
             print("Below are the list of donors:")
+            print(self.get_list())
             for x in self.donor_list:
                 print(x["donor name"])
             print('----------------------------')
@@ -163,9 +165,9 @@ donor3 = Donor_Data({"donor name": "Michael Jordan", "total donations": 45000, "
 donor4 = Donor_Data({"donor name": "Kobe Bryant", "total donations": 8000, "number donations": 2,
                    "avg donation": 4000})
 
-d = Interaction([donor1, donor2, donor3, donor4])
+run = Interaction([donor1, donor2, donor3, donor4])
 
-user_selection = {1: Interaction.send_thank_you, 2: Interaction.create_report, 3: Interaction.send_letter_all}
+user_selection = {1: run.send_thank_you, 2: run.create_report, 3: run.send_letter_all}
 
 
 def options():
