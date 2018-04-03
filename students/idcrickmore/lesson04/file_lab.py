@@ -2,7 +2,7 @@
 
 import os
 
-# prints fjull pat for all files in current directory
+# prints full path for all files in current directory
 for l in os.listdir():
     print("{}\{}".format(os.getcwd(),l))
 
@@ -21,6 +21,6 @@ ext = os.path.splitext(source)[1]
 
 # opens 'source' with read binary arguement
 # opens 'copied_file' with write binary arguement
-# reades the input file (in_f) and writes it (out_f)
+# reads the input file (in_f) and writes it (out_f)
 with open(str(source), 'rb') as in_f, open("copied_file" + ext, 'wb') as out_f:
     out_f.write(in_f.read())
