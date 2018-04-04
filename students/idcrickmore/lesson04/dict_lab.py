@@ -15,27 +15,41 @@ for k in d:
 print('\ndictionary values...')
 for v in d.values():
     print(v)
-    
+
 print('\ncake is a key...')
 print('cake' in d)
-    
+
 
 print('\nMango is a value...')
 print('Mango' in d.values())
 
 
 # Dictionaries 2
+# loop through d, count lowercase t and writing value to new k_dict
 k_dict = {}
 for k, v in d.items():
     k_dict[k] = d[k].lower().count('t')
-    
+
 print(k_dict)
 
 
-# sets 1 this sh*t is broken
-s2 = set(range(1,21))
-for s in s2:
-    if (s % 3) != 0:
-        del s
-    
+# sets 1
+# use range's 'step' parameter to filter out unwanted values
+s2 = set(range(0, 21, 2))
+s3 = set(range(0, 21, 3))
+s4 = set(range(0, 21, 4))
+
 print(s2)
+print(s3)
+print(s4)
+
+print(s3.issubset(s2))
+print(s4.issubset(s2))
+
+
+# sets2
+p = set('Python')
+p.update('i')
+m = frozenset('marathon')
+print(p.union(m))
+print(p.intersection(m))
