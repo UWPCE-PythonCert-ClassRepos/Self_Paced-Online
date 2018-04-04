@@ -1,10 +1,10 @@
-for num in range(1:101):
-    str = ('')
+for num in range(1,101):
+    cur_str = ''
     if not num % 3:
-        str = 'Fizz'
+        cur_str = 'Fizz'
     if not num % 5:
-        str += 'Buzz'
-    if str == '':
+        cur_str += 'Buzz'
+    if cur_str == '':
         print(num)
     else:
-        print(str)
+        print(cur_str)
