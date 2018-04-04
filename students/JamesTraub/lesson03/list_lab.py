@@ -41,8 +41,11 @@ print()
 # Lesson 3 - Series 2
 print(fruit)
 print()
+print()
+
 
 fruit.pop()
+print('The last item in the list has been removed.')
 print(fruit)
 print()
 
@@ -74,5 +77,5 @@ for tree in new_fruit:
     new_tree = tree[::-1]
     reversed_list.append(new_tree)
 fruit.pop()
-print(fruit)
 print(reversed_list)
+print(fruit)
