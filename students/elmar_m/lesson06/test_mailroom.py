@@ -52,30 +52,54 @@ def test_list_donors():
 #             else:
 #                 assert r.react_correct() == action_result[key]
 
-
+# @pytest.fixture
+# def 
 def test_add():
     test_names = ['berta', 'nobody']
     for name in test_names:
         with unittest.mock.patch('builtins.input') as fake_input:
-            '''
-            Mocking m.add_amount to return True or something arbitrary here prevents it from
-            really being executed when running this test. Executing it would result
-            in being caught in m.add_amount's while loop (until i find out how 
-            to prevent this (maybe using 'side_effect' parameter of mock.patch...?))
-            '''
-            # m.add_amount = unittest.mock.MagicMock(return_value = 'BUBU')
-            m.add_amount = unittest.mock.MagicMock(return_value = True)
             fake_input.return_value = name
-            assert m.add() is True
+            '''
+            It's necessary to mock / fake m.add_amount() here to return True or something
+            arbitrary when running this test. Otherwise m.add_amount() will be executed 
+            in real and the test will be caught in m.add_amount's while loop.
+
+            # m.add_amount = unittest.mock.MagicMock(return_value = 'BUBU')   # OK1
+            # assert m.add() == 'BUBU'                                        # OK1
+
+            Drawback: from here on m.add_amount() is faked. If used further below from here,
+            e.g. in test_add_amount(), it won't be executed in real but just represent
+            the faked state.
+            '''
+
+            m.add_amount = unittest.mock.MagicMock(return_value = True)   # OK2
+            assert m.add() is True                                        # OK2
+            '''
+            # This version (OK2) let test_add_amount() succeed also, but that is then only some
+            # kind of 'false positive', because m.add_amount() is NOT really executed / tested
+            # in test_add_amount() anymore. So, if the code of m.add_amount() would have 
+            # changed to something wrong, this would not be detected my test_add_amount() 
+            # anymore.
+
+            # m.add_amount = unittest.mock.MagicMock(name)
+            # assert m.add() == m.add_amount(name)
+
+            # unittest.mock.patch(m.add_amount, return_value = 'BUBU')
+            # assert m.add() == 'BUBU'                                        
+            '''
 
 
 def test_add_amount():
-    test_donor = 'berta'
+    test_donor = 'steve'
     with unittest.mock.patch('builtins.input') as fake_input:
         fake_input.return_value = '100'
+        # fake_input.return_value = '-100'    # puts you in while loop, thereby proving that
+                                              # m.add_amount really is executed here
+        # fake_input.return_value = 'abc'     # dito
         '''
-        Note: at this point, m.add_amount is still mocked / patched to return the  
-        faked return_value from the stanza above, so it is not REALLY executed here !! 
+        Note: depending on the code in test_add() above, m.add_amount might be still 
+        mocked / patched at this point and return a faked return value instead of 
+        being executed / tested here once again in real. 
         This can lead to misleading test results at this point!
         Possible workaround: put test_add_amount() before test_add().
         '''
