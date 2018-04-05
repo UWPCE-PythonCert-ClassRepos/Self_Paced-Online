@@ -1,29 +1,29 @@
 #!/usr/bin/env python3
 
 # initial list of donors
-"""dict_donors = {1: {"donor name": "Lionel Messi", "total donations": 1000000.00, "number donations": 5,
-                   "avg donation": 20000.00},
-               2: {"donor name": "Thierry Henry", "total donations": 500, "number donations": 1,
-                   "avg donation": 500},
-               3: {"donor name": "Michael Jordan", "total donations": 45000, "number donations": 3,
-                   "avg donation": 15000},
-               4: {"donor name": "Kobe Bryant", "total donations": 8000, "number donations": 2,
-                   "avg donation": 4000}}"""
+
 
 class Donor_Data:
     def __init__(self,donors):
-        self.donor = donors
+        self.donors = donors
 
     def donor_data(self):
-        return self.donor
+        return self.donors
+
 
 
 class Interaction:
-    def __init__(self, donor_list):
-        self.donor_list = donor_list
+    def __init__(self, donor_list = None):
+        if donor_list is None:
+            donor_list = []
+        else:
+            self.donor_list = donor_list
 
-    def get_list(self):
-        return self.donor_list
+    """def get_list(self):
+        the_list = []
+        for x in self.donor_list:
+            the_list.append(x.donor_data()['donor name'])
+        return the_list"""
 
     def send_thank_you(self):
         # function creates a thank you email to current and new donors added to the list
@@ -31,12 +31,12 @@ class Interaction:
         # print the names of the current donor if 'list' is input by the user
         print('\n-----------------------------------------------------')
         view_donors = input("If you would like to see a list of donors please type 'list' or any key to continue. ")
+
         if view_donors.lower() == 'list':
             print()
             print("Below are the list of donors:")
-            print(self.get_list())
             for x in self.donor_list:
-                print(x["donor name"])
+                print(x.donor_data()["donor name"])
             print('----------------------------')
 
         while True:
@@ -60,7 +60,7 @@ class Interaction:
 
         # prints an email if the donors name is currently in the list
         for x in self.donor_list:
-            if x["donor name"] == donor_full_name:
+            if x.donor_data()["donor name"] == donor_full_name:
 
                 while True:
 
@@ -81,15 +81,15 @@ class Interaction:
                             print("Please input a valid value")
                         else:
                             break
-                    total_donations = x["total donations"] + donate_more
-                    count_donations = x["number donations"] + 1
+                    total_donations = x.donor_data()["total donations"] + donate_more
+                    count_donations = x.donor_data()["number donations"] + 1
                     avg_donation = total_donations/count_donations
-                    x["total donations"] = total_donations
-                    x["number donations"] = count_donations
-                    x["avg donation"] = '{:.2f}'.format(avg_donation)
+                    x.donor_data()["total donations"] = total_donations
+                    x.donor_data()["number donations"] = count_donations
+                    x.donor_data()["avg donation"] = '{:.2f}'.format(avg_donation)
                     print('-----------------------------------------------------\n')
                 email = "Dear {donor_name},\n\nThank you for your generous donations of ${donations:.2f} " \
-                        "to our charity.\n".format(donor_name=x["donor name"],donations=x["total donations"])
+                        "to our charity.\n".format(donor_name=x.donor_data()["donor name"],donations=x.donor_data()["total donations"])
                 print(email)
                 break
 
@@ -156,16 +156,18 @@ class Interaction:
 
         print('----------------------------------------------\n')
 
-donor1 = Donor_Data({"donor name": "Lionel Messi", "total donations": 1000000.00, "number donations": 5,
-                   "avg donation": 20000.00})
-donor2 = Donor_Data({"donor name": "Thierry Henry", "total donations": 500, "number donations": 1,
-                   "avg donation": 500})
-donor3 = Donor_Data({"donor name": "Michael Jordan", "total donations": 45000, "number donations": 3,
-                   "avg donation": 15000})
-donor4 = Donor_Data({"donor name": "Kobe Bryant", "total donations": 8000, "number donations": 2,
-                   "avg donation": 4000})
 
-run = Interaction([donor1, donor2, donor3, donor4])
+donor1 = Donor_Data({"donor name": "Lionel Messi", "total donations": 1000000.00, "number donations": 5,
+                     "avg donation": 20000.00})
+donor2 = Donor_Data({"donor name": "Thierry Henry", "total donations": 500, "number donations": 1,
+                     "avg donation": 500})
+donor3 = Donor_Data({"donor name": "Michael Jordan", "total donations": 45000, "number donations": 3,
+                     "avg donation": 15000})
+donor4 = Donor_Data({"donor name": "Kobe Bryant", "total donations": 8000, "number donations": 2,
+                     "avg donation": 4000})
+
+
+run = Interaction([donor1,donor2,donor3,donor4])
 
 user_selection = {1: run.send_thank_you, 2: run.create_report, 3: run.send_letter_all}
 
