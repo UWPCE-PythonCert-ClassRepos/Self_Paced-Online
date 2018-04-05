@@ -4,10 +4,10 @@ import os
 
 # prints full path for all files in current directory
 for l in os.listdir():
-    print("{}\{}".format(os.getcwd(),l))
+    print("{}\{}".format(os.getcwd(), l))
 
 
-#copeies a file from source to destination
+# copies a file from source to destination
 print("your working directory is {}\n".format(os.getcwd()))
 print("It contains the following files:")
 
