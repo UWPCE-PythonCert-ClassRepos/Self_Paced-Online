@@ -5,39 +5,48 @@
 class SparseArray():
     """Sparse Array class"""
     def __init__(self, seq):
-        self.elements = {}
         self.num_elems = 0
+        self.elements = {}
 
-        for i, arg in enumerate(seq):
-            self.num_elems += 1
-            self.elements[i] = arg
+        self.elements = {i: arg for i, arg in enumerate(seq) if arg}
+        self.num_elems = len(seq)
 
     def __contains__(self, item):
         return bool(item in self.elements.values())
 
     def __delitem__(self, index):
-        if index in self.elements.keys():
-            del self.elements[index]
-            self.num_elems -= 1
-
-            # Rebuild dict after deleted element
-            for i in range(index, self.num_elems):
-                self.elements[i] = self.elements[i + 1]
-            del self.elements[self.num_elems]
-        else:
+        if index >= self.num_elems or index < 0:
             raise IndexError
+        else:
+            try:
+                del self.elements[index]
+            except ValueError:
+                raise IndexError
+            except KeyError:
+                pass
+            else:
+                self.num_elems -= 1
 
     def __getitem__(self, index):
-        try:
-            if isinstance(index, slice):
-                beg = index.start if index.start is not None else 0
-                end = index.stop if index.stop is not None else self.num_elems
-                stp = index.step if index.step is not None else 1
-                return [self.elements[i] for i in range(beg, end, stp)]
-            else:
+        if isinstance(index, slice):
+            strt = index.start if index.start is not None else 0
+            stop = index.stop if index.stop is not None else self.num_elems
+            step = index.step if index.step is not None else 1
+
+            ret_lst = []
+            for i in range(strt, stop, step):
+                if i in self.elements.keys():
+                    ret_lst.append(self.elements[i])
+                else:
+                    ret_lst.append(0)
+
+            return ret_lst
+        else:
+            if index >= self.num_elems or index < 0:
+                raise IndexError
+            elif index in self.elements.keys():
                 return self.elements[index]
-        except KeyError:
-            raise IndexError
+            return 0
 
     def __iter__(self):
         for i in range(0, self.num_elems):
@@ -50,13 +59,25 @@ class SparseArray():
         return bool(self.num_elems < len(seq))
 
     def __setitem__(self, index, value):
-        if index < self.num_elems:
-            self.elements[index] = value
-        else:
+        if index >= self.num_elems or index < 0:
             raise IndexError
+        elif not value:
+            try:
+                del self.elements[index]
+            except KeyError:
+                pass
+        else:
+            self.elements[index] = value
 
     def __str__(self):
-        return '[' + ', '.join([str(self.elements[i]) for i in range(self.num_elems)]) + ']'
+        elems = []
+        for i in range(self.num_elems):
+            if i in self.elements.keys():
+                elems.append(str(self.elements[i]))
+            else:
+                elems.append('0')
+
+        return '[' + ', '.join(elems) + ']'
 
     def __repr__(self):
         return f'SparseArray(*args)'
