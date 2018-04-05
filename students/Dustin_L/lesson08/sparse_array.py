@@ -8,10 +8,13 @@ class SparseArray():
         self.num_elems = 0
         self.elements = {}
 
+        self.contains_zero = True if 0 in seq else False
         self.elements = {i: arg for i, arg in enumerate(seq) if arg}
         self.num_elems = len(seq)
 
     def __contains__(self, item):
+        if not item:
+            return self.contains_zero
         return bool(item in self.elements.values())
 
     def __delitem__(self, index):
@@ -20,12 +23,30 @@ class SparseArray():
         else:
             try:
                 del self.elements[index]
-            except ValueError:
-                raise IndexError
             except KeyError:
                 pass
-            else:
-                self.num_elems -= 1
+
+            # Rebuild dict after deleted element
+            # NOTE: Can this be done with a dictionary comprehension??
+            new_dict = {}
+            for i, arg in self.elements.items():
+                if i > index:
+                    new_dict[i - 1] = arg
+                else:
+                    new_dict[i] = arg
+
+            self.elements = new_dict
+            self.num_elems -= 1
+
+    def __eq__(self, other):
+        for i in range(self.num_elems):
+            if i in self.elements.keys():
+                if self.elements[i] != other[i]:
+                    return False
+            elif other[i] != 0:
+                return False
+
+        return True
 
     def __getitem__(self, index):
         if isinstance(index, slice):
@@ -49,8 +70,11 @@ class SparseArray():
             return 0
 
     def __iter__(self):
-        for i in range(0, self.num_elems):
-            yield self.elements[i]
+        for i in range(self.num_elems):
+            if i in self.elements.keys():
+                yield self.elements[i]
+            else:
+                yield 0
 
     def __len__(self):
         return self.num_elems
