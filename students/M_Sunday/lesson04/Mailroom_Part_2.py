@@ -21,7 +21,8 @@ def menu_disp():
     print("\n\n----- MENU -----")
     print("1: Send a Thank You")
     print("2: Create a Report")
-    print("3: Quit")
+    print("3: Send letters to everyone")
+    print("4: Quit")
     menu_sel_ = input("------> "
                       "Select an option from the menu: ")
     return menu_sel_
@@ -91,7 +92,7 @@ def report(data=donor_data):
 
 if __name__ == "__main__":
 
-    menu_map = {'1': thank_you, '2': report, '3': 'exit'}
+    menu_map = {'1': thank_you, '2': report, '3': send_all_letters, '4': 'exit'}
 
     while True:
         menu_sel = menu_disp()
