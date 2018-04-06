@@ -34,10 +34,13 @@ def read_text(intext):
 def create_trigrams_try_two(text_list):
     trigrams = {}
     # Add 3rd word to trigram pairs.  Create key entry if not already in dict.
+    # TODO: learn about default dicts :(
     for i in range(len(text_list)-2):
         try:
             trigrams[(text_list[i], text_list[i+1])].append(text_list[i+2])
-        except:
+        except KeyError:
+            trigrams[(text_list[i], text_list[i+1])] = (text_list[i+2])
+        except AttributeError:
             trigrams[(text_list[i], text_list[i+1])] = (text_list[i+2])
 
     return trigrams
