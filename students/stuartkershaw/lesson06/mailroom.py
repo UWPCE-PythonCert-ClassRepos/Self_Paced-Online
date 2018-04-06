@@ -80,6 +80,8 @@ def get_selection():
     while True:
         selection = input(options)
         apply_selection(selection)
+        if selection == '2':
+            get_selection()
 
 
 def set_donation(donor):
@@ -143,7 +145,6 @@ def show_donor_table():
         cur_donor = donors[donor]
         print('{:<20}'.format(donor), ('{:<15}' * len(cur_donor['rollup']))
               .format(*cur_donor['rollup'].values()))
-    get_selection()
 
 
 def generate_letters():
