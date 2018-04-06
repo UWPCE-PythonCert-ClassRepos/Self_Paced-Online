@@ -11,7 +11,6 @@ class Donor_Data:
         return self.donors
 
 
-
 class Interaction:
 
     new_donor = []
@@ -21,7 +20,6 @@ class Interaction:
             donor_list = []
         else:
             self.donor_list = donor_list
-
 
     def send_thank_you(self):
         # function creates a thank you email to current and new donors added to the list
@@ -147,8 +145,9 @@ class Interaction:
             with open('{file_name}.txt'.format(file_name=x.donor_data()["donor name"]), 'w') as f1:
 
                 # writes a thank you letter to the text file
-                f1.write('Dear {donor_name},\n\nThank you for your generous donation(s) of ${donations:.2f} to our charity.'.format(
-                    donor_name=x.donor_data()["donor name"], donations=x.donor_data()["total donations"]))
+                f1.write('Dear {donor_name},\n\nThank you for your generous donation(s) of ${donations:.2f} '
+                         'to our charity.'.format(donor_name=x.donor_data()["donor name"],
+                                                  donations=x.donor_data()["total donations"]))
                 print('Letter sent to  {a}'.format(a=x.donor_data()["donor name"]))
 
         print('----------------------------------------------\n')
