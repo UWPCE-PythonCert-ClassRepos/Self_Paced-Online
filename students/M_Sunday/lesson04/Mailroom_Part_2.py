@@ -91,12 +91,10 @@ def report(data=donor_data):
 
 if __name__ == "__main__":
 
-    menu_sel = menu_disp()
+    menu_map = {'1': thank_you, '2': report, '3': 'exit'}
 
-    while menu_sel != '3':
-        if menu_sel == '1':
-            thank_you(donor_data)
-            menu_sel = menu_disp()
-        elif menu_sel == '2':
-            report()
-            menu_sel = menu_disp()
+    while True:
+        menu_sel = menu_disp()
+        if menu_map[menu_sel] == 'exit':
+            break
+        menu_map[menu_sel]()
