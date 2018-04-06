@@ -13,17 +13,15 @@ class Donor_Data:
 
 
 class Interaction:
+
+    new_donor = []
+
     def __init__(self, donor_list = None):
         if donor_list is None:
             donor_list = []
         else:
             self.donor_list = donor_list
 
-    """def get_list(self):
-        the_list = []
-        for x in self.donor_list:
-            the_list.append(x.donor_data()['donor name'])
-        return the_list"""
 
     def send_thank_you(self):
         # function creates a thank you email to current and new donors added to the list
@@ -112,9 +110,11 @@ class Interaction:
                 else:
                     break
 
-            new_donor = {"donor name": donor_full_name, "total donations": new_donation_amount,
-                                        "number donations": 1, "avg donation": new_donation_amount}
-            self.donor_list.update(new_donor)
+            self.new_donor.append({"donor name": donor_full_name, "total donations": new_donation_amount,
+                                        "number donations": 1, "avg donation": new_donation_amount})
+            print(self.new_donor)
+            self.donor_list.extend(self.new_donor)
+            print(self.donor_list)
             print('-----------------------------------------------------')
             for x in self.donor_list:
                 if x["donor name"] == donor_full_name:
@@ -123,22 +123,19 @@ class Interaction:
                     print(email)
         print('-----------------------------------------------------')
 
-    @staticmethod
-    def sort_list(self):
-        # used to sort the donor list by the total donations column
-
-        return self.donor_list["total donations"]
-
     def create_report(self):
         # creates a report of the the donors
         # headers used in table
+        data_list = []
+        for x in self.donor_list:
+            data_list.append(x.donor_data())
         print()
 
         lst_headers = [["Donor Name", "| Total Donation(s)", "| # of Donations", "| Avg Donation"]]
         for x in lst_headers:
             print('{:<25}{:<20}{:<17}{:<15}'.format(*x))
         print("----------------------------------------------------------------------------")
-        for x in sorted(self.donor_list, key=Interaction.sort_list, reverse= True):
+        for x in sorted(data_list, key=lambda x: x['total donations'], reverse=True):
             print('{:<25} $ {:<20}{:^14} $ {:<15}'.format(*x.values()))
 
     def send_letter_all(self):
@@ -147,12 +144,12 @@ class Interaction:
         for x in self.donor_list:
 
             # opens or creates a new text file for writing based on the donor name
-            with open('{file_name}.txt'.format(file_name=x['donor name']), 'w') as f1:
+            with open('{file_name}.txt'.format(file_name=x.donor_data()["donor name"]), 'w') as f1:
 
                 # writes a thank you letter to the text file
                 f1.write('Dear {donor_name},\n\nThank you for your generous donation(s) of ${donations:.2f} to our charity.'.format(
-                    donor_name=x['donor name'], donations=x['total donations']))
-                print('Letter sent to  {a}'.format(a=x['donor name']))
+                    donor_name=x.donor_data()["donor name"], donations=x.donor_data()["total donations"]))
+                print('Letter sent to  {a}'.format(a=x.donor_data()["donor name"]))
 
         print('----------------------------------------------\n')
 
