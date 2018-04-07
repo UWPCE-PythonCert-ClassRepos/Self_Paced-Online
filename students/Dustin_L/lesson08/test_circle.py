@@ -261,6 +261,66 @@ class TestCircle(unittest.TestCase):
         self.assertTrue(c3.area == expected_circle.area,
                         msg=(c3.area, expected_circle.area))
 
+    def test_eq_operator(self):
+        c2 = circle.Circle(self.test_radius)
+        c3 = circle.Circle(self.test_radius + 1)
+
+        self.assertTrue(self.c == c2, msg=(self.c, c2))
+        self.assertFalse(self.c == c3, msg=(self.c, c3))
+        with self.assertRaises(AttributeError):
+            self.c == 5
+
+    def test_ge_operator(self):
+        c1 = circle.Circle(self.test_radius - 1)
+        c2 = circle.Circle(self.test_radius)
+        c3 = circle.Circle(self.test_radius + 1)
+
+        self.assertTrue(self.c >= c1, msg=(self.c, c1))
+        self.assertTrue(self.c >= c2, msg=(self.c, c2))
+        self.assertFalse(self.c >= c3, msg=(self.c, c3))
+        with self.assertRaises(AttributeError):
+            self.c >= 5
+
+    def test_gt_operator(self):
+        c1 = circle.Circle(self.test_radius - 1)
+        c2 = circle.Circle(self.test_radius)
+        c3 = circle.Circle(self.test_radius + 1)
+
+        self.assertTrue(self.c > c1, msg=(self.c, c1))
+        self.assertFalse(self.c > c2, msg=(self.c, c2))
+        self.assertFalse(self.c > c3, msg=(self.c, c3))
+        with self.assertRaises(AttributeError):
+            self.c > 5
+
+    def test_le_operator(self):
+        c1 = circle.Circle(self.test_radius - 1)
+        c2 = circle.Circle(self.test_radius)
+        c3 = circle.Circle(self.test_radius + 1)
+
+        self.assertFalse(self.c <= c1, msg=(self.c, c1))
+        self.assertTrue(self.c <= c2, msg=(self.c, c2))
+        self.assertTrue(self.c <= c3, msg=(self.c, c3))
+        with self.assertRaises(AttributeError):
+            self.c <= 5
+
+    def test_lt_operator(self):
+        c1 = circle.Circle(self.test_radius - 1)
+        c2 = circle.Circle(self.test_radius)
+        c3 = circle.Circle(self.test_radius + 1)
+
+        self.assertFalse(self.c < c1, msg=(self.c, c1))
+        self.assertFalse(self.c < c2, msg=(self.c, c2))
+        self.assertTrue(self.c < c3, msg=(self.c, c3))
+        with self.assertRaises(AttributeError):
+            self.c < 5
+
+    def test_sort_circles(self):
+        circles = [circle.Circle(random.randint(0, 20)) for _ in range(10)]
+        circles.sort()
+
+        for i in range(0, len(circles) - 1):
+            self.assertTrue(circles[i].radius <= circles[i + 1].radius)
+
 
 if __name__ == '__main__':
     unittest.main()

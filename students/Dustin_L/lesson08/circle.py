@@ -19,6 +19,21 @@ class Circle:
             return Circle(self._radius + other.radius)
         return Circle(self._radius + other)
 
+    def __eq__(self, other):
+        return self._radius == other.radius
+
+    def __ge__(self, other):
+        return self._radius >= other.radius
+
+    def __gt__(self, other):
+        return self._radius > other.radius
+
+    def __le__(self, other):
+        return self._radius <= other.radius
+
+    def __lt__(self, other):
+        return self._radius < other.radius
+
     def __mul__(self, other):
         if isinstance(other, Circle):
             return Circle(self._radius * other.radius)
