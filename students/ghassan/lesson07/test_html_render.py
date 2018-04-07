@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from html_render import Element, Html, P, Body
+from html_render import Element, Html, P, Body, Head, OneLineTag, Title
 
 
 def test_Element():
@@ -27,9 +27,9 @@ def test_render():
 def test_Html():
     element = Html('data1')
     element.append('data2')
-    with open('file1.html', 'w') as file1fh:
+    with open('file2.html', 'w') as file1fh:
         element.render(file1fh)
-    with open('file1.html', 'r') as filefh:
+    with open('file2.html', 'r') as filefh:
         rendered = filefh.read()
     assert '<html>\n'+element.indent+'data1\n'+element.indent+'data2\n'+'</html>\n' == rendered  # noqa: E501
 
@@ -37,9 +37,9 @@ def test_Html():
 def test_P():
     element = P('data1')
     element.append('data2')
-    with open('file1.html', 'w') as file1fh:
+    with open('file3.html', 'w') as file1fh:
         element.render(file1fh)
-    with open('file1.html', 'r') as filefh:
+    with open('file3.html', 'r') as filefh:
         rendered = filefh.read()
     assert '<p>\n'+element.indent+'data1\n'+element.indent+'data2\n'+'</p>\n' == rendered  # noqa: E501
 
@@ -47,8 +47,38 @@ def test_P():
 def test_Body():
     element = Body('data1')
     element.append('data2')
-    with open('file1.html', 'w') as file1fh:
+    with open('file4.html', 'w') as file1fh:
         element.render(file1fh)
-    with open('file1.html', 'r') as filefh:
+    with open('file4.html', 'r') as filefh:
         rendered = filefh.read()
     assert '<body>\n'+element.indent+'data1\n'+element.indent+'data2\n'+'</body>\n' == rendered  # noqa: E501
+
+
+def test_Head():
+    element = Head('data1')
+    element.append('data2')
+    with open('file5.html', 'w') as file1fh:
+        element.render(file1fh)
+    with open('file5.html', 'r') as filefh:
+        rendered = filefh.read()
+    assert '<head>\n'+element.indent+'data1\n'+element.indent+'data2\n'+'</head>\n' == rendered  # noqa: E501
+
+
+def test_OneLineTag():
+    element = OneLineTag('data1')
+    element.append('data2')
+    with open('file6.html', 'w') as file6fh:
+        element.render(file6fh)
+    with open('file6.html', 'r') as file6fh:
+        rendered = file6fh.read()
+    assert '<> '+element.indent+'data1 '+element.indent+'data2 '+'</>\n' == rendered  # noqa: E501
+
+
+def test_Title():
+    element = Title('data1')
+    element.append('data2')
+    with open('file7.html', 'w') as file1fh:
+        element.render(file1fh)
+    with open('file7.html', 'r') as filefh:
+        rendered = filefh.read()
+    assert '<title> '+element.indent+'data1 '+element.indent+'data2 '+'</title>\n' == rendered  # noqa: E501
