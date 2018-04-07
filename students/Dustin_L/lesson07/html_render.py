@@ -5,7 +5,7 @@ This module contains all of the functions for the HTML Render module
 """
 
 
-class Element(object):
+class Element:
     """Element class for rendering an HTML element"""
     tag = ''
     indent = '    '
@@ -105,8 +105,6 @@ class TitleElement(OneLineElement):
 
 class SelfClosingElement(Element):
     """Self-Closing type Element"""
-    def __init__(self, content=None, **attrs):
-        super().__init__(content=None, **attrs)
 
     # Overwrite content attribute to prevent use
     @property

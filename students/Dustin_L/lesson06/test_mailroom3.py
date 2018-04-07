@@ -109,10 +109,8 @@ class TestMailRoom(unittest.TestCase):
                          'Test Donor 2': 'na',
                          'Test Donor 3': 'na'}
         with mock.patch.dict(mr.donor_db, test_donor_db, clear=True):
-            self.assertTrue(mr.get_donor_names() == ['test donor 1',
-                                                     'test donor 2',
-                                                     'test donor 3'],
-                            mr.get_donor_names())
+            for i, name in enumerate(mr.get_donor_names()):
+                self.assertTrue(name == f'test donor {i+1}', name)
 
     def test_prompt_for_donor(self):
         """Test the prompt_for_donor() fxn"""
