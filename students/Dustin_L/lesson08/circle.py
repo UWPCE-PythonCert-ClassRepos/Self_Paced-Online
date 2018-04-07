@@ -11,6 +11,10 @@ class Circle:
         self._diameter = 2 * radius
         self._area = math.pi * radius**2
 
+    @classmethod
+    def from_diameter(cls, diameter):
+        return cls(diameter / 2)
+
     @property
     def area(self):
         return self._area

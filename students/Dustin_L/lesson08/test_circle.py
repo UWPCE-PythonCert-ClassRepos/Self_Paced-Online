@@ -93,6 +93,17 @@ class TestCircle(unittest.TestCase):
         with self.assertRaises(AttributeError):
             self.c.area = random.randint(-100, 100)
 
+    def test_construct_from_diameter(self):
+        diameter = 7
+        self.c = circle.Circle.from_diameter(diameter)
+
+        self.assertTrue(self.c.diameter == diameter,
+                        msg=self.c.diameter)
+        self.assertTrue(self.c.radius == diameter / 2,
+                        msg=self.c.radius)
+        self.assertTrue(self.c.area == math.pi * (diameter / 2)**2,
+                        msg=(self.c.area, math.pi * (diameter / 2)**2))
+
 
 if __name__ == '__main__':
     unittest.main()
