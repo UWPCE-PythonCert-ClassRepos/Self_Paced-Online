@@ -55,3 +55,15 @@ class OneLineTag(Element):
 
 class Title(OneLineTag):
     tag = 'title'
+
+
+class SefClosingTag(Element):
+    def render(self, file_out, cur_indent=''):
+            file_out.write('{}{}{}'.format(cur_indent, self.left, self.tag))  # noqa: E501
+            for k, v in self.html_data.items():
+                file_out.write(' {}="{}"'.format(k, v))
+            file_out.write('{}\n'.format(self.right))
+            if self.content:
+                raise TypeError
+            else:
+                file_out.write(cur_indent + "{}/{}{}\n".format(self.left, self.tag, self.right))  # noqa: E501

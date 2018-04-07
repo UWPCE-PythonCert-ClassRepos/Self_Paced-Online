@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-from html_render import Element, Html, P, Body, Head, OneLineTag, Title
+import pytest
+from html_render import Element, Html, P, Body, Head, OneLineTag, Title, SefClosingTag
 
 
 def test_Element():
@@ -93,3 +94,20 @@ def test_Element_kwargs():
     with open('file8.html', 'r') as filefh:
         rendered = filefh.read()
     assert '<p style="text-align: center; font-style: oblique;">\n'+element.indent+'data1\n'+element.indent+'data2\n'+'</p>\n' == rendered  # noqa: E501
+
+
+def test_SelfClosingTag_with_contents():
+    with pytest.raises(TypeError):
+        element = SefClosingTag('data1', style="text-align: center; font-style: oblique;")  # noqa: E501
+        element.append('data2')
+        with open('file9.html', 'w') as file1fh:
+            element.render(file1fh)
+
+
+def test_SelfClosingTag_no_contents():
+    element = SefClosingTag(style="text-align: center; font-style: oblique;")  # noqa: E501
+    with open('file9.html', 'w') as file1fh:
+        element.render(file1fh)
+    with open('file9.html', 'r') as filefh:
+        rendered = filefh.read()
+    assert '< style="text-align: center; font-style: oblique;">\n'+'</>\n' == rendered  # noqa: E501
