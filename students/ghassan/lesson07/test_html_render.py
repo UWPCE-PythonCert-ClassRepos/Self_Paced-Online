@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import pytest
-from html_render import Element, Html, P, Body, Head, OneLineTag, Title, SefClosingTag, A, Ul, Li, H
+from html_render import Element, Html, P, Body, Head, OneLineTag, Title, SefClosingTag, A, Ul, Li, H, Meta  ## noqa: E501
 
 
 def test_Element():
@@ -32,7 +32,7 @@ def test_Html():
         element.render(file1fh)
     with open('file2.html', 'r') as filefh:
         rendered = filefh.read()
-    assert '<html>\n'+element.indent+'data1\n'+element.indent+'data2\n'+'</html>\n' == rendered  # noqa: E501
+    assert '<!DOCTYPE html>\n<html>\n'+element.indent+'data1\n'+element.indent+'data2\n'+'</html>\n' == rendered  # noqa: E501
 
 
 def test_P():
@@ -110,7 +110,7 @@ def test_SelfClosingTag_no_contents():
         element.render(file1fh)
     with open('file9.html', 'r') as filefh:
         rendered = filefh.read()
-    assert '< style="text-align: center; font-style: oblique;">\n'+'</>\n' == rendered  # noqa: E501
+    assert '< style="text-align: center; font-style: oblique;"/>\n' == rendered  # noqa: E501
 
 
 def test_A():
@@ -149,3 +149,12 @@ def test_H():
     with open('file13.html', 'r') as filefh:
         rendered = filefh.read()
     assert '<h2> '+element.indent+'data1 '+'</h2>\n' == rendered  # noqa: E501
+
+
+def test_Meta():
+    element = Meta(charset="UTF-8")  # noqa: E501
+    with open('file14.html', 'w') as file1fh:
+        element.render(file1fh)
+    with open('file14.html', 'r') as filefh:
+        rendered = filefh.read()
+    assert '<meta charset="UTF-8"/>\n' == rendered  # noqa: E501

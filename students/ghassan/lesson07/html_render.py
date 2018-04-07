@@ -28,6 +28,10 @@ class Element:
 class Html(Element):
     tag = 'html'
 
+    def render(self, file_out, cur_indent=""):
+        file_out.write("<!DOCTYPE html>\n")
+        Element.render(self, file_out, cur_indent="")
+
 
 class P(Element):
     tag = 'p'
@@ -62,11 +66,9 @@ class SefClosingTag(Element):
             file_out.write('{}{}{}'.format(cur_indent, self.left, self.tag))  # noqa: E501
             for k, v in self.html_data.items():
                 file_out.write(' {}="{}"'.format(k, v))
-            file_out.write('{}\n'.format(self.right))
+            file_out.write('/{}\n'.format(self.right))
             if self.content:
                 raise TypeError
-            else:
-                file_out.write(cur_indent + "{}/{}{}\n".format(self.left, self.tag, self.right))  # noqa: E501
 
 
 class A(Element):
@@ -90,3 +92,7 @@ class H(OneLineTag):
         OneLineTag.__init__(self, content, **kwargs)
         self.size = size
         self.tag = "h{}".format(size)
+
+
+class Meta(SefClosingTag):
+    tag = 'meta'
