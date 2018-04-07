@@ -53,7 +53,8 @@ def prompt_donation():
 
 
 def add_donor(donor_name, title):
-    print('Added to list of Donors:', title, donor_name)
+    if __name__ == '__main__':
+        print('Added to list of Donors:', title, donor_name)
     donors_amts[donor_name] = {'title': title,
                                'donations': 0,
                                'num_of_donations': 0}
@@ -109,7 +110,8 @@ def send_ty(title, name, donation_amt):
                 Thank you for your generous donation in the
                 amount of {donation} USD.
               """
-    print(ty_text.format(**donor_dict))
+    if __name__ == '__main__':
+        print(ty_text.format(**donor_dict))
 
 
 def get_report():
@@ -160,24 +162,18 @@ def send_letters():
             [Signature]
             """
             of.write(letter_text.format(**donor_dict))
-    print('Generated a letter, just now, for each of the donors in the db.\n')
-
-
-def test():
-    test_list = get_donor_list()
-    a_test = mailroomtest.MailroomTest()
-    a_test.test_get_donor_list(test_list)
+    if __name__ == '__main__':
+        print('Generated a letter, just now, for each of the donors in the db.\n')
 
 
 def program_run():
     menu_dict = {'1': prepare_ty, '2': get_report,
-                 '3': send_letters, '4': test, 'q': sys.exit}
+                 '3': send_letters, 'q': sys.exit}
     main_text = '\n'.join((
         'Choose from the following:',
         '"1" - Send a "Thank You",',
         '"2" - Create a Report,',
-        '"3" - Send Letters to All Donors,',
-        '"4" - Test this program, or',
+        '"3" - Send Letters to All Donors, or',
         '"q" to Quit: '
       ))
     while True:
