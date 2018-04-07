@@ -63,18 +63,29 @@ class Circle:
 
     @classmethod
     def from_diameter(cls, diameter):
+        """Creates a circle from a diameter"""
         return cls(diameter / 2)
 
     @property
     def area(self):
+        """Returns the circle's area"""
         return self._area
 
     @property
     def diameter(self):
+        """Returns the circle's diameter"""
         return self._diameter
 
     @diameter.setter
     def diameter(self, value):
+        """Sets the circle's diameter
+
+        Args:
+            value: diameter value
+
+        Raises:
+            ValueError: If value is less than 0
+        """
         if value < 0:
             raise ValueError
 
@@ -85,10 +96,19 @@ class Circle:
 
     @property
     def radius(self):
+        """Returns the circle's radius"""
         return self._radius
 
     @radius.setter
     def radius(self, value):
+        """Sets the circle's radius
+
+        Args:
+            value: radius value
+
+        Raises:
+            ValueError: If value is less than 0
+        """
         if value < 0:
             raise ValueError
 

@@ -6,7 +6,6 @@ import math
 import random
 import sys
 import circle
-
 from io import StringIO
 
 
