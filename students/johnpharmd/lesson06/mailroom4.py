@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import datetime
-# import mailroomtest
 import sys
 
 # Data
@@ -28,7 +27,8 @@ def get_donors_amts():
 def get_donor_list():
     if __name__ == '__main__':
         print(list(donors_amts))
-    return list(donors_amts)
+    else:
+        return list(donors_amts)
 
 
 def prompt_title():
@@ -112,27 +112,32 @@ def send_ty(title, name, donation_amt):
               """
     if __name__ == '__main__':
         print(ty_text.format(**donor_dict))
+    else:
+        return ty_text.format(**donor_dict)
 
 
 def get_report():
     print()
     psv = ['Donor Name', '| Total Given', '| Num Gifts',
            '| Average Gift']
-    print('{:<15}{:>12}{:>12}{:>12}'.format(psv[0], psv[1],
-          psv[2], psv[3]))
-    for i in range(55):
-        print('-', end='')
-    print()
+    if __name__ == '__main__':
+        print('{:<15}{:>12}{:>12}{:>12}'.format(psv[0], psv[1],
+              psv[2], psv[3]))
+        for i in range(55):
+            print('-', end='')
+        print()
     new_list = [[donors_amts[donor]['donations'], donor,
                 donors_amts[donor]['num_of_donations']] for
                 donor in donors_amts]
     new_list.sort(reverse=True)
     for donor_list in new_list:
-        print('{:<15}'.format(donor_list[1])
-              + '{}{:>10}'.format(' $', donor_list[0])
-              + '{:>12}'.format(donor_list[2])
-              + '{}{:>11}'.format(' $',
-              donor_list[0] // donor_list[2]))
+        formatted_donor = ('{:<15}'.format(donor_list[1])
+                           + '{}{:>10}'.format(' $', donor_list[0])
+                           + '{:>12}'.format(donor_list[2])
+                           + '{}{:>11}'.format(' $',
+                           donor_list[0] // donor_list[2]))
+        if __name__ == '__main__':
+            print(formatted_donor)
 
 
 def send_letters():
@@ -163,7 +168,7 @@ def send_letters():
             """
             of.write(letter_text.format(**donor_dict))
     if __name__ == '__main__':
-        print('Generated a letter, just now, for each of the donors in the db.\n')
+        print('Generated a letter, just now, for each donor in the db.\n')
 
 
 def program_run():
@@ -191,6 +196,3 @@ def program_run():
 # I/O
 if __name__ == '__main__':
     program_run()
-
-# else:
-#     print('This module is intended to be imported.')
