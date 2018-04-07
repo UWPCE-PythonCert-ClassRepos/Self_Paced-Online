@@ -40,10 +40,30 @@ else:
 # there were any exceptions, call the function last_fun with no
 # parameters. (pun intended)
 
+"""
+GOAL:
+1 - Whoops! there is no joke for: spam
+
+2 - Customer: Not much of a cheese shop really, is it?
+3 - Shopkeeper: Finest in the district, sir.
+4 - Customer: And what leads you to that conclusion?
+5 - Shopkeeper: Well, it's so clean.
+6 - Customer:  It's certainly uncontaminated by cheese.
+"""
+
 langs = ['java', 'c', 'python']
 
 try:
+    # Bad --> Test[5] out of range
     more_fun(langs[0])
+except IndexError:
+    more_fun(langs[1])
+# Except will trigger -> else
+else:
+    more_fun(langs[2])
+# Post exception block
+finally:
+    last_fun()
 
 
 
