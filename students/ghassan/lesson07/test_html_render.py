@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import pytest
-from html_render import Element, Html, P, Body, Head, OneLineTag, Title, SefClosingTag, A
+from html_render import Element, Html, P, Body, Head, OneLineTag, Title, SefClosingTag, A, Ul, Li, H
 
 
 def test_Element():
@@ -120,3 +120,32 @@ def test_A():
     with open('file10.html', 'r') as filefh:
         rendered = filefh.read()
     assert '<a href="http://google.com">\n'+element.indent+'link to google\n</a>\n' == rendered  # noqa: E501
+
+
+def test_Ul():
+    element = Ul('data1')
+    element.append('data2')
+    with open('file11.html', 'w') as file1fh:
+        element.render(file1fh)
+    with open('file11.html', 'r') as filefh:
+        rendered = filefh.read()
+    assert '<ul>\n'+element.indent+'data1\n'+element.indent+'data2\n'+'</ul>\n' == rendered  # noqa: E501
+
+
+def test_Li():
+    element = Li('data1')
+    element.append('data2')
+    with open('file12.html', 'w') as file1fh:
+        element.render(file1fh)
+    with open('file12.html', 'r') as filefh:
+        rendered = filefh.read()
+    assert '<li>\n'+element.indent+'data1\n'+element.indent+'data2\n'+'</li>\n' == rendered  # noqa: E501
+
+
+def test_H():
+    element = H(2, 'data1')
+    with open('file13.html', 'w') as file1fh:
+        element.render(file1fh)
+    with open('file13.html', 'r') as filefh:
+        rendered = filefh.read()
+    assert '<h2> '+element.indent+'data1 '+'</h2>\n' == rendered  # noqa: E501

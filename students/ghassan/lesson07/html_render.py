@@ -74,3 +74,19 @@ class A(Element):
 
     def __init__(self, link, comment):
         Element.__init__(self, content=comment, href=link)
+
+
+class Ul(Element):
+    tag = 'ul'
+
+
+class Li(Element):
+    tag = 'li'
+
+
+class H(OneLineTag):
+
+    def __init__(self, size, content, **kwargs):
+        OneLineTag.__init__(self, content, **kwargs)
+        self.size = size
+        self.tag = "h{}".format(size)
