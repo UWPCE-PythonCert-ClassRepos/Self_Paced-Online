@@ -87,7 +87,15 @@ def report():
 
 
 def send_all_letters():
-    return
+    summary_data = calc_data()
+    for item in summary_data:
+        filename_format = "{}_{}.txt".format(item[0].split()[0], item[0].split()[1])
+        thank_you_text = open(filename_format, 'w+')
+        thank_you_text.write("Dear {},\n\nThank you very much for your {} generous donations totalling ${}.\n"
+                             "\nYour donations will significantly aid our scholarship fund\n\n"
+                             "Sincerely,\n - Advancement Office".format(item[0], item[1], item[2]))
+        thank_you_text.close()
+    print("\nAll thank you letters drafted")
 
 
 if __name__ == "__main__":
