@@ -3,7 +3,7 @@
 # initial list of donors
 
 
-class Donor_Data:
+class DonorData:
     def __init__(self,donors):
         self.donors = donors
 
@@ -13,18 +13,21 @@ class Donor_Data:
 
 class Interaction:
 
-    new_donor = []
-
     def __init__(self, donor_list = None):
         if donor_list is None:
             donor_list = []
         else:
             self.donor_list = donor_list
 
+    def add_new_donor(self,new_donor):
+        # method to add a new donor
+        self.donor_list.append(new_donor)
+
     def send_thank_you(self):
-        # function creates a thank you email to current and new donors added to the list
+        # method creates a thank you email to current and new donors added to the list
         # add new donors and donations
         # print the names of the current donor if 'list' is input by the user
+        new_donor = []
         print('\n-----------------------------------------------------')
         view_donors = input("If you would like to see a list of donors please type 'list' or any key to continue. ")
 
@@ -108,16 +111,19 @@ class Interaction:
                 else:
                     break
 
-            self.new_donor.append({"donor name": donor_full_name, "total donations": new_donation_amount,
-                                        "number donations": 1, "avg donation": new_donation_amount})
-            print(self.new_donor)
-            self.donor_list.extend(self.new_donor)
+            new_donor.append({"donor name": donor_full_name, "total donations": new_donation_amount,
+                              "number donations": 1, "avg donation": new_donation_amount})
+
+            for x in new_donor:
+                self.add_new_donor(DonorData(x))
+
             print(self.donor_list)
             print('-----------------------------------------------------')
             for x in self.donor_list:
-                if x["donor name"] == donor_full_name:
+                if x.donor_data()["donor name"] == donor_full_name:
                     email = "Dear {donor_name},\n\nThank you for your generous donations of ${donations:.2f} " \
-                            "to our charity.\n".format(donor_name=x["donor name"],donations=x["total donations"])
+                            "to our charity.\n".format(donor_name=x.donor_data()["donor name"],
+                                                       donations=x.donor_data()["total donations"])
                     print(email)
         print('-----------------------------------------------------')
 
@@ -153,13 +159,13 @@ class Interaction:
         print('----------------------------------------------\n')
 
 
-donor1 = Donor_Data({"donor name": "Lionel Messi", "total donations": 1000000.00, "number donations": 5,
+donor1 = DonorData({"donor name": "Lionel Messi", "total donations": 1000000.00, "number donations": 5,
                      "avg donation": 20000.00})
-donor2 = Donor_Data({"donor name": "Thierry Henry", "total donations": 500, "number donations": 1,
+donor2 = DonorData({"donor name": "Thierry Henry", "total donations": 500, "number donations": 1,
                      "avg donation": 500})
-donor3 = Donor_Data({"donor name": "Michael Jordan", "total donations": 45000, "number donations": 3,
+donor3 = DonorData({"donor name": "Michael Jordan", "total donations": 45000, "number donations": 3,
                      "avg donation": 15000})
-donor4 = Donor_Data({"donor name": "Kobe Bryant", "total donations": 8000, "number donations": 2,
+donor4 = DonorData({"donor name": "Kobe Bryant", "total donations": 8000, "number donations": 2,
                      "avg donation": 4000})
 
 
