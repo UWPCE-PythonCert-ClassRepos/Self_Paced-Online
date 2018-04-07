@@ -3,6 +3,7 @@
 
 import unittest
 import math
+import random
 import circle
 
 
@@ -12,6 +13,7 @@ class TestCircle(unittest.TestCase):
         super(TestCircle, self).__init__(*args, **kwargs)
         self.test_radius = 4
         self.test_diameter = 2 * self.test_radius
+        self.test_area = math.pi * self.test_radius**2
 
     def setUp(self):
         self.c = circle.Circle(self.test_radius)
@@ -27,7 +29,11 @@ class TestCircle(unittest.TestCase):
         self.assertTrue(self.c.diameter == self.test_diameter,
                         msg=self.c.diameter)
 
-    def test_radius_property_positive(self):
+    def test_get_area(self):
+        self.assertTrue(self.c.area == self.test_area,
+                        msg=self.c.area)
+
+    def test_set_radius_positive(self):
         new_radius = 3
         self.c.radius = new_radius
 
@@ -35,17 +41,10 @@ class TestCircle(unittest.TestCase):
                         msg=self.c.radius)
         self.assertTrue(self.c.diameter == 2 * new_radius,
                         msg=self.c.diameter)
+        self.assertTrue(self.c.area == math.pi * new_radius**2,
+                        msg=(self.c.area, math.pi * new_radius**2))
 
-    def test_diameter_property_positive(self):
-        new_diameter = 5
-        self.c.diameter = new_diameter
-
-        self.assertTrue(self.c.diameter == new_diameter,
-                        msg=self.c.diameter)
-        self.assertTrue(self.c.radius == new_diameter / 2,
-                        msg=self.c.radius)
-
-    def test_radius_property_negative(self):
+    def test_set_radius_negative(self):
         with self.assertRaises(ValueError):
             self.c.radius = -4
 
@@ -54,7 +53,26 @@ class TestCircle(unittest.TestCase):
         self.assertTrue(self.c.diameter == self.test_diameter,
                         msg=self.c.diameter)
 
-    def test_diameter_property_negative(self):
+    def test_set_radius_zero(self):
+        self.c.radius = 0
+
+        self.assertTrue(self.c.radius == 0,
+                        msg=self.c.radius)
+        self.assertTrue(self.c.diameter == 0,
+                        msg=self.c.diameter)
+
+    def test_set_diameter_positive(self):
+        new_diameter = 5
+        self.c.diameter = new_diameter
+
+        self.assertTrue(self.c.diameter == new_diameter,
+                        msg=self.c.diameter)
+        self.assertTrue(self.c.radius == new_diameter / 2,
+                        msg=self.c.radius)
+        self.assertTrue(self.c.area == math.pi * (new_diameter / 2)**2,
+                        msg=(self.c.area, math.pi * (new_diameter / 2)**2))
+
+    def test_set_diameter_negative(self):
         with self.assertRaises(ValueError):
             self.c.diameter = -4
 
@@ -63,21 +81,17 @@ class TestCircle(unittest.TestCase):
         self.assertTrue(self.c.diameter == self.test_diameter,
                         msg=self.c.diameter)
 
-    def test_radius_property_zero(self):
-        self.c.radius = 0
-
-        self.assertTrue(self.c.radius == 0,
-                        msg=self.c.radius)
-        self.assertTrue(self.c.diameter == 0,
-                        msg=self.c.diameter)
-
-    def test_diameter_property_zero(self):
+    def test_set_diameter_zero(self):
         self.c.diameter = 0
 
         self.assertTrue(self.c.radius == 0,
                         msg=self.c.radius)
         self.assertTrue(self.c.diameter == 0,
                         msg=self.c.diameter)
+
+    def test_set_area(self):
+        with self.assertRaises(AttributeError):
+            self.c.area = random.randint(-100, 100)
 
 
 if __name__ == '__main__':

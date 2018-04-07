@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 """Circle Module"""
 
+import math
+
 
 class Circle:
     """Circle Class"""
     def __init__(self, radius):
         self._radius = radius
         self._diameter = 2 * radius
+        self._area = math.pi * radius**2
+
+    @property
+    def area(self):
+        return self._area
 
     @property
     def diameter(self):
@@ -17,8 +24,10 @@ class Circle:
         if value < 0:
             raise ValueError
 
-        self._diameter = value
+        if self._diameter != value:
+            self._diameter = value
             self._radius = value / 2
+            self._area = math.pi * self._radius**2
 
     @property
     def radius(self):
@@ -29,5 +38,7 @@ class Circle:
         if value < 0:
             raise ValueError
 
-        self._radius = value
+        if self._radius != value:
+            self._radius = value
             self._diameter = value * 2
+            self._area = math.pi * self._radius**2
