@@ -4,14 +4,18 @@ class Element:
     left = '<'
     right = '>'
 
-    def __init__(self, content=None):
+    def __init__(self, content=None, **kwargs):
         self.content = [content] if content else []
+        self.html_data = kwargs
 
     def append(self, data):
         self.content.append(data)
 
     def render(self, file_out, cur_indent=''):
-        file_out.write('{}{}{}{}\n'.format(cur_indent, self.left, self.tag, self.right))  # noqa: E501
+        file_out.write('{}{}{}'.format(cur_indent, self.left, self.tag))  # noqa: E501
+        for k, v in self.html_data.items():
+            file_out.write(' {}="{}"'.format(k, v))
+        file_out.write('{}\n'.format(self.right))
         for contents in self.content:
             if isinstance(contents, Element):
                 contents.render(file_out, cur_indent + self.indent)

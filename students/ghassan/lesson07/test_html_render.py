@@ -82,3 +82,14 @@ def test_Title():
     with open('file7.html', 'r') as filefh:
         rendered = filefh.read()
     assert '<title> '+element.indent+'data1 '+element.indent+'data2 '+'</title>\n' == rendered  # noqa: E501
+
+
+def test_Element_kwargs():
+    element = Element('data1', style="text-align: center; font-style: oblique;")  # noqa: E501
+    element.tag = 'p'
+    element.append('data2')
+    with open('file8.html', 'w') as file1fh:
+        element.render(file1fh)
+    with open('file8.html', 'r') as filefh:
+        rendered = filefh.read()
+    assert '<p style="text-align: center; font-style: oblique;">\n'+element.indent+'data1\n'+element.indent+'data2\n'+'</p>\n' == rendered  # noqa: E501
