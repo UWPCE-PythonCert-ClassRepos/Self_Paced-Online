@@ -67,3 +67,10 @@ class SefClosingTag(Element):
                 raise TypeError
             else:
                 file_out.write(cur_indent + "{}/{}{}\n".format(self.left, self.tag, self.right))  # noqa: E501
+
+
+class A(Element):
+    tag = 'a'
+
+    def __init__(self, link, comment):
+        Element.__init__(self, content=comment, href=link)

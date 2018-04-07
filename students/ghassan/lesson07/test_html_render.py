@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import pytest
-from html_render import Element, Html, P, Body, Head, OneLineTag, Title, SefClosingTag
+from html_render import Element, Html, P, Body, Head, OneLineTag, Title, SefClosingTag, A
 
 
 def test_Element():
@@ -111,3 +111,12 @@ def test_SelfClosingTag_no_contents():
     with open('file9.html', 'r') as filefh:
         rendered = filefh.read()
     assert '< style="text-align: center; font-style: oblique;">\n'+'</>\n' == rendered  # noqa: E501
+
+
+def test_A():
+    element = A('http://google.com', 'link to google')
+    with open('file10.html', 'w') as file1fh:
+        element.render(file1fh)
+    with open('file10.html', 'r') as filefh:
+        rendered = filefh.read()
+    assert '<a href="http://google.com">\n'+element.indent+'link to google\n</a>\n' == rendered  # noqa: E501
