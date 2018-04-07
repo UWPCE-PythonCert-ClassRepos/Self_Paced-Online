@@ -143,6 +143,124 @@ class TestCircle(unittest.TestCase):
         self.assertTrue(test_repr == f'Circle({self.test_radius})',
                         msg=test_repr)
 
+    def test_add_number_to_circle(self):
+        add_radius = 5
+        c2 = self.c + add_radius
+        expected_circle = circle.Circle(self.test_radius + add_radius)
+
+        self.assertTrue(c2.radius == expected_circle.radius,
+                        msg=(c2.radius, expected_circle.radius))
+        self.assertTrue(c2.diameter == expected_circle.diameter,
+                        msg=(c2.diameter, expected_circle.diameter))
+        self.assertTrue(c2.area == expected_circle.area,
+                        msg=(c2.area, expected_circle.area))
+
+    def test_radd_number_to_circle(self):
+        add_radius = 5
+        c2 = add_radius + self.c
+        expected_circle = circle.Circle(self.test_radius + add_radius)
+
+        self.assertTrue(c2.radius == expected_circle.radius,
+                        msg=(c2.radius, expected_circle.radius))
+        self.assertTrue(c2.diameter == expected_circle.diameter,
+                        msg=(c2.diameter, expected_circle.diameter))
+        self.assertTrue(c2.area == expected_circle.area,
+                        msg=(c2.area, expected_circle.area))
+
+    def test_add_circles(self):
+        c2_radius = 5
+        c2 = circle.Circle(c2_radius)
+        c3 = self.c + c2
+        expected_circle = circle.Circle(c2_radius + self.test_radius)
+
+        self.assertTrue(c3.radius == expected_circle.radius,
+                        msg=(c3.radius, expected_circle.radius))
+        self.assertTrue(c3.diameter == expected_circle.diameter,
+                        msg=(c3.diameter, expected_circle.diameter))
+        self.assertTrue(c3.area == expected_circle.area,
+                        msg=(c3.area, expected_circle.area))
+
+    def test_sub_number_to_circle(self):
+        sub_radius = 2
+        c2 = self.c - sub_radius
+        expected_circle = circle.Circle(self.test_radius - sub_radius)
+
+        self.assertTrue(c2.radius == expected_circle.radius,
+                        msg=(c2.radius, expected_circle.radius))
+        self.assertTrue(c2.diameter == expected_circle.diameter,
+                        msg=(c2.diameter, expected_circle.diameter))
+        self.assertTrue(c2.area == expected_circle.area,
+                        msg=(c2.area, expected_circle.area))
+
+    def test_rsub_number_to_circle(self):
+        sub_radius = 5
+        c2 = sub_radius - self.c
+        expected_circle = circle.Circle(sub_radius - self.test_radius)
+
+        self.assertTrue(c2.radius == expected_circle.radius,
+                        msg=(c2.radius, expected_circle.radius))
+        self.assertTrue(c2.diameter == expected_circle.diameter,
+                        msg=(c2.diameter, expected_circle.diameter))
+        self.assertTrue(c2.area == expected_circle.area,
+                        msg=(c2.area, expected_circle.area))
+
+    def test_sub_circles(self):
+        c2_radius = 3
+        c2 = circle.Circle(c2_radius)
+        c3 = self.c - c2
+        expected_circle = circle.Circle(self.test_radius - c2_radius)
+
+        self.assertTrue(c3.radius == expected_circle.radius,
+                        msg=(c3.radius, expected_circle.radius))
+        self.assertTrue(c3.diameter == expected_circle.diameter,
+                        msg=(c3.diameter, expected_circle.diameter))
+        self.assertTrue(c3.area == expected_circle.area,
+                        msg=(c3.area, expected_circle.area))
+
+    def test_sub_circles_negative(self):
+        c2_radius = 5
+        c2 = circle.Circle(c2_radius)
+
+        with self.assertRaises(ValueError):
+            _ = self.c - c2
+
+    def test_mult_number_to_circle(self):
+        mult_radius = 3
+        c2 = self.c * mult_radius
+        expected_circle = circle.Circle(self.test_radius * mult_radius)
+
+        self.assertTrue(c2.radius == expected_circle.radius,
+                        msg=(c2.radius, expected_circle.radius))
+        self.assertTrue(c2.diameter == expected_circle.diameter,
+                        msg=(c2.diameter, expected_circle.diameter))
+        self.assertTrue(c2.area == expected_circle.area,
+                        msg=(c2.area, expected_circle.area))
+
+    def test_rmult_number_to_circle(self):
+        mult_radius = 5
+        c2 = mult_radius * self.c
+        expected_circle = circle.Circle(self.test_radius * mult_radius)
+
+        self.assertTrue(c2.radius == expected_circle.radius,
+                        msg=(c2.radius, expected_circle.radius))
+        self.assertTrue(c2.diameter == expected_circle.diameter,
+                        msg=(c2.diameter, expected_circle.diameter))
+        self.assertTrue(c2.area == expected_circle.area,
+                        msg=(c2.area, expected_circle.area))
+
+    def test_mult_circles(self):
+        c2_radius = 5
+        c2 = circle.Circle(c2_radius)
+        c3 = self.c * c2
+        expected_circle = circle.Circle(c2_radius * self.test_radius)
+
+        self.assertTrue(c3.radius == expected_circle.radius,
+                        msg=(c3.radius, expected_circle.radius))
+        self.assertTrue(c3.diameter == expected_circle.diameter,
+                        msg=(c3.diameter, expected_circle.diameter))
+        self.assertTrue(c3.area == expected_circle.area,
+                        msg=(c3.area, expected_circle.area))
+
 
 if __name__ == '__main__':
     unittest.main()

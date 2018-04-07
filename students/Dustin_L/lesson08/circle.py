@@ -7,17 +7,44 @@ import math
 class Circle:
     """Circle Class"""
     def __init__(self, radius):
+        if radius < 0:
+            raise ValueError
+
         self._radius = radius
         self._diameter = 2 * radius
         self._area = math.pi * radius**2
 
+    def __add__(self, other):
+        if isinstance(other, Circle):
+            return Circle(self._radius + other.radius)
+        return Circle(self._radius + other)
+
+    def __mul__(self, other):
+        if isinstance(other, Circle):
+            return Circle(self._radius * other.radius)
+        return Circle(self._radius * other)
+
+    def __radd__(self, other):
+        return Circle(self._radius + other)
+
     def __repr__(self):
         return f'Circle({self._radius})'
+
+    def __rmul__(self, other):
+        return Circle(self._radius * other)
+
+    def __rsub__(self, other):
+        return Circle(other - self._radius)
 
     def __str__(self):
         return (f'Circle with radius: {self._radius}\n'
                 f'            diameter: {self._diameter}\n'
                 f'            area: {self._area}')
+
+    def __sub__(self, other):
+        if isinstance(other, Circle):
+            return Circle(self._radius - other.radius)
+        return Circle(self._radius - other)
 
     @classmethod
     def from_diameter(cls, diameter):
