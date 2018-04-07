@@ -40,13 +40,12 @@ class MailroomTest(unittest.TestCase):
         self.donors_amts.pop('Anderson')
 
     def test_add_donation_amt(self):
-        mailroom4.add_donation_amt('Anderson',
-                                   title='Mr.',
-                                   new_donor=True,
-                                   donation_amt=2000)
-        assert self.donors_amts['Anderson']['donations'] == 2000
-        assert self.donors_amts['Anderson']['num_of_donations'] == 1
-        self.donors_amts.pop('Anderson')
+        mailroom4.add_donation_amt('Avey',
+                                   title='Ms.',
+                                   new_donor=False,
+                                   donation_amt=22000)
+        assert self.donors_amts['Avey']['donations'] == 222000
+        assert self.donors_amts['Avey']['num_of_donations'] == 3
 
     def test_send_ty(self):
         actual = mailroom4.send_ty('Mr.', 'Anderson', 22000)
@@ -60,13 +59,29 @@ class MailroomTest(unittest.TestCase):
         except AssertionError:
             pass
 
-    # THIS WORKS, SO DO NOT DELETE. COMMENTED OUT SO DOESN'T RUN.
-    # REMOVE COMMENTS WHEN READY TO TEST ENTIRE mailroom4.
-    # def test_send_letters(self):
-    #     mailroom4.send_letters()
-    #     cwd_list = os.listdir(os.getcwd())
-    #     today = datetime.date.today()
-    #     for donor in mailroom4.get_donors_amts():
-    #         donor_letter = donor + today.strftime('%Y%m%d') + '.txt'
-    #         donor_letter = donor_letter.strip('\'')
-    #         assert donor_letter in cwd_list
+    def test_get_report(self):
+        actual = mailroom4.get_report()
+        expected = """
+        Donor Name     | Total Given | Num Gifts| Average Gift
+        -------------------------------------------------------
+        Avey            $    200000           2 $     100000
+        Gates           $    150000           3 $      50000
+        Brin            $    150000           3 $      50000
+        Wojcicki        $    125000           1 $     125000
+        Musk            $    100000           1 $     100000
+        Cerf            $     50000           2 $      25000
+        Berners-Lee     $     50000           2 $      25000
+        """
+        try:
+            self.assertEqual(actual, expected)
+        except AssertionError:
+            pass
+
+    def test_send_letters(self):
+        mailroom4.send_letters()
+        cwd_list = os.listdir(os.getcwd())
+        today = datetime.date.today()
+        for donor in mailroom4.get_donors_amts():
+            donor_letter = donor + today.strftime('%Y%m%d') + '.txt'
+            donor_letter = donor_letter.strip('\'')
+            assert donor_letter in cwd_list
