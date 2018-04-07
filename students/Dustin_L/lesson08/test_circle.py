@@ -4,7 +4,27 @@
 import unittest
 import math
 import random
+import sys
 import circle
+
+from io import StringIO
+
+
+def redirect_stdout():
+    """Redirect stdout to the returned StringIO object.
+
+    Returns:
+        StringIO: Object containing redirected stdout.
+    """
+    redirect = StringIO()
+    sys.stdout = redirect
+
+    return redirect
+
+
+def reset_stdout():
+    """Reset stdout back to default"""
+    sys.stdout = sys.__stdout__
 
 
 class TestCircle(unittest.TestCase):
@@ -103,6 +123,25 @@ class TestCircle(unittest.TestCase):
                         msg=self.c.radius)
         self.assertTrue(self.c.area == math.pi * (diameter / 2)**2,
                         msg=(self.c.area, math.pi * (diameter / 2)**2))
+
+    def test_print_circle(self):
+        captured_print = redirect_stdout()
+        print(self.c)
+        reset_stdout()
+
+        self.assertTrue(captured_print.getvalue() == (f'Circle with radius: '
+                                                      f'{self.test_radius}\n'
+                                                      f'            diameter: '
+                                                      f'{self.test_diameter}\n'
+                                                      f'            area: '
+                                                      f'{self.test_area}\n'),
+                        msg=captured_print.getvalue())
+
+    def test_repr(self):
+        test_repr = repr(self.c)
+
+        self.assertTrue(test_repr == f'Circle({self.test_radius})',
+                        msg=test_repr)
 
 
 if __name__ == '__main__':

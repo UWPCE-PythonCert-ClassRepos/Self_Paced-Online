@@ -11,6 +11,14 @@ class Circle:
         self._diameter = 2 * radius
         self._area = math.pi * radius**2
 
+    def __repr__(self):
+        return f'Circle({self._radius})'
+
+    def __str__(self):
+        return (f'Circle with radius: {self._radius}\n'
+                f'            diameter: {self._diameter}\n'
+                f'            area: {self._area}')
+
     @classmethod
     def from_diameter(cls, diameter):
         return cls(diameter / 2)
