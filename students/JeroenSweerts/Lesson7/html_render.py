@@ -1,3 +1,5 @@
+from io import StringIO
+
 class Element():
     tagname = 'tag'
     indentation = 4
@@ -13,13 +15,26 @@ class Element():
 
     def render(self, file_out, cur_ind=0):
         '''Method that renders the tag and the strings in the content.'''
-        output = "<" + self.tagname + ">\n"
+        self.cur_ind = cur_ind
+        output = (self.cur_ind * " ") + "<" + self.tagname + ">\n"
         if len(self.content) > 0:
-            output = output + ((cur_ind + self.indentation) * " ")
-            for string in self.content:
-                output = output + string
-            output = output + "\n"
-        output = output +  "<\\" + self.tagname + ">\n"
+            for element in self.content:
+                if isinstance(element, str):
+                    output = output + (2 * self.cur_ind * " ") + element + "\n"
+                if isinstance(element, Body):
+                    f_body = StringIO()
+                    element.cur_ind = self.cur_ind + element.indentation
+                    element.render(f_body, element.cur_ind)
+                    output = output + f_body.getvalue()
+                    #output = output.strip()
+                if isinstance(element, P):
+                    f_p = StringIO()
+                    element.cur_ind = self.cur_ind + element.indentation
+                    element.render(f_p, element.cur_ind)
+                    output = output + f_p.getvalue()
+                    #output = output.strip()
+            #output = output + "\n"
+        output = output + (self.cur_ind * " ") + "</" + self.tagname + ">\n"
         file_out.write(output)
 
 class Html(Element):
