@@ -54,13 +54,19 @@ def test_list_donors():
 
 # @pytest.fixture
 # def 
+
+# @patch(m.add_amount)  # Fail
+# @unittest.mock.patch(m.add_amount)    # Fail
+# @unittest.mock.patch('m.add_amount')    # Fail
+# @unittest.mock.patch('add_amount')   # Fail 
 def test_add():
+# def test_add(mock_add_amount):
     test_names = ['berta', 'nobody']
     for name in test_names:
         with unittest.mock.patch('builtins.input') as fake_input:
             fake_input.return_value = name
             '''
-            It's necessary to mock / fake m.add_amount() here to return True or something
+            It seems to be necessary to mock / fake m.add_amount() here to return True or something
             arbitrary when running this test. Otherwise m.add_amount() will be executed 
             in real and the test will be caught in m.add_amount's while loop.
 
@@ -71,7 +77,8 @@ def test_add():
             e.g. in test_add_amount(), it won't be executed in real but just represent
             the faked state.
             '''
-
+            
+            # mock_add_amount.return_value = True
             m.add_amount = unittest.mock.MagicMock(return_value = True)   # OK2
             assert m.add() is True                                        # OK2
             '''
@@ -87,13 +94,29 @@ def test_add():
             # unittest.mock.patch(m.add_amount, return_value = 'BUBU')
             # assert m.add() == 'BUBU'                                        
             '''
+            # with unittest.mock.patch('m.add_amount') as fake_am:      # Fail
+            # with unittest.mock.patch('add_amount') as fake_am:          # Fail
+            # with unittest.mock.patch(m.add_amount) as fake_am:      # Fail
+            # with unittest.mock.MagicMock(m.add_amount, return_value = True) as fake_am:   # Fail
+            # with unittest.mock.MagicMock('m.add_amount', return_value = True) as fake_am:   # Fail
+            #     assert fake_am() is True
+
+            # with m.add_amount = unittest.mock.MagicMock(return_value = True) as bla: # Fail
+            #     assert m.add() is True                                        # Fail
+
+            # with unittest.mock.patch('m.add_amount') as fake_am:      # Fail
+            # with unittest.mock.patch(m.add_amount) as fake_am:        # Fail
+            # with unittest.mock.MagicMock(m.add_amount, return_value = True) as fake_am:   # Fail
+            # with unittest.mock.patch(add_amount) as fake_am:      # Fail
+                # fake_am.return_value = True
+                # assert m.add() is True
 
 
 def test_add_amount():
     test_donor = 'steve'
     with unittest.mock.patch('builtins.input') as fake_input:
-        fake_input.return_value = '100'
-        # fake_input.return_value = '-100'    # puts you in while loop, thereby proving that
+        # fake_input.return_value = '100'
+        fake_input.return_value = '-100'    # puts you in while loop, thereby proving that
                                               # m.add_amount really is executed here
         # fake_input.return_value = 'abc'     # dito
         '''
