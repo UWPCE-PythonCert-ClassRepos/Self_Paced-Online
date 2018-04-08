@@ -3,8 +3,7 @@
 # Series 1
 fruits = ["Apples", "Pears", "Oranges", "Peaches"]
 print(fruits)
-new_fruit = input("Enter a fruit: ")
-fruits.append(new_fruit)
+fruits.append(input("Enter a fruit: "))
 print(fruits)
 strInput = input("Enter a number corresponding to a fruit in the list: ")
 print(strInput)
@@ -15,24 +14,39 @@ print(fruits)
 strInput = input("Enter another fruit to add to the beginning of the list: ")
 fruits.insert(0, strInput)
 print(fruits)
-for fruit in fruits:  # not functioning
-    print(fruit)
+for fruit in fruits:
+    if fruit[0].lower() == 'p':
+        print(fruit)
+    else:
+        continue
 
 # Series 2
 fruits = ["Apples", "Pears", "Oranges", "Peaches"]
 print(fruits)
 del fruits[-1]
 print(fruits)
-fruit_to_delete = input("Enter a fruit to delete: ")
-fruits.remove(fruit_to_delete)
+fruits.remove(input("Enter a fruit to delete: "))
+print(fruits)
+
+# Series 2 Bonus
+fruits = ["Apples", "Pears", "Oranges", "Peaches"]
+double_fruits = fruits * 2
+for fruit in fruits:
+    strInput = input('Do you want to delete ' + fruit + '? [yes/no] ')
+    if strInput.lower() == 'yes':
+        while fruit in double_fruits:
+            double_fruits.remove(fruit)
+    else:
+        continue
+print(double_fruits)
 
 # Series 3
 fruits = ["Apples", "Pears", "Oranges", "Peaches"]
-for fruit in fruits:
+for fruit in fruits[:]:
     while True:
-        strInput = print(input('Do you like' + fruit.lower() + '? [yes/no]'))
+        strInput = input('Do you like ' + fruit.lower() + '? [yes/no] ')
         if strInput.lower() == 'no':
-            del fruit
+            fruits.remove(fruit)
             break
         elif strInput.lower() == 'yes':
             break
@@ -43,12 +57,9 @@ print(fruits)
 
 # Series 4
 fruits = ["Apples", "Pears", "Oranges", "Peaches"]
-# Three ways to make a copy:
-fruits_copy1 = fruits.copy()
-fruits_copy2 = list(fruits)
-fruits_copy3 = fruits[:]
-for i in range(len(fruits_copy2)):
-    fruits_copy2[i] = fruits_copy2[i][::-1]
+fruits_copy = fruits[:]
+for i in range(len(fruits_copy)):
+    fruits_copy[i] = fruits_copy[i][::-1]
 fruits.remove(fruits[-1])
 print(fruits)
-print(fruits_copy2)
+print(fruits_copy)
