@@ -32,7 +32,7 @@ def send_thankyou():
         return
 
     while donor_name != "list":
-        donation_amount = input("Please enter the donation amount or e to exit: ")
+        donation_amount = input("Please entergiftt the donation amount or e to exit: ")
         if donation_amount == "e":
             return
         elif donor_name in donor_dict:
@@ -88,23 +88,23 @@ The funtions below product the main selection menu
 """
 
 def menu_selection(prompt, dispatch_dict):
-	while True:
-		response = input(prompt)
-		if dispatch_dict[response]() == "exit menu":
-			break
+    while True:
+        response = input(prompt)
+        if dispatch_dict[response]() == "exit menu":
+            break
 
 def print_report():
-	create_report()
+    create_report()
 
 def send_letter():
     create_email_file()
 
 def send_thanks():
-	send_thankyou()
+    send_thankyou()
 
 def quit():
-	print("Bye!")
-	return "exit menu"
+    print("Bye!")
+    return "exit menu"
 
 main_prompt = ("""\nChoose an action:
       1 - Send a Thank You
@@ -114,10 +114,10 @@ main_prompt = ("""\nChoose an action:
       : """)
 
 main_dispatch = {"1": send_thanks,
-				 "2": print_report,
-				 "3": send_letter,
+                 "2": print_report,
+                 "3": send_letter,
                  "4": quit,
-				 }
+                 }
 
 if __name__ == '__main__': 
     menu_selection(main_prompt, main_dispatch)
