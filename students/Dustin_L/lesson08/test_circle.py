@@ -315,7 +315,9 @@ class TestCircle(unittest.TestCase):
 
     def test_sort_circles(self):
         circles = [circle.Circle(random.randint(0, 20)) for _ in range(10)]
-        circles.sort()
+        # QUESTION: How is it that I can use the "sort_key()" function here
+        #           even though it is an instance method and not a static method?
+        circles.sort(key=circle.Circle.sort_key)
 
         for i in range(0, len(circles) - 1):
             self.assertTrue(circles[i].radius <= circles[i + 1].radius)

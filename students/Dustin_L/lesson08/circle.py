@@ -116,3 +116,7 @@ class Circle:
             self._radius = value
             self._diameter = value * 2
             self._area = math.pi * self._radius**2
+
+    def sort_key(self):
+        """Key for efficient Circle sort operations"""
+        return self._radius
