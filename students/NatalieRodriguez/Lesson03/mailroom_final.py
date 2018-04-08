@@ -9,7 +9,6 @@ donors = [['Luke Rodriguez', 12.75, 50.31, 42.59], ['Emma Burgess', 390.87, 30.0
           ['Hannah Watson', 20.58, 1120.14], ['Emily Connor', 10.00], ['Catherine Davis', 400.00],
           ['River Tails', 63.56, 1200.00, 300.65], ['Virginia Ferdinand', 350.35, 5000.00], ['Joseph Kibson', 3498.00, 5.50],]
 
-
 def thank_you():
     print("\nPlease enter the name of the donor you would like to thank,\nenter a new name, or enter 'list' for current donors.\nEnter '3' to return to the MAILROOM MENU.")
     answer = input()
