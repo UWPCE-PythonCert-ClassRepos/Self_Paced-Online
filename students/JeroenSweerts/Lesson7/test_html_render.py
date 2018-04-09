@@ -84,7 +84,17 @@ class TestHTMLRender(unittest.TestCase):
         testelement.render(f)
         print(f.getvalue())
 
+    def test_Title_render(self):
+        f = StringIO()
+        testelement = hr.Title()
+        testelement.render(f)
+        self.assertEqual(f.getvalue(), "<title></title>\n")
 
+    def test_append_Title_string(self):
+        f = StringIO()
+        testelement = hr.Title("test")
+        testelement.render(f)
+        self.assertEqual(f.getvalue(), "<title>test</title>\n")
 
 if __name__ == '__main__':
     unittest.main()
