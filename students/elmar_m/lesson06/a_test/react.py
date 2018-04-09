@@ -22,7 +22,7 @@ def react_correct():
         print('ValueError exception raised !!')
 
 
-def recondfunc():
+def secondfunc():
     print('this is secondfunc() executed...')
     ts = time.strftime('%Y%m%d-%H%M%S')
     filename = 'foo.{}.txt'.format(ts)
@@ -34,9 +34,30 @@ def recondfunc():
     # return 'HAHAHA'
     # return None
 
+
+def thirdfunc(a, b):
+    c = a + b
+    return c
+    
+
+def fourthfunc():
+    print('i am fourthfunc and your value was > 10')
+    return True
+    # return False
+
+
+def funcfive(x):
+    if x > 10:
+        return fourthfunc()
+    else:
+        return False
+    
+
 def main():
     print('starting my program...')
     react_correct()
+    response = input('And now: give a value bigger / smaller 10:\n')
+    funcfive(int(response)) 
     print('end of my program.')
 
 
