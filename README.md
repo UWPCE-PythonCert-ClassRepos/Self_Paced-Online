@@ -20,3 +20,5 @@ The class repo has three top level directories:
 If you are a student in the class, you should create a fork of this repo, add your work to your fork, and use Pull Requests to submit your work for review:
 
 https://uwpce-pythoncert.github.io/PythonCertDevel/modules/Git.html#setting-up-your-fork-of-the-class-repository
+
+*Please only add commits under `student` directory*

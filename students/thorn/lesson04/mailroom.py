@@ -1,35 +1,10 @@
 import os
 
-################################################################################
-# Revision 1
-# - Use dicts where appropriate*
-# - Use a dict to switch between user selections*
-# - Use a dict & format method to do the letter as one big template
-#       .format(**dict) -> passes in dict as keyword args
-################################################################################
-
-################################################################################
-# Revision 2
-# - Adds a menu item to send a letter to all donors and writes a multi-line
-# thank you letter to the disk as a text file -> fname_lname.txt
-################################################################################
-
 """
 Thomas Horn
 mailroom.py
 Tracks donor information and automates the sending of thank you notes.
 """
-################################################################################
-# Original global list that holds donor history and the amounts donated.
-# donors = [
-#     ['Tom Horn',        [599.23, 1000.00]],
-#     ['Theo Hartwell',   [0.01, 0.01, 0.1]],
-#     ['Bailey Kimmitt',  [8723.22, 27167.22, 91817.66]],
-#     ['Paul Hubbell',    [90012.32, 2312.24]],
-#     ['David Beckham',   [1817266.11, 123123.66, 111335.112]]
-# ]
-###############################################################################
-
 # Revised dictionary version of above container.
 # Adding a donation -> donors[donor].append()
 # Adding a donor/donation -> donors[donor] = [donation]
@@ -97,12 +72,27 @@ def create_report():
     """
     print("Donor:                    | $    Total     |   Donations   | $   Average   |")
     print("-"*76)
-    for item in donors:
-        amt_total = float(sum(donors[item]))
-        num_total = int(len(donors[item]))
-        # Thousand separator as default. Careful with the space if we get some big donors.
-        print("{:<26}| ${:>14,.2f}|{:>15}| ${:>13,.2f}".format(item, amt_total, num_total, amt_total/num_total))
-    print('\n')
+    # List is sorted by donor amounts desc.  Create preset list to pass in 
+    # vars once the list is sorted.
+    line_in = "{:<26}| ${:>14,.2f}|{:>15}| ${:>13,.2f}\n"
+    lines = []
+    # Append relevant information to the list to be sorted.
+    # List comprehension for fun
+    lines = [[donor for donor, donations in donors.items()],
+             [sum(donations) for donor, donations in donors.items()],
+             [len(donations) for donor, donations in donor.items()],
+             [(sum(donations)/len(donations)) for donor, donations in donor.items()]]
+    # Sort based on total's index
+    lines.sort(key=lambda x: x[1], reverse=True)
+    for donor_set in lines:
+        print(line_in.format(*donor_set) + "\n")
+
+    # ~*~ DEPRECIATED ~*~
+    # for donor, donations in donors.items():
+    #     count = len(donations)
+    #     total = sum(donations)
+    #     average = total / count
+    #     lines.append([donor, total, count, average])
 
 
 def send_letters():
@@ -111,23 +101,21 @@ def send_letters():
     Letter will contain the donors name and total donation amount.
     """
     cwd = os.getcwd()
-    for donor in donors:
-        # Get total donations for the donor.
-        total = 0
-        for donation in donors[donor]:
-            total += donation
-        outletter = open(os.path.join(cwd, f'{donor}_ty_letter.txt'), 'w+')
-        message = f"""Dear {donor},
-        Thank you for you generous donation of ${total:.2f}.
-It will truly help the children.
+    # Get donors (donors[0]), donations (donors[1]), and write letters.
+    for donor in donors.items():
+        total = sum(donor[1])
+        outletter = os.path.join(cwd, f'{donor[0]}_ty_letter.txt')
+        with open(outletter, 'w+') as f:
+            message = f"""Dear {donor[0]},
+            Thank you for you generous donation of ${total:.2f}.
+        It will truly help the children.
 
 
         Sincerely,
         Donation Recievers
     """
-        outletter.write(message)
-        outletter.close()
-        
+            f.write(message)
+
 
 def quitter():
     print("Exiting")
