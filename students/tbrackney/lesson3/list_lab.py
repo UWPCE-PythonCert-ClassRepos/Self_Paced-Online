@@ -8,6 +8,7 @@ Python Version: 3.6.4
 """
 
 # Series 1
+print('Series 1')
 fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
 print(fruits)
 new_fruit = input('Enter the name of a fruit: ')
@@ -24,9 +25,10 @@ print("Fruits that start with P")
 for fruit in fruits:
     if (fruit[0] == 'P'):
         print(fruit)
-print("\n" * 3)
+print("\n")
 
 # Series 2
+print('Series 2')
 fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
 print(fruits)
 fruits.pop()
@@ -37,8 +39,10 @@ for fruit in fruits:
     if fruit == fruit_to_remove:
         fruits.remove(fruit)
 print(fruits)
+print("\n")
 
 # Series 3
+print('Series 3')
 fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
 fruits[:]
 for fruit in fruits[:]:
@@ -48,8 +52,10 @@ for fruit in fruits[:]:
         if response == 'no':
             fruits.remove(fruit)
 print(fruits)
+print("\n")
 
 # Series 4
+print('Series 4')
 fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
 copy = []
 for f in fruits:
