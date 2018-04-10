@@ -96,5 +96,41 @@ class TestHTMLRender(unittest.TestCase):
         testelement.render(f)
         self.assertEqual(f.getvalue(), "<title>test</title>\n")
 
+    def test_Head_render(self):
+        f = StringIO()
+        testelement = hr.Head()
+        testelement.render(f)
+        self.assertEqual(f.getvalue(), "<head>\n</head>\n")
+
+    def test_append_Head_string(self):
+        f = StringIO()
+        testelement = hr.Head("test")
+        testelement.render(f)
+        self.assertEqual(f.getvalue(), "<head>\ntest\n</head>\n")
+
+    def test_attributes_P(self):
+        f = StringIO()
+        testelement = hr.P("test", test="test")
+        testelement.render(f)
+        self.assertEqual(f.getvalue(), '<p test="test">\ntest\n</p>\n')
+
+    def test_Hr_render(self):
+        f = StringIO()
+        testelement = hr.Hr()
+        testelement.render(f)
+        self.assertEqual(f.getvalue(), "<hr />\n")
+
+    def test_attributes_Hr(self):
+        f = StringIO()
+        testelement = hr.Hr(test="test")
+        testelement.render(f)
+        self.assertEqual(f.getvalue(), '<hr test="test" />\n')
+
+    def test_attributes_Hr(self):
+        f = StringIO()
+        testelement = hr.Hr("test")
+        with self.assertRaises(TypeError):
+            testelement.render(f)
+
 if __name__ == '__main__':
     unittest.main()
