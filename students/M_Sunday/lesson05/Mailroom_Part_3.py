@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from operator import itemgetter
 
-# Lesson 03, Mailroom Part 1 Assignment
+# Lesson 05, Mailroom Part 3 Assignment
 
 
 # ------- Global Assignments -------
@@ -29,8 +29,7 @@ def menu_display():
 
 def list_display():
     print("\n---- List of all Donors ----")
-    for item in donor_data:
-        print("- {}".format(item))
+    [print("- {}".format(item)) for item in donor_data]
     print("----------------------------")
     thank_you()
 
@@ -75,12 +74,11 @@ def thank_you():
 
 
 def calc_data():
-    summary_data = []
+    summary_data = [[] for data in donor_data]
     for i, item in enumerate(donor_data):
         donations_quantity = len(donor_data[item])
         donations_value = sum(donor_data[item])
         donations_average = (float(donations_value / donations_quantity))
-        summary_data.append([])
         summary_data[i].extend([item, donations_quantity, donations_value, donations_average])
     return summary_data
 
