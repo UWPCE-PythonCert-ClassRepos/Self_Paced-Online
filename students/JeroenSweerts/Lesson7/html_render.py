@@ -15,6 +15,7 @@ class Element():
         self.content.append(string)
 
     def create_open_tag(self):
+        '''Creates the first tag.'''
         if self.attributes is None:
             output = (self.cur_ind * " ") + "<" + self.tagname + ">\n"
         else:
@@ -25,6 +26,7 @@ class Element():
         return output
 
     def write_tag_content(self, output):
+        '''Writes the content between the open and close tag.'''
         for element in self.content:
             if isinstance(element, str):
                 output = output + (2 * self.cur_ind * " ") + element + "\n"
@@ -36,6 +38,7 @@ class Element():
         return output
 
     def create_closing_tag(self, output):
+        '''Creates the closing tag.'''
         output = output + (self.cur_ind * " ") + "</" + self.tagname + ">\n"
         return output
 
@@ -51,6 +54,7 @@ class Element():
 class Html(Element):
     tagname = 'html'
     def render(self, file_out, cur_ind=0):
+        '''Method that renders the tag and the strings in the content.'''
         output = "<!DOCTYPE html>\n"
         file_out.write(output)
         Element.render(self, file_out, cur_ind=0)
@@ -67,6 +71,7 @@ class Head(Element):
 
 class OneLineTag(Element):
     def create_open_tag(self):
+        '''Creates the first tag.'''
         if self.attributes is None:
             output = (self.cur_ind * " ") + "<" + self.tagname + ">"
         else:
@@ -77,6 +82,7 @@ class OneLineTag(Element):
         return output
 
     def write_tag_content(self, output):
+        '''Writes the content between the open and close tag.'''
         for element in self.content:
             if isinstance(element, str):
                 output = output + element
@@ -88,6 +94,7 @@ class OneLineTag(Element):
         return output
 
     def create_closing_tag(self, output):
+        '''Creates the closing tag.'''
         output = output + "</" + self.tagname + ">\n"
         return output
 
@@ -97,6 +104,7 @@ class Title(OneLineTag):
 
 class SelfClosingTag(Element):
     def create_open_tag(self):
+        '''Creates the first tag.'''
         if self.attributes is None:
             output = (self.cur_ind * " ") + "<" + self.tagname + " />\n"
         else:
@@ -107,9 +115,11 @@ class SelfClosingTag(Element):
         return output
 
     def write_tag_content(self, output):
+        '''Writes the content between the open and close tag.'''
         raise TypeError('You are not allowed to put content in a self closing tag')
 
     def create_closing_tag(self, output):
+        '''Creates the closing tag.'''
         return output
 
 
@@ -140,6 +150,7 @@ class H(OneLineTag):
         self.header_level = header_level
 
     def create_open_tag(self):
+        '''Creates the first tag.'''
         if self.attributes is None:
             output = (self.cur_ind * " ") + "<" + self.tagname + str(self.header_level) + ">"
         else:
@@ -150,6 +161,7 @@ class H(OneLineTag):
         return output
 
     def create_closing_tag(self, output):
+        '''Creates the closing tag.'''
         output = output + "</" + self.tagname + str(self.header_level) + ">\n"
         return output
 
