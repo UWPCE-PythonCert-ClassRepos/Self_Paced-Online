@@ -12,8 +12,9 @@ class mailroom_6_unit_test(unittest.TestCase):
     'Paul Hubbell': [90012.32, 2312.24],
     'David Beckham': [1817266.11, 123123.66, 111335.112]
     }   
-        
-    sorted_donors = [
+    
+    sorted_donors = [   
+    #   Unrounded -> rounding occurs in string formatting
         ['David Beckham', 2051724.882, 3, 683908.294], 
         ['Bailey Kimmitt', 127708.1, 3, 42569.36666666667], 
         ['Paul Hubbell', 92324.56000000001, 2, 46162.280000000006], 
