@@ -132,5 +132,11 @@ class TestHTMLRender(unittest.TestCase):
         with self.assertRaises(TypeError):
             testelement.render(f)
 
+    def test_A_render(self):
+        f = StringIO()
+        testelement = hr.A("http://google.com", "link")
+        testelement.render(f)
+        self.assertEqual(f.getvalue(), '<a href="http://google.com">link</a>\n')
+
 if __name__ == '__main__':
     unittest.main()
