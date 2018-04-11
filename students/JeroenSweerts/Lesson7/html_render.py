@@ -48,10 +48,12 @@ class Element():
         output = self.create_closing_tag(output)
         file_out.write(output)
 
-
-
 class Html(Element):
     tagname = 'html'
+    def render(self, file_out, cur_ind=0):
+        output = "<!DOCTYPE html>\n"
+        file_out.write(output)
+        Element.render(self, file_out, cur_ind=0)
 
 class Body(Element):
     tagname = 'body'
@@ -150,3 +152,6 @@ class H(OneLineTag):
     def create_closing_tag(self, output):
         output = output + "</" + self.tagname + str(self.header_level) + ">\n"
         return output
+
+class Meta(SelfClosingTag):
+    tagname = "meta"

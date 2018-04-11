@@ -28,7 +28,7 @@ class TestHTMLRender(unittest.TestCase):
         f = StringIO()
         testelement = hr.Html()
         testelement.render(f)
-        self.assertEqual(f.getvalue(), "<html>\n</html>\n")
+        self.assertEqual(f.getvalue(), "<!DOCTYPE html>\n<html>\n</html>\n")
 
     def test_Html_append(self):
         f = StringIO()
@@ -36,7 +36,7 @@ class TestHTMLRender(unittest.TestCase):
         testelement.append('test1')
         testelement.append('test2')
         testelement.render(f)
-        self.assertEqual(f.getvalue(), "<html>\ntest1\ntest2\n</html>\n")
+        self.assertEqual(f.getvalue(), "<!DOCTYPE html>\n<html>\ntest1\ntest2\n</html>\n")
 
     def test_Body_render(self):
         f = StringIO()
@@ -153,9 +153,15 @@ class TestHTMLRender(unittest.TestCase):
     def test_Li_render(self):
         f = StringIO()
         testelement = hr.Ul()
-        testelement.append( hr.Li("test1") )
+        testelement.append(hr.Li("test1"))
         testelement.render(f)
         self.assertEqual(f.getvalue(), '<ul>\n    <li>\n        test1\n    </li>\n</ul>\n')
+
+    def test_Meta_render(self):
+        f = StringIO()
+        testelement = hr.Meta(charset="UTF-8")
+        testelement.render(f)
+        self.assertEqual(f.getvalue(), '<meta charset="UTF-8" />\n')
 
 if __name__ == '__main__':
     unittest.main()
