@@ -13,6 +13,26 @@ donors = {
     'David Beckham': [1817266.11, 123123.66, 111335.112]
 }
 
+def get_donor_names():
+    """ Returns the donor keys - representing the donor names. """
+    return donors.keys()
+
+
+def get_donor_totals(donor):
+    """ Returns the total donation for a donor.  Not currently active. Except for testing. """
+    print(sum(donors[donor]))
+    return(sum(donors[donor]))
+
+
+def print_thanks(name_request, donation_amount):
+    message = f"""Dear {name_request},
+        Thank you for you generous donation of ${donation_amount:.2f}.
+        It will truly help the children.
+
+        Sincerely,
+        Donation Recievers"""
+    print(message)
+
 
 def send_thanks():
     """
@@ -41,32 +61,26 @@ def send_thanks():
     if name_request.lower() == "return":
         return
 
-    # List request - only donors returned.
+    # List request - list of donors returned
     # Exception added to make user format it properly.
     if name_request.lower() == 'list':
-        for donor in donors:
-            print(donor)
+        # print('\n'.join(get_donor_names()))
+        donor_names = get_donor_names()
+        print('\n'.join(donor_names))
         return
 
     name_request = name_request.title()
     donation_amount = float(input(("Please enter a donation amount for {}: ".format(name_request))))
     print()
-    # TODO: reword the message format - maybe read it from a file.  Super awk.
-    message = f"""Dear {name_request},
-        Thank you for you generous donation of ${donation_amount:.2f}.
-It will truly help the children.
-
-        Sincerely,
-        Donation Recievers
-    """
 
     # Add to existing donor or put new donor and amount in the list.
     if name_request in donors.keys():
         donors[name_request].append(donation_amount)
-        print(message)
+        print_thanks(name_request, donation_amount)
+
     else:
         donors[name_request] = [donation_amount]
-        print(message)
+        print_thanks(name_request, donation_amount)
 
         
 def create_report():
@@ -82,9 +96,18 @@ def create_report():
     # vars once the list is sorted.
     line_in = "{:<26}| ${:>14,.2f}|{:>15}| ${:>13,.2f}\n"
 
+    lines = create_report_lines()
     # Append relevant information to the list to be sorted.
-    lines = [[] for _ in range(len(donors.keys()))]
+ 
+
+    for donor_set in lines:
+        print(line_in.format(*donor_set))
+
+
+def create_report_lines():
     i = 0
+    lines = [[] for _ in range(len(donors.keys()))]
+
     for name, donation in donors.items():
         try:
             lines[i].append(name)
@@ -95,9 +118,8 @@ def create_report():
         except IndexError:
             continue
     lines.sort(key=lambda x: x[1], reverse=True)
-
-    for donor_set in lines:
-        print(line_in.format(*donor_set))
+    print(lines)
+    return lines
 
 
 def send_letters():
