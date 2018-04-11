@@ -11,10 +11,12 @@ def react_correct():
             print('JAAA')
             # print('answer was yes, will return secondfunc()')
             # return 'JAAA' 
-            return secondfunc()
+            # return secondfunc()
+            return True
         elif response == 'no':
             print('NOOO')
-            return 'NOOO'
+            # return 'NOOO'
+            return False
         else:
             print('BULLSHIT')
             return 'BULLSHIT'

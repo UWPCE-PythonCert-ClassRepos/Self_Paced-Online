@@ -13,9 +13,6 @@ def test_mail():
     assert m.mail() is True
 
 
-# def test_thankyou():
-    
-
 def test_list_donors():
     assert m.list_donors() is True
 
@@ -62,55 +59,13 @@ def test_list_donors():
 def test_add():
 # def test_add(mock_add_amount):
     test_names = ['berta', 'nobody']
-    for name in test_names:
-        with unittest.mock.patch('builtins.input') as fake_input:
-            fake_input.return_value = name
-            '''
-            It seems to be necessary to mock / fake m.add_amount() here to return True or something
-            arbitrary when running this test. Otherwise m.add_amount() will be executed 
-            in real and the test will be caught in m.add_amount's while loop.
-
-            # m.add_amount = unittest.mock.MagicMock(return_value = 'BUBU')   # OK1
-            # assert m.add() == 'BUBU'                                        # OK1
-
-            Drawback: from here on m.add_amount() is faked. If used further below from here,
-            e.g. in test_add_amount(), it won't be executed in real but just represent
-            the faked state.
-            '''
+    # for name in test_names:
+        # with unittest.mock.patch('builtins.input') as fake_input:
+        with unittest.mock.patch('builtins.input', side_effect=['berta', 'nobody']) as fake_input:
             
             # mock_add_amount.return_value = True
             m.add_amount = unittest.mock.MagicMock(return_value = True)   # OK2
             assert m.add() is True                                        # OK2
-            '''
-            # This version (OK2) let test_add_amount() succeed also, but that is then only some
-            # kind of 'false positive', because m.add_amount() is NOT really executed / tested
-            # in test_add_amount() anymore. So, if the code of m.add_amount() would have 
-            # changed to something wrong, this would not be detected my test_add_amount() 
-            # anymore.
-
-            # m.add_amount = unittest.mock.MagicMock(name)
-            # assert m.add() == m.add_amount(name)
-
-            # unittest.mock.patch(m.add_amount, return_value = 'BUBU')
-            # assert m.add() == 'BUBU'                                        
-            '''
-            # with unittest.mock.patch('m.add_amount') as fake_am:      # Fail
-            # with unittest.mock.patch('add_amount') as fake_am:          # Fail
-            # with unittest.mock.patch(m.add_amount) as fake_am:      # Fail
-            # with unittest.mock.MagicMock(m.add_amount, return_value = True) as fake_am:   # Fail
-            # with unittest.mock.MagicMock('m.add_amount', return_value = True) as fake_am:   # Fail
-            #     assert fake_am() is True
-
-            # with m.add_amount = unittest.mock.MagicMock(return_value = True) as bla: # Fail
-            #     assert m.add() is True                                        # Fail
-
-            # with unittest.mock.patch('m.add_amount') as fake_am:      # Fail
-            # with unittest.mock.patch(m.add_amount) as fake_am:        # Fail
-            # with unittest.mock.MagicMock(m.add_amount, return_value = True) as fake_am:   # Fail
-            # with unittest.mock.patch(add_amount) as fake_am:      # Fail
-                # fake_am.return_value = True
-                # assert m.add() is True
-
 
 def test_add_amount():
     test_donor = 'steve'
