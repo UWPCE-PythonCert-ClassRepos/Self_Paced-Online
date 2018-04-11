@@ -122,4 +122,31 @@ class Br(SelfClosingTag):
 class A(OneLineTag):
     tagname = 'a'
     def __init__(self, link=None, content=None):
-        OneLineTag.__init__(self, content, href=link)
+        #OneLineTag.__init__(self, content, href=link)
+        super().__init__(content, href=link)
+
+class Ul(Element):
+    tagname = "ul"
+
+class Li(Element):
+    tagname = "li"
+
+class H(OneLineTag):
+    tagname = "h"
+    def __init__(self, header_level=1, content=None, **attributes):
+        super().__init__(content, **attributes)
+        self.header_level = header_level
+
+    def create_open_tag(self):
+        if self.attributes is None:
+            output = (self.cur_ind * " ") + "<" + self.tagname + str(self.header_level) + ">"
+        else:
+            output = (self.cur_ind * " ") + "<" + self.tagname + str(self.header_level)
+            for key, value in self.attributes.items():
+                output = output + " " + key + "=" + '"' + value + '"'
+            output = output + ">"
+        return output
+
+    def create_closing_tag(self, output):
+        output = output + "</" + self.tagname + str(self.header_level) + ">\n"
+        return output

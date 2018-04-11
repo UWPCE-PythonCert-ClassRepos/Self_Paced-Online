@@ -138,5 +138,24 @@ class TestHTMLRender(unittest.TestCase):
         testelement.render(f)
         self.assertEqual(f.getvalue(), '<a href="http://google.com">link</a>\n')
 
+    def test_H_render(self):
+        f = StringIO()
+        testelement = hr.H(2, "PythonClass - Class 6 example")
+        testelement.render(f)
+        self.assertEqual(f.getvalue(), '<h2>PythonClass - Class 6 example</h2>\n')
+
+    def test_Ul_render(self):
+        f = StringIO()
+        testelement = hr.Ul(id="TheList", style="line-height:200%")
+        testelement.render(f)
+        self.assertEqual(f.getvalue(), '<ul id="TheList" style="line-height:200%">\n</ul>\n')
+
+    def test_Li_render(self):
+        f = StringIO()
+        testelement = hr.Ul()
+        testelement.append( hr.Li("test1") )
+        testelement.render(f)
+        self.assertEqual(f.getvalue(), '<ul>\n    <li>\n        test1\n    </li>\n</ul>\n')
+
 if __name__ == '__main__':
     unittest.main()
