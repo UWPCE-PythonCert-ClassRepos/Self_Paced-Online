@@ -1,1 +1,6 @@
-{}
+{
+  "test_html_render.py::test_element_indent1": true,
+  "test_html_render.py::test_indent": true,
+  "test_html_render.py::test_multiple_indent": true,
+  "test_html_render.py::test_render_element": true
+}

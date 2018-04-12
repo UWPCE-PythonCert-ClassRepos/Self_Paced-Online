@@ -8,7 +8,7 @@ A class-based system for rendering html.
 class Element(object):
     # Class attributes
     tag = ''  # tag name -> to be overridden
-    indent = '  '  # indention level -> <html> is first so it starts at 4
+    indent = '    '  # indention level -> <html> is first so it starts at 4
 
     def __init__(self, content=None):
         ''' Init '''
@@ -35,27 +35,31 @@ class Element(object):
                  entire tag should be indented for printing
         '''
         # Start with html at our current ident --> add content 1 tab extra in
-        file_out.write(f"{cur_ind}<html>\n")
+        file_out.write(f"{cur_ind}<{self.tag}>\n")
+        
         for contents in self.content:
-            file_out.write(f"{self.indent}{contents}\n")
-        file_out.write(f"{cur_ind}</html>")
+            if hasattr(contents, 'render'):
+                contents.render(file_out, cur_ind + self.indent)
+            else:
+                file_out.write(f"{cur_ind}{self.indent}{contents}\n")
+        file_out.write(f"{cur_ind}</{self.tag}>\n")
             
 
+class Html(Element):
+    ''' <html> tag '''
+    # HTML class attributes
+    tag = 'html'
 
-# class Html(Element):
-#     ''' <html> tag '''
-#     # HTML class attributes
-#     tag = 'html'
-
-#     def render(self, file_out, cur_ind=""):
-#         Element.render(self, file_out, cur_ind="")
-
-
-# class Body(Element):
-#     ''' <body> tag '''
-#     tag = 'body'
+    # Pass render with indent.
+    def render(self, file_out, cur_ind=""):
+        Element.render(self, file_out, cur_ind="")
 
 
-# class P(Element):
-#     ''' <p> tag '''
-#     tag = 'p'
+class Body(Element):
+    ''' <body> tag '''
+    tag = 'body'
+
+
+class P(Element):
+    ''' <p> tag '''
+    tag = 'p'
