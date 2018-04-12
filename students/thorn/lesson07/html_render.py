@@ -63,3 +63,28 @@ class Body(Element):
 class P(Element):
     ''' <p> tag '''
     tag = 'p'
+
+
+class Head(Element):
+    ''' <head> tag '''
+    tag = 'head'
+
+
+class OneLineTag(Element):
+    ''' Overrides the render method to put everything on one line for certain tags. 
+    
+    Should be similar to how element acts but without new lines.
+    '''
+    def render(self, fileout, cur_ind=''):
+        fileout.write(f"{cur_ind}<{self.tag}>")
+        for contents in self.content:
+            if hasattr(contents, 'render'):
+                contents.render(fileout, cur_ind + self.indent)
+            else:
+                fileout.write(contents)
+        fileout.write(f"</{self.tag}>\n")
+
+
+class Title(OneLineTag):
+    ''' <title> tag subclass of OneLineTag (puts it all on one line). '''
+    tag = 'title'
