@@ -35,9 +35,9 @@ class Element(object):
                  entire tag should be indented for printing
         '''
         # Start with html at our current ident --> add content 1 tab extra in
-        file_out.write(f"{cur_ind}<html>")
+        file_out.write(f"{cur_ind}<html>\n")
         for contents in self.content:
-            file_out.write(f"{self.indent}{contents}")
+            file_out.write(f"{self.indent}{contents}\n")
         file_out.write(f"{cur_ind}</html>")
             
 
