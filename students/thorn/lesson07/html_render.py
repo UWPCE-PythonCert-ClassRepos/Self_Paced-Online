@@ -37,7 +37,7 @@ class Element(object):
         # Start with html at our current ident --> add content 1 tab extra in
         file_out.write(f"{cur_ind}<html>")
         for contents in self.content:
-            file_out.write(contents)
+            file_out.write(f"{self.indent}{contents}")
         file_out.write(f"{cur_ind}</html>")
             
 
