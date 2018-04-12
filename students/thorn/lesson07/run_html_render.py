@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+##!/usr/bin/env python3
 
 """
 a simple script can run and test your html rendering classes.
@@ -31,7 +31,7 @@ def render_page(page, filename):
 
 
 # Step 1
-#########
+########
 
 page = hr.Element()
 
