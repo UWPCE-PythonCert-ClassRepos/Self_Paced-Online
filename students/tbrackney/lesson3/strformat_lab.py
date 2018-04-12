@@ -17,7 +17,7 @@ f"file_{a:03d}: {b:.2f}, {c:.2e}, {d:.2e}"
 
 
 # Task 3
-def formatter(*t):
+def formatter(t):
     form_string = "the {:d} numbers are: " + "{:d}, " * (len(t) - 1) + "{:d}"
     return form_string.format(len(t), *t)
 
