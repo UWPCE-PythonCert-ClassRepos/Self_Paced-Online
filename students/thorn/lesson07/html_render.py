@@ -14,7 +14,7 @@ class Element(object):
         ''' Init '''
         # Set content list if any exists
         if content:
-            self.content = list(content)
+            self.content = [content]
         else:
             self.content = []
 
@@ -36,10 +36,26 @@ class Element(object):
         '''
         # Start with html at our current ident --> add content 1 tab extra in
         file_out.write(f"{cur_ind}<html>")
-        for item in self.content:
-            if hasattr(item, "render"):
-                item.render(file_out, cur_ind + self.indent)
-            else:
-                file_out.write(f"{cur_ind}{self.indent}{item}")
+        for contents in self.content:
+            file_out.write(contents)
         file_out.write(f"{cur_ind}</html>")
+            
 
+
+# class Html(Element):
+#     ''' <html> tag '''
+#     # HTML class attributes
+#     tag = 'html'
+
+#     def render(self, file_out, cur_ind=""):
+#         Element.render(self, file_out, cur_ind="")
+
+
+# class Body(Element):
+#     ''' <body> tag '''
+#     tag = 'body'
+
+
+# class P(Element):
+#     ''' <p> tag '''
+#     tag = 'p'

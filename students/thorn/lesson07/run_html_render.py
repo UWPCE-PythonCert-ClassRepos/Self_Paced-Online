@@ -31,7 +31,7 @@ def render_page(page, filename):
 
 
 # Step 1
-########
+#########
 
 page = hr.Element()
 
