@@ -1,0 +1,5 @@
+[
+  "test_html_render.py::test_init",
+  "test_html_render.py::test_append",
+  "test_html_render.py::test_render_element"
+]

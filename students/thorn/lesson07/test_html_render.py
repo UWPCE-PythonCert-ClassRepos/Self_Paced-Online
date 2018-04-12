@@ -10,7 +10,6 @@ import pytest
 # import * is often bad form, but makes some sense for testing.
 from html_render import *
 
-
 # utility function for testing render methods
 # needs to be used in multiple tests, so we write it once here.
 def render_result(element, ind=""):
