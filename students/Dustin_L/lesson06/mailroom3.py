@@ -71,8 +71,9 @@ def get_usr_input():
 
 
 def get_donor_names():
-    """Return a list of all donor names."""
-    return [donor.lower() for donor in donor_db]
+    """Generator of all donor names."""
+    for donor in donor_db:
+        yield donor.lower()
 
 
 def prompt_for_donor(prompt):
@@ -88,7 +89,6 @@ def prompt_for_donor(prompt):
     Returns:
         str: Donor name.
     """
-    names = get_donor_names()
     donor = None
 
     while not donor:
@@ -98,7 +98,7 @@ def prompt_for_donor(prompt):
             break
         elif usr_in == 'list':
             print()
-            for name in names:
+            for name in get_donor_names():
                 print(name.title())
         else:
             donor = " ".join([name.title() for name in usr_in.split()])

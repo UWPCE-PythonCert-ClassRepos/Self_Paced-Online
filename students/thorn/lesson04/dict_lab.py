@@ -18,7 +18,7 @@ def dictionaries_1():
     chris_dict['fruit'] = "Mango"
     print(chris_dict)
     # 6: Display the dictionary keys.
-    print(', '.join(chris_dict.keys()))
+    print(', '.join(chris_dict))
     # 7: Display the dictionary values.
     print(', '.join(chris_dict.values()))
     # 8: Display whether or not “cake” is a key in the dictionary (i.e. False) (now).
