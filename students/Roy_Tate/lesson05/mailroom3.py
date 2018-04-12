@@ -87,17 +87,18 @@ def email_all():
             # when the user generates output to the current directory
             os.system('mkdir -p ' + save_path + '> /dev/null 2>&1')
             for donor, donations in donor_dict.items():
-                filename = save_path + donor + '.txt'.strip()
+                filename = os.path.join(save_path, donor + '.txt')
                 with open(filename, 'w') as f:
                     f.write(email_str_annual.format(donor.title(), sum(donations)))
                     print('Output file -->  ' + str(os.path.abspath(filename)))
                     count += 1
-            print('[DONE] Successfully generated {} emails.'.format(str(count)))
+            print('[DONE] Successfully generated {} files/emails.'.format(str(count)))
             break
         except PermissionError as e:
             print("You can\'t write to that directory: " + str(e))
             print('Try again.\n')
-
+        except FileNotFoundError as e:
+            print('Invalid directory: ' + str(e) + '\nTry again.\n')
 
 def send_thank_you():
     # Obtain the name of the donor, the contribution amount, add the donation to the list, and generate
@@ -156,7 +157,7 @@ def menu_selection(prompt, arg_dict):
             response = input(prompt)
             arg_dict[response]() == ''
         except KeyError as e:
-            print('Invalid Response: ' + str(e))
+            print('Invalid response: ' + str(e) + '\nTry again.')
 
 
 # All good things come to an end.
