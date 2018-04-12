@@ -3,17 +3,8 @@ Slicing Lab Assignment
 """
 def exchange_first_last(seq):
     """function to switch first and last elements"""
-    if isinstance(seq, tuple):
-        new_seq = list(seq)
-        new_seq[0], new_seq[-1] = new_seq[-1], new_seq[0]
-        return tuple(new_seq)
+    new_seq = seq[-1:] + seq[1:-1] + seq[:1]
 
-    elif isinstance(seq, str):
-        # seq[1:-1]
-        new_seq = seq[-1:] + seq[1:-1] + seq[:1]
-        return str(new_seq)
-    new_seq = seq
-    new_seq[0], new_seq[-1] = new_seq[-1], new_seq[0]
     return new_seq
 
 
@@ -52,8 +43,8 @@ def switch_thirds(seq):
     #switched = new_seq[2*third_length:] + \
         #new_seq[:third_length] + new_seq[third_length:2*third_length]
     switched = seq[third_length:] + seq[:third_length]
-    if isinstance(seq, tuple):
-        tuple(switched)
+    #if isinstance(seq, tuple):
+        #tuple(switched)
     print(switched)
     return switched
 
@@ -76,4 +67,4 @@ if __name__ == '__main__':
     assert reverse_seq(a_tuple) == (32, 5, 12, 13, 54, 2)
 
     assert switch_thirds(a_string) == "is a stringthis "
-    assert switch_thirds(a_tuple) == (2, 54, 13, 12, 5, 32)
+    assert switch_thirds(a_tuple) == (13, 12, 5, 32, 2, 54)
