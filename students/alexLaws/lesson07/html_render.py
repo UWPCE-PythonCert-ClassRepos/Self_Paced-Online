@@ -48,12 +48,13 @@ class Html(Element):
         super().__init__(content, **kwargs)
 
     def render(self, file_out, cur_ind=""):
+        '''Render HTML tags'''
         file_out.write("{}<!DOCTYPE html>\n".format(cur_ind))
         super().render(file_out, cur_ind)
 
 
 class Head(Element):
-    '''A class for an element with a body tag'''
+    '''A class for an element with a head tag'''
 
     tag_name = 'head'
 
@@ -71,7 +72,7 @@ class Body(Element):
 
 
 class P(Element):
-    '''A class for an element with a body tag'''
+    '''A class for an element with a p tag'''
 
     tag_name = 'p'
 
@@ -80,7 +81,7 @@ class P(Element):
 
 
 class OneLineTag(Element):
-    '''A class for an element with a body tag'''
+    '''A class for an element meant to appear on one line'''
 
     tag_name = ''
 
@@ -88,6 +89,7 @@ class OneLineTag(Element):
         super().__init__(content, **kwargs)
 
     def render(self, file_out, cur_ind=""):
+        '''Render an element meant to appear on one line'''
         element_format = style_tags(self.kwargs)
         file_out.write("{}<{}{}>".format(cur_ind, self.tag_name, element_format))
         for item in self.content:
@@ -99,7 +101,7 @@ class OneLineTag(Element):
 
 
 class Title(OneLineTag):
-    '''A class for an element with a body tag'''
+    '''A class for an element with a title tag'''
 
     tag_name = 'title'
 
@@ -108,7 +110,7 @@ class Title(OneLineTag):
 
 
 class A(OneLineTag):
-    '''A class for A tags and links'''
+    '''A class for a tags and links'''
 
     tag_name = 'a'
 
@@ -118,7 +120,7 @@ class A(OneLineTag):
 
 
 class H(OneLineTag):
-    '''A class for A tags and links'''
+    '''A class for h tags'''
 
     def __init__(self, h_level, content=None, **kwargs):
         super().__init__(content, **kwargs)
@@ -126,7 +128,7 @@ class H(OneLineTag):
 
 
 class SelfClosingTag(Element):
-    '''A class for tags that appear individually'''
+    '''A class for self closing tags'''
 
     tag_name = ''
 
@@ -134,6 +136,7 @@ class SelfClosingTag(Element):
         super().__init__(content, **kwargs)
 
     def render(self, file_out, cur_ind=""):
+        '''Render self closing tags'''
         element_format = style_tags(self.kwargs)
         file_out.write("{}<{}{} />\n".format(cur_ind, self.tag_name, element_format))
 
@@ -148,7 +151,7 @@ class Hr(SelfClosingTag):
 
 
 class Br(SelfClosingTag):
-    '''A class for <hr /> tags'''
+    '''A class for <br /> tags'''
 
     tag_name = 'br'
 
@@ -157,7 +160,7 @@ class Br(SelfClosingTag):
 
 
 class Meta(SelfClosingTag):
-    '''A class for <hr /> tags'''
+    '''A class for <meta /> tags'''
 
     tag_name = 'meta'
 
