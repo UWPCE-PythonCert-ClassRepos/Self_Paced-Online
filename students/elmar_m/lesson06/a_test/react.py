@@ -2,6 +2,10 @@
 
 import time
 
+def simple():
+    print('simple')
+    return False
+
 def react_correct():
     response = input('Please type yes or no\n')
 
@@ -57,6 +61,7 @@ def funcfive(x):
 
 def main():
     print('starting my program...')
+    simple()
     react_correct()
     response = input('And now: give a value bigger / smaller 10:\n')
     funcfive(int(response)) 
