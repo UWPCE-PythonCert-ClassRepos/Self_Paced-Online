@@ -1,14 +1,16 @@
 #NameError
-y=noName
-
+#def noName(x):
+#	return y
 #TypeError
-#x='5'
-#y=x+10
+#def badType():
+#	x='5'
+#	y=x+10
 
 #SyntaxError
-#for i in range(10)
-#	return i
+#def badSyntax():
+#	for i in range(10)
 
 #AttributeError
-#y=5
-#y.capitalize()
+def badAttribute():
+	y=5
+	y.capitalize()
