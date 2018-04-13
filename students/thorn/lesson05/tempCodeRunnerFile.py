@@ -1,2 +1,1 @@
-
-langs = ['java', 'c', 'python']
+justified
