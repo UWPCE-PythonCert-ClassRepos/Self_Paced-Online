@@ -3,5 +3,7 @@
   "test_html_render.py::test_body",
   "test_html_render.py::test_p",
   "test_html_render.py::test_sub_element",
-  "test_html_render.py::test_indent"
+  "test_html_render.py::test_indent",
+  "test_html_render.py::test_indent_contents",
+  "test_html_render.py::test_multiple_indent"
 ]

@@ -19,31 +19,32 @@ class Element(object):
             self.content = []
 
     def append(self, new_content):
-        ''' 
+        '''
         Appends a string to content.
         '''
         self.content.append(new_content)
 
     def render(self, file_out, cur_ind=""):
-        ''' 
-        Renders the tag and the strings in the content.  
+        '''
+        Renders the tag and the strings in the content.
         Starts <html> ends </html>
 
         file_out: any open writeable file-like object
 
-        cur_ind: string with the current level of indentation -> the amount the 
+        cur_ind: string with the current level of indentation -> the amount the
                  entire tag should be indented for printing
         '''
         # Start with html at our current ident --> add content 1 tab extra in
         file_out.write(f"{cur_ind}<{self.tag}>\n")
-        
+
         for contents in self.content:
-            if hasattr(contents, 'render'):
+            # if hasattr(contents, 'render'):
+            if isinstance(contents, Element):
                 contents.render(file_out, cur_ind + self.indent)
             else:
                 file_out.write(f"{cur_ind}{self.indent}{contents}\n")
         file_out.write(f"{cur_ind}</{self.tag}>\n")
-            
+
 
 class Html(Element):
     ''' <html> tag '''
@@ -52,7 +53,7 @@ class Html(Element):
 
     # Pass render with indent.
     def render(self, file_out, cur_ind=""):
-        Element.render(self, file_out, cur_ind="")
+        Element.render(self, file_out, cur_ind='')
 
 
 class Body(Element):
@@ -71,8 +72,8 @@ class Head(Element):
 
 
 class OneLineTag(Element):
-    ''' Overrides the render method to put everything on one line for certain tags. 
-    
+    ''' Overrides the render method to put everything on one line for certain tags.
+
     Should be similar to how element acts but without new lines.
     '''
     def render(self, fileout, cur_ind=''):

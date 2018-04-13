@@ -2,6 +2,19 @@ import unittest
 import html_render as hr
 from io import StringIO
 
+class TagTests(unittest.TestCase):
+    def test_html(self):
+        ''' Test that it starts with <html> and ends with </html> '''
+        e = hr.Element()
+        test = hr.Html()
+        e.render(hello)
+        f = StringIO()
+        test.render(f)
+        lines = f.getvalue()
+        lines.strip()
+        print(lines)
+
+
 class Step3Tests(unittest.TestCase):
     def test_head(self):
         ''' Test for proper head tag and that I remember how to make these. '''
