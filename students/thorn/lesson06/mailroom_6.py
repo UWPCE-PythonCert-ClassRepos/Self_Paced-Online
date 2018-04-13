@@ -82,6 +82,8 @@ def send_thanks():
         donors[name_request] = [donation_amount]
         print_thanks(name_request, donation_amount)
 
+def get_report():
+    print(create_report())
         
 def create_report():
     """
@@ -90,8 +92,9 @@ def create_report():
       amount.
     - $ Total - 27 spaces in, right justified
     """
-    print("Donor:                    | $    Total     |   Donations   | $   Average   |")
-    print("-"*76)
+    line_out = ''
+    line_out += "Donor:                    | $    Total     |   Donations   | $   Average   |\n"
+    line_out += ("-"*76) + '\n'
     # List is sorted by donor amounts desc.  Create preset list to pass in 
     # vars once the list is sorted.
     line_in = "{:<26}| ${:>14,.2f}|{:>15}| ${:>13,.2f}\n"
@@ -101,7 +104,10 @@ def create_report():
  
 
     for donor_set in lines:
-        print(line_in.format(*donor_set))
+        # print(line_in.format(*donor_set))
+        line_out += line_in.format(*donor_set)
+
+    return line_out
 
 
 def create_report_lines():
@@ -118,7 +124,6 @@ def create_report_lines():
         except IndexError:
             continue
     lines.sort(key=lambda x: x[1], reverse=True)
-    print(lines)
     return lines
 
 
@@ -160,7 +165,7 @@ if __name__ == "__main__":
         print()
         user_choices = {
             '1': send_thanks,
-            '2': create_report,
+            '2': get_report,
             '3': send_letters,
             '4': quitter
         }

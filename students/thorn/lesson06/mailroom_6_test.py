@@ -22,6 +22,16 @@ class mailroom_6_unit_test(unittest.TestCase):
         ['Theo Hartwell', 0.12000000000000001, 3, 0.04]
     ]
 
+#     formatted_report = (
+# """
+# Donor:                    | $    Total     |   Donations   | $   Average   |
+# ----------------------------------------------------------------------------
+# David Beckham             | $  2,051,724.88|              3| $   683,908.29
+# Bailey Kimmitt            | $    127,708.10|              3| $    42,569.37
+# Paul Hubbell              | $     92,324.56|              2| $    46,162.28
+# Tom Horn                  | $      1,599.23|              2| $       799.62
+# Theo Hartwell             | $          0.12|              3| $         0.04""")
+
     def test_get_donor_names(self):
         ''' Gets the list of donor names. Original list should be the same as the unmodified main program. '''
         self.assertEqual(mailroom_6.get_donor_names(), self.donors.keys())
@@ -35,8 +45,11 @@ class mailroom_6_unit_test(unittest.TestCase):
         self.assertEqual(mailroom_6.create_report_lines(), self.sorted_donors)
 
     def test_create_report(self):
-        ''' Prints a test report using the test donor. '''
-        pass
+        ''' Compares a line in the report to make sure they're formatted correctly. '''
+        becks_line = 'David Beckham             | $  2,051,724.88|              3| $   683,908.29'
+        report = mailroom_6.create_report().split('\n')
+        self.assertEqual(report[2], becks_line)
+
 
 if __name__ == '__main__':
     unittest.main()
