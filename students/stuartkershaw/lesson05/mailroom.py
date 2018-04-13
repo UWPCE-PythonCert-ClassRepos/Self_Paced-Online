@@ -58,12 +58,17 @@ def compose_email(donor):
 
 def apply_selection(selection):
     arg_dict = {
-        '1': get_donor_name,
+        '1': send_thank_you,
         '2': show_donor_table,
         '3': generate_letters,
         '4': quit
     }
-    arg_dict.get(selection)()
+    try:
+        if not arg_dict.get(selection):
+            raise KeyError
+        arg_dict.get(selection)()
+    except KeyError:
+        print('Oops, invalid selection.')
 
 
 def get_selection():
@@ -73,25 +78,18 @@ def get_selection():
               '3) send letters to everyone\n'\
               '4) quit\n'
     while True:
-        try:
-            selection = input(options)
-            if selection in ['1', '2', '3', '4']:
-                apply_selection(selection)
-        except ValueError:
-            input(options)
+        selection = input(options)
+        apply_selection(selection)
 
 
 def set_donation(donor):
     while True:
         try:
             donation = int(input('Please enter a donation amount: '))
-            assert donation > 0
-        except AssertionError:
-            print('__AssertionError__ Please provide a whole number greater than zero.')
-            set_donation(donor)
+            if not donation > 0:
+                raise ValueError
         except ValueError:
-            print('__ValueError__ Please provide a whole number.')
-            set_donation(donor)
+            print('Please provide a whole number greater than zero.')
         else:
             if 'donations' in donors[donor]:
                 donors[donor]['donations'].append(donation)
@@ -106,12 +104,12 @@ def list_donors():
         print(name)
 
 
-def get_donor_name():
+def send_thank_you():
     instruction = 'Please enter a full name or type \'list\' to see donors:\n'
     name_input = input(instruction)
     if name_input == 'list':
         list_donors()
-        get_donor_name()
+        send_thank_you()
     elif name_input in donors:
         set_donation(name_input)
     else:
@@ -132,7 +130,8 @@ def generate_rollup():
                     ), '.2f'
                 )
             )
-        cur_donor['rollup'] = dict(zip(('number', 'total', 'average'), (number, total, average)))
+        cur_donor['rollup'] = dict(zip(('number', 'total', 'average'),
+                                       (number, total, average)))
 
 
 def show_donor_table():
