@@ -47,7 +47,6 @@ def user(select_user):
             else:
                 if select_user in donor:
                     i.append(update_donation)
-    print(donors)
     print('Thank you {} for your thoughtful donation of ${}.'.format(select_user, update_donation))
 
 
