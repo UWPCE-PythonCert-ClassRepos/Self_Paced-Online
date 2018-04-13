@@ -6,62 +6,60 @@ Created on Tue Apr  3 15:31:18 2018
 """
 
 def fibonacci(n):
-    """Creates a fibonacci sequence with the number of elements determined
-    by the "n" parameter"""
+    """Creates a fibonacci sequence that displays the nth number in the
+    sequence, identified by the "n" parameter"""
     
-    list = []
+    fib_list = []
     for i in range(n):
         if (i == 0) or (i == 1):
-            list.append(i)
+            fib_list.append(i)
         else:
-            list.append(list[-1] + list[-2])
-    print(*list, '\n')
-    return list
-fibonacci(20)
+            fib_list.append(fib_list[-1] + fib_list[-2])
+    print(fib_list[n-1], '\n')
+    return fib_list[n-1]
+    
+fibonacci(10)
 
 def lucas(n):
     """The Lucas Numbers are a related series of integers that start with
     the values 2 and 1.  Returns the nth value in the lucas numbers series."""
     
-    list = [2, 1]
+    lucas_list = [2, 1]
     for i in range(n-2):
-        list.append(list[-1] + list[-2])
-    print(*list, '\n')
-    return list
+        lucas_list.append(lucas_list[-1] + lucas_list[-2])
+    print(lucas_list[n-1], '\n')
+    return lucas_list[n-1]
 lucas(20)
 
-def sum_series(count, start1=0, start2=1):
-    """Creates a sequence of length "count", in which the first 2 elements
-    default to 0 and 1, or which may be changed to any 2 numbers when calling
-    the function using start1/start2 argument positions."""
+def sum_series(n, start1=0, start2=1):
+    """Creates a sequence of length "n", in which the first 2 elements
+    default to 0 and 1 (fibonaccie), or which may be changed to any 2
+    numbers when calling the function using start1/start2 argument
+    positions. Returns the nth value in the sequence, as chosen by the 
+    'n' parameter."""
     
     if start1 == 0 and start2 == 1:
-        list = []
-        for i in range(count):
+        series_list = []
+        for i in range(n):
             if (i==0) or (i==1):
-                list.append(i)
+                series_list.append(i)
             else:
-                list.append(list[-2] + list[-1])
+                series_list.append(series_list[-2] + series_list[-1])
     else:
-        list = [start1, start2]
-        for i in range(count - 2):
-            list.append(list[-2] + list[-1])
-    print(*list, '\n')
-    return list
-sum_series(20, 4, 2)
+        series_list = [start1, start2]
+        for i in range(n - 2):
+            series_list.append(series_list[-2] + series_list[-1])
+    print(series_list[n-1], '\n')
+    return series_list[n-1]
+sum_series(21, 4, 5)
 
 if __name__ == "__main__":
-    # Tests if the function produces a sequence of the number of elements
-    # provided by the argument.  Result is a number sequnce if True, or 
-    # AssertionError if False.
-    assert len(fibonacci(10)) == 10
-    assert len(lucas(5)) == 5 # AssertionError if not 5
-    assert len(sum_series(8)) == 8
-    
-    # Tests if the first number of the fibonacci (0) and lucas (2) sequences
-    # are correct.  AssertionError if False.
-    assert fibonacci(5)[0] == 0
-    assert lucas(5)[0] == 2
-    # Tests if the second element of the sequence (third argument) is correct
-    # Assertion error if False.
-    assert sum_series(5, 3, 2)[1] == 3 #AssertionErrof if not 2
+    # Tests if the function produces the number chosen in as parameter "n".
+    # remove comment (#) before assert below to test that assertion, add 
+    # comment (#) to remove test
+    assert fibonacci(10) == 34  #Returns no error
+    #assert fibonacci(10) == 233 #Returns error; answer = 233
+    #assert lucas(7) == 18 #Returns no error
+    #assert lucas(12) == 322 # Returns error: answer = 199
+    #assert sum_series(20, 4, 5) == 31241 #Returns no error
+    #assert sum_series(10, 4, 5) == 665 #Returns error; answer = 254
