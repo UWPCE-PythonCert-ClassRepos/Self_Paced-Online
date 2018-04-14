@@ -60,16 +60,22 @@ class Donor:
 
 class DonorDatabase(defaultdict):
     """A database of Donors"""
-    THANK_YOU_FMT = ('\nDear {:s},\n'
-                     'Thank you for your generous donation of ${:.2f}.\n'
-                     '\t\tSincerely,\n'
-                     '\t\t  -Your conscience')
-
     def __init__(self, *donors):
         if not donors:
             donors = []
 
         super().__init__(Donor, {d.name: d for d in donors})
+        self.min_col_width = 12
+        self.def_pad = 5
+        self.col_sep = ' | '
+        self.col_1_name = 'Donor Name'
+        self.col_2_name = 'Total Given'
+        self.col_3_name = 'Num Gifts'
+        self.col_4_name = 'Average Gift'
+        self.thank_you_fmt = ('\nDear {:s},\n'
+                              'Thank you for your generous donation of ${:.2f}.\n'
+                              '\t\tSincerely,\n'
+                              '\t\t  -Your conscience')
 
     def __missing__(self, key):
         if self.default_factory is None:
@@ -80,35 +86,37 @@ class DonorDatabase(defaultdict):
 
     def create_report(self):
         """Generate report of all donors and donations in database."""
-        min_width = 12
-        def_space = 5
-        col_sep = ' | '
+        sorted_dnr_keys = sorted(self,
+                                 key=lambda d: self[d].total_donations,
+                                 reverse=True)
 
-        max_name = len(max([dnr for dnr in self], key=len)) + def_space
+        max_name = len(max([dnr for dnr in self], key=len)) + self.def_pad
         max_total = len(max([str(d.total_donations)
-                             for d in self.values()], key=len)) + def_space
+                             for d in self.values()], key=len)) + self.def_pad
         max_gifts = len(max([str(d.num_donations)
-                             for d in self.values()], key=len)) + def_space
+                             for d in self.values()], key=len)) + self.def_pad
         max_ave = max_total
 
-        if max_name < min_width:
-            max_name = min_width
-        if max_total < min_width:
-            max_total = max_ave = min_width
-        if max_gifts < min_width:
-            max_gifts = min_width
+        if max_name < self.min_col_width:
+            max_name = self.min_col_width
+        if max_total < self.min_col_width:
+            max_total = max_ave = self.min_col_width
+        if max_gifts < self.min_col_width:
+            max_gifts = self.min_col_width
 
-        header = (f'\n{{:^{max_name}s}}{col_sep}{{:^{max_total}s}}{col_sep}'
-                  f'{{:^{max_gifts}s}}{col_sep}{{:^{max_ave}s}}\n')
-        header += '-' * (max_name + max_total + max_gifts +
-                         max_ave + len(col_sep) * 3) + '\n'
-        header = header.format('Donor Name', 'Total Given',
-                               'Num Gifts', 'Average Gift')
-        row_fmt = (f'{{:<{max_name}s}}{col_sep}${{:>{max_total - 1}.2f}}{col_sep}'
-                   f'{{:>{max_gifts}d}}{col_sep}${{:>{max_ave - 1}.2f}}')
+        hdr_fmt = (f'\n{{:^{max_name}s}}{self.col_sep}{{:^{max_total}s}}'
+                   f'{self.col_sep}{{:^{max_gifts}s}}{self.col_sep}'
+                   f'{{:^{max_ave}s}}\n' +
+                   '-' * (max_name + max_total + max_gifts + max_ave +
+                          len(self.col_sep) * 3) +
+                   '\n')
 
-        sorted_dnr_keys = sorted(
-            self, key=lambda d: self[d].total_donations, reverse=True)
+        row_fmt = (f'{{:<{max_name}s}}{self.col_sep}${{:>{max_total - 1}.2f}}'
+                   f'{self.col_sep}{{:>{max_gifts}d}}{self.col_sep}'
+                   f'${{:>{max_ave - 1}.2f}}')
+
+        header = hdr_fmt.format(self.col_1_name, self.col_2_name,
+                                self.col_3_name, self.col_4_name)
 
         rows = [row_fmt.format(dnr, self[dnr].total_donations,
                                self[dnr].num_donations,
@@ -124,7 +132,7 @@ class DonorDatabase(defaultdict):
         for donor, data in self.items():
             f_name = f'{donor.replace(" ", "_")}_{now}.txt'
             with open(f_name, 'w') as f:
-                f.write(self.THANK_YOU_FMT.format(donor, data.total_donations))
+                f.write(self.thank_you_fmt.format(donor, data.total_donations))
 
 
 def get_usr_input():
@@ -244,7 +252,7 @@ def send_thank_you(donor_db):
         return
 
     donor_db[donor].add_donation(donation)
-    print(donor_db.THANK_YOU_FMT.format(donor, donation))
+    print(donor_db.thank_you_fmt.format(donor, donation))
 
 
 def create_report(donor_db):

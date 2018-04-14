@@ -146,17 +146,17 @@ class TestDonorDatabase(unittest.TestCase):
         # Check the file contents are correct
         with open(f'Test_Donor_1_{now}.txt', 'r') as f:
             contents = f.read(105)
-            self.assertTrue(contents == self.db.THANK_YOU_FMT.format(
+            self.assertTrue(contents == self.db.thank_you_fmt.format(
                 'Test Donor 1', 16000))
 
         with open(f'Test_Donor_2_{now}.txt', 'r') as f:
             contents = f.read(105)
-            self.assertTrue(contents == self.db.THANK_YOU_FMT.format(
+            self.assertTrue(contents == self.db.thank_you_fmt.format(
                 'Test Donor 2', 44000))
 
         with open(f'Test_Donor_3_{now}.txt', 'r') as f:
             contents = f.read(106)
-            self.assertTrue(contents == self.db.THANK_YOU_FMT.format(
+            self.assertTrue(contents == self.db.thank_you_fmt.format(
                 'Test Donor 3', 112527))
 
     def test_get_donor_names(self):
@@ -284,7 +284,7 @@ class TestUserInteraction(unittest.TestCase):
             reset_stdout()
 
             self.assertTrue(captured_print.getvalue() ==
-                            self.db.THANK_YOU_FMT.format('Bert', 1000) + '\n')
+                            self.db.thank_you_fmt.format('Bert', 1000) + '\n')
 
     def test_quit_mailroom(self):
         """Test quit_mailroom() fxn"""
