@@ -147,22 +147,12 @@ def send_letter_all():
     print('----------------------------------------------\n')
 
 
-"""def challenge(x):
-    x = 0
-    
-
-    for x in copy_donor_list.values():
-        all_donations = x['total donations'] * factor
-        x['total donations'] = all_donations
-
-    return x*factor"""
-
-
-def map_function():
+def challenge():
     new_list = []
     list_donor_info = []
     donations = []
     update_avg = []
+    new_donor_database = []
 
     while True:
         try:
@@ -198,11 +188,20 @@ def map_function():
         index_2 += 1
 
     for x in list_donor_info:
-        new_row = 
+        new_row = {"donor name": x[0],"total donations": x[1],"number donations": x[2],"avg donation":x[3]}
+        new_donor_database.append(new_row)
+
+    print()
+    lst_header = [["Donor Name", "| Total Donation(s)", "| # of Donations", "| Avg Donation"]]
+
+    for x in lst_header:
+        print('{:<25}{:<20}{:<17}{:<15}'.format(*x))
+    print("----------------------------------------------------------------------------")
+    for x in sorted(new_donor_database, key=lambda x: x['total donations'], reverse=True):
+        print('{:<25} $ {:<20}{:^14} $ {:<15}'.format(*x.values()))
 
 
-
-user_selection = {1: send_thank_you, 2: create_report, 3: send_letter_all, 4: map_function}
+user_selection = {1: send_thank_you, 2: create_report, 3: send_letter_all, 4: challenge}
 
 
 def options():
