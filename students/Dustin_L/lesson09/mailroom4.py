@@ -7,10 +7,6 @@ This module contains all of the functions for the updated Mail Room 4 module.
 import datetime
 from collections import defaultdict
 
-THANK_YOU_FMT = ('\nDear {:s},\n'
-                 'Thank you for your generous donation of ${:.2f}.\n'
-                 '\t\tSincerely,\n'
-                 '\t\t  -Your conscience')
 SELECT_PROMPT = ('\nPlease select from the following options:\n'
                  '\t1. Send a Thank You\n'
                  '\t2. Create a Report\n'
@@ -64,6 +60,11 @@ class Donor:
 
 class DonorDatabase(defaultdict):
     """A database of Donors"""
+    THANK_YOU_FMT = ('\nDear {:s},\n'
+                     'Thank you for your generous donation of ${:.2f}.\n'
+                     '\t\tSincerely,\n'
+                     '\t\t  -Your conscience')
+
     def __init__(self, *donors):
         if not donors:
             donors = []
@@ -123,7 +124,7 @@ class DonorDatabase(defaultdict):
         for donor, data in self.items():
             f_name = f'{donor.replace(" ", "_")}_{now}.txt'
             with open(f_name, 'w') as f:
-                f.write(THANK_YOU_FMT.format(donor, data.total_donations))
+                f.write(self.THANK_YOU_FMT.format(donor, data.total_donations))
 
 
 def get_usr_input():
@@ -243,7 +244,7 @@ def send_thank_you(donor_db):
         return
 
     donor_db[donor].add_donation(donation)
-    print(THANK_YOU_FMT.format(donor, donation))
+    print(donor_db.THANK_YOU_FMT.format(donor, donation))
 
 
 def create_report(donor_db):
