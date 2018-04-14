@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """This is a test module that tests mailroom4.py"""
 
-import os
-import sys
 import datetime
+import os
 import random
-import unittest
-import mailroom4 as mr
-from unittest import mock
+import sys
 from io import StringIO
-from mailroom4 import Donor, DonorDatabase, THANK_YOU_FMT, PROMPT_OPTS
+
+import unittest
+from unittest import mock
+
+import mailroom4 as mr
+from mailroom4 import PROMPT_OPTS, THANK_YOU_FMT, Donor, DonorDatabase
 
 
 def redirect_stdout():
