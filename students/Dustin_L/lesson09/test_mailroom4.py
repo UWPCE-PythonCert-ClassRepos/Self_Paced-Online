@@ -50,17 +50,37 @@ class TestDonor(unittest.TestCase):
         """Test donations attribute"""
         self.assertTrue(self.donor.donations == self.test_dons)
 
+    def test_set_donations(self):
+        """Test setting donations attribute"""
+        with self.assertRaises(AttributeError):
+            self.donor.donations = [100, 20]
+
     def test_get_num_donations(self):
         """Test num_donations attribute"""
         self.assertTrue(self.donor.num_donations == len(self.test_dons))
+
+    def test_set_num_donations(self):
+        """Test setting num_donations attribute"""
+        with self.assertRaises(AttributeError):
+            self.donor.num_donations = 4
 
     def test_get_total_donations(self):
         """Test total_donations attribute"""
         self.assertTrue(self.donor.total_donations == self.test_total)
 
+    def test_set_total_donations(self):
+        """Test setting total_donations attribute"""
+        with self.assertRaises(AttributeError):
+            self.donor.total_donations = 100
+
     def test_get_ave_donations(self):
         """Test average_donations attribute"""
         self.assertTrue(self.donor.average_donations == self.test_ave)
+
+    def test_set_ave_donations(self):
+        """Test setting average_donations attribute"""
+        with self.assertRaises(AttributeError):
+            self.donor.average_donations = 100
 
     def test_add_donation(self):
         """Test add_donation method"""
