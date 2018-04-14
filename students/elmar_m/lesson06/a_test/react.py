@@ -57,7 +57,13 @@ def funcfive(x):
         return fourthfunc()
     else:
         return False
+
+def funcsix():
+    return funcseven()
     
+
+def funcseven():
+    opinion = input('Tell me what you think...')
 
 def main():
     print('starting my program...')
@@ -65,6 +71,7 @@ def main():
     react_correct()
     response = input('And now: give a value bigger / smaller 10:\n')
     funcfive(int(response)) 
+    funcsix()
     print('end of my program.')
 
 
