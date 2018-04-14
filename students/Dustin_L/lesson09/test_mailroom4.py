@@ -32,6 +32,7 @@ def reset_stdout():
 
 
 class TestDonor(unittest.TestCase):
+    """Unit tests for the Donor class"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.test_name = 'Test Donor'
@@ -46,18 +47,23 @@ class TestDonor(unittest.TestCase):
         pass
 
     def test_get_donations(self):
+        """Test donations attribute"""
         self.assertTrue(self.donor.donations == self.test_dons)
 
     def test_get_num_donations(self):
+        """Test num_donations attribute"""
         self.assertTrue(self.donor.num_donations == len(self.test_dons))
 
     def test_get_total_donations(self):
+        """Test total_donations attribute"""
         self.assertTrue(self.donor.total_donations == self.test_total)
 
     def test_get_ave_donations(self):
+        """Test average_donations attribute"""
         self.assertTrue(self.donor.average_donations == self.test_ave)
 
     def test_add_donation(self):
+        """Test add_donation method"""
         donation = random.randint(0, 10000.0)
         self.donor.add_donation(donation)
         self.assertTrue(self.donor.donations == self.test_dons + [donation])
@@ -68,6 +74,7 @@ class TestDonor(unittest.TestCase):
 
 
 class TestDonorDatabase(unittest.TestCase):
+    """Unit tests for the DonorDatabase class"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.d1_name = 'Test Donor 1'
@@ -139,6 +146,7 @@ class TestDonorDatabase(unittest.TestCase):
 
 
 class TestUserInteraction(unittest.TestCase):
+    """Unit tests for the user interaction functions"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.d1_name = 'Test Donor 1'
