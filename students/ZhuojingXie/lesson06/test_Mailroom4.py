@@ -1,8 +1,33 @@
-
-import os
 import unittest
-from Mailroom4 import list_name, send_letters_to_everyone
+from unittest import mock
+import mailroom4
+import copy
 
-class TestMailRoom(unittest.TestCase):
-      def test_list_name (self):
-          self.assertEqual(list_name(), ('Andy','Bryce','Charile','David','Elaine'))
+class TestMailRoom4(unittest.TestCase):
+
+
+    def test_list_name(self):
+
+        data = [{'name':'Andy','donation':[960,256,123.5,40]},{'name':'Bryce','donation':[30,45,27]}]
+
+
+
+        self.assertEqual(data[0], {'name':'Andy','donation':[960,256,123.5,40]})
+
+
+
+
+    def send_letters_to_everyone(self):
+        data = [{'name':'Andy','donation':[960,256,123.5,40]},{'name':'Bryce','donation':[30,45,27]}]
+        mailroom4.letters_to_everyone()
+        assert os.path.isfile('Andy.txt')
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    unittest.main()

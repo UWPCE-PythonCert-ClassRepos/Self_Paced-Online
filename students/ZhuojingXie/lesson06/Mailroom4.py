@@ -41,9 +41,9 @@ def list_name():
         #here. but since i think using while loop here is more easy.
     for info in data:
         if donator == info['name']:
-            info['donation'].append(float(money))
+            return info['donation'].append(float(money))
         else:
-            data.append({'name':donator,'donation':[float(money)]})
+            return data.append({'name':donator,'donation':[float(money)]})
             break
     menu_selection(main_prompt,main_dispatch)
 
@@ -74,5 +74,3 @@ sub1_prompt = ('\n\nType "list" to show a list of the donor names, \n'
                 'Or type "back" to Back\n')
 main_dispatch ={'1':sub1_menu,'2':creat_a_report,'3':send_letters_to_everyone,'4': sys.exit}
 sub1_dispatch ={'list':list_name, 'back':back}
-
-menu_selection(main_prompt,main_dispatch)
