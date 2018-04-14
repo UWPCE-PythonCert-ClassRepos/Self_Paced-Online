@@ -7,6 +7,18 @@ This module contains all of the functions for the updated Mail Room 4 module.
 import datetime
 from collections import defaultdict
 
+THANK_YOU_FMT = ('\nDear {:s},\n'
+                 'Thank you for your generous donation of ${:.2f}.\n'
+                 '\t\tSincerely,\n'
+                 '\t\t  -Your conscience')
+SELECT_PROMPT = ('\nPlease select from the following options:\n'
+                 '\t1. Send a Thank You\n'
+                 '\t2. Create a Report\n'
+                 '\t3. Send letters to all donors\n'
+                 '\t4. quit\n'
+                 ' --> ')
+PROMPT_OPTS = (1, 2, 3, 4)
+
 
 class Donor:
     """Contains all information for a single donor"""
@@ -50,43 +62,68 @@ class Donor:
         self._ave = self._total / self.num_donations
 
 
-THANK_YOU_FMT = ('\nDear {:s},\n'
-                 'Thank you for your generous donation of ${:.2f}.\n'
-                 '\t\tSincerely,\n'
-                 '\t\t  -Your conscience')
-SELECT_PROMPT = ('\nPlease select from the following options:\n'
-                 '\t1. Send a Thank You\n'
-                 '\t2. Create a Report\n'
-                 '\t3. Send letters to all donors\n'
-                 '\t4. quit\n'
-                 ' --> ')
-PROMPT_OPTS = (1, 2, 3, 4)
-GIFTS_KEY = 'gifts'
-NUM_GIFTS_KEY = 'number_of_gifts'
-TOTAL_KEY = 'total'
-AVE_KEY = 'average'
+class DonorDatabase(defaultdict):
+    """A database of Donors"""
+    def __init__(self, *donors):
+        if not donors:
+            donors = []
 
+        super().__init__(Donor, {d.name: d for d in donors})
 
-def init_donor_data(gifts=None):
-    """Initialize each donor in the database.
+    def __missing__(self, key):
+        if self.default_factory is None:
+            raise KeyError(key)
+        else:
+            ret = self[key] = self.default_factory(key)
+            return ret
 
-        gifts (list, optional): Defaults to None. Initial donations.
-    """
-    if not gifts:
-        gifts = []
+    def create_report(self):
+        """Generate report of all donors and donations in database."""
+        min_width = 12
+        def_space = 5
+        col_sep = ' | '
 
-    return {GIFTS_KEY: gifts,
-            NUM_GIFTS_KEY: len(gifts),
-            TOTAL_KEY: sum(gifts),
-            AVE_KEY: sum(gifts) / len(gifts) if gifts else 0}
+        max_name = len(max([dnr for dnr in self], key=len)) + def_space
+        max_total = len(max([str(d.total_donations)
+                             for d in self.values()], key=len)) + def_space
+        max_gifts = len(max([str(d.num_donations)
+                             for d in self.values()], key=len)) + def_space
+        max_ave = max_total
 
+        if max_name < min_width:
+            max_name = min_width
+        if max_total < min_width:
+            max_total = max_ave = min_width
+        if max_gifts < min_width:
+            max_gifts = min_width
 
-donor_db = defaultdict(lambda: init_donor_data(),
-                       {'Toni Morrison': init_donor_data([1000, 5000, 10000]),
-                        'Mike McHargue': init_donor_data([12000, 5000, 27000]),
-                        "Flannery O'Connor": init_donor_data([38734, 6273, 67520]),
-                        'Angela Davis': init_donor_data([74846, 38470, 7570, 50]),
-                        'Bell Hooks': init_donor_data([634547, 47498, 474729, 4567])})
+        header = (f'\n{{:^{max_name}s}}{col_sep}{{:^{max_total}s}}{col_sep}'
+                  f'{{:^{max_gifts}s}}{col_sep}{{:^{max_ave}s}}\n')
+        header += '-' * (max_name + max_total + max_gifts +
+                         max_ave + len(col_sep) * 3) + '\n'
+        header = header.format('Donor Name', 'Total Given',
+                               'Num Gifts', 'Average Gift')
+        row_fmt = (f'{{:<{max_name}s}}{col_sep}${{:>{max_total - 1}.2f}}{col_sep}'
+                   f'{{:>{max_gifts}d}}{col_sep}${{:>{max_ave - 1}.2f}}')
+
+        sorted_dnr_keys = sorted(
+            self, key=lambda d: self[d].total_donations, reverse=True)
+
+        rows = [row_fmt.format(dnr, self[dnr].total_donations,
+                               self[dnr].num_donations,
+                               self[dnr].average_donations)
+                for dnr in sorted_dnr_keys]
+
+        return header + '\n'.join(rows)
+
+    def send_letters(self):
+        """Create a letter for each donor and write to disk as a text file"""
+        now = datetime.datetime.today().strftime('%m-%d-%Y')
+
+        for donor, data in self.items():
+            f_name = f'{donor.replace(" ", "_")}_{now}.txt'
+            with open(f_name, 'w') as f:
+                f.write(THANK_YOU_FMT.format(donor, data.total_donations))
 
 
 def get_usr_input():
@@ -113,13 +150,7 @@ def get_usr_input():
     return usr_in
 
 
-def get_donor_names():
-    """Generator of all donor names."""
-    for donor in donor_db:
-        yield donor.lower()
-
-
-def prompt_for_donor(prompt):
+def prompt_for_donor(prompt, donor_db):
     """Prompt user to enter a donor name.
 
     Allows user the additional options of:
@@ -128,6 +159,7 @@ def prompt_for_donor(prompt):
 
     Args:
         prompt (str): String to prompt user with.
+        donor_db (DonorDatabase): Database instance containing all donors
 
     Returns:
         str: Donor name.
@@ -141,7 +173,7 @@ def prompt_for_donor(prompt):
             break
         elif usr_in == 'list':
             print()
-            for name in get_donor_names():
+            for name in donor_db:
                 print(name.title())
         else:
             donor = " ".join([name.title() for name in usr_in.split()])
@@ -174,21 +206,7 @@ def prompt_for_donation(prompt):
     return donation
 
 
-def add_donation(donor, amount):
-    """Add a new donation to the donation database.
-
-    Args:
-        donor (str): Name of donor in donation database.
-        amount (int): Amount to add to donation database.
-    """
-    donor_db[donor][GIFTS_KEY].append(amount)
-    donor_db[donor][NUM_GIFTS_KEY] += 1
-    donor_db[donor][TOTAL_KEY] += amount
-    donor_db[donor][AVE_KEY] = donor_db[donor][TOTAL_KEY] / \
-        donor_db[donor][NUM_GIFTS_KEY]
-
-
-def send_thank_you():
+def send_thank_you(donor_db):
     """Send a thank you.
 
     Prompt for a Full Name.
@@ -204,6 +222,9 @@ def send_thank_you():
     Finally, use string formatting to compose an email thanking the donor for
     their generous donation. Print the email to the terminal and return to the
     original prompt.
+
+    Args:
+        donor_db (DonorDatabase): Database instance containing all donors
     """
     name_prompt = ('\nPlease enter name of "Thank You" recipient:\n'
                    '(Enter "list" to see all donors)\n'
@@ -213,7 +234,7 @@ def send_thank_you():
                      '(Enter "quit" to return to main menu)\n'
                      ' --> ')
 
-    donor = prompt_for_donor(name_prompt)
+    donor = prompt_for_donor(name_prompt, donor_db)
     if not donor:
         return
 
@@ -221,77 +242,51 @@ def send_thank_you():
     if not donation:
         return
 
-    add_donation(donor, donation)
+    donor_db[donor].add_donation(donation)
     print(THANK_YOU_FMT.format(donor, donation))
 
 
-def create_report():
+def create_report(donor_db):
     """Generate and print a report of donors in the database
 
     Prints a list of donors, sorted by total historical donation amount.
     Includes Donor Name, total donated, number of donations and average
     donation
+
+    Args:
+        donor_db (DonorDatabase): Database instance containing all donors
     """
-    min_width = 12
-    def_space = 5
-    col_sep = ' | '
-
-    max_name = len(max([dnr for dnr in donor_db], key=len)) + def_space
-    max_total = len(max([str(val[TOTAL_KEY])
-                         for val in donor_db.values()], key=len)) + def_space
-    max_gifts = len(max([str(val[NUM_GIFTS_KEY])
-                         for val in donor_db.values()], key=len)) + def_space
-    max_ave = max_total
-
-    if max_name < min_width:
-        max_name = min_width
-    if max_total < min_width:
-        max_total = max_ave = min_width
-    if max_gifts < min_width:
-        max_gifts = min_width
-
-    header = (f'\n{{:^{max_name}s}}{col_sep}{{:^{max_total}s}}{col_sep}'
-              f'{{:^{max_gifts}s}}{col_sep}{{:^{max_ave}s}}\n')
-    header += '-' * (max_name + max_total + max_gifts +
-                     max_ave + len(col_sep) * 3)
-    header = header.format('Donor Name', 'Total Given',
-                           'Num Gifts', 'Average Gift')
-    row_fmt = (f'{{:<{max_name}s}}{col_sep}${{:>{max_total - 1}.2f}}{col_sep}'
-               f'{{:>{max_gifts}d}}{col_sep}${{:>{max_ave - 1}.2f}}')
-
-    sorted_dnr_keys = sorted(
-        donor_db, key=lambda dnr: donor_db[dnr][TOTAL_KEY], reverse=True)
-
-    print(header)
-    for dnr in sorted_dnr_keys:
-        print(row_fmt.format(dnr, donor_db[dnr][TOTAL_KEY],
-                             donor_db[dnr][NUM_GIFTS_KEY],
-                             donor_db[dnr][AVE_KEY]))
+    print(donor_db.create_report())
 
 
-def quit_mailroom():
+def send_letters(donor_db):
+    """Create a letter for each donor and write to disk as a text file"""
+    donor_db.send_letters()
+
+
+def quit_mailroom(donor_db):
     """Exit operations when quitting mail room"""
     print('Quitting mailroom...')
 
 
-def send_letters():
-    """Create a letter for each donor and write to disk as a text file"""
-    now = datetime.datetime.today().strftime('%m-%d-%Y')
-
-    for donor, data in donor_db.items():
-        f_name = f'{donor.replace(" ", "_")}_{now}.txt'
-        with open(f_name, 'w') as f:
-            f.write(THANK_YOU_FMT.format(donor, data[TOTAL_KEY]))
-
-
 def main():
     """Main function"""
-    opt_dict = dict(zip(PROMPT_OPTS, (send_thank_you, create_report,
-                                      send_letters, quit_mailroom)))
+    donors = [Donor('Toni Morrison', [1000, 5000, 100]),
+              Donor('Mike McHargue', [12000, 5000, 2500]),
+              Donor("Flannery O'Connor", [38734, 6273, 67520]),
+              Donor('Angelina Davis', [74846, 38470, 7570, 50]),
+              Donor('Bell Hooks', [634547, 47498, 474729, 4567])]
+
+    donor_db = DonorDatabase(*donors)
+
+    opt_dict = dict(zip(PROMPT_OPTS, (send_thank_you,
+                                      create_report,
+                                      send_letters,
+                                      quit_mailroom)))
     choice = ''
     while choice != PROMPT_OPTS[-1]:
         choice = get_usr_input()
-        opt_dict.get(choice)()
+        opt_dict.get(choice)(donor_db)
 
 
 if __name__ == '__main__':
