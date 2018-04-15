@@ -7,5 +7,5 @@ class HTMLRenderTest(unittest.TestCase):
 
     def test_element(self):
         test = hr.Element(content=None)
-        self.assertTrue(test.tag='')
-        self.assertTrue(test.indent=0)
+        self.assertEqual(test.tag, '')
+        self.assertEqual(test.indent, 0)
