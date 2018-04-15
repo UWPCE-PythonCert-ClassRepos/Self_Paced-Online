@@ -6,9 +6,12 @@ import unittest as ut
 import html_render as hr
 
 class mytests(ut.TestCase):
-    ''' Test if html_render provides a class named 'element': '''   
+
+    ''' Test if html_render provides a class named 'Element': '''   
     def test_element(self):
-        pass
+        obj = hr.Element('html', 0)
+        # pass
+        self.assertIsInstance(obj, hr.Element)
 
     ''' Test if class 'element' provides an attribute named 'tagname': '''
     def test_tagname(self):
@@ -26,11 +29,6 @@ class mytests(ut.TestCase):
     def test_render(self):
         pass
     
-
-
-
-
-
 
 
 if __name__ == '__main__':
