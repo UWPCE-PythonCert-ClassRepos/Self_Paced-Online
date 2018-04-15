@@ -231,7 +231,7 @@ def main():
             1) Send Thank You Note
             2) Create Report
             3) Send Letter to Everyone
-            4) View Factored Donations
+            4) View Factor and Filter Applied Donations
             5) Exit Program
             """)
 
