@@ -148,6 +148,8 @@ def send_letter_all():
 
 
 def challenge():
+    # functions filters and multiplies the total donations by a factor input by a user
+
     new_list = []
     list_donor_info = []
     donations = []
@@ -167,6 +169,14 @@ def challenge():
 
     for x in list_donor_info:
         donations.append(x[1])
+
+    filtered_list = filter(lambda x: x > 5000, donations)
+    donations = list(filtered_list)
+    print(donations)
+
+    for x in list_donor_info:
+        if x[1] < 5000:
+            list_donor_info.remove(x)
 
     for x in list_donor_info:
         update_avg.append(x[3])
