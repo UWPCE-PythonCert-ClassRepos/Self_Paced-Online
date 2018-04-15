@@ -68,10 +68,7 @@ class DonorDatabase(defaultdict):
         self.min_col_width = 12
         self.def_pad = 5
         self.col_sep = ' | '
-        self.col_1_name = 'Donor Name'
-        self.col_2_name = 'Total Given'
-        self.col_3_name = 'Num Gifts'
-        self.col_4_name = 'Average Gift'
+        self.cols = ['Donor Name', 'Total Given', 'Num Gifts', 'Average Gift']
         self.thank_you_fmt = ('\nDear {:s},\n'
                               'Thank you for your generous donation of ${:.2f}.\n'
                               '\t\tSincerely,\n'
@@ -115,8 +112,7 @@ class DonorDatabase(defaultdict):
                    f'{self.col_sep}{{:>{max_gifts}d}}{self.col_sep}'
                    f'${{:>{max_ave - 1}.2f}}')
 
-        header = hdr_fmt.format(self.col_1_name, self.col_2_name,
-                                self.col_3_name, self.col_4_name)
+        header = hdr_fmt.format(*self.cols)
 
         rows = [row_fmt.format(dnr, self[dnr].total_donations,
                                self[dnr].num_donations,
