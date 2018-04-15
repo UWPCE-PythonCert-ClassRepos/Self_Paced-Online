@@ -109,7 +109,7 @@ def add():
         # return True
         
     else:
-        print('>>', dname, 'not in list, adding it ')
+        print('>>', dname, 'not in list, adding it')
         return add_amount(dname)
         # add_amount(dname)
         # return True
