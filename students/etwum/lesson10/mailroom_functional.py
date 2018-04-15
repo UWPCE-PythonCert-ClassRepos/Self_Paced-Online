@@ -211,7 +211,59 @@ def challenge():
         print('{:<25} $ {:<20}{:^14} $ {:<15}'.format(*x.values()))
 
 
-user_selection = {1: send_thank_you, 2: create_report, 3: send_letter_all, 4: challenge}
+def projections():
+    boolDonorName = False
+    print("Below are the list of donors:")
+    for x in lst_donors:
+        print(x["donor name"])
+    print('----------------------------')
+
+    donor_name_input = input("Please enter the name of the donor you'd like to run the projection on: ")
+
+    for x in lst_donors:
+        if x['donor name'] == donor_name_input:
+
+            while True:
+                try:
+                    donor_project_input = input("Would you like to multiply your current donations by a factor or add a donation amount? "
+                                                      "Input (factor or add)")
+                    if donor_project_input not in ("factor", "add"):
+                        raise Exception
+
+                except Exception:
+                    print("Please input 'factor' or 'add'")
+                    continue
+                else:
+                    break
+
+            if donor_project_input == "factor":
+                while True:
+                    try:
+                        factor = float(input("Please enter a factor "))
+                    except ValueError as e:
+                        print(e)
+                    else:
+                        break
+                new_donation_total = x['total donations'] * factor
+                print("-----------------------------------------------------")
+                print("The projected new donation total is ", new_donation_total)
+
+            elif donor_project_input == "add":
+                while True:
+                    try:
+                        add = float(input("Please enter an amount to add to your current total "))
+                    except ValueError as e:
+                        print(e)
+                    else:
+                        break
+                new_donation_total2 = x['total donations'] + add
+                print("-----------------------------------------------------")
+                print("The projected new donation total is", new_donation_total2)
+            break
+    else:
+        print("Invalid donor name")
+
+user_selection = {1: send_thank_you, 2: create_report, 3: send_letter_all, 4: challenge, 5:projections}
 
 
 def options():
@@ -224,7 +276,7 @@ def main():
     print("------------------------------------------------------------------------")
     str_choice = 0
     # ****Input/Output****
-    while str_choice != 5:
+    while str_choice != 6:
         # Option menu
         print("""
             Menu of Options
@@ -232,22 +284,23 @@ def main():
             2) Create Report
             3) Send Letter to Everyone
             4) View Factor and Filter Applied Donations
-            5) Exit Program
+            5) Run Projection
+            6) Exit Program
             """)
 
         # try/except block to make sure the user inputs a valid option
         try:
-            str_choice = int(input("Which option would you like to perform? Input a number [1 to 5] "))
+            str_choice = int(input("Which option would you like to perform? Input a number [1 to 6] "))
             if str_choice in options():
                 # returns a value from user_selection dictionary in the options function
                 # then runs the function from the dictionary
                 options()[str_choice]()
-            elif str_choice == 5:
+            elif str_choice == 6:
                 print("\nExiting Program")
             else:
                 raise Exception
         except Exception:
-            print("Please input a valid option: 1, 2, 3, 4, or 5")
+            print("Please input a valid option: 1, 2, 3, 4, 5, or 6")
 
 
 if __name__ == "__main__":
