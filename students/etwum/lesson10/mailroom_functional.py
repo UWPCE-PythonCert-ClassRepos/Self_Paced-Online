@@ -263,6 +263,7 @@ def projections():
     else:
         print("Invalid donor name")
 
+
 user_selection = {1: send_thank_you, 2: create_report, 3: send_letter_all, 4: challenge, 5:projections}
 
 
