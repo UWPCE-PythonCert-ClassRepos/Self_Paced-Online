@@ -37,6 +37,9 @@ def secondfunc():
     # return None
 
 
+def printfunc():
+    print('JACKSON')
+
 def thirdfunc(a, b):
     c = a + b
     return c
@@ -60,6 +63,7 @@ def main():
     react_correct()
     response = input('And now: give a value bigger / smaller 10:\n')
     funcfive(int(response)) 
+    printfunc()
     print('end of my program.')
 
 
