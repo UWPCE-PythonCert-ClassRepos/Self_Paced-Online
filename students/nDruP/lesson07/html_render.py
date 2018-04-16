@@ -14,7 +14,7 @@ class Element:
                 x.render(file_out, cur_ind)
             elif x:
                 file_out.write((cur_ind*(self.indent+1))+str(x)+'\n')
-                
+
         file_out.write((self.indent*cur_ind)+"</"+self.tag+">\n")
 
     def append(self, text):
@@ -29,6 +29,7 @@ class Element:
                 token += ' '+attr+'="'+value+'"'
         token += ">"
         return token
+    pass
 
 
 class OneLineTag(Element):
@@ -37,6 +38,7 @@ class OneLineTag(Element):
         for x in self.substance:
             file_out.write(str(x)+' ')
         file_out.write("</"+self.tag+">\n")
+    pass
 
 
 class SelfClosingTag(Element):
@@ -44,15 +46,8 @@ class SelfClosingTag(Element):
         self.attributes = kwargs
 
     def render(self, file_out, cur_ind=""):
-        file_out.write(self.open_tag_str(cur_ind)+'\n')
-
-    def open_tag_str(self, cur_ind=""):
-        token = (self.indent*cur_ind)+'<'+self.tag
-        if self.attributes:
-            for attr, value in self.attributes.items():
-                token += ' '+attr+'="'+value+'"'
-        token += " \>"
-        return token
+        file_out.write(self.open_tag_str(cur_ind)[:-1]+" />"+'\n')
+    pass
 
 
 class Html(Element):
@@ -76,8 +71,9 @@ class H(OneLineTag):
     def __init__(self, size, content=None, **kwargs):
         self.tag = 'h'+str(size)
         OneLineTag.__init__(self, content, **kwargs)
+    pass
 
-    
+
 class P(Element):
     tag = "p"
     pass
@@ -100,14 +96,17 @@ class Title(OneLineTag):
 
 class A(OneLineTag):
     tag = "a"
+
     def __init__(self, link, content):
-        self.attributes = {"href":link}
-        self.substance = () if content is None else (content,)        
+        self.attributes = {"href": link}
+        self.substance = () if content is None else (content,)
     pass
+
 
 class Hr(SelfClosingTag):
     tag = "hr"
     pass
+
 
 class Br(SelfClosingTag):
     tag = "br"
