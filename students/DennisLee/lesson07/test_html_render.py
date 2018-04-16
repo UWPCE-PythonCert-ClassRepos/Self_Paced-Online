@@ -19,6 +19,8 @@ class ElementTestCase(unittest.TestCase):
         )
     def tearDown(self):
         del self.e
+        del self.strs_before
+        del self.strs_after
 
     def test_init_1(self):
         x = hr.Element(self.strs_before[0])
@@ -107,6 +109,10 @@ class ElementTestCase(unittest.TestCase):
 
 class Step2ElementTestCase(ElementTestCase):
     def setUp(self):
+        self.html_element = hr.Html()
+        self.body_element = hr.Body()
+        self.p1_element = hr.P("hello")
+        self.p2_element = hr.P()
         self.strs_before = (
                 "  \n Why  am   \n\tI here?     \t",
                 "\n\t  \n  Here's   that rainy   day...   \t  \n",
@@ -124,7 +130,10 @@ class Step2ElementTestCase(ElementTestCase):
                 "I did it my way"
         )
     def tearDown(self):
-        pass
+        del self.html_element
+        del self.p1_element
+        del self.p2_element
+        del self.body_element
 
     def test_render_P(self):
         para = hr.P(self.strs_before[0])
