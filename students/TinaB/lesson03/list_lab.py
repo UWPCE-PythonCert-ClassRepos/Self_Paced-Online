@@ -30,7 +30,7 @@ else:
 second_fruit_response = input(
     "Let's add another fruit to the begginng of our list. Enter a fruit here: ")
 print("You entered {:s}".format(second_fruit_response))
-new_fruit_list = [second_fruit_response, ] + fruit_list
+new_fruit_list = [second_fruit_response] + fruit_list
 print(new_fruit_list)
 
 # Add another fruit to the beginning of the list using insert() and display the list.
