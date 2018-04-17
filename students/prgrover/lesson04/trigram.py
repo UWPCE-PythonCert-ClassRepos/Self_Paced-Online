@@ -19,6 +19,7 @@ def get_sample_size():
     Args: None.
     """
     sample_size = input("How long (number of words) should the new text sample be: ")
+    sample_size = int(sample_size)
     return sample_size
 
 
@@ -93,7 +94,7 @@ def create_new_sample(trigram_dict):
     Args:
     trigram_dict:  Dictionary of trigrams.
     """
-    num_words = int(get_sample_size())
+    num_words = get_sample_size()
     dict_keys = list(random.choice(list(trigram_dict.keys())))
     sample = dict_keys
 
