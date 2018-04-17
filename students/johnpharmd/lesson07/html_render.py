@@ -2,19 +2,17 @@ class Element(object):
     """renders an html element"""
 
     tag = ''
-    indent = ''
+    indent = 1
 
-    def __init__(self, content=None):
+    def __init__(self, content=''):
         self.content = content
-        self.content_list = [content]
 
-    def render(self, cur_ind=''):
-        return ('<{}>\n' + ' ' * int(cur_ind) + '{}\n'
-                + '<\\{}>').format(self.tag,
-                                   self.content, self.tag).strip('\'')
+    def append(self, new_string):
+        self.content = ' '.join([self.content, new_string])
+        return self.content
 
-
-if __name__ == '__main__':
-    e1 = Element()
-    e1.tag = 'html'
-    print(e1.render(cur_ind='4'))
+    def render(self, file_out, cur_ind=''):
+        output = (('<{}>\n' + self.indent * cur_ind + '{}\n'
+                  + '<\\{}>').format(self.tag, self.content,
+                                     self.tag).strip('\''))
+        file_out.write(output)
