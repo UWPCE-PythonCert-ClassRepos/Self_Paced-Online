@@ -98,7 +98,7 @@ def create_new_sample(trigram_dict):
     dict_keys = list(random.choice(list(trigram_dict.keys())))
     sample = dict_keys
 
-    for i in range(num_words):
+    for word in range(num_words):
         dict_keys = random.choice(trigram_dict[tuple(sample[-2:])])
         sample.append(dict_keys)
 
