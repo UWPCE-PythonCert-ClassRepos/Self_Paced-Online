@@ -2,7 +2,9 @@
 # #############################################################################
 # Written by: Lily Mayc4t
 # Date: 4/14/2018
-# FileID: mailroom2.py
+# FileID: mailroom3.py
+#
+# Purpose: use comprehension and excepttion
 #
 # #############################################################################
 
@@ -10,18 +12,9 @@
 import collections
 from collections import *
 
-
-donors = defaultdict(list, {"Lily Maycat": [20],
-                             "Lulu Lemon": [15, 15, 15],
-                             "Marc Jacobs": [30, 30],
-                             "Kate Spade": [60, 60, 60],
-                             "Bobbi Brown": [44]
-                             })
-
-# names = ["Lily Maycat", "Lulu Lemon", "Marc Jacobs", "Bobbi Brown", "Kate Spade"]
-# times = [1, 2, 4, 9, 16]
-# amt   = [i*5000 for i in times]
-# donors = {name:amout for name, amout in zip(names, amt)}
+names = ["Lily Maycat", "Lulu Lemon", "Marc Jacobs", "Bobbi Brown", "Kate Spade"]
+amt   = [i*[5000] for i in range(1,6)]
+donors = {name:amout for name, amout in zip(names, amt)}
 
 def quit():
     """Quit the top menu."""
