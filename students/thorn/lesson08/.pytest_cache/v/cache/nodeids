@@ -1,0 +1,6 @@
+[
+  "circle_test.py::test_radius",
+  "circle_test.py::test_diameter",
+  "circle_test.py::test_set_diameter",
+  "circle_test.py::test_from_diameter"
+]
