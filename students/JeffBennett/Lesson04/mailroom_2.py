@@ -13,14 +13,15 @@ donors = {
     'Laila Samir': [1000, 250]
 }
 
-# Needs work
+# Needs format arguments
 letter_to_all_donors = '''\nDear {}\n\nI write to thank you again for all the
-support you have provided to Northwest Lifeboats.\n\nDuring the past year
-your total gifts of {} have supported our activities through the Northest.
+support you have provided to Northwest Lifeboats.
+\n\nDuring the past year your total gifts of ${:,.2f} have greatly
+furthered our activities.
 \n\nI have exciting news that one of our prospective donors may be prepared
 to match your next donation, which would double your impact on our efforts.
-\n\nI will be back in touch with you soon with more details.\n\nSincerely
-yours\n\nJ A Bennett\nDirector'''.format(donors, sum())
+I will be back in touch with you soon with more details.\n\nSincerely yours
+\n\nJ A Bennett\nDirector'''
 
 # Input/Output
 
@@ -46,7 +47,7 @@ def print_donor_list(donors):
 
 def print_email_to_donor(donor, gift):
     """print email thanking donor for recent donation."""
-    print(f"\nDear {donor}\n\nThank you very much for your gift of {gift}."
+    print(f"\nDear {donor}\n\nThank you very much for your gift of ${gift}."
           "\nYour donation supports fishermen all along the Northwest coast."
           "\n\nSincerely yours\n\nJ A Bennett\nDirector")
 
@@ -58,10 +59,6 @@ def print_sorted_donors(sorted_donors):
     print('-' * 73)
     for row in sorted_donors:
         print('{0:30s}  ${1:12.2f}{2:12d}  ${3:12.2f}'.format(*row))
-
-
-def print_letter_to_all_donors(donors):
-    pass
 
 
 # Processing
@@ -76,13 +73,13 @@ def update_donors(donors, name, donation):
     return donors
 
 
-def sort_donors(donors):
-    """sort donors from largest to smallest aggregate givers, and calculate
-    average gift and number of gifts per donor. """
+def create_report(donors):
+    """sort donors from largest to smallest aggregate givers, calculate
+    average gift and number of gifts per donor, and print report. """
     data_table = [[key, sum(donors[key]), len(donors[key]),
                    sum(donors[key]) / len(donors[key])] for key in donors]
     sorted_donors = sorted(data_table, key=lambda x: x[1], reverse=True)
-    return sorted_donors
+    print_sorted_donors(sorted_donors)
 
 
 def email_all_donors(donors):
@@ -90,13 +87,15 @@ def email_all_donors(donors):
     strDate = datetime.date.today().strftime("%Y-%m-%d")
     for key in donors:
         file_name = key.replace(' ', '_') + '_' + strDate + '.txt'
+        message = letter_to_all_donors.format(key, sum(donors[key]))
+        print(file_name, message)
         with open(file_name, 'w') as fout:
-            fout.write(letter_to_all_donors)
+            fout.write(message)
 
 
 switch_dict = {
     1: 'placeholder',
-    2: 'placeholder',
+    2: create_report,
     3: email_all_donors,
     4: 'placeholder'
 }
