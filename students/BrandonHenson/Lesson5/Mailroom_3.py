@@ -1,6 +1,6 @@
 # Brandon Henson
-# 4/20/18
-# Lesson 04 mailroom_3.py
+# 4/19/18
+# Lesson 05 mailroom_3.py
 # Exceptions
 donor_history = {'Brandon Henson': [1005.49, 3116.72, 5200],
                     'Alicia Henson': [21.47, 1500],
@@ -80,12 +80,13 @@ def menu_2():
     try:
         print("\nDonor Name         |  Total Given | Num Gifts | Average Gift")
         print("------------------------------------------------------------\n")
-        for key, values in donor_history.items():
-            total = sum(values)
-            numgifts = len(values)
-            avgifts = total/numgifts
-            print(f'{str(key):20s}     ${total:8n} {numgifts:10n}      ${avgifts:8n}')
-
+        report = list()
+        for donor, total in donor_history.items():
+            report.append([donor, sum(total), len(total), sum(total)/len(total)])
+        sorted_report = sorted(report, key=lambda x: -x[1])
+        for i in sorted_report:
+            print("{:<20}   ${:>8} {:>8}        ${:<1}".format(
+                i[0], i[1], i[2], i[3]))
     except TypeError:
         print()
 
