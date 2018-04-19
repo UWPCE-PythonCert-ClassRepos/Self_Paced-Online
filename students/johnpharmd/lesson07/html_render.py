@@ -6,6 +6,8 @@ class Element(object):
 
     def __init__(self, content=''):
         self.content = content
+        self.content_list = ['<' + self.tag + '>', self.content,
+                             '<\\' + self.tag + '>']
 
     def append(self, new_string):
         self.content = ' '.join([self.content, new_string])
@@ -15,4 +17,5 @@ class Element(object):
         output = (('<{}>\n' + self.indent * cur_ind + '{}\n'
                   + '<\\{}>').format(self.tag, self.content,
                                      self.tag).strip('\''))
-        file_out.write(output)
+        # https://stackoverflow.com/questions/4369159/replace-n-with-br
+        file_out.write(output.replace('\n', '<br />'))
