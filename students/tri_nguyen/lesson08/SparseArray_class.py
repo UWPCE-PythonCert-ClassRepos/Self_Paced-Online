@@ -1,9 +1,7 @@
 class SparseArray:
     def __init__(self, array):
         self.array = array
-
-    def store_nonzero(self):
-        return {idx:item for idx, item in enumerate(self.array) if item !=0}
+        self.non_zeros = {idx: item for idx, item in enumerate(self.array) if item != 0}
 
     def __len__(self):
         return len(self.array)
@@ -27,6 +25,7 @@ class SparseArray:
     def append(self, value):
         if isinstance(value, int):
             self.array.append(value)
+            self.non_zeros = {idx: item for idx, item in enumerate(self.array) if item != 0}
 
     def __delitem__(self, idx):
         try:
@@ -41,5 +40,4 @@ if __name__ == '__main__':
     print('\nindexing:',sa[6], '\n')
     print(sa.array, '\n')
     print('slicing:', sa[1:9])
-    print('\nstore non zeros:', sa.store_nonzero(), '\n')
     print(sa[34])
