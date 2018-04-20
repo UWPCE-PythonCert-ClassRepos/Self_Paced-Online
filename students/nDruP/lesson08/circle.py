@@ -15,7 +15,7 @@ from math import *
 
 
 class Circle:
-    
+
     def __init__(self, in_radius=1):
         self._radius = in_radius
 
@@ -68,7 +68,7 @@ class Circle:
 
     def __len__(self):
         return round(self.circumference)
-    
+
     @classmethod
     def from_diameter(cls, in_diameter):
         return cls(in_diameter / 2)
