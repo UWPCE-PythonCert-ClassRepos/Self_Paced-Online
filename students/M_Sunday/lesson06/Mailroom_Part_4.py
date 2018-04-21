@@ -122,8 +122,7 @@ def exit_program():
     exit()
 
 
-if __name__ == "__main__":
-
+def main_exec():
     menu_map = {'1': thank_you_input, '2': report, '3': send_all_letters, '4': exit_program}
 
     while True:
@@ -134,3 +133,9 @@ if __name__ == "__main__":
             print("\nMenu selection must be one of the following:\n")
             for key in menu_map:
                 print("- {}".format(key))
+
+
+if __name__ == "__main__":
+
+    main_exec()
+
