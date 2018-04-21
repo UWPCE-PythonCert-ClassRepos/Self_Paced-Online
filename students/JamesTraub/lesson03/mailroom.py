@@ -2,43 +2,54 @@
 # James Traub 04-17-18
 # Lesson 3 - Mailroom Lab Exercise, Part 1
 
-# Write a small command-line script called mailroom.py.
-# This script should be executable. 
-# The script should accomplish the following goals:
-# It should have a data structure that holds a list 
-# of your donors and a history of the amounts they have donated.
-# This structure should be populated at first with at least 
-# five donors, with between 1 and 3 donations each.
-# You can store that data structure in the global namespace.
-# The script should prompt the user to choose from a menu 
-# of 3 actions: “Send a Thank You”, “Create a Report” or “quit”)
 
-# Create list containg (("Donor #1[use index?]:" donor name, 
-# Donation 01-01: 10, Donation 01-02: 10, Donation 01-03: 10), 
-# ("Donor #2 [use index?]:", donation 02-01: 10, Donation 02-02: 10),)
+from datetime import date
+today = str(date.today())
 
-def thanks():
+if __name__ == "__main__":
+    print()
 
 
-def reporting():
-    
+donors_history = [["Thomas Doyle", [1.00, 2.00, 4.00]], ["Kim Thayill", [200.00, 34999.00]], [
+    "Rex Tillerson", [18000000.00, 1.00]], ["Judy Noise", [1000.00]], ["April Brinno", [20000.00, 3000.00, 400.00]]]
 
-print()
-print("    \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\")
-print("        Mailroom Main Menu")
-print("    \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\\n")
-print("    Option 1: \'Send a Thank You\'\n")
-print("    Option 2: \'Create a Report\'\n")
-print("    Option 3: \'Quit\'\n")
-print()
 
-menu_input = ''
+mailroom_menu = "    \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\\n        Mailroom Main Menu    \\ \\ \\ \\ \\ \\ \\      \\ \\ \\ \\ \\ \\ \\\n    Option 1: \'Send a Thank You\'\n    Option 2: \'Create a Report\'\n    Option 3: \'Quit\'\n"
 
-while menu_input != '3':
-    menu_input = input("Please enter an option from the Mailroom Main Menu: ")
-    if menu_input == '1':
-    	print("Send a Thank you")
-    elif menu_input == '2':
-        print("Create a Report")
+
+
+def donor_name_list():
+    print("This is the complete list of charitable donors as of " + today + ". ")
+    for i in donors_history:
+        print(i[0])
+    thanking()
+
+
+def thanking():
+    thanks_for = input("Please enter the first and last name of the donor to thank. \nIf you would like to a list of the donor names enter the word 'list'. ")
+    if thanks_for.lowercase() = 'list':
+        donor_name_list()
     else:
-        print("Good bye.")
+        if thanks_for in donors_history:
+            input("please eter a donation amount: ")
+        else:
+
+
+
+def mailing_options():
+    menu_input = ''
+    while menu_input != '3':
+        print(mailroom_menu)
+        menu_input = input("Please enter an option from the Mailroom Main Menu: ")
+        if menu_input == '1':
+            thanking()
+        elif menu_input == '2':
+            print("Create a Report")
+        elif menu_input == '3':
+            print("Good Bye.")
+        else:
+            print("Entry not recognized. Please try again.")
+        break
+
+
+mailing_options()
