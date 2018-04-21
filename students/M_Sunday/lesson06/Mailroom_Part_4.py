@@ -36,7 +36,6 @@ def list_display():
     print("\n---- List of all Donors ----")
     [print("- {}".format(item)) for item in donor_data]
     print("----------------------------")
-    thank_you_input()
 
 
 def list_details(data):
