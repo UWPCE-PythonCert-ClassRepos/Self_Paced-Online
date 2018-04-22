@@ -96,3 +96,22 @@ def test_OneLineTag():
         '        <title>Here is some title text</title>\n'\
         '    </head>\n'\
         '</html>'
+
+
+# Step 4
+
+def test_Element_with_attributes():
+    page = Html()
+    body = Body()
+    attributes = {'class': 'paragraph', 'id': 'intro'}
+    body.append(P("Here is some paragraph text.", **attributes))
+    page.append(body)
+
+    f = StringIO()
+    page.render(f, "")
+
+    assert f.getvalue() == '<html>\n'\
+        '    <body>\n'\
+        '        <p class="paragraph" id="intro">Here is some paragraph text.</p>\n'\
+        '    </body>\n'\
+        '</html>'

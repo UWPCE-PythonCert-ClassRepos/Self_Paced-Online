@@ -21,8 +21,9 @@ class Element:
     indentation = 4
     cur_tree_level = [0]
 
-    def __init__(self, content=None):
+    def __init__(self, content=None, **kwargs):
         self.content = [] if content is None else [TextWrapper(content)]
+        self.kwargs = kwargs
 
     def append(self, content):
         if isinstance(content, str):
@@ -41,7 +42,13 @@ class Element:
             )
 
         if not self.tag_name == '':
-            self.file_out.write(f"<{self.tag_name}>\n")
+            self.file_out.write(f"<{self.tag_name}")
+
+            if self.kwargs:
+                for key, value in self.kwargs.items():
+                    self.file_out.write(f" {key}=\"{value}\"")
+
+            self.file_out.write(f">\n")
 
         for el in self.content:
             el.render(
@@ -83,7 +90,13 @@ class OneLineTag(Element):
             " " * (self.cur_tree_level[0] + 1) * self.indentation
         )
 
-        self.file_out.write(f"<{self.tag_name}>")
+        self.file_out.write(f"<{self.tag_name}")
+
+        if self.kwargs:
+            for key, value in self.kwargs.items():
+                self.file_out.write(f" {key}=\"{value}\"")
+
+        self.file_out.write(f">")
 
         for el in self.content:
             el.render(self.file_out)
