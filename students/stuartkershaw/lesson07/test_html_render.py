@@ -1,5 +1,6 @@
 from io import StringIO
 from html_render import Element
+from html_render import Body
 
 
 # Step 1 tests
@@ -37,3 +38,13 @@ def test_render_page_Element():
     assert f.getvalue() == '<html>\n'\
         '    Some content. Some more content.\n'\
         '</html>'
+
+
+# Step 2 tests
+
+
+def test_type_Body():
+    test_element = Body(content=None)
+    assert isinstance(test_element, Body) is True
+    assert test_element.tag_name == 'body'
+    assert test_element.indentation == 4
