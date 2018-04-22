@@ -17,7 +17,12 @@ PLEASE CHOOSE FROM THE FOLLOWING THREE OPTIONS
 
     # use .get() on the 'options' dict to call functions
     # keep calling the 'menu' function if user input not in dict
-    options.get(choice, menu)()
+    # try exception handling here
+    #options.get(choice, menu)()
+    try:
+        options(choice)
+    except KeyError:
+        menu()
 
 
 def thankyou():
@@ -84,17 +89,17 @@ Scrooge McDuck""".format(**letter_dict)
 def donor_list():
     # lists all the donors
     # calls the 'thankyou' function at the end to ask for user input
-    print("\n------------------ DONOR LIST ------------------\n")
+    donor_list_string ="\n------------------ DONOR LIST ------------------\n\n"
 
     for name in donors:
-        print(name)
+        donor_list_string += (str(name) + "\n")
 
-    thankyou()
+    return donor_list_string
 
 
 def report():
-    print("\n-------------------- REPORT --------------------\n")
-
+    report_string = "\n-------------------- REPORT --------------------\n\n"
+    
     column = ["Donor Name", "| Total Given", "| Num Gifts", "| Average Gift"]
     donors_report = [[name, sum(donors[name]), len(donors[name]),
                      (sum(donors[name])/len(donors[name]))]
@@ -102,20 +107,28 @@ def report():
 
     # and reverses the order from largest to smallest
     donors_report = sorted(donors_report, key=itemgetter(1), reverse=True)
-
-    print("{:<15}{:>17}{:>15}{:>10}".format(*column))
-    print("---------------------------------------------------------------")
+       
+    report_string += "{:<15}{:>17}{:>15}{:>10}\n".format(*column)
+    report_string += "---------------------------------------------------------------\n"
 
     # loops through 'donors_report' and
     # dumps all values for 'name' into .format
     for name in donors_report:
-        print('{:<20} ${:>13.2f}{:>12}  ${:>10.2f}'.format(*name))
+        report_string += ('{:<20} ${:>13.2f}{:>12}  ${:>10.2f}\n'.format(*name))
+    
+    return report_string
 
-    menu()
-
+    
 
 def ex():
     print("quiting...")
+    
+    
+#code here 'print_func' takes one arguemnt
+#uses argument to call the right function
+def print_func(func):
+    print(func())
+    menu()
 
 
 donors = {
@@ -127,10 +140,12 @@ donors = {
           }
 
 
+#code here options should call the 'print_func' function with
+#the right argment for it to call the correct function
 options = {
            '1': thankyou, 's': thankyou,
            '2': letters, 'e': letters,
-           '3': report, 'c': report,
+           '3': print_func, 'c': print_func,
            '4': ex, 'q': ex,
            'list': donor_list,
            'menu': menu
