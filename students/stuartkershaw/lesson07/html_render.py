@@ -3,7 +3,7 @@
 
 class Element():
     tag_name = 'html'
-    indentation = 2
+    indentation = 4
 
     def __init__(self, content=None):
         self.content = [] if content is None else [content]
@@ -17,7 +17,7 @@ class Element():
         self.cur_ind = cur_ind
 
         self.file_out.write(
-            f"<{self.tag_name}>\n"
-            f"{' '.join(self.content)}\n"
-            f"</{self.tag_name}>"
+            f"{self.cur_ind}<{self.tag_name}>\n"
+            f"{self.cur_ind}{' ' * self.indentation}{' '.join(self.content)}\n"
+            f"{self.cur_ind}</{self.tag_name}>"
         )

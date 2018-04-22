@@ -2,6 +2,9 @@ from io import StringIO
 from html_render import Element
 
 
+# Step 1 tests
+
+
 def test_type_Element():
     test_element = Element(content=None)
     assert isinstance(test_element, Element) is True
@@ -10,7 +13,7 @@ def test_type_Element():
 def test_class_attributes_Element():
     test_element = Element(content=None)
     assert test_element.tag_name == 'html'
-    assert test_element.indentation == 2
+    assert test_element.indentation == 4
 
 
 def test_instance_attributes_Element():
@@ -29,6 +32,8 @@ def test_render_page_Element():
     test_element.append('Some more content.')
 
     f = StringIO()
-    test_element.render(f, "    ")
+    test_element.render(f, "")
 
-    assert f.getvalue() == '<html>\nSome content. Some more content.\n</html>'
+    assert f.getvalue() == '<html>\n'\
+        '    Some content. Some more content.\n'\
+        '</html>'
