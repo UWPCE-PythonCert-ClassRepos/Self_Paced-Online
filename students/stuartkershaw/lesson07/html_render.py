@@ -110,3 +110,30 @@ class Title(OneLineTag):
 
 class P(OneLineTag):
     tag_name = 'p'
+
+
+class SelfClosingTag(Element):
+    def render(self, file_out, cur_ind=""):
+        self.file_out = file_out
+        self.cur_ind = cur_ind
+
+        self.file_out.write(
+            " " * (self.cur_tree_level[0] + 1) * self.indentation
+        )
+
+        self.file_out.write(f"<{self.tag_name}")
+
+        if self.kwargs:
+            for key, value in self.kwargs.items():
+                self.file_out.write(f" {key}=\"{value}\"")
+
+        try:
+            if len(self.content):
+                raise TypeError
+            self.file_out.write(f" />\n")
+        except TypeError:
+            print('This element does not accept nested content.')
+
+
+class Hr(SelfClosingTag):
+    tag_name = 'hr'

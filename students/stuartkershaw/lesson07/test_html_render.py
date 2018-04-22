@@ -1,3 +1,4 @@
+import pytest
 from io import StringIO
 
 from html_render import Element
@@ -6,6 +7,7 @@ from html_render import Body
 from html_render import P
 from html_render import Head
 from html_render import Title
+from html_render import Hr
 
 
 # Step 1 tests
@@ -103,7 +105,7 @@ def test_OneLineTag():
 def test_Element_with_attributes():
     page = Html()
     body = Body()
-    attributes = {'class': 'paragraph', 'id': 'intro'}
+    attributes = {"class": "paragraph", "id": "intro"}
     body.append(P("Here is some paragraph text.", **attributes))
     page.append(body)
 
@@ -115,3 +117,36 @@ def test_Element_with_attributes():
         '        <p class="paragraph" id="intro">Here is some paragraph text.</p>\n'\
         '    </body>\n'\
         '</html>'
+
+
+def test_SelfClosingTag():
+    page = Html()
+    body = Body()
+    attributes = {"class": "main bordered", "id": "top-spacer"}
+    body.append(Hr(**attributes))
+    page.append(body)
+
+    f = StringIO()
+    page.render(f, "")
+
+    assert f.getvalue() == '<html>\n'\
+        '    <body>\n'\
+        '        <hr class="main bordered" id="top-spacer" />\n'\
+        '    </body>\n'\
+        '</html>'
+
+
+def test_SelfClosingTag_with_content():
+    with pytest.raises(TypeError) as excinfo:
+        page = Html()
+        body = Body()
+        attributes = {"class": "main bordered", "id": "top-spacer"}
+        body.append(Hr("This should break stuff!", **attributes))
+        page.append(body)
+
+        f = StringIO()
+        page.render(f, "")
+
+        raise TypeError("This element does not accept nested content.") 
+
+    assert str(excinfo.value) == "This element does not accept nested content."
