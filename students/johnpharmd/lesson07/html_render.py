@@ -15,12 +15,15 @@ class Element(object):
         self.close_tag = '</' + self.tag + '>'
         if self.tag == 'html':
             file_out.write(self.open_tag + '\n')
-        else:
+        elif self.tag == 'body':
             file_out.write(cur_ind + self.open_tag + '\n')
+        # else:
+        #     file_out.write(cur_ind + self.open_tag + '\n')
         for item in self.content:
             if item is None:
                 file_out.write('')
             elif type(item) == str:
+                file_out.write(cur_ind * 2 + self.open_tag + '\n')
                 file_out.write(cur_ind * 3 + item + '\n')
                 file_out.write(cur_ind * 2 + self.close_tag + '\n')
             else:
