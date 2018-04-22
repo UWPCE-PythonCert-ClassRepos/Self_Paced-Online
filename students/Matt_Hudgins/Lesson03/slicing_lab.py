@@ -1,8 +1,8 @@
 '''
-    File Name: series.py
+    File Name: slicing_lab.py
     Author: Matt Hudgins
-    Date created: 4/2/2018
-    Date last modified: 4/2/2018
+    Date created: 4/21/18
+    Date last modified: 4/21/18
     Python Version 3.6.4
 '''
 # The following sequences will be used for the slicing lab exercise
