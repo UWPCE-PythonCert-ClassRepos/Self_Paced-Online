@@ -38,8 +38,8 @@ def test_render_page_Element():
     test_element.render(f, "")
 
     assert f.getvalue() == '<html>\n'\
-        'Some content.\n'\
-        'Some more content.\n'\
+        '    Some content.\n'\
+        '    Some more content.\n'\
         '</html>'
 
 
@@ -66,10 +66,16 @@ def test_nesting_Elements():
     assert f.getvalue() == '<html>\n'\
         '    <body>\n'\
         '        <p>\n'\
-        'Here is a paragraph of text.\n'\
+        '            Here is a paragraph of text.\n'\
         '        </p>\n'\
         '        <p>\n'\
-        'And here is another paragraph of text.\n'\
+        '            And here is another paragraph of text.\n'\
         '        </p>\n'\
         '    </body>\n'\
         '</html>'
+
+
+# Step 3
+
+
+

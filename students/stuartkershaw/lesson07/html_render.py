@@ -44,7 +44,7 @@ class Element:
             self.file_out.write(f"<{self.tag_name}>\n")
 
         for el in self.content:
-            el.render(self.file_out, self.cur_ind)
+            el.render(self.file_out, " " * (self.cur_tree_level[0] + 1) * self.indentation)
 
         if self.tag_name not in ['', 'html']:
             self.file_out.write(
