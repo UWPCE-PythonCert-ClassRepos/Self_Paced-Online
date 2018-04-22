@@ -4,9 +4,7 @@ class Element(object):
     tag = ''
     indent = '    '
 
-    def __init__(self, content=''):
-        self.open_tag = '<' + self.tag + '>'
-        self.close_tag = '</' + self.tag + '>'
+    def __init__(self, content=None):
         self.content = [content]
 
     def append(self, new_string):
@@ -14,37 +12,45 @@ class Element(object):
         return self.content.append(new_string)
 
     def render(self, file_out, cur_ind=''):
-        file_out.write(self.open_tag)
-        print('open_tag ==', self.open_tag)
-        print('self.content ==', self.content)
-        for l in self.content:
-            for s in l:
-                file_out.write(cur_ind + s + '\n')
-        file_out.write(self.close_tag)
+        self.open_tag = '<' + self.tag + '>'
+        self.close_tag = '</' + self.tag + '>'
+        file_out.write(self.open_tag + '\n')
+        # print('self.content ==', self.content)
+        for item in self.content:
+            if item is None:
+                file_out.write(cur_ind + '')
+            elif type(item) == str:
+                file_out.write(cur_ind + item + '\n')
+            else:
+                item.render(file_out)
+        file_out.write(self.close_tag + '\n')
 
 
 class Html(Element):
     """renders html"""
 
-    def __init__(self, content=''):
-        self.open_tag = '<html>'
-        self.close_tag = '</html>'
-        self.content = [content]
+    tag = 'html'
+    # def __init__(self, content=''):
+    #     self.open_tag = '<html>'
+    #     self.close_tag = '</html>'
+    #     self.content = [content]
 
 
 class Body(Element):
     """renders body"""
 
-    def __init__(self, content=''):
-        self.open_tag = '<body>'
-        self.close_tag = '</body>'
-        self.content = [content]
+    tag = 'body'
+    # def __init__(self, content=''):
+    #     self.open_tag = '<body>'
+    #     self.close_tag = '</body>'
+    #     self.content = [content]
 
 
 class P(Element):
     """renders p"""
 
-    def __init__(self, content=''):
-        self.open_tag = '<p>'
-        self.close_tag = '</p>'
-        self.content = [content]
+    tag = 'p'
+    # def __init__(self, content=''):
+    #     self.open_tag = '<p>'
+    #     self.close_tag = '</p>'
+    #     self.content = [content]
