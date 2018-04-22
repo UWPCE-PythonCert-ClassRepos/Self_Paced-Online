@@ -8,49 +8,36 @@ class Element(object):
         self.content = [content]
 
     def append(self, new_string):
-        # self.content = '<br>'.join([self.content, new_string])
         return self.content.append(new_string)
 
     def render(self, file_out, cur_ind=''):
         self.open_tag = '<' + self.tag + '>'
         self.close_tag = '</' + self.tag + '>'
         file_out.write(self.open_tag + '\n')
-        # print('self.content ==', self.content)
         for item in self.content:
             if item is None:
-                file_out.write(cur_ind + '')
+                file_out.write(cur_ind)
             elif type(item) == str:
-                file_out.write(cur_ind + item + '\n')
+                file_out.write(cur_ind * 3 + item + '\n')
+                file_out.write(cur_ind * 2 + self.close_tag + '\n')
             else:
-                item.render(file_out)
-        file_out.write(self.close_tag + '\n')
+                item.render(file_out, cur_ind)
+        if self.tag != 'html' and self.tag != 'p':
+            file_out.write(cur_ind + self.close_tag + '\n')
+        elif self. tag == 'html':
+            file_out.write(self.close_tag)
 
 
 class Html(Element):
     """renders html"""
-
     tag = 'html'
-    # def __init__(self, content=''):
-    #     self.open_tag = '<html>'
-    #     self.close_tag = '</html>'
-    #     self.content = [content]
 
 
 class Body(Element):
     """renders body"""
-
     tag = 'body'
-    # def __init__(self, content=''):
-    #     self.open_tag = '<body>'
-    #     self.close_tag = '</body>'
-    #     self.content = [content]
 
 
 class P(Element):
     """renders p"""
-
     tag = 'p'
-    # def __init__(self, content=''):
-    #     self.open_tag = '<p>'
-    #     self.close_tag = '</p>'
-    #     self.content = [content]
