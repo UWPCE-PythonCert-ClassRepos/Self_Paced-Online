@@ -19,6 +19,7 @@ class TextWrapper:
 class Element:
     tag_name = ''
     indentation = 4
+    cur_tree_level = [0]
 
     def __init__(self, content=None):
         self.content = [] if content is None else [TextWrapper(content)]
@@ -33,14 +34,28 @@ class Element:
         self.file_out = file_out
         self.cur_ind = cur_ind
 
-        self.file_out.write(f"{self.cur_ind}<{self.tag_name}>\n")
+        if not self.tag_name == 'html':
+            self.cur_tree_level[0] += 1
+            self.file_out.write(
+                " " * self.cur_tree_level[0] * self.indentation
+            )
+
+        if not self.tag_name == '':
+            self.file_out.write(f"<{self.tag_name}>\n")
 
         for el in self.content:
             el.render(self.file_out, self.cur_ind)
 
-        self.file_out.write(f"{self.cur_ind}</{self.tag_name}>")
-
         if not self.tag_name == 'html':
+            self.file_out.write(
+                " " * self.cur_tree_level[0] * self.indentation
+            )
+
+        if not self.tag_name == '':
+            self.file_out.write(f"</{self.tag_name}>")
+
+        if not self.tag_name == 'html' or not self.tag_name == '':
+            self.cur_tree_level[0] -= 1
             self.file_out.write("\n")
 
 
