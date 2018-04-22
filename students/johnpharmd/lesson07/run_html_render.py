@@ -57,7 +57,7 @@ body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
 # print(body.content)
 body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
 # print(body.content)
-page.append(body.content)
+page.append(body)
 
 render_page(page, "test_html_output2.html")
 
