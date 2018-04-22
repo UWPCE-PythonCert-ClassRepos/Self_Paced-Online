@@ -13,10 +13,13 @@ class Element(object):
     def render(self, file_out, cur_ind=''):
         self.open_tag = '<' + self.tag + '>'
         self.close_tag = '</' + self.tag + '>'
-        file_out.write(self.open_tag + '\n')
+        if self.tag == 'html':
+            file_out.write(self.open_tag + '\n')
+        else:
+            file_out.write(cur_ind + self.open_tag + '\n')
         for item in self.content:
             if item is None:
-                file_out.write(cur_ind)
+                file_out.write('')
             elif type(item) == str:
                 file_out.write(cur_ind * 3 + item + '\n')
                 file_out.write(cur_ind * 2 + self.close_tag + '\n')
@@ -24,7 +27,7 @@ class Element(object):
                 item.render(file_out, cur_ind)
         if self.tag != 'html' and self.tag != 'p':
             file_out.write(cur_ind + self.close_tag + '\n')
-        elif self. tag == 'html':
+        elif self.tag == 'html':
             file_out.write(self.close_tag)
 
 
