@@ -12,7 +12,7 @@ class TextWrapper:
     def render(self, file_out, cur_ind=""):
         file_out.write(cur_ind)
         file_out.write(
-            f"{self.text}\n"
+            f"{self.text}"
         )
 
 
@@ -44,7 +44,10 @@ class Element:
             self.file_out.write(f"<{self.tag_name}>\n")
 
         for el in self.content:
-            el.render(self.file_out, " " * (self.cur_tree_level[0] + 1) * self.indentation)
+            el.render(
+                self.file_out,
+                " " * (self.cur_tree_level[0] + 1) * self.indentation
+            )
 
         if self.tag_name not in ['', 'html']:
             self.file_out.write(
@@ -67,5 +70,30 @@ class Body(Element):
     tag_name = 'body'
 
 
-class P(Element):
+class Head(Element):
+    tag_name = 'head'
+
+
+class OneLineTag(Element):
+    def render(self, file_out, cur_ind=""):
+        self.file_out = file_out
+        self.cur_ind = cur_ind
+
+        self.file_out.write(
+            " " * (self.cur_tree_level[0] + 1) * self.indentation
+        )
+
+        self.file_out.write(f"<{self.tag_name}>")
+
+        for el in self.content:
+            el.render(self.file_out)
+
+        self.file_out.write(f"</{self.tag_name}>\n")
+
+
+class Title(OneLineTag):
+    tag_name = 'title'
+
+
+class P(OneLineTag):
     tag_name = 'p'

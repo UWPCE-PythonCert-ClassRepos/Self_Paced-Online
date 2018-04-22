@@ -1,8 +1,11 @@
 from io import StringIO
+
 from html_render import Element
 from html_render import Html
 from html_render import Body
 from html_render import P
+from html_render import Head
+from html_render import Title
 
 
 # Step 1 tests
@@ -38,8 +41,8 @@ def test_render_page_Element():
     test_element.render(f, "")
 
     assert f.getvalue() == '<html>\n'\
-        '    Some content.\n'\
-        '    Some more content.\n'\
+        '    Some content.'\
+        '    Some more content.'\
         '</html>'
 
 
@@ -65,12 +68,8 @@ def test_nesting_Elements():
 
     assert f.getvalue() == '<html>\n'\
         '    <body>\n'\
-        '        <p>\n'\
-        '            Here is a paragraph of text.\n'\
-        '        </p>\n'\
-        '        <p>\n'\
-        '            And here is another paragraph of text.\n'\
-        '        </p>\n'\
+        '        <p>Here is a paragraph of text.</p>\n'\
+        '        <p>And here is another paragraph of text.</p>\n'\
         '    </body>\n'\
         '</html>'
 
@@ -78,4 +77,22 @@ def test_nesting_Elements():
 # Step 3
 
 
+def test_type_Head():
+    test_element = Head(content=None)
+    assert isinstance(test_element, Head) is True
 
+
+def test_OneLineTag():
+    page = Html()
+    head = Head()
+    head.append(Title("Here is some title text"))
+    page.append(head)
+
+    f = StringIO()
+    page.render(f, "")
+
+    assert f.getvalue() == '<html>\n'\
+        '    <head>\n'\
+        '        <title>Here is some title text</title>\n'\
+        '    </head>\n'\
+        '</html>'
