@@ -34,7 +34,7 @@ class Element:
         self.file_out = file_out
         self.cur_ind = cur_ind
 
-        if not self.tag_name == 'html':
+        if self.tag_name not in ['', 'html']:
             self.cur_tree_level[0] += 1
             self.file_out.write(
                 " " * self.cur_tree_level[0] * self.indentation
@@ -46,7 +46,7 @@ class Element:
         for el in self.content:
             el.render(self.file_out, self.cur_ind)
 
-        if not self.tag_name == 'html':
+        if self.tag_name not in ['', 'html']:
             self.file_out.write(
                 " " * self.cur_tree_level[0] * self.indentation
             )
@@ -54,7 +54,7 @@ class Element:
         if not self.tag_name == '':
             self.file_out.write(f"</{self.tag_name}>")
 
-        if not self.tag_name == 'html' or not self.tag_name == '':
+        if self.tag_name not in ['', 'html']:
             self.cur_tree_level[0] -= 1
             self.file_out.write("\n")
 
