@@ -34,20 +34,6 @@ class TestMailroom(unittest.TestCase):
             {'papa': [100, 5, 15], 'mama': [12, 200, 2, 66], \
             'bompa': [1000], 'bobonne': [500, 500], 'onbekende': [1000000], 'jeroen': []})
 
-    def test_donate1(self):
-        self.DonorDict = mailroom5.Donor_Collection(self.donors)
-        self.DonorDict.donate('onbekende', 2)
-        self.assertEqual(self.DonorDict.donors, \
-            {'papa': [100, 5, 15], 'mama': [12, 200, 2, 66], \
-            'bompa': [1000], 'bobonne': [500, 500], 'onbekende': [1000000, 2]})
-
-    def test_donate2(self):
-        self.DonorDict = mailroom5.Donor_Collection(self.donors)
-        self.DonorDict.donate('jeroen', 2)
-        self.assertEqual(self.DonorDict.donors, \
-            {'papa': [100, 5, 15], 'mama': [12, 200, 2, 66], \
-            'bompa': [1000], 'bobonne': [500, 500], 'onbekende': [1000000], 'jeroen': [2]})
-
     def test_thankyou(self):
         self.DonorDict = mailroom5.Donor_Collection(self.donors)
         mailroom5.thankyou(self.DonorDict)
