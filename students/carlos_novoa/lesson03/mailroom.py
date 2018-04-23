@@ -42,9 +42,15 @@ _donors = [
 def check_for_quit(action):
     if action.lower() == 'quit':
         donor_app()
-        return
-    else:
-        return
+    return
+
+
+def donor_lookup(action):
+    for donor in _donors:
+        if donor[0].lower() == action.lower():
+            return True
+        else:
+            return False
 
 
 def format_donation(donation):
@@ -61,14 +67,13 @@ def get_donation():
 
 def add_donor(donor, donation):
     _donors.append([donor, [float(donation)]])
-    return True
 
 
-def append_donor(donor, donation):
+def append_donation(donor, donation):
     for d in _donors:
         if donor.lower() == d[0].lower():
-            d[1].append(donation)
-            return True
+            d[1].append(float(donation))
+            return
 
 
 def thank_donor(donor_name, donation):
@@ -80,24 +85,21 @@ def thank_donor(donor_name, donation):
 
 def sort_donors(donors):
     sorted_donors = list(donors)
-    sorted_donors.sort(key=lambda x: sum(x[1]))
-    sorted_donors.reverse()
+    sorted_donors.sort(key=lambda x: sum(x[1]), reverse=True)
     return sorted_donors
 
 
 def get_donor_summary(donors):
+    """ pass summary list of strings that is ready for parsing"""
     summary = []
-    for i, donor in enumerate(donors):
-        d = donor[1]  # all donations
-        s = sum(d)  # total donations
-        g = len(d)
-        m = float(s) / max(len(d), 1)  # mean
-        n = []  # new donor item
-        n.append(donor[0])
-        n.append('${0:.2f}'.format(s))
-        n.append(str(g))
-        n.append('${0:.2f}'.format(m))
-        summary.append(n)
+    for donor in donors:
+        donations = donor[1]
+        total = float(sum(donations))
+        number = len(donations)
+        str_total = '${0:.2f}'.format(sum(donations))
+        str_number = str(len(donations))
+        str_average = '${0:.2f}'.format(total / max(number, 1))
+        summary.append([donor[0], str_total, str_number, str_average])
     return summary
 
 
@@ -121,10 +123,11 @@ def print_report(rows):
 
 if __name__ == "__main__":
 
-    menu = {}
-    menu['1'] = 'Send a Thank You'
-    menu['2'] = 'Create a Report'
-    menu['3'] = 'quit'
+    menu = {
+        '1': 'Send a Thank You',
+        '2': 'Create a Report',
+        '3': 'quit',
+    }
 
     def donor_app():
         while True:
@@ -136,30 +139,35 @@ if __name__ == "__main__":
 
             # menu selection:  'Send a Thank You'
             if selection == '1':
-                complete = False
                 action = ''
                 donation = None
-                while not complete:
+                while True:
                     action = input("Type a name or 'list': ")
                     check_for_quit(action)
-                    # donor IS found
-                    a = action.lower()  # line too long without this
-                    if any(x for x in _donors if x[0].lower() == a):
-                        donation = get_donation()
-                        donation = format_donation(donation)
-                        complete = append_donor(action, donation)
-                        break
+
                     # list requested
-                    elif action == 'list':
+                    if action == 'list':
                         print(', '.join(d[0] for d in _donors))
                         continue
+
+                    # request donation
+                    donation = get_donation()
+                    donation = format_donation(donation)
+
+                    # donor IS found
+                    donor_found = donor_lookup(action)
+                    print(donor_found)
+                    if donor_found:
+                        append_donation(action, donation)
+                        break
+
                     # donor NOT found
                     else:
-                        donation = get_donation()
-                        donation = format_donation(donation)
-                        complete = add_donor(action, donation)
+                        add_donor(action, donation)
                         break
+
                 # generate email
+                print(_donors)
                 thank_donor(action, donation)
                 donor_app()
                 break
