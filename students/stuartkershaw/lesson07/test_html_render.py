@@ -119,6 +119,9 @@ def test_Element_with_attributes():
         '</html>'
 
 
+# Step 5
+
+
 def test_SelfClosingTag():
     page = Html()
     body = Body()
@@ -152,6 +155,6 @@ def test_SelfClosingTag_with_content():
     assert str(excinfo.value) == "This element does not accept nested content."
 
 
-# Step 5
+# Step 6
 
 
