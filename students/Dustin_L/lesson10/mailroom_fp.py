@@ -131,18 +131,32 @@ class DonorDatabase(defaultdict):
             with open(f_name, 'w') as f:
                 f.write(self.thank_you_fmt.format(donor, data.total_donations))
 
-    def challenge(self, factor):
-        """Multiplies all donations of all the donors by the factor value.
+    def challenge(self, factor, min_don=None, max_don=None):
+        """Multiplies all donations of all the donors by the factor value if
+           within the specified range.
 
         Args:
             factor (float): Factor value
+            min_don (float, optional): Defaults to None. Min donation value
+            max_don (float, optional): Defaults to None. Max donation value
+
 
         Returns:
             DonorDatabase: New DonorDatabase with factor value applied
         """
         new_donors = []
-        for name, data in self.items():
-            new_donors.append(Donor(name, map(lambda x: x * factor, data.donations)))
+        for donor in self.values():
+            if min_don and max_don:
+                if min_don > max_don:
+                    raise ValueError('Min donation value is greater than max')
+
+                new_donors.append(Donor(donor.name, list(map(lambda x: x * factor, filter(lambda d: min_don <= d <= max_don, donor.donations)))))
+            elif min_don:
+                new_donors.append(Donor(donor.name, list(map(lambda x: x * factor, filter(lambda d: d >= min_don, donor.donations)))))
+            elif max_don:
+                new_donors.append(Donor(donor.name, list(map(lambda x: x * factor, filter(lambda d: d <= max_don, donor.donations)))))
+            else:
+                new_donors.append(Donor(donor.name, list(map(lambda x: x * factor, donor.donations))))
 
         return DonorDatabase(*new_donors)
 
