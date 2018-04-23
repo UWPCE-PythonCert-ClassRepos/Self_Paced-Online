@@ -93,25 +93,33 @@ class Head(Element):
 
 
 class OneLineTag(Element):
-    def render(self, file_out, cur_ind=""):
+    def render(self, file_out, cur_ind="", level=None):
         self.file_out = file_out
         self.cur_ind = cur_ind
+        self.level = level
 
         self.file_out.write(
             self.generate_spacing(self.cur_tree_level[0] + 1)
         )
-
         self.file_out.write(f"<{self.tag_name}")
 
         if self.kwargs:
-            self.apply_attributes(self.kwargs)
+            if not self.tag_name == "h":
+                self.apply_attributes(self.kwargs)
+            else:
+                self.file_out.write(f"{self.kwargs['level']}")
 
         self.file_out.write(f">")
 
         for el in self.content:
             el.render(self.file_out)
 
-        self.file_out.write(f"</{self.tag_name}>\n")
+        self.file_out.write(f"</{self.tag_name}")
+
+        if self.kwargs.get("level"):
+            self.file_out.write(f"{self.kwargs.get('level')}")
+
+        self.file_out.write(">\n")
 
 
 class Title(OneLineTag):
@@ -161,3 +169,22 @@ class A(Element):
         self.attributes = {'href': self.link}
 
         Element.__init__(self, content=self.content, **self.attributes)
+
+
+class Ul(Element):
+    tag_name: 'ul'
+
+
+class Li(Element):
+    tag_name: 'li'
+
+
+class H(OneLineTag):
+    tag_name = 'h'
+
+    def __init__(self, level, content):
+        self.level = level
+        self.content = content
+        self.attributes = {'level': self.level}
+
+        OneLineTag.__init__(self, content=self.content, **self.attributes)

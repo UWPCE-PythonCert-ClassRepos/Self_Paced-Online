@@ -9,6 +9,7 @@ from html_render import Head
 from html_render import Title
 from html_render import Hr
 from html_render import A
+from html_render import H
 
 
 # Step 1
@@ -170,4 +171,22 @@ def test_A():
     assert f.getvalue() == '<html>\n'\
         '    <body>\n'\
         '<a href="http://google.com">link</a>    </body>\n'\
+        '</html>'
+
+
+# Step 7
+
+def test_H():
+    page = Html()
+    body = Body()
+    body.append(H(1, "Top Heading"))
+    page.append(body)
+
+    f = StringIO()
+    page.render(f, "")
+
+    assert f.getvalue() == '<html>\n'\
+        '    <body>\n'\
+        '        <h1>Top Heading</h1>\n'\
+        '    </body>\n'\
         '</html>'
