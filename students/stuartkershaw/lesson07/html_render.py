@@ -31,6 +31,17 @@ class Element:
         else:
             self.content.append(content)
 
+    def generate_spacing(self, tree_level):
+        self.tree_level = tree_level
+
+        return " " * self.tree_level * self.indentation
+
+    def apply_attributes(self, attrs):
+        self.attrs = attrs
+
+        for key, value in self.attrs.items():
+            self.file_out.write(f" {key}=\"{value}\"")
+
     def render(self, file_out, cur_ind=""):
         self.file_out = file_out
         self.cur_ind = cur_ind
@@ -38,27 +49,26 @@ class Element:
         if self.tag_name not in ['', 'html']:
             self.cur_tree_level[0] += 1
             self.file_out.write(
-                " " * self.cur_tree_level[0] * self.indentation
+                self.generate_spacing(self.cur_tree_level[0])
             )
 
         if not self.tag_name == '':
             self.file_out.write(f"<{self.tag_name}")
 
             if self.kwargs:
-                for key, value in self.kwargs.items():
-                    self.file_out.write(f" {key}=\"{value}\"")
+                self.apply_attributes(self.kwargs)
 
             self.file_out.write(f">\n")
 
         for el in self.content:
             el.render(
                 self.file_out,
-                " " * (self.cur_tree_level[0] + 1) * self.indentation
+                self.generate_spacing(self.cur_tree_level[0] + 1)
             )
 
         if self.tag_name not in ['', 'html']:
             self.file_out.write(
-                " " * self.cur_tree_level[0] * self.indentation
+                self.generate_spacing(self.cur_tree_level[0])
             )
 
         if not self.tag_name == '':
@@ -87,14 +97,13 @@ class OneLineTag(Element):
         self.cur_ind = cur_ind
 
         self.file_out.write(
-            " " * (self.cur_tree_level[0] + 1) * self.indentation
+            self.generate_spacing(self.cur_tree_level[0] + 1)
         )
 
         self.file_out.write(f"<{self.tag_name}")
 
         if self.kwargs:
-            for key, value in self.kwargs.items():
-                self.file_out.write(f" {key}=\"{value}\"")
+            self.apply_attributes(self.kwargs)
 
         self.file_out.write(f">")
 
@@ -118,14 +127,13 @@ class SelfClosingTag(Element):
         self.cur_ind = cur_ind
 
         self.file_out.write(
-            " " * (self.cur_tree_level[0] + 1) * self.indentation
+            self.generate_spacing(self.cur_tree_level[0] + 1)
         )
 
         self.file_out.write(f"<{self.tag_name}")
 
         if self.kwargs:
-            for key, value in self.kwargs.items():
-                self.file_out.write(f" {key}=\"{value}\"")
+            self.apply_attributes(self.kwargs)
 
         try:
             if len(self.content):

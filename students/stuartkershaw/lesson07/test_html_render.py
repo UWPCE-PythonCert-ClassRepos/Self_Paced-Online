@@ -10,7 +10,7 @@ from html_render import Title
 from html_render import Hr
 
 
-# Step 1 tests
+# Step 1
 
 
 def test_type_Element():
@@ -48,7 +48,7 @@ def test_render_page_Element():
         '</html>'
 
 
-# Step 2 tests
+# Step 2
 
 
 def test_type_Body():
@@ -150,3 +150,8 @@ def test_SelfClosingTag_with_content():
         raise TypeError("This element does not accept nested content.") 
 
     assert str(excinfo.value) == "This element does not accept nested content."
+
+
+# Step 5
+
+
