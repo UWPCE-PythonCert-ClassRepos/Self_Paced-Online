@@ -83,6 +83,14 @@ class Element:
 class Html(Element):
     tag_name = 'html'
 
+    def render(self, file_out, cur_ind=""):
+        self.file_out = file_out
+        self.cur_ind = cur_ind
+
+        self.file_out.write('<!DOCTYPE html>\n')
+
+        Element.render(self, self.file_out, self.cur_ind)
+
 
 class Body(Element):
     tag_name = 'body'
@@ -188,3 +196,12 @@ class H(OneLineTag):
         self.attributes = {'level': self.level}
 
         OneLineTag.__init__(self, content=self.content, **self.attributes)
+
+
+class Meta(SelfClosingTag):
+    tag_name = 'meta'
+
+    def __init__(self, **kwargs):
+        self.attributes = kwargs
+
+        SelfClosingTag.__init__(self, **self.attributes)

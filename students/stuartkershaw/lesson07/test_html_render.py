@@ -10,6 +10,7 @@ from html_render import Title
 from html_render import Hr
 from html_render import A
 from html_render import H
+from html_render import Meta
 
 
 # Step 1
@@ -44,7 +45,7 @@ def test_render_page_Element():
     f = StringIO()
     test_element.render(f, "")
 
-    assert f.getvalue() == '<html>\n'\
+    assert f.getvalue() == '<!DOCTYPE html>\n<html>\n'\
         'Some content.'\
         'Some more content.'\
         '</html>'
@@ -70,7 +71,7 @@ def test_nesting_Elements():
     f = StringIO()
     page.render(f, "")
 
-    assert f.getvalue() == '<html>\n'\
+    assert f.getvalue() == '<!DOCTYPE html>\n<html>\n'\
         '    <body>\n'\
         '        <p>Here is a paragraph of text.</p>\n'\
         '        <p>And here is another paragraph of text.</p>\n'\
@@ -95,7 +96,7 @@ def test_OneLineTag():
     f = StringIO()
     page.render(f, "")
 
-    assert f.getvalue() == '<html>\n'\
+    assert f.getvalue() == '<!DOCTYPE html>\n<html>\n'\
         '    <head>\n'\
         '        <title>Here is some title text</title>\n'\
         '    </head>\n'\
@@ -114,7 +115,7 @@ def test_Element_with_attributes():
     f = StringIO()
     page.render(f, "")
 
-    assert f.getvalue() == '<html>\n'\
+    assert f.getvalue() == '<!DOCTYPE html>\n<html>\n'\
         '    <body>\n'\
         '        <p class="paragraph" id="intro">Here is some paragraph text.</p>\n'\
         '    </body>\n'\
@@ -134,7 +135,7 @@ def test_SelfClosingTag():
     f = StringIO()
     page.render(f, "")
 
-    assert f.getvalue() == '<html>\n'\
+    assert f.getvalue() == '<!DOCTYPE html>\n<html>\n'\
         '    <body>\n'\
         '        <hr class="main bordered" id="top-spacer" />\n'\
         '    </body>\n'\
@@ -168,7 +169,7 @@ def test_A():
     f = StringIO()
     page.render(f, "")
 
-    assert f.getvalue() == '<html>\n'\
+    assert f.getvalue() == '<!DOCTYPE html>\n<html>\n'\
         '    <body>\n'\
         '<a href="http://google.com">link</a>    </body>\n'\
         '</html>'
@@ -185,8 +186,26 @@ def test_H():
     f = StringIO()
     page.render(f, "")
 
-    assert f.getvalue() == '<html>\n'\
+    assert f.getvalue() == '<!DOCTYPE html>\n<html>\n'\
         '    <body>\n'\
         '        <h1>Top Heading</h1>\n'\
         '    </body>\n'\
+        '</html>'
+
+
+# Step 8
+
+def test_Doctype_Meta():
+    page = Html()
+    head = Head()
+    head.append(Meta(charset="UTF-8"))
+    page.append(head)
+
+    f = StringIO()
+    page.render(f, "")
+
+    assert f.getvalue() == '<!DOCTYPE html>\n<html>\n'\
+        '    <head>\n'\
+        '        <meta charset="UTF-8" />\n'\
+        '    </head>\n'\
         '</html>'
