@@ -131,6 +131,21 @@ class DonorDatabase(defaultdict):
             with open(f_name, 'w') as f:
                 f.write(self.thank_you_fmt.format(donor, data.total_donations))
 
+    def challenge(self, factor):
+        """Multiplies all donations of all the donors by the factor value.
+
+        Args:
+            factor (float): Factor value
+
+        Returns:
+            DonorDatabase: New DonorDatabase with factor value applied
+        """
+        new_donors = []
+        for name, data in self.items():
+            new_donors.append(Donor(name, map(lambda x: x * factor, data.donations)))
+
+        return DonorDatabase(*new_donors)
+
 
 def get_usr_input():
     """Get input from user.
