@@ -8,6 +8,7 @@ from html_render import P
 from html_render import Head
 from html_render import Title
 from html_render import Hr
+from html_render import A
 
 
 # Step 1
@@ -43,8 +44,8 @@ def test_render_page_Element():
     test_element.render(f, "")
 
     assert f.getvalue() == '<html>\n'\
-        '    Some content.'\
-        '    Some more content.'\
+        'Some content.'\
+        'Some more content.'\
         '</html>'
 
 
@@ -150,11 +151,23 @@ def test_SelfClosingTag_with_content():
         f = StringIO()
         page.render(f, "")
 
-        raise TypeError("This element does not accept nested content.") 
+        raise TypeError("This element does not accept nested content.")
 
     assert str(excinfo.value) == "This element does not accept nested content."
 
 
 # Step 6
 
+def test_A():
+    page = Html()
+    body = Body()
+    body.append(A("http://google.com", "link"))
+    page.append(body)
 
+    f = StringIO()
+    page.render(f, "")
+
+    assert f.getvalue() == '<html>\n'\
+        '    <body>\n'\
+        '<a href="http://google.com">link</a>    </body>\n'\
+        '</html>'

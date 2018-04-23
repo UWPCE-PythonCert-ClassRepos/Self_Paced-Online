@@ -20,6 +20,7 @@ class Element:
     tag_name = ''
     indentation = 4
     cur_tree_level = [0]
+    ignored_tag_spacing = ['', 'a', 'html']
 
     def __init__(self, content=None, **kwargs):
         self.content = [] if content is None else [TextWrapper(content)]
@@ -46,7 +47,7 @@ class Element:
         self.file_out = file_out
         self.cur_ind = cur_ind
 
-        if self.tag_name not in ['', 'html']:
+        if self.tag_name not in self.ignored_tag_spacing:
             self.cur_tree_level[0] += 1
             self.file_out.write(
                 self.generate_spacing(self.cur_tree_level[0])
@@ -58,15 +59,15 @@ class Element:
             if self.kwargs:
                 self.apply_attributes(self.kwargs)
 
-            self.file_out.write(f">\n")
+            self.file_out.write(f">")
+
+            if not self.tag_name == 'a':
+                self.file_out.write(f"\n")
 
         for el in self.content:
-            el.render(
-                self.file_out,
-                self.generate_spacing(self.cur_tree_level[0] + 1)
-            )
+            el.render(self.file_out)
 
-        if self.tag_name not in ['', 'html']:
+        if self.tag_name not in self.ignored_tag_spacing:
             self.file_out.write(
                 self.generate_spacing(self.cur_tree_level[0])
             )
@@ -74,7 +75,7 @@ class Element:
         if not self.tag_name == '':
             self.file_out.write(f"</{self.tag_name}>")
 
-        if self.tag_name not in ['', 'html']:
+        if self.tag_name not in self.ignored_tag_spacing:
             self.cur_tree_level[0] -= 1
             self.file_out.write("\n")
 
@@ -145,3 +146,18 @@ class SelfClosingTag(Element):
 
 class Hr(SelfClosingTag):
     tag_name = 'hr'
+
+
+class Br(SelfClosingTag):
+    tag_name = 'br'
+
+
+class A(Element):
+    tag_name = 'a'
+
+    def __init__(self, link, content):
+        self.link = link
+        self.content = content
+        self.attributes = {'href': self.link}
+
+        Element.__init__(self, content=self.content, **self.attributes)
