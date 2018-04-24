@@ -5,18 +5,21 @@
 # define class 'Element':
 class Element:
     # define attributes:
-    def __init__(self, tagname, indentation):
+    def __init__(self, tagname='', indentation=0, content=[]):
         self.tagname = tagname
         self.indentation = indentation
     
     # define method append:
-    def append(self, text):
+    def append(self, *args):
         # myoutput = []
-        pass
+        # pass
+        # content = []
+        for i in args:
+            content.append(i)
 
     # define method render:
-    def render(self):
-        print('html')
+    def render(self, io, content):
+        io.write(content) 
 
     
         

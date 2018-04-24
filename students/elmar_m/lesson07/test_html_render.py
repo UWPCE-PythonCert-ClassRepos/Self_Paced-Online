@@ -9,7 +9,8 @@ class mytests(ut.TestCase):
 
     ''' Test if html_render provides a class named 'Element': '''   
     def test_element(self):
-        obj = hr.Element('html', 0)
+        # obj = hr.Element('html', 0)
+        obj = hr.Element()
         # pass
         self.assertIsInstance(obj, hr.Element)
 
