@@ -64,6 +64,5 @@ class MailroomTests(unittest.TestCase):
         for name in self.donor_dict.keys():
             assert name in report_text
 
-
 if __name__ == "__main__":
     unittest.main()
