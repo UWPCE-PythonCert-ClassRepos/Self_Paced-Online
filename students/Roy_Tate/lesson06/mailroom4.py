@@ -63,7 +63,6 @@ def print_list():
     return printed_list
 
 
-
 # Helper function to add donations to appropriate donor's account
 def add_donation(name, new_donation):
     if name in donor_dict.keys():
@@ -140,10 +139,9 @@ def sum_donations(donor_dict):
 
 def create_report():
     # generate a report of the current donor list, the total donation amounts, avg donation amt, and # of donations
-    header = '{:<20}|{:^15}|{:^13}|{:>14}'.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift')
+    header = '{:<20}|{:^15}|{:^13}|{:>14}\n'.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift')
     header_len = len(header)
-    dotted_line = '\n{:<20}'.format('-' * header_len)
-    print(header + dotted_line)
+    dotted_line = '{:<20}\n'.format('-' * header_len)
     donor_str_fmt = '{:<20} ${:>13.2f}{:>11}    ${:>11.2f}'  # I don't like the way this is spaced out, but it works
     sort_list = []
     for name, donations in donor_dict.items():
@@ -152,10 +150,10 @@ def create_report():
         avg_gift = total_given / num_gifts
         sort_list.append([name, total_given, num_gifts, avg_gift])
     sort_list.sort(key=sum_donations, reverse=True)
-    all_str = ''  # string to hold each line of the list generated
+    all_str = header + dotted_line  # string to hold each line of the list generated
     for donor in sort_list:
         all_str += donor_str_fmt.format(donor[0], donor[1], donor[2], donor[3]) + '\n'
-    print(all_str)
+    return(all_str)
 
 
 # take a prompt as a string and a list of options/arguments as a dict
@@ -163,11 +161,15 @@ def menu_selection(prompt, arg_dict):
     while True:
         try:
             response = input(prompt)
-            arg_dict[response]() == ''
+            arg_dict[response]()
         except KeyError as e:
             print('Invalid response: ' + str(e) + '\nTry again.')
         except ValueError as e:
             print('Invalid entry: ' + str(e) + '\nTry again.')
+
+
+def print_report():
+    print(create_report())
 
 
 # All good things come to an end.
@@ -178,20 +180,20 @@ def die():
 
 # The user is presented with the initial menu when ran.
 def main():
-    arg_dict = {
+    main_menu_args = {
         '1': send_thank_you,
-        '2': create_report,
+        '2': print_report,
         '3': email_all,
         '4': die,
     }
-    prompt = '\n***** Main Menu *****\n'\
+    main_prompt = '\n***** Main Menu *****\n'\
              'Select an option:\n' \
              '[1] Send a Thank You\n' \
              '[2] Create a Report\n' \
              '[3] Send letters to everyone\n' \
              '[4] Quit\n' \
              '--> '
-    menu_selection(prompt, arg_dict)
+    menu_selection(main_prompt, main_menu_args)
 
 
 if __name__ == "__main__":
