@@ -249,14 +249,15 @@ class TestUserInteraction(unittest.TestCase):
                                                          f'{self.d2_name}\n'
                                                          f'{self.d3_name}\n'))
 
-    def test_prompt_for_donation(self):
+    def test_prompt_for_float(self):
         """Test the prompt_for_donation() fxn"""
+        error_prompt = '\nDonation amount must be a number'
 
         # Test when user enters donation attempts
         se = ['foufty', '50']
         with mock.patch('builtins.input', side_effect=se):
             captured_print = redirect_stdout()
-            result = mr.prompt_for_donation('')
+            result = mr.prompt_for_float('', error_prompt)
             reset_stdout()
 
             self.assertEqual(result, 50.0, msg=result)
@@ -267,7 +268,7 @@ class TestUserInteraction(unittest.TestCase):
         with mock.patch('builtins.input') as mock_input:
             mock_input.return_value = 'quit'
             captured_print = redirect_stdout()
-            result = mr.prompt_for_donation('')
+            result = mr.prompt_for_float('', error_prompt)
             reset_stdout()
 
             self.assertTrue(result is None, msg=result)

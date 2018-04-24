@@ -12,9 +12,10 @@ SELECT_PROMPT = ('\nPlease select from the following options:\n'
                  '\t1. Send a Thank You\n'
                  '\t2. Create a Report\n'
                  '\t3. Send letters to all donors\n'
-                 '\t4. quit\n'
+                 '\t4. Create contribution projection\n'
+                 '\t5. quit\n'
                  ' --> ')
-PROMPT_OPTS = (1, 2, 3, 4)
+PROMPT_OPTS = (1, 2, 3, 4, 5)
 
 
 class Donor:
@@ -262,29 +263,30 @@ def prompt_for_donor(prompt, donor_db):
     return donor
 
 
-def prompt_for_donation(prompt):
-    """Prompt user for donation amount
+def prompt_for_float(prompt, error_prompt):
+    """Prompt for user contribution factor
 
     Args:
         prompt (str): String to prompt user with.
+        error_prompt (str): Error response to invalid user input.
 
     Returns:
-        float: Donation amount.
+        float: Factor value
     """
-    donation = None
+    val = None
 
-    while not donation:
+    while not val and val != 0.0:
         usr_in = input(prompt).strip().lower()
 
         if usr_in.startswith('q'):
             break
         else:
             try:
-                donation = float(usr_in)
+                val = float(usr_in)
             except ValueError:
-                print('\nDonation amount must be a number')
+                print(error_prompt)
 
-    return donation
+    return val
 
 
 def send_thank_you(donor_db):
@@ -314,12 +316,13 @@ def send_thank_you(donor_db):
     amount_prompt = ('\nPlease enter the donation amount:\n'
                      '(Enter "quit" to return to main menu)\n'
                      ' --> ')
+    error_prompt = '\nDonation amount must be a number'
 
     donor = prompt_for_donor(name_prompt, donor_db)
     if not donor:
         return
 
-    donation = prompt_for_donation(amount_prompt)
+    donation = prompt_for_float(amount_prompt, error_prompt)
     if not donation:
         return
 
@@ -345,6 +348,30 @@ def send_letters(donor_db):
     donor_db.send_letters()
 
 
+def create_projection(donor_db):
+    """Create contribution projection based on user constraints"""
+    factor_prompt = ('\nPlease enter the contribution multiplicative factor:\n'
+                     '(Enter "quit" to return to main menu)\n'
+                     ' --> ')
+    min_prompt = ('\nPlease enter the minimum donation limit:\n'
+                  '(Optional, press "0" to continue)\n'
+                  ' --> ')
+    max_prompt = ('\nPlease enter the maximum donation limit:\n'
+                  '(Optional, press "0" to continue)\n'
+                  ' --> ')
+    error_prompt = ('\nValue must be a float')
+
+    factor = prompt_for_float(factor_prompt, error_prompt)
+    if not factor:
+        return
+
+    min_don = prompt_for_float(min_prompt, error_prompt)
+    max_don = prompt_for_float(max_prompt, error_prompt)
+    projection = donor_db.projection(factor, min_don=min_don, max_don=max_don)
+
+    print(f'\nProjected contribution value: ${projection:,.2f}')
+
+
 def quit_mailroom(donor_db):
     """Exit operations when quitting mail room"""
     print('Quitting mailroom...')
@@ -363,6 +390,7 @@ def main():
     opt_dict = dict(zip(PROMPT_OPTS, (send_thank_you,
                                       create_report,
                                       send_letters,
+                                      create_projection,
                                       quit_mailroom)))
     choice = ''
     while choice != PROMPT_OPTS[-1]:
