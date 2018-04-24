@@ -20,8 +20,6 @@ class MailroomTests(unittest.TestCase):
         for donor, donations in self.donor_dict.items():
             assert str(donor) in mailroom4.create_report()
 
-
-
     # We want to ensure our signature appears as intended
     # This also ensures that nothing appears after our signature
     def test_verify_output_file_has_correct_signature(self):
