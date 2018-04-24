@@ -3,6 +3,7 @@ import mailroom6
 import os.path
 import io
 import sys
+from functools import reduce
 
 
 
@@ -18,7 +19,7 @@ class TestMailroom(unittest.TestCase):
 
     def test_challenge(self):
         self.DonorDict = mailroom6.Donor_Collection(self.donors)
-        self.DonorDict.challenge(5)
+        self.DonorDict.challenge(1,5,0,1000)
         print(self.DonorDict.donors.keys())
         print(self.DonorDict.donors.values())
 

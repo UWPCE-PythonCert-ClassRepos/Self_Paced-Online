@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from functools import reduce
 
 class Donor():
     def __init__(self, name=None):
@@ -55,9 +56,23 @@ class Donor_Collection(dict):
         else:
             self.donors[name].append(int(donation))
 
-    def challenge(self, factor):
-        for key in self.donors:
-            self.donors[key] = list(map(lambda x: x*factor, self.donors[key]))
+    def challenge(self, simulate, factor, min = 100, max = 9999999999999999):
+        total = 0
+        if not str(factor).isdigit():
+            raise Exception("ERROR: You didn't enter a number or a negative number.")
+        else:
+            for key in self.donors:
+                filter_list1 = list(filter(lambda x: x > min and x < max, self.donors[key]))
+                filter_list2 = list(filter(lambda x: x <= min or x >= max, self.donors[key]))
+                if simulate == 0:
+                    self.donors[key] = list(map(lambda x: x*factor, filter_list1)) + filter_list2
+                else:
+                    M_list = list(map(lambda x: x*factor, filter_list1))
+                    if M_list:
+                        total = total + reduce(lambda x,y: x+y,M_list)
+        if simulate ==1:
+            print('total simulated donation is: '+str(total))
+
 
 
     def createfile(self, name):
@@ -112,19 +127,34 @@ def thankyou(donordict):
 
 def multiply(donordict):
     success = False
+    simulate = 10
     while not success:
+        while simulate not in [0,1]:
+            simulate = int(input('Enter 1 if you want to simulate and 0 if you want to donate >'))
         factor = input('Please enter a factor > ')
+        factor = int(factor)
+        min_donation = input('Please enter a minimum donation amount > ')
+        if min_donation =="":
+            min_donation = 0
+        else:
+            min_donation = int(min_donation)
+
+        max_donation = input('Please enter a maximum donation amount > ')
+        if max_donation =="":
+            max_donation = 99999999999999
+        else:
+            max_donation = int(max_donation)
         try:
-            donordict.challenge(int(factor))
+            donordict.challenge(simulate, factor, min_donation, max_donation)
             success = True
         except Exception as err:
             print(err.args[0])
             success = False
-
-    d = {'factor':factor}
-    print("Thank you for multiplying all donations by a factor {factor}. Looking forward receiving even more money next time.".format(**d))
-    print(donordict.donors.keys())
-    print(donordict.donors.values())
+    if simulate == 0:
+        d = {'factor':factor}
+        print("Thank you for multiplying all donations by a factor {factor}. Looking forward receiving even more money next time.".format(**d))
+        print(donordict.donors.keys())
+        print(donordict.donors.values())
 
 def report(donordict):
     """call the create_report() method of the Donor_Collection class
