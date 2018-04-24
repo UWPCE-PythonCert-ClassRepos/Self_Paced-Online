@@ -1,3 +1,6 @@
+
+
+
 #!/usr/bin/env python3
 from operator import itemgetter
 import os
@@ -7,36 +10,40 @@ import datetime
 def menu():
 
     print("""\n------------------ MENU ------------------\n
-PLEASE CHOOSE FROM THE FOLLOWING THREE OPTIONS
+PLEASE CHOOSE A NUMBER FROM THE FOLLOWING OPTIONS
 1. Send Thank You
 2. Export Letters to Everyone
 3. Create a Report
 4. Quit\n""")
 
-    choice = input("-> ").lower()[0]
-
-    # use .get() on the 'options' dict to call functions
-    # keep calling the 'menu' function if user input not in dict
-    # try exception handling here
-    #options.get(choice, menu)()
     try:
-        options(choice)
-    except KeyError:
+        choice = int(input("-> "))
+    except ValueError:
+        print("--------------------------------------")
+        print("\nPlease enter an integer between 1 and 4")
         menu()
 
+    try:
+        options[choice-1]()
+    except (IndexError):
+        print("--------------------------------------")
+        print("\nPlease enter an integer between 1 and 4")
+        menu()
 
 def thankyou():
 
     print("""\n------------------ THANK YOU ------------------\n
 type 'list' to to see a complete list of donors -
 type 'menu' at any time to return to the menu""")
-
+    
+    thankyou_options = {'list':4, 'menu':5}
+    
     # asks for a name from the user, or for the 'list' prompt
     name_check = input("Enter first and last name of a donor\n\n-> ").lower()
 
     try:
-        options.get(name_check)()
-    except TypeError:
+        options[thankyou_options[name_check]]()
+    except KeyError:
         try:
             donation = float(input("What is the donation amount? -> "))
         except ValueError:
@@ -89,12 +96,12 @@ Scrooge McDuck""".format(**letter_dict)
 def donor_list():
     # lists all the donors
     # calls the 'thankyou' function at the end to ask for user input
-    donor_list_string ="\n------------------ DONOR LIST ------------------\n\n"
+    print("\n------------------ DONOR LIST ------------------\n")
 
     for name in donors:
-        donor_list_string += (str(name) + "\n")
+        print(name)
 
-    return donor_list_string
+    thankyou()
 
 
 def report():
@@ -118,17 +125,15 @@ def report():
     
     return report_string
 
-    
 
 def ex():
     print("quiting...")
     
-    
-#code here 'print_func' takes one arguemnt
-#uses argument to call the right function
-def print_func(func):
-    print(func())
+
+def print_report_func():
+    print(report())
     menu()
+    
 
 
 donors = {
@@ -140,16 +145,14 @@ donors = {
           }
 
 
-#code here options should call the 'print_func' function with
-#the right argment for it to call the correct function
-options = {
-           '1': thankyou, 's': thankyou,
-           '2': letters, 'e': letters,
-           '3': print_func, 'c': print_func,
-           '4': ex, 'q': ex,
-           'list': donor_list,
-           'menu': menu
-           }
+options = (
+           thankyou,
+           letters,
+           print_report_func,
+           ex,
+           donor_list,
+           menu
+           )
 
 if __name__ == '__main__':
     menu()

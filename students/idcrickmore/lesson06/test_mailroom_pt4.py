@@ -1,38 +1,17 @@
-import mailroom_pt4 as m
-import unittest
+from operator import itemgetter
+from mailroom_pt4 import report
 
+#test mailroom functions using pytest
 
-#test mailroom functions
-
-class mailroom_tests(unittest.TestCase):
-    donors = {}
-    donors[('Bat Man')] = [20,30]
-    donors[('Wonder Woman')] = [100, 500]
+donors = {
+          "Galileo Galilei": [348, 8377, 123],
+          "Giovanni Cassini": [209],
+          "Christiaan Huygens": [9135, 39],
+          "Edmond Halley": [399, 1100, 357],
+          "Edwin Hubble": [1899]
+          }
     
-def report():
-    print("\n-------------------- REPORT --------------------\n")
+def test_report():
+    assert report() is '\n-------------------- REPORT --------------------\n\nDonor Name         | Total Given    | Num Gifts| Average Gift\n---------------------------------------------------------------\nChristiaan Huygens   $      9174.00           2  $   4587.00\nGalileo Galilei      $      8848.00           3  $   2949.33\nEdwin Hubble         $      1899.00           1  $   1899.00
+\nEdmond Halley        $      1856.00           3  $    618.67\nGiovanni Cassini     $       209.00           1  $    209.00\n'
 
-    column = ["Donor Name", "| Total Given", "| Num Gifts", "| Average Gift"]
-    donors_report = [[name, sum(donors[name]), len(donors[name]),
-                     (sum(donors[name])/len(donors[name]))]
-                     for name in donors]
-
-    # and reverses the order from largest to smallest
-    donors_report = sorted(donors_report, key=itemgetter(1), reverse=True)
-    
-    report_string = str()
-    
-    report_string = "{:<15}{:>17}{:>15}{:>10}\n".format(*column)
-    report_string += "---------------------------------------------------------------\n"
-
-    # loops through 'donors_report' and
-    # dumps all values for 'name' into .format
-    for name in donors_report:
-        report_string += ('{:<20} ${:>13.2f}{:>12}  ${:>10.2f}\n'.format(*name))
-
-    
-        
-    
-
-if __name__=='__mainn__':
-    unittest.main()
