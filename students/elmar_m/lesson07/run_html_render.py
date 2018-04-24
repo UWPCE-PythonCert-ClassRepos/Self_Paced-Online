@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# file: run_html_render.py -- DO NOT CHANGE !
+
 """
 a simple script can run and test your html rendering classes.
 
@@ -22,25 +24,39 @@ def render_page(page, filename):
     write to file -- very handy!
     """
 
-    f = StringIO()
-    page.render(f, "    ")
+    f = StringIO()      # erzeuge ein StringIO Objekt namens f
+    # page.render(f, "----")      # fuehre die Methode 'render' des Objekts 'page' aus 
+    page.render(f, "    ")      # fuehre die Methode 'render' des Objekts 'page' aus 
+                                # und uebergib ihr zwei Argumente: 
+                                # 1. das ein StringIO Objekt
+                                # 2. einen leeren String bzw. einen String mit 4 Leerzeichen
 
-    print(f.getvalue())
-    with open(filename, 'w') as outfile:
-        outfile.write(f.getvalue())
+    print(f.getvalue())         # gib den Inhalt des StringIO Objektes auf dem Bildschirm aus
+
+    with open(filename, 'w') as outfile:    # erzeuge das Fileobjekt outfile und oeffne es im Schreibmodus
+        outfile.write(f.getvalue())         # fuehre die Methode 'write' des Fileobjekts aus und uebergib 
+                                            # ihr den Inhalt des StringIO Objektes 'f' als Argument
 
 
 # Step 1
 #########
 
-page = hr.Element()
+page = hr.Element()     
+    # erzeuge ein Objekt der Klasse hr.Element und nenne es page
 
 page.append("Here is a paragraph of text -- there could be more of them, "
-            "but this is enough  to show that we can do some text")
+            "but this is enough  to show that we can do some text")     
+    # fuehre die Methode 'append' des Objektes
+    # page aus und uebergib ihm als Argument 
+    # zwei Strings
 
 page.append("And here is another piece of text -- you should be able to add any number")
+    # fuehre die Methode 'append' des Objektes page noch einmal aus und
+    # uebergib ihm einen anderen String als Argument
 
-render_page(page, "test_html_output1.html")
+render_page(page, "output1.html")
+    # fuehre die Funktion 'render_page' aus und uebergib ihr zwei Argumente: das Objekt 
+    # namens page und einen String fuer den Namen des zu erzeugenden Files
 
 # The rest of the steps have been commented out.
 #  Uncomment them as you move along with the assignment.
