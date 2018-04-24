@@ -132,8 +132,8 @@ class DonorDatabase(defaultdict):
                 f.write(self.thank_you_fmt.format(donor, data.total_donations))
 
     def challenge(self, factor, min_don=None, max_don=None):
-        """Multiplies all donations of all the donors by the factor value if
-           within the specified range.
+        """Return a new database with all donations multiplied by the factor
+           value if within the specified min and max donation range.
 
         Args:
             factor (float): Factor value
@@ -146,19 +146,65 @@ class DonorDatabase(defaultdict):
         """
         new_donors = []
         for donor in self.values():
-            if min_don and max_don:
-                if min_don > max_don:
-                    raise ValueError('Min donation value is greater than max')
-
-                new_donors.append(Donor(donor.name, list(map(lambda x: x * factor, filter(lambda d: min_don <= d <= max_don, donor.donations)))))
-            elif min_don:
-                new_donors.append(Donor(donor.name, list(map(lambda x: x * factor, filter(lambda d: d >= min_don, donor.donations)))))
-            elif max_don:
-                new_donors.append(Donor(donor.name, list(map(lambda x: x * factor, filter(lambda d: d <= max_don, donor.donations)))))
-            else:
-                new_donors.append(Donor(donor.name, list(map(lambda x: x * factor, donor.donations))))
-
+            new_donors.append(Donor(donor.name,
+                                    self.filter_and_factor(factor,
+                                                           donor.donations,
+                                                           min_don=min_don,
+                                                           max_don=max_don)))
         return DonorDatabase(*new_donors)
+
+    def projection(self, factor, min_don=None, max_don=None):
+        """Return projection for a contribution that multiplies all current
+        donations by 'factor' that are within the specified min and max
+        donation range, if specified.
+
+        Args:
+            factor (float): Factor value
+            min_don (float, optional): Defaults to None. Min donation value
+            max_don (float, optional): Defaults to None. Max donation value
+
+        Returns:
+            float: Projected contribution value
+        """
+        projection = 0
+        for donor in self.values():
+            projection += sum(self.filter_and_factor(factor,
+                                                     donor.donations,
+                                                     min_don=min_don,
+                                                     max_don=max_don))
+        return projection
+
+    @staticmethod
+    def filter_and_factor(factor, donations, min_don=None, max_don=None):
+        """For each donation, multiply by the factor value if the donation is
+           within the min and max donation range, if set.
+
+        Args:
+            factor (float): Factor value
+            donations (list): List of donations to filter and factor
+            min_don (float, optional): Defaults to None. Min donation value
+            max_don (float, optional): Defaults to None. Max donation value
+
+        Raises:
+            ValueError: Min donation value is greater than max value
+
+        Returns:
+            list: New list of filtered and factored donations
+        """
+        if min_don and max_don:
+            if min_don > max_don:
+                raise ValueError('Min donation value is greater than max')
+
+            return list(map(lambda x: x * factor,
+                            filter(lambda d: min_don <= d <= max_don, donations)))
+        elif min_don:
+            return list(map(lambda x: x * factor,
+                            filter(lambda d: d >= min_don, donations)))
+        elif max_don:
+            return list(map(lambda x: x * factor,
+                            filter(lambda d: d <= max_don, donations)))
+        else:
+            return list(map(lambda x: x * factor, donations))
 
 
 def get_usr_input():
