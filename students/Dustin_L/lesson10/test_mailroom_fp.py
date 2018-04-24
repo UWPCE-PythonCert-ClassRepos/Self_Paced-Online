@@ -126,11 +126,11 @@ class TestDonorDatabase(unittest.TestCase):
         report_lines = self.db.create_report().split('\n')
 
         self.assertEqual(report_lines[0], '')
-        self.assertEqual(report_lines[1], '   Donor Name     | Total Given  |  Num Gifts   | Average Gift')
-        self.assertEqual(report_lines[2], '--------------------------------------------------------------')
-        self.assertEqual(report_lines[3], 'Test Donor 3      | $  112527.00 |            3 | $   37509.00')
-        self.assertEqual(report_lines[4], 'Test Donor 2      | $   44000.00 |            3 | $   14666.67')
-        self.assertEqual(report_lines[5], 'Test Donor 1      | $   16000.00 |            3 | $    5333.33')
+        self.assertEqual(report_lines[1], '    Donor Name      |  Total Given  |  Num Gifts   | Average Gift ')
+        self.assertEqual(report_lines[2], '------------------------------------------------------------------')
+        self.assertEqual(report_lines[3], 'Test Donor 3        | $  112,527.00 |            3 | $   37,509.00')
+        self.assertEqual(report_lines[4], 'Test Donor 2        | $   44,000.00 |            3 | $   14,666.67')
+        self.assertEqual(report_lines[5], 'Test Donor 1        | $   16,000.00 |            3 | $    5,333.33')
 
     def test_send_letters(self):
         """Test send_letters() fxn"""

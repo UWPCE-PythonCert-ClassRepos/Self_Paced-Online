@@ -68,11 +68,11 @@ class DonorDatabase(defaultdict):
 
         super().__init__(Donor, {d.name: d for d in donors})
         self.min_col_width = 12
-        self.def_pad = 5
+        self.def_pad = 7
         self.col_sep = ' | '
         self.cols = ['Donor Name', 'Total Given', 'Num Gifts', 'Average Gift']
         self.thank_you_fmt = ('\nDear {:s},\n'
-                              'Thank you for your generous donation of ${:.2f}.\n'
+                              'Thank you for your generous donation of ${:,.2f}.\n'
                               '\t\tSincerely,\n'
                               '\t\t  -Your conscience')
 
@@ -110,9 +110,9 @@ class DonorDatabase(defaultdict):
                           len(self.col_sep) * 3) +
                    '\n')
 
-        row_fmt = (f'{{:<{max_name}s}}{self.col_sep}${{:>{max_total - 1}.2f}}'
+        row_fmt = (f'{{:<{max_name}s}}{self.col_sep}${{:>{max_total - 1},.2f}}'
                    f'{self.col_sep}{{:>{max_gifts}d}}{self.col_sep}'
-                   f'${{:>{max_ave - 1}.2f}}')
+                   f'${{:>{max_ave - 1},.2f}}')
 
         header = hdr_fmt.format(*self.cols)
 
@@ -140,7 +140,6 @@ class DonorDatabase(defaultdict):
             factor (float): Factor value
             min_don (float, optional): Defaults to None. Min donation value
             max_don (float, optional): Defaults to None. Max donation value
-
 
         Returns:
             DonorDatabase: New DonorDatabase with factor value applied
