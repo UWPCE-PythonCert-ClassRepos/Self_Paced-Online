@@ -57,6 +57,10 @@ class Donor_Collection(dict):
             self.donors[name].append(int(donation))
 
     def challenge(self, simulate, factor, min = 100, max = 9999999999999999):
+        """A philantropist can multiply the donations in the database with a indicated
+        factor. The philantropist can put a cap and floor on the donations that he wants
+        to multiply. He also can first request a simulation of what his total donation
+        would be."""
         total = 0
         if not str(factor).isdigit():
             raise Exception("ERROR: You didn't enter a number or a negative number.")
@@ -69,8 +73,8 @@ class Donor_Collection(dict):
                 else:
                     M_list = list(map(lambda x: x*factor, filter_list1))
                     if M_list:
-                        total = total + reduce(lambda x,y: x+y,M_list)
-        if simulate ==1:
+                        total = total + reduce(lambda x, y: x+y, M_list)
+        if simulate == 1:
             print('total simulated donation is: '+str(total))
 
 
@@ -129,18 +133,18 @@ def multiply(donordict):
     success = False
     simulate = 10
     while not success:
-        while simulate not in [0,1]:
+        while simulate not in [0, 1]:
             simulate = int(input('Enter 1 if you want to simulate and 0 if you want to donate >'))
         factor = input('Please enter a factor > ')
         factor = int(factor)
         min_donation = input('Please enter a minimum donation amount > ')
-        if min_donation =="":
+        if min_donation == "":
             min_donation = 0
         else:
             min_donation = int(min_donation)
 
         max_donation = input('Please enter a maximum donation amount > ')
-        if max_donation =="":
+        if max_donation == "":
             max_donation = 99999999999999
         else:
             max_donation = int(max_donation)

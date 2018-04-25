@@ -19,9 +19,8 @@ class TestMailroom(unittest.TestCase):
 
     def test_challenge(self):
         self.DonorDict = mailroom6.Donor_Collection(self.donors)
-        self.DonorDict.challenge(1,5,0,1000)
-        print(self.DonorDict.donors.keys())
-        print(self.DonorDict.donors.values())
+        self.DonorDict.challenge(1, 5, 0, 1000)
+        self.assertEqual(self.DonorDict.donors,{'papa': [100, 5, 15], 'mama': [12, 200, 2, 66], 'bompa': [1000], 'bobonne': [500, 500], 'onbekende': [1000000]})
 
 
 if __name__ == '__main__':
