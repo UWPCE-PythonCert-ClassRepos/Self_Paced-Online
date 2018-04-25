@@ -64,17 +64,19 @@ def send_letters():
 
 def main():
     while True:
-        a = int(prompt_user())
-        decision = {
-                1: user,
-                2: create_report,
-                3: send_letters,
-                4: quit,
-                }
         try:
+            a = int(prompt_user())
+            decision = {
+                    1: user,
+                    2: create_report,
+                    3: send_letters,
+                    4: quit,
+                    }
             decision[a]()
         except KeyError:
             print('Please select a number 1 - 4')
+        except ValueError:
+            print('Please use an integer 1 - 4')
 
 
 if __name__ == "__main__":
