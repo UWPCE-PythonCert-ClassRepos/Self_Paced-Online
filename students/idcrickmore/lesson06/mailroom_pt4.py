@@ -1,6 +1,3 @@
-
-
-
 #!/usr/bin/env python3
 from operator import itemgetter
 import os
@@ -105,7 +102,7 @@ def donor_list():
 
 
 def report():
-    report_string = "\n-------------------- REPORT --------------------\n\n"
+    report_string = "-------------------- REPORT --------------------\n"
     
     column = ["Donor Name", "| Total Given", "| Num Gifts", "| Average Gift"]
     donors_report = [[name, sum(donors[name]), len(donors[name]),
