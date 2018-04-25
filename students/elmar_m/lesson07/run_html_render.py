@@ -40,7 +40,6 @@ import html_render as hr
 # The rest of the steps have been commented out.
 #  Uncomment them as you move along with the assignment.
 
-
 # writing the file out:
 def render_page(page, filename):
     """
@@ -82,24 +81,27 @@ page.append(body)
 
 render_page(page, "output2.html")
 
+
+
+
 # # Step 3
 # ##########
 
 # page = hr.Html()
-
+# 
 # head = hr.Head()
 # head.append(hr.Title("PythonClass = Revision 1087:"))
-
+# 
 # page.append(head)
-
+# 
 # body = hr.Body()
-
+# 
 # body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
 #                  "but this is enough  to show that we can do some text"))
 # body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
-
+# 
 # page.append(body)
-
+# 
 # render_page(page, "test_html_output3.html")
 
 # # Step 4

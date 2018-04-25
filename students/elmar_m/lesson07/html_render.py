@@ -2,28 +2,18 @@
 
 # file: html_render.py
 
-# define class 'Element':
 class Element:
-
-    # define attributes:
     tag = 'element'
-    i_level = 0
 
-    def __init__(self, content=None):
+    def __init__(self, content=None):       # wird erzeugt und kann schon content uebergeben 
+                                            # bekommen, siehe Step2 body.append(hr.P("blabla...")
         self.content = [content] if content else []
     
-    # define method append:
     def append(self, stuff):
         self.content.append(stuff)
 
-    # define method render:
     def render(self, io, ind):
-        # io.write('<{}>\n'.format(self.tag))
-        if self.tag == 'html':
-            io.write('<!DOCTYPE html>\n')
-            io.write('<{}>\n'.format(self.tag))
-        else:
-            io.write('<{}>\n'.format(self.tag))
+        io.write('<{}>\n'.format(self.tag))
             
         for i in self.content:
             if hasattr(i, 'render'):
@@ -44,4 +34,18 @@ class Body(Element):
 
 class P(Element):
     tag = 'p'
+
+
+class Head(Element):
+    tag = 'head'
+
+
+class OneLineTag(Element):
+    pass 
+
+
+
+
+
+
 
