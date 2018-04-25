@@ -90,15 +90,32 @@ class DonorCollection(object):
     def challenge(x,factor):
         #print(f"{x}*{factor}={x*factor}")
         return x*factor
+    
+    def greater_than_min_value(self, x):
+        return x >= self.min_value
+
+    def less_than_max_value(self, x):
+        return x <= self.max_value
 
     def donation_challenge(self):
         question = "By what factor would you like to increase the donations? "
         my_factor = int(input(question))
+        question = "What is the minimum allowed amount? "
+        self.min_value = int(input(question)) if question is not None else 0
+        question = "What is the maximum allowed amount? "
+        self.max_value = int(input(question)) if question is not None else 0
+        
 
         for donor in self.donor_list:
+            print(donor,"before filters",donor.amount_list)
+            donor.amount_list = list(filter(self.greater_than_min_value, donor.amount_list))
+            donor.amount_list = list(filter(self.less_than_max_value, donor.amount_list))
+            print(donor,"after filters",donor.amount_list)
+
             factor_list = [my_factor]*len(donor.amount_list)
             challenge_list = list(map(DonorCollection.challenge, donor.amount_list, factor_list))
             donor.amount_list = challenge_list[:]
+            print(donor.amount_list)
 
         
 
