@@ -6,38 +6,49 @@ class Element():
 	tag, indent = "", ""
 	def __init__(self, content=None):
 		self.contents = []
-		if content is not None:
-			self.append(content)
+		self.append(content)
 	def append(self, content):
-		if isinstance(content, Element) and len(content.strip()):
-			self.contents.append(content)
-		elif isinstance(content, str):
-			self.clean_str = ' '.join(content.split())
-			self.contents.append(self.clean_str)
-		elif isinstance(content, list) or isinstance(content, tuple):
-			for i in content:
-				self.append(i)
-		else:
-			print(f"{content} not added - must be string, element, "
-			      "list, or tuple.")
+		if content is not None:
+			if isinstance(content, Element):
+				self.contents.append(content)
+			elif isinstance(content, str):
+				if len(content.strip()) > 0:
+					self.clean_str = ' '.join(content.split())
+					self.contents.append(self.clean_str)
+			elif isinstance(content, list) or isinstance(content, tuple):
+				for i in content:
+					self.append(i)
+			else:
+				raise TypeError(f"'{content}' not added, because "
+						"the 'content' argument must be string, element, "
+						"list, or tuple.")
 	def render(self, file_out, cur_ind=""):
 		result = False
-		if file_out:
+		if not file_out:
+			raise ValueError("Nothing specified in the 'file_out' argument.")
+		elif not isinstance(cur_ind, str):
+			raise TypeError("The 'cur_ind' argument must be a string.")
+		elif cur_ind.strip(' '):
+			raise ValueError(
+					"The 'cur_ind' argument must contain spaces only.")
+		else:
+			if not self.indent:
+				self.indent, cur_ind = cur_ind, self.indent
+			child_ind = cur_ind + self.indent
 			try:
-				file_out.write('<{0}>\n'.format(self.tag))
+				file_out.write(cur_ind + '<{0}>\n'.format(self.tag))
 			except AttributeError:
-				print(f"\n\tWritable file-like object not given - aborting.\n")
+				raise AttributeError("Writable file-like "
+						"object not given in the 'file_out' argument.")
 			else:
-				child_ind = cur_ind + self.indent
-				if not self.indent:
-					self.indent = cur_ind
+				file_out.write(child_ind)
 				for i in self.contents:
-					if isinstance(i, str):
-						file_out.write(child_ind + i + ' ')
-					elif isinstance(i, Element):
-						i.indent = self.indent
-						i.render(file_out, child_ind)
-				file_out.write(cur_ind + '\n</{0}>\n'.format(self.tag))
+					if isinstance(i, str) and i.strip():
+						file_out.write(i + ' ')
+					# elif isinstance(i, Element):
+					# 	i.indent = self.indent
+					# 	i.render(file_out, child_ind)
+				file_out.write('\n' + cur_ind + '</{0}>\n'.format(self.tag))
 				result = True
 		return result
 
