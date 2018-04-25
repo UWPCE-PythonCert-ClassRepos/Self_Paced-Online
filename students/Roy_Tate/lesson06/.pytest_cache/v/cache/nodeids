@@ -1,0 +1,9 @@
+[
+  "test_mailroom4.py::MailroomTests::test_add_donation_existing_donor", 
+  "test_mailroom4.py::MailroomTests::test_add_donation_new_donor", 
+  "test_mailroom4.py::MailroomTests::test_correct_list_returned_from_print_list", 
+  "test_mailroom4.py::MailroomTests::test_correct_sums_printed_in_report", 
+  "test_mailroom4.py::MailroomTests::test_single_email_output", 
+  "test_mailroom4.py::MailroomTests::test_verify_all_donor_names_included_in_report", 
+  "test_mailroom4.py::MailroomTests::test_verify_output_file_has_correct_signature"
+]
