@@ -15,6 +15,32 @@ from io import StringIO
 import html_render as hr
 
 
+
+
+# Step 1
+#########
+
+# page = hr.Element()     
+#     # erzeuge ein Objekt der Klasse hr.Element und nenne es page
+# 
+# page.append("Here is a paragraph of text -- there could be more of them, "
+#             "but this is enough  to show that we can do some text")     
+#     # fuehre die Methode 'append' des Objektes
+#     # page aus und uebergib ihm als Argument 
+#     # zwei Strings
+# 
+# page.append("And here is another piece of text -- you should be able to add any number")
+#     # fuehre die Methode 'append' des Objektes page noch einmal aus und
+#     # uebergib ihm einen anderen String als Argument
+# 
+# render_page(page, "output1.html")
+    # fuehre die Funktion 'render_page' aus und uebergib ihr zwei Argumente: das Objekt 
+    # namens page und einen String fuer den Namen des zu erzeugenden Files
+
+# The rest of the steps have been commented out.
+#  Uncomment them as you move along with the assignment.
+
+
 # writing the file out:
 def render_page(page, filename):
     """
@@ -37,45 +63,24 @@ def render_page(page, filename):
         outfile.write(f.getvalue())         # fuehre die Methode 'write' des Fileobjekts aus und uebergib 
                                             # ihr den Inhalt des StringIO Objektes 'f' als Argument
 
-
-# Step 1
-#########
-
-page = hr.Element()     
-    # erzeuge ein Objekt der Klasse hr.Element und nenne es page
-
-page.append("Here is a paragraph of text -- there could be more of them, "
-            "but this is enough  to show that we can do some text")     
-    # fuehre die Methode 'append' des Objektes
-    # page aus und uebergib ihm als Argument 
-    # zwei Strings
-
-page.append("And here is another piece of text -- you should be able to add any number")
-    # fuehre die Methode 'append' des Objektes page noch einmal aus und
-    # uebergib ihm einen anderen String als Argument
-
-render_page(page, "output1.html")
-    # fuehre die Funktion 'render_page' aus und uebergib ihr zwei Argumente: das Objekt 
-    # namens page und einen String fuer den Namen des zu erzeugenden Files
-
-# The rest of the steps have been commented out.
-#  Uncomment them as you move along with the assignment.
-
 # ## Step 2
 # ##########
 
-# page = hr.Html()
+page = hr.Html()    # erzeuge ein Objekt der Klasse hr.Html und nenne es page
 
-# body = hr.Body()
+body = hr.Body()    # erzeuge ein Objekt der Klasse hr.Body und nenne es body
 
-# body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-#                  "but this is enough  to show that we can do some text"))
+body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                 "but this is enough  to show that we can do some text"))
+                    # fuehre die append Methode des Objekts body aus und uebergib ihr ein
+                    # Objekt der Klasse hr.P als Argument, dieses Objekt wiederum bekommt
+                    # zwei Strings als Argument uebergeben
 
-# body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
+body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
 
-# page.append(body)
+page.append(body)
 
-# render_page(page, "test_html_output2.html")
+render_page(page, "output2.html")
 
 # # Step 3
 # ##########
