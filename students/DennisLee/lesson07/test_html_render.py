@@ -21,9 +21,12 @@ class ElementTestCase(unittest.TestCase):
                 "Someone who'll watch over me",
                 "I did it my way"
         )
+        self.test_filename = "test_html_file_dennislee.html"
     def tearDown(self):
         del self.strs_before
         del self.strs_after
+        # if os.path.exists(self.test_filename):
+        #     os.remove(self.test_filename)
 
     def test_init_1(self):
         x = hr.Element(self.strs_before[0])
@@ -104,85 +107,105 @@ class ElementTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.render_helper('\t', 'html')
     def render_helper(self, ind, element_tag=''):
-        result, filename = False, 'test_html_file_dennislee.html'
+        result = False
         self.e = hr.Element()
         if element_tag:
             self.e.tag = element_tag
         for str in self.strs_before:
             self.e.append(str)
-        fobj = open(filename, 'w')
-        result = self.e.render(fobj, ind)
-        fobj.close()
+        with open(self.test_filename, 'w') as fobj:
+            result = self.e.render(fobj, ind)
         if result:
-            with open(filename, 'r') as f:
+            with open(self.test_filename, 'r') as f:
                 self.strs_out = f.readlines()
+            self.assertEqual(len(self.strs_out), 3)
             self.assertEqual(self.strs_out[0], f"<{element_tag}>\n")
             self.assertEqual(self.strs_out[1], 
                     ind + ' '.join(self.strs_after) + ' \n')
             self.assertEqual(self.strs_out[-1], f"</{element_tag}>\n")
-        os.remove(filename)
         del self.e
         return result
 
-# class Step2ElementTestCase(ElementTestCase):
-#     def setUp(self):
-#         self.html_element = hr.Html()
-#         self.body_element = hr.Body()
-#         self.p1_element = hr.P("hello")
-#         self.p2_element = hr.P()
-#         self.strs_before = (
-#                 "  \n Why  am   \n\tI here?     \t",
-#                 "\n\t  \n  Here's   that rainy   day...   \t  \n",
-#                 "I told  you   about...\n",
-#                 "    \n \t  \n  There's  a   somebody I'm longing  to   see\n",
-#                 "   \n \t \t Someone  who'll \twatch\nover\nme   \t   ",
-#                 "\tI\tdid\nit\t\tmy      \n\n\t\tway\t\t\n\t"
-#         )
-#         self.strs_after = (
-#                 "Why am I here?", 
-#                 "Here's that rainy day...",
-#                 "I told you about..."
-#                 "There's a somebody I'm longing to see",
-#                 "Someone who'll watch over me",
-#                 "I did it my way"
-#         )
-#     def tearDown(self):
-#         del self.html_element
-#         del self.p1_element
-#         del self.p2_element
-#         del self.body_element
-#         del self.strs_before
-#         del self.strs_after
+    def test_render_P_1(self):
+        para = hr.P()
+        for string in self.strs_before:
+            para.append(string)
+        self.assertEqual(para.contents, list(self.strs_after))
+        del para
+    def test_render_P_2(self):
+        para = hr.P(self.strs_before[0])
+        for string in self.strs_before[1:]:
+            para.append(string)
+        self.assertEqual(para.contents, list(self.strs_after))
+        del para
+    def test_Body_element_1(self):
+        bod = hr.Body()
+        for string in self.strs_before:
+            bod.append(string)
+        self.assertEqual(bod.contents, list(self.strs_after))
+        del bod
+    def test_Body_element_2(self):
+        bod = hr.Body(self.strs_before[0])
+        for string in self.strs_before[1:]:
+            bod.append(string)
+        self.assertEqual(bod.contents, list(self.strs_after))
+        del bod
+    def test_Html_element_1(self):
+        pg = hr.Html()
+        for string in self.strs_before:
+            pg.append(string)
+        self.assertEqual(pg.contents, list(self.strs_after))
+        del pg
+    def test_Html_element_2(self):
+        pg = hr.Html(self.strs_before[0])
+        for string in self.strs_before[1:]:
+            pg.append(string)
+        self.assertEqual(pg.contents, list(self.strs_after))
+        del pg
 
-#     def test_render_P(self):
-#         para = hr.P(self.strs_before[0])
-#         for string in self.strs_before[1:]:
-#             para.append(string)
-#         self.assertEqual(para.contents, list(self.strs_after))
-#     def test_Body_element_1(self):
-#         bod = hr.Body(self.strs_before[0])
-#         for string in self.strs_before[1:]:
-#             bod.append(string)
-#         self.assertEqual(bod.contents, list(self.strs_after))
-#     def test_Html_element_1(self):
-#         pg = hr.Html(self.strs_before[0])
-#         for string in self.strs_before[1:]:
-#             pg.append(string)
-#         self.assertEqual(pg.contents, list(self.strs_after))
-#     def test_hierarchical_1(self):
-#         para1 = hr.P(self.strs_before[0])
-#         para1.append(self.strs_before[1])
-#         para2 = hr.P(self.strs_before[2])
-#         para2.append(self.strs_before[3])
-#         para3 = hr.P(self.strs_before[4])
-#         para3.append(self.strs_before[5])
+    def test_hierarchical_1(self):
+        para1 = hr.P(self.strs_before[0])
+        para1.append(self.strs_before[1])
+        para2 = hr.P(self.strs_before[2])
+        para2.append(self.strs_before[3])
+        para3 = hr.P(self.strs_before[4])
+        para3.append(self.strs_before[5])
 
-#         bod = hr.Body()
-#         bod.append(para1)
-#         bod.append(para2)
-#         bod.append(para3)
+        bod = hr.Body()
+        bod.append(para1)
+        bod.append(para2)
+        bod.append(para3)
         
-#         pg = hr.Html(bod)
+        pg = hr.Html(bod)
+
+        result = False
+        self.test_filename = 'test_hierarchical.html'
+        with open(self.test_filename, 'w') as fobj:
+            result = pg.render(fobj, '    ')
+        if result:
+            with open(self.test_filename, 'r') as f:
+                self.strs_out = f.readlines()
+            self.assertEqual(len(self.strs_out), 13)
+            self.assertEqual(self.strs_out[0], "<html>\n")
+            self.assertEqual(self.strs_out[1], "    <body>\n")
+            self.assertEqual(self.strs_out[2], "        <p>\n")
+            self.assertEqual(self.strs_out[3], "            " +
+                    self.strs_after[0] + " " +
+                    self.strs_after[1] + "\n")
+            self.assertEqual(self.strs_out[4], "        </p>\n")
+            self.assertEqual(self.strs_out[5], "        <p>\n")
+            self.assertEqual(self.strs_out[6], "            " +
+                    self.strs_after[2] + " " +
+                    self.strs_after[3] + "\n")
+            self.assertEqual(self.strs_out[7], "        </p>\n")
+            self.assertEqual(self.strs_out[8], "        <p>\n")
+            self.assertEqual(self.strs_out[9], "            " +
+                    self.strs_after[4] + " " +
+                    self.strs_after[5] + "\n")
+            self.assertEqual(self.strs_out[-3], "        </p>\n")
+            self.assertEqual(self.strs_out[-2], "    </body>\n")
+            self.assertEqual(self.strs_out[-1], "</html>")
+        return result
 
 
 if __name__ == '__main__':

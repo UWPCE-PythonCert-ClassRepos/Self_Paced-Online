@@ -40,15 +40,28 @@ class Element():
 			except AttributeError:
 				raise AttributeError("Writable file-like "
 						"object not given in the 'file_out' argument.")
-			else:
+			else:  # REDO
 				file_out.write(child_ind)
 				for i in self.contents:
 					if isinstance(i, str) and i.strip():
 						file_out.write(i + ' ')
-					# elif isinstance(i, Element):
-					# 	i.indent = self.indent
-					# 	i.render(file_out, child_ind)
+					elif isinstance(i, Element):
+						i.indent = self.indent
+						i.render(file_out, child_ind)
 				file_out.write('\n' + cur_ind + '</{0}>\n'.format(self.tag))
+				# i = 0
+				# while i < len(self.contents):
+				# 	start_index = i
+				# 	while isinstance(i, str):
+				# 		i += 1
+				# 	if start_index < i:
+				# 		file_out.write(child_ind + 
+				# 				' '.join(self.contents[start_index:i]) + "\n")
+				# 	if isinstance(i, Element):
+				# 		i.indent = self.indent
+				# 		i.render(file_out, child_ind)
+				# 	i += 1
+				# file_out.write(cur_ind + '</{0}>\n'.format(self.tag))
 				result = True
 		return result
 
