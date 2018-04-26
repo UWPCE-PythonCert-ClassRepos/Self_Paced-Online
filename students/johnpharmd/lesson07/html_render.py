@@ -7,14 +7,26 @@ class Element():
 
     def __init__(self, content=None, **kwargs):
         self.content = [content]
-        self.dict = kwargs
+        self.kwargs = kwargs
 
     def append(self, new_string):
         return self.content.append(new_string)
 
     def render(self, file_out, cur_ind=''):
-        if self.dict:
-            self.open_tag = '<' + self.tag + str(self.dict.items()) + '>'
+        if self.kwargs:
+            kwargs_string = ' '
+            self.open_tag = '<' + self.tag
+            # kwargs_keys = [key for key in self.kwargs]
+            # kwargs_values = [self.kwargs[key] for key in self.kwargs]
+            
+            # for tup in zip(kwargs_keys, kwargs_values):
+            #     for item in tup:
+            #         kwargs_string += str(item)
+            
+            for k, v in self.kwargs.items():
+                kwargs_string += k + '=' +  '\'' + v + '\''
+
+            self.open_tag = self.open_tag + kwargs_string + '>'
         else:
             self.open_tag = '<' + self.tag + '>'
         self.close_tag = '</' + self.tag + '>'
