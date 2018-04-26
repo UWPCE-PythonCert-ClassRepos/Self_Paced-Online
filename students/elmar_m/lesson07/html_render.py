@@ -65,11 +65,26 @@ class Title(Element):
 
 
 class SelfClosingTag(Element):
+    # closing = '/'
     def __init__(self):     # if erroneously given a second argument ('content'), 
         pass                # a TypeError will be raised
     def render(self, io, ind):
         closing = '/'
         io.write('<{} {}>\n'.format(self.tag, closing))
+
+
+class Meta(SelfClosingTag):
+    # tag = 'meta charset="UTF-8"'
+    # tag = 'meta'
+    def __init__(self, **kwargs):
+        self.props = []
+        self.propstring = ''
+        for key, value in kwargs.items():
+            props.append('{}="{}"'.format(key,value))
+            propstring = ' '.join(props)
+    # tag = 'meta' + self.propstring
+    tag = 'meta' + self.propstring
+    
 
 
 class Hr(SelfClosingTag):
