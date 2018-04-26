@@ -40,6 +40,11 @@ class Head(Element):
     tag = 'head'
 
 
+class Title(Element):
+    tag = 'title'
+
+
+
 class OneLineTag(Element):
     pass 
 

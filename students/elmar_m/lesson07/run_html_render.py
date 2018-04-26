@@ -65,21 +65,21 @@ def render_page(page, filename):
 # ## Step 2
 # ##########
 
-page = hr.Html()    # erzeuge ein Objekt der Klasse hr.Html und nenne es page
-
-body = hr.Body()    # erzeuge ein Objekt der Klasse hr.Body und nenne es body
-
-body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-                 "but this is enough  to show that we can do some text"))
-                    # fuehre die append Methode des Objekts body aus und uebergib ihr ein
-                    # Objekt der Klasse hr.P als Argument, dieses Objekt wiederum bekommt
-                    # zwei Strings als Argument uebergeben
-
-body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
-
-page.append(body)
-
-render_page(page, "output2.html")
+#page = hr.Html()    # erzeuge ein Objekt der Klasse hr.Html und nenne es page
+#
+#body = hr.Body()    # erzeuge ein Objekt der Klasse hr.Body und nenne es body
+#
+#body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+#                 "but this is enough  to show that we can do some text"))
+#                    # fuehre die append Methode des Objekts body aus und uebergib ihr ein
+#                    # Objekt der Klasse hr.P als Argument, dieses Objekt wiederum bekommt
+#                    # zwei Strings als Argument uebergeben
+#
+#body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
+#
+#page.append(body)
+#
+#render_page(page, "output2.html")
 
 
 
@@ -87,22 +87,22 @@ render_page(page, "output2.html")
 # # Step 3
 # ##########
 
-# page = hr.Html()
-# 
-# head = hr.Head()
-# head.append(hr.Title("PythonClass = Revision 1087:"))
-# 
-# page.append(head)
-# 
-# body = hr.Body()
-# 
-# body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-#                  "but this is enough  to show that we can do some text"))
-# body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
-# 
-# page.append(body)
-# 
-# render_page(page, "test_html_output3.html")
+page = hr.Html()
+ 
+head = hr.Head()
+head.append(hr.Title("PythonClass = Revision 1087:"))
+ 
+page.append(head)
+ 
+body = hr.Body()
+
+body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                "but this is enough  to show that we can do some text"))
+body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
+ 
+page.append(body)
+ 
+render_page(page, "output3.html")
 
 # # Step 4
 # ##########
