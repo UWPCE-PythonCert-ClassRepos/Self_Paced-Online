@@ -24,6 +24,9 @@ class Element:
 
 class Html(Element):
     tag = 'html'
+    def render(self, io, ind):
+        io.write('<!DOCTYPE html>\n')
+        Element.render(self, io, ind)
 
 class Body(Element):
     tag = 'body'
