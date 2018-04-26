@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
-# file: html_render.py
+'''
+file: html_render.py
+elmar_m / 22e88@mailbox.org
+Lesson07: HTML renderer
+'''
 
 class Element:
     tag = 'element'
@@ -64,9 +68,13 @@ class SelfClosingTag(Element):
 class Hr(SelfClosingTag):
     tag = 'hr'
 
+class A(Element):
+    tag = 'a'
+    def __init__(self, target, linktext):
+        self.target = target
+        self.link = linktext
+        self.targetstring = 'href={}'.format(self.target)
 
-
-
-
-
+    def render(self, io, ind):
+        io.write('{}<{} {}>{}</{}>\n'.format(ind, self.tag, self.targetstring, self.link, self.tag))
 
