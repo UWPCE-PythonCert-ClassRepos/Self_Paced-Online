@@ -1,17 +1,22 @@
-class Element(object):
+class Element():
     """renders an html element"""
 
     tag = ''
     indent = '    '
+    attrs = {'text-align': '', 'font-style': ''}
 
-    def __init__(self, content=None):
+    def __init__(self, content=None, **kwargs):
         self.content = [content]
+        self.dict = kwargs
 
     def append(self, new_string):
         return self.content.append(new_string)
 
     def render(self, file_out, cur_ind=''):
-        self.open_tag = '<' + self.tag + '>'
+        if self.dict:
+            self.open_tag = '<' + self.tag + str(self.dict.items()) + '>'
+        else:
+            self.open_tag = '<' + self.tag + '>'
         self.close_tag = '</' + self.tag + '>'
         if self.tag == 'html':
             file_out.write(cur_ind + self.open_tag + '\n')
