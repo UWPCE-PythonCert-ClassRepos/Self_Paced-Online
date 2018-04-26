@@ -53,8 +53,16 @@ class Head(Element):
 class Title(Element):
     tag = 'title'
 
-class OneLineTag(Element):
-    pass 
+class SelfClosingTag(Element):
+    def __init__(self):     # if erroneously given a second argument ('content'), 
+        pass                # a TypeError will be raised
+
+    def render(self, io, ind):
+        closing = '/'
+        io.write('<{} {}>\n'.format(self.tag, closing))
+
+class Hr(SelfClosingTag):
+    tag = 'hr'
 
 
 
