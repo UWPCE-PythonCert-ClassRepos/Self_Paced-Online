@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""This is a test module that tests mailroom4.py"""
+"""This is a test module that tests mailroom_fp.py"""
 
 import datetime
 import os
@@ -10,8 +10,8 @@ from io import StringIO
 import unittest
 from unittest import mock
 
-import mailroom4 as mr
-from mailroom4 import PROMPT_OPTS, Donor, DonorDatabase
+import mailroom_fp as mr
+from mailroom_fp import PROMPT_OPTS, Donor, DonorDatabase
 
 
 def redirect_stdout():
@@ -126,11 +126,11 @@ class TestDonorDatabase(unittest.TestCase):
         report_lines = self.db.create_report().split('\n')
 
         self.assertEqual(report_lines[0], '')
-        self.assertEqual(report_lines[1], '   Donor Name     | Total Given  |  Num Gifts   | Average Gift')
-        self.assertEqual(report_lines[2], '--------------------------------------------------------------')
-        self.assertEqual(report_lines[3], 'Test Donor 3      | $  112527.00 |            3 | $   37509.00')
-        self.assertEqual(report_lines[4], 'Test Donor 2      | $   44000.00 |            3 | $   14666.67')
-        self.assertEqual(report_lines[5], 'Test Donor 1      | $   16000.00 |            3 | $    5333.33')
+        self.assertEqual(report_lines[1], '    Donor Name      |  Total Given  |  Num Gifts   | Average Gift ')
+        self.assertEqual(report_lines[2], '------------------------------------------------------------------')
+        self.assertEqual(report_lines[3], 'Test Donor 3        | $  112,527.00 |            3 | $   37,509.00')
+        self.assertEqual(report_lines[4], 'Test Donor 2        | $   44,000.00 |            3 | $   14,666.67')
+        self.assertEqual(report_lines[5], 'Test Donor 1        | $   16,000.00 |            3 | $    5,333.33')
 
     def test_send_letters(self):
         """Test send_letters() fxn"""
@@ -249,14 +249,15 @@ class TestUserInteraction(unittest.TestCase):
                                                          f'{self.d2_name}\n'
                                                          f'{self.d3_name}\n'))
 
-    def test_prompt_for_donation(self):
+    def test_prompt_for_float(self):
         """Test the prompt_for_donation() fxn"""
+        error_prompt = '\nDonation amount must be a number'
 
         # Test when user enters donation attempts
         se = ['foufty', '50']
         with mock.patch('builtins.input', side_effect=se):
             captured_print = redirect_stdout()
-            result = mr.prompt_for_donation('')
+            result = mr.prompt_for_float('', error_prompt)
             reset_stdout()
 
             self.assertEqual(result, 50.0, msg=result)
@@ -267,7 +268,7 @@ class TestUserInteraction(unittest.TestCase):
         with mock.patch('builtins.input') as mock_input:
             mock_input.return_value = 'quit'
             captured_print = redirect_stdout()
-            result = mr.prompt_for_donation('')
+            result = mr.prompt_for_float('', error_prompt)
             reset_stdout()
 
             self.assertTrue(result is None, msg=result)
