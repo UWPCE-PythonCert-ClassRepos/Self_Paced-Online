@@ -33,35 +33,30 @@ class Element():
 					"The 'cur_ind' argument must contain spaces only.")
 		else:
 			if not self.indent:
-				self.indent, cur_ind = cur_ind, self.indent
+				self.indent, cur_ind = cur_ind, ""
 			child_ind = cur_ind + self.indent
 			try:
 				file_out.write(cur_ind + '<{0}>\n'.format(self.tag))
 			except AttributeError:
 				raise AttributeError("Writable file-like "
 						"object not given in the 'file_out' argument.")
-			else:  # REDO
-				file_out.write(child_ind)
-				for i in self.contents:
-					if isinstance(i, str) and i.strip():
-						file_out.write(i + ' ')
-					elif isinstance(i, Element):
-						i.indent = self.indent
-						i.render(file_out, child_ind)
-				file_out.write('\n' + cur_ind + '</{0}>\n'.format(self.tag))
-				# i = 0
-				# while i < len(self.contents):
-				# 	start_index = i
-				# 	while isinstance(i, str):
-				# 		i += 1
-				# 	if start_index < i:
-				# 		file_out.write(child_ind + 
-				# 				' '.join(self.contents[start_index:i]) + "\n")
-				# 	if isinstance(i, Element):
-				# 		i.indent = self.indent
-				# 		i.render(file_out, child_ind)
-				# 	i += 1
-				# file_out.write(cur_ind + '</{0}>\n'.format(self.tag))
+			else:
+				i, items = 0, len(self.contents)
+				while i < items:
+					start_index = i
+					while isinstance(self.contents[i], str):
+						i += 1
+						if i >= items:
+							break
+					if start_index < i:
+						file_out.write(child_ind + 
+								' '.join(self.contents[start_index:i]) + "\n")
+					if i < items and isinstance(self.contents[i], Element):
+						self.contents[i].indent = self.indent
+						self.contents[i].render(file_out, child_ind)
+					i += 1
+				file_out.write(cur_ind + '</{0}>\n'.format(self.tag))
+				
 				result = True
 		return result
 

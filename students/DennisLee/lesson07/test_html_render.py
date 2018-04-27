@@ -121,7 +121,7 @@ class ElementTestCase(unittest.TestCase):
             self.assertEqual(len(self.strs_out), 3)
             self.assertEqual(self.strs_out[0], f"<{element_tag}>\n")
             self.assertEqual(self.strs_out[1], 
-                    ind + ' '.join(self.strs_after) + ' \n')
+                    ind + ' '.join(self.strs_after) + '\n')
             self.assertEqual(self.strs_out[-1], f"</{element_tag}>\n")
         del self.e
         return result
@@ -182,30 +182,29 @@ class ElementTestCase(unittest.TestCase):
         self.test_filename = 'test_hierarchical.html'
         with open(self.test_filename, 'w') as fobj:
             result = pg.render(fobj, '    ')
-        if result:
-            with open(self.test_filename, 'r') as f:
-                self.strs_out = f.readlines()
-            self.assertEqual(len(self.strs_out), 13)
-            self.assertEqual(self.strs_out[0], "<html>\n")
-            self.assertEqual(self.strs_out[1], "    <body>\n")
-            self.assertEqual(self.strs_out[2], "        <p>\n")
-            self.assertEqual(self.strs_out[3], "            " +
-                    self.strs_after[0] + " " +
-                    self.strs_after[1] + "\n")
-            self.assertEqual(self.strs_out[4], "        </p>\n")
-            self.assertEqual(self.strs_out[5], "        <p>\n")
-            self.assertEqual(self.strs_out[6], "            " +
-                    self.strs_after[2] + " " +
-                    self.strs_after[3] + "\n")
-            self.assertEqual(self.strs_out[7], "        </p>\n")
-            self.assertEqual(self.strs_out[8], "        <p>\n")
-            self.assertEqual(self.strs_out[9], "            " +
-                    self.strs_after[4] + " " +
-                    self.strs_after[5] + "\n")
-            self.assertEqual(self.strs_out[-3], "        </p>\n")
-            self.assertEqual(self.strs_out[-2], "    </body>\n")
-            self.assertEqual(self.strs_out[-1], "</html>")
-        return result
+        self.assertTrue(result)
+        with open(self.test_filename, 'r') as f:
+            self.strs_out = f.readlines()
+        self.assertEqual(len(self.strs_out), 13)
+        self.assertEqual(self.strs_out[0], "<html>\n")
+        self.assertEqual(self.strs_out[1], "    <body>\n")
+        self.assertEqual(self.strs_out[2], "        <p>\n")
+        self.assertEqual(self.strs_out[3], "            " +
+                self.strs_after[0] + " " +
+                self.strs_after[1] + "\n")
+        self.assertEqual(self.strs_out[4], "        </p>\n")
+        self.assertEqual(self.strs_out[5], "        <p>\n")
+        self.assertEqual(self.strs_out[6], "            " +
+                self.strs_after[2] + " " +
+                self.strs_after[3] + "\n")
+        self.assertEqual(self.strs_out[7], "        </p>\n")
+        self.assertEqual(self.strs_out[8], "        <p>\n")
+        self.assertEqual(self.strs_out[9], "            " +
+                self.strs_after[4] + " " +
+                self.strs_after[5] + "\n")
+        self.assertEqual(self.strs_out[-3], "        </p>\n")
+        self.assertEqual(self.strs_out[-2], "    </body>\n")
+        self.assertEqual(self.strs_out[-1], "</html>\n")
 
 
 if __name__ == '__main__':
