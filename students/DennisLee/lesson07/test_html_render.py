@@ -25,8 +25,8 @@ class ElementTestCase(unittest.TestCase):
     def tearDown(self):
         del self.strs_before
         del self.strs_after
-        # if os.path.exists(self.test_filename):
-        #     os.remove(self.test_filename)
+        if os.path.exists(self.test_filename):
+            os.remove(self.test_filename)
 
     def test_init_1(self):
         x = hr.Element(self.strs_before[0])
@@ -124,15 +124,17 @@ class ElementTestCase(unittest.TestCase):
                     ind + ' '.join(self.strs_after) + '\n')
             self.assertEqual(self.strs_out[-1], f"</{element_tag}>\n")
         del self.e
+        del fobj
+        del f
         return result
 
-    def test_render_P_1(self):
+    def test_P_element_1(self):
         para = hr.P()
         for string in self.strs_before:
             para.append(string)
         self.assertEqual(para.contents, list(self.strs_after))
         del para
-    def test_render_P_2(self):
+    def test_P_element_2(self):
         para = hr.P(self.strs_before[0])
         for string in self.strs_before[1:]:
             para.append(string)
@@ -162,6 +164,22 @@ class ElementTestCase(unittest.TestCase):
             pg.append(string)
         self.assertEqual(pg.contents, list(self.strs_after))
         del pg
+    def test_Head_element_1(self):
+        title = hr.Title('    \tSome \t marquee \t  text    \n')
+        head = hr.Head(title)
+        with open(self.test_filename, 'w') as fobj:
+            result = head.render(fobj, '    ')
+        self.assertTrue(result)
+        with open(self.test_filename, 'r') as f:
+            self.strs_out = f.readlines()
+        self.assertEqual(len(self.strs_out), 3)
+        self.assertEqual(self.strs_out[0], "<head>\n")
+        self.assertEqual(self.strs_out[1], 
+                "    <title>Some marquee text</title>\n")
+        self.assertEqual(self.strs_out[2], "</head>\n")
+        del head; del title
+        del fobj
+        del f
 
     def test_hierarchical_1(self):
         para1 = hr.P(self.strs_before[0])
@@ -205,6 +223,85 @@ class ElementTestCase(unittest.TestCase):
         self.assertEqual(self.strs_out[-3], "        </p>\n")
         self.assertEqual(self.strs_out[-2], "    </body>\n")
         self.assertEqual(self.strs_out[-1], "</html>\n")
+
+        del pg
+        del bod
+        del para1
+        del para2
+        del para3
+        del fobj
+        del f
+
+    def test_OneLineTag_1(self):
+        para = hr.P('Hello there!')
+        bod = hr.Body(para)
+        elem = hr.OneLineTag(bod)
+        elem.tag = "RandomOneLiner"
+        with open(self.test_filename, 'w') as fobj:
+            with self.assertRaises(TypeError):
+                elem.render(fobj, '    ')
+        del elem
+        del bod
+        del para
+        del fobj
+    def test_OneLineTag_2(self):
+        para = hr.P('Hello there!')
+        elem = hr.OneLineTag()
+        elem.tag = "RandomOneLiner"
+        for str in self.strs_before:
+            elem.append(str)
+        elem.append(para)
+        with open(self.test_filename, 'w') as fobj:
+            with self.assertRaises(TypeError):
+                elem.render(fobj, '    ')
+        del elem
+        del para
+        del fobj
+    def test_OneLineTag_3(self):
+        elem = hr.OneLineTag('  \t\n\t   Hello     there!   \n \t \n ')
+        elem.tag = "p"
+        with open(self.test_filename, 'w') as fobj:
+            result = elem.render(fobj, '    ')
+        self.assertTrue(result)
+        with open(self.test_filename, 'r') as f:
+            str_out = f.read()
+        self.assertEqual(str_out, "    <{0}>Hello there!</{0}>\n".format("p"))
+        del fobj
+        del f
+        del elem
+    def test_OneLineTag_4(self):
+        elem = hr.OneLineTag()
+        elem.tag = "p"
+        for str in self.strs_before:
+            elem.append(str)
+        with open(self.test_filename, 'w') as fobj:
+            result = elem.render(fobj, '    ')
+        self.assertTrue(result)
+        with open(self.test_filename, 'r') as f:
+            str_out = f.read()
+        self.assertEqual(str_out, 
+                "    <{0}>{1}</{0}>\n".format("p", ' '.join(self.strs_after)))
+        del fobj
+        del f
+        del elem
+    def test_Title_1(self):
+        elem = hr.Title()
+        for str in self.strs_before:
+            elem.append(str)
+        with open(self.test_filename, 'w') as fobj:
+            result = elem.render(fobj, '    ')
+        self.assertTrue(result)
+        with open(self.test_filename, 'r') as f:
+            str_out = f.read()
+        self.assertEqual(str_out, "    <{0}>{1}</{0}>\n".format(
+                "title", ' '.join(self.strs_after)))
+        del fobj
+        del f
+        del elem
+
+        
+
+
 
 
 if __name__ == '__main__':

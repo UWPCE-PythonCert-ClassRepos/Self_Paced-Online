@@ -68,3 +68,37 @@ class Body(Element):
 
 class P(Element):
 	tag = "p"
+
+class Head(Element):
+	tag = "head"
+
+class OneLineTag(Element):
+	def render(self, file_out, cur_ind=""):
+		result = False
+		if not file_out:
+			raise ValueError("Nothing specified in the 'file_out' argument.")
+		elif not isinstance(cur_ind, str):
+			raise TypeError("The 'cur_ind' argument must be a string.")
+		elif cur_ind.strip(' '):
+			raise ValueError(
+					"The 'cur_ind' argument must contain spaces only.")
+		else:
+			for i in range(len(self.contents)):
+				item = self.contents[i]
+				if not isinstance(item, str):
+					raise TypeError(
+							f"Element content item #{i} '{item}' is a "
+							f"{type(item)}; it must be a string "
+							f"since {self.tag} is a one-line element.")
+			try:
+				file_out.write(cur_ind + '<{0}>{1}</{0}>\n'.format(
+						self.tag, ' '.join(self.contents)))
+			except AttributeError:
+				raise AttributeError("Writable file-like "
+						"object not given in the 'file_out' argument.")
+			else:
+				result = True
+		return result
+
+class Title(OneLineTag):
+	tag = "title"
