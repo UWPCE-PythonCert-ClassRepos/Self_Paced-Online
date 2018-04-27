@@ -8,15 +8,25 @@ Lesson07: HTML renderer
 
 class Element:
     tag = 'element'
+    props = []
+    propstring = ''
 
-    def __init__(self, content=None):       # wird erzeugt und kann schon content uebergeben bekommen, 
-        self.content = [content] if content else []  #  siehe Step2 body.append(hr.P("blabla...")
+    def __init__(self, content=None, **kwargs):       
+        self.content = [content] if content else []  
+        self.attrs = kwargs
+        self.tagopen = self.tag
+
+        if self.attrs:
+            for key, value in self.attrs.items():
+                self.props.append('{}="{}"'.format(key,value))
+            self.propstring = ' '.join(self.props)
+            self.tagopen = '{} {}'.format(self.tag, self.propstring)
 
     def append(self, stuff):
         self.content.append(stuff)
 
     def render(self, io, ind):
-        io.write('<{}>\n'.format(self.tag))
+        io.write('<{}>\n'.format(self.tagopen))
         for i in self.content:
             if hasattr(i, 'render'):
                 i.render(io, ind)
@@ -24,7 +34,7 @@ class Element:
                 line = '{}{}\n'.format(ind, i)
                 io.write(line)
         io.write('</{}>\n'.format(self.tag))
-        
+
 
 class Html(Element):
     tag = 'html'
@@ -39,17 +49,8 @@ class Body(Element):
 
 class P(Element):
     tag = 'p'
-    def __init__(self, content=None, **kwargs):   
-        self.content = [content] if content else []
-        if 'style' in kwargs.keys():
-            s = kwargs['style']
-            self.style = str('style="' + s + '"')
-    def render(self, io, ind):
-        io.write('<{} {}>\n'.format(self.tag, self.style))
-        for i in self.content:
-                line = '{}{}\n'.format(ind, i)
-                io.write(line)
-        io.write('</{}>\n'.format(self.tag))
+    props = []
+    propstring = ''
 
 
 class Head(Element):
@@ -65,22 +66,15 @@ class Title(Element):
 
 
 class SelfClosingTag(Element):
-    def __init__(self):     # if erroneously given a second argument ('content'), 
-        pass                # a TypeError will be raised
     def render(self, io, ind):
         closing = '/'
-        io.write('<{} {}>\n'.format(self.tag, closing))
+        io.write('<{} {}>\n'.format(self.tagopen, closing))
 
 
 class Meta(SelfClosingTag):
+    tag = 'meta'
     props = []
     propstring = ''
-    def __init__(self, **kwargs):
-        for key, value in kwargs.items():
-            self.props.append('{}="{}"'.format(key,value))
-
-        self.propstring = ' '.join(self.props)
-        self.tag = 'meta ' + self.propstring
     
 
 class Hr(SelfClosingTag):
@@ -109,27 +103,12 @@ class H(Element):
 
 class Ul(Element):
     tag = 'ul'
-    def __init__(self, content=None, **kwargs):       
-        self.content = [content] if content else []
-        props = []
-        for key, value in kwargs.items():
-            props.append('{}="{}"'.format(key,value))
-        self.propstring = ' '.join(props)
-
-    def append(self, stuff):
-        self.content.append(stuff)
-
-    def render(self, io, ind):
-        io.write('<{} {}>\n'.format(self.tag, self.propstring))
-        for i in self.content:
-            if hasattr(i, 'render'):
-                i.render(io, ind)
-            else:
-                line = '{}{}\n'.format(ind, i)
-                io.write(line)
-        io.write('</{}>\n'.format(self.tag))
+    props = []
+    propstring = ''
  
 
 class Li(Ul):
     tag = 'li'
+    props = []
+    propstring = ''
 

@@ -79,7 +79,7 @@ def render_page(page, filename):
 
 # page.append(body)
 
-# render_page(page, "test_html_output3.html")
+# render_page(page, "output3.html")
 
 # # Step 4
 # ##########
@@ -118,7 +118,6 @@ def render_page(page, filename):
 #               style="text-align: center; font-style: oblique;"))
 
 # body.append(hr.Hr())
-##  body.append(hr.Hr("blabla"))
 
 # page.append(body)
 
