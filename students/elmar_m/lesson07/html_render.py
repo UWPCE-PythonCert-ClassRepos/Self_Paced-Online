@@ -74,16 +74,15 @@ class SelfClosingTag(Element):
 
 
 class Meta(SelfClosingTag):
-    # tag = 'meta charset="UTF-8"'
     # tag = 'meta'
+    props = []
+    propstring = ''
     def __init__(self, **kwargs):
-        self.props = []
-        self.propstring = ''
         for key, value in kwargs.items():
-            props.append('{}="{}"'.format(key,value))
-            propstring = ' '.join(props)
-    # tag = 'meta' + self.propstring
-    tag = 'meta' + self.propstring
+            self.props.append('{}="{}"'.format(key,value))
+
+        self.propstring = ' '.join(self.props)
+        self.tag = 'meta ' + self.propstring
     
 
 
