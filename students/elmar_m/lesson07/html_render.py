@@ -65,7 +65,6 @@ class Title(Element):
 
 
 class SelfClosingTag(Element):
-    # closing = '/'
     def __init__(self):     # if erroneously given a second argument ('content'), 
         pass                # a TypeError will be raised
     def render(self, io, ind):
@@ -74,7 +73,6 @@ class SelfClosingTag(Element):
 
 
 class Meta(SelfClosingTag):
-    # tag = 'meta'
     props = []
     propstring = ''
     def __init__(self, **kwargs):
@@ -84,7 +82,6 @@ class Meta(SelfClosingTag):
         self.propstring = ' '.join(self.props)
         self.tag = 'meta ' + self.propstring
     
-
 
 class Hr(SelfClosingTag):
     tag = 'hr'
@@ -100,14 +97,6 @@ class A(Element):
     def render(self, io, ind):
         io.write('{}<{} {}>{}</{}>\n'.format(ind, self.tag, self.targetstring, self.link, self.tag))
 
-
-# class OneLineTag(Element):
-#     def render(self, io, ind):
-#         io.write('{}<{} {}>{}</{}>\n'.format(ind, self.tag, self.targetstring, self.link, self.tag))
-#         io.write('<{}>\n'.format(self.tag))
-#                 line = '{}{}\n'.format(ind, i)
-#                 io.write(line)
-#         io.write('</{}>\n'.format(self.tag))
 
 class H(Element):
     tag = 'h'
@@ -141,9 +130,6 @@ class Ul(Element):
         io.write('</{}>\n'.format(self.tag))
  
 
-# class Li(Element):
 class Li(Ul):
     tag = 'li'
-    # def __init__(self, content=None, **kwargs):       
-    #     self.content = [content] if content else []
 
