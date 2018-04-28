@@ -24,6 +24,18 @@ class Circle(object):
     def __str__(self):
         return "Circle with radius: {0:.6f}".format(float(self._radius))
 
+    def __add__(self, other):
+        new_circle = self._radius + other._radius
+        return Circle(new_circle)
+
+    def __rmul__(self, other):
+        new_circle = self._radius * other
+        return Circle(new_circle)
+
+    def __mul__(self, other):
+        new_circle = self._radius * other
+        return Circle(new_circle)
+
     @property
     def radius(self):
         return self._radius
