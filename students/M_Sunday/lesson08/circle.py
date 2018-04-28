@@ -18,6 +18,12 @@ class Circle(object):
     def __init__(self, the_radius):
         self._radius = self.entry_check(the_radius)
 
+    def __repr__(self):
+        return "Circle({})".format(self._radius)
+
+    def __str__(self):
+        return "Circle with radius: {0:.6f}".format(float(self._radius))
+
     @property
     def radius(self):
         return self._radius
