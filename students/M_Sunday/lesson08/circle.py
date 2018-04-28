@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from math import pi
 
 
 class Circle(object):
@@ -17,11 +18,26 @@ class Circle(object):
     def __init__(self, the_radius):
         self._radius = self.entry_check(the_radius)
 
-    def get_radius(self):
+    @property
+    def radius(self):
         return self._radius
 
-    def set_radius(self, the_radius):
+    @radius.setter
+    def radius(self, the_radius):
         self._radius = self.entry_check(the_radius)
 
-    radius = property(get_radius, set_radius)
+    @property
+    def diameter(self):
+        return self._radius * 2.0
 
+    @diameter.setter
+    def diameter(self, diam):
+        self._radius = diam / 2.0
+
+    @property
+    def area(self):
+        return pi * self._radius**2
+
+    @classmethod
+    def from_diameter(cls, dia):
+        return cls(dia / 2.0)
