@@ -1,18 +1,17 @@
 # Brandon Henson
-# 4/23/18
+# 4/27/18
 # Lesson 06 mailroom_4.py
-# Exceptions
+# Testing
 donor_history = {'Brandon Henson': [1005.49, 3116.72, 5200],
                     'Alicia Henson': [21.47, 1500],
                     'Michael Green': [2400.54],
                     'Brandon Henson Jr': [355.42, 579.31],
                     'Kaiya Henson': [636.9, 850.13, 125.23]}
-
-
 # Comprehension instead of for loop
-name_list = [i for i in donor_history]
-
-
+def names():
+    name_list = [i for i in donor_history]
+    #print(name_list)
+    return name_list
 def email_all():
     for key, values in donor_history.items():
         filename = str(key)+'.txt'
@@ -57,7 +56,7 @@ def menu_1():
     try:
         fullname = input("Enter a full name or 'list' to view all\n")
         if fullname.lower() == 'list':
-            print(name_list)
+            names()
 
         elif str(fullname) in donor_history:
             amount = int(input("Donation amount? \n"))
@@ -84,12 +83,12 @@ def menu_2():
         for donor, total in donor_history.items():
             report.append([donor, sum(total), len(total), sum(total)/len(total)])
         sorted_report = sorted(report, key=lambda x: -x[1])
+
         for i in sorted_report:
             print("{:<20}   ${:>8} {:>8}        ${:<1}".format(
                 i[0], i[1], i[2], i[3]))
     except TypeError:
         print()
-
 
 if __name__ == '__main__':
     main_menu()
