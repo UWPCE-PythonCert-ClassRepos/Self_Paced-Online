@@ -83,4 +83,7 @@ if __name__ == "__main__":
             if user_input == 4:
                 break
             selection = {1: send_thanks, 2: create_report, 3: send_letters_all}
-            selection[user_input]()
+            try:
+                selection[user_input]()
+            except KeyError:
+                print("You must selector number 1 - 4; try again!")
