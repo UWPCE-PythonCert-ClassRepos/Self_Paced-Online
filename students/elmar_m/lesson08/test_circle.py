@@ -17,16 +17,22 @@ class mytests(ut.TestCase):
         - possibility to create an object from class ci.Circle
         - if the resulting object has an attribute 'radius'
         - is the value of 'radius' according to the argument given at initialization
-        TODO:
-        - test if initialization with something else than a numerical value (int, float)
-          raises an exception
+        - if initialization with something else than a numerical value (int, float,
+          complex) raises a TypeError exception
         '''
         obj = ci.Circle(4)
         self.assertIsInstance(obj, ci.Circle)
         self.assertTrue(hasattr(obj, 'radius'))
+        self.assertRaises(TypeError, ci.Circle, 'abc')
+        self.assertTrue(hasattr(obj, 'diameter'))
+        self.assertTrue(hasattr(obj, 'area'))
+        
+    
+    def test_Circle_calculate(self):
+        obj = ci.Circle(4)
         self.assertEqual(obj.radius, 4)
-
-        # obj = ci.Circle('abc')
+        self.assertEqual(obj.diameter, 8)
+        self.assertEqual(obj.area, 50.26548245743669)
         
 
 
