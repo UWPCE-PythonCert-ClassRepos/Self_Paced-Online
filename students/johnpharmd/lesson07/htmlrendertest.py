@@ -144,7 +144,7 @@ class ATest(unittest.TestCase):
                          ("<a href=''>", [None, 'new content'], '</a>'))
 
 
-class UlTEst(unittest.TestCase):
+class UlTest(unittest.TestCase):
     """test ul render attributes"""
 
     def setUp(self):
@@ -158,3 +158,27 @@ class UlTEst(unittest.TestCase):
         self.assertEqual(self.test.kwargs,
                          {'id': 'TheList', 'style':
                           'line-height:200%'})
+
+
+class LiTest(unittest.TestCase):
+    """test li render attributes"""
+
+    def setUp(self):
+        self.test = hr.Li(content=None)
+
+    def test_li(self):
+        self.assertEqual(self.test.tag, 'li')
+        self.test.append('new content')
+        self.assertEqual(self.test.content, [None, 'new content'])
+
+
+class HTest(unittest.TestCase):
+    """test header render attributes"""
+
+    def setUp(self):
+        self.test = hr.H(integer=0, content=None)
+
+    def test_h(self):
+        self.assertEqual(self.test.tag, 'h')
+        self.test.append('new content')
+        self.assertEqual(self.test.content, [None, 'new content'])
