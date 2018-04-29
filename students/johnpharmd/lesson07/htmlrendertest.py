@@ -137,7 +137,6 @@ class ATest(unittest.TestCase):
         self.assertEqual(self.test.tag, 'a')
         self.test.append('new content')
         self.assertEqual(self.test.content, [None, 'new content'])
-        print('self.test.content contains:', self.test.content)
         self.test.link = 'http://duckduckgo.com'
         self.assertEqual(self.test.link, 'http://duckduckgo.com')
         self.assertEqual(self.test.render(self.f, cur_ind=''),
@@ -176,9 +175,9 @@ class HTest(unittest.TestCase):
     """test header render attributes"""
 
     def setUp(self):
-        self.test = hr.H(integer=0, content=None)
+        self.test = hr.H(integer=2, content=None)
 
     def test_h(self):
-        self.assertEqual(self.test.tag, 'h')
+        self.assertEqual(self.test.tag, 'h2')
         self.test.append('new content')
         self.assertEqual(self.test.content, [None, 'new content'])
