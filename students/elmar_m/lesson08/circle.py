@@ -51,3 +51,21 @@ class Circle:
     
     def __repr__(self):
         return 'Circle({})'.format(self._radius)
+
+
+    # object.__add__(self, other)
+    # object.__mul__(self, other)
+    # object.__rmul__(self, other)
+    
+    def __add__(self, second):  
+        return Circle(self._radius + second.radius)
+
+    def __mul__(self, factor):
+        return Circle(self._radius * factor)
+    
+    def __rmul__(self, factor):
+        return Circle(self._radius * factor)
+
+
+
+
