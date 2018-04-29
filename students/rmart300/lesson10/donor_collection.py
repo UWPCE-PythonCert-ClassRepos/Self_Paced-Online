@@ -1,5 +1,6 @@
 import os
 from donor import Donor
+from functools import reduce
 
 class DonorCollection(object):
 
@@ -107,15 +108,19 @@ class DonorCollection(object):
         
 
         for donor in self.donor_list:
-            print(donor,"before filters",donor.amount_list)
-            donor.amount_list = list(filter(self.greater_than_min_value, donor.amount_list))
-            donor.amount_list = list(filter(self.less_than_max_value, donor.amount_list))
-            print(donor,"after filters",donor.amount_list)
+            amount_list = donor.amount_list[:]
+            #print(donor,"before filters",amount_list)
+            amount_list = list(filter(self.greater_than_min_value, amount_list))
+            amount_list = list(filter(self.less_than_max_value, amount_list))
+            #print(donor,"after filters",amount_list)
 
-            factor_list = [my_factor]*len(donor.amount_list)
-            challenge_list = list(map(DonorCollection.challenge, donor.amount_list, factor_list))
-            donor.amount_list = challenge_list[:]
-            print(donor.amount_list)
+            factor_list = [my_factor]*len(amount_list)
+            challenge_list = list(map(DonorCollection.challenge, amount_list, factor_list))
+            amount_list = challenge_list[:]
+            #print(amount_list)
+            challenge_sum = reduce(lambda x,y: x+y, amount_list)
+            print(f"If you limited the donations between {self.min_value} and {self.max_value}")
+            print(f"and increased by a factor of {my_factor}, then the total donation for {donor} would be {challenge_sum}!")
 
         
 
