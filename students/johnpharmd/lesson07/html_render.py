@@ -16,10 +16,12 @@ class Element():
     def render(self, file_out, cur_ind=''):
         if self.kwargs:
             self.open_tag = '<' + self.tag
-            kwargs_string = ' '
+            kwargs_string = ''
             for k, v in self.kwargs.items():
-                kwargs_string += k + '=' + '\'' + v + '\''
+                kwargs_string += ' ' + k + '=' + '\'' + v + '\''
             self.open_tag += kwargs_string + '>'
+            if self.tag == 'ul':
+                self.open_tag += '\n'
         else:
             if self.tag != 'a':
                 self.open_tag = '<' + self.tag + '>'
@@ -27,29 +29,39 @@ class Element():
                 self.open_tag = '<' + self.tag
         self.close_tag = '</' + self.tag + '>'
         if self.tag == 'html':
-            file_out.write(cur_ind + self.open_tag + '\n')
+            file_out.write(self.open_tag + '\n')
+        elif self.tag == 'ul':
+            file_out.write(cur_ind * 2 + self.open_tag)
+        elif self.tag == 'li':
+            file_out.write(cur_ind * 3 + self.open_tag + '\n')
         elif self.tag == 'a':
-            file_out.write(cur_ind * 3 + self.open_tag)
+            file_out.write(cur_ind * 4 + self.open_tag)
         elif self.tag != 'p':
-            file_out.write(cur_ind * 2 + self.open_tag + '\n')
+            file_out.write(cur_ind + self.open_tag + '\n')
         for item in self.content:
             if item is None:
                 file_out.write('')
             elif type(item) == str:
                 if self.tag in ('p', ):
-                    file_out.write(cur_ind * 3 + self.open_tag + '\n' +
-                                   cur_ind * 4 + item + '\n' +
-                                   cur_ind * 3 + self.close_tag + '\n')
+                    file_out.write(cur_ind * 2 + self.open_tag + '\n' +
+                                   cur_ind * 3 + item + '\n' +
+                                   cur_ind * 2 + self.close_tag + '\n')
                 elif self.tag == 'body':
-                    file_out.write(cur_ind * 3 + item + '\n')
+                    file_out.write(cur_ind * 2 + item + '\n')
                 elif self.tag == 'a':
                     file_out.write(item + self.close_tag + '\n')
+                elif self.tag == 'li':
+                    file_out.write(cur_ind * 4 + item + '\n')
             else:
                 item.render(file_out, cur_ind)
-        if self.tag in ('body', 'head'):
+        if self.tag == 'html':
+            file_out.write(self.close_tag)
+        elif self.tag in ('body', 'head'):
+            file_out.write(cur_ind + self.close_tag + '\n')
+        elif self.tag == 'ul':
             file_out.write(cur_ind * 2 + self.close_tag + '\n')
-        elif self.tag == 'html':
-            file_out.write(cur_ind + self.close_tag)
+        elif self.tag == 'li':
+            file_out.write(cur_ind * 3 + self.close_tag + '\n')
         return self.open_tag, self.content, self.close_tag
 
 
@@ -91,12 +103,18 @@ class SelfClosingTag(Element):
         print('TypeError! SelfClosingTag cannot have content.')
 
     def render(self, file_out, cur_ind):
-        file_out.write(cur_ind * 3 + '<' + self.tag + ' />\n')
+        file_out.write(cur_ind * 2 + '<' + self.tag + ' />\n')
         return '<' + self.tag + ' />'
 
 
 class Ul(Element):
+    """renders a ul"""
     tag = 'ul'
+
+
+class Li(Element):
+    """renders a li element"""
+    tag = 'li'
 
 
 class Hr(SelfClosingTag):
@@ -116,7 +134,7 @@ class OneLineTag(Element):
     def render(self, file_out, cur_ind=''):
         self.open_tag = '<' + self.tag + '>'
         self.close_tag = '</' + self.tag + '>'
-        file_out.write(cur_ind * 3 + self.open_tag)
+        file_out.write(cur_ind * 2 + self.open_tag)
         for item in self.content:
             if type(item) == str:
                 file_out.write(item)
@@ -127,3 +145,11 @@ class OneLineTag(Element):
 class Title(OneLineTag):
     """renders title"""
     tag = 'title'
+
+
+class H(OneLineTag):
+    """renders a header element"""
+    tag = 'h'
+
+    def __init__(self, integer=0, content=None):
+        super().__init__()
