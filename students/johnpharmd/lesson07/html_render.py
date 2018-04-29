@@ -37,9 +37,10 @@ class Element():
             if item is None:
                 file_out.write('')
             elif type(item) == str:
-                file_out.write(cur_ind * 3 + self.open_tag + '\n' +
-                               cur_ind * 4 + item + '\n' +
-                               cur_ind * 3 + self.close_tag + '\n')
+                if self.tag != 'body':
+                    file_out.write(cur_ind * 3 + self.open_tag + '\n' +
+                                   cur_ind * 4 + item + '\n' +
+                                   cur_ind * 3 + self.close_tag + '\n')
             else:
                 item.render(file_out, cur_ind)
         if self.tag != 'html' and self.tag != 'p':
