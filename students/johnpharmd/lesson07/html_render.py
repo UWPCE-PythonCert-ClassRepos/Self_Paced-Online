@@ -41,7 +41,7 @@ class Element():
         for item in self.content:
             if item is None:
                 file_out.write('')
-            elif type(item) == str:
+            elif type(item) == str or type(item) == int:
                 if self.tag in ('p', ):
                     file_out.write(cur_ind * 2 + self.open_tag + '\n' +
                                    cur_ind * 3 + item + '\n' +
@@ -151,5 +151,7 @@ class H(OneLineTag):
     """renders a header element"""
     tag = 'h'
 
-    def __init__(self, integer=0, content=None):
-        super().__init__()
+    def __init__(self, integer, content=None):
+        OneLineTag.__init__(self, content)
+        self.integer = str(integer)
+        self.tag += self.integer
