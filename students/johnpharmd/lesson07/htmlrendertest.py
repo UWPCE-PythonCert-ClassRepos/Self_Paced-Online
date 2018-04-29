@@ -140,6 +140,21 @@ class ATest(unittest.TestCase):
         print('self.test.content contains:', self.test.content)
         self.test.link = 'http://duckduckgo.com'
         self.assertEqual(self.test.link, 'http://duckduckgo.com')
-        # self.assertEqual(self.test.render(self.f, cur_ind=''),
-        #                  ('<a' + self.test.kwargs + '>' +
-        #                   self.test.content + '</a>'))
+        self.assertEqual(self.test.render(self.f, cur_ind=''),
+                         ("<a href=''>", [None, 'new content'], '</a>'))
+
+
+class UlTEst(unittest.TestCase):
+    """test ul render attributes"""
+
+    def setUp(self):
+        self.test = hr.Ul(
+            id='TheList', style='line-height:200%')
+
+    def test_ul(self):
+        self.assertEqual(self.test.tag, 'ul')
+        self.test.append('new content')
+        self.assertEqual(self.test.content, [None, 'new content'])
+        self.assertEqual(self.test.kwargs,
+                         {'id': 'TheList', 'style':
+                          'line-height:200%'})
