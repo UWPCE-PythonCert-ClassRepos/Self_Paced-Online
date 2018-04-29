@@ -15,16 +15,22 @@ class Element():
 
     def render(self, file_out, cur_ind=''):
         if self.kwargs:
-            kwargs_string = ' '
             self.open_tag = '<' + self.tag
+            kwargs_string = ' '
             for k, v in self.kwargs.items():
                 kwargs_string += k + '=' + '\'' + v + '\''
             self.open_tag += kwargs_string + '>'
         else:
-            self.open_tag = '<' + self.tag + '>'
+            if self.tag != 'a':
+                self.open_tag = '<' + self.tag + '>'
+            else:
+                self.open_tag = '<' + self.tag
         self.close_tag = '</' + self.tag + '>'
         if self.tag == 'html':
             file_out.write(cur_ind + self.open_tag + '\n')
+        elif self.tag == 'a':
+            print('dir(a) is:', dir(self))
+            file_out.write(cur_ind * 3 + self.open_tag)
         elif self.tag != 'p':
             file_out.write(cur_ind * 2 + self.open_tag + '\n')
         for item in self.content:
@@ -38,6 +44,8 @@ class Element():
                 item.render(file_out, cur_ind)
         if self.tag != 'html' and self.tag != 'p':
             file_out.write(cur_ind * 2 + self.close_tag + '\n')
+        elif self.tag == 'a':
+            file_out.write(cur_ind * 3 + self.close_tag + '\n')
         elif self.tag == 'html':
             file_out.write(cur_ind + self.close_tag)
         return self.open_tag, self.content, self.close_tag
@@ -67,10 +75,10 @@ class A(Element):
     """renders an anchor"""
     tag = 'a'
 
-    def __init__(self, link='', content=None):
-        self.link = link
-        self.content = [content]
-        super().__init__()
+    def __init__(self, link, content):
+        # self.link = link
+        # self.content = content
+        Element.__init__(self)
 
 
 class SelfClosingTag(Element):
