@@ -3,10 +3,16 @@
 import io
 
 class Element():
-	tag, indent = "", ""
-	def __init__(self, content=None):
-		self.contents = []
+	indent = ""
+	def __init__(self, content=None, **kwargs):
+		self.contents, self.attributes = [], {}
 		self.append(content)
+		for k, v in kwargs.items():
+			if isinstance(v, str):
+				self.attributes[k] = ' '.join(v.split())
+			else:
+				raise TypeError(
+						f"Attribute {k} value is {v}, which is not a string.")
 	def append(self, content):
 		if content is not None:
 			if isinstance(content, Element):
@@ -32,11 +38,14 @@ class Element():
 			raise ValueError(
 					"The 'cur_ind' argument must contain spaces only.")
 		else:
+			attr_str = ''.join(
+					f' {k}="{v}"' for k, v in self.attributes.items())
 			if not self.indent:
 				self.indent, cur_ind = cur_ind, ""
 			child_ind = cur_ind + self.indent
 			try:
-				file_out.write(cur_ind + '<{0}>\n'.format(self.tag))
+				file_out.write(cur_ind + 
+						'<{0}{1}>\n'.format(self.tag, attr_str))
 			except AttributeError:
 				raise AttributeError("Writable file-like "
 						"object not given in the 'file_out' argument.")

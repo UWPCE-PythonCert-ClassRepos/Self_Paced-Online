@@ -21,10 +21,19 @@ class ElementTestCase(unittest.TestCase):
                 "Someone who'll watch over me",
                 "I did it my way"
         )
+        self.attrs_fail = {
+            'id': 60,
+            'alt': '  \t  \n \tFancy      \t\t   Pants   \n\n\t\n '
+        }
+        self.attrs_pass = {
+            'id': 'Marker',
+            'alt': '  \t  \n \tFancy      \t\t   Pants   \n\n\t\n '
+        }
+        self.alt_normalized = "Fancy Pants"
+        self.random_tag = "SomeTagName"
         self.test_filename = "test_html_file_dennislee.html"
     def tearDown(self):
-        del self.strs_before
-        del self.strs_after
+        del self.strs_before, self.strs_after, self.attrs_fail, self.attrs_pass
         if os.path.exists(self.test_filename):
             os.remove(self.test_filename)
 
@@ -57,6 +66,60 @@ class ElementTestCase(unittest.TestCase):
         x = hr.Element(None)
         self.assertEqual(x.contents, [])
         del x
+    
+    def test_init_100(self):
+        with self.assertRaises(TypeError):
+            x = hr.Element(self.strs_before[0], **self.attrs_fail)
+            del x
+    def test_init_101(self):
+        with self.assertRaises(TypeError):
+            x = hr.Element(self.strs_before[0],
+                    id=self.attrs_fail['id'],
+                    alt=self.attrs_fail['alt'])
+            del x
+    def test_init_105(self):
+        x = hr.Element(self.strs_before[0], **self.attrs_pass)
+        x.tag = self.random_tag
+        with open(self.test_filename, 'w') as fobj:
+            self.assertTrue(x.render(fobj, '    '))
+        with open(self.test_filename, 'r') as f:
+            str = f.read()
+        self.assertEqual(str, '<SomeTagName id="Marker" alt="Fancy Pants">\n'
+                f'    {self.strs_after[0]}\n'
+                '</SomeTagName>\n')
+        del x, fobj, f
+    def test_init_106(self):
+        x = hr.Element(**self.attrs_pass)
+        x.append(self.strs_before[0])
+        x.append(self.strs_before[1])
+        x.tag = self.random_tag
+        with open(self.test_filename, 'w') as fobj:
+            self.assertTrue(x.render(fobj, '    '))
+        with open(self.test_filename, 'r') as f:
+            str = f.read()
+        self.assertEqual(str, '<SomeTagName id="Marker" alt="Fancy Pants">\n'
+                f'    {self.strs_after[0]} {self.strs_after[1]}\n'
+                '</SomeTagName>\n')
+        del x, fobj, f
+    def test_init_107(self):
+        x = hr.Element(self.strs_before[0], **self.attrs_pass)
+        y = hr.P(self.strs_before[1])
+        x.append(y)
+        x.append(self.strs_before[2])
+        x.tag = self.random_tag
+        with open(self.test_filename, 'w') as fobj:
+            self.assertTrue(x.render(fobj, '    '))
+        with open(self.test_filename, 'r') as f:
+            str = f.read()
+            self.assertEqual(str, '<SomeTagName id="Marker" alt="Fancy Pants">\n'
+                    f'    {self.strs_after[0]}\n'
+                    '    <p>\n'
+                    f'        {self.strs_after[1]}\n'
+                    '    </p>\n'
+                    f'    {self.strs_after[2]}\n'
+                    '</SomeTagName>\n')
+        del x, y, fobj, f
+
 
     def test_append_internal(self):
         self.assertEqual(len(self.strs_before), len(self.strs_after))
@@ -114,18 +177,17 @@ class ElementTestCase(unittest.TestCase):
         for str in self.strs_before:
             self.e.append(str)
         with open(self.test_filename, 'w') as fobj:
-            result = self.e.render(fobj, ind)
-        if result:
-            with open(self.test_filename, 'r') as f:
-                self.strs_out = f.readlines()
+            self.assertTrue(self.e.render(fobj, ind))
+        with open(self.test_filename, 'r') as f:
+            self.strs_out = f.readlines()
             self.assertEqual(len(self.strs_out), 3)
             self.assertEqual(self.strs_out[0], f"<{element_tag}>\n")
             self.assertEqual(self.strs_out[1], 
                     ind + ' '.join(self.strs_after) + '\n')
             self.assertEqual(self.strs_out[-1], f"</{element_tag}>\n")
-        del self.e
-        del fobj
-        del f
+            del self.strs_out
+            result = True
+        del self.e, fobj, f
         return result
 
     def test_P_element_1(self):
@@ -168,18 +230,16 @@ class ElementTestCase(unittest.TestCase):
         title = hr.Title('    \tSome \t marquee \t  text    \n')
         head = hr.Head(title)
         with open(self.test_filename, 'w') as fobj:
-            result = head.render(fobj, '    ')
-        self.assertTrue(result)
+            self.assertTrue(head.render(fobj, '    '))
         with open(self.test_filename, 'r') as f:
             self.strs_out = f.readlines()
-        self.assertEqual(len(self.strs_out), 3)
-        self.assertEqual(self.strs_out[0], "<head>\n")
-        self.assertEqual(self.strs_out[1], 
-                "    <title>Some marquee text</title>\n")
-        self.assertEqual(self.strs_out[2], "</head>\n")
-        del head; del title
-        del fobj
-        del f
+            self.assertEqual(len(self.strs_out), 3)
+            self.assertEqual(self.strs_out[0], "<head>\n")
+            self.assertEqual(self.strs_out[1], 
+                    "    <title>Some marquee text</title>\n")
+            self.assertEqual(self.strs_out[2], "</head>\n")
+            del self.strs_out
+        del head, title, fobj, f
 
     def test_hierarchical_1(self):
         para1 = hr.P(self.strs_before[0])
@@ -196,108 +256,88 @@ class ElementTestCase(unittest.TestCase):
         
         pg = hr.Html(bod)
 
-        result = False
         self.test_filename = 'test_hierarchical.html'
         with open(self.test_filename, 'w') as fobj:
-            result = pg.render(fobj, '    ')
-        self.assertTrue(result)
+            self.assertTrue(pg.render(fobj, '    '))
         with open(self.test_filename, 'r') as f:
             self.strs_out = f.readlines()
-        self.assertEqual(len(self.strs_out), 13)
-        self.assertEqual(self.strs_out[0], "<html>\n")
-        self.assertEqual(self.strs_out[1], "    <body>\n")
-        self.assertEqual(self.strs_out[2], "        <p>\n")
-        self.assertEqual(self.strs_out[3], "            " +
-                self.strs_after[0] + " " +
-                self.strs_after[1] + "\n")
-        self.assertEqual(self.strs_out[4], "        </p>\n")
-        self.assertEqual(self.strs_out[5], "        <p>\n")
-        self.assertEqual(self.strs_out[6], "            " +
-                self.strs_after[2] + " " +
-                self.strs_after[3] + "\n")
-        self.assertEqual(self.strs_out[7], "        </p>\n")
-        self.assertEqual(self.strs_out[8], "        <p>\n")
-        self.assertEqual(self.strs_out[9], "            " +
-                self.strs_after[4] + " " +
-                self.strs_after[5] + "\n")
-        self.assertEqual(self.strs_out[-3], "        </p>\n")
-        self.assertEqual(self.strs_out[-2], "    </body>\n")
-        self.assertEqual(self.strs_out[-1], "</html>\n")
-
-        del pg
-        del bod
-        del para1
-        del para2
-        del para3
-        del fobj
-        del f
+            self.assertEqual(len(self.strs_out), 13)
+            self.assertEqual(self.strs_out[0], "<html>\n")
+            self.assertEqual(self.strs_out[1], "    <body>\n")
+            self.assertEqual(self.strs_out[2], "        <p>\n")
+            self.assertEqual(self.strs_out[3], "            " +
+                    self.strs_after[0] + " " +
+                    self.strs_after[1] + "\n")
+            self.assertEqual(self.strs_out[4], "        </p>\n")
+            self.assertEqual(self.strs_out[5], "        <p>\n")
+            self.assertEqual(self.strs_out[6], "            " +
+                    self.strs_after[2] + " " +
+                    self.strs_after[3] + "\n")
+            self.assertEqual(self.strs_out[7], "        </p>\n")
+            self.assertEqual(self.strs_out[8], "        <p>\n")
+            self.assertEqual(self.strs_out[9], "            " +
+                    self.strs_after[4] + " " +
+                    self.strs_after[5] + "\n")
+            self.assertEqual(self.strs_out[-3], "        </p>\n")
+            self.assertEqual(self.strs_out[-2], "    </body>\n")
+            self.assertEqual(self.strs_out[-1], "</html>\n")
+            del self.strs_out
+        del pg, bod, para1, para2, para3, fobj, f
 
     def test_OneLineTag_1(self):
-        para = hr.P('Hello there!')
+        para = hr.P(self.strs_before[0])
         bod = hr.Body(para)
         elem = hr.OneLineTag(bod)
-        elem.tag = "RandomOneLiner"
+        elem.tag = self.random_tag
         with open(self.test_filename, 'w') as fobj:
             with self.assertRaises(TypeError):
                 elem.render(fobj, '    ')
-        del elem
-        del bod
-        del para
-        del fobj
+        del elem, bod, para, fobj
     def test_OneLineTag_2(self):
-        para = hr.P('Hello there!')
+        para = hr.P(self.strs_before[0])
         elem = hr.OneLineTag()
-        elem.tag = "RandomOneLiner"
+        elem.tag = self.random_tag
         for str in self.strs_before:
             elem.append(str)
         elem.append(para)
         with open(self.test_filename, 'w') as fobj:
             with self.assertRaises(TypeError):
                 elem.render(fobj, '    ')
-        del elem
-        del para
-        del fobj
+        del elem, para, fobj
     def test_OneLineTag_3(self):
-        elem = hr.OneLineTag('  \t\n\t   Hello     there!   \n \t \n ')
-        elem.tag = "p"
+        elem = hr.OneLineTag(self.strs_before[0])
+        elem.tag = self.random_tag
         with open(self.test_filename, 'w') as fobj:
-            result = elem.render(fobj, '    ')
-        self.assertTrue(result)
-        with open(self.test_filename, 'r') as f:
-            str_out = f.read()
-        self.assertEqual(str_out, "    <{0}>Hello there!</{0}>\n".format("p"))
-        del fobj
-        del f
-        del elem
-    def test_OneLineTag_4(self):
-        elem = hr.OneLineTag()
-        elem.tag = "p"
-        for str in self.strs_before:
-            elem.append(str)
-        with open(self.test_filename, 'w') as fobj:
-            result = elem.render(fobj, '    ')
-        self.assertTrue(result)
+            self.assertTrue(elem.render(fobj, '    '))
         with open(self.test_filename, 'r') as f:
             str_out = f.read()
         self.assertEqual(str_out, 
-                "    <{0}>{1}</{0}>\n".format("p", ' '.join(self.strs_after)))
-        del fobj
-        del f
-        del elem
+                "    <{0}>{1}</{0}>\n".format(elem.tag, self.strs_after[0]))
+        del fobj, f, elem
+    def test_OneLineTag_4(self):
+        elem = hr.OneLineTag()
+        elem.tag = self.random_tag
+        for str in self.strs_before:
+            elem.append(str)
+        with open(self.test_filename, 'w') as fobj:
+            self.assertTrue(elem.render(fobj, '    '))
+        with open(self.test_filename, 'r') as f:
+            str_out = f.read()
+        self.assertEqual(str_out, 
+                "    <{0}>{1}</{0}>\n".format(
+                elem.tag, ' '.join(self.strs_after)))
+        del fobj, f, elem
     def test_Title_1(self):
         elem = hr.Title()
         for str in self.strs_before:
             elem.append(str)
         with open(self.test_filename, 'w') as fobj:
-            result = elem.render(fobj, '    ')
-        self.assertTrue(result)
+            self.assertTrue(elem.render(fobj, '    '))
         with open(self.test_filename, 'r') as f:
             str_out = f.read()
         self.assertEqual(str_out, "    <{0}>{1}</{0}>\n".format(
                 "title", ' '.join(self.strs_after)))
-        del fobj
-        del f
-        del elem
+        del fobj, f, elem
 
         
 
