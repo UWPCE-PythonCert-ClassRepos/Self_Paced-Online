@@ -27,12 +27,27 @@ class Html(Element):
     tag_name = 'html'
 
 
+class Head(Element):
+    tag_name = 'head'
+
+
 class Body(Element):
     tag_name = 'body'
 
 
 class P(Element):
     tag_name = 'p'
+
+
+class OneLineTag(Element):
+    def render(self, file_out="f", cur_ind=""):
+        open_tag = "<"+self.tag_name+">"
+        close_tag = "</"+self.tag_name+">"
+        print(open_tag, self.content[0], close_tag)
+
+
+class Title(OneLineTag):
+    tag_name = 'title'
 
 
 class TextWrapper:
