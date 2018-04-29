@@ -1,0 +1,7 @@
+{
+  "circle_test.py::test_comparisons": true,
+  "circle_test.py::test_iadd__": true,
+  "circle_test.py::test_repr_": true,
+  "circle_test.py::test_sort": true,
+  "circle_test.py::test_str_": true
+}
