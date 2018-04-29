@@ -6,13 +6,12 @@ class DonorCollection(object):
 
     letter_directory = 'temp/'
 
-    def __init__(self, donor_names=()):
+    def __init__(self, donors=()):
         # list to hold donors
         self.donor_list = []
 
         # build initial dictionary of donors and donation amounts
-        for name in donor_names:
-            d = Donor(name)
+        for d in donors:
             self.donor_list.append(d)
 
     def validate_and_create_thank_you(self, name, amount):
@@ -23,12 +22,14 @@ class DonorCollection(object):
         except ValueError as e: 
             return 'invalid donation amount: ' + str(amount)
 
-        if name in self.donor_list:
-            for d in self.donor_list:
-                if d == name:
-                    amount_list = d.amount_list
-                    amount_list.append(amount)
-                    break
+        existing_donor = None
+        for d in self.donor_list:
+            if name == str(d):
+                existing_donor = d
+                break
+
+        if existing_donor is not None:
+            existing_donor.amount_list.append(amount)
         else:
             try:
                 d = Donor(name,[amount])

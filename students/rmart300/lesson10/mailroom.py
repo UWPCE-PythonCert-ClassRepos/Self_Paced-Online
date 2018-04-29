@@ -1,5 +1,6 @@
 from datetime import date
 from donor_collection import DonorCollection
+from donor import Donor
 
 dc = {}
 
@@ -17,7 +18,7 @@ def validate_user_selection(action, action_dict):
 
 if __name__ == '__main__':
 
-    example_list = ['Fred Smith', 'Terrie Ann', 'Murray Martin', 'Josh Jones', 'Jane Doe']
+    example_list = [Donor('Fred Smith'), Donor('Terrie Ann'), Donor('Murray Martin'), Donor('Josh Jones'), Donor('Jane Doe')]
     dc = DonorCollection(example_list)
     # prompt user for action and then call function
     action = 0
