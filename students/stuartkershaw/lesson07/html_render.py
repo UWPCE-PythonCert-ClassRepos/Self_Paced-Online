@@ -33,14 +33,13 @@ class Element:
             self.content.append(content)
 
     def generate_spacing(self, tree_level):
-        self.tree_level = tree_level
+        tree_level = tree_level
 
-        return " " * self.tree_level * self.indentation
+        return " " * tree_level * self.indentation
 
-    def apply_attributes(self, attrs):
-        self.attrs = attrs
+    def apply_attributes(self, attributes_in):
 
-        for key, value in self.attrs.items():
+        for key, value in attributes_in.items():
             self.file_out.write(f" {key}=\"{value}\"")
 
     def render(self, file_out, cur_ind=""):
