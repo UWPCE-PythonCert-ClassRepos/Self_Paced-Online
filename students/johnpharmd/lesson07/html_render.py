@@ -29,7 +29,6 @@ class Element():
         if self.tag == 'html':
             file_out.write(cur_ind + self.open_tag + '\n')
         elif self.tag == 'a':
-            print('dir(a) is:', dir(self))
             file_out.write(cur_ind * 3 + self.open_tag)
         elif self.tag != 'p':
             file_out.write(cur_ind * 2 + self.open_tag + '\n')
@@ -37,16 +36,18 @@ class Element():
             if item is None:
                 file_out.write('')
             elif type(item) == str:
-                if self.tag != 'body':
+                if self.tag in ('p', ):
                     file_out.write(cur_ind * 3 + self.open_tag + '\n' +
                                    cur_ind * 4 + item + '\n' +
                                    cur_ind * 3 + self.close_tag + '\n')
+                elif self.tag == 'body':
+                    file_out.write(cur_ind * 3 + item + '\n')
+                elif self.tag == 'a':
+                    file_out.write(item + self.close_tag + '\n')
             else:
                 item.render(file_out, cur_ind)
-        if self.tag != 'html' and self.tag != 'p':
+        if self.tag in ('body', 'head'):
             file_out.write(cur_ind * 2 + self.close_tag + '\n')
-        elif self.tag == 'a':
-            file_out.write(cur_ind * 3 + self.close_tag + '\n')
         elif self.tag == 'html':
             file_out.write(cur_ind + self.close_tag)
         return self.open_tag, self.content, self.close_tag
@@ -79,7 +80,7 @@ class A(Element):
     def __init__(self, link, content):
         # self.link = link
         # self.content = content
-        Element.__init__(self)
+        Element.__init__(self, content, href=link)
 
 
 class SelfClosingTag(Element):
@@ -92,6 +93,10 @@ class SelfClosingTag(Element):
     def render(self, file_out, cur_ind):
         file_out.write(cur_ind * 3 + '<' + self.tag + ' />\n')
         return '<' + self.tag + ' />'
+
+
+class Ul(Element):
+    tag = 'ul'
 
 
 class Hr(SelfClosingTag):
