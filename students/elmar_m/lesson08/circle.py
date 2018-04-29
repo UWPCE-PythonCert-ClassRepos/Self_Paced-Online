@@ -39,3 +39,22 @@ class Circle:
         # print('getter area called')
         self._area = (self._radius ** 2) * m.pi
         return self._area
+
+    
+    @classmethod
+    def from_diameter(cls, value):
+        # self = cls(value / 2)
+        # return self
+        return cls(value / 2)
+
+    #@classmethod
+    #def fromkeys(cls, iterable, value=None):
+    #    '''OD.fromkeys(S[, v]) -> New ordered dictionary with keys from S.
+    #    If not specified, the value defaults to None.
+    #    '''
+    #    self = cls()
+    #    for key in iterable:
+    #        self[key] = value
+    #    return self
+
+

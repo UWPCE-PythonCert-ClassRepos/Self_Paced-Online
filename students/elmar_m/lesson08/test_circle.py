@@ -32,7 +32,6 @@ class mytests(ut.TestCase):
         self.assertRaises(BaseException, ci.Circle, 0)
         self.assertRaises(BaseException, ci.Circle, -1)
         
-        
     
     def test_Circle_calculate(self):
         obj = ci.Circle(4)
