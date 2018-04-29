@@ -4,11 +4,12 @@ import math as m
 class Circle:
 
     def __init__(self, r):
-        if isinstance(r, (int, float, complex)):
+        if isinstance(r, (int, float, complex)) and r > 0:
             self._radius = r
             self._diameter = r * 2
         else:
-            raise TypeError('Only numerical datatypes allowed')
+            # raise TypeError('Only numerical datatypes greater than zero allowed')
+            raise BaseException('Only numerical datatypes greater than zero allowed')
 
     @property
     def radius(self):

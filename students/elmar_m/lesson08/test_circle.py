@@ -23,9 +23,15 @@ class mytests(ut.TestCase):
         obj = ci.Circle(4)
         self.assertIsInstance(obj, ci.Circle)
         self.assertTrue(hasattr(obj, 'radius'))
-        self.assertRaises(TypeError, ci.Circle, 'abc')
         self.assertTrue(hasattr(obj, 'diameter'))
         self.assertTrue(hasattr(obj, 'area'))
+    
+    def test_given_value(self):
+        self.assertRaises(BaseException, ci.Circle, 'aBc')
+        self.assertRaises(BaseException, ci.Circle, '2aBc')
+        self.assertRaises(BaseException, ci.Circle, 0)
+        self.assertRaises(BaseException, ci.Circle, -1)
+        
         
     
     def test_Circle_calculate(self):
