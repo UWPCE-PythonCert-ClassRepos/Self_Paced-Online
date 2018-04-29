@@ -181,3 +181,15 @@ class HTest(unittest.TestCase):
         self.assertEqual(self.test.tag, 'h2')
         self.test.append('new content')
         self.assertEqual(self.test.content, [None, 'new content'])
+
+
+class MetaTest(unittest.TestCase):
+    """test meta render attributes"""
+
+    def setUp(self):
+        self.test = hr.Meta()
+        self.f = StringIO()
+
+        def test_meta(self):
+            self.assertEqual(self.test.render(self.f, cur_ind=''),
+                             '<meta charset=UTF-8 />')
