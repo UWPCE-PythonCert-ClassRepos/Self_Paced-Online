@@ -69,6 +69,10 @@ class Html(Element):
     """renders html"""
     tag = 'html'
 
+    def render(self, file_out, cur_ind=''):
+        file_out.write('<!DOCTYPE html>\n')
+        Element.render(self, file_out, cur_ind)
+
 
 class Body(Element):
     """renders body"""
@@ -125,6 +129,11 @@ class Hr(SelfClosingTag):
 class Br(SelfClosingTag):
     """renders br tag"""
     tag = 'br'
+
+
+class Meta(SelfClosingTag):
+    """renders meta tag"""
+    tag = 'meta'
 
 
 class OneLineTag(Element):
