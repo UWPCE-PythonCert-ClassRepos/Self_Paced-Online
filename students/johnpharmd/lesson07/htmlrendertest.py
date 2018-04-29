@@ -21,10 +21,9 @@ class ElementRenderTest(unittest.TestCase):
     def test_element_render(self):
         self.test.content = 'None'
         self.test.tag = 'html'
-        self.test.f = StringIO()
-        self.assertEqual(self.test.render(self.test.f, cur_ind=''),
-                         ('<html>\n' + self.test.indent * 1 +
-                          '<\html>'))
+        self.f = StringIO()
+        self.assertEqual(self.test.render(self.f, cur_ind=''),
+                         ('<html>', 'None', '</html>'))
 
 
 class HTMLRenderTest(unittest.TestCase):
@@ -62,7 +61,6 @@ class ParaRenderTest(unittest.TestCase):
         self.assertEqual(self.test.tag, 'p')
         self.test.append('new content')
         self.assertEqual(self.test.content, [None, 'new content'])
-        print(self.test)
         self.assertEqual(self.test.kwargs,
                          {'style': 'text-align: center; font-style: oblique;'})
 
@@ -88,10 +86,9 @@ class OneLineTagTest(unittest.TestCase):
     def test_olt(self):
         self.test.content = 'None'
         self.test.tag = 'olt'
-        self.test.f = StringIO()
-        self.assertEqual(self.test.render(self.test.f, cur_ind=''),
-                         ('<olt>' + self.test.indent * 2 +
-                          'None' + '<\olt>'))
+        self.f = StringIO()
+        self.assertEqual(('<olt>', 'None', '</olt>'),
+                         self.test.render(self.f, cur_ind=''))
 
 
 class TitleTest(unittest.TestCase):
@@ -111,8 +108,38 @@ class SelfClosingTagTest(unittest.TestCase):
 
     def setUp(self):
         self.test = hr.SelfClosingTag()
+        self.f = StringIO()
 
     def test_selfclosingtag(self):
-        self.test.f = StringIO()
-        self.assertEqual(self.test.render(self.test.f, cur_ind=''),
+        self.assertEqual(self.test.render(self.f, cur_ind=''),
                          '<sct />')
+
+
+class HrTest(unittest.TestCase):
+    """test hr render attributes"""
+
+    def setUp(self):
+        self.test = hr.Hr()
+
+    def test_hr(self):
+        self.assertEqual(self.test.tag, 'hr')
+        self.assertEqual(self.test.content, [None])
+
+
+class ATest(unittest.TestCase):
+    """test anchor render attributes"""
+
+    def setUp(self):
+        self.test = hr.A(link='', content=None)
+        self.f = StringIO()
+
+    def test_a(self):
+        self.assertEqual(self.test.tag, 'a')
+        self.test.append('new content')
+        self.assertEqual(self.test.content, [None, 'new content'])
+        print('self.test.content contains:', self.test.content)
+        self.test.link = 'http://duckduckgo.com'
+        self.assertEqual(self.test.link, 'http://duckduckgo.com')
+        # self.assertEqual(self.test.render(self.f, cur_ind=''),
+        #                  ('<a' + self.test.kwargs + '>' +
+        #                   self.test.content + '</a>'))
