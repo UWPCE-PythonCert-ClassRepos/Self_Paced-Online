@@ -36,7 +36,7 @@ def render_page(page, filename):
 page = hr.Element()
 
 page.append("Here is a paragraph of text -- there could be more of them, "
-             "but this is enough  to show that we can do some text")
+            "but this is enough  to show that we can do some text")
 	
 			
 page.append("And here is another piece of text -- you should be able to add any number")
