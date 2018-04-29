@@ -43,18 +43,11 @@ class Circle:
     
     @classmethod
     def from_diameter(cls, value):
-        # self = cls(value / 2)
-        # return self
         return cls(value / 2)
 
-    #@classmethod
-    #def fromkeys(cls, iterable, value=None):
-    #    '''OD.fromkeys(S[, v]) -> New ordered dictionary with keys from S.
-    #    If not specified, the value defaults to None.
-    #    '''
-    #    self = cls()
-    #    for key in iterable:
-    #        self[key] = value
-    #    return self
 
-
+    def __str__(self):
+        return 'Circle with radius: {}'.format(self._radius)
+    
+    def __repr__(self):
+        return 'Circle({})'.format(self._radius)
