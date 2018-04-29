@@ -7,11 +7,11 @@ class Circle(object):
     @staticmethod
     def entry_check(the__radius):
         if isinstance(the__radius, (str, list, tuple, dict)):
-            raise TypeError("Radius entry must be a single, positive, and "
+            raise TypeError("Radius/Diameter entry must be a single, positive, and "
                             "non-string value")
         else:
             if the__radius < 0:
-                raise ValueError("Radius must be greater than 0")
+                raise ValueError("Radius/Diameter must be greater than 0")
             else:
                 return the__radius
 
@@ -36,6 +36,15 @@ class Circle(object):
         new_circle = self._radius * other
         return Circle(new_circle)
 
+    def __lt__(self, other):
+        return self._radius < other._radius
+
+    def __gt__(self, other):
+        return self._radius > other._radius
+
+    def __eq__(self, other):
+        return self._radius == other._radius
+
     @property
     def radius(self):
         return self._radius
@@ -50,7 +59,7 @@ class Circle(object):
 
     @diameter.setter
     def diameter(self, diam):
-        self._radius = diam / 2.0
+        self._radius = self.entry_check(diam) / 2.0
 
     @property
     def area(self):
@@ -58,4 +67,12 @@ class Circle(object):
 
     @classmethod
     def from_diameter(cls, dia):
-        return cls(dia / 2.0)
+        if isinstance(dia, (str, list, tuple, dict)):
+            raise TypeError("Diameter entry must be a single, positive, and "
+                            "non-string value")
+        else:
+            if dia < 0:
+                raise ValueError("Diameter must be greater than 0")
+            else:
+                return cls(dia / 2.0)
+
