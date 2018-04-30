@@ -1,4 +1,5 @@
 # Series 1
+print("---------- SERIES 1 ----------")
 
 fruits = ["Apples", "Pears", "Oranges", "Peaches"]
 
@@ -11,7 +12,6 @@ print("Fruit list: ")
 print(fruits)
 
 fruitdex = input("Enter a fruitdex number: ")
-
 print("#" + fruitdex + ": " + fruits[int(fruitdex) - 1])
 
 print("Adding 'pineapples' to list...")
@@ -29,6 +29,7 @@ for fruit in fruits:
         print(fruit)
 
 # Series 2
+print("---------- SERIES 2 ----------")
 
 print("Showing current list: ")
 print(fruits)
@@ -39,10 +40,11 @@ print(fruits)
 
 delete_fruit = input("Please enter a fruit to delete: ")
 fruits.remove(delete_fruit)
-print("Current list status: ")
+print("Series 2 list status: ")
 print(fruits)
 
-# Series 3
+# # Series 3
+print("---------- SERIES 3 ----------")
 
 new_fruits = fruits[:]
 
@@ -63,3 +65,21 @@ fruit_liker()
 print("Current list status: ")
 fruits = new_fruits[:]
 print(fruits)
+
+# Series 4
+print("---------- SERIES 4 ----------")
+
+print("Reversing letters in each fruit...")
+reverse_fruits = []
+for fruit in fruits:
+    reverse_fruits.append(fruit[::-1])
+print(reverse_fruits)
+
+print("Removing last fruit from original list...")
+fruits.pop()
+
+print("Original list status:")
+print(fruits)
+
+print("Reversed list status:")
+print(reverse_fruits)
