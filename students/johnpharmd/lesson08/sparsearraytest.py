@@ -1,11 +1,12 @@
 import sparse_array as sa
+import unittest
 
 
-class SparseArrayTest(unittest.TestCase):
+class SATest(unittest.TestCase):
     """tests sparse array attributes"""
 
     def setUp(self):
-        self.test = sa.SparseArray()
+        self.test = sa.SA((4, 3, 0, 7, 0, 8, 2, 9, 0))
 
     def test_sa(self):
-        self.assertEqual(self.test(range(5)), [1, 2, 3, 4])
+        self.assertEqual(self.test.make_array(), str([4, 3, 7, 8, 2, 9]))
