@@ -37,7 +37,7 @@ assert remove_every_other_num(a_string)
 assert remove_every_other_num(a_tuple)
 
 assert multiple_removals(a_string)
-#assert multiple_removals(a_tuple)
+# assert multiple_removals(a_tuple)
 
 assert reversed(a_string)
 assert reversed(a_tuple)
