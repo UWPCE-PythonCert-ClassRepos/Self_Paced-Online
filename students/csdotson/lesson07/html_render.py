@@ -13,18 +13,17 @@ class Element:
         else:
             self.content.append(content_to_add)
 
-    def render(self, file_out="f", cur_ind=""):
-        if self.attributes is not None:
+    def render(self, file_out, cur_ind=""):
+        if self.attributes:
             for key, value in self.attributes.items():
-                print("<"+self.tag_name+f" {key}={value}"+">")
+                file_out.write("<"+self.tag_name+f" {key}=\"{value}\""+">\n")
         else:
-            print("<"+self.tag_name+">")
+            file_out.write("<"+self.tag_name+">\n")
         for elem in self.content:
             if isinstance(elem, str):
                 elem = TextWrapper(elem)
-            elem.render()
-        print("</"+self.tag_name+">")
-        # file_out.write(output)
+            elem.render(file_out)
+        file_out.write("</"+self.tag_name+">\n")
 
 
 class Html(Element):
@@ -44,10 +43,10 @@ class P(Element):
 
 
 class OneLineTag(Element):
-    def render(self, file_out="f", cur_ind=""):
+    def render(self, file_out, cur_ind=""):
         open_tag = "<"+self.tag_name+">"
-        close_tag = "</"+self.tag_name+">"
-        print(open_tag, self.content[0], close_tag)
+        close_tag = "</"+self.tag_name+">\n"
+        file_out.write(open_tag + self.content[0] + close_tag)
 
 
 class Title(OneLineTag):
@@ -62,7 +61,6 @@ class TextWrapper:
     def __init__(self, text):
         self.text = text
 
-    def render(self, file_out="f", cur_ind=""):
-        print(self.text)
+    def render(self, file_out, cur_ind=""):
         # file_out.write(cur_ind)
-        # file_out.write(self.text)
+        file_out.write(self.text)
