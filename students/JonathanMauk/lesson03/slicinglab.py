@@ -14,6 +14,11 @@ def reverse_slicing(seq):
     return seq[::-1]
 
 
+def return_thirds(seq):
+    third = len(seq) // 3
+    return seq[third:third * 2] + seq[third * 2:] + seq[:third]
+
+
 a_string = "abcdefghij"
 a_tuple = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 
@@ -28,3 +33,6 @@ assert remove_firstlast_four(a_tuple) == (4,)
 
 assert reverse_slicing(a_string) == "jihgfedcba"
 assert reverse_slicing(a_tuple) == (9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+
+assert return_thirds(a_string) == "defghijabc"
+assert return_thirds(a_tuple) == (3, 4, 5, 6, 7, 8, 9, 0, 1, 2)
