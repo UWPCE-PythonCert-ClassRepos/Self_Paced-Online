@@ -27,3 +27,17 @@ print("Displaying all fruits that start with 'p'...")
 for fruit in fruits:
     if fruit[0] == ("p" or "P"):
         print(fruit)
+
+# Series 2
+
+print("Showing current list: ")
+print(fruits)
+
+print("Removing last item from list: ")
+fruits = fruits[:-1]
+print(fruits)
+
+delete_fruit = input("Please enter a fruit to delete: ")
+fruits.remove(delete_fruit)
+print("Current list status: ")
+print(fruits)
