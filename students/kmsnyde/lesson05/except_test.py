@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Apr 23 18:20:12 2018
+
+@author: Karl M. Snyder
+"""
+
 #!/usr/bin/env python3
 
 """
@@ -39,3 +46,4 @@ def last_fun():
     print(cust, cheese)
     time.sleep(1)
     import antigravity
+
