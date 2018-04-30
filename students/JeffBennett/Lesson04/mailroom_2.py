@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import datetime
+import sys
 
 # Data
 
@@ -13,10 +14,10 @@ donors = {
     'Laila Samir': [1000, 250]
 }
 
-# Needs format arguments
-letter_to_all_donors = '''\nDear {}\n\nI write to thank you again for all the
-support you have provided to Northwest Lifeboats.
-\n\nDuring the past year your total gifts of ${:,.2f} have greatly
+
+letter_to_all_donors = '''\nDear {}\n\n
+I write to thank you again for all the support you have provided to Northwest
+Lifeboats.  During the past year your total gifts of ${:,.2f} have greatly
 furthered our activities.
 \n\nI have exciting news that one of our prospective donors may be prepared
 to match your next donation, which would double your impact on our efforts.
@@ -26,16 +27,11 @@ I will be back in touch with you soon with more details.\n\nSincerely yours
 # Input/Output
 
 
-def print_menu():
-    """print menu and prompt for user choice."""
+def print_main_menu():
+    """print main menu and prompt for user choice."""
     print('\nMain Menu\n' + '-'*25 +
           '\n(1)\tSend a Thank You\n(2)\tCreate a Report'
           '\n(3)\tSend Letters to All Donors\n(4)\tQuit')
-
-
-def menu_choice():
-    int_choice = int(input('\nPlease enter the number of your choice: '))
-    return int_choice
 
 
 def print_donor_list(donors):
@@ -47,9 +43,13 @@ def print_donor_list(donors):
 
 def print_email_to_donor(donor, gift):
     """print email thanking donor for recent donation."""
-    print(f"\nDear {donor}\n\nThank you very much for your gift of ${gift}."
-          "\nYour donation supports fishermen all along the Northwest coast."
-          "\n\nSincerely yours\n\nJ A Bennett\nDirector")
+    email_dict = {
+        'greeting': f'\nDear {donor}',
+        'body': f'\n\nThank you very much for your gift of ${gift:,.2f}',
+        'signature': '\n\nSincerely yours\n\nJ A Bennett\nDirector'
+    }
+    email = "{greeting}{body}{signature}".format(**email_dict)
+    print(email)
 
 
 def print_sorted_donors(sorted_donors):
@@ -64,16 +64,37 @@ def print_sorted_donors(sorted_donors):
 # Processing
 
 
+def send_thank_you():
+    while True:
+        donor_name = input("\nEnter donor first and last name,\n " +
+                           "'list' for a list of current donors: \n" +
+                           "  or 'menu' to return to the main menu: ")
+        if donor_name == 'menu':
+            break
+        elif donor_name == 'list':
+            print_donor_list(donors)
+            continue
+        else:
+            gift = float(input("\nEnter amount of gift: " +
+                               " or '0' to return to the main menu: "))
+            if gift == 0:
+                break
+            print_email_to_donor(donor_name, gift)
+            update_donors(donors, donor_name, gift)
+            continue
+
+
 def update_donors(donors, name, donation):
     """update the dictionary of donors and their gift history. """
     if name in donors:
+        donors.setdefault(name, [])
         donors[name].append(donation)
     else:
-        donors[name] = donation
+        donors.update({name: [donation]})
     return donors
 
 
-def create_report(donors):
+def create_report():
     """sort donors from largest to smallest aggregate givers, calculate
     average gift and number of gifts per donor, and print report. """
     data_table = [[key, sum(donors[key]), len(donors[key]),
@@ -82,28 +103,35 @@ def create_report(donors):
     print_sorted_donors(sorted_donors)
 
 
-def email_all_donors(donors):
-    """write letters to all donors to current file."""
+def email_all_donors():
+    """write letters to all donors to working directory."""
     strDate = datetime.date.today().strftime("%Y-%m-%d")
     for key in donors:
         file_name = key.replace(' ', '_') + '_' + strDate + '.txt'
         message = letter_to_all_donors.format(key, sum(donors[key]))
-        print(file_name, message)
         with open(file_name, 'w') as fout:
             fout.write(message)
 
 
-switch_dict = {
-    1: 'placeholder',
-    2: create_report,
-    3: email_all_donors,
-    4: 'placeholder'
-}
+def exit_func():
+    """print exit notice and exit the script"""
+    print("Exiting the program.  Changes made during session are not saved.")
+    sys.exit(0)
 
-# Main
+
+def execute_menu_choice():
+    """present menu and manage user choices with a function dictionary """
+    switch_dict = {
+        1: send_thank_you,
+        2: create_report,
+        3: email_all_donors,
+        4: exit_func
+    }
+    while True:
+        print_main_menu()
+        int_choice = int(input('\nPlease enter the number of your choice: '))
+        switch_dict[int_choice]()
 
 
 if __name__ == "__main__":
-    while True:
-        print_menu()
-        menu_choice()
+    execute_menu_choice()

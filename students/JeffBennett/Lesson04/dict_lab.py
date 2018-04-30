@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import os
 
 # Activity 1:  Dictionaries and Sets
 # Dictionaries 1
@@ -42,24 +41,3 @@ set_2 = frozenset('marathon')
 print(set_2)
 print(set_1 | set_2)
 print(set_1 & set_2)
-
-# Activity 2: File lab
-print('\nFile Lab\n')
-
-for file in os.listdir():
-    print(os.getcwd() + '/' + file)
-
-# need to handle size of file, test with txt and binary files
-with open('Path/to/fin', 'rb') as fin, open('Path/to/fout', 'wb') as fout:
-    fout.write(fin.read())
-
-
-# needs analysis
-def read_in_chunks(file_object, chunk_size=1024):
-    """Lazy function (generator) to read a file piece by piece.
-    Default chunk size: 1k."""
-    while True:
-        data = file_object.read(chunk_size)
-        if not data:
-            break
-        yield data
