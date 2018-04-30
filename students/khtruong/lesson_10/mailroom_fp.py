@@ -114,24 +114,20 @@ class DataBase:
                 '                   -The Team'.format(fullname, amount))
 
     def challenge(self, factor, min_donation=0, max_donation=None):
+        db2 = DataBase()
         for donor in self.donors:
             db2.add_donor_and_amount(
                 donor.fullname,
                 donor.factordonation(factor, min_donation, max_donation))
         db2.create_report()
+        return db2
 
     def projection(self, projection_inputs):
-        if projection_inputs[0] == '':
-            projection_inputs[0] = 1
-        if projection_inputs[1] == '':
-            projection_inputs[1] = 0
-        if projection_inputs[2] == '':
-            projection_inputs[2] = None
         factor, min_donation, max_donation = projection_inputs
-        self.challenge(factor, min_donation, max_donation)
-        # overalldonations = [donor.totaldonation for donor in db2.donors]
-        x = reduce(lambda x, y: x + y,
-                   map(lambda x: x.totaldonation, db2.donors))
+        db2 = self.challenge(factor, min_donation, max_donation)
+        total = reduce(lambda x, y: x + y,
+                       map(lambda x: x.totaldonation, db2.donors))
+        print(f'\nProjection: total contribution would be ${total:.2f}!')
 
 # initialize the database
 db = DataBase([Donor('Jeff', 'Bezos', [3.65, 54.50]),
@@ -139,8 +135,6 @@ db = DataBase([Donor('Jeff', 'Bezos', [3.65, 54.50]),
                Donor('Paul', 'Allen', [17.38]),
                Donor('William', 'Gates', [25.55, 33.33, 78.14])
                ])
-
-db2 = DataBase()
 
 
 def menu_selection(prompt, selection_dict):
@@ -183,13 +177,28 @@ def factor_input():
 def projection_input():
     """Return prompt asking for challenge factor, min, and max donation to run
     projections."""
-    string = input(
-                '\nEnter challenge factor, min, and max donation! \n'
-                'Challenge factor, min, and max donations are optional \n'
-                'Ex1: ",," will return a factor of 1 for all contributions \n'
-                'Ex2: "2,,100" will double all contributions under $100 \n'
-                'Ex3: "3,50," will triple all contributions above $50 > ')
-    return string.split(',')
+    while True:
+        string = input(
+            '\nEnter challenge factor, min, and max donation! \n'
+            'Challenge factor, min, and max donations are optional \n'
+            'Ex1: ",," will return a factor of 1 for all contributions \n'
+            'Ex2: "2,,100" will double all contributions under $100 \n'
+            'Ex3: "3,50," will triple all contributions above $50 > ')
+        inputs = string.split(',')
+        try:
+            if inputs[0] == '':
+                inputs[0] = 1
+            if inputs[1] == '':
+                inputs[1] = 0
+            if inputs[2] == '':
+                inputs[2] = None
+            return [input if input is None
+                    else float(input)
+                    for input in inputs]
+        except IndexError:
+            print('Provide at least 2 commas!')
+        except ValueError:
+            print('Enter number between commas and not texts!')
 
 
 def send_thankyou_email():
