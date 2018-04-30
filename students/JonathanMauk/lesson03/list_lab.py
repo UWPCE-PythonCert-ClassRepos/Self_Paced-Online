@@ -1,6 +1,6 @@
 # Series 1
 
-fruits = ["apples", "pears", "oranges", "peaches"]
+fruits = ["Apples", "Pears", "Oranges", "Peaches"]
 
 print("Fruit list: ")
 print(fruits)
@@ -15,17 +15,17 @@ fruitdex = input("Enter a fruitdex number: ")
 print("#" + fruitdex + ": " + fruits[int(fruitdex) - 1])
 
 print("Adding 'pineapples' to list...")
-fruits = ["pineapples"] + fruits
+fruits = ["Pineapples"] + fruits
 print(fruits)
 
 print("Adding 'kiwis' to list...")
-fruits.insert(0, "kiwis")
+fruits.insert(0, "Kiwis")
 print(fruits)
 
 print("Displaying all fruits that start with 'p'...")
 
 for fruit in fruits:
-    if fruit[0] == ("p" or "P"):
+    if fruit[0] == "p" or fruit[0] == "P":
         print(fruit)
 
 # Series 2
@@ -40,4 +40,26 @@ print(fruits)
 delete_fruit = input("Please enter a fruit to delete: ")
 fruits.remove(delete_fruit)
 print("Current list status: ")
+print(fruits)
+
+# Series 3
+
+new_fruits = fruits[:]
+
+
+def fruit_liker():
+    for fruit in fruits:
+        fruit_like = input("Do you like " + fruit.lower() + "? ")
+        if fruit_like.lower() == "no" or fruit_like.lower() == "n":
+            print("Deleting " + fruit.lower() + ".")
+            new_fruits.remove(fruit)
+        elif fruit_like.lower() == "yes" or fruit_like.lower() == "y":
+            continue
+        else:
+            print("Please enter 'yes/y' or 'no/n' only. Restarting...")
+            fruit_liker()
+
+fruit_liker()
+print("Current list status: ")
+fruits = new_fruits[:]
 print(fruits)
