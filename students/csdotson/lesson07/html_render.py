@@ -3,8 +3,9 @@ class Element:
     tag_name = "html"
     indentation = ""
 
-    def __init__(self, content=None):
+    def __init__(self, content=None, **attrs):
         self.content = [content] if content else []
+        self.attributes = attrs
 
     def append(self, content_to_add):
         if isinstance(content_to_add, str):
@@ -13,14 +14,17 @@ class Element:
             self.content.append(content_to_add)
 
     def render(self, file_out="f", cur_ind=""):
-        print("<"+self.tag_name+">")
+        if self.attributes is not None:
+            for key, value in self.attributes.items():
+                print("<"+self.tag_name+f" {key}={value}"+">")
+        else:
+            print("<"+self.tag_name+">")
         for elem in self.content:
             if isinstance(elem, str):
                 elem = TextWrapper(elem)
             elem.render()
         print("</"+self.tag_name+">")
         # file_out.write(output)
-        # print(output)
 
 
 class Html(Element):
