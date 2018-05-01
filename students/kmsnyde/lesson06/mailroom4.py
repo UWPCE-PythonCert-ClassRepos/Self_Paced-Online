@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Apr 11 17:38:02 2018
+Created on Sat Apr 28 13:16:50 2018
 
 @author: Karl M. Snyder
 """
@@ -24,8 +24,7 @@ def menu():
             print(k, v)
             
 def thank_you_greeting():
-    print('{} {}'.format('\nType a user\'s name or "list" to show names.',
-          print()))
+    print('{}'.format('\nType a user\'s name or "list" to show names.'))
     
 def donations():
     try:
