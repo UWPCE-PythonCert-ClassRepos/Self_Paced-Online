@@ -52,11 +52,6 @@ class Circle:
     def __repr__(self):
         return 'Circle({})'.format(self._radius)
 
-
-    # object.__add__(self, other)
-    # object.__mul__(self, other)
-    # object.__rmul__(self, other)
-    
     def __add__(self, second):  
         return Circle(self._radius + second.radius)
 
@@ -66,6 +61,16 @@ class Circle:
     def __rmul__(self, factor):
         return Circle(self._radius * factor)
 
+    def __lt__(self, second):
+        return self._radius < second.radius
 
+    def __gt__(self, second):
+        return self._radius > second.radius
+
+    def __eq__(self, second):
+        return self._radius == second.radius
+    
+    def sortkey(self):
+        return self._radius
 
 
