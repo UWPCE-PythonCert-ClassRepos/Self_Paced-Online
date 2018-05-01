@@ -1,5 +1,5 @@
-donor_db = [["John Smith", 18000, 8200, 7500], ["Jane Doe", 281000, 8200],
-              ["Alan Smithee", 180, 950], ["Tom D.A. Harry", 60, 500], ["Joe Shmoe", 200]]
+donor_db = [["John Smith", 18774.48, 8264.47, 7558.71], ["Jane Doe", 281918.99, 8242.13],
+            ["Alan Smithee", 181.97, 955.16], ["Tom D.A. Harry", 67.10, 500.98], ["Joe Shmoe", 200.01]]
 
 
 def thank_you():
@@ -11,18 +11,39 @@ def thank_you():
             print(ind_donor[0])
         thank_you()
     elif user_input.lower() == 'e':
-        return
+        mailroom()
     else:
-        donation = int(input("Please enter a donation amount: "))
+        donation = float(input("Please enter a donation amount: "))
+        new_donor = [user_input, donation]
+        donor_list = []
         for ind_donor in donor_db:
-            if ind_donor[0] == user_input:
-                ind_donor.append(donation)
-                print("Appending the amount of {0} to {1}'s file...".format(donation, ind_donor[0]))
-                print("Printing thank you email...")
-                print("Dear {0}:".format(ind_donor[0]))
-                print("\nThank you for your donation of {0}, and thank you for your continuing support!".format(donation))
-                print("Your generous contributions are essential for our charity to continue operating.")
-                print("\nRegards\nJonathan Mauk")
+            donor_list.append(ind_donor[0])
+        if new_donor[0] in donor_list:
+            for ind_donor in donor_db:
+                if ind_donor[0] == new_donor[0]:
+                    ind_donor.append(donation)
+                    print("Appending the amount of {0} to {1}'s file...".format(donation, new_donor[0]))
+                    print("Printing thank you email...")
+                    print("---------------------------")
+                    print("Dear {0}:".format(ind_donor[0]))
+                    print("\nThank you for your donation of ${0}, and for your continuing support!".format(donation))
+                    print("Your generous contributions are essential for our charity to continue operating.")
+                    print("\nSincerely,\nJonathan Mauk")
+                    print("---------------------------")
+                    print("Returning to menu...")
+                    thank_you()
+        else:
+            donor_db.append(new_donor)
+            print("New donor detected. Creating record for {0}...".format(user_input))
+            print("Printing thank you email...")
+            print("---------------------------")
+            print("Dear {0}:".format(user_input))
+            print("\nThank you for your donation of ${0}.".format(donation))
+            print("Your generous contribution is essential for our charity to continue operating.")
+            print("\nSincerely,\nJonathan Mauk")
+            print("---------------------------")
+            print("Returning to menu...")
+            thank_you()
 
 
 def report():
