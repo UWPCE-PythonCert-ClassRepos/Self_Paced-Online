@@ -45,6 +45,21 @@ class P(Element):
     tag_name = 'p'
 
 
+class A(Element):
+    tag_name = "a"
+
+    def __init__(self, link, content):
+        Element.__init__(self, content, href=link)
+
+
+class Ul(Element):
+    tag_name = 'ul'
+
+
+class Li(Element):
+    tag_name = 'li'
+
+
 class OneLineTag(Element):
     def render(self, file_out, cur_ind=""):
         open_tag = "<"+self.tag_name+">"
@@ -54,6 +69,14 @@ class OneLineTag(Element):
 
 class Title(OneLineTag):
     tag_name = 'title'
+
+
+class H(OneLineTag):
+    tag_name = 'h'
+
+    def __init__(self, level, content):
+        self.tag_name += str(level)
+        Element.__init__(self, content)
 
 
 class SelfClosingTag(Element):
@@ -69,12 +92,6 @@ class Hr(SelfClosingTag):
 class Br(SelfClosingTag):
     tag_name = 'br'
 
-
-class A(Element):
-    tag_name = "a"
-
-    def __init__(self, link, content):
-        Element.__init__(self, content, href=link)
 
 
 class TextWrapper:
