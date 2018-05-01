@@ -6,6 +6,9 @@ class Element:
     def __init__(self, content=None, **attrs):
         self.content = [content] if content else []
         self.attributes = attrs
+        if isinstance(self, SelfClosingTag):
+            if self.content:
+                raise TypeError("Self closing tag cannot have content")
 
     def append(self, content_to_add):
         if isinstance(content_to_add, str):
@@ -51,6 +54,20 @@ class OneLineTag(Element):
 
 class Title(OneLineTag):
     tag_name = 'title'
+
+
+class SelfClosingTag(Element):
+    def render(self, file_out, cur_ind=""):
+        tag = "<"+self.tag_name+">\n"
+        file_out.write(tag)
+
+
+class Hr(SelfClosingTag):
+    tag_name = 'hr'
+
+
+class Br(SelfClosingTag):
+    tag_name = 'br'
 
 
 class TextWrapper:
