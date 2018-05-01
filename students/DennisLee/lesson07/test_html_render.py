@@ -66,6 +66,10 @@ class ElementTestCase(unittest.TestCase):
         x = hr.Element(None)
         self.assertEqual(x.contents, [])
         del x
+    def test_init_8(self):
+        x = hr.Element(self.strs_before)
+        self.assertEqual(x.contents, list(self.strs_after))
+        del x
     
     def test_init_100(self):
         with self.assertRaises(TypeError):
@@ -147,12 +151,22 @@ class ElementTestCase(unittest.TestCase):
             self.e.append("  ")
             self.assertEqual(self.e.contents, list(self.strs_after[:i+1]))
         del self.e
+    def test_append_5(self):
+        self.e = hr.Element(self.strs_before[:2])
+        self.e.append(self.strs_before[2:4])
+        self.assertEqual(self.e.contents, list(self.strs_after[:4]))
+        del self.e
 
 
     def test_render_1(self):
         self.e = hr.Element()
         with self.assertRaises(ValueError):
             self.e.render('', '  ')
+        del self.e
+    def test_render_2(self):
+        self.e = hr.Element()
+        with self.assertRaises(AttributeError):
+            self.e.render(self.e, '  ')
         del self.e
     def test_render_100(self):
         self.assertTrue(self.render_helper('', 'html'))
@@ -190,8 +204,7 @@ class ElementTestCase(unittest.TestCase):
 
     def test_P_element_1(self):
         para = hr.P()
-        for string in self.strs_before:
-            para.append(string)
+        para.append(self.strs_before)
         self.assertEqual(para.contents, list(self.strs_after))
         del para
     def test_P_element_2(self):
