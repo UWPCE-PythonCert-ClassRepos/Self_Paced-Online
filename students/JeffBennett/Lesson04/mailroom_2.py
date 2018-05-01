@@ -64,6 +64,7 @@ def print_sorted_donors(sorted_donors):
 
 
 def send_thank_you():
+    """acknowledge gift with an email and update donor and gift list."""
     while True:
         donor_name = input("\nEnter donor first and last name,\n " +
                            "'list' for a list of current donors: \n" +
@@ -95,7 +96,7 @@ def update_donors(donors, name, donation):
 
 def create_report():
     """sort donors from largest to smallest aggregate givers, calculate
-    average gift and number of gifts per donor, and print report. """
+    average gift and number of gifts per donor, and print report."""
     data_table = [[key, sum(donors[key]), len(donors[key]),
                    sum(donors[key]) / len(donors[key])] for key in donors]
     sorted_donors = sorted(data_table, key=lambda x: x[1], reverse=True)
@@ -113,13 +114,13 @@ def email_all_donors():
 
 
 def exit_func():
-    """print exit notice and exit the script"""
+    """print exit notice and exit the script."""
     print("Exiting the program.  Changes made during session are not saved.")
     sys.exit(0)
 
 
 def execute_menu_choice():
-    """present menu and manage user choices with a function dictionary """
+    """present menu and manage user choices with a function dictionary. """
     switch_dict = {
         1: send_thank_you,
         2: create_report,
