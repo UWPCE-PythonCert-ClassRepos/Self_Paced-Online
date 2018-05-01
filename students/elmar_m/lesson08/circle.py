@@ -1,5 +1,10 @@
-import math as m
+'''
+file: circle.py
+elmar_m / 22e88@mailbox.org
+Lesson08: circle class
+'''
 
+import math as m
 
 class Circle:
 
