@@ -84,7 +84,7 @@ class mytests(ut.TestCase):
     '''
     def test_Circle_sort(self):
         c_list = []
-        # for i in range(1, 1000000):      # uncomment print statements before activating this line ;))
+        # for i in range(1, 1000000):      # comment out print statements before activating this line ;))
         for i in range(1, 100):
             circle = ci.Circle(ra.randint(5, 3000000))
             c_list.append(circle)
