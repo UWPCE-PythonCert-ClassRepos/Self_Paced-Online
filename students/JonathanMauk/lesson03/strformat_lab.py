@@ -2,7 +2,7 @@
 
 print('file_{0:0>3}: {1:0.2f}, {2:.2E}, {3:.2E}'.format(2, 123.4567, 10000, 12345.67))
 
-# Task Two
+# ------------------- Task Two -------------------
 
 one = 2
 two = 123.4567
@@ -35,4 +35,24 @@ five_elements(five_tuple)
 
 # ------------------- Task Five  -------------------
 
+a = ['oranges', 1.3, 'lemons', 1.1]
+
+# Normal version
+print(f'The weight of an {a[0].rstrip("s")} is {a[1]} and the weight of a {a[2].rstrip("s")} is {a[3]}.')
+
+# Upper case/1.2x multiplier version
+print(f'The weight of an {a[0].rstrip("s").upper()} is {a[1]*1.2} '
+      f'and the weight of a {a[2].rstrip("s").upper()} is {a[3]*1.2}.')
+
 # ------------------- Task Six -------------------
+
+names = ('Name', '---', 'Jonathan', 'Lauren', 'Keith', 'Jesse', 'Arnold Schwarzenegger')
+ages = ('Age', '---', '31', '32', '29', '27', '70')
+costs = ('Cost', '---', '$9984.85', '$759.37', '$19.38', '$9.47', '$184982.73')
+
+x = len(max(names, key=len)) + 2
+y = len(max(ages, key=len)) + 2
+z = len(max(costs, key=len)) + 2
+
+for item in range(len(names)):
+    print(f'{names[item]:{x}} {ages[item]:{y}} {costs[item]:{z}}')
