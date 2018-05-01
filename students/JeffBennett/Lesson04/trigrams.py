@@ -5,7 +5,7 @@ from random import choice
 
 
 def prep_text(text_name):
-    """open file, read text, strip  characters, and split into words """
+    """open file, read and clean text, and split into words. """
     with open(text_name, 'r') as fin:
         text_file = fin.read()
         text_file = text_file.replace(',', '').replace('\n', ' ').strip()
@@ -15,7 +15,7 @@ def prep_text(text_name):
 
 
 def trigrams(word_list):
-    """form tuples of trigrams and enter them as key-val pairs in dictionary"""
+    """form tuples of trigrams and enter as key-val pairs in dictionary."""
     tri_dict = {}
     for index in range(len(word_list) - 2):
         tpl = tuple(word_list[index:index + 3])
@@ -31,7 +31,7 @@ def trigrams(word_list):
 
 def generate_new_text(tri_dict):
     """generate random starter and alternative keys, append key and val to new
-     text, with random choice of value for all keys with multiple values"""
+     text, with random choice of value for all keys with multiple values."""
     new_text = []
     random_key = choice(list(tri_dict.keys()))
     new_text.append(random_key[0])
@@ -47,14 +47,16 @@ def generate_new_text(tri_dict):
 
 
 def epic_poem_format(new_text):
-    """arrange text in 8-word verse lines with initial capitals"""
-    poem = ' '.join(new_text)
-    print(poem)
+    """arrange text in 8-word verse lines with initial capitals."""
+    num_lines = len(new_text) // 8
+    lines_list = [new_text[(8 * i):(8 + 8 * i)] for i in range(num_lines)]
+    for line in lines_list:
+        print((' '.join(line)).capitalize())
 
 
 def main():
-    """generate the trigram dictionary then used to derive new text """
-    text_name = './machiavelli_the_prince.txt'
+    """generate a trigram dictionary and use it to derive new text. """
+    text_name = './Milton_Paradise_Lost.txt'
     word_list = prep_text(text_name)
     tri_dict = trigrams(word_list)
     new_text = generate_new_text(tri_dict)
