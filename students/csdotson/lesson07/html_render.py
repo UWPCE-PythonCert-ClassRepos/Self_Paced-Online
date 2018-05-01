@@ -70,6 +70,13 @@ class Br(SelfClosingTag):
     tag_name = 'br'
 
 
+class A(Element):
+    tag_name = "a"
+
+    def __init__(self, link, content):
+        Element.__init__(self, content, href=link)
+
+
 class TextWrapper:
     """
     A simple wrapper that creates a class with a render method
