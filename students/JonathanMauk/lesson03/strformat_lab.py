@@ -1,4 +1,4 @@
-# Task One
+# ------------------- Task One -------------------
 
 print('file_{0:0>3}: {1:0.2f}, {2:.2E}, {3:.2E}'.format(2, 123.4567, 10000, 12345.67))
 
@@ -11,7 +11,7 @@ four = 12345.67
 
 print(f'file_{one:0>3}: {two:0.2f}, {three:.2E}, {four:.2E}')
 
-# Task Three
+# ------------------- Task Three -------------------
 
 
 def formatter(in_tuple):
@@ -23,3 +23,16 @@ tuple_2 = (49, 48, 47)
 print(formatter(tuple_1))
 print(formatter(tuple_2))
 
+# ------------------- Task Four -------------------
+
+
+def five_elements(in_tuple):
+    five_string = '{3:0>2} {4:0>2} {2} {0:0>2} {1:0>2}'
+    print(five_string.format(*in_tuple))
+
+five_tuple = (4, 30, 2017, 2, 27)
+five_elements(five_tuple)
+
+# ------------------- Task Five  -------------------
+
+# ------------------- Task Six -------------------
