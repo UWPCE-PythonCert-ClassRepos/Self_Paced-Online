@@ -51,6 +51,13 @@ def thanking():
         print('\n'"Thank you for the donation in {}'s name!".format(name_or_list.title()))
 
 
+def donor_report():
+    print('\n'"This is the Donor History report listing Donor and Donation Amount.")
+    print("-------------------------------------------------------------------")
+    for list_entry in donors_history:
+        total_donation = sum(list_entry[1])
+        print("|{:>32}|{:>32}|".format(list_entry[0].title(), total_donation))
+
 def mailing_options():
     menu_input = 0
     while menu_input != '3':
@@ -59,7 +66,7 @@ def mailing_options():
         if menu_input == 1:
             thanking()
         elif menu_input == 2:
-            print("Create a Report")
+            donor_report()
         elif menu_input == 3:
             print('\n'"Good Bye."'\n')
             break
