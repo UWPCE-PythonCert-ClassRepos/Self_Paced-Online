@@ -29,7 +29,7 @@ def trigrams(word_list):
     return(tri_dict)
 
 
-def new_text(tri_dict):
+def generate_new_text(tri_dict):
     """generate random starter and alternative keys, append key and val to new
      text, with random choice of value for all keys with multiple values"""
     new_text = []
@@ -43,20 +43,22 @@ def new_text(tri_dict):
             alt_key = choice(list(tri_dict.keys()))
             new_text.append(alt_key[0])
             new_text.append(alt_key[1])
-    print(new_text)
+    return(new_text)
 
 
 def epic_poem_format(new_text):
     """arrange text in 8-word verse lines with initial capitals"""
-    pass
+    poem = ' '.join(new_text)
+    print(poem)
 
 
 def main():
     """generate the trigram dictionary then used to derive new text """
-    text_name = './Milton_sample.txt'
+    text_name = './machiavelli_the_prince.txt'
     word_list = prep_text(text_name)
     tri_dict = trigrams(word_list)
-    new_text(tri_dict)
+    new_text = generate_new_text(tri_dict)
+    epic_poem_format(new_text)
 
 
 if __name__ == "__main__":

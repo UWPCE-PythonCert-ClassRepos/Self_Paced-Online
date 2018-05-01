@@ -14,7 +14,6 @@ donors = {
     'Laila Samir': [1000, 250]
 }
 
-
 letter_to_all_donors = '''\nDear {}\n\n
 I write to thank you again for all the support you have provided to Northwest
 Lifeboats.  During the past year your total gifts of ${:,.2f} have greatly
