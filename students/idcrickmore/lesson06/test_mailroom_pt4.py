@@ -1,4 +1,5 @@
-from mailroom_pt4 import report
+from mailroom_pt4 import report, letters, donor_list
+import os
 
 #test mailroom functions using pytest
 
@@ -18,3 +19,21 @@ def test_report():
         
     assert expected == actual
     
+    
+def test_letters():
+    assert os.path.isfile('Giovanni Cassini_2018-04-30.txt')
+    assert os.path.isfile('Edmond Halley_2018-04-30.txt')
+    assert os.path.isfile('Edwin Hubble_2018-04-30.txt')
+    assert os.path.isfile('Galileo Galilei_2018-04-30.txt')
+    assert os.path.isfile('Christiaan Huygens_2018-04-30.txt')
+    
+
+def test_list():
+    actual = donor_list()
+    expected = ['Galileo Galilei',
+                'Giovanni Cassini',
+                'Christiaan Huygens',
+                'Edmond Halley',
+                'Edwin Hubble']
+                
+    assert expected == actual

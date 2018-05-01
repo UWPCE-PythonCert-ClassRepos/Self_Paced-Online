@@ -1,40 +1,42 @@
 #!/usr/bin/env python3
 from operator import itemgetter
 import os
+import sys
 import datetime
 
 
 def menu():
 
-    print("""\n------------------ MENU ------------------\n
+    while True:
+
+        print("""\n------------------ MENU ------------------\n
 PLEASE CHOOSE A NUMBER FROM THE FOLLOWING OPTIONS
 1. Send Thank You
 2. Export Letters to Everyone
 3. Create a Report
 4. Quit\n""")
 
-    try:
-        choice = int(input("-> "))
-    except ValueError:
-        print("--------------------------------------")
-        print("\nPlease enter an integer between 1 and 4")
-        menu()
+        try:
+            choice = int(input("-> "))
+        except (ValueError):
+            print("--------------------------------------")
+            print("\nPlease enter an integer between 1 and 4")
 
-    try:
-        options[choice-1]()
-    except (IndexError):
-        print("--------------------------------------")
-        print("\nPlease enter an integer between 1 and 4")
-        menu()
+        try:
+            options[choice-1]()
+        except (IndexError):
+            print("--------------------------------------")
+            print("\nPlease enter an integer between 1 and 4")
+
 
 def thankyou():
 
     print("""\n------------------ THANK YOU ------------------\n
 type 'list' to to see a complete list of donors -
 type 'menu' at any time to return to the menu""")
-    
-    thankyou_options = {'list':4, 'menu':5}
-    
+
+    thankyou_options = {'list': 4, 'menu': 5}
+
     # asks for a name from the user, or for the 'list' prompt
     name_check = input("Enter first and last name of a donor\n\n-> ").lower()
 
@@ -67,8 +69,6 @@ will go a long way to lining my pockets.
 Sincerely,
 Scrooge McDuck""".format(**letter_dict))
 
-                menu()
-
 
 def letters():
     print("""\n--------- Exporting Letters to Everyone ---------\n
@@ -87,23 +87,22 @@ Scrooge McDuck""".format(**letter_dict)
                   '.txt', 'w') as out_file:
             out_file.write(letter)
 
-    menu()
-
 
 def donor_list():
-    # lists all the donors
-    # calls the 'thankyou' function at the end to ask for user input
+    # returns a list of all the donors
     print("\n------------------ DONOR LIST ------------------\n")
 
-    for name in donors:
-        print(name)
+    name_list = list()
 
-    thankyou()
+    for name in donors:
+        name_list.append(name)
+
+    return(name_list)
 
 
 def report():
     report_string = "-------------------- REPORT --------------------\n"
-    
+
     column = ["Donor Name", "| Total Given", "| Num Gifts", "| Average Gift"]
     donors_report = [[name, sum(donors[name]), len(donors[name]),
                      (sum(donors[name])/len(donors[name]))]
@@ -111,7 +110,7 @@ def report():
 
     # and reverses the order from largest to smallest
     donors_report = sorted(donors_report, key=itemgetter(1), reverse=True)
-       
+
     report_string += "{:<15}{:>17}{:>15}{:>10}\n".format(*column)
     report_string += "---------------------------------------------------------------\n"
 
@@ -119,18 +118,21 @@ def report():
     # dumps all values for 'name' into .format
     for name in donors_report:
         report_string += ('{:<20} ${:>13.2f}{:>12}  ${:>10.2f}\n'.format(*name))
-    
+
     return report_string
 
 
 def ex():
-    print("quiting...")
-    
+    sys.exit("quitting")
+
 
 def print_report_func():
     print(report())
-    menu()
-    
+
+
+def print_list_func():
+    for name in donor_list():
+        print(name)
 
 
 donors = {
@@ -147,7 +149,7 @@ options = (
            letters,
            print_report_func,
            ex,
-           donor_list,
+           print_list_func,
            menu
            )
 
