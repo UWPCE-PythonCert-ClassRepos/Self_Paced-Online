@@ -454,6 +454,55 @@ class ElementTestCase(unittest.TestCase):
             str_out = f.read()
             self.assertEqual(str_out, '<hr id="Marker" alt="Fancy Pants" />\n')
         del horizontal_rule, f, fobj
+
+    def test_A_201(self):
+        with self.assertRaises(TypeError):
+            link = hr.A("   https://www.wikipedia.org/  ", 50)
+            del link
+    def test_A_202(self):
+        with self.assertRaises(TypeError):
+            link = hr.A(self.attrs_pass, 
+                    '\t   \t  \n  Grand \t \tWiki   \t\n   \t')
+            del link
+    def test_A_203(self):
+        link = hr.A("   https://www.wikipedia.org/  ", 
+                '\t   \t  \n  Grand \t \tWiki   \t\n   \t')
+        with open(self.test_filename, 'w') as fobj:
+            self.assertTrue(link.render(fobj, '    '))
+        with open(self.test_filename, 'r') as f:
+            str_out = f.read()
+            self.assertEqual(str_out, 
+                    '<a href="https://www.wikipedia.org/">Grand Wiki</a>\n')
+        del link, f, fobj
+    def test_A_204(self):
+        strs_out = None
+        para = hr.P(
+                "  \t  Here's \t Britannica's  \nworst\t  nightmare: \n\n\t  ")
+        link = hr.A("   https://www.wikipedia.org/  ", 
+                '\t   \t  \n  Grand \t \tWiki   \t\n   \t')
+        para.append(link)
+        para.append(" \t . \n    ")
+        body = hr.Body(para)
+        with open(self.test_filename, 'w') as fobj:
+            self.assertTrue(body.render(fobj, '   '))
+        with open(self.test_filename, 'r') as f:
+            strs_out = f.readlines()
+            self.assertEqual(len(strs_out), 7)
+            self.assertEqual(strs_out[0], '<body>\n')
+            self.assertEqual(strs_out[1], '   <p>\n')
+            self.assertEqual(strs_out[2], 
+                    "      Here's Britannica's worst nightmare:\n")
+            self.assertEqual(strs_out[3], '      '
+                    '<a href="https://www.wikipedia.org/">Grand Wiki</a>\n')
+            self.assertEqual(strs_out[4], '      .\n')
+            self.assertEqual(strs_out[5], '   </p>\n')
+            self.assertEqual(strs_out[6], '</body>\n')
+        del strs_out, para, link, body, f, fobj
+        
+
+    
+        
+        
         
         
 

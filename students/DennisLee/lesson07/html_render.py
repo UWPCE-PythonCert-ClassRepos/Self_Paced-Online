@@ -119,3 +119,13 @@ class Hr(SelfClosingTag):
 
 class Br(SelfClosingTag):
 	tag = "br"
+
+class A(OneLineTag):
+	def __init__(self, link, content):
+		self.contents, self.attributes, self.tag = [], {}, "a"
+		if not isinstance(link, str):
+			raise TypeError(f"'{link}' is the wrong type - the 'link' "
+					"argument must be a string.")
+		self.attributes['href'] = link.strip()
+		self.append(content)
+		self.attribute_string = self.convert_attrs_to_str()
