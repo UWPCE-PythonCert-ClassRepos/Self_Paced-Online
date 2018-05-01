@@ -1,1 +1,1 @@
-CourAuthor Courtney Smith
+Author Courtney Smith
