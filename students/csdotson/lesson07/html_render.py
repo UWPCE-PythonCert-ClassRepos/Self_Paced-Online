@@ -1,7 +1,7 @@
 class Element:
     """Create an Element class for rendering an html element"""
     tag_name = "html"
-    indentation = ""
+    indentation = "    "
 
     def __init__(self, content=None, **attrs):
         self.content = [content] if content else []
@@ -16,12 +16,19 @@ class Element:
         else:
             self.content.append(content_to_add)
 
-    def render(self, file_out, cur_ind=""):
+
+    def attr_render(self, file_out, cur_ind=""):
         if self.attributes:
+            file_out.write("<"+self.tag_name)
             for key, value in self.attributes.items():
-                file_out.write("<"+self.tag_name+f" {key}=\"{value}\""+">\n")
+                file_out.write(f" {key}=\"{value}\"")
+            file_out.write(">\n")
         else:
             file_out.write("<"+self.tag_name+">\n")
+
+
+    def render(self, file_out, cur_ind=""):
+        Element.attr_render(self, file_out, cur_ind="")
         for elem in self.content:
             if isinstance(elem, str):
                 elem = TextWrapper(elem)
@@ -31,6 +38,9 @@ class Element:
 
 class Html(Element):
     tag_name = 'html'
+    def render(self, file_out, cur_ind=""):
+        file_out.write("<!DOCTYPE html>\n")
+        Element.render(self, file_out, cur_ind="")
 
 
 class Head(Element):
@@ -47,7 +57,6 @@ class P(Element):
 
 class A(Element):
     tag_name = "a"
-
     def __init__(self, link, content):
         Element.__init__(self, content, href=link)
 
@@ -73,7 +82,6 @@ class Title(OneLineTag):
 
 class H(OneLineTag):
     tag_name = 'h'
-
     def __init__(self, level, content):
         self.tag_name += str(level)
         Element.__init__(self, content)
@@ -81,8 +89,7 @@ class H(OneLineTag):
 
 class SelfClosingTag(Element):
     def render(self, file_out, cur_ind=""):
-        tag = "<"+self.tag_name+">\n"
-        file_out.write(tag)
+        Element.attr_render(self, file_out, cur_ind="")
 
 
 class Hr(SelfClosingTag):
@@ -93,6 +100,9 @@ class Br(SelfClosingTag):
     tag_name = 'br'
 
 
+class Meta(SelfClosingTag):
+    tag_name = 'meta'
+
 
 class TextWrapper:
     """
@@ -102,6 +112,6 @@ class TextWrapper:
     def __init__(self, text):
         self.text = text
 
-    def render(self, file_out, cur_ind=""):
-        # file_out.write(cur_ind)
+    def render(self, file_out, cur_ind="    "):
+        file_out.write(cur_ind)
         file_out.write(self.text)
