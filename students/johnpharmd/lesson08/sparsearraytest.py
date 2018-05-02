@@ -6,7 +6,13 @@ class SATest(unittest.TestCase):
     """tests sparse array attributes"""
 
     def setUp(self):
-        self.test = sa.SA((4, 3, 0, 7, 0, 8, 2, 9, 0))
+        self.test = sa.SA((4, 3, 0, 7, 0, 8, 2, 9, 0, 4))
 
     def test_sa(self):
-        self.assertEqual(self.test.make_array(), str([4, 3, 7, 8, 2, 9]))
+        print('self.test.seq is', self.test.seq)
+        print('self.test.seq_d is', self.test.seq_d)
+        print('self.test.make_arr() makes', self.test.make_arr())
+        self.assertEqual(self.test.make_arr(), [4, 3, 7, 8, 2, 9, 4])
+
+    def test_sa_len(self):
+        self.assertEqual(self.test.get_len_arr(), 9)
