@@ -129,3 +129,25 @@ class A(OneLineTag):
 		self.attributes['href'] = link.strip()
 		self.append(content)
 		self.attribute_string = self.convert_attrs_to_str()
+
+class Ul(Element):
+	tag = "ul"
+
+class Li(Element):
+	tag = "li"
+	
+class H(OneLineTag):
+	def __init__(self, header_level, header_text, **kwargs):
+		if not isinstance(header_text, str):
+			raise TypeError(f"The 'header_text' argument is '{header_text}' "
+					f"(type '{type(header_text)}') - a string is required "
+					"for this argument.")
+		elif not isinstance(header_level, int):
+			raise TypeError(f"Header level '{header_level}' is not valid - "
+					"must specify an int.")
+		elif header_level not in range(1, 7):
+			raise ValueError(f"Header level '{header_level}' is out of range "
+					"- must be between 1 and 6.")
+		else:
+			self.tag = "h" + str(header_level)
+			OneLineTag.__init__(self, header_text, **kwargs)

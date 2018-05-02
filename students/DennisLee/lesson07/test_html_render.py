@@ -500,8 +500,109 @@ class ElementTestCase(unittest.TestCase):
         del strs_out, para, link, body, f, fobj
         
 
-    
+    def test_Ul_100(self):
+        strs_out, br = None, hr.Br()
+        line_items = [hr.Li(self.strs_before[i]) for i in range(3)]
+        line_items.append(hr.Li(
+                id=" \n \t First \n \n \t ", alt="  Hi \t\t there!  \n"))
+        line_items[3].append([self.strs_before[3], br, self.strs_before[4]])
+        line_items.append(hr.Li(self.strs_before[-1]))
+        ul = hr.Ul(**self.attrs_pass)
+        ul.append(line_items)
+        with open(self.test_filename, 'w') as fobj:
+            self.assertTrue(ul.render(fobj, '  '))
+        with open(self.test_filename, 'r') as f:
+            strs_out = f.readlines()
+            self.assertEqual(len(strs_out), 19)
+            self.assertEqual(strs_out[0],   '<ul id="Marker" alt="Fancy Pants">\n')
+            self.assertEqual(strs_out[1],   '  <li>\n')
+            self.assertEqual(strs_out[2],  f'    {self.strs_after[0]}\n')
+            self.assertEqual(strs_out[3],   '  </li>\n')
+            self.assertEqual(strs_out[4],   '  <li>\n')
+            self.assertEqual(strs_out[5],  f'    {self.strs_after[1]}\n')
+            self.assertEqual(strs_out[6],   '  </li>\n')
+            self.assertEqual(strs_out[7],   '  <li>\n')
+            self.assertEqual(strs_out[8],  f'    {self.strs_after[2]}\n')
+            self.assertEqual(strs_out[9],   '  </li>\n')
+            self.assertEqual(strs_out[10],  '  <li id="First" alt="Hi there!">\n')
+            self.assertEqual(strs_out[11], f'    {self.strs_after[3]}\n')
+            self.assertEqual(strs_out[12],  '    <br />\n')
+            self.assertEqual(strs_out[13], f'    {self.strs_after[4]}\n')
+            self.assertEqual(strs_out[14],  '  </li>\n')
+            self.assertEqual(strs_out[15],  '  <li>\n')
+            self.assertEqual(strs_out[16], f'    {self.strs_after[5]}\n')
+            self.assertEqual(strs_out[17],  '  </li>\n')
+            self.assertEqual(strs_out[18],  '</ul>\n')
+        del strs_out, line_items, ul, f, fobj
         
+    def test_H_050(self):
+        with self.assertRaises(ValueError):
+            header = hr.H(7, "Some header")
+            del header
+    def test_H_051(self):
+        with self.assertRaises(ValueError):
+            header = hr.H(0, "Some header")
+            del header
+    def test_H_052(self):
+        with self.assertRaises(ValueError):
+            header = hr.H(-3, "Some header")
+            del header
+    def test_H_053(self):
+        with self.assertRaises(ValueError):
+            header = hr.H(10, "Some header")
+            del header
+    def test_H_060(self):
+        with self.assertRaises(TypeError):
+            header = hr.H(2.0, "Some header")
+            del header
+    def test_H_070(self):
+        with self.assertRaises(TypeError):
+            header = hr.H(1, 50)
+            del header
+    def test_H_071(self):
+        with self.assertRaises(TypeError):
+            header = hr.H(1, 60.5)
+            del header
+    def test_H_072(self):
+        with self.assertRaises(TypeError):
+            header = hr.H(1, ["header part 1", "header part 2"])
+            del header
+    def test_H_073(self):
+        with self.assertRaises(TypeError):
+            para = hr.P("A paragraph.")
+            header = hr.H(1, para)
+            del header, para
+    def test_H_080(self):
+        with self.assertRaises(TypeError):
+            header = hr.H(2, "Header text", id=50)
+            del header
+
+    def test_H_100(self):
+        headers_and_p = [hr.H(i, self.strs_before[i-1]) for i in range(1, 6)]
+        para = hr.P("\tText   under \n heading   \t5.    \n\t")
+        headers_and_p.append(para)
+        headers_and_p.append(hr.H(6, self.strs_after[5], alt='Some hover text'))
+        strs_out, body = None, hr.Body(headers_and_p)
+        with open(self.test_filename, 'w') as fobj:
+            self.assertTrue(body.render(fobj, '  '))
+        with open(self.test_filename, 'r') as f:
+            strs_out = f.readlines()
+            self.assertEqual(len(strs_out), 11)
+            self.assertEqual(strs_out[0],  '<body>\n')
+            self.assertEqual(strs_out[1], f'  <h1>{self.strs_after[0]}</h1>\n')
+            self.assertEqual(strs_out[2], f'  <h2>{self.strs_after[1]}</h2>\n')
+            self.assertEqual(strs_out[3], f'  <h3>{self.strs_after[2]}</h3>\n')
+            self.assertEqual(strs_out[4], f'  <h4>{self.strs_after[3]}</h4>\n')
+            self.assertEqual(strs_out[5], f'  <h5>{self.strs_after[4]}</h5>\n')
+            self.assertEqual(strs_out[6], f'  <p>\n')
+            self.assertEqual(strs_out[7], f'    Text under heading 5.\n')
+            self.assertEqual(strs_out[8], f'  </p>\n')
+            self.assertEqual(strs_out[9], 
+                    f'  <h6 alt="Some hover text">{self.strs_after[5]}</h6>\n')
+            self.assertEqual(strs_out[10],  '</body>\n')
+        del strs_out, body, para, headers_and_p, f, fobj
+        
+
         
         
         
