@@ -19,12 +19,12 @@ class Element:
 
     def attr_render(self, file_out, cur_ind=""):
         if self.attributes:
-            file_out.write("<"+self.tag_name)
+            file_out.write(cur_ind + "<"+self.tag_name)
             for key, value in self.attributes.items():
                 file_out.write(f" {key}=\"{value}\"")
             file_out.write(">\n")
         else:
-            file_out.write("<"+self.tag_name+">\n")
+            file_out.write(cur_ind + "<"+self.tag_name+">\n")
 
 
     def render(self, file_out, cur_ind=""):
@@ -32,12 +32,13 @@ class Element:
         for elem in self.content:
             if isinstance(elem, str):
                 elem = TextWrapper(elem)
-            elem.render(file_out)
+            elem.render(file_out, cur_ind)
         file_out.write("</"+self.tag_name+">\n")
 
 
 class Html(Element):
     tag_name = 'html'
+    indentation = ""
     def render(self, file_out, cur_ind=""):
         file_out.write("<!DOCTYPE html>\n")
         Element.render(self, file_out, cur_ind="")
@@ -71,8 +72,8 @@ class Li(Element):
 
 class OneLineTag(Element):
     def render(self, file_out, cur_ind=""):
-        open_tag = "<"+self.tag_name+">"
-        close_tag = "</"+self.tag_name+">\n"
+        open_tag = cur_ind + "<"+self.tag_name+">"
+        close_tag = cur_ind + "</"+self.tag_name+">\n"
         file_out.write(open_tag + self.content[0] + close_tag)
 
 
@@ -109,9 +110,10 @@ class TextWrapper:
     A simple wrapper that creates a class with a render method
     for simple text
     """
+
     def __init__(self, text):
         self.text = text
 
-    def render(self, file_out, cur_ind="    "):
+    def render(self, file_out, cur_ind=""):
         file_out.write(cur_ind)
-        file_out.write(self.text)
+        file_out.write(self.text + "\n")
