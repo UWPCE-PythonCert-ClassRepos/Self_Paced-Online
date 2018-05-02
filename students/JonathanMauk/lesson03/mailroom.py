@@ -79,7 +79,5 @@ def mailroom():
         print("Invalid value. Enter a number from 1-3.")
         mailroom()
 
-mailroom()
-
 if __name__ == "__main__":
     mailroom()
