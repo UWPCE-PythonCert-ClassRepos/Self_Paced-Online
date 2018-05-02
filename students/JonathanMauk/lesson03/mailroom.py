@@ -47,7 +47,16 @@ def thank_you():
 
 
 def report():
-    print('l')
+    print('Donor Name' + ' ' * 16 + '| Total Given | Num Gifts | Average Gift')
+    print('-' * 66)
+    for ind_donor in donor_db:
+        donor_name = ind_donor[0]
+        num_gifts = len(ind_donor[1:])
+        total_given = sum(ind_donor[1:])
+        average_gifts = total_given / num_gifts
+        print(f'{donor_name: <26}| ${total_given:>10.2f} |{num_gifts:^11}| ${average_gifts:>11.2f}')
+    print('\nReturning to main menu...')
+    mailroom()
 
 
 def mailroom():
