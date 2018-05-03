@@ -1,70 +1,85 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 def send_thank_you():
     """Print a thank you email"""
-    while True:
-        donor_name = input("Please enter donor's full name: ")
-        if donor_name.lower() == 'list':
-            print('\nCurrent Donors:')
-            print(donor_names,'\n')
-        elif donor_name.lower() == 'quit':
-            return
-        elif not donor_name in donor_names:
-            add_donor(donor_name)
-            break
-        else:
-            break
-      
-    donation = float(input('Enter the donation amount: '))
-    add_donation(donor_name,donation)
-
-    write_email(donor_name,donation)
-  
+    donate_prompt = ('\n\nSend a Thank You Letter:\n'
+                 'Please select an option from the list:\n'
+                 '1 - Send a Thank You for New Donation\n'
+                 '2 - List Current Donors\n'
+                 '3 - Exit to Main Menu\n'
+                 '>> '
+                )
+    donate_menu = {'1': add_donation,
+                   '2': list_donors,
+                   '3': quit_menu
+                  }
+    show_menu(donate_prompt, donate_menu)
+    
   
 def create_report():
     """Print a donation report"""
-    donors_report = create_donor_summary()
-    #Add in dynamic column widths in future iteration
-    header = ' | '.join(('Donor Name' + ' ' * 10,'Total Given','Num Gifts',
+    sorted_donors = sorted(donors.values(), key = lambda v:v['tot_don'], 
+                           reverse = True)
+    # Add in dynamic column widths in future iteration
+    header = ' | '.join(('     Donor Name    ','Total Given','Num Gifts',
              'Average Gift'))
     print('\n' + header)
     print('-' * len(header))
-    for donor in donors_report:
-        print('{:20s}  $ {:>10.2f}   {:>9d}  $ {:>11.2f}'.format(*donor))
+    for donor in sorted_donors:
+        print(('{name:20s}  $ {tot_don:>10.2f}   {num_don:>9d}'
+               '  $ {avg_don:>10.2f}').format(**donor))
     
     
-def create_donor_summary():
-    donors_report = []  
-    for donor in donors:
-        num_don = len(donor[1:])
-        tot_don = sum(donor[1:])
-        donors_report.append([donor[0], tot_don, num_don, tot_don/num_don])
-    return sorted(donors_report, key=lambda v:v[1], reverse=True)
+def create_sorted_donors():
+    return sorted(donors_report, key=lambda v:v['tot_don'], reverse=True)
   
-  
-def add_donor(donor_name):
-    """Add a donor to donor list"""
-    donors.append([donor_name])
-    donor_names.append(donor_name)
-  
-  
-def add_donation(donor_name, amount):
-    """Add donation amount to list under donors name"""
-    for donor in donors:
-        if donor[0] == donor_name:
-            donor.append(amount)
-            return
 
-        
-def write_email(donor_name, amount):
-    """Print a thank you email"""
-    print('\nFROM: Your friendly local charity mailroom.')
-    print('TO: {}'.format(donor_name))
-    print('RE: Your recent donation')
-    print('\nThank you so much for your recent donation of ${:,.2f}. This will'
-          ' go a long way towards helping to save the pythons. Your generosity'
-          ' is most appreciated!'.format(amount))
-    print('\nBest Regards,\nSave The Pythons\n')
+def send_all_letters():
+    write_dir = input('\nWhich directory should the letters be writen in?: ')
+    if not write_dir:
+        write_dir = '.'
+    for donor in donors.values():
+        letter = gen_email()
+        file_name = donor['name'] + '.txt'
+        print('Writing Letter: {}'.format(file_name))
+        with open('/'.join([write_dir, file_name]),'w') as f:
+            f.write(letter.format(**donor))
+    print('\nAll letters complete.\n')
+  
+  
+def add_donation():
+    """Add donation amount to list under donors name"""
+    donor_name = input("\nPlease enter donor's full name: ")
+    if donor_name.lower() not in donors:
+        donors[donor_name.lower()] = {'name': donor_name}
+    cur_dict = donors[donor_name.lower()]
+    donation = float(input('Enter the donation amount: '))
+    cur_dict.setdefault('donations',[]).append(donation)
+    cur_dict['last_don'] = donation
+    update_tot_avg(cur_dict)
+    letter = gen_email()
+    print(letter.format(**cur_dict))
+    return False
+
+
+def list_donors():
+    """Print list of current donors"""
+    print('\n\nCurrent Donors:\n')
+    for donor in donors.values():
+        print(donor['name'])
+    
+    
+def gen_email():
+    """Return a thank you email"""
+    letter = ('\nFROM: Your friendly local charity mailroom.\n'
+              'TO: {name}\n'
+              'RE: Your recent donation\n\n'
+              '\nThank you so much for your recent donation of'
+              ' ${last_don:,.2f}. This will go a long way towards helping to'
+              ' save the pythons. Your generosity is most appreciated!'
+              '\n\nBest Regards,\nSave The Pythons\n'
+             )
+    return letter
   
   
 def quit_menu():
@@ -72,31 +87,58 @@ def quit_menu():
     return False
     
     
+def update_tot_avg(d):
+    """Update total and average donation value in dict d."""
+    d['tot_don'] = sum(d['donations'])
+    d['num_don'] = len(d['donations'])
+    d['avg_don'] = d['tot_don']/d['num_don']
+    
+    
 def show_menu(prompt, disp_dict):
     """Generate menu with dispatch dictionary"""
     while True:
         sel = input(prompt)
-        if disp_dict[sel]() == False 
-            break
+        if disp_dict[sel]() is False:
+            return False
      
      
-if __name__ == '__main__':
-    donations = {'Bill Gates': [789.25,87562.22,125000.00],
-                 'Jeff Bezos': [3456.89,130],
-                 'Jimmy Buffett': [85000],
-                 'Abe Lincoln': [5,2,1],
-                 'Yankee Doodle': [67]
-                }       
-    main_prompt = ('\nMain Menu:\n'
+if __name__ == '__main__':      
+    donors = {'bill gates': {'name': 'Bill Gates',
+                             'donations': [789.25,87562.22,125000.00],
+                             'last_don': 125000                          
+                            },                              
+              'jeff bezos': {'name': 'Jeff Bezos',
+                             'donations': [3456.89,130],
+                             'last_don': 130
+                            }, 
+              'jimmy buffett': {'name': 'Jimmy Buffett',
+                                'donations': [85000],
+                                'last_don': 85000
+                               },
+              'abe lincoln': {'name': 'Abe Lincoln',
+                              'donations': [5,2,1],
+                              'last_don': 1
+                             },
+              'yankee doodle': {'name': 'Yankee Doodle',
+                                'donations': [67],
+                                'last_don': 67
+                               }                          
+             }
+
+    for donor in donors.values():
+        update_tot_avg(donor)
+    
+    main_prompt = ('\n\nMain Menu:\n\n'
                    'Please select an option from the list:\n'
                    '1 - Send a Thank You\n'
                    '2 - Create a Report\n'
                    '3 - Send Thank You Letters to All\n'
                    '4 - Quit Menu\n'
+                   '>> '
                   )
-    main_menu = {1: send_thank_you, 
-                 2: create_report,
-                 3: send_all_letters,
-                 4: quit_menu
+    main_menu = {'1': send_thank_you, 
+                 '2': create_report,
+                 '3': send_all_letters,
+                 '4': quit_menu
                 }  
     show_menu(main_prompt, main_menu)
