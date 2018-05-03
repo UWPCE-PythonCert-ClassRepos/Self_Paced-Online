@@ -43,11 +43,12 @@ def send_thanks():
        
 def create_report():
     sum_data = [(k, sum(v), len(v), sum(v)/len(v)) for k,v in donor_dict.items()]
-    sum_data = sorted(sum_data, key=lambda x: x[2], reverse=True)
+    sum_data = sorted(sum_data, key=lambda x: x[1], reverse=True)
+    print(sum_data)
     print('{:<20} {:>20} {:>20} {:>20}'.format('Donor Name', '| Total Given', '| Num Gifts', '| Average Gift'))
     print('{}'.format('-' * 83))
-    for item in sum_data:
-        print('{:<20} {:>20.02f} {:>20} {:>20.02f}'.format(*item))
+    for line in sum_data:
+        print('{:<20} {:>20.02f} {:>20} {:>20.02f}'.format(*line))
         
 letters = 'Dear {},\n\n\tThank you for your total contributions in the amount of ${}.\n\n\tYou are making a difference in the lives of others.\n\n\t\tSincerely,\n\t\t"Working for America"'
 
