@@ -23,7 +23,7 @@ def render_page(page, filename):
     """
 
     f = StringIO()
-    page.render(f, "    ")
+    page.render(f, 0)
 
     print(f.getvalue())
     with open(filename, 'w') as outfile:
@@ -194,7 +194,7 @@ page = hr.Html()
 
 
 head = hr.Head()
-head.append( hr.Meta(charset="UTF-8") )
+head.append(hr.Meta(charset="UTF-8"))
 head.append(hr.Title("PythonClass = Revision 1087:"))
 
 page.append(head)

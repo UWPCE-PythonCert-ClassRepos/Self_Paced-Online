@@ -1,7 +1,7 @@
 class Element:
     """Create an Element class for rendering an html element"""
     tag_name = "html"
-    indentation = "    "
+    indentation = '    '
 
     def __init__(self, content=None, **attrs):
         self.content = [content] if content else []
@@ -16,32 +16,32 @@ class Element:
         else:
             self.content.append(content_to_add)
 
-
-    def attr_render(self, file_out, cur_ind=""):
+    def attr_render(self, file_out, cur_ind=0):
         if self.attributes:
-            file_out.write(cur_ind + "<"+self.tag_name)
+            file_out.write( (cur_ind * self.indentation) + "<"+self.tag_name)
             for key, value in self.attributes.items():
                 file_out.write(f" {key}=\"{value}\"")
             file_out.write(">\n")
         else:
-            file_out.write(cur_ind + "<"+self.tag_name+">\n")
+            file_out.write( (cur_ind * self.indentation) + "<"+self.tag_name+">\n")
 
-
-    def render(self, file_out, cur_ind=""):
-        Element.attr_render(self, file_out, cur_ind="")
+    def render(self, file_out, cur_ind=0):
+        Element.attr_render(self, file_out, cur_ind)
         for elem in self.content:
+            cur_ind += 1
             if isinstance(elem, str):
                 elem = TextWrapper(elem)
             elem.render(file_out, cur_ind)
-        file_out.write("</"+self.tag_name+">\n")
+            cur_ind -= 1
+        file_out.write( (cur_ind * self.indentation) + "</"+self.tag_name+">\n")
 
 
 class Html(Element):
     tag_name = 'html'
-    indentation = ""
-    def render(self, file_out, cur_ind=""):
+    indentation = ''
+    def render(self, file_out, cur_ind=0):
         file_out.write("<!DOCTYPE html>\n")
-        Element.render(self, file_out, cur_ind="")
+        Element.render(self, file_out, cur_ind)
 
 
 class Head(Element):
@@ -71,9 +71,9 @@ class Li(Element):
 
 
 class OneLineTag(Element):
-    def render(self, file_out, cur_ind=""):
-        open_tag = cur_ind + "<"+self.tag_name+">"
-        close_tag = cur_ind + "</"+self.tag_name+">\n"
+    def render(self, file_out, cur_ind=0):
+        open_tag = (cur_ind * self.indentation) + "<"+self.tag_name+">"
+        close_tag = "</"+self.tag_name+">\n"
         file_out.write(open_tag + self.content[0] + close_tag)
 
 
@@ -89,8 +89,8 @@ class H(OneLineTag):
 
 
 class SelfClosingTag(Element):
-    def render(self, file_out, cur_ind=""):
-        Element.attr_render(self, file_out, cur_ind="")
+    def render(self, file_out, cur_ind=0):
+        Element.attr_render(self, file_out, cur_ind)
 
 
 class Hr(SelfClosingTag):
@@ -110,10 +110,11 @@ class TextWrapper:
     A simple wrapper that creates a class with a render method
     for simple text
     """
+    indentation = '    '
 
     def __init__(self, text):
         self.text = text
 
-    def render(self, file_out, cur_ind=""):
-        file_out.write(cur_ind)
+    def render(self, file_out, cur_ind=0):
+        file_out.write(cur_ind * self.indentation)
         file_out.write(self.text + "\n")
