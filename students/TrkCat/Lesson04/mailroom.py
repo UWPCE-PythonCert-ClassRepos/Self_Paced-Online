@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 def send_thank_you():
     """Print a thank you email"""
@@ -29,10 +29,6 @@ def create_report():
         print(('{name:20s}  $ {tot_don:>10.2f}   {num_don:>9d}'
                '  $ {avg_don:>10.2f}').format(**donor))
     
-    
-def create_sorted_donors():
-    return sorted(donors_report, key=lambda v:v['tot_don'], reverse=True)
-  
 
 def send_all_letters():
     write_dir = input('\nWhich directory should the letters be writen in?: ')
