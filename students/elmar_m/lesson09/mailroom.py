@@ -15,9 +15,12 @@ class donor:
 
 class donation:
     def __init__(self, asset, currency=None ):
-        if currency is not None:
-            self.amount = int(asset)
-            self.currency = currency
+        #if currency is not None:
+        # if asset is int:
+        if type(asset) is int:
+            self.amount = asset
+            if currency is None:
+                self.currency = 'dollar'
         else:
             self.real_value = str(asset)
             

@@ -23,9 +23,16 @@ class mailroom_tests(ut.TestCase):
     def test_donation(self):
         #obj = mr.donation(250)
         #self.assertEqual(obj.amount, 250)
-        obj = mr.donation(500, 'dollar')
+        obj = mr.donation(500)
         self.assertEqual(obj.amount, 500)
         self.assertEqual(obj.currency, 'dollar')
+        # self.assertTrue(hasattr, obj.real_value)
+
+        obj1 = mr.donation('a piece of land')
+        self.assertFalse(hasattr, obj1.amount)
+        self.assertFalse(hasattr, obj1.currency)
+        self.assertTrue(hasattr, obj1.real_value)
+        
 
 
 
