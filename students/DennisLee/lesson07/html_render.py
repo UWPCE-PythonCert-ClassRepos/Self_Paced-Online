@@ -4,7 +4,8 @@ import io
 
 class Element():
 	"""The base class for HTML elements."""
-	indent = ""
+	indent = ""  # A string of spaces indicating how much to indent
+	             # between each indentation level
 	def __init__(self, content=None, **kwargs):
 		"""
 		Define an element by specifying its child content & attributes.
@@ -98,7 +99,6 @@ class Element():
 			i += 1
 		file_out.write(cur_ind + '</{0}>\n'.format(self.tag)) # Close tag
 		return True
-	
 	def verify_render_args(self, file_out, cur_ind):
 		"""
 		Make sure the indentation level is specified correctly and that
@@ -123,45 +123,9 @@ class Element():
 		elif not hasattr(file_out, 'write'):
 			raise AttributeError("Writable file-like "
 					"object not given in the 'file_out' argument.")
-
 	def convert_attrs_to_str(self):
 		"""Return the full HTML attribute text, preceded by a space."""
 		return ''.join(f' {k}="{v}"' for k, v in self.attributes.items())
-		
-
-class Html(Element):
-	"""An `html` document element class."""
-	tag = "html"
-	def render(self, file_out, cur_ind=""):
-		"""
-		Create (render) the `Html` object onto an <html> text object,
-		including its preceding DOCTYPE declaration.
-
-		:file_out:  A StringIO or FileIO object representing the output
-		            stream to save the rendered HTML text to.
-
-		:cur_ind:  A string of spaces specifying how much to indent
-		           for this particular `Element` object.  The default is
-				   to not indent at all.
-
-		:return:  `True` if the method succeeds; otherwise, `None`.
-		"""
-		# Make sure arguments are passed correctly
-		self.verify_render_args(file_out, cur_ind)
-		file_out.write("<!DOCTYPE html>\n")
-		return Element.render(self, file_out, cur_ind)
-			
-class Body(Element):
-	"""A `body` element class (child element of `html`)."""
-	tag = "body"
-
-class P(Element):
-	"""A paragraph (`p`) element class."""
-	tag = "p"
-
-class Head(Element):
-	"""A `head` element class (child element of `html`)."""
-	tag = "head"
 
 class OneLineTag(Element):
 	"""
@@ -199,11 +163,7 @@ class OneLineTag(Element):
 		file_out.write(cur_ind + '<{0}{1}>{2}</{0}>\n'.format(
 				self.tag, self.attribute_string, ' '.join(self.contents)))
 		return True
-
-class Title(OneLineTag):
-	"""A `title` one-line element class (child element of `head`)."""
-	tag = "title"
-
+		
 class SelfClosingTag(Element):
 	"""
 	The base class for HTML elements that contain neither child text nor
@@ -252,6 +212,79 @@ class SelfClosingTag(Element):
 				self.tag, self.attribute_string))
 		return True
 
+class Html(Element):
+	"""An `html` document element class."""
+	tag = "html"
+	def render(self, file_out, cur_ind=""):
+		"""
+		Create (render) the `Html` object onto an <html> text object,
+		including its preceding DOCTYPE declaration.
+
+		:file_out:  A StringIO or FileIO object representing the output
+		            stream to save the rendered HTML text to.
+
+		:cur_ind:  A string of spaces specifying how much to indent
+		           for this particular `Element` object.  The default is
+				   to not indent at all.
+
+		:return:  `True` if the method succeeds; otherwise, `None`.
+		"""
+		# Make sure arguments are passed correctly
+		self.verify_render_args(file_out, cur_ind)
+		file_out.write("<!DOCTYPE html>\n")
+		return Element.render(self, file_out, cur_ind)
+
+class Head(Element):
+	"""A `head` element class (child element of `html`)."""
+	tag = "head"
+
+class Meta(SelfClosingTag):
+	"""
+	A metadata (`meta`) self-closing element class (child of `head`).
+	"""
+	tag = "meta"
+
+class Title(OneLineTag):
+	"""A `title` one-line element class (child element of `head`)."""
+	tag = "title"
+
+class Body(Element):
+	"""A `body` element class (child element of `html`)."""
+	tag = "body"
+
+class H(OneLineTag):
+	"""A class for one-line heading elements (`h1`-`h6`) """
+	def __init__(self, header_level, header_text, **kwargs):
+		"""
+		Define a header element by specifying its heading level, child 
+		content, & attributes.
+
+		:header_level:  The element's heading level (from 1 through 6).
+		
+		:header_text:  The heading text's content string.
+
+		:kwargs:  A dict containing attribute names and their values.
+
+		:return:  The initialized heading element object.
+		"""
+		if not isinstance(header_text, str):
+			raise TypeError(f"The 'header_text' argument is '{header_text}' "
+					f"(type '{type(header_text)}') - a string is required "
+					"for this argument.")
+		elif not isinstance(header_level, int):
+			raise TypeError(f"Header level '{header_level}' is not valid - "
+					"must specify an int.")
+		elif header_level not in range(1, 7):
+			raise ValueError(f"Header level '{header_level}' is out of range "
+					"- must be between 1 and 6.")
+		else:
+			self.tag = "h" + str(header_level)
+			OneLineTag.__init__(self, header_text, **kwargs)
+
+class P(Element):
+	"""A paragraph (`p`) element class."""
+	tag = "p"
+
 class Hr(SelfClosingTag):
 	"""A horizontal rule/line (`hr`) self-closing element class."""
 	tag = "hr"
@@ -291,38 +324,3 @@ class Ul(Element):
 class Li(Element):
 	"""A list item (`li`) element class (child of `ul`)."""
 	tag = "li"
-	
-class H(OneLineTag):
-	"""A class for one-line heading elements (`h1`-`h6`) """
-	def __init__(self, header_level, header_text, **kwargs):
-		"""
-		Define a header element by specifying its heading level, child 
-		content, & attributes.
-
-		:header_level:  The element's heading level (from 1 through 6).
-		
-		:header_text:  The heading text's content string.
-
-		:kwargs:  A dict containing attribute names and their values.
-
-		:return:  The initialized heading element object.
-		"""
-		if not isinstance(header_text, str):
-			raise TypeError(f"The 'header_text' argument is '{header_text}' "
-					f"(type '{type(header_text)}') - a string is required "
-					"for this argument.")
-		elif not isinstance(header_level, int):
-			raise TypeError(f"Header level '{header_level}' is not valid - "
-					"must specify an int.")
-		elif header_level not in range(1, 7):
-			raise ValueError(f"Header level '{header_level}' is out of range "
-					"- must be between 1 and 6.")
-		else:
-			self.tag = "h" + str(header_level)
-			OneLineTag.__init__(self, header_text, **kwargs)
-
-class Meta(SelfClosingTag):
-	"""
-	A metadata (`meta`) self-closing element class (child of `head`).
-	"""
-	tag = "meta"
