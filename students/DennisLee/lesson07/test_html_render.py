@@ -271,21 +271,22 @@ class ElementTestCase(unittest.TestCase):
             self.assertTrue(pg.render(fobj, '    '))
         with open(self.test_filename, 'r') as f:
             self.strs_out = f.readlines()
-            self.assertEqual(len(self.strs_out), 13)
-            self.assertEqual(self.strs_out[0], "<html>\n")
-            self.assertEqual(self.strs_out[1], "    <body>\n")
-            self.assertEqual(self.strs_out[2], "        <p>\n")
-            self.assertEqual(self.strs_out[3], "            " +
+            self.assertEqual(len(self.strs_out), 14)
+            self.assertEqual(self.strs_out[0], "<!DOCTYPE html>\n")
+            self.assertEqual(self.strs_out[1], "<html>\n")
+            self.assertEqual(self.strs_out[2], "    <body>\n")
+            self.assertEqual(self.strs_out[3], "        <p>\n")
+            self.assertEqual(self.strs_out[4], "            " +
                     self.strs_after[0] + " " +
                     self.strs_after[1] + "\n")
-            self.assertEqual(self.strs_out[4], "        </p>\n")
-            self.assertEqual(self.strs_out[5], "        <p>\n")
-            self.assertEqual(self.strs_out[6], "            " +
+            self.assertEqual(self.strs_out[5], "        </p>\n")
+            self.assertEqual(self.strs_out[6], "        <p>\n")
+            self.assertEqual(self.strs_out[7], "            " +
                     self.strs_after[2] + " " +
                     self.strs_after[3] + "\n")
-            self.assertEqual(self.strs_out[7], "        </p>\n")
-            self.assertEqual(self.strs_out[8], "        <p>\n")
-            self.assertEqual(self.strs_out[9], "            " +
+            self.assertEqual(self.strs_out[8], "        </p>\n")
+            self.assertEqual(self.strs_out[9], "        <p>\n")
+            self.assertEqual(self.strs_out[10], "            " +
                     self.strs_after[4] + " " +
                     self.strs_after[5] + "\n")
             self.assertEqual(self.strs_out[-3], "        </p>\n")
@@ -602,9 +603,98 @@ class ElementTestCase(unittest.TestCase):
             self.assertEqual(strs_out[10],  '</body>\n')
         del strs_out, body, para, headers_and_p, f, fobj
         
+    def test_Meta_100(self):
+        with self.assertRaises(TypeError):
+            meta = hr.Meta(50)
+            del meta
+    def test_Meta_101(self):
+        with self.assertRaises(TypeError):
+            meta = hr.Meta(70.5)
+            del meta
+    def test_Meta_110(self):
+        with self.assertRaises(TypeError):
+            meta = hr.Meta("UTF-8")
+            del meta
+    def test_Meta_120(self):
+        meta = hr.Meta()
+        with self.assertRaises(TypeError):
+            meta.append("   Some \t text.   \n")
+        del meta
+    def test_Meta_130(self):
+        para = hr.P("\n    Nothing. \t\t")
+        meta = hr.Meta()
+        with self.assertRaises(TypeError):
+            meta.append(para)
+        del meta, para
+    def test_Meta_200(self):
+        meta = hr.Meta(charset="\t    UTF-8   \n")
+        head = hr.Head(meta)
+        strs_out = None
+        with open(self.test_filename, 'w') as fobj:
+            self.assertTrue(head.render(fobj, '     '))
+        with open(self.test_filename, 'r') as f:
+            strs_out = f.readlines()
+            self.assertEqual(len(strs_out), 3)
+            self.assertEqual(strs_out[0], '<head>\n')
+            self.assertEqual(strs_out[1], '     <meta charset="UTF-8" />\n')
+            self.assertEqual(strs_out[2], '</head>\n')
+        del meta, head, f, fobj, strs_out
 
-        
-        
+    def test_Html_with_doctype_100(self):
+        import html_render as hr
+        meta = hr.Meta(charset="\t    UTF-8   \n")
+        title = hr.Title("\n\nRandom  \t   Page   \n\t   ")
+        head = hr.Head([meta, title])
+        li_1 = hr.Li("  First  item:  ")
+        para = hr.P("\n\nExplanatory\t\ttext.\n\n", **self.attrs_pass)
+        link = hr.A("https://github.com/", "A useful site!")
+        para.append(link)
+        strs_out, hr = None, hr.Hr()
+        li_1.append([hr, para])
+        import html_render as hr
+        li_2 = hr.Li("Second")
+        br = hr.Br()
+        li_2.append([br, "item"])
+        li_3 = hr.Li("Third item", onclick="\n\n\t  EventHandler()\t  \n")
+        ul = hr.Ul([li_1, li_2, li_3])
+        body = hr.Body(ul)
+        html = hr.Html((head, body))
+        with open(self.test_filename, 'w') as fobj:
+            self.assertTrue(html.render(fobj))
+        with open(self.test_filename, 'r') as f:
+            strs_out = f.readlines()
+            self.assertEqual(len(strs_out), 27)
+            self.assertEqual(strs_out[ 0], '<!DOCTYPE html>\n')
+            self.assertEqual(strs_out[ 1], '<html>\n')
+            self.assertEqual(strs_out[ 2], '<head>\n')
+            self.assertEqual(strs_out[ 3], '<meta charset="UTF-8" />\n')
+            self.assertEqual(strs_out[ 4], '<title>Random Page</title>\n')
+            self.assertEqual(strs_out[ 5], '</head>\n')
+            self.assertEqual(strs_out[ 6], '<body>\n')
+            self.assertEqual(strs_out[ 7], '<ul>\n')
+            self.assertEqual(strs_out[ 8], '<li>\n')
+            self.assertEqual(strs_out[ 9], 'First item:\n')
+            self.assertEqual(strs_out[10], '<hr />\n')
+            self.assertEqual(strs_out[11], '<p id="Marker" alt="Fancy Pants">\n')
+            self.assertEqual(strs_out[12], 'Explanatory text.\n')
+            self.assertEqual(strs_out[13], '<a href="https://github.com/">A useful site!</a>\n')
+            self.assertEqual(strs_out[14], '</p>\n')
+            self.assertEqual(strs_out[15], '</li>\n')
+            self.assertEqual(strs_out[16], '<li>\n')
+            self.assertEqual(strs_out[17], 'Second\n')
+            self.assertEqual(strs_out[18], '<br />\n')
+            self.assertEqual(strs_out[19], 'item\n')
+            self.assertEqual(strs_out[20], '</li>\n')
+            self.assertEqual(strs_out[21], '<li onclick="EventHandler()">\n')
+            self.assertEqual(strs_out[22], 'Third item\n')
+            self.assertEqual(strs_out[23], '</li>\n')
+            self.assertEqual(strs_out[24], '</ul>\n')
+            self.assertEqual(strs_out[25], '</body>\n')
+            self.assertEqual(strs_out[26], '</html>\n')
+        del meta, title, head, li_1, li_2, li_3, para, link, \
+                hr, br, ul, body, html, f, fobj
+
+
         
 
         

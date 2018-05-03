@@ -61,7 +61,7 @@ class Element():
 		elif cur_ind.strip(' '):
 			raise ValueError(
 					"The 'cur_ind' argument must contain spaces only.")
-		elif file_out.write(''):
+		elif not hasattr(file_out, 'write'):
 			raise AttributeError("Writable file-like "
 					"object not given in the 'file_out' argument.")
 
@@ -71,7 +71,11 @@ class Element():
 
 class Html(Element):
 	tag = "html"
-
+	def render(self, file_out, cur_ind=""):
+		self.verify_render_args(file_out, cur_ind)
+		file_out.write("<!DOCTYPE html>\n")
+		return Element.render(self, file_out, cur_ind)
+			
 class Body(Element):
 	tag = "body"
 
@@ -151,3 +155,6 @@ class H(OneLineTag):
 		else:
 			self.tag = "h" + str(header_level)
 			OneLineTag.__init__(self, header_text, **kwargs)
+
+class Meta(SelfClosingTag):
+	tag = "meta"
