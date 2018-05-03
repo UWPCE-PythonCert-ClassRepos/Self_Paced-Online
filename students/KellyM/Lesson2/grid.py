@@ -32,4 +32,9 @@ def variable_grid(x,y):
 		    print((y*(bar + (y*' ')) + bar))
 	    
     print((y*(plus + (y*minus)) + plus))	
+<<<<<<< HEAD
+  
+    
+=======
  
+>>>>>>> c22db40b2005d59325404152d7b47aa6085fabc3
