@@ -15,4 +15,7 @@ class SATest(unittest.TestCase):
         self.assertEqual(self.test.make_arr(), [4, 3, 7, 8, 2, 9, 4])
 
     def test_sa_len(self):
-        self.assertEqual(self.test.get_len_arr(), 9)
+        self.assertEqual(self.test.get_seq_len(), 10)
+
+    def test_sa_index(self):
+        self.assertEqual(self.test.__getitem__(self.test.seq, 3), 7)
