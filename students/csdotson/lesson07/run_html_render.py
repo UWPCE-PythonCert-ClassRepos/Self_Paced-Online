@@ -30,9 +30,9 @@ def render_page(page, filename):
         outfile.write(f.getvalue())
 
 
-# Step 1
-#########
-
+# # Step 1
+# #########
+#
 # page = hr.Element()
 #
 # page.append("Here is a paragraph of text -- there could be more of them, "
