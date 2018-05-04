@@ -6,8 +6,8 @@ s1.format(*a)
 
 #Task Two
 #repeat 'Task One' using f-strings
-
-#NEEED TO COME BACK TO THIS!
+a=(2,123.4567,10000,12345.67)
+f'file_{a[0]:03}: {a[1]:.2f}, {a[2]:.2e}, {a[3]:.2e}'
 
 #Task Three
 def formatter(nums):
@@ -26,3 +26,20 @@ nums=(4,30,2017,2,27)
 
 
 #Task Five
+a=['orange',1.3,'lemon',1.1]
+f"the weight of an {a[0].lower()} is {a[1]} and the weight of a {a[2]} is {a[3]}"
+f"the weight of an {a[0].upper()} is {a[1]*1.2} and the weight of a {a[2].upper()} is {a[3]*1.2}"
+
+#Task Six
+name = ['Kalamazoo', 'Joe', 'Dave', 'Michigan', 'Blue', 'Go']
+age = [10,5,100,250,7,23]
+cost = [10,10,1500,20000,5,25]
+
+s='{:<10}{:<10}{:<10}'
+for i in range(len(name)):
+    temp = [name[i],age[i],cost[i]]
+    print(s.format(*temp))
+
+
+
+
