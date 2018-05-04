@@ -6,6 +6,7 @@ class Element():
 	"""The base class for HTML elements."""
 	indent = ""  # A string of spaces indicating how much to indent
 	             # between each indentation level
+	tag = None
 	def __init__(self, content=None, **kwargs):
 		"""
 		Define an element by specifying its child content & attributes.
@@ -75,8 +76,6 @@ class Element():
 		# indentation argument, and change the current indent level to 0
 		if not self.indent:
 			self.indent, cur_ind = cur_ind, ""
-		if not self.tag:
-			self.tag = "html"  # Default setting for step 1 in the run file
 		child_ind = cur_ind + self.indent
 		file_out.write(  # Open tag
 				cur_ind + '<{0}{1}>\n'.format(self.tag, self.attribute_string))
