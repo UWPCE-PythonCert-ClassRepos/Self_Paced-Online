@@ -4,6 +4,7 @@ import unittest, os
 import html_render as hr
 
 class consts():
+    """Constant strings/dicts to be used in during testing."""
     strs_before = (
             "  \n Why  am   \n\tI here?     \t",
             "\n\t  \n  Here's   that rainy   day...   \t  \n",
@@ -628,9 +629,11 @@ class ElementTestCase(unittest.TestCase):
             self.assertEqual(self.strs_out[1], '     <meta charset="UTF-8" />\n')
             self.assertEqual(self.strs_out[2], '</head>\n')
 
-    # Test a multilayered `html` document stream w/DOCTYPE declared
+    # Test a multilayered `html` document stream w/DOCTYPE declared.
     def test_Html_with_doctype_100(self):
-        import html_render as hr
+        import html_render as hr  # This repeated statement shouldn't
+                                  # be needed, but I keep getting errors
+                                  # without it here
         meta = hr.Meta(charset="\t    UTF-8   \n")
         title = hr.Title("\n\nRandom  \t   Page   \n\t   ")
         head = hr.Head([meta, title])
@@ -640,7 +643,7 @@ class ElementTestCase(unittest.TestCase):
         para.append(link)
         hr = hr.Hr()
         li_1.append([hr, para])
-        import html_render as hr
+        import html_render as hr  # See previous comment
         li_2 = hr.Li("Second")
         br = hr.Br()
         li_2.append([br, "item"])
