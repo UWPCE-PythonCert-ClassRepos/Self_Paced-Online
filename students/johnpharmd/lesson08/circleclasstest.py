@@ -33,7 +33,16 @@ class CircleTest(unittest.TestCase):
         self.assertEqual(self.test.__repr__(), 'Circle(5)')
 
     def test_circle_num_protocol(self):
+        """tests for Steps 7 and 8"""
         self.new_test = cc.Circle(3)
         self.assertEqual(self.test + self.new_test, 'Circle(8)')
         self.assertEqual(self.test * 3, 'Circle(24)')
         self.assertEqual(3 * self.test, 'Circle(72)')
+        self.assertTrue(self.test > self.new_test)
+        self.assertTrue(self.new_test < self.test)
+        self.another_test = cc.Circle(3)
+        self.assertEqual(self.new_test, self.another_test)
+        cc.Circle.test_circles = [cc.Circle(i) for i in (6, 7, 8, 4, 2,
+                             3, 5, 9, 1)]
+        self.assertEqual(cc.Circle.test_circles.sort(), [cc.Circle(i) for
+                         i in range(1, 10)])
