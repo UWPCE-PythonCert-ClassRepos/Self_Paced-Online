@@ -42,7 +42,7 @@ class CircleTest(unittest.TestCase):
         self.assertTrue(self.new_test < self.test)
         self.another_test = cc.Circle(3)
         self.assertEqual(self.new_test, self.another_test)
-        cc.Circle.test_circles = [cc.Circle(i) for i in (6, 7, 8, 4, 2,
+        self.test_circles = [cc.Circle(i) for i in (6, 7, 8, 4, 2,
                              3, 5, 9, 1)]
-        self.assertEqual(cc.Circle.test_circles.sort(), [cc.Circle(i) for
+        self.assertEqual(sorted(self.test_circles), [cc.Circle(i) for
                          i in range(1, 10)])
