@@ -13,3 +13,6 @@ class CircleTest(unittest.TestCase):
 
     def test_circle_diameter(self):
         self.assertEqual(self.test.diameter, 10)
+        self.test.diameter = 8
+        self.assertEqual(self.test.diameter, 8)
+        self.assertEqual(self.test.radius, 4)
