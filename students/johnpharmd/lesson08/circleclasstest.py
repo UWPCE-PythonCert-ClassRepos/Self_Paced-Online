@@ -1,5 +1,6 @@
 import circle_class as cc
 import unittest
+import math
 
 
 class CircleTest(unittest.TestCase):
@@ -16,3 +17,14 @@ class CircleTest(unittest.TestCase):
         self.test.diameter = 8
         self.assertEqual(self.test.diameter, 8)
         self.assertEqual(self.test.radius, 4)
+
+    def test_circle_area(self):
+        self.assertEqual(self.test.area, math.pi * self.test.radius ** 2)
+
+    def test_circle_from_diameter(self):
+        self.assertEqual(self.test.from_diameter(), 10)
+        self.assertTrue(self.test.radius == 5)
+
+    def test_circle_str(self):
+        self.assertEqual(self.test.__str__(), 'Circle with radius: ' +
+                         str(5))
