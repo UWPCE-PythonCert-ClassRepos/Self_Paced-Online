@@ -2,10 +2,10 @@
 
 
 '''
-    File Name: slicing_lab.py
+    File Name: list_lab.py
     Author: Matt Hudgins
-    Date created: 4/21/18
-    Date last modified: 4/21/18
+    Date created: 5/5/18
+    Date last modified: 5/5/18
     Python Version 3.6.4
 '''
 
