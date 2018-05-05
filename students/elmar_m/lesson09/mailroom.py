@@ -6,28 +6,42 @@ elmar_m / 22e88@mailbox.org
 Lesson09: OOP mailroom program 
 '''
 
-class donor:
+import io
+
+class Donor:
     def __init__(self, fname, lname):
         self.firstname = fname
         self.lastname = lname
         self.uid = '{}_{}'.format(fname, lname) 
 
 
-class donation:
-    def __init__(self, asset, currency=None ):
-        #if currency is not None:
-        # if asset is int:
-        if type(asset) is int:
-            self.amount = asset
-            if currency is None:
-                self.currency = 'dollar'
-        else:
-            self.real_value = str(asset)
+#class donation:
+#    def __init__(self, asset, currency=None ):
+#        self.amount = asset 
+#        if currency is None:
+#            self.currency = 'dollar'
+    
             
 
+class Collection:
 
 
+    def __init__(self):
+        self.db = open('./database', 'a+')
 
+    def add(self, donor, amount):
+        #with open(self.db, 'a+') as f:
+        #    # f.write(str(donor + amount))
+        #    f.write(donor + amount)
+        #    return donor, amount
+        self.db.write(donor + amount)
+        return donor, amount
+        
+
+    def get(donor):
+        pass
+
+        
 
 def main():
     print('This is executing main...\n')
