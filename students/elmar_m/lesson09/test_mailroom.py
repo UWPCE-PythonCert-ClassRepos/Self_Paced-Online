@@ -33,9 +33,21 @@ class Mailroom_Tests(unittest.TestCase):
         #self.assertTrue(hasattr, obj.add)
         #self.assertTrue(hasattr, obj.get)
         # self.assertTrue(obj.add('John', '500'))
+
         db = mailroom.Collection()
-        # db.add_donation('kalleinz', 500) 
-        print(db.get_donor('kalleinz'))
+        db._create_table()
+
+        db.add_donor('brathahn')
+        db.add_donor('b')
+        db.add_donor('kalleinz')
+
+        db.add_donation('b', 500) 
+        db.add_donation('b', 1500) 
+        db.add_donation('kalleinz', 500) 
+        db.add_donation('kalleinz', 1500) 
+        print(db.get_donations('b'))
+        print(db.get_donations('kalleinz'))
+        print(db.get_donations('brathahn'))
         
 
 

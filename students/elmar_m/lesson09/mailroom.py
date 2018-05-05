@@ -24,20 +24,32 @@ class Collection:
         self.cursor = self.db.cursor()
 
     def _create_table(self):
-        self.cursor.execute("create table mailroom (donor TEXT PRIMARY KEY, donation INT)")
+        self.cursor.execute("create table mailroom (donation_ID INTEGER PRIMARY KEY AUTOINCREMENT, donor TEXT, donation INT DEFAULT 0)")
         # self.db.close()
         return True
 
+    def add_donor(self, spender):
+        # self.cursor.execute("insert into mailroom values(?, ?)", (donor, 0)) 
+        # self.cursor.execute("insert into mailroom (donor) values('?')", (donor)) 
+        self.cursor.execute("insert into mailroom (donor) values(?)", (spender,)) 
+        # self.cursor.execute("insert into mailroom (donor) values(?)", (self.donor)) 
+        self.db.commit()
+        # self.db.close()
 
-    def get_donor(self, donor):
-        self.cursor.execute("select * from mailroom where donor = ?", (donor,))
+    def add_donation(self, donor, amount):
+    #    self.cursor.execute("insert into mailroom values(?) where donor = (?)", (amount), (donor) ) 
+        self.cursor.execute("insert into mailroom (donor, donation) values(?, ?)", (donor, amount)) 
+    #    self.db.commit()
+    #    self.db.close()
+
+
+    # def get_donor(self, donor):
+    def get_donations(self, donor):
+        # self.cursor.execute("select * from mailroom where donor = ?", (donor,))
+        self.cursor.execute("select donation from mailroom where donor = ?", (donor,))
         # self.db.close()
         return self.cursor.fetchall()
 
-    def add_donation(self, donor, amount):
-        self.cursor.execute("insert into mailroom values(?, ?)", (donor, amount) ) 
-        self.db.commit()
-        self.db.close()
 
 
 
