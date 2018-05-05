@@ -28,3 +28,6 @@ class CircleTest(unittest.TestCase):
     def test_circle_str(self):
         self.assertEqual(self.test.__str__(), 'Circle with radius: ' +
                          str(5))
+
+    def test_circle_repr(self):
+        self.assertEqual(self.test.__repr__(), 'Circle(5)')
