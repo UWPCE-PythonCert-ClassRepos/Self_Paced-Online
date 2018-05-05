@@ -11,6 +11,9 @@ class Circle:
     def __str__(self):
         return 'Circle with radius: ' + str(self.radius)
 
+    def __repr__(self):
+        return 'Circle(' + str(self.radius) + ')'
+
     @property
     def diameter(self):
         return self.radius * 2
