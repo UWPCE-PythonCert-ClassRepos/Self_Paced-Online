@@ -100,18 +100,3 @@ fruit.insert(3,"Peaches")
 print("This is the original list:", fruit)
 
 Print ("This is the end of the list-lab exercise!")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
