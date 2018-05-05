@@ -6,7 +6,10 @@ elmar_m / 22e88@mailbox.org
 Lesson09: OOP mailroom program 
 '''
 
-import io
+# import io
+
+import sqlite3
+
 
 class Donor:
     def __init__(self, fname, lname):
@@ -15,19 +18,51 @@ class Donor:
         self.uid = '{}_{}'.format(fname, lname) 
 
 
-#class donation:
-#    def __init__(self, asset, currency=None ):
-#        self.amount = asset 
-#        if currency is None:
-#            self.currency = 'dollar'
-    
-            
-
 class Collection:
-
-
     def __init__(self):
-        self.db = open('./database', 'a+')
+        self.db= sqlite3.connect('BLABLA.db')
+        self.cursor = self.db.cursor()
+
+    def _create_table(self):
+        self.cursor.execute("create table mailroom (donor TEXT PRIMARY KEY, donation INT)")
+        # self.db.close()
+        return True
+
+
+    def get_donor(self, donor):
+        self.cursor.execute("select * from mailroom where donor = ?", (donor,))
+        # self.db.close()
+        return self.cursor.fetchall()
+
+    def add_donation(self, donor, amount):
+        self.cursor.execute("insert into mailroom values(?, ?)", (donor, amount) ) 
+        self.db.commit()
+        self.db.close()
+
+
+
+
+
+
+    #def db_lookup(x):
+    #    sender_found = None     # Hilfsvariable setzen
+    #    # Datenbankabfrage durchfuehren:
+    #    connection = sqlite3.connect(dbname)
+    #    cursor = connection.cursor()
+    #    cursor.execute("select * from addresses where sender = ?", (x,))
+    #    # Wenn cursor einen Inhalt hat, die Variable sender_found mit diesem Inhalt belegen:
+    #    for i in cursor:
+    #        sender_found = i[0]
+    #    # Den Inhalt der Hilfsvariablen zurueckgeben:
+    #    return sender_found
+    #    connection.close()
+
+
+
+
+
+
+
 
     def add(self, donor, amount):
         #with open(self.db, 'a+') as f:

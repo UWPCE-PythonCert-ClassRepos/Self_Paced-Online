@@ -7,13 +7,13 @@ Lesson09: unittests for mailroom.py class
 '''
 
 
-import unittest as ut
-import mailroom as mr
+import unittest 
+import mailroom 
 
-class Mailroom_Tests(ut.TestCase):
+class Mailroom_Tests(unittest.TestCase):
     
     def test_Donor(self):   
-        obj = mr.Donor('John', 'Doe')
+        obj = mailroom.Donor('John', 'Doe')
         self.assertIs(obj.firstname, 'John')
         self.assertIs(obj.lastname, 'Doe')
         self.assertEqual(obj.uid, 'John_Doe')
@@ -29,16 +29,18 @@ class Mailroom_Tests(ut.TestCase):
     #    #self.assertTrue(hasattr, obj1.real_value)
     
     def test_Collection(self):
-        obj = mr.Collection()
-        self.assertTrue(hasattr, obj.add)
-        self.assertTrue(hasattr, obj.get)
-        self.assertTrue(obj.add('John', '500'))
-        
+        #obj = mr.Collection()
+        #self.assertTrue(hasattr, obj.add)
+        #self.assertTrue(hasattr, obj.get)
+        # self.assertTrue(obj.add('John', '500'))
+        db = mailroom.Collection()
+        # db.add_donation('kalleinz', 500) 
+        print(db.get_donor('kalleinz'))
         
 
 
 
 
 if __name__ == '__main__':
-    ut.main()
+    unittest.main()
 
