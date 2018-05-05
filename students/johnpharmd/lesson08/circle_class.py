@@ -5,6 +5,10 @@ class Circle:
     """represents a simple circle, using properties, a class method, and
     special methods"""
 
+    @classmethod
+    def sort(cls, list):
+        return cls.list.sort()
+
     def __init__(self, radius):
         self.radius = radius
 
@@ -24,6 +28,15 @@ class Circle:
 
     def __rmul__(self, value):
         return self.__mul__(value)
+
+    def __gt__(self, other):
+        return self.radius > other.radius
+
+    # def __lt__(self, other):
+    #     return self.radius < other.radius
+
+    def __eq__(self, other):
+        return self.radius == other.radius
 
     @property
     def diameter(self):
