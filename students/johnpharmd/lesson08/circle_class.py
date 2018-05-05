@@ -14,6 +14,17 @@ class Circle:
     def __repr__(self):
         return 'Circle(' + str(self.radius) + ')'
 
+    def __add__(self, other):
+        self.radius += other.radius
+        return self.__repr__()
+
+    def __mul__(self, value):
+        self.radius *= value
+        return self.__repr__()
+
+    def __rmul__(self, value):
+        return self.__mul__(value)
+
     @property
     def diameter(self):
         return self.radius * 2
