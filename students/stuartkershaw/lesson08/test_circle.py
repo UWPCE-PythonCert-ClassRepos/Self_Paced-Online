@@ -36,3 +36,17 @@ def test_circle_alt_constructor():
     c = Circle.from_diameter(8)
     assert c.diameter == 8
     assert c.radius == 4
+
+
+def test_circle_str(capsys):
+    c = Circle(4)
+    print(c)
+    captured = capsys.readouterr()
+    assert captured.out == "Circle with radius: 4\n"
+
+    assert repr(c) == "Circle(4)"
+    
+    d = eval(repr(c))
+
+    assert d.radius == 4
+    assert d.diameter == 8
