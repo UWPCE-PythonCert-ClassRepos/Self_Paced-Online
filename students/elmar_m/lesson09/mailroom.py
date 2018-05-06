@@ -38,7 +38,7 @@ class Collection:
 
     def add_donation(self, donor, amount):
         self.cursor.execute("insert into mailroom (donor, donation) values(?, ?)", (donor, amount)) 
-    #    self.db.commit()
+        self.db.commit()
     #    self.db.close()
 
 
@@ -48,35 +48,102 @@ class Collection:
         # self.db.close()
         return self.cursor.fetchall()
 
+
+    def get_average_donation(self, donor):
+        pass
+
+
+    def get_number_of_donations(self, donor):
+        pass
+
     
-    def get_donors(self):
+    def sum_up_donations(self, donor):
+        pass
+    
+
+    #def report(self):      # ?? das hier oder oben die Einzelfunktionen?
+    #    pass               # ?? oder dies hier nutzt die Einzelfunktionen,
+                            # welche dann nur 'intern' sind?
+
+    #def send_mails(self):  # hier oder draussen?
+    #    pass
+
+
+    def get_all_donors(self):
         self.cursor.execute("select donor from mailroom")
         donors = set(self.cursor.fetchall())
-        # return self.cursor.fetchall()
         return donors
         
+
+    def check_existence(self, donor):
+        self.cursor.execute("select * from mailroom where donor = ?", (donor,))
+        if self.cursor.fetchall():
+            return True
+        else:
+            return None
+
+
 
 
 def efunc():
     return 'exiting'
 
-
 def fakefunc():
     pass
 
-def listdonors():
+def list_donors():
     db = Collection()
-    for i in db.get_donors():
+    for i in db.get_all_donors():
         print('\t{} {}'.format('Nice person:', i)) 
 
+def list_donations():
+    donor = input('Please enter name of donor: ') 
+    db = Collection()
+    for i in db.get_donations(donor):
+        print('\t{} donated: {}'.format(donor, i)) 
 
-#sub_d= {
-#    #Dispatcher dictionary submenu
-#    'l' : list_donors,
-#    'a' : add,
-#    'x' : efunc,
-#    'm' : mail,
-#    }
+def add():
+    while True: 
+        donor = input('Please enter donor name: ')
+        if not donor.isalpha():
+            print('>> only alphabetical characters in donor name allowed, please try again')
+            continue
+        else:
+            break
+    amount = input('Please enter donation amount: ')
+    db = Collection()
+    db.add_donation(donor, amount)
+
+    #if db.check_existence(donor):   
+    #    print('{} found in database'.format(donor))
+    #    db.add_donation(donor, amount)
+    #else:
+    #    print('{} NOT FOUND in database, will be added'.format(donor))
+    #    db.add_donation(donor, amount)
+        
+    
+#def add():
+#    while True: 
+#        dname = input('>> Please give donor name: ')
+#        if not dname.isalpha():
+#            print('>> only alphabetical characters in donor name allowed, please try again')
+#            continue
+#        else:
+#            break
+#    if dname in donors:
+#        print('>>', dname, 'already in list')
+#        return add_amount(dname)
+#        # add_amount(dname)
+#        # return True
+#    
+#    else:
+#        print('>>', dname, 'not in list, adding it')
+#        return add_amount(dname)
+#        # add_amount(dname)
+#        # return True
+
+    
+
 
 def menu(prompt, dispatcher):
     try:
@@ -101,11 +168,9 @@ if __name__ == '__main__':
     \n\t6: quit program\n\n'
 
     dispatcher = {
-        '1' : listdonors,
-        # '2' : listdonations,
-        '2' : fakefunc,
-        # '3' : add,
-        '3' : fakefunc,
+        '1' : list_donors,
+        '2' : list_donations,
+        '3' : add,
         # '4' : thankyou,
         '4' : fakefunc,
         # '5' : report,

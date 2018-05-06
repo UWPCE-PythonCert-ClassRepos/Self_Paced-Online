@@ -33,11 +33,13 @@ class Mailroom_Tests(unittest.TestCase):
         db.add_donation('kalleinz', 500) 
         db.add_donation('kalleinz', 1500) 
         print(db.get_donations('b'))
-        print(db.get_donations('kalleinz'))
+        print('kalleinz:', db.get_donations('kalleinz'))
         print('brathahn:', db.get_donations('brathahn'))
         # print('all donors:', db.get_donors())
-        for i in db.get_donors():
+        for i in db.get_all_donors():
             print('{} {}'.format('nice person:', i))
+        db.check_existence('kalleinz')
+        db.check_existence('gibsnich')
         
 
 
