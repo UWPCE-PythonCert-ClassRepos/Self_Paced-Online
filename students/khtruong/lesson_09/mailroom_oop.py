@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """This module runs the mailroom script using oop paradigm."""
-
+import sys
 from datetime import date
 
 
@@ -48,22 +48,14 @@ class DataBase:
         else:
             self.donors = []
 
-    def donor_and_amount(self):
-        """Return prompt for donor name and donation amount and print to
-        screen.
-        """
-        fullname = fullname_input()
-        amount = amount_input()
+    def add_donor_and_amount(self, fullname, amount):
         for donor in self.donors:
             if fullname == donor.fullname:
                 donor.add_donation(amount)
                 break
         else:
-            self.add_donor(fullname, [amount])
+            self.donors.append(Donor.from_fullname(fullname, [amount]))
         print(self._format_letter(fullname, amount))
-
-    def add_donor(self, fullname, donations=None):
-        self.donors.append(Donor.from_fullname(fullname, donations))
 
     def list_donors(self):
         """Return all donors name."""
@@ -87,9 +79,7 @@ class DataBase:
         for donor in self.donors:
             fullname = donor.fullname
             amount = donor.donations[-1]
-            filename = ''.join([fullname, ' ',
-                                str(date.today()),
-                                '.txt'])
+            filename = f'{fullname}_{date.today()}.txt'
             with open(filename, 'w') as outfile:
                 # use last donated amount
                 outfile.write(self._format_letter(fullname, amount))
@@ -115,13 +105,15 @@ db = DataBase([Donor('Jeff', 'Bezos', [3.65, 54.50]),
 def menu_selection(prompt, selection_dict):
     """Return options for user to select from."""
     while True:
-        userinput = input(prompt)
-        if selection_dict.get(userinput) is None:
+        try:
+            userinput = input(prompt)
+            if userinput == 'q':
+                break
+            else:
+                selection_dict[userinput]()
+        except KeyError:
             print('\n{} is not a valid selection. '
                   'Please try again!'.format(userinput))
-        else:
-            if selection_dict.get(userinput)() == 'Exit Menu':
-                break
 
 
 def fullname_input():
@@ -133,17 +125,9 @@ def amount_input():
     """Return prompt asking for donation amount."""
     while True:
         try:
-            amount = float(input('Enter donation amount! > '))
+            return float(input('Enter donation amount! > '))
         except ValueError:
             print('\nPlease enter dollar amount and NOT text!')
-        else:
-            break
-    return amount
-
-
-def exit_menu():
-    """Return 'Exit Menu'."""
-    return 'Exit Menu'
 
 
 def send_thankyou_email():
@@ -158,8 +142,7 @@ main_prompt = ('\nEnter "q" to "Exit Menu" \n'
                'What do you want to do? > '
                )
 
-main_dict = {'q': exit_menu,
-             '1': send_thankyou_email,
+main_dict = {'1': send_thankyou_email,
              '2': db.create_report,
              '3': db.send_letters
              }
@@ -170,9 +153,9 @@ thankyou_prompt = ('\nEnter "q" to "Exit Menu" \n'
                    'What do you want to do? > '
                    )
 
-thankyou_dict = {'q': exit_menu,
-                 '1': db.list_donors,
-                 '2': db.donor_and_amount
+thankyou_dict = {'1': db.list_donors,
+                 '2': lambda: db.add_donor_and_amount(fullname_input(),
+                                                      amount_input())
                  }
 
 

@@ -1,4 +1,6 @@
-# author/student: Roy Tate (githubtater)
+#!/usr/bin/python3
+
+## author/student: Roy Tate (githubtater)
 
 from collections import Counter
 
