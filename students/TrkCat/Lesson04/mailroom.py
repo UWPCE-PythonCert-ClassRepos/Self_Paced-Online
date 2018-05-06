@@ -84,11 +84,11 @@ def quit_menu():
     return False
 
 
-def update_tot_avg(d):
+def update_tot_avg(don_dict):
     """Update total and average donation value in dict d."""
-    d['tot_don'] = sum(d['donations'])
-    d['num_don'] = len(d['donations'])
-    d['avg_don'] = d['tot_don']/d['num_don']
+    don_dict['tot_don'] = sum(don_dict['donations'])
+    don_dict['num_don'] = len(don_dict['donations'])
+    don_dict['avg_don'] = don_dict['tot_don']/don_dict['num_don']
 
 
 def show_menu(prompt, disp_dict):
