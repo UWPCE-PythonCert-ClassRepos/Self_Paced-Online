@@ -18,7 +18,7 @@ def donor_dashboard():
     options = {'1': ("Send a thank you note.", thank_you),
                '2': ("Create a report.", create_report),
                '3': ("Send thank yous to all donors.", thank_all),
-               '4': ("Exit the donor dashboard.", exit)}
+               '4': ("Exit the donor dashboard.", exit_dash)}
 
     response = ''
     while response != '4':
@@ -103,29 +103,23 @@ def thank_all():
     print('\nThe current directory is %s' % cur_dir)
     new_dir = input('\nEnter the directory you want to save to '
                     '(Press enter to save in the current location): ').strip()
-#exception handling changes here: indented all for try/except block
-    try:
-        if new_dir != '':
-            os.mkdir(new_dir)
-            os.chdir(new_dir)
-            new_dir = os.getcwd()
-        else:
-            new_dir = cur_dir
 
-        for k, v in donors.items():
-            letter = create_form_letter(k, v[-1])
-            with open('{:s}.txt'.format(k), 'w') as f:
-                for line in letter:
-                    f.write(line)
+    if new_dir != '':
+        os.mkdir(new_dir)
+        os.chdir(new_dir)
+        new_dir = os.getcwd()
+    else:
+        new_dir = cur_dir
 
-        print('Your thank you notes have been saved in %s:' % new_dir)
-        print(os.listdir())
-        os.chdir(cur_dir)
-    except FileNotFoundError:
-        print('\n'"We cannot find that file location. Please enter another.")
-    finally:
-        thank_all()
+    for k, v in donors.items():
+         letter = create_form_letter(k, v[-1])
+    with open('{:s}.txt'.format(k), 'w') as f:
+            for line in letter:
+                f.write(line)
 
+    print('Your thank you notes have been saved in %s:' % new_dir)
+    print(os.listdir())
+    os.chdir(cur_dir)
 
 def create_form_letter(donor_name, donor_amount):
 
