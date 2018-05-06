@@ -24,12 +24,12 @@ class Element:
 
     def render( self, file_out, cur_ind='', new_line=True):
         if new_line :
-            file_out.write("<{}{}>\n".format(self.tag, self.stl))
+            file_out.write("<{}{}>\n".format(self.tag, self.style))
             for idx_elm in self.sub_elements: 
                 if self.leaf_node: file_out.write("{}\n".format(idx_elm))
                 else: idx_elm.render(file_out, cur_ind)
         else: 
-            file_out.write("<{}{}>".format(self.tag, self.stl))
+            file_out.write("<{}{}>".format(self.tag, self.style))
             for idx_elm in self.sub_elements:
 
                 if self.leaf_node: file_out.write("{}".format(idx_elm))
@@ -66,6 +66,19 @@ class OneLineTag(Element):
 
 class Title(OneLineTag):
     tag="title"
+
+
+class SelfClosingTag(Element):
+    def __init__self( self, content=None, **kwargs ):
+
+        if self.content is not None:
+            raise TypeError
+    
+    def render( self, file_out, cur_ind='', new_line=True):
+        file_out.write("< /{}>\n".format(self.tag))
+
+class Hr(SelfClosingTag):
+    tag = "hr"
 
 
 
