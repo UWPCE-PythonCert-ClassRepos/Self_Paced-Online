@@ -24,7 +24,7 @@ def render_page(page, filename, indent=None):
 
     #print ("page: {}, filename: {}, indent: {}".format(page, filename, indent))
     f = StringIO()
-    print (f)
+    #print (f)
     if indent is None:
         print ("use 1")
         page.render(f)  # this means f is already declared StringIO
@@ -33,8 +33,8 @@ def render_page(page, filename, indent=None):
         print("use 2")
         page.render(f, indent)
 
-    print(f.getvalue())
-    print (f)
+    #print(f.getvalue())
+    #print (f)
 
     with open(filename, 'w') as outfile:
         outfile.write(f.getvalue())
@@ -43,33 +43,45 @@ def render_page(page, filename, indent=None):
 # Step 1
 #########
 
-page = hr.Element()
-
-page.append("Here is a paragraph of text -- there could be more of them, "
-            "but this is enough  to show that we can do some text")
-
-page.append("And here is another piece of text -- you should be able to add any number")
-
-render_page(page, "test_html_output1.html")
-
+# page = hr.Element()
+# 
+# page.append("Here is a paragraph of text -- there could be more of them, "
+#             "but this is enough  to show that we can do some text")
+# 
+# page.append("And here is another piece of text -- you should be able to add any number")
+# 
+# render_page(page, "test_html_output1.html")
+# 
 # The rest of the steps have been commented out.
 #  Uncomment them as you move along with the assignment.
 
 # ## Step 2
 # ##########
 
-# page = hr.Html()
+print ("---Test 2")
+print ("---page = hr.Html()")
+page = hr.Html()
 
-# body = hr.Body()
+print ("---body = hr.Body")
+body = hr.Body()
 
-# body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-#                  "but this is enough  to show that we can do some text"))
+print ("-====body.append.Paragraph")
+body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                 "but this is enough  to show that we can do some text"))
+print (body)
+print ("====body.append.Paragraph ")
+body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
 
-# body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
 
-# page.append(body)
+print ("===page.append (body)")
+page.append(body) # --> need to modify the append func -->
+                  # step 1, just append a string
+                  # now append awhole "complete part of html
 
-# render_page(page, "test_html_output2.html")
+page.dump()
+body.dump()
+
+render_page(page, "test_html_output2.html")
 
 # # Step 3
 # ##########
