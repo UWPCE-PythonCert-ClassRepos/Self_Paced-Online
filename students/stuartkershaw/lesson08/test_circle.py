@@ -45,8 +45,21 @@ def test_circle_str(capsys):
     assert captured.out == "Circle with radius: 4\n"
 
     assert repr(c) == "Circle(4)"
-    
+
     d = eval(repr(c))
 
     assert d.radius == 4
     assert d.diameter == 8
+
+
+def test_circle_add():
+    c1 = Circle(2)
+    c2 = Circle(4)
+    c1 + c2
+    assert Circle(6)
+
+
+def test_circle_add():
+    c1 = Circle(4)
+    c1 * 3
+    assert Circle(12)
