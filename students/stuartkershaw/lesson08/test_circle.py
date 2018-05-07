@@ -59,7 +59,42 @@ def test_circle_add():
     assert Circle(6)
 
 
-def test_circle_add():
+def test_circle_mul():
     c1 = Circle(4)
     c1 * 3
     assert Circle(12)
+
+
+def test_circle_compare():
+    c1 = Circle(2)
+    c2 = Circle(4)
+    assert (c1 > c2) is False
+    assert (c1 < c2) is True
+    assert (c1 == c2) is False
+
+    c3 = Circle(4)
+    assert (c2 == c3) is True
+
+
+def test_circle_sort():
+    circles = [Circle(6),
+               Circle(7),
+               Circle(8),
+               Circle(4),
+               Circle(0),
+               Circle(2),
+               Circle(3),
+               Circle(5),
+               Circle(9),
+               Circle(1)]
+    circles.sort(key=Circle.sort_key)
+    assert circles == [Circle(0),
+                       Circle(1),
+                       Circle(2),
+                       Circle(3),
+                       Circle(4),
+                       Circle(5),
+                       Circle(6),
+                       Circle(7),
+                       Circle(8),
+                       Circle(9)]

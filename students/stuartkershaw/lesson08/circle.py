@@ -48,3 +48,12 @@ class Circle:
 
     def __mul__(self, other):
         return Circle(self.radius * other)
+
+    def __eq__(self, other):
+        return self.radius == other.radius
+
+    def __lt__(self, other):
+        return self.radius < other.radius
+
+    def sort_key(self):
+        return self.radius
