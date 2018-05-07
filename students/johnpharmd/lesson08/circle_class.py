@@ -6,8 +6,8 @@ class Circle:
     special methods"""
 
     @classmethod
-    def sort(cls, list):
-        return cls.list.sort()
+    def sort(cls, radius_list):
+        return sorted(radius_list)
 
     def __init__(self, radius):
         self.radius = radius
