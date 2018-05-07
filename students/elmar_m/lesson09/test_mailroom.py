@@ -21,27 +21,28 @@ class Mailroom_Tests(unittest.TestCase):
 
     
     def test_Collection(self):
+        nice_person = Donor('John', 'Doe')
 
-        # db = mailroom.Collection()
         db = Collection()
-        # db._create_table()
+        db._create_table()
 
-        db.add_donor('brathahn')
-        db.add_donor('b')
-        db.add_donor('kalleinz')
+        db.add_donor(nice_person.uid)
+        self.assertTrue(db.check_existence('John_Doe'))
+        self.assertFalse(db.check_existence('NonExisting_FakeUser'))
 
-        db.add_donation('b', 500) 
-        db.add_donation('b', 1500) 
-        db.add_donation('kalleinz', 500) 
-        db.add_donation('kalleinz', 1500) 
-        print(db.get_donations('b'))
-        print('kalleinz:', db.get_donations('kalleinz'))
-        print('brathahn:', db.get_donations('brathahn'))
-        # print('all donors:', db.get_donors())
-        for i in db.get_all_donors():
-            print('{} {}'.format('nice person:', i))
-        db.check_existence('kalleinz')
-        db.check_existence('gibsnich')
+        self.assertTrue(db.add_donation(nice_person.uid, 8999))
+        #db.add_donation('b', 500) 
+        #db.add_donation('b', 1500) 
+        #db.add_donation('kalleinz', 500) 
+        #db.add_donation('kalleinz', 1500) 
+        #print(db.get_donations('b'))
+        #print('kalleinz:', db.get_donations('kalleinz'))
+        #print('brathahn:', db.get_donations('brathahn'))
+        ## print('all donors:', db.get_donors())
+        #for i in db.get_all_donors():
+        #    print('{} {}'.format('nice person:', i))
+        #db.check_existence('kalleinz')
+        #db.check_existence('gibsnich')
         
 
 

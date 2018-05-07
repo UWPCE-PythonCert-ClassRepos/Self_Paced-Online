@@ -30,15 +30,26 @@ class Collection:
 
 
     def add_donor(self, donor):
-        self.cursor.execute("insert into mailroom (donor) values(?)", (donor,)) 
-        self.db.commit()
+        #if self.cursor.execute("insert into mailroom (donor) values(?)", (donor,)):
+        #    self.db.commit()
+        #    return True
+        #else:
+        #    return None
         # self.db.close()
+        self.cursor.execute("insert into mailroom (donor) values(?)", (donor,))
+        self.db.commit()
 
 
     def add_donation(self, donor, amount):
-        self.cursor.execute("insert into mailroom (donor, donation) values(?, ?)", (donor, amount)) 
-        self.db.commit()
-    #    self.db.close()
+        try: 
+            self.cursor.execute("insert into mailroom (donor, donation) values(?, ?)", (donor, amount)) 
+            self.db.commit()
+            return True
+        except sqlite3.Error as e:
+            print('Exception raised: {}'.format(e))
+        finally:
+            self.db.close()
+
 
 
     def get_donations(self, donor):
@@ -56,7 +67,7 @@ class Collection:
         pass
 
     
-    def sum_up_donations(self, donor):
+    def sum_donations(self, donor):
         pass
     
 
