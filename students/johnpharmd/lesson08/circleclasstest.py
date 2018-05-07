@@ -1,6 +1,6 @@
 import circle_class as cc
 import unittest
-import math
+from math import pi
 
 
 class CircleTest(unittest.TestCase):
@@ -19,7 +19,7 @@ class CircleTest(unittest.TestCase):
         self.assertEqual(self.test.radius, 4)
 
     def test_circle_area(self):
-        self.assertEqual(self.test.area, math.pi * self.test.radius ** 2)
+        self.assertEqual(self.test.area, pi * self.test.radius ** 2)
 
     def test_circle_from_diameter(self):
         self.assertEqual(self.test.from_diameter(), 10)
@@ -44,5 +44,5 @@ class CircleTest(unittest.TestCase):
         self.assertEqual(self.new_test, self.another_test)
         self.test_circles = [cc.Circle(i) for i in (6, 7, 8, 4, 2,
                              3, 5, 9, 1)]
-        self.assertEqual(sorted(self.test_circles), [cc.Circle(i) for
+        self.assertEqual(cc.Circle.sort(self.test_circles), [cc.Circle(i) for
                          i in range(1, 10)])
