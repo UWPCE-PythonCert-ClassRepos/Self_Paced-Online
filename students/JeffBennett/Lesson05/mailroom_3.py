@@ -44,10 +44,11 @@ def input_gift():
     while True:
         try:
             gift = float(input("\nEnter amount of gift: " +
-                               " or '0' to return to the main menu: "))
+                               "or '0' to return to the main menu: "))
+            return gift
         except ValueError:
-            print("Enter dollar amount, no '$' sign or ',' separator: ")
-    print(gift)
+            print("Enter dollar amount, no '$' sign or ',' thousands " +
+                  "separator: ")
 
 
 def print_email_to_donor(donor, gift):
