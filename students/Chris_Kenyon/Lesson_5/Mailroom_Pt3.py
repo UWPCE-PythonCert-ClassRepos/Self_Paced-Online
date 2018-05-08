@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Lesson_4 Activity 1 Mailroom Part 2
+# Lesson_5 Activity 2 Mailroom Part 2
 
 import os
 
