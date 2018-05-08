@@ -21,6 +21,12 @@ email = textwrap.dedent('''
 
 
 def get_donor():
+    """
+    Prompts user to enter a donor's name.
+
+    Args: None
+    """
+
     donor_name = input("Please enter the full name of a donor. You can also enter list to see all current donors or 'e' to exit: ")
     if donor_name == "e":
         menu_selection(main_prompt, main_dispatch)
@@ -56,8 +62,7 @@ def get_donation():
     """
     Prompts the user for a donoation amount and returns the value.
 
-    Args:
-    None
+    Args: None
     """
     while True:
         donation_amount = input("Please enter the donation amount or 'e' to exit: ")
@@ -73,6 +78,13 @@ def get_donation():
 
 
 def add_donation(donor_name, donation_amount):
+    """
+    Adds a new donation amount for new and existing donors.
+
+    Args:
+    donor_name:  A donor
+    donation_amount:  Donation amount for the dono
+    """
     if donor_name in donor_dict:
         donor_dict[donor_name].append(donation_amount)
     else:
@@ -113,7 +125,7 @@ def create_report():
         total_given = sum(donations)
         num_donations = len(donations)
         average_donation = (total_given / num_donations)
-        print ("{:30s}  ${:11.2f}   {:9d}  ${:12.2f}".format(donor_name, total_given, num_donations, average_donation))
+        print ("{:30s}  ${:11.2f}   {:12d}    ${:12.2f}".format(donor_name, total_given, num_donations, average_donation))
 
 
 def create_email_file():
