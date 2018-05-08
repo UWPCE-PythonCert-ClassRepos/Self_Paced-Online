@@ -21,7 +21,6 @@ def get_amount():
                 return float(amount)
         except ValueError:
             print("you have made an invalid choice, try again.")
-            continue
 
 
 def get_key(donor_chart):
@@ -145,7 +144,6 @@ def send_letters():
             break
         except ValueError:
             print("\nsomething went wrong please try again: ")
-            continue
 
 
 def add_donation(name, amount, donor_bool):
