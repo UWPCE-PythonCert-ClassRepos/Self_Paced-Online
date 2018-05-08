@@ -20,8 +20,10 @@ def list_donors():
 def list_donations():
     donor = input('Please enter name of donor: ') 
     db = Collection()
+    print('\tOverview donations of {} (date, amount):'.format(donor))
     for i in db.get_donations(donor):
-        print('\t{} donated: {}'.format(donor, i)) 
+        # print('\t{} donated: {}'.format(donor, i)) 
+        print('\t{}'.format(i)) 
 
 def add():
     while True: 

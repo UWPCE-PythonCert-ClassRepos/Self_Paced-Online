@@ -4,8 +4,7 @@ elmar_m / 22e88@mailbox.org
 Lesson09: classes for OOP mailroom program 
 '''
 
-import sqlite3
-
+import sqlite3, time
 
 class Donor:
     def __init__(self, fname, lname):
@@ -18,15 +17,7 @@ class Collection:
     def __init__(self):
         self.db= sqlite3.connect('BLABLA.db')
         self.cursor = self.db.cursor()
-
-
-    def _create_table(self):
-        ''' Other columns like e.g. date of donation could be 
-            inserted anytime without breaking the class interface
-        '''
-        self.cursor.execute("create table mailroom (donation_ID INTEGER PRIMARY KEY AUTOINCREMENT, donor TEXT, donation INT DEFAULT 0)")
-        # self.db.close()
-        return True
+        self.cursor.execute("create table if not exists mailroom (donation_ID INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, donor TEXT, donation INT DEFAULT 0)")
 
 
     def add_donor(self, donor):
@@ -41,8 +32,10 @@ class Collection:
 
 
     def add_donation(self, donor, amount):
+        ts = time.strftime('%Y%m%d-%H%M%S')
         try: 
-            self.cursor.execute("insert into mailroom (donor, donation) values(?, ?)", (donor, amount)) 
+            # self.cursor.execute("insert into mailroom (donor, donation) values(?, ?)", (donor, amount)) 
+            self.cursor.execute("insert into mailroom (date, donor, donation) values(?, ?, ?)", (ts, donor, amount)) 
             self.db.commit()
             return True
         except sqlite3.Error as e:
@@ -53,8 +46,7 @@ class Collection:
 
 
     def get_donations(self, donor):
-        # self.cursor.execute("select * from mailroom where donor = ?", (donor,))
-        self.cursor.execute("select donation from mailroom where donor = ?", (donor,))
+        self.cursor.execute("select date, donation from mailroom where donor = ?", (donor,))
         # self.db.close()
         return self.cursor.fetchall()
 
