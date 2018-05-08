@@ -41,14 +41,15 @@ def print_donor_list(donors):
 
 
 def input_gift():
+    """input donor gift."""
     while True:
         try:
             gift = float(input("\nEnter amount of gift: " +
                                "or '0' to return to the main menu: "))
             return gift
         except ValueError:
-            print("Enter dollar amount, no '$' sign or ',' thousands " +
-                  "separator: ")
+            print("Enter dollar amount as a number; no '$' sign or ',' " +
+                  "thousands separator: ")
 
 
 def print_email_to_donor(donor, gift):
@@ -75,7 +76,8 @@ def print_sorted_donors(sorted_donors):
 
 
 def send_thank_you():
-    """acknowledge gift with an email and update donor and gift list."""
+    """acknowledge gift with an email and update donor and gift list.
+    Final confirm of new gifts from both new and existing donors required."""
     while True:
         donor_name = input("\nEnter donor first and last name,\n " +
                            "'list' for a list of current donors: \n" +
@@ -89,8 +91,12 @@ def send_thank_you():
             gift = input_gift()
             if gift == 0:
                 break
-            print_email_to_donor(donor_name, gift)
-            update_donors(donors, donor_name, gift)
+            confirm = input(f"\nCan you confirm: {donor_name} donated " +
+                            f"${gift:,.2f}? [y/n]: ")
+            if confirm.lower() == 'y':
+                print_email_to_donor(donor_name, gift)
+                update_donors(donors, donor_name, gift)
+            continue
 
 
 def update_donors(donors, name, donation):
