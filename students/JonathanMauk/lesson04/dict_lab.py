@@ -1,31 +1,25 @@
 # ----- Dictionaries 1 -----
 
 cake_dict = {"name": "Chris", "city": "Seattle", "cake": "chocolate"}
-
 print(cake_dict)
 
 cake_dict.pop("cake")
-
 print(cake_dict)
 
 cake_dict["fruit"] = "Mango"
-
 print(cake_dict)
 
 print(cake_dict.keys())
-
 print(cake_dict.values())
 
-print("Is 'cake' still in our dictionary?")
-print("cake" in cake_dict)
+print("Is 'cake' still in our dictionary?", "cake" in cake_dict)
 
-print("Is 'Mango' still in our dictionary?")
-print("Mango" in cake_dict.values())
+print("Is 'Mango' still in our dictionary?", "Mango" in cake_dict.values())
+print()
 
 # ----- Dictionaries 2 -----
 
 cake_dict = {"name": "Chris", "city": "Seattle", "cake": "chocolate"}
-
 t_dict = {}
 
 for k, v in cake_dict.items():
@@ -43,7 +37,6 @@ s4 = set()
 for n in range(21):
     if n % 2 == 0:
         s2.update([n])
-
 
 for n in range(21):
     if n % 3 == 0:
@@ -70,7 +63,6 @@ for l in 'Python':
 print(s5)
 
 s6 = frozenset(('m', 'a', 'r', 'a', 't', 'h', 'o', 'n'))
-
 print(s6)
 
 print("Displaying union...")
