@@ -17,25 +17,24 @@ class Collection:
     def __init__(self):
         self.db= sqlite3.connect('BLABLA.db')
         self.cursor = self.db.cursor()
-        self.cursor.execute("create table if not exists mailroom (donation_ID INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, donor TEXT, donation INT DEFAULT 0)")
+        self.cursor.execute('create table if not exists mailroom (donation_ID INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, donor TEXT, donation INT DEFAULT 0)')
 
 
-    def add_donor(self, donor):
-        #if self.cursor.execute("insert into mailroom (donor) values(?)", (donor,)):
-        #    self.db.commit()
-        #    return True
-        #else:
-        #    return None
-        # self.db.close()
-        self.cursor.execute("insert into mailroom (donor) values(?)", (donor,))
-        self.db.commit()
+    #def add_donor(self, donor):
+    #    #if self.cursor.execute('insert into mailroom (donor) values(?)', (donor,)):
+    #    #    self.db.commit()
+    #    #    return True
+    #    #else:
+    #    #    return None
+    #    # self.db.close()
+    #    self.cursor.execute('insert into mailroom (donor) values(?)', (donor,))
+    #    self.db.commit()
 
 
     def add_donation(self, donor, amount):
         ts = time.strftime('%Y%m%d-%H%M%S')
         try: 
-            # self.cursor.execute("insert into mailroom (donor, donation) values(?, ?)", (donor, amount)) 
-            self.cursor.execute("insert into mailroom (date, donor, donation) values(?, ?, ?)", (ts, donor, amount)) 
+            self.cursor.execute('insert into mailroom (date, donor, donation) values(?, ?, ?)', (ts, donor, amount)) 
             self.db.commit()
             return True
         except sqlite3.Error as e:
@@ -44,9 +43,8 @@ class Collection:
             self.db.close()
 
 
-
     def get_donations(self, donor):
-        self.cursor.execute("select date, donation from mailroom where donor = ?", (donor,))
+        self.cursor.execute('select date, donation from mailroom where donor = ?', (donor,))
         # self.db.close()
         return self.cursor.fetchall()
 
@@ -72,15 +70,8 @@ class Collection:
 
 
     def get_all_donors(self):
-        self.cursor.execute("select donor from mailroom")
+        self.cursor.execute('select donor from mailroom')
         donors = set(self.cursor.fetchall())
         return donors
         
-
-    def check_existence(self, donor):
-        self.cursor.execute("select * from mailroom where donor = ?", (donor,))
-        if self.cursor.fetchall():
-            return True
-        else:
-            return None
 

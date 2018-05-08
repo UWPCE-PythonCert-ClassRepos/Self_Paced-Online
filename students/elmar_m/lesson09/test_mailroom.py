@@ -24,9 +24,10 @@ class Mailroom_Tests(unittest.TestCase):
         nice_person = Donor('John', 'Doe')
 
         db = Collection()
-        # db._create_table()
+        # db.add_donor(nice_person.uid)
 
-        db.add_donor(nice_person.uid)
+
+
         self.assertTrue(db.check_existence('John_Doe'))
         self.assertFalse(db.check_existence('NonExisting_FakeUser'))
 

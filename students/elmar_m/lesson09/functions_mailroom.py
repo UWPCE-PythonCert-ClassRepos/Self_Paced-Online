@@ -20,10 +20,12 @@ def list_donors():
 def list_donations():
     donor = input('Please enter name of donor: ') 
     db = Collection()
-    print('\tOverview donations of {} (date, amount):'.format(donor))
+    print('\n\tDonations of {}:'.format(donor))
     for i in db.get_donations(donor):
-        # print('\t{} donated: {}'.format(donor, i)) 
-        print('\t{}'.format(i)) 
+        date = i[0]
+        donation = i[1]
+        print('\tDate: {}\tDonation: {}'.format(date, donation)) 
+        
 
 def add():
     while True: 
@@ -37,12 +39,6 @@ def add():
     db = Collection()
     db.add_donation(donor, amount)
 
-    #if db.check_existence(donor):   
-    #    print('{} found in database'.format(donor))
-    #    db.add_donation(donor, amount)
-    #else:
-    #    print('{} NOT FOUND in database, will be added'.format(donor))
-    #    db.add_donation(donor, amount)
         
     
 #def add():
