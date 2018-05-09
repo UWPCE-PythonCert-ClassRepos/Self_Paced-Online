@@ -17,7 +17,9 @@ class Collection:
     def __init__(self):
         self.db= sqlite3.connect('BLABLA.db')
         self.cursor = self.db.cursor()
-        self.cursor.execute('create table if not exists mailroom (donation_ID INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, donor TEXT, donation INT DEFAULT 0)')
+        self.cursor.execute('''create table if not exists mailroom
+                     (donation_ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    date TEXT, donor TEXT, donation INT DEFAULT 0)''')
 
 
     #def add_donor(self, donor):
@@ -50,11 +52,19 @@ class Collection:
 
 
     def get_average_donation(self, donor):
-        pass
-
+        self.cursor.execute('select donation from mailroom where donor = ?', (donor,))
+        num = self.get_number_of_donations(donor)
+        res = self.cursor.fetchall()
+        dlist = [x[0] for x in res]
+        total = sum(dlist) 
+        avg = total / num
+        return avg
+        
 
     def get_number_of_donations(self, donor):
-        pass
+        self.cursor.execute('select * from mailroom where donor = ?', (donor,))
+        num = self.cursor.fetchall()
+        return len(num)
 
     
     def sum_donations(self, donor):

@@ -40,6 +40,31 @@ def add():
     db.add_donation(donor, amount)
 
         
+def get_number_of_donations():
+    while True:
+        donor = input('Please enter donor name: ')
+        if not donor.isalpha():
+            print('>> only alphabetical characters in donor name allowed, please try again')
+            continue
+        else:
+            break
+    db = Collection()
+    num = db.get_number_of_donations(donor)
+    print('\n\t{} has given {} donations in total.\n'.format(donor, num))
+
+
+def get_average_donation():
+    while True:
+        donor = input('Please enter donor name: ')
+        if not donor.isalpha():
+            print('>> only alphabetical characters in donor name allowed, please try again')
+            continue
+        else:
+            break
+    db = Collection()
+    num = db.get_average_donation(donor)
+    print('\n\t{} has given an average donation of {}. \n'.format(donor, num))
+
     
 #def add():
 #    while True: 
