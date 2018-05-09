@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 """
 An exercise in playing with Exceptions.
@@ -17,7 +17,9 @@ first_try = ['spam', 'cheese', 'mr death']
 try:
     joke = fun(first_try[0])
 except NameError:
-    print("Got your back, Spam!")
+    print('Whoops! there is no joke for: ' + first_try[0])
+else:  # does not run; joke here not under except to achieve suggested output
+    joke = fun(first_try[1])
 
 # Here is a try/except block. Add an else that prints not_joke
 try:
@@ -48,5 +50,7 @@ try:
     more_joke = more_fun(langs[0])
 except IndexError:
     more_joke = more_fun(langs[1])
-    more_joke = more_fun(langs[2])
+else:
+    more_fun(langs[2])
+finally:
     last_fun()
