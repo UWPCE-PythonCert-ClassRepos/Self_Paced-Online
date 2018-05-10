@@ -47,7 +47,11 @@ def report():
 
 
 def send_letters():
-    print("a")
+    print("Creating letters...")
+    for k in donor_db:
+        with open(k + '.txt', 'w') as letter:
+            letter.write(create_letter(2, k, sum(donor_db[k])))
+    print("Letters saved to text file.")
 
 
 def quit_program():
@@ -110,7 +114,6 @@ def thank_all():
     print("---------------------------")
     print("Letters printed and saved to text files in directory. Returning to main menu...")
     mailroom()
-
 
 
 def mailroom():

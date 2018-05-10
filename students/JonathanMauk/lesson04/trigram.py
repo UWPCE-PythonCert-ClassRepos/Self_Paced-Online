@@ -1,28 +1,35 @@
 import random
-import string
+import re
+import textwrap
 
 
 trigram_dict = {}
 
 
-def create_trigram_dict(filename):
-    word_list = []
-
+def read_text(filename):
     with open(filename) as f:
-        for line in f:
-            split = line.split()
-            word_list += split
-    return word_list
+        text = f.read()
+        f.close()
+        return text
 
-print(create_trigram_dict('sherlock_small.txt'))
+def make_list(source):
+    formatted_text = replace(r"[\r\n]|[+---]", ' ')
+    list = formatted_text.split(" ")
+    for
+
+
+
+
+print(read_text('sherlock_small.txt'))
 
 
 # def mutate_text():
 
 
 # if __name__ == '__main__':
-#     try:
-#         get_user_input = input("Enter the name of a file to generate 300 words of text from trigrams: ")
-#         create_trigram_dict(get_user_input)
-#     except:
-#         print("Error. Please restart the program to try again.")
+#     get_filename = input("Enter the name of a text file to generate text from trigrams: ")
+#
+#     read = read_text(get_filename)
+
+
+
