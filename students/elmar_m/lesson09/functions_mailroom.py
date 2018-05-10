@@ -7,6 +7,8 @@ Lesson09: functions for OOP mailroom program
 from classes_mailroom import Mailroom
 from collections import defaultdict
 
+db = Mailroom()
+
 def efunc():
     return 'exiting'
 
@@ -15,12 +17,10 @@ def fakefunc():
     pass
 
 def thankyou():
-    db = Mailroom()
-    db.thankyou()
+    db.mail()
 
 
 def report():
-    db = Mailroom()
     db.report()
     
 
@@ -36,17 +36,14 @@ def enter_donor():
 
 
 def list_donors():
-    db = Mailroom()
     print('\n\tAll donors:\n')
     for i in db.get_all_donors():
         person = i[0]
-        # print('\t{} {}'.format('Nice person:', person)) 
         print('\t{}'.format(person)) 
 
 
 def list_donations():
     donor = enter_donor()
-    db = Mailroom()
     print('\n\tDonations of {}:\n'.format(donor))
     for i in db.get_donations(donor):
         date = i[0]
@@ -57,15 +54,12 @@ def list_donations():
 def add():
     donor = enter_donor()
     amount = input('Please enter donation amount: ')
-    db = Mailroom()
     db.add_donation(donor, amount)
 
 
 def get_average_donation():
     donor = enter_donor()
-    db = Mailroom()
     num = db._get_average_donation(donor)
-    # print('\n\t{} has given an average donation of {}. \n'.format(donor, num))
     print('\n\t', num, ' \n')
     
 

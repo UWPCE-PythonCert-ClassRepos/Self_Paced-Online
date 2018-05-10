@@ -42,13 +42,10 @@ class Mailroom:
             return True
         except sqlite3.Error as e:
             print('Exception raised: {}'.format(e))
-        finally:
-            self.db.close()
 
 
     def get_donations(self, donor):
         self.cursor.execute('select date, donation from mailroom where donor = ?', (donor,))
-        # self.db.close()
         return self.cursor.fetchall()
 
 
@@ -56,7 +53,6 @@ class Mailroom:
         total = self._get_donations_total(donor)
         num = self._get_number_of_donations(donor)
         avg = total / num
-        # return avg
         return format(avg, '.2f')
         
 
@@ -85,7 +81,7 @@ class Mailroom:
         return raw
 
 
-    # Currently not needed here, as it's done in the functions_mailroom.py
+    # ToDo: Could be used in functions_mailroom.py also, resulting in less code there... 
     def _beautify(self, listoftuples):
         ''' cursor.fetchall() returns a list of tuples (in our case one-element tuples).
             This method changes that into a list of single items (INT, STRING, whatever). 
@@ -95,7 +91,6 @@ class Mailroom:
         
 
     def report(self):
-        # db = Mailroom()
         donordict = defaultdict(list)
         maxn = 0
         for i in self.get_all_donors():
@@ -119,31 +114,25 @@ class Mailroom:
             print(fstring.format(i, donordict[i][0], donordict[i][1], donordict[i][2])) 
         
     
-    def thankyou(self):
-        self.mail()
-
     def mail(self):
         with open('./MAIL_TEMPLATE', 'r') as fr:
             lines = fr.readlines()
 
             for name in self._beautify(self.get_all_donors()):
                 ts = time.strftime('%Y%m%d-%H%M%S')
-                print(name)
                 filename = name + '_' + ts + '.txt'
                 donation = '500'
                 with open(filename, 'w') as fw:
-                    print('filename: {}'.format(filename))
-
                     for i in lines:
                         if 'NAME' in i:
                             new = i.replace('NAME', name)
-                            print(new)
                             fw.write(new)
                         elif 'DONATION' in i:
                             new = i.replace('DONATION', donation)
-                            print(new)
                             fw.write(new)
                         else:
-                            print(i)
                             fw.write(i)
-                
+                    print('\tMailtext for {} successfully written to {}'.format(name, filename))
+                    
+               
+

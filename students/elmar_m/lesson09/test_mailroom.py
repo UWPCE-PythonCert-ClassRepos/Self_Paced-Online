@@ -8,7 +8,7 @@ Lesson09: unittests for mailroom.py class
 
 
 import unittest 
-from classes_mailroom import Collection, Donor
+from classes_mailroom import Mailroom, Donor
 
 class Mailroom_Tests(unittest.TestCase):
     
@@ -23,7 +23,7 @@ class Mailroom_Tests(unittest.TestCase):
     def test_Collection(self):
         nice_person = Donor('John', 'Doe')
 
-        db = Collection()
+        db = Mailroom()
         # db.add_donor(nice_person.uid)
 
 
