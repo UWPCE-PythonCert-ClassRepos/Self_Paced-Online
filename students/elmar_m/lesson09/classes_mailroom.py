@@ -86,12 +86,12 @@ class Mailroom:
 
 
     # Currently not needed here, as it's done in the functions_mailroom.py
-    #def _beautify(self, listoftuples):
-    #    ''' cursor.fetchall() returns a list of tuples (in our case one-element tuples).
-    #        This method changes that into a list of single items (INT, STRING, whatever). 
-    #    '''
-    #    resultlist = [x[0] for x in listoftuples]       
-    #    return resultlist
+    def _beautify(self, listoftuples):
+        ''' cursor.fetchall() returns a list of tuples (in our case one-element tuples).
+            This method changes that into a list of single items (INT, STRING, whatever). 
+        '''
+        resultlist = [x[0] for x in listoftuples]       
+        return resultlist
         
 
     def report(self):
@@ -118,3 +118,32 @@ class Mailroom:
         for i in donordict:
             print(fstring.format(i, donordict[i][0], donordict[i][1], donordict[i][2])) 
         
+    
+    def thankyou(self):
+        self.mail()
+
+    def mail(self):
+        with open('./MAIL_TEMPLATE', 'r') as fr:
+            lines = fr.readlines()
+
+            for name in self._beautify(self.get_all_donors()):
+                ts = time.strftime('%Y%m%d-%H%M%S')
+                print(name)
+                filename = name + '_' + ts + '.txt'
+                donation = '500'
+                with open(filename, 'w') as fw:
+                    print('filename: {}'.format(filename))
+
+                    for i in lines:
+                        if 'NAME' in i:
+                            new = i.replace('NAME', name)
+                            print(new)
+                            fw.write(new)
+                        elif 'DONATION' in i:
+                            new = i.replace('DONATION', donation)
+                            print(new)
+                            fw.write(new)
+                        else:
+                            print(i)
+                            fw.write(i)
+                

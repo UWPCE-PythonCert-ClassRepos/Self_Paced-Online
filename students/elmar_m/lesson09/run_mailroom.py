@@ -7,8 +7,7 @@ Lesson09: executable for OOP mailroom program
 '''
 
 from functions_mailroom import menu, list_donors, list_donations,\
-    add, fakefunc, efunc, get_average_donation, report
-    # add, fakefunc, efunc, get_number_of_donations, get_average_donation
+    add, thankyou, fakefunc, report, efunc
 
 
 if __name__ == '__main__':
@@ -20,21 +19,16 @@ if __name__ == '__main__':
     \n\t3: add donor and / or donation\
     \n\t4: send thankyou mail\
     \n\t5: show report\
-    \n\t6: quit program\
-    \n\t8: get average donation of a donor\n\n'
-    # \n\t7: get number of donations of a donor\
+    \n\t6: quit program\n\n'
 
     dispatcher = {
         '1' : list_donors,
         '2' : list_donations,
         '3' : add,
-        # '4' : thankyou,
-        '4' : fakefunc,
+        '4' : thankyou,
+        # '4' : fakefunc,
         '5' : report,
-        # '5' : fakefunc,
         '6' : efunc,
-        # '7' : get_number_of_donations,
-        '8' : get_average_donation,
         }
 
     print('\n*** Welcome to OOP mailroom. ***')
