@@ -55,8 +55,7 @@ def send_letters():
 
 
 def quit_program():
-    print("\nExiting...\n")
-    return
+    quit("Exiting...")
 
 
 def create_letter(donor_status, donor_name, donation_amt):
@@ -120,11 +119,11 @@ def mailroom():
     while True:
         selection = input('MAILROOM v0.2\n------------------------\nChoose an option:\n1) Send a thank you' +
                           '\n2) Create a report\n3) Send letters to everyone\n4) Quit\n> ')
-        menu_d = {'1': thank_you, '2': report, '3': thank_all, '4': quit_program}
-        if selection in menu_d:
-            menu_d.get(selection)()
+        menu_dict = {'1': thank_you, '2': report, '3': thank_all, '4': quit_program}
+        if selection in menu_dict:
+            menu_dict.get(selection)()
         else:
-            print("Invalid value. Enter a number from 1-3.")
+            print("Invalid value. Enter a number from 1-4.")
 
 
 if __name__ == "__main__":

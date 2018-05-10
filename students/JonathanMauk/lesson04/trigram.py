@@ -52,7 +52,6 @@ def write_text(text_file, output):
     replace_filename = text_file.replace('.txt', '_trigram.txt')
     with open(replace_filename, 'w') as outfile:
         outfile.write(textwrap.fill(output, 80))
-        outfile[0].capitalize()
 
 
 if __name__ == "__main__":
