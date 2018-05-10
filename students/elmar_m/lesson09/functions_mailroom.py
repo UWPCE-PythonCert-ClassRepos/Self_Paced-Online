@@ -4,7 +4,7 @@ elmar_m / 22e88@mailbox.org
 Lesson09: functions for OOP mailroom program 
 '''
 
-from classes_mailroom import Mailroom
+from classes_mailroom import Mailroom, Donor
 from collections import defaultdict
 
 db = Mailroom()
@@ -23,12 +23,34 @@ def report():
 
 def enter_donor():
     while True: 
-        donor = input('Please enter donor name: ')
-        if not donor.isalpha():
-            print('Only alphabetical characters in donor name allowed, please try again')
-            continue
-        else:
+        donor = input('Please enter donor name (UID: First_Last): ')
+        parts = donor.split(sep = '_')
+        fname = parts[0]
+        lname = parts[1]
+
+        dobj = Donor(fname, lname)
+
+        #dobj = Donor.__new__(Donor)
+        #attrs = {'firstname' : fname, 'lastname' : lname, 'uid' : donor}  
+        #
+        #for key, value in attrs.items():
+        #    setattr(dobj, key, value)
+
+        #if not donor.isalpha():
+        #    print('Only alphabetical characters in donor name allowed, please try again')
+        #    continue
+        #else:
+        #    break
+
+        if dobj.check_existence(donor):
+            print('Donor / UID {} found in donor database...'.format(donor))
             break
+        else:
+            print('Donor / UID {} not found in donor database, will create it...'.format(donor))
+            if dobj.create(donor, fname, lname, None):
+                break
+            else:
+                continue
     return donor
 
 

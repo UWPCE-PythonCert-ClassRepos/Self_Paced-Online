@@ -9,10 +9,43 @@ from collections import defaultdict
 
 class Donor:
     def __init__(self, fname, lname):
+    # def __init__(self, uid):
         self.firstname = fname
+        # self.firstname = parts[0] 
         self.lastname = lname
+        # self.lastname = parts[1]
         self.uid = '{}_{}'.format(fname, lname) 
+        # self.uid = uid 
 
+        self.db= sqlite3.connect('BLABLA.db')
+        self.dcursor = self.db.cursor()
+        self.dcursor.execute('''create table if not exists donors
+                     (uid TEXT PRIMARY KEY, 
+                    fname TEXT, lname TEXT, last_donation INT DEFAULT 0)''')
+
+    def check_existence(self, uid):
+        self.dcursor.execute('select * from donors where uid = ?', (uid,))
+        result = self.dcursor.fetchall()
+        if len(result) == 0:
+            print('====Donor / UID not found: {}'.format(uid))
+            return None
+        else:
+            print('====HOORAY, Donor / UID FOUND: {}'.format(uid))
+            return True
+        
+    
+    def create(self, uid, fname, lname, last_donation=None):
+        print('++++ HOORAY, in create...')
+        try:
+            self.dcursor.execute('insert into donors (uid, fname, lname, last_donation) values (?, ?, ?, ?)', (uid, fname, lname, last_donation))
+            self.db.commit()
+            return True
+        except sqlite3.Error as e:
+            print('Exception raised: {}'.format(e))
+            return False
+
+                     
+                    
 
 class Mailroom:
     def __init__(self):
