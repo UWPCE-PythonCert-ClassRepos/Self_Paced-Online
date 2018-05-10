@@ -49,14 +49,16 @@ def generate_text(trigram, num_words):
 
 
 def write_text(text_file, output):
-    replace_filename = text_file.replace('.txt', '_trigram.txt')
-    with open(replace_filename, 'w') as outfile:
+    output_filename = text_file.replace('.txt', '_trigrams.txt')
+    with open(output_filename, 'w') as outfile:
         outfile.write(textwrap.fill(output, 80))
 
 
 if __name__ == "__main__":
-    get_filename = input("Enter the name of a text file to generate text from trigrams: ")
-    get_number = input("Enter the number of words to generate: ")
+    # get_filename = input("Enter the name of a text file to generate text from trigrams: ")
+    # get_number = input("Enter the number of words to generate: ")
+    get_filename = 'sherlock.txt'
+    get_number = 500
     file_text = get_file_text(get_filename)
     str_list = text_to_list(file_text)
     trigram = list_to_trigram(str_list)
