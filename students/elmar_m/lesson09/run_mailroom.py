@@ -7,7 +7,7 @@ Lesson09: executable for OOP mailroom program
 '''
 
 from functions_mailroom import menu, list_donors, list_donations,\
-    add, thankyou, fakefunc, report, efunc
+    add, thankyou, report, efunc
 
 
 if __name__ == '__main__':
@@ -26,7 +26,6 @@ if __name__ == '__main__':
         '2' : list_donations,
         '3' : add,
         '4' : thankyou,
-        # '4' : fakefunc,
         '5' : report,
         '6' : efunc,
         }

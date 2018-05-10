@@ -13,9 +13,6 @@ def efunc():
     return 'exiting'
 
 
-def fakefunc():
-    pass
-
 def thankyou():
     db.mail()
 
