@@ -5,6 +5,7 @@ Lesson09: classes for OOP mailroom program
 '''
 
 import sqlite3, time
+from collections import defaultdict 
 
 class Donor:
     def __init__(self, fname, lname):
@@ -13,7 +14,6 @@ class Donor:
         self.uid = '{}_{}'.format(fname, lname) 
 
 
-# class Collection:
 class Mailroom:
     def __init__(self):
         self.db= sqlite3.connect('BLABLA.db')
@@ -92,4 +92,29 @@ class Mailroom:
     #    '''
     #    resultlist = [x[0] for x in listoftuples]       
     #    return resultlist
+        
+
+    def report(self):
+        # db = Mailroom()
+        donordict = defaultdict(list)
+        maxn = 0
+        for i in self.get_all_donors():
+            person = i[0]
+            total = self._get_donations_total(person)
+            slen = len(str(total))
+            if slen > maxn:
+                maxn = slen
+            num = self._get_number_of_donations(person)
+            avg = self._get_average_donation(person)
+            donordict[person].append(total)
+            donordict[person].append(num)
+            donordict[person].append(avg)
+        
+        maxn += 3
+        fstring = '\t{:<20} ' + '|' + '{:>' + str(maxn) + '} ' + '|' + '{:>9}' + '|' + '{:>20}' 
+        print(fstring.format('Donor Name', 'Total', 'Num Gifts', 'Average Gift'))  
+        print('\t' + '-' * (maxn + 54)) 
+
+        for i in donordict:
+            print(fstring.format(i, donordict[i][0], donordict[i][1], donordict[i][2])) 
         

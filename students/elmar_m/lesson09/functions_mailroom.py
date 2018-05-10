@@ -17,27 +17,28 @@ def fakefunc():
 
 def report():
     db = Mailroom()
-    donordict = defaultdict(list)
-    maxn = 0
-    for i in db.get_all_donors():
-        person = i[0]
-        total = db._get_donations_total(person)
-        slen = len(str(total))
-        if slen > maxn:
-            maxn = slen
-        num = db._get_number_of_donations(person)
-        avg = db._get_average_donation(person)
-        donordict[person].append(total)
-        donordict[person].append(num)
-        donordict[person].append(avg)
-    
-    maxn += 3
-    fstring = '\t{:<20} ' + '|' + '{:>' + str(maxn) + '} ' + '|' + '{:>9}' + '|' + '{:>20}' 
-    print(fstring.format('Donor Name', 'Total', 'Num Gifts', 'Average Gift'))  
-    print('\t' + '-' * (maxn + 54)) 
+    db.report()
+    #donordict = defaultdict(list)
+    #maxn = 0
+    #for i in db.get_all_donors():
+    #    person = i[0]
+    #    total = db._get_donations_total(person)
+    #    slen = len(str(total))
+    #    if slen > maxn:
+    #        maxn = slen
+    #    num = db._get_number_of_donations(person)
+    #    avg = db._get_average_donation(person)
+    #    donordict[person].append(total)
+    #    donordict[person].append(num)
+    #    donordict[person].append(avg)
+    #
+    #maxn += 3
+    #fstring = '\t{:<20} ' + '|' + '{:>' + str(maxn) + '} ' + '|' + '{:>9}' + '|' + '{:>20}' 
+    #print(fstring.format('Donor Name', 'Total', 'Num Gifts', 'Average Gift'))  
+    #print('\t' + '-' * (maxn + 54)) 
 
-    for i in donordict:
-        print(fstring.format(i, donordict[i][0], donordict[i][1], donordict[i][2])) 
+    #for i in donordict:
+    #    print(fstring.format(i, donordict[i][0], donordict[i][1], donordict[i][2])) 
     
 
 def enter_donor():
