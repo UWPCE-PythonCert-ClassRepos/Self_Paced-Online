@@ -48,6 +48,13 @@ def generate_text(trigram, num_words):
     return ' '.join(word_list)
 
 
+def write_text(text_file, output):
+    replace_filename = text_file.replace('.txt', '_trigram.txt')
+    with open(replace_filename, 'w') as outfile:
+        outfile.write(textwrap.fill(output, 80))
+        outfile[0].capitalize()
+
+
 if __name__ == "__main__":
     get_filename = input("Enter the name of a text file to generate text from trigrams: ")
     get_number = input("Enter the number of words to generate: ")
