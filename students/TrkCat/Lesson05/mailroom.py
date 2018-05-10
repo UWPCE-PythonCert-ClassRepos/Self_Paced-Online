@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from operator import itemgetter
 
 
 def send_thank_you():
@@ -19,7 +20,7 @@ def send_thank_you():
 
 def create_report():
     """Print a donation report"""
-    sorted_donors = sorted(donors.values(), key=lambda v: v['tot_don'],
+    sorted_donors = sorted(donors.values(), key=itemgetter('tot_don'),
                            reverse=True)
     # Add in dynamic column widths in future iteration
     header = ' | '.join(('     Donor Name    ', 'Total Given', 'Num Gifts',
