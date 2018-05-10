@@ -7,6 +7,10 @@ class Circle:
     def __init__(self, radius):
         self.radius = radius
 
+    @classmethod
+    def from_diameter(cls, diameter):
+        return ( cls(diameter/2) )
+        
     @property
     def diameter(self):
         return 2 * self.radius
@@ -18,11 +22,3 @@ class Circle:
     @diameter.setter
     def diameter(self, val):
         self.radius = val / 2
-
-
-
-    # def test_diameter_changes_radius(self):
-    #     circle = Circle(4)
-    #     circle.diameter = 4
-    #     assert circle.radius == 2:
-    #         print("success!!")

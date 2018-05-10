@@ -34,3 +34,8 @@ def test_radius_changes_diameter():
 def test_area():
     circle = c.Circle(2)
     assert circle.area == (math.pi * math.pow(circle.radius, 2))
+
+def test_circle_creation_from_diameter():
+    circle = c.Circle.from_diameter(8)
+    assert circle.diameter == 8
+    assert circle.radius == 4
