@@ -39,3 +39,15 @@ def test_circle_creation_from_diameter():
     circle = c.Circle.from_diameter(8)
     assert circle.diameter == 8
     assert circle.radius == 4
+
+def test_str_method():
+    circle = c.Circle(4)
+    # str = print(circle)
+    # assert str == "Circle with radius: {}".format(circle.radius)
+
+def test_repr_method():
+    circle = c.Circle(4)
+    # assert repr(c) == 'Circle(4)'
+
+def test_eval_repr_method():
+    pass
