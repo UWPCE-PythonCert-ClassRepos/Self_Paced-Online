@@ -13,7 +13,8 @@ class Donor:
         self.uid = '{}_{}'.format(fname, lname) 
 
 
-class Collection:
+# class Collection:
+class Mailroom:
     def __init__(self):
         self.db= sqlite3.connect('BLABLA.db')
         self.cursor = self.db.cursor()
@@ -51,37 +52,44 @@ class Collection:
         return self.cursor.fetchall()
 
 
-    def get_average_donation(self, donor):
-        self.cursor.execute('select donation from mailroom where donor = ?', (donor,))
-        num = self.get_number_of_donations(donor)
-        res = self.cursor.fetchall()
-        dlist = [x[0] for x in res]
-        total = sum(dlist) 
+    def _get_average_donation(self, donor):
+        total = self._get_donations_total(donor)
+        num = self._get_number_of_donations(donor)
         avg = total / num
-        return avg
+        # return avg
+        return format(avg, '.2f')
         
 
-    def get_number_of_donations(self, donor):
+    def _get_number_of_donations(self, donor):
         self.cursor.execute('select * from mailroom where donor = ?', (donor,))
         num = self.cursor.fetchall()
         return len(num)
 
     
-    def sum_donations(self, donor):
-        pass
+    def _get_donations_total(self, donor):
+        self.cursor.execute('select donation from mailroom where donor = ?', (donor,))
+        res = self.cursor.fetchall()
+        dlist = [x[0] for x in res]
+        total = sum(dlist) 
+        return total
     
 
-    #def report(self):      # ?? das hier oder oben die Einzelfunktionen?
-    #    pass               # ?? oder dies hier nutzt die Einzelfunktionen,
-                            # welche dann nur 'intern' sind?
-
-    #def send_mails(self):  # hier oder draussen?
-    #    pass
-
-
     def get_all_donors(self):
+        ''' fetchall liefert eine Liste von 1-Element tuples
+            fetchone liefert einzelne 1-Element tuples
+        '''
         self.cursor.execute('select donor from mailroom')
-        donors = set(self.cursor.fetchall())
-        return donors
-        
+        raw = set(self.cursor.fetchall())    # unifying result by putting it into a set
+        # donors = self._beautify(raw) 
+        # return donors
+        return raw
 
+
+    # Currently not needed here, as it's done in the functions_mailroom.py
+    #def _beautify(self, listoftuples):
+    #    ''' cursor.fetchall() returns a list of tuples (in our case one-element tuples).
+    #        This method changes that into a list of single items (INT, STRING, whatever). 
+    #    '''
+    #    resultlist = [x[0] for x in listoftuples]       
+    #    return resultlist
+        

@@ -28,8 +28,6 @@ class Mailroom_Tests(unittest.TestCase):
 
 
 
-        self.assertTrue(db.check_existence('John_Doe'))
-        self.assertFalse(db.check_existence('NonExisting_FakeUser'))
 
         self.assertTrue(db.add_donation(nice_person.uid, 8999))
         #db.add_donation('b', 500) 
