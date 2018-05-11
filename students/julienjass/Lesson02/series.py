@@ -30,21 +30,18 @@ def sum_series(n, a=0, b=1):
 
 #testing output of Fibonacci function
 
-assert fibonacci(0) == 0
-assert fibonacci(1) == 1
-assert fibonacci(2) == 1
-assert fibonacci(6) == 8
+assert fibonacci(5) == 5
+assert fibonacci(7) == 13
 
 
 #testing output of Lucas function
-assert lucas(0) == 7
-assert lucas(5) == 7
-assert lucas(8) == 29
+assert lucas(5) == 11
+assert lucas(7) == 29
 
 #testing output of sum_series with default a,b arguments
-assert sum_series(5) == 3
-assert sum_series(8) == 13
+assert sum_series(5) == 5
+assert sum_series(7) == 13
 
 #testing output of sum_series function with values 2,1 assigned to a,b arguments
-assert sum_series(5,2,1) == 7
-assert sum_series(8,2,1) == 29
+assert sum_series(5,2,1) == 11
+assert sum_series(7,2,1) == 29
