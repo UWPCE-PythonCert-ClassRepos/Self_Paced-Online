@@ -44,7 +44,15 @@ class Donor:
             print('Exception raised: {}'.format(e))
             return False
 
-                     
+
+    def get_last_donation(self, donor):
+        try:
+            self.dcursor.execute('select from donors (last_donation) where uid = ?', (donor))
+            # return self._beutify(self.dcursor.fetchall())
+            return self.dcursor.fetchall()
+        except sqlite3.Error as e:
+            print('Exception raised: {}'.format(e))
+            return None
                     
 
 class Mailroom:
@@ -71,6 +79,7 @@ class Mailroom:
         ts = time.strftime('%Y%m%d-%H%M%S')
         try: 
             self.cursor.execute('insert into mailroom (date, donor, donation) values(?, ?, ?)', (ts, donor, amount)) 
+            self.cursor.execute('update donors set last_donation = ? where uid = ?', (amount, donor)) 
             self.db.commit()
             return True
         except sqlite3.Error as e:
@@ -116,7 +125,7 @@ class Mailroom:
 
     # ToDo: Could be used in functions_mailroom.py also, resulting in less code there... 
     def _beautify(self, listoftuples):
-        ''' cursor.fetchall() returns a list of tuples (in our case one-element tuples).
+        ''' cursor.fetchall() returns a list of tuples (in our case mostly one-element tuples).
             This method changes that into a list of single items (INT, STRING, whatever). 
         '''
         resultlist = [x[0] for x in listoftuples]       
@@ -154,7 +163,20 @@ class Mailroom:
             for name in self._beautify(self.get_all_donors()):
                 ts = time.strftime('%Y%m%d-%H%M%S')
                 filename = name + '_' + ts + '.txt'
-                donation = '500'
+    
+                # donation = '500'
+                self.cursor.execute('select * from donors where uid = ?', (name,))
+                result = self.cursor.fetchall()
+                if len(result) == 0:
+                    print('====Last_donation not found: {}'.format(name))
+                else:
+                    print('====Last_donation FOUND: {} {}'.format(name, result))
+                    last_donation = result[0][3]
+                    donation = str(last_donation)
+                    print(donation)
+                    # return
+                
+
                 with open(filename, 'w') as fw:
                     for i in lines:
                         if 'NAME' in i:
