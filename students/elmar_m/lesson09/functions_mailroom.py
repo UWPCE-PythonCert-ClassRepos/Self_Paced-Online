@@ -30,18 +30,6 @@ def enter_donor():
 
         dobj = Donor(fname, lname)
 
-        #dobj = Donor.__new__(Donor)
-        #attrs = {'firstname' : fname, 'lastname' : lname, 'uid' : donor}  
-        #
-        #for key, value in attrs.items():
-        #    setattr(dobj, key, value)
-
-        #if not donor.isalpha():
-        #    print('Only alphabetical characters in donor name allowed, please try again')
-        #    continue
-        #else:
-        #    break
-
         if dobj.check_existence(donor):
             print('Donor / UID {} found in donor database...'.format(donor))
             break
