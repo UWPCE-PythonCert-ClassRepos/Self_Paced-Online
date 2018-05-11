@@ -23,6 +23,20 @@ class Circle:
     def diameter(self, val):
         self.radius = val / 2
 
+    def __add__(self, other):
+        if isinstance(other, Circle):
+            return Circle(self.radius + other.radius)
+        else:
+            raise TypeError("Both objects need to be circles!")
+
+    def __mul__(self, val):
+        """ Multiply self by val: Circle * 4"""
+        return Circle(self.radius * val)
+
+    def __rmul__(self, val):
+        """ Multiply val by self: 4 * Circle"""
+        return Circle(self.radius * val)
+
     def __str__(self):
         return "Circle with radius: {}".format(self.radius)
 
