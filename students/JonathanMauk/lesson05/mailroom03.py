@@ -117,13 +117,14 @@ def thank_all():
 
 def mailroom():
     while True:
-        selection = input('MAILROOM v0.2\n------------------------\nChoose an option:\n1) Send a thank you' +
+        selection = input('MAILROOM v0.3\n------------------------\nChoose an option:\n1) Send a thank you' +
                           '\n2) Create a report\n3) Send letters to everyone\n4) Quit\n> ')
         menu_dict = {'1': thank_you, '2': report, '3': thank_all, '4': quit_program}
-        if selection in menu_dict:
+        try:
             menu_dict.get(selection)()
-        else:
+        except TypeError:
             print("Invalid value. Enter a number from 1-4.")
+            pass
 
 
 if __name__ == "__main__":
