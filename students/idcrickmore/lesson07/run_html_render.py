@@ -96,11 +96,11 @@ page.append(head)
 
 body = hr.Body()
 
-# body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-#                  "but this is enough  to show that we can do some text",
-#               style="text-align: center; font-style: oblique;"))
+body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                 "but this is enough  to show that we can do some text",
+              style="text-align: center; font-style: oblique;"))
 
-# page.append(body)
+page.append(body)
 
 render_page(page, "test_html_output4.html")
 
