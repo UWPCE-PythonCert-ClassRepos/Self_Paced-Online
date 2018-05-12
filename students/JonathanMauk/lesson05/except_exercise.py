@@ -14,8 +14,6 @@ from except_test import fun, more_fun, last_fun
 # in that catch block, try again with the second item in the list
 first_try = ['spam', 'cheese', 'mr death']
 
-joke = fun(first_try[0])
-
 # Here is a try/except block. Add an else that prints not_joke
 try:
     joke = fun(first_try[0])
@@ -42,4 +40,6 @@ else:
 
 langs = ['java', 'c', 'python']
 
-more_joke = more_fun(langs[0])
+try:
+    more_joke = more_fun(langs[0])
+except IndexError:
