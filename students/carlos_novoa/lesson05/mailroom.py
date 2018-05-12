@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import datetime
+from collections import defaultdict
 
 """
 Lesson4 - Mailroom, Part 3
@@ -50,7 +51,7 @@ def add_donor():
             if donor_name in _donors:
                 print('Donor already exists, use append.')
                 return
-            _donors[donor_name] = []
+            _donors[donor_name] = defaultdict(list)
             break
 
     while True:
@@ -187,66 +188,59 @@ def menu_selection(prompt, dispatch):
 
 
 def main_menu():
+    main_prompt = ("\n--- MAIN MENU ---\n"
+                   "What do you want to do?\n"
+                   "Type '1' - Donors Menu\n"
+                   "Type '2' - Reports Menu\n"
+                   "Type '3' - Gratitude Menu\n"
+                   "Type 'q' - Quit >> "
+                   )
+    main_dispatch = {'1': donors_sub_menu,
+                     '2': reports_sub_menu,
+                     '3': gratitude_sub_menu,
+                     'q': quit_menu,
+                     }
     menu_selection(main_prompt, main_dispatch)
 
 
 def donors_sub_menu():
+    donors_prompt = ("\n--- DONOR SUB MENU ---\n"
+                     "Type '1' - Add Donor\n"
+                     "Type '2' - Append Donation\n"
+                     "Type '3' - List Donors\n"
+                     "Type 'q' - Quit >> "
+                     )
+    donors_dispatch = {'1': add_donor,
+                       '2': append_donation,
+                       '3': list_donors,
+                       'q': quit_menu,
+                       }
     menu_selection(donors_prompt, donors_dispatch)
 
 
 def reports_sub_menu():
+    reports_prompt = ("\n--- REPORTS SUB MENU ---\n"
+                      "Type '1' - Print Report\n"
+                      "Type 'q' - Quit >> "
+                      )
+    reports_dispatch = {'1': create_report,
+                        'q': quit_menu,
+                        }
     menu_selection(reports_prompt, reports_dispatch)
 
 
 def gratitude_sub_menu():
+    gratitude_prompt = ("\n--- GRATITUDE SUB MENU ---\n"
+                        "Type '1' - Print Individual Letter\n"
+                        "Type '2' - Generate Letters for All Donors\n"
+                        "Type 'q' - Quit >> "
+                        )
+    gratitude_dispatch = {'1': thank_donor,
+                          '2': generate_letters,
+                          'q': quit_menu,
+                          }
     menu_selection(gratitude_prompt, gratitude_dispatch)
 
-
-donors_prompt = ("\n--- DONOR SUB MENU ---\n"
-                 "Type '1' - Add Donor\n"
-                 "Type '2' - Append Donation\n"
-                 "Type '3' - List Donors\n"
-                 "Type 'q' - Quit >> "
-                 )
-donors_dispatch = {'1': add_donor,
-                   '2': append_donation,
-                   '3': list_donors,
-                   'q': quit_menu,
-                   }
-
-
-reports_prompt = ("\n--- REPORTS SUB MENU ---\n"
-                  "Type '1' - Print Report\n"
-                  "Type 'q' - Quit >> "
-                  )
-reports_dispatch = {'1': create_report,
-                    'q': quit_menu,
-                    }
-
-
-gratitude_prompt = ("\n--- GRATITUDE SUB MENU ---\n"
-                    "Type '1' - Print Individual Letter\n"
-                    "Type '2' - Generate Letters for All Donors\n"
-                    "Type 'q' - Quit >> "
-                    )
-gratitude_dispatch = {'1': thank_donor,
-                      '2': generate_letters,
-                      'q': quit_menu,
-                      }
-
-
-main_prompt = ("\n--- MAIN MENU ---\n"
-               "What do you want to do?\n"
-               "Type '1' - Donors Menu\n"
-               "Type '2' - Reports Menu\n"
-               "Type '3' - Gratitude Menu\n"
-               "Type 'q' - Quit >> "
-               )
-main_dispatch = {'1': donors_sub_menu,
-                 '2': reports_sub_menu,
-                 '3': gratitude_sub_menu,
-                 'q': quit_menu,
-                 }
 
 if __name__ == "__main__":
     main_menu()
