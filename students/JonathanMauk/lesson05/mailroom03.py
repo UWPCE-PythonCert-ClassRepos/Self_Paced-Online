@@ -14,7 +14,12 @@ def thank_you():
     elif user_input.lower() == 'e':
         mailroom()
     else:
-        donation = float(input("Please enter a donation amount: "))
+        try:
+            donation = float(input("Please enter a donation amount: "))
+        except ValueError:
+            print("Error: donations can only be entered as numbers and decimals.")
+            print("Returning to previous menu...")
+            thank_you()
         donor_list = []
         for k in donor_db:
             donor_list.append(k)
