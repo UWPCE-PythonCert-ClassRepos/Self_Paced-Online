@@ -16,29 +16,24 @@ from html_render import Meta
 # Step 1
 
 
-def test_type_Element():
-    test_element = Element(content=None)
-    assert isinstance(test_element, Element) is True
-
-
-def test_class_attributes_Element():
-    test_element = Element(content=None)
+def test_class_attributes_element():
+    test_element = Element()
     assert test_element.tag_name == ''
     assert test_element.indentation == 4
 
 
-def test_instance_attributes_Element():
-    test_element = Element(content=None)
+def test_instance_attributes_element():
+    test_element = Element()
     assert test_element.content == []
 
 
-def test_append_content_Element():
-    test_element = Element(content=None)
+def test_append_content_element():
+    test_element = Element()
     test_element.append('New content')
     assert test_element.content[0].text == 'New content'
 
 
-def test_render_page_Element():
+def test_render_page_element():
     test_element = Html(content="Some content.")
     test_element.append('Some more content.')
 
@@ -54,14 +49,13 @@ def test_render_page_Element():
 # Step 2
 
 
-def test_type_Body():
-    test_element = Body(content=None)
-    assert isinstance(test_element, Body) is True
+def test_type_body():
+    test_element = Body()
     assert test_element.tag_name == 'body'
     assert test_element.indentation == 4
 
 
-def test_nesting_Elements():
+def test_nesting_elements():
     page = Html()
     body = Body()
     body.append(P("Here is a paragraph of text."))
@@ -82,12 +76,7 @@ def test_nesting_Elements():
 # Step 3
 
 
-def test_type_Head():
-    test_element = Head(content=None)
-    assert isinstance(test_element, Head) is True
-
-
-def test_OneLineTag():
+def test_onelinetag():
     page = Html()
     head = Head()
     head.append(Title("Here is some title text"))
@@ -105,7 +94,7 @@ def test_OneLineTag():
 
 # Step 4
 
-def test_Element_with_attributes():
+def test_element_with_attributes():
     page = Html()
     body = Body()
     attributes = {"class": "paragraph", "id": "intro"}
@@ -125,7 +114,7 @@ def test_Element_with_attributes():
 # Step 5
 
 
-def test_SelfClosingTag():
+def test_selfclosingtag():
     page = Html()
     body = Body()
     attributes = {"class": "main bordered", "id": "top-spacer"}
@@ -142,7 +131,7 @@ def test_SelfClosingTag():
         '</html>'
 
 
-def test_SelfClosingTag_with_content():
+def test_selfclosingtag_with_content():
     with pytest.raises(TypeError) as excinfo:
         page = Html()
         body = Body()
@@ -160,7 +149,7 @@ def test_SelfClosingTag_with_content():
 
 # Step 6
 
-def test_A():
+def test_a():
     page = Html()
     body = Body()
     body.append(A("http://google.com", "link"))
@@ -177,7 +166,7 @@ def test_A():
 
 # Step 7
 
-def test_H():
+def test_h():
     page = Html()
     body = Body()
     body.append(H(1, "Top Heading"))
@@ -195,7 +184,7 @@ def test_H():
 
 # Step 8
 
-def test_Doctype_Meta():
+def test_doctype_meta():
     page = Html()
     head = Head()
     head.append(Meta(charset="UTF-8"))
