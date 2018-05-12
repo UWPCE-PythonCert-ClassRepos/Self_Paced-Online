@@ -33,14 +33,13 @@ class Element:
             self.content.append(content)
 
     def generate_spacing(self, tree_level):
-        self.tree_level = tree_level
+        tree_level = tree_level
 
-        return " " * self.tree_level * self.indentation
+        return " " * tree_level * self.indentation
 
-    def apply_attributes(self, attrs):
-        self.attrs = attrs
+    def apply_attributes(self, attributes_in):
 
-        for key, value in self.attrs.items():
+        for key, value in attributes_in.items():
             self.file_out.write(f" {key}=\"{value}\"")
 
     def render(self, file_out, cur_ind=""):
@@ -89,7 +88,7 @@ class Html(Element):
 
         self.file_out.write('<!DOCTYPE html>\n')
 
-        Element.render(self, self.file_out, self.cur_ind)
+        super().render(file_out, cur_ind)
 
 
 class Body(Element):
@@ -174,17 +173,16 @@ class A(Element):
     def __init__(self, link, content):
         self.link = link
         self.content = content
-        self.attributes = {'href': self.link}
 
-        Element.__init__(self, content=self.content, **self.attributes)
+        super().__init__(content=content, **{'href': link})
 
 
 class Ul(Element):
-    tag_name: 'ul'
+    tag_name = 'ul'
 
 
-class Li(Element):
-    tag_name: 'li'
+class Li(OneLineTag):
+    tag_name = 'li'
 
 
 class H(OneLineTag):
@@ -193,15 +191,9 @@ class H(OneLineTag):
     def __init__(self, level, content):
         self.level = level
         self.content = content
-        self.attributes = {'level': self.level}
 
-        OneLineTag.__init__(self, content=self.content, **self.attributes)
+        super().__init__(content=content, **{'level': level})
 
 
 class Meta(SelfClosingTag):
     tag_name = 'meta'
-
-    def __init__(self, **kwargs):
-        self.attributes = kwargs
-
-        SelfClosingTag.__init__(self, **self.attributes)
