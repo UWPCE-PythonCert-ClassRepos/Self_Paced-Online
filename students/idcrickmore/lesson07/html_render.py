@@ -45,7 +45,9 @@ class OneLineTag(Element):
                 file_out.write(f"</{self.tag_name}>")
             
         
-class SelfClosingTag(Element):  
+class SelfClosingTag(Element):
+    #To Do: raise some kind of exception for content
+    
     def render(self, file_out, cur_ind=""):
         tag_close = "/"
         print(f"<{self.tag_name}{tag_close}>")
@@ -71,8 +73,19 @@ class Head(Element):
 class Title(OneLineTag):
     tag_name = "title"
 
+    
 class Hr(SelfClosingTag):
     tag_name = 'hr'
-    
+   
+   
 class Br(SelfClosingTag):
     tag_name = 'br'
+    
+ 
+class A(Element):
+    tag_name = 'a'
+    
+    def __init__(self, link, content):
+        Element.__init__(self, content, href=link)
+        
+        
