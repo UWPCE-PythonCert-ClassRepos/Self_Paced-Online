@@ -23,18 +23,22 @@ def report():
 
 def enter_donor():
     while True: 
-        donor = input('Please enter donor name (UID: First_Last): ')
-        parts = donor.split(sep = '_')
-        fname = parts[0]
-        lname = parts[1]
+        donor = input('Please enter donor name (<Firstname_Lastname>): ')
+        try:
+            parts = donor.split(sep = '_')
+            fname = parts[0]
+            lname = parts[1]
+        except:
+            print('\nName must be given as <Firstname_Lastname>, please try again\n')
+            continue
 
         dobj = Donor(fname, lname)
 
         if dobj.check_existence(donor):
-            print('Donor / UID {} found in donor database...'.format(donor))
+            # print('Donor / UID {} found in database...'.format(donor))
             break
         else:
-            print('Donor / UID {} not found in donor database, will create it...'.format(donor))
+            print('{} not found in database, creating it...'.format(donor))
             if dobj.create(donor, fname, lname, None):
                 break
             else:
