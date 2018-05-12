@@ -8,6 +8,7 @@ donor_db = {name: donation for name, donation in zip(donor_names, donation_amoun
 # donor_db = {"John Smith": [18774.48, 8264.47, 7558.71], "Jane Doe": [281918.99, 8242.13],
 #            "Alan Smithee": [181.97, 955.16], "Tom D.A. Harry": [67.10, 500.98], "Joe Shmoe": [200.01]}
 
+
 def thank_you():
     user_input = input('Enter a donor\'s full name, or type \'list\' for a full list. ' +
                        'Type \'e\' to exit and return to the main menu.\n> ').title()
