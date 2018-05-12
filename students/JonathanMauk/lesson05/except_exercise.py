@@ -20,7 +20,7 @@ except NameError:
     try:
         joke = fun(first_try[1])
     except NameError:
-        print("NameError")
+        print('Run Away!')
 
 # Here is a try/except block. Add an else that prints not_joke
 try:
