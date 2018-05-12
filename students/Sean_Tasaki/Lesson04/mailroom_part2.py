@@ -1,7 +1,7 @@
 """
 Sean Tasaki
-5/11/2018
-Lesson03.mailroom_part_1
+5/12/2018
+Lesson04.mailroom_part_2
 """
 
 donor_full_list = [['Bob Dylan', 120000.00, 3, 40000.00], ['Leonard Cohen', 600.00, 2, 300.00], ['Soren Kierkegaard', 1000.00, 2, 500.00], ['Italo Calvino', 20000.00, 4, 5000.00], ['Florence Feist', 300.00, 3, 100.00]]
