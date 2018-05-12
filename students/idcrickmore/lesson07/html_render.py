@@ -14,7 +14,7 @@ class Element():
 
     def render(self, file_out, cur_ind=""):
         if self.attributes != {}:
-            attributes = " ".join(["%s=%s" % (k, v) for k, v in self.attributes.items()])
+            attributes = " ".join([' %s="%s"' % (k, v) for k, v in self.attributes.items()])
             open_tag = f"<{self.tag_name}{attributes}>"
             close_tag = f"</{self.tag_name}>"
             print(open_tag)
