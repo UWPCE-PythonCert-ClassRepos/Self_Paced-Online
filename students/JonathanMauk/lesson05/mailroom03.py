@@ -1,15 +1,21 @@
 import os
+import sys
 
-donor_db = {"John Smith": [18774.48, 8264.47, 7558.71], "Jane Doe": [281918.99, 8242.13],
-            "Alan Smithee": [181.97, 955.16], "Tom D.A. Harry": [67.10, 500.98], "Joe Shmoe": [200.01]}
+donor_names = ["John Smith", "Jane Doe", "Alan Smithee", "Tom D.A. Harry", "Joe Shmoe"]
+donation_amounts = [[18774.48, 8264.47, 7558.71], [281918.99, 8242.13], [181.97, 955.16], [67.10, 500.98], [200.01]]
+
+donor_db = {name: donation for name, donation in zip(donor_names, donation_amounts)}
+# donor_db = {"John Smith": [18774.48, 8264.47, 7558.71], "Jane Doe": [281918.99, 8242.13],
+#            "Alan Smithee": [181.97, 955.16], "Tom D.A. Harry": [67.10, 500.98], "Joe Shmoe": [200.01]}
 
 
 def thank_you():
     user_input = input('Enter a donor\'s full name, or type \'list\' for a full list. ' +
                        'Type \'e\' to exit and return to the main menu.\n> ').title()
     if user_input.lower() == 'list':
-        for k in donor_db:
-            print(k)
+        # Sadly this comprehension doesn't save any lines of code from my original implementation.
+        donor_list = [k for k in donor_db]
+        print(donor_list)
         thank_you()
     elif user_input.lower() == 'e':
         mailroom()
@@ -20,6 +26,10 @@ def thank_you():
             print("Error: donations can only be entered as numbers and decimals.")
             print("Returning to previous menu...")
             thank_you()
+        # This seemed like an obvious spot to convert to list/dict comprehension, but the if-else statements made it
+        # tricky to do so. I tried a few different ways and could not get it to work. Still not sure if there's a good
+        # way to work in else statements to comprehensions--that doesn't seem to be what they're for.
+        # I would love to know if there's an elegant way to do this, though.
         donor_list = []
         for k in donor_db:
             donor_list.append(k)
@@ -60,7 +70,8 @@ def send_letters():
 
 
 def quit_program():
-    quit("Exiting...")
+    print("Exiting...")
+    sys.exit()
 
 
 def create_letter(donor_status, donor_name, donation_amt):
