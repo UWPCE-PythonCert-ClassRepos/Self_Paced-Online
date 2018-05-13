@@ -41,7 +41,7 @@ class DonorGroup(Donor):
     """creates donor group objects for multiple donors"""
     def __init__(self, *donors):
         self.donors = [*donors]
-        super().__init__(*donors)
+        super().__init__(Donor.title, Donor.donor, Donor.donation)
 
     @property
     def donorgroup(self):
@@ -84,8 +84,8 @@ class DonorGroup(Donor):
                                + '{:>13}'.format(donor_list[2])
                                + '{}{:>11}'.format(' $',
                                donor_list[0] // donor_list[2]))
-            if __name__ != '__main__':
-                print(formatted_donor)
+            # if __name__ == '__main__':
+            #     print(formatted_donor)
 
     def save_data(self):
         with open('test.txt', 'w') as outfile:
@@ -95,6 +95,7 @@ class DonorGroup(Donor):
 
 class UI(DonorGroup):
     def __init__(self):
+        self.donors = (DonorGroup.donorgroup)
         self.menu_dict = {'1': DonorGroup.get_list,
                           '2': DonorGroup.get_report, 'q': sys.exit}
         self.main_text = '\n'.join((
@@ -103,6 +104,7 @@ class UI(DonorGroup):
                                     '"2" - Create a Report, or',
                                     '"q" to Quit: '
                                   ))
+        super().__init__()
         while True:
             print('\nMain Menu:')
             response = input(self.main_text)
