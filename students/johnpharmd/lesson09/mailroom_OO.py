@@ -42,3 +42,11 @@ class DonorGroup(Donor):
     @property
     def donor_group(self):
         return [donor.donor for donor in self.donors]
+
+    @donor_group.setter
+    def donor_group_add(self, new_donor):
+        self.donors.append(new_donor)
+
+    @donor_group.deleter
+    def donor_group_remove(self, donor):
+        del donor
