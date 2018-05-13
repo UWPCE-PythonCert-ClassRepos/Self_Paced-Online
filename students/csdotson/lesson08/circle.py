@@ -23,6 +23,13 @@ class Circle:
     def diameter(self, val):
         self.radius = val / 2
 
+    def __lt__(self, other):
+        """ Define less than comparator for circles """
+        return (self.radius < other.radius)
+
+    def __eq__(self, other):
+        return(self.radius == other.radius)
+
     def __add__(self, other):
         """ Add radii of two circles """
         if isinstance(other, Circle):
