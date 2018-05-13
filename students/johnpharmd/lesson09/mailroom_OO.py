@@ -76,13 +76,15 @@ class DonorGroup(Donor):
             print('-', end='')
         print()
         new_list = self.get_list()
-        new_list.sort(reverse=True)
         for donor_list in new_list:
             formatted_donor = ('{:<15}'.format(donor_list[1])
                                + '{}{:>10}'.format(' $', donor_list[0])
-                               + '{:>12}'.format(donor_list[2])
+                               + '{:>13}'.format(donor_list[2])
                                + '{}{:>11}'.format(' $',
                                donor_list[0] // donor_list[2]))
+            if __name__ != '__main__':
+                print(formatted_donor)
+            # return formatted_donor
 
     def save_data(self):
         with open('test.txt', 'w') as outfile:
