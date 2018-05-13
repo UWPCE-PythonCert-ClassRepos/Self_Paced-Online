@@ -57,3 +57,7 @@ class DonorGroup(Donor):
         for d in self.donors[:]:
             if last_name in d.donor and d.donor[last_name]['title'] == title:
                 self.donors.remove(d)
+
+    def save_data(self):
+        with open('test.txt', 'w') as outfile:
+            outfile.write('This is current DonorGroup data:\n' + str(self.donorgroup))
