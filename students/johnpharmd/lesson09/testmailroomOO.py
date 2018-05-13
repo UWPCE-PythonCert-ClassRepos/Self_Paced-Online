@@ -25,15 +25,15 @@ class DonorGroupTest(unittest.TestCase):
                                     mrOO.Donor('Ms.', 'Avey', 150000))
 
     def test_donor_group(self):
-        self.assertEqual(self.test.donor_group,
+        self.assertEqual(self.test.donorgroup,
                          [{'Brin': {'title': 'Mr.', 'donations': 100000,
                           'num_donations': 1}},
                           {'Wojcicki': {'title': 'Ms.', 'donations': 200000,
                            'num_donations': 1}},
                           {'Avey': {'title': 'Ms.', 'donations': 150000,
                                     'num_donations': 1}}])
-        self.test.donor_group_add = mrOO.Donor('Mr.', 'Page', 50000)
-        self.assertEqual(self.test.donor_group,
+        self.test.donorgroup_new_donor = mrOO.Donor('Mr.', 'Page', 50000)
+        self.assertEqual(self.test.donorgroup,
                          [{'Brin': {'title': 'Mr.', 'donations': 100000,
                           'num_donations': 1}},
                           {'Wojcicki': {'title': 'Ms.', 'donations': 200000,
@@ -42,11 +42,12 @@ class DonorGroupTest(unittest.TestCase):
                                     'num_donations': 1}},
                           {'Page': {'title': 'Mr.', 'donations': 50000,
                                     'num_donations': 1}}])
-        self.test.donor_group_remove = 'Brin'
-        self.assertEqual(self.test.donor_group,
+        # print('self.test.__dir__() is', self.test.__dir__())
+        self.test.withdraw('Mr.', 'Brin')
+        self.assertEqual(self.test.donorgroup,
                          [{'Wojcicki': {'title': 'Ms.', 'donations': 200000,
                            'num_donations': 1}},
                           {'Avey': {'title': 'Ms.', 'donations': 150000,
                                     'num_donations': 1}},
-                          {'Page': {'title': 'Ms.', 'donations': 150000,
+                          {'Page': {'title': 'Mr.', 'donations': 50000,
                                     'num_donations': 1}}])
