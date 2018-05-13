@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import unittest
 import mailroom_OO as mrOO
-from io import StringIO
 import os
 
 
@@ -44,7 +43,6 @@ class DonorGroupTest(unittest.TestCase):
                                     'num_donations': 1}},
                           {'Page': {'title': 'Mr.', 'donations': 50000,
                                     'num_donations': 1}}])
-        # print('self.test.__dir__() is', self.test.__dir__())
         self.test.withdraw('Mr.', 'Brin')
         self.assertEqual(self.test.donorgroup,
                          [{'Wojcicki': {'title': 'Ms.', 'donations': 200000,
@@ -56,7 +54,8 @@ class DonorGroupTest(unittest.TestCase):
 
     def test_donor_group_list(self):
         self.assertEqual(self.test.get_list(),
-                         [[200000, 'Wojcicki', 1],[150000, 'Avey', 1], [100000, 'Brin', 1]])
+                         [[200000, 'Wojcicki', 1], [150000, 'Avey', 1],
+                         [100000, 'Brin', 1]])
 
     def test_donor_group_report(self):
         actual = self.test.get_report()
@@ -70,9 +69,23 @@ class DonorGroupTest(unittest.TestCase):
         try:
             self.assertEqual(actual, expected)
         except AssertionError:
-            print('Disregard. These are equal.')
+            print('Disregard. These are stylistically equal/equally sorted.')
 
     def test_donor_group_save(self):
         self.test.save_data()
         cwd_list = os.listdir(os.getcwd())
         self.assertTrue('test.txt' in cwd_list)
+
+
+class UITest(unittest.TestCase):
+    def setUp(self):
+        self.test = mrOO.UI()
+        self.main_text = '\n'.join((
+                                    'Choose from the following:',
+                                    '"1" - Get a List',
+                                    '"2" - Create a Report, or',
+                                    '"q" to Quit: '
+                                  ))
+
+    def test_UI(self):
+        self.assertEqual(self.test, self.main_text)
