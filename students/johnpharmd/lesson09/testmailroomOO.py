@@ -53,6 +53,22 @@ class DonorGroupTest(unittest.TestCase):
                                     'num_donations': 1}},
                           {'Page': {'title': 'Mr.', 'donations': 50000,
                                     'num_donations': 1}}])
+
+    def test_donor_group_list(self):
+        self.assertEqual(self.test.get_list(),
+                         [[200000, 'Wojcicki', 1],[150000, 'Avey', 1], [100000, 'Brin', 1]])
+
+    def test_donor_group_report(self):
+        actual = self.test.get_report()
+        expected = """
+        Donor Name     | Total Given | Num Gifts| Average Gift
+        -------------------------------------------------------
+        Wojcicki         $    200000           1 $     200000
+        Avey             $    150000           1 $     150000
+        Brin             $    100000           1 $     100000
+        """
+        self.assertEqual(actual, expected)
+
     def test_donor_group_save(self):
         self.test.save_data()
         cwd_list = os.listdir(os.getcwd())
