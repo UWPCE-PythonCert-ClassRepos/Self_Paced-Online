@@ -7,12 +7,13 @@ class Donor:
         self.title = title
         self.last_name = last_name
         self.donations = [donation]
+        super().__init__()
 
     @property
     def donor(self):
         return {self.last_name: {'title': self.title, 'donations':
-        sum(self.donations), 'num_donations': len(self.donations)}}
-    
+                sum(self.donations), 'num_donations': len(self.donations)}}
+
     @property
     def title(self):
         return self.new_title
@@ -24,9 +25,20 @@ class Donor:
 
     @property
     def donation(self):
-        return self.donation
+        return self.donations[-1]
 
     @donation.setter
     def donation(self, donation):
-        """enables addition of new donations"""
+        """enables addition of new donation"""
         self.donations.append(donation)
+
+
+class DonorGroup(Donor):
+    """creates donor group objects for multiple donors"""
+    def __init__(self, *donors):
+        self.donors = [*donors]
+        super().__init__(*donors)
+
+    @property
+    def donor_group(self):
+        return [donor.donor for donor in self.donors]
