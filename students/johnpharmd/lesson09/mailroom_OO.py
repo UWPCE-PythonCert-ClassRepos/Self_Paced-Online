@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 
 
 class Donor:
@@ -62,7 +63,8 @@ class DonorGroup(Donor):
         self.donor_list = []
         for d in self.donors:
             for last_name in d.donor:
-                self.donor_list.append([d.donor[last_name]['donations'], last_name,
+                self.donor_list.append([d.donor[last_name]['donations'],
+                                        last_name,
                                         d.donor[last_name]['num_donations']])
         return sorted(self.donor_list, reverse=True)
 
@@ -84,9 +86,33 @@ class DonorGroup(Donor):
                                donor_list[0] // donor_list[2]))
             if __name__ != '__main__':
                 print(formatted_donor)
-            # return formatted_donor
 
     def save_data(self):
         with open('test.txt', 'w') as outfile:
             outfile.write('This is current DonorGroup data:\n' +
                           str(self.donorgroup))
+
+
+class UI(DonorGroup):
+    def __init__(self):
+        self.menu_dict = {'1': DonorGroup.get_list,
+                          '2': DonorGroup.get_report, 'q': sys.exit}
+        self.main_text = '\n'.join((
+                                    'Choose from the following:',
+                                    '"1" - Get a List,',
+                                    '"2" - Create a Report, or',
+                                    '"q" to Quit: '
+                                  ))
+        while True:
+            print('\nMain Menu:')
+            response = input(self.main_text)
+            print()
+            try:
+                if response == 'q':
+                    print('Program execution completed.')
+                self.menu_dict[response](self)
+            except KeyError:
+                print('\nThat selection is invalid. Please try again.')
+
+
+interactionObject = UI()
