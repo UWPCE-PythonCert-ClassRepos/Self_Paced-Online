@@ -4,6 +4,7 @@
 class Donor:
     """creates objects for individual donors"""
     def __init__(self, title, last_name, donation):
+        # fixme: self.ID = 0
         self.title = title
         self.last_name = last_name
         self.donations = [donation]
@@ -11,6 +12,7 @@ class Donor:
 
     @property
     def donor(self):
+        """getter for individual donor"""
         return {self.last_name: {'title': self.title, 'donations':
                 sum(self.donations), 'num_donations': len(self.donations)}}
 
@@ -25,6 +27,7 @@ class Donor:
 
     @property
     def donation(self):
+        """getter for most recent donation amount"""
         return self.donations[-1]
 
     @donation.setter
@@ -40,13 +43,17 @@ class DonorGroup(Donor):
         super().__init__(*donors)
 
     @property
-    def donor_group(self):
+    def donorgroup(self):
+        """getter for self.donors"""
         return [donor.donor for donor in self.donors]
 
-    @donor_group.setter
-    def donor_group_add(self, new_donor):
+    @donorgroup.setter
+    def donorgroup_new_donor(self, new_donor):
+        """enables addition of new donor"""
         self.donors.append(new_donor)
 
-    @donor_group.deleter
-    def donor_group_remove(self, donor):
-        del donor
+    def withdraw(self, title, last_name):
+        """given donor last name as string, removes donor from self.donors"""
+        for d in self.donors[:]:
+            if last_name in d.donor and d.donor[last_name]['title'] == title:
+                self.donors.remove(d)
