@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import unittest
 import mailroom_OO as mrOO
+from io import StringIO
+import os
 
 
 class DonorTest(unittest.TestCase):
@@ -51,3 +53,7 @@ class DonorGroupTest(unittest.TestCase):
                                     'num_donations': 1}},
                           {'Page': {'title': 'Mr.', 'donations': 50000,
                                     'num_donations': 1}}])
+    def test_donor_group_save(self):
+        self.test.save_data()
+        cwd_list = os.listdir(os.getcwd())
+        self.assertTrue('test.txt' in cwd_list)
