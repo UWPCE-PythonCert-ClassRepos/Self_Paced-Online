@@ -11,4 +11,42 @@ Python Version: 3.6.4
 
 
 class Element():
-    pass
+    tag = None
+    i_string = '    '
+
+    def __init__(self, content=None):
+        if content is None:
+            self.content = []
+        else:
+            self.content = [content]
+
+    def append(self, new_content):
+        if (self.content):
+            self.content.append(new_content)
+        else:
+            self.content = [new_content]
+
+    def render(self, file_out, curr_ind=None):
+        file_out.write(f'<{self.tag}>\n')
+        file_out.write(self.i_string)
+        for c in self.content:
+            if issubclass(type(c), Element):
+                c.render(file_out)
+            elif (c[-1:] is '.'):
+                file_out.write(c + ' ')
+            else:
+                file_out.write(c + '. ')
+        file_out.write('\n')
+        file_out.write(f'</{self.tag}>\n')
+
+
+class Html(Element):
+    tag = 'html'
+
+
+class Body(Element):
+    tag = 'body'
+
+
+class P(Element):
+    tag = 'p'
