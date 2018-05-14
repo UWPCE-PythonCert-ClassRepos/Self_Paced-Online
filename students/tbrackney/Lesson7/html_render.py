@@ -13,6 +13,7 @@ Python Version: 3.6.4
 class Element():
     tag = None
     i_string = '    '
+    indent = 0
 
     def __init__(self, content=None):
         if content is None:
@@ -27,11 +28,11 @@ class Element():
             self.content = [new_content]
 
     def render(self, file_out, curr_ind=None):
-        file_out.write(f'<{self.tag}>\n')
-        file_out.write(self.i_string)
+        file_out.write(f'{i_string * indent}<{self.tag}>\n')
+        file_out.write(self.i_string * (indent + 1))
         for c in self.content:
             if issubclass(type(c), Element):
-                c.render(file_out)
+                c.render(file_out, (indent + 1))
             elif (c[-1:] is '.'):
                 file_out.write(c + ' ')
             else:
