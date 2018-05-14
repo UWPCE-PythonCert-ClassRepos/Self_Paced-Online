@@ -88,4 +88,32 @@ def test_append_p():
     a.append(b)
     output = StringIO()
     a.render(output)
-    assert f'<p>\n    This is some content. \n</p>\n' in output.getvalue()
+    elements = ('<p>\n', 'This is some content. \n', '</p>\n')
+    for element in elements:
+        assert element in output.getvalue()
+
+
+def test_head():
+    a = hr.Html()
+    b = hr.Head('This is the header')
+    a.append(b)
+    output = StringIO()
+    a.render(output)
+    elements = ('<head>\n', 'This is the header. \n', '</head>\n')
+    for element in elements:
+        assert element in output.getvalue()
+
+
+def test_onelinetag():
+    t = hr.OneLineTag('This is a tag')
+    t.tag = 'title'
+    output = StringIO()
+    t.render(output)
+    assert '<title>This is a tag</title>\n' in output.getvalue()
+
+
+def test_title():
+        t = hr.Title('This is a title')
+        output = StringIO()
+        t.render(output)
+        assert '<title>This is a title</title>\n' in output.getvalue()

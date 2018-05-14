@@ -27,18 +27,18 @@ class Element():
         else:
             self.content = [new_content]
 
-    def render(self, file_out, curr_ind=None):
-        file_out.write(f'{i_string * indent}<{self.tag}>\n')
-        file_out.write(self.i_string * (indent + 1))
+    def render(self, file_out, curr_ind=0):
+        file_out.write(f'{self.i_string * curr_ind}<{self.tag}>\n')
         for c in self.content:
+            file_out.write(self.i_string * (curr_ind + 1))
             if issubclass(type(c), Element):
-                c.render(file_out, (indent + 1))
+                c.render(file_out, (curr_ind + 1))
             elif (c[-1:] is '.'):
                 file_out.write(c + ' ')
             else:
                 file_out.write(c + '. ')
         file_out.write('\n')
-        file_out.write(f'</{self.tag}>\n')
+        file_out.write(f'{curr_ind * self.i_string}</{self.tag}>\n')
 
 
 class Html(Element):
@@ -51,3 +51,20 @@ class Body(Element):
 
 class P(Element):
     tag = 'p'
+
+
+class Head(Element):
+    tag = 'head'
+
+
+class OneLineTag(Element):
+
+    def __init__(self, content=None):
+        self.content = content
+
+    def render(self, file_out, curr_ind=0):
+        file_out.write(f'{self.i_string * curr_ind}<{self.tag}>{self.content}</{self.tag}>\n')
+
+
+class Title(OneLineTag):
+    tag = 'title'
