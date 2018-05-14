@@ -80,7 +80,28 @@ def menu(prompt, dispatcher):
             response = input(prompt)
             if dispatcher[response]() == 'exiting':
                 break
+            # elif response == '':
+            #     dispatcher(give_factor)
     except KeyError:
         print('\n\tSorry, unknown option:', response, '\n')
         menu(prompt, dispatcher)
 
+
+def challenge():
+    prompt = "\
+    \nYou're taking the CHALLENGE ...:)\
+    \nPlease choose an option:\
+    \n\tf: give multiplication factor\
+    \n\t7: exit\n\n"
+
+    dispatcher = {
+        'f' : give_factor,
+        '7' : efunc,
+        }
+    
+    menu(prompt, dispatcher)
+
+
+def give_factor():
+    factor = input('please give factor as an integer')
+    # pass
