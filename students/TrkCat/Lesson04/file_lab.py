@@ -1,8 +1,9 @@
 #Lesson 4 File Lab
+import os
+
 
 def list_files():
     """Print file names in current dir"""
-    import os
     for cur_file in os.listdir():
         print(cur_file)
         

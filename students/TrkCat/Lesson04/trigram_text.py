@@ -8,19 +8,19 @@ def trigram_text(infile, out_len):
     out_text = []
     word_count = 0
     while word_count < out_len:
-            sent_len = random.randint(6, 25)
-            if (word_count + sent_len) > out_len:
-                sent_len = out_len - word_count
-            out_text.extend(start_trigram(tri_dict))
-            word_count += 2
-            for _ in range((sent_len - 2)):
-                if tuple(out_text[-2:]) in tri_dict:
-                    out_text.append(get_trigram(out_text[-2:], tri_dict))
-                    word_count += 1
-                else:
-                    out_text[-1] += '.'
-                    break
-            out_text[-1] += '.'
+        sent_len = random.randint(6, 25)
+        if (word_count + sent_len) > out_len:
+            sent_len = out_len - word_count
+        out_text.extend(start_trigram(tri_dict))
+        word_count += 2
+        for _ in range((sent_len - 2)):
+            if tuple(out_text[-2:]) in tri_dict:
+                out_text.append(get_trigram(out_text[-2:], tri_dict))
+                word_count += 1
+            else:
+                out_text[-1] += '.'
+                break
+        out_text[-1] += '.'
     format_text(out_text, punc)
     print(' '.join(out_text))
 

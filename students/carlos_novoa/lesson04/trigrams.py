@@ -11,11 +11,10 @@ Lesson4 - Kata Fourteen: Tom Swift Under Milk Wood
 
 def get_content(file_name):
     cwd = os.getcwd()
-    path = cwd + '/' + file_name
-    f = open(path, 'r')
-    content = f.read()
-    f.close()
-    return content
+    path = os.path.join(cwd, file_name)
+    with open(path, 'r') as f:
+        content = f.read()
+        return content
 
 
 def pre_process(c):
