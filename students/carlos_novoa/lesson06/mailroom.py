@@ -3,6 +3,7 @@ import os
 import datetime
 from collections import defaultdict
 
+
 """
 Lesson4 - Mailroom, Part 3
 """
@@ -18,84 +19,99 @@ _donors = {
 }
 
 
-def quit_menu():
-    return 'break'
+def format_currency_str(donation):
+    donation = float(donation)
+    donation = "${0:.2f}".format(donation)
+    return donation
 
 
-def thank_donor(donor_name=None, donations=None):
-    if donor_name is None:
-        while True:
-            donor_name = input('Type donor name: ')
-            try:
-                donations = _donors[donor_name]
-            except KeyError:
-                print('Type the exact donor name (see list): ', end='\n\n')
-                list_donors()
-            else:
-                donor_email(donor_name, sum(donations), True)
-                break
+def donor_key_search(donor_name):
+    try:
+        _donors[donor_name]
+    except KeyError:
+        print('Type the exact donor name (see list): ', end='\n\n')
+        list_donors()
+        raise
+        return False
     else:
-        donor_email(donor_name, donations, False)
-
-
-def add_donor():
-    while True:
-        try:
-            donor_name = input('Type donor name: ')
-            if not donor_name:
-                raise ValueError('String required.')
-        except ValueError as e:
-            print(e)
-            continue
-        else:
-            if donor_name in _donors:
-                print('Donor already exists, use append.')
-                return
-            _donors[donor_name] = defaultdict(list)
-            break
-
-    while True:
-        try:
-            donation = input('Donation amount: ')
-            donation = float(donation)
-            break
-        except ValueError:
-            print('Input must be a int/float, try again.')
-
-    _donors[donor_name] = [float(donation)]
-    thank_donor(donor_name, donation)
+        return True
 
 
 def list_donors():
     print('\n'.join([k for k in _donors.keys()]))
 
 
-def append_donation():
-    while True:
-        try:
-            donor_name = input('Type donor name: ')
-            donations = _donors[donor_name]
-            break
-        except KeyError:
-            print('Type the exact donor name (see list): ', end='\n\n')
-            list_donors()
+def sort_donors():
+    return sorted(_donors.items(), key=lambda x: x[1], reverse=True)
 
-    while True:
-        try:
-            donation = input('Donation amount: ')
-            donation = float(donation)
-            break
-        except ValueError:
-            print('Input must be a int/float, try again.')
 
-    donations.append(float(donation))
+def add_donor_name(donor_name):
+    try:
+        if not donor_name:
+            raise ValueError()
+    except ValueError:
+        print('String required.')
+        raise
+        return False
+    else:
+        if donor_name in _donors:
+            print('Donor already exists, use append.')
+            return False
+        else:
+            _donors[donor_name] = defaultdict(list)
+        return True
+
+
+def add_donation(donor_name, donation):
+    try:
+        donation = float(donation)
+    except ValueError:
+        print('Input must be a int/float, try again.')
+        raise
+        return False
+    else:
+        _donors[donor_name] = [float(donation)]
+        return True
+
+
+def append_donation(donor_name, donation):
+    try:
+        donation = float(donation)
+    except ValueError:
+        print('Input must be a int/float, try again.')
+        raise
+        return False
+    else:
+        _donors[donor_name].append(float(donation))
+        return True
+
+
+def process_donor():
+    donor_added = False
+    while donor_added is False:
+        donor_name = input('Type donor name: ')
+        donor_added = add_donor_name(donor_name)
+
+    donation_added = False
+    while donation_added is False:
+        donation = input('Donation amount: ')
+        donation_added = add_donation(donor_name, donation)
+
     thank_donor(donor_name, donation)
 
 
-def format_currency_str(donation):
-    donation = float(donation)
-    donation = "${0:.2f}".format(donation)
-    return donation
+def process_donation():
+    donor_found = False
+    while donor_found is False:
+        donor_name = input('Type donor name: ')
+        donor_found = donor_key_search(donor_name)
+
+    donation_appended = False
+    while donation_appended is False:
+        donation = input('Donation amount: ')
+        donation_appended = append_donation(donor_name, donation)
+
+    thank_donor(donor_name, donation)
 
 
 def donor_email(donor_name, amount, total=False):
@@ -112,6 +128,18 @@ def donor_email(donor_name, amount, total=False):
             '                  -The Team')
     body = str2 if total else str1
     print(body.format(donor_name, donation))
+
+
+def thank_donor(donor_name=None, donations=None):
+    if donor_name is None:
+        donor_found = False
+        while donor_found is False:
+            donor_name = input('Type donor name: ')
+            donor_found = donor_key_search(donor_name)
+        donations = _donors[donor_name]
+        donor_email(donor_name, sum(donations), True)
+    else:
+        donor_email(donor_name, donations, False)
 
 
 def generate_letters():
@@ -141,15 +169,12 @@ def create_report():
     print_report(rows)
 
 
-def sort_donors():
-    sorted_donors = sorted(_donors.items(), key=lambda x: x[1], reverse=True)
-    return sorted_donors
-
-
 def get_donor_summary(donors):
     """ pass summary list of strings that is ready for parsing"""
     summary = []
-    for name, donations in _donors.items():
+    for d in donors:
+        name = d[0]
+        donations = d[1]
         total = float(sum(donations))
         number = len(donations)
         str_total = format_currency_str(total)
@@ -187,6 +212,10 @@ def menu_selection(prompt, dispatch):
             break
 
 
+def quit_menu():
+    return 'break'
+
+
 def main_menu():
     main_prompt = ("\n--- MAIN MENU ---\n"
                    "What do you want to do?\n"
@@ -210,8 +239,8 @@ def donors_sub_menu():
                      "Type '3' - List Donors\n"
                      "Type 'q' - Quit >> "
                      )
-    donors_dispatch = {'1': add_donor,
-                       '2': append_donation,
+    donors_dispatch = {'1': process_donor,
+                       '2': process_donation,
                        '3': list_donors,
                        'q': quit_menu,
                        }
