@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # Ian Letourneau
-# 5/2/2018
+# 5/11/2018
 # A script that stores values for donors and their donations.
 # The script can process requests from the user on various functions
 # to utilize these values
+import datetime
 
 # Build a dictionary of existing donors
 donors = {
@@ -43,7 +44,15 @@ def send_thank_you():
 
     # Once amount is input, add the donation to the donor key if existing
     # or add both the donor and the donation to the dictionary if new
-    amount = float(amount)
+    while True:
+        try:
+            amount = float(amount)
+        except ValueError:
+            amount = input(
+                "Invalid. Please enter the amount that was donated: ")
+            continue
+        break
+
     if name in donors.keys():
         donors[name].append(amount)
     else:
@@ -51,7 +60,7 @@ def send_thank_you():
         donors[name].append(amount)
 
     print('Dear {}, we wanted to say thank you for your generous'
-          ' donation of ${}!'.format(name, amount))
+          ' donation of ${:.2f}!'.format(name, amount))
 
 
 def create_report():
@@ -76,10 +85,8 @@ def create_report():
             total += value
             total_dict[name] = total
     sorted_list = sorted(total_dict.values(), reverse=True)
-    for sorted_key in sorted_list:
-        for key, value in total_dict.items():
-            if value == sorted_key:
-                sorted_dict[key] = value
+    sorted_dict = {key: value for sorted_key in sorted_list for key,
+                   value in total_dict.items() if value == sorted_key}
 
     # Print header line of table adjusting column length by length of name
     print("")
@@ -99,28 +106,57 @@ def create_report():
             align='<', width=str(name_length+2)))
 
 
+def send_all():
+    """A function that sends a Thank You letter to every donor in the form of
+    creating and writing to a .txt file titled with their name and the current
+    date. The .txt includes their name and their total donations within the
+    thank you memo."""
+    now = datetime.datetime.now()
+    # Loop through each donor in the list and calculate total donations.
+    for donor in list(donors.keys()):
+        total = 0
+        donations = donors[donor]
+        for value in donations:
+            total += value
+        donorFile = donor.replace(" ", "")
+        # Format .txt filename using the donors name and the current date. Then
+        # create file and write thank you letter within open .txt file.
+        filename = "{}_{}_{}_{}.txt".format(
+            donorFile, now.year, now.month, now.day)
+        f = open(filename, "w+")
+        f.write('Dear {}, we wanted to say thank you for your generous total'
+                ' donations of ${:.2f}! We hope to continue seeing you in'
+                ' the future!'.format(
+                    donor, float(total)))
+        f.close()
+    print("Letters have been sent to all donors.")
+
+
 if __name__ == '__main__':
-    """This area is always exectued by the script. It contains the main
-    menu prompt as well as the calls to the previous two functions
-    depending on which option was chosen. The third option allows
-    the user to quit the script."""
+    """This area is always exectued by the script. It contains the main menu
+    prompt as well as the calls to the previous two functions depending on which
+    option was chosen. The third option allows the user to quit the script."""
     response = ''
     # Prompt menu and repeat until the "Quit" option has been chosen
-    while response != 3:
+    while response != '4':
         print("""\nHello User! What would you like to do?
 1) Send a Thank You card
 2) Create a report of donors
-3) Quit \n""")
-        response = int(
+3) Send a Thank You to everyone
+4) Quit \n""")
+        response = (
             input("Please input a numerical value for"
                   " what you would like to do: "))
-        while response not in (1, 2, 3,):
-            response = int(
-                input("Invalid answer. Please input a numerical"
+        while response not in ('1', '2', '3', '4'):
+            response = (
+                input("Invalid input. Please input a numerical"
                       " value for what you would like to do: "))
-        # Once response has been verified and is not 3 to quit,
-        # call the appropriate function
-        if response == 1:
+
+        # Once response has been verified and is not 3 to quit, call the
+        # appropriate function
+        if response == '1':
             send_thank_you()
-        elif response == 2:
+        elif response == '2':
             create_report()
+        elif response == '3':
+            send_all()
