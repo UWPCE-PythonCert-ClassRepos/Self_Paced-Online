@@ -78,30 +78,58 @@ def menu(prompt, dispatcher):
     try:
         while True:
             response = input(prompt)
+
+
             if dispatcher[response]() == 'exiting':
                 break
-            # elif response == '':
-            #     dispatcher(give_factor)
+            # elif response == 'a':
+            #     print('====Hier: Multiplying all donations...')
+            # #     dispatcher(give_factor)
+            # elif response == 'b':
+            #     print('Multiplying only donations below...')
+            # elif response == 'c':
+            #     print('Multiplying only donations above...')
+
     except KeyError:
         print('\n\tSorry, unknown option:', response, '\n')
         menu(prompt, dispatcher)
 
 
 def challenge():
+    print("You're taking the CHALLENGE...")
+    global factor
+    factor = input('Please give a factor: ')
+    print('\nCongratulations, you will multiply by {}...'.format(factor))
+    print('Which donations do you want to multiply?\
+    \nPlease choose:')
+
     prompt = "\
-    \nYou're taking the CHALLENGE ...:)\
-    \nPlease choose an option:\
-    \n\tf: give multiplication factor\
+    \n\ta: all\
+    \n\tb: all below a certain value\
+    \n\tc: all above a certain value\
     \n\t7: exit\n\n"
 
     dispatcher = {
-        'f' : give_factor,
+        'a' : multiply_all,
+        'b' : multiply_below,
+        'c' : multiply_above,
         '7' : efunc,
         }
     
     menu(prompt, dispatcher)
 
 
-def give_factor():
-    factor = input('please give factor as an integer')
+def multiply_all():
+    print('==== multiplying all by {}'.format(factor))
+    db.multiply(factor)
     # pass
+
+
+def multiply_below():
+    threshold = input('Please enter below threshold:')    
+    pass
+
+
+def multiply_above():
+    threshold = input('Please enter below threshold:')    
+    pass
