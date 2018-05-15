@@ -15,22 +15,28 @@ class Element():
     i_string = '    '
     indent = 0
 
-    def __init__(self, content=None):
-        if content is None:
-            self.content = []
-        else:
-            self.content = [content]
+    def __init__(self, *args, **kwargs):
+        self.content = []
+        if len(args) is not 0:
+            for arg in args:
+                self.content.append(arg)
+        self.keywords = kwargs
 
-    def append(self, new_content):
-        if (self.content):
-            self.content.append(new_content)
-        else:
-            self.content = [new_content]
+    def append(self, *args):
+        for content in args:
+            self.content.append(content)
 
     def render(self, file_out, curr_ind=0):
-        file_out.write(f'{self.i_string * curr_ind}<{self.tag}>\n')
+        file_out.write(f'{self.i_string * curr_ind}')
+        if len(self.keywords) is 0:
+            file_out.write(f'<{self.tag}>\n')
+        else:
+            file_out.write(f'<{self.tag} ')
+            for key, val in self.keywords.items():
+                file_out.write(f'{key}="{val}"')
+            file_out.write('>\n')
+        file_out.write(self.i_string * (curr_ind + 1))
         for c in self.content:
-            file_out.write(self.i_string * (curr_ind + 1))
             if issubclass(type(c), Element):
                 c.render(file_out, (curr_ind + 1))
             elif (c[-1:] is '.'):

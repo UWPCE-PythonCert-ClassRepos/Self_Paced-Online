@@ -113,7 +113,18 @@ def test_onelinetag():
 
 
 def test_title():
-        t = hr.Title('This is a title')
-        output = StringIO()
-        t.render(output)
-        assert '<title>This is a title</title>\n' in output.getvalue()
+    t = hr.Title('This is a title')
+    output = StringIO()
+    t.render(output)
+    assert '<title>This is a title</title>\n' in output.getvalue()
+
+
+def test_keywords():
+    a = (hr.P("Here is a paragraph of text -- there could be more of them, "
+              "but this is enough  to show that we can do some text",
+         style="text-align: center; font-style: oblique;"))
+    output = StringIO()
+    a.render(output)
+    out_text = output.getvalue()
+    assert '<p style="text-align: center; font-style: oblique;">' in out_text
+    assert 'but this is enough  to show that we can do some text' in out_text
