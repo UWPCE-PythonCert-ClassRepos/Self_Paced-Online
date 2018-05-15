@@ -100,6 +100,9 @@ def challenge():
     global factor
     factor = input('Please give a factor: ')
     print('\nCongratulations, you will multiply by {}...'.format(factor))
+    global preview
+    preview = input('\nPlease type "yes" if you want to see a preview first:')
+
     print('Which donations do you want to multiply?\
     \nPlease choose:')
 
@@ -123,9 +126,12 @@ def challenge():
 
 
 def multiply_all():
-    print('==== multiplying all by {}'.format(factor))
-    db.multiply(factor)
-    # pass
+    if preview == 'yes':
+        print('just executing preview')
+    else:
+        print('==== multiplying all by {}'.format(factor))
+        db.multiply(factor)
+        # pass
 
 
 def multiply_below():

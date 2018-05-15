@@ -107,29 +107,41 @@ class Mailroom:
         return raw
 
 
-    def multiply(self, factor, above=None, below=None):
+    # def multiply(self, factor, above=None, below=None):
+    def multiply(self, factor, above=None, below=None, preview=None):
+
+        sql = None
+        if preview == 'yes':
+            sql = 'select count(*) from mailroom '
+        else: 
+            sql = 'update mailroom set donation = donation * ?'
+
 
         if above is None and below is None:
             try:
+                # self.cursor.execute('update mailroom set donation = donation * ?', (factor,))
+                print('====command: {}'.format(command))
                 self.cursor.execute('update mailroom set donation = donation * ?', (factor,))
                 self.db.commit()
                 return True
             except sqlite3.Error as e:
-                print('Exception raised: {}'.format(e))
+                print('Exception raised 1: {}'.format(e))
         elif below:
             try:
-                self.cursor.execute('update mailroom set donation = donation * ? where donation < ?', (factor, below))
+                # self.cursor.execute('update mailroom set donation = donation * ? where donation < ?', (factor, below))
+                self.cursor.execute('? mailroom set donation = donation * ? where donation < ?', (command, factor, below))
                 self.db.commit()
                 return True
             except sqlite3.Error as e:
-                print('Exception raised: {}'.format(e))
+                print('Exception raised 2: {}'.format(e))
         elif above:
             try:
-                self.cursor.execute('update mailroom set donation = donation * ? where donation > ?', (factor, above))
+                # self.cursor.execute('update mailroom set donation = donation * ? where donation > ?', (factor, above))
+                self.cursor.execute('? mailroom set donation = donation * ? where donation > ?', (command, factor, above))
                 self.db.commit()
                 return True
             except sqlite3.Error as e:
-                print('Exception raised: {}'.format(e))
+                print('Exception raised 3: {}'.format(e))
 
             
 
