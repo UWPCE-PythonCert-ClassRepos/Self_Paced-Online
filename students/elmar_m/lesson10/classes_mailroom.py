@@ -107,37 +107,52 @@ class Mailroom:
         return raw
 
 
-    # def multiply(self, factor, above=None, below=None):
-    def multiply(self, factor, above=None, below=None, preview=None):
+    def multiply(self, factor, above=None, below=None):
+    # def multiply(self, factor, above=None, below=None, preview=None):
 
-        sql = None
-        if preview == 'yes':
-            sql = 'select count(*) from mailroom '
-        else: 
-            sql = 'update mailroom set donation = donation * ?'
-
+        #sql = None
+        #if preview == 'yes':
+        #    sql = 'select count(*) from mailroom '
+        #else: 
+        #    sql = 'update mailroom set donation = donation * ?'
 
         if above is None and below is None:
             try:
                 # self.cursor.execute('update mailroom set donation = donation * ?', (factor,))
                 print('====command: {}'.format(command))
                 self.cursor.execute('update mailroom set donation = donation * ?', (factor,))
+                # preview: select count(*) from mailroom
+                # 'this operation will affect xy datasets'...
+                # 'it will result in an additional required donation of 
+                # (sum up all donations and multiply with factor) dollars from you...' 
                 self.db.commit()
                 return True
             except sqlite3.Error as e:
                 print('Exception raised 1: {}'.format(e))
         elif below:
             try:
-                # self.cursor.execute('update mailroom set donation = donation * ? where donation < ?', (factor, below))
-                self.cursor.execute('? mailroom set donation = donation * ? where donation < ?', (command, factor, below))
+                self.cursor.execute('update mailroom set donation = donation * ? where donation < ?', (factor, below))
+                # self.cursor.execute('? mailroom set donation = donation * ? where donation < ?', (command, factor, below))
+
+                # preview: select count(*) from mailroom where donation < below
+                # 'this operation will affect xy datasets'...
+                # 'it will result in an additional required donation of 
+                # (sum up all donations where donation < below and multiply with factor) dollars from you...' 
+                
                 self.db.commit()
                 return True
             except sqlite3.Error as e:
                 print('Exception raised 2: {}'.format(e))
         elif above:
             try:
-                # self.cursor.execute('update mailroom set donation = donation * ? where donation > ?', (factor, above))
-                self.cursor.execute('? mailroom set donation = donation * ? where donation > ?', (command, factor, above))
+                self.cursor.execute('update mailroom set donation = donation * ? where donation > ?', (factor, above))
+                # self.cursor.execute('? mailroom set donation = donation * ? where donation > ?', (command, factor, above))
+
+                # preview: select count(*) from mailroom where donation < below
+                # 'this operation will affect xy datasets'...
+                # 'it will result in an additional required donation of 
+                # (sum up all donations where donation < below and multiply with factor) dollars from you...' 
+
                 self.db.commit()
                 return True
             except sqlite3.Error as e:

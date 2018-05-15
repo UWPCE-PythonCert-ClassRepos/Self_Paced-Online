@@ -126,12 +126,13 @@ def challenge():
 
 
 def multiply_all():
-    if preview == 'yes':
-        print('just executing preview')
-    else:
-        print('==== multiplying all by {}'.format(factor))
-        db.multiply(factor)
-        # pass
+    # if preview == 'yes':
+    #     print('just executing preview')
+    # else:
+
+    print('==== multiplying all by {}'.format(factor))
+    db.multiply(factor)
+    # pass
 
 
 def multiply_below():
