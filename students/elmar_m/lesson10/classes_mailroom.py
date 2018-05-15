@@ -108,6 +108,7 @@ class Mailroom:
 
 
     def multiply(self, factor, above=None, below=None):
+
         if above is None and below is None:
             try:
                 self.cursor.execute('update mailroom set donation = donation * ?', (factor,))
@@ -115,6 +116,21 @@ class Mailroom:
                 return True
             except sqlite3.Error as e:
                 print('Exception raised: {}'.format(e))
+        elif below:
+            try:
+                self.cursor.execute('update mailroom set donation = donation * ? where donation < ?', (factor, below))
+                self.db.commit()
+                return True
+            except sqlite3.Error as e:
+                print('Exception raised: {}'.format(e))
+        elif above:
+            try:
+                self.cursor.execute('update mailroom set donation = donation * ? where donation > ?', (factor, above))
+                self.db.commit()
+                return True
+            except sqlite3.Error as e:
+                print('Exception raised: {}'.format(e))
+
             
 
     # ToDo: make more consistent usage of this function throughout the program... or omit it at all.

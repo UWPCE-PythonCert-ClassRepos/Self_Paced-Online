@@ -119,6 +119,9 @@ def challenge():
     menu(prompt, dispatcher)
 
 
+# def preview():
+
+
 def multiply_all():
     print('==== multiplying all by {}'.format(factor))
     db.multiply(factor)
@@ -126,10 +129,12 @@ def multiply_all():
 
 
 def multiply_below():
-    threshold = input('Please enter below threshold:')    
-    pass
+    below = input('Please enter below threshold:')    
+    db.multiply(factor, below = below)
+    # pass
 
 
 def multiply_above():
-    threshold = input('Please enter below threshold:')    
-    pass
+    above = input('Please enter above threshold:')    
+    db.multiply(factor, above = above)
+    # pass
