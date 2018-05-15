@@ -74,13 +74,6 @@ class Head(Element):
 
 
 class OneLineTag(Element):
-    def __init__(self, *args, **kwargs):
-        self.content = []
-        if len(args) is not 0:
-            for arg in args:
-                self.content.append(arg)
-        self.keywords = kwargs
-
     def render(self, file_out, curr_ind=0):
         file_out.write(self.open_tag(curr_ind, False))
         for c in self.content:
@@ -107,3 +100,6 @@ class Hr(SelfClosingTag):
 
 class Br(SelfClosingTag):
     tag = 'br'
+
+class A(OneLineTag):
+    def __init__(self, link, content):
