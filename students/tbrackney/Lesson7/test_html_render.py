@@ -8,6 +8,7 @@ Python Version: 3.6.4
 """
 from io import StringIO
 import html_render as hr
+import pytest
 
 i_string = '    '
 
@@ -128,3 +129,39 @@ def test_keywords():
     out_text = output.getvalue()
     assert '<p style="text-align: center; font-style: oblique;">' in out_text
     assert 'but this is enough  to show that we can do some text' in out_text
+
+
+def test_selfclosingtag():
+    a = hr.SelfClosingTag()
+    a.tag = 'br'
+    output = StringIO()
+    a.render(output)
+    assert output.getvalue() == "<br />\n"
+    with pytest.raises(TypeError):
+        a = hr.SelfClosingTag('some stuff')
+
+
+def test_hr():
+    a = hr.Hr()
+    output = StringIO()
+    a.render(output)
+    assert output.getvalue() == "<hr />\n"
+    with pytest.raises(TypeError):
+        a = hr.Hr('some stuff')
+
+
+def test_br():
+    a = hr.Br()
+    output = StringIO()
+    a.render(output)
+    assert output.getvalue() == "<br />\n"
+    with pytest.raises(TypeError):
+        a = hr.Br('some stuff')
+
+
+def test_open():
+    a = hr.Html("Here is a paragraph of text -- there could be more of them, "
+                "but this is enough  to show that we can do some text",
+                style="text-align: center; font-style: oblique;")
+    output = '    <html style="text-align: center; font-style: oblique;">\n'
+    assert a.open_tag(indent=1) == output
