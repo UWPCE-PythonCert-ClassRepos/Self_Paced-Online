@@ -38,11 +38,11 @@ class Circle:
         total = self.radius * other
         return Circle(total)
 
-#    def __gt__(self, other):
-#        return self.radius > other.radius
+    def __gt__(self, other):
+        return self.radius > other.radius
     
-#    def __lt__(self, other):
-#        return self.radius < other.radius
+    def __lt__(self, other):
+        return self.radius < other.radius
 
     def __eq__(self, other):
         return self.radius == other.radius
