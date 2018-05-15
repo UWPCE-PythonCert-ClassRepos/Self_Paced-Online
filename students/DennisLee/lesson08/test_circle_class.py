@@ -177,6 +177,36 @@ class CircleTestCase(unittest.TestCase):
         with self.assertRaises(TypeError):
             c2 = c1 * "54"
             del c2
+
+    def test_comps_100(self):
+        c1 = Circle(7)
+        c2 = Circle(8)
+        self.assertTrue(c1 < c2)
+        self.assertTrue(c1 <= c2)
+        self.assertFalse(c1 == c2)
+        self.assertFalse(c1 > c2)
+        self.assertFalse(c1 >= c2)
+        self.assertTrue(c1 != c2)
+        
+    def test_comps_101(self):
+        c1 = Circle(8)
+        c2 = Circle(8)
+        self.assertFalse(c1 < c2)
+        self.assertTrue(c1 <= c2)
+        self.assertTrue(c1 == c2)
+        self.assertFalse(c1 > c2)
+        self.assertTrue(c1 >= c2)
+        self.assertFalse(c1 != c2)
+        
+    def test_comps_102(self):
+        c1 = Circle(9)
+        c2 = Circle(8)
+        self.assertFalse(c1 < c2)
+        self.assertFalse(c1 <= c2)
+        self.assertFalse(c1 == c2)
+        self.assertTrue(c1 > c2)
+        self.assertTrue(c1 >= c2)
+        self.assertTrue(c1 != c2)
         
 
 

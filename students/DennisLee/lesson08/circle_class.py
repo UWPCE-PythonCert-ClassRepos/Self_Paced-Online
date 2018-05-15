@@ -81,6 +81,48 @@ class Circle():
         """
         return self.__mul__(other)
 
+    def __lt__(self, other):
+        """
+        Return `True` if this circle's radius is less than the other
+        circle's radius.
+        """
+        return self._radius < other.radius
+
+    def __le__(self, other):
+        """
+        Return `True` if this circle's radius is less than or equal to
+        the other circle's radius.
+        """
+        return self._radius <= other.radius
+
+    def __eq__(self, other):
+        """
+        Return `True` if this circle's radius is equal to
+        the other circle's radius.
+        """
+        return self._radius == other.radius
+
+    def __ne__(self, other):
+        """
+        Return `True` if this circle's radius is not equal to
+        the other circle's radius.
+        """
+        return self._radius != other.radius
+
+    def __gt__(self, other):
+        """
+        Return `True` if this circle's radius is greater than the other
+        circle's radius.
+        """
+        return self._radius > other.radius
+
+    def __ge__(self, other):
+        """
+        Return `True` if this circle's radius is greater than or equal to
+        the other circle's radius.
+        """
+        return self._radius >= other.radius
+
     @property
     def radius(self):
         """Get the radius of the circle."""
