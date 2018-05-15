@@ -28,7 +28,7 @@ def create_new_text(trigram):
     pair = random.choice(list(trigram.keys()))
     sentence = []
     sentence.extend(pair)
-    for i in range(30):
+    for i in range(200):
         followers = trigram[pair]
         sentence.append(random.choice(followers))
         pair = tuple(sentence[-2:])
