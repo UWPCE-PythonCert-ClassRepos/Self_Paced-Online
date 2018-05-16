@@ -13,6 +13,33 @@ class Circle():
     def __init__(self, the_radius):
         self._r = the_radius
 
+    def __str__(self):
+        return f'Circle with radius: {self._r}'
+
+    def __repr__(self):
+        return f'Circle({self._r})'
+
+    def __add__(self, other):
+        if isinstance(other, Circle):
+            return Circle(self.radius + other.radius)
+        else:
+            raise ValueError(f'{type(other)} cannot be added to a circle')
+
+    def __mul__(self, factor):
+        if factor < 0:
+            raise ValueError('Cannot multiple circle by negative number')
+        else:
+            return Circle(self.radius * factor)
+
+    def __rmul__(self, factor):
+        return Circle(self.radius * factor)
+
+    def __eq__(self, other):
+        return (self.radius == other.radius)
+
+    def __lt__(self, other):
+        return (self.radius < other.radius)
+
     @property
     def radius(self):
         return self._r
