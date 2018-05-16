@@ -80,12 +80,24 @@ class Hr(SelfClosingTag):
    
 class Br(SelfClosingTag):
     tag_name = 'br'
-    
- 
+
+
 class A(Element):
     tag_name = 'a'
     
     def __init__(self, link, content):
         Element.__init__(self, content, href=link)
+        #self.content = content
+
+	
+class Ul(Element):
+    tag_name = 'ui'
+    
+    
+class  Li(Element):
+    tag_name = 'li'
+
+
+
         
         
