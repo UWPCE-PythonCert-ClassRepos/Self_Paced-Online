@@ -10,6 +10,7 @@ import math
 
 
 class Circle():
+    """Implements a class of circle objects"""
     def __init__(self, the_radius):
         self._r = the_radius
 
@@ -62,10 +63,12 @@ class Circle():
 
     @property
     def area(self):
+        """Returns area of a circle"""
         return math.pi * self._r ** 2
 
     @classmethod
     def from_diameter(cls, val):
+        """Alternate constructor using diameter rather than radius"""
         if val < 0:
             raise ValueError('Diameter must be greater than 0')
         return cls(val / 2)
