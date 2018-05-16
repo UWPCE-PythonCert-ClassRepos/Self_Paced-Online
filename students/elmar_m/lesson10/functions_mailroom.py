@@ -100,8 +100,8 @@ def challenge():
     global factor
     factor = input('Please give a factor: ')
     print('\nCongratulations, you will multiply by {}...'.format(factor))
-    global preview
-    preview = input('\nPlease type "yes" if you want to see a preview first:')
+    # global preview
+    # preview = input('\nPlease type "yes" if you want to see a preview first:')
 
     print('Which donations do you want to multiply?\
     \nPlease choose:')
@@ -122,26 +122,19 @@ def challenge():
     menu(prompt, dispatcher)
 
 
-# def preview():
-
-
 def multiply_all():
-    # if preview == 'yes':
-    #     print('just executing preview')
-    # else:
-
     print('==== multiplying all by {}'.format(factor))
-    db.multiply(factor)
-    # pass
+    if db.multiply(factor):
+        print('\tAll donations have successfully been multiplied by {}'.format(factor))
 
 
 def multiply_below():
     below = input('Please enter below threshold:')    
-    db.multiply(factor, below = below)
-    # pass
+    if db.multiply(factor, below = below):
+        print('\tAll donations below {} have successfully been multiplied by {}'.format(below, factor))
 
 
 def multiply_above():
     above = input('Please enter above threshold:')    
-    db.multiply(factor, above = above)
-    # pass
+    if db.multiply(factor, above = above):
+        print('\tAll donations above {} have successfully been multiplied by {}'.format(above, factor))

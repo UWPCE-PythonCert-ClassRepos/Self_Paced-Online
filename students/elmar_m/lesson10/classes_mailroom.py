@@ -105,21 +105,29 @@ class Mailroom:
         # donors = self._beautify(raw) 
         # return donors
         return raw
+    
+
+    def _preview(self, show):
+        self.cursor.execute(show)
+        rows = self._beautify(self.cursor.fetchall())
+        print('\tThis operation will affect {} rows'.format(rows[0]))
+
+    
+    def _preview_total(self, total): 
+        self.cursor.execute(total)
+        value = self._beautify(self.cursor.fetchall())
+        print('\tYou have to give an additional donation of {} to pass the CHALLENGE'.format(value[0]))
 
 
     def multiply(self, factor, above=None, below=None):
-    # def multiply(self, factor, above=None, below=None, preview=None):
-
-        #sql = None
-        #if preview == 'yes':
-        #    sql = 'select count(*) from mailroom '
-        #else: 
-        #    sql = 'update mailroom set donation = donation * ?'
-
         if above is None and below is None:
             try:
-                # self.cursor.execute('update mailroom set donation = donation * ?', (factor,))
-                print('====command: {}'.format(command))
+                show = 'select count(*) from mailroom'
+                self._preview(show)
+
+                total = 'select sum(donation) from mailroom where donation'
+                self._preview_total(total)
+                
                 self.cursor.execute('update mailroom set donation = donation * ?', (factor,))
                 # preview: select count(*) from mailroom
                 # 'this operation will affect xy datasets'...
@@ -131,6 +139,9 @@ class Mailroom:
                 print('Exception raised 1: {}'.format(e))
         elif below:
             try:
+                show = 'select count(*) from mailroom where donation < ' + below
+                # print('====', show)
+                self._preview(show)
                 self.cursor.execute('update mailroom set donation = donation * ? where donation < ?', (factor, below))
                 # self.cursor.execute('? mailroom set donation = donation * ? where donation < ?', (command, factor, below))
 
@@ -145,6 +156,8 @@ class Mailroom:
                 print('Exception raised 2: {}'.format(e))
         elif above:
             try:
+                show = 'select count(*) from mailroom where donation > ' + above
+                self._preview(show)
                 self.cursor.execute('update mailroom set donation = donation * ? where donation > ?', (factor, above))
                 # self.cursor.execute('? mailroom set donation = donation * ? where donation > ?', (command, factor, above))
 
