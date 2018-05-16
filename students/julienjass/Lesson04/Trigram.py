@@ -3,6 +3,7 @@
 import random
 import sys
 
+
 def extract_words(filename):
     with open(filename) as infile:
         words = []
@@ -14,6 +15,7 @@ def extract_words(filename):
             words.extend(line.split())
     return words
 
+
 def build_trigram(words):
     trig = {}
     for i in range(len(words) - 2):
@@ -24,16 +26,18 @@ def build_trigram(words):
         trig.setdefault(pair, []).append(third)
     return trig
 
+
 def create_new_text(trigram):
     pair = random.choice(list(trigram.keys()))
     sentence = []
     sentence.extend(pair)
-    for i in range(30):
+    for i in range(200):
         followers = trigram[pair]
         sentence.append(random.choice(followers))
         pair = tuple(sentence[-2:])
     result = ' '.join(sentence).capitalize().replace(' i ', ' I ')+"."
     return result
+
 
 if __name__ == "__main__":
     all_words = extract_words("sherlock.txt")
