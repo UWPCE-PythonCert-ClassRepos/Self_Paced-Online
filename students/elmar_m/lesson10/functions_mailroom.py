@@ -123,18 +123,21 @@ def challenge():
 
 
 def multiply_all():
-    print('==== multiplying all by {}'.format(factor))
+    # print('==== multiplying all by {}'.format(factor))
     if db.multiply(factor):
-        print('\tAll donations have successfully been multiplied by {}'.format(factor))
+        # print('\tAll donations have successfully been multiplied by {}'.format(factor))
+        print('\tDatabase operations finished successfully')
 
 
 def multiply_below():
-    below = input('Please enter below threshold:')    
+    below = input('Please enter below threshold: ')    
     if db.multiply(factor, below = below):
-        print('\tAll donations below {} have successfully been multiplied by {}'.format(below, factor))
+        # print('\tAll donations below {} have successfully been multiplied by {}'.format(below, factor))
+        print('\tDatabase operations finished successfully')
 
 
 def multiply_above():
-    above = input('Please enter above threshold:')    
+    above = input('Please enter above threshold: ')    
     if db.multiply(factor, above = above):
-        print('\tAll donations above {} have successfully been multiplied by {}'.format(above, factor))
+        # print('\tAll donations above {} have successfully been multiplied by {}'.format(above, factor))
+        print('\tDatabase operations finished successfully')

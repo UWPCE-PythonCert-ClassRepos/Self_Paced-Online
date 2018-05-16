@@ -110,68 +110,41 @@ class Mailroom:
     def _preview(self, show):
         self.cursor.execute(show)
         rows = self._beautify(self.cursor.fetchall())
-        print('\tThis operation will affect {} rows'.format(rows[0]))
+        print('\n\tThis operation will affect {} already existing donations'.format(rows[0]))
 
     
     def _preview_total(self, total): 
         self.cursor.execute(total)
         value = self._beautify(self.cursor.fetchall())
-        print('\tYou have to give an additional donation of {} to pass the CHALLENGE'.format(value[0]))
+        print('\tYou have to give an additional donation of {} to pass the CHALLENGE !'.format(value[0]))
 
 
     def multiply(self, factor, above=None, below=None):
         if above is None and below is None:
-            try:
-                show = 'select count(*) from mailroom'
-                self._preview(show)
-
-                total = 'select sum(donation) from mailroom where donation'
-                self._preview_total(total)
-                
-                self.cursor.execute('update mailroom set donation = donation * ?', (factor,))
-                # preview: select count(*) from mailroom
-                # 'this operation will affect xy datasets'...
-                # 'it will result in an additional required donation of 
-                # (sum up all donations and multiply with factor) dollars from you...' 
-                self.db.commit()
-                return True
-            except sqlite3.Error as e:
-                print('Exception raised 1: {}'.format(e))
+            sql_show = 'select count(*) from mailroom where donation'
+            sql_total = 'select sum(donation) from mailroom where donation'
+            sql = 'update mailroom set donation = donation * ?'
+            werte = (factor,)
         elif below:
-            try:
-                show = 'select count(*) from mailroom where donation < ' + below
-                # print('====', show)
-                self._preview(show)
-                self.cursor.execute('update mailroom set donation = donation * ? where donation < ?', (factor, below))
-                # self.cursor.execute('? mailroom set donation = donation * ? where donation < ?', (command, factor, below))
-
-                # preview: select count(*) from mailroom where donation < below
-                # 'this operation will affect xy datasets'...
-                # 'it will result in an additional required donation of 
-                # (sum up all donations where donation < below and multiply with factor) dollars from you...' 
-                
-                self.db.commit()
-                return True
-            except sqlite3.Error as e:
-                print('Exception raised 2: {}'.format(e))
+            sql_show = 'select count(*) from mailroom where donation < ' + below
+            sql_total = 'select sum(donation) from mailroom where donation < ' + below
+            sql = 'update mailroom set donation = donation * ? where donation < ?'
+            werte = (factor, below)
         elif above:
-            try:
-                show = 'select count(*) from mailroom where donation > ' + above
-                self._preview(show)
-                self.cursor.execute('update mailroom set donation = donation * ? where donation > ?', (factor, above))
-                # self.cursor.execute('? mailroom set donation = donation * ? where donation > ?', (command, factor, above))
+            sql_show = 'select count(*) from mailroom where donation > ' + above
+            sql_total = 'select sum(donation) from mailroom where donation > ' + above
+            sql = 'update mailroom set donation = donation * ? where donation > ?'
+            werte = (factor, above)
 
-                # preview: select count(*) from mailroom where donation < below
-                # 'this operation will affect xy datasets'...
-                # 'it will result in an additional required donation of 
-                # (sum up all donations where donation < below and multiply with factor) dollars from you...' 
+        try:
+            self._preview(sql_show)
+            self._preview_total(sql_total)
+            self.cursor.execute(sql, werte)
+            self.db.commit()
+            return True
+        except sqlite3.Error as e:
+            print('Exception raised 3: {}'.format(e))
 
-                self.db.commit()
-                return True
-            except sqlite3.Error as e:
-                print('Exception raised 3: {}'.format(e))
-
-            
 
     # ToDo: make more consistent usage of this function throughout the program... or omit it at all.
     def _beautify(self, listoftuples):
