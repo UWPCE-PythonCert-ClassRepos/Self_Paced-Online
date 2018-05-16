@@ -36,8 +36,11 @@ def adding_a_donor(newname):
 def adding_a_donation(newname):
     '''This function adds a donation to the the list'''
     donation_amount = round(float(input(f'Enter a Donation amount for {newname}\n')), 2)
-    donors[newname].append(donation_amount)
-    send_letter(newname, donation_amount)
+    if newname in donors.keys():
+        donors[newname].append(donation_amount)
+    elif newname not in donors:
+        donors[newname] = [donation_amount]
+    print(donors)
     return
 
 
@@ -56,19 +59,20 @@ def create_report():
         total = sum(donations)
         num = len(donations)
         avg = total / num
-        spaceing = '{:20} $ {20} {20}      $ {20}'
+        spacing = '{:20} | {:20} | {:20} | {:20}'
         print(spacing.format(name, total, num, avg))
     print('\n')
     return
 
-    def letter_to_all():
-        big_letter = ('Dear {},\n\n Thank you for you donation of {} your money will go a long way')
+def letter_to_all():
+        big_letter = ('Dear {},\n\n Thank you for you donation of {} your money will go a long way\n')
         for donor, donations in donors.items():
             print(big_letter.format(donor, sum(donations)))
             filename = donor.replace(' ', ' ') + '.txt'
             save = open(filename, 'w')
             save.write(big_letter.format(donor, sum(donations)))
             save.close()
+        return
 
 
 def main_menu():
@@ -94,17 +98,17 @@ main_prompt = ('\nDonation Update\n'
                '0. Exit menu\n'
                )
 
-main_dispatch = {'1': main_menu(),
-                 '2': create_report(),
-                 '3': letter_to_all(),
-                 '0': quit()
+main_dispatch = {'1': main_menu,
+                 '2': create_report,
+                 '3': letter_to_all,
+                 '0': quit
                  }
 
 
 def menu(prompt, dispatch):
     while True:
-        response = input(prompt)
-        if dispatch[response]() == "exit menu":
+        response2 = input(prompt)
+        if dispatch[response2]() == "exit menu":
             break
 
 
