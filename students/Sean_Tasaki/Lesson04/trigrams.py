@@ -8,20 +8,20 @@ two_word_sequence = []
 #with open('sherlock.txt', 'r') as file:
 	#read = file.read()
 def read_file():
-	with open(book_filename, 'r') as file:
-		read = file.read()
-	for x in string.punctuation:
-		read = read.replace(x, " ")
-	words_list = read.split()
-	for word in words_list:
-		make_trigram(word)
+    with open(book_filename, 'r') as file:
+	    read = file.read()
+    for x in string.punctuation:
+	    read = read.replace(x, " ")
+    words_list = read.split()
+    for word in words_list:
+	    make_trigram(word)
 	
 
 
 def make_trigram(word):
 	if len(two_word_sequence) < 2:
 		two_word_sequence.append(word)
-		return
+		returns
 	key = (two_word_sequence[0], two_word_sequence[1])
 	if key in trigram_dict:
 		trigram_dict[key].append(word)
@@ -62,6 +62,8 @@ def create_text():
 if __name__ == '__main__':
 	read_file()
 	create_text()
+
+
  
 
 
