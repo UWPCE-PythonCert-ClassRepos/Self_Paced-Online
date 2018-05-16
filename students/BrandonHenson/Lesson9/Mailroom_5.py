@@ -3,16 +3,26 @@
 # Lesson 09 mailroom_5.py
 # Refactoring
 
-class Donor:
-    def __init__(self,name,donation = None):
-        donation = []
+class Donor(object):
+    def __init__(self,name,*donation):
+        self.donations = []
         self.name = name
         self.donation = donation
-        self.total_donation = sum(self.donation)
+        for i in self.donation:
+            self.donations.append(i)
+        self.total = sum(self.donations)
+        self.num_of_donations = len(self.donations)
+        self.average = self.total/self.num_of_donations
 
+        
 
+    def donor_history(self):
+        pass
 
-
+test = Donor('brandon',78,65,32)
+print(test.donations)
+print(test.total)
+print(test.average)
 '''
 donor_history = {'Brandon Henson': [1005.49, 3116.72, 5200],
                     'Alicia Henson': [21.47, 1500],
