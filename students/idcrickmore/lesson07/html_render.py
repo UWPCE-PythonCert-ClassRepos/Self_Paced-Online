@@ -86,16 +86,27 @@ class A(Element):
     tag_name = 'a'
     
     def __init__(self, link, content):
-        Element.__init__(self, content, href=link)
-        #self.content = content
+        super().__init__(content, href=link)
+
 
 	
 class Ul(Element):
-    tag_name = 'ui'
+    tag_name = 'ul'
     
     
 class  Li(Element):
     tag_name = 'li'
+    
+    
+class H(OneLineTag):
+    def __init__(self, level_number, content):
+        super().__init__(content)
+        self.tag_name = "h%s" % level_number
+
+
+
+
+    
 
 
 
