@@ -8,20 +8,18 @@ two_word_sequence = []
 #with open('sherlock.txt', 'r') as file:
 	#read = file.read()
 def read_file():
-    with open(book_filename, 'r') as file:
-	    read = file.read()
-    for x in string.punctuation:
-	    read = read.replace(x, " ")
-    words_list = read.split()
-    for word in words_list:
-	    make_trigram(word)
+	with open(book_filename, 'r') as file:
+		read = file.read()
+	for x in string.punctuation:
+		read = read.replace(x, " ")
+	words_list = read.split()
+	for word in words_list:
+		make_trigram(word)
 	
-
-
 def make_trigram(word):
 	if len(two_word_sequence) < 2:
 		two_word_sequence.append(word)
-		returns
+		return
 	key = (two_word_sequence[0], two_word_sequence[1])
 	if key in trigram_dict:
 		trigram_dict[key].append(word)
@@ -53,7 +51,7 @@ def create_text():
 		if trigram_val:
 			new_words.append(random.choice(trigram_val))
 
-
+	# Add period to end of text. Not sure how to add punctuation throughout text.
 	add_period_at_end = str(new_words[-1]) + '.'
 	new_words.insert(-1, add_period_at_end)
 	print(' '.join(new_words[:-1]))
@@ -62,8 +60,6 @@ def create_text():
 if __name__ == '__main__':
 	read_file()
 	create_text()
-
-
  
 
 
