@@ -17,45 +17,44 @@ def send_thank_you():
     prompt(thank_you_prompt, thank_you_menu)
 
 
-def add_donation():
-    """ Add donor/donation to existing list of donations """
+def prompt_for_donation():
+    """ Prompt user for new donor/donation """
     try:
-        donor_name = input("\nPlease enter a donor name: ")
-        new_donation = float(input(f"Please enter a donation amount for {donor_name}: "))
+        donor = input("\nPlease enter a donor name: ")
+        donation = float(input(f"Please enter a donation amount for {donor}: "))
     except ValueError:
         print("Please enter a numeric value for 'donation'!")
-        add_donation()
+        prompt_for_donation()
+    add_donation(donor, donation, donations)
+    print_email(donor, donation)
+
+
+def add_donation(donor, donation, donations):
+    """ Add donor/donation data to current donations """
+    if donor not in donations:
+        donations[donor] = [donation]
     else:
-        if donor_name not in donations:
-            donations[donor_name] = [new_donation]
-        else:
-            donations[donor_name].append(new_donation)
-        print_email(donor_name, new_donation)
+        donations[donor].append(donation)
 
 
 def write_letters():
-    """
-    For all donors, generate a thank you letter, and write it to disk as a text file
-    """
+    """ Generate thank you's to all donors and write files to disk """
     for donor in donations:
         file_name = '_'.join(donor.split()) + ".txt"
         with open(file_name, 'w') as f:
-            f.write(f"""Dear {donor},
-
-            Thank you very much for your generosity! Your most recent gift of ${(donations[donor][-1])} will be put to great use. So far, you've donated a total of ${sum(donations[donor])}!
-
-            Sincerely,
-            The Team""")
-
+            f.write(compose_letter(donor, donations))
             print(f"\nCreated letter for {donor}!")
 
 
-def compose_letter(donations):
-    pass
+def compose_letter(donor, donations):
+        return (f"""Dear {donor},
+
+        Thank you very much for your generosity! Your most recent gift of ${(donations[donor][-1])} will be put to great use. So far, you've donated a total of ${sum(donations[donor])}!
+
+        Sincerely,
+        The Team""")
 
 
-
-####  TESTED  ####
 def create_report_header():
     """ Generate formatted header for report """
     header = '{:20}|{:^15}|{:^15}|{:>15}'.format("Donor Name", "Total Given", "Num Gifts", "Average Gift")
@@ -133,7 +132,7 @@ main_menu = {
 }
 
 thank_you_menu = {
-    "1": add_donation,
+    "1": prompt_for_donation,
     "2": print_donors,
     "q": quit_menu,
 }
