@@ -7,10 +7,11 @@ Date Created 5/12/2018
 Python Version: 3.6.4
 """
 
-''' Class for rendering html page'''
+''' '''
 
 
 class Element():
+    """Class for rendering html page"""
     tag = None
     i_string = '    '
     indent = 0
@@ -29,6 +30,7 @@ class Element():
             self.content.append(arg)
 
     def open_tag(self, indent=0):
+        """writes the opening of any xml tag"""
         spaces = f'{self.i_string * indent}'
         tag = f'<{self.tag}'
         keywords = ''
@@ -41,12 +43,14 @@ class Element():
         return ''.join(['\n', spaces, tag, keywords, close])
 
     def close_tag(self, indent=0):
+        """writes the closing xml tag"""
         if self.new_lines:
             return ''.join(['\n', f'{indent * self.i_string}</{self.tag}>\n'])
         else:
             return f'</{self.tag}>\n'
 
     def render(self, file_out, curr_ind=0):
+        """Writes the output of each element to the output stream"""
         file_out.write(self.open_tag(curr_ind))
         file_out.write(self.i_string * (curr_ind + 1))
         for c in self.content:
