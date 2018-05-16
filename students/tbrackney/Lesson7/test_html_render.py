@@ -35,39 +35,40 @@ def test_append():
 
 
 def test_render():
-    a = hr.Element('Some Content')
-    a.append('Some more Content')
+    a = hr.Element('Some Content.')
+    a.append('Some more Content.')
     a.tag = 'html'
     output = StringIO()
     a.render(output)
-    assert output.getvalue() == f'<html>\n    Some Content. Some more Content. \n</html>\n'
+    assert f'<html>\n    Some Content. Some more Content. \n</html>\n' in output.getvalue()
     output.close()
 
 
 def test_html():
-    a = hr.Html('Some Content')
-    a.append('Some more Content')
+    a = hr.Html('Some Content.')
+    a.append('Some more Content.')
     output = StringIO()
     a.render(output)
-    assert output.getvalue() == f'<html>\n    Some Content. Some more Content. \n</html>\n'
+    assert f'<html>\n    Some Content. Some more Content. \n</html>\n' in output.getvalue()
+    assert '<!DOCTYPE html>\n' in output.getvalue()
     output.close()
 
 
 def test_body():
-    a = hr.Body('Some Content')
-    a.append('Some more Content')
+    a = hr.Body('Some Content.')
+    a.append('Some more Content.')
     output = StringIO()
     a.render(output)
-    assert output.getvalue() == f'<body>\n    Some Content. Some more Content. \n</body>\n'
+    assert f'<body>\n    Some Content. Some more Content. \n</body>\n' in output.getvalue()
     output.close()
 
 
 def test_paragraph():
-        a = hr.P('Some Content')
-        a.append('Some more Content')
+        a = hr.P('Some Content.')
+        a.append('Some more Content.')
         output = StringIO()
         a.render(output)
-        assert output.getvalue() == f'<p>\n    Some Content. Some more Content. \n</p>\n'
+        assert f'<p>\n    Some Content. Some more Content. \n</p>\n' in  output.getvalue()
         output.close()
 
 
@@ -85,7 +86,7 @@ def test_append_body():
 def test_append_p():
     a = hr.Html()
     b = hr.Body()
-    b.append(hr.P('This is some content'))
+    b.append(hr.P('This is some content.'))
     a.append(b)
     output = StringIO()
     a.render(output)
@@ -100,7 +101,7 @@ def test_head():
     a.append(b)
     output = StringIO()
     a.render(output)
-    elements = ('<head>\n', 'This is the header. \n', '</head>\n')
+    elements = ('<head>\n', 'This is the header \n', '</head>\n')
     for element in elements:
         assert element in output.getvalue()
 
@@ -136,7 +137,7 @@ def test_selfclosingtag():
     a.tag = 'br'
     output = StringIO()
     a.render(output)
-    assert output.getvalue() == "<br />\n"
+    assert "<br />\n" in output.getvalue()
     with pytest.raises(TypeError):
         a = hr.SelfClosingTag('some stuff')
 
@@ -145,7 +146,7 @@ def test_hr():
     a = hr.Hr()
     output = StringIO()
     a.render(output)
-    assert output.getvalue() == "<hr />\n"
+    assert "<hr />\n" in output.getvalue()
     with pytest.raises(TypeError):
         a = hr.Hr('some stuff')
 
@@ -154,7 +155,7 @@ def test_br():
     a = hr.Br()
     output = StringIO()
     a.render(output)
-    assert output.getvalue() == "<br />\n"
+    assert "<br />\n" in output.getvalue()
     with pytest.raises(TypeError):
         a = hr.Br('some stuff')
 
@@ -164,4 +165,43 @@ def test_open():
                 "but this is enough  to show that we can do some text",
                 style="text-align: center; font-style: oblique;")
     output = '    <html style="text-align: center; font-style: oblique;">\n'
-    assert a.open_tag(indent=1) == output
+    assert output in a.open_tag(indent=1)
+
+
+def test_a():
+    a = hr.A('http://www.google.com', 'link')
+    output = StringIO()
+    a.render(output)
+    assert '<a href="http://www.google.com">link</a>\n' in output.getvalue()
+
+
+def test_ul():
+    a = hr.Ul()
+    output = StringIO()
+    a.render(output)
+    tags = ('<ul>', '</ul>')
+    for tag in tags:
+        assert tag in output.getvalue()
+
+
+def test_li():
+    a = hr.Li()
+    output = StringIO()
+    a.render(output)
+    tags = ('<li>', '</li>')
+    for tag in tags:
+        assert tag in output.getvalue()
+
+
+def test_h():
+    a = hr.H(2, "PythonClass - Class 6 example")
+    output = StringIO()
+    a.render(output)
+    assert '<h2>PythonClass - Class 6 example</h2>' in output.getvalue()
+
+
+def test_meta():
+    a = hr.Meta(charset="UTF-8")
+    output = StringIO()
+    a.render(output)
+    assert '<meta charset="UTF-8"/>\n' in output.getvalue()

@@ -14,6 +14,8 @@ class Element():
     tag = None
     i_string = '    '
     indent = 0
+    new_lines = True
+    keywords = ''
 
     def __init__(self, *args, **kwargs):
         self.content = []
@@ -23,23 +25,23 @@ class Element():
         self.keywords = kwargs
 
     def append(self, *args):
-        for content in args:
-            self.content.append(content)
+        for arg in args:
+            self.content.append(arg)
 
-    def open_tag(self, indent=0, new_lines=True):
+    def open_tag(self, indent=0):
         spaces = f'{self.i_string * indent}'
-        keywords = ''
         tag = f'<{self.tag}'
+        keywords = ''
         if len(self.keywords) > 0:
             for key, val in self.keywords.items():
                 keywords += f' {key}="{val}"'
         close = '>'
-        if new_lines:
+        if self.new_lines:
             close += '\n'
-        return ''.join([spaces, tag, keywords, close])
+        return ''.join(['\n', spaces, tag, keywords, close])
 
-    def close_tag(self, indent=0, new_lines=True):
-        if new_lines:
+    def close_tag(self, indent=0):
+        if self.new_lines:
             return ''.join(['\n', f'{indent * self.i_string}</{self.tag}>\n'])
         else:
             return f'</{self.tag}>\n'
@@ -50,15 +52,17 @@ class Element():
         for c in self.content:
             if issubclass(type(c), Element):
                 c.render(file_out, (curr_ind + 1))
-            elif (c[-1:] is '.'):
-                file_out.write(c + ' ')
             else:
-                file_out.write(c + '. ')
+                file_out.write(c + ' ')
         file_out.write(self.close_tag(curr_ind))
 
 
 class Html(Element):
     tag = 'html'
+
+    def render(self, file_out):
+        file_out.write('<!DOCTYPE html>\n')
+        Element.render(self, file_out)
 
 
 class Body(Element):
@@ -75,23 +79,31 @@ class Head(Element):
 
 class OneLineTag(Element):
     def render(self, file_out, curr_ind=0):
-        file_out.write(self.open_tag(curr_ind, False))
+        self.new_lines = False
+        file_out.write(self.open_tag(curr_ind))
         for c in self.content:
             file_out.write(f'{c}')
-        file_out.write(self.close_tag(curr_ind, False))
+        file_out.write(self.close_tag(curr_ind))
 
 
 class Title(OneLineTag):
+    new_lines = False
     tag = 'title'
 
 
 class SelfClosingTag(Element):
-    def __init__(self, content=None):
+    def __init__(self, content=None, **kwargs):
         if content:
             raise TypeError('SelfClosingTag takes no content')
+        self.keywords = kwargs
 
     def render(self, file_out, curr_ind=0):
-        file_out.write(f'{self.i_string * curr_ind}<{self.tag} />\n')
+        file_out.write(f'{self.i_string * curr_ind}')
+        file_out.write(f'<{self.tag} ')
+        if len(self.keywords) > 0:
+            for key, val in self.keywords.items():
+                file_out.write(f'{key}="{val}"')
+        file_out.write('/>\n')
 
 
 class Hr(SelfClosingTag):
@@ -101,5 +113,28 @@ class Hr(SelfClosingTag):
 class Br(SelfClosingTag):
     tag = 'br'
 
+
 class A(OneLineTag):
-    def __init__(self, link, content):
+    tag = 'a'
+
+    def __init__(self, *args, **kwargs):
+        kwargs['href'] = args[0]
+        Element.__init__(self, *args[1:], **kwargs)
+
+
+class Ul(Element):
+    tag = 'ul'
+
+
+class Li(Element):
+    tag = 'li'
+
+
+class H(OneLineTag):
+    def __init__(self, *args, **kwargs):
+            self.tag = f'h{int(args[0])}'
+            Element.__init__(self, *args[1:], **kwargs)
+
+
+class Meta(SelfClosingTag):
+    tag = 'meta'
