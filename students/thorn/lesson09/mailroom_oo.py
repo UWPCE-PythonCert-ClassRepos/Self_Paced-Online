@@ -31,6 +31,18 @@ class Donor:
     def add_donation(self, donation):
         self.donations.append(donation)
 
+    """
+    OO Sorting.
+    """
+    def __lt__(self, other):
+        return self.donor_totals < other.donor_totals
+
+    def __gt__(self, other):
+        return self.donor_totals > other.donor_totals
+
+    # def __eq__(self, other):
+    #     return self.donor_totals == other.donor_totals and other.donor_totals == self.donor_totals
+        
 
 class DonorList:
     """
@@ -47,28 +59,49 @@ class DonorList:
         self.donors = donors
 
     def list_donor_names(self):
-        # Better way of doing this?
         donor_names = [donor.name for donor in self.donors]
         return ('\n'.join(donor_names))
 
-    def add_donor(self, new_donor):
-        self.donors.append(new_donor)
+    # def add_donor(self, new_donor):
+    #     """ Deprecated --> function is contained in add_donor and donation """
+    #     self.donors.append(new_donor)
 
     def add_donation(self, target_donor, new_donation):
         target_donor.add_donation(new_donation)
     
     def add_donor_and_donation(self, target_donor, new_donation):
-        """ Called for a brand new donor only. """
-        self.add_donor(target_donor)
-        self.add_donation(target_donor, new_donation)
+        """ Called for a brand new donor only.  Creates new donor object """
+        new_donor = Donor(target_donor, [new_donation])
+        self.donors.append(new_donor)
+        # self.add_donor(new_donor) --> deprecated
+        print(f"{new_donor.name} has given {new_donor.donor_totals}")
     
+    def send_thanks(self):
+        """ Determines if the donor exists and gets the donation amount. """
+        # Get donor
+        target_donor = input("Please enter the donor's full name.  ")
+
+        # Get donation
+        try:
+            new_donation = float(input("Please enter the donation amount for {}.  ".format(target_donor)))
+        except ValueError:
+            print("Please enter a number.  ")
+
+        # Find donor or create and add new donor object.
+        if target_donor in self.donors:
+            self.add_donation(target_donor, new_donation)
+        else:
+            self.add_donor_and_donation(target_donor, new_donation)
+
+        self.print_thanks(target_donor, new_donation)
+
     def print_thanks(self, target_donor, new_donation):
         message = f"""Dear {target_donor},
         Thank you for you generous donation of ${new_donation:.2f}.
         It will truly help the children.
 
         Sincerely,
-        # Donation Recievers"""
+        Donation Recievers"""
         print(message)
 
     def order_donors(self):
@@ -79,21 +112,59 @@ class DonorList:
         for donor in self.donors:
             ordered_donors.append([donor])
         
-        ordered_donors.sort(key=lambda x: x.donor_totals, reverse=True)
+        # Sorts on class default donor totals
+        ordered_donors.sort(reverse=True)
         return ordered_donors
         
+    def create_report(self):
+        """ Prints a report based ordered by total donations. """
+        # Base setup
+        line_out = ''
+        line_out += "Donor:                    | $    Total     |   Donations   | $   Average   |\n"
+        line_out += ("-"*76) + '\n'
         
-        
+        # Setup line format to recieve ordered donor info 
+        line_in = "{:<26}| ${:>14,.2f}|{:>15}| ${:>13,.2f}\n"
+        ordered_donors = self.order_donors()
 
+        # Donor object itself is contained in a list. [[donor1], [donor2]].  Peel that away to access properties.
+        for info in ordered_donors:
+            for donor in info: 
+                line_out += line_in.format(donor.name, donor.donor_totals, donor.num_donations, donor.average_donations)
+
+        print(line_out)
+
+    def create_letters(self):
+        """ Creates text files for each donor in the list. """
+        for donor in self.donors:
+            outletter = os.path.join(os.getcwd(), f'{donor.name}_ty_letter.txt')
+            with open(outletter, 'w+') as f:
+                message = f"""Dear {donor.name[0]},
+                Thank you for you generous donation of ${donor.donor_totals:.2f}.
+            It will truly help the children.
+
+
+            Sincerely,
+            Donation Receivers
+        """
+                f.write(message)
+
+    def quitter(self):
+        print("Quitting.")
+        quit()
+    
+
+def main():
+    """ Controls the menu. """
+    donor1 = Donor("Tom Horn", [599.23, 1000.00])
+    donor2 = Donor("Theo Hartwell", [0.01, 0.01, 0.1])
+    donor3 = Donor("Bailey Kimmitt", [8723.22, 27167.22, 91817.66])
+    donor4 = Donor("Paul Hubbell", [90012.32, 2312.24])
+    donor5 = Donor("David Beckham", [1817266.11, 123123.66, 111335.112])
+    donors = DonorList([donor1, donor2, donor3, donor4, donor5])
+    donors.send_thanks()
+    donors.create_report()
+    
 
 if __name__ == "__main__":
-    # Default collection of donors
-    d1 = ("Tom Horn", [599.23, 1000.00])
-    d2 = ("Theo Hartwell", [0.01, 0.01, 0.1])
-    d3 = ("Bailey Kimmitt", [8723.22, 27167.22, 91817.66])
-    d4 = ("Paul Hubbell", [90012.32, 2312.24])
-    d5 = ("David Beckham", [1817266.11, 123123.66, 111335.112])
-
-    # Add to donor book
-
-
+    main()

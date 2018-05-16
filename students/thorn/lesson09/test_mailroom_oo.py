@@ -56,8 +56,31 @@ def test_add_donor_and_donation():
     assert(tester2.num_donations == 4)
 
 def test_order_donors():
+    # Second person should be tester
     o_d = test_donors.order_donors()
-    print(o_d)
+    assert(o_d[1] == [tester])
+
 
 if __name__ == "__main__":
-    pass
+    test_donors.send_thanks()    
+
+
+
+
+    # while True:
+    #     choice = input(
+    #     "Please select an option:\n\
+    #     1 - Send Thanks\n\
+    #     2 - Create Donor Report\n\
+    #     3 - Send Letters\n\
+    #     4 - Quit\n")
+    #     print()
+    #     if choice == '1':
+    #         send_thanks(donors)
+    #     if choice == '2':
+    #         create_donor_report(donors)
+    #     if choice == '3':
+    #         send_letters(donors)
+    #     if choice == '4':
+    #         donors.quitter()
+    
