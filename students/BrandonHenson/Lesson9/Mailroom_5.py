@@ -1,7 +1,19 @@
 # Brandon Henson
 # 5/16/18
-# Lesson 09 mailroom_4.py
+# Lesson 09 mailroom_5.py
 # Refactoring
+
+class Donor:
+    def __init__(self,name,donation = None):
+        donation = []
+        self.name = name
+        self.donation = donation
+        self.total_donation = sum(self.donation)
+
+
+
+
+'''
 donor_history = {'Brandon Henson': [1005.49, 3116.72, 5200],
                     'Alicia Henson': [21.47, 1500],
                     'Michael Green': [2400.54],
@@ -91,17 +103,16 @@ def menu_2():
 if __name__ == '__main__':
     main_menu()
 '''
-Goal:
-Refactor the mailroom program using classes to help organize the code.
-This time, we want to use an OO approach to better structure the code to make it more extensible.
-It was quite reasonable to build the simple mailroom program using a single module, a simple data structure, and functions that manipulate that data structure.
-But if one were to expand the program with additional functionality, it would start to get a bit unwieldy and hard to maintain.
-So it’s a pretty good candidate for an object-oriented approach.
+
+'''
 As you design appropriate classes, keep in mind these three guidlines for good code structure:
 Encapsulation: you have a data structure that holds your data, and you have functions that manipulate that data –
-you want them “bundled up” in a neat package, so that the rest of the code doesn’t need to know about the data structure you are using.
+you want them “bundled up” in a neat package, so that the rest of the code doesn’t need to know about the data structure 
+you are using.
+
 Separation of Concerns: The user interaction code should be cleanly separated from the data handling code.
 There should be no input function in the class that holds the data!
+
 As always: DRY – Don’t repeat yourself – anywhere you see repeated code – refactor it!
 SuggestionsOne of the hardest parts of OO design (particularly in Python) is to know how “low” to go with the classes
 and data structures. In particular, you might have a bit of data collected together (say, a donor’s name and donation
