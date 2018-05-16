@@ -162,9 +162,23 @@ def main():
     donor4 = Donor("Paul Hubbell", [90012.32, 2312.24])
     donor5 = Donor("David Beckham", [1817266.11, 123123.66, 111335.112])
     donors = DonorList([donor1, donor2, donor3, donor4, donor5])
-    donors.send_thanks()
-    donors.create_report()
-    
+
+    while True:
+        choice = input(
+        "Please select an option:\n\
+        1 - Send Thanks\n\
+        2 - Create Donor Report\n\
+        3 - Send Letters\n\
+        4 - Quit\n")
+        print()
+        if choice == '1':
+            donors.send_thanks()
+        if choice == '2':
+            donors.create_report()
+        if choice == '3':
+            donors.create_letters()
+        if choice == '4':
+            donors.quitter()
 
 if __name__ == "__main__":
     main()
