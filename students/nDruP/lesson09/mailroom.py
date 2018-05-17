@@ -19,7 +19,7 @@ d = Donor_Dict.from_file("dict_init.txt")
 divider = "\n" + "*" * 50 + "\n"
 
 
-def main_menu(user_prompt = None):
+def main_menu(user_prompt=None):
     """
     Prompt user to send a Thank You, Create a report, create letters, or quit.
     """
@@ -28,8 +28,8 @@ def main_menu(user_prompt = None):
                      "3": write_letters_to_all,
                      "4": exit}
     options = list(valid_prompts.keys())
-    print(divider + "We're a Pyramid Scheme & So Are You! E-Mailroom"
-          + divider)
+    print(divider + "We're a Pyramid Scheme & So Are You! E-Mailroom" +
+          divider)
     while user_prompt not in valid_prompts:
         options_str = ("{}" + (", {}") * (len(options)-1)).format(*options)
         print(f"Please choose from the following options ({options_str}):")
@@ -42,7 +42,7 @@ def main_menu(user_prompt = None):
     return valid_prompts.get(user_prompt)
 
 
-def user_input(some_str = ""):
+def user_input(some_str=""):
     """
     Display exit reminder and prompt user for input.
     """
@@ -61,7 +61,7 @@ def check_not_exit(check_str):
 
 def input_dir(write_dir=""):
     """
-    Prompt user for a valid path to directory. 
+    Prompt user for a valid path to directory.
     """
     while True:
         print("Enter an existing directory to write to.")
@@ -156,12 +156,12 @@ def create_thank_u():
 
     d_name = input_donor_name()
     if d_name:
-       gift_amt = input_donor_amt()
-       if gift_amt:
-           d.add_donor(d_name, gift_amt)
-           thanks = d[d_name.lower()].thank_u_letter_str(1) 
-           print(thanks)
-           print(save_to_dir(d_name, thanks))
+        gift_amt = input_donor_amt()
+        if gift_amt:
+            d.add_donor(d_name, gift_amt)
+            thanks = d[d_name.lower()].thank_u_letter_str(1)
+            print(thanks)
+            print(save_to_dir(d_name, thanks))
     return
 
 
@@ -194,7 +194,7 @@ def create_donor_report():
     return
 
 
-def write_letters_to_all(write_dir = ""):
+def write_letters_to_all(write_dir=""):
     """
     Write a full set of letters to each donor to individual files on disk.
     Go through all donors in donor_dict, generate a thank you letter,
@@ -216,7 +216,7 @@ def exit():
     """
     print("Before exiting would you like to save the donor info?[y/n]")
     save_confirm = ""
-    while save_confirm not in ['y','n']:
+    while save_confirm not in ['y', 'n']:
         save_confirm = input('>').lower()
     if save_confirm == 'y':
         print(write_txt_to_dir("dict_init", d.dict_to_txt(), os.getcwd()))

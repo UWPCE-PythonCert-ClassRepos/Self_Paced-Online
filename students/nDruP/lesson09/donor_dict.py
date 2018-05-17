@@ -1,5 +1,6 @@
 from donor import Donor
 
+
 class Donor_Dict():
     def __init__(self, donor, *args):
         self._dict = {donor.name.lower(): donor}
@@ -11,16 +12,15 @@ class Donor_Dict():
 
     def __getitem__(self, key_name):
         return self._dict[key_name]
-    
+
     def __len__(self):
         return len(self.donors)
 
     @classmethod
     def from_file(cls, file_path):
-        #donor_name;history (history is comma-separated)
         first_donor = None
         donor_list = []
-        
+
         with open(file_path, 'r') as text:
             end = text.tell()
             while True:
@@ -31,12 +31,12 @@ class Donor_Dict():
                 name_or_hist = 0
                 gift = ""
                 history = []
-                
+
                 for param in some_str:
                     if param == ';':
                         name_or_hist = 1
                         continue
-                    donor_init[name_or_hist]+=param
+                    donor_init[name_or_hist] += param
 
                 for hist in donor_init[1]:
                     if hist == ',':
@@ -46,13 +46,13 @@ class Donor_Dict():
                     gift += hist
                 history.append(float(gift))
 
-                if first_donor == None:
+                if first_donor is None:
                     first_donor = Donor(donor_init[0], history)
                 else:
                     donor_list.append(Donor(donor_init[0], history))
                 end = text.tell()
         return cls(first_donor, *donor_list)
-    
+
     @property
     def names(self):
         d_names = []
@@ -102,7 +102,7 @@ class Donor_Dict():
             dict_txt += ("{}" + (",{}"*(len(d.history)-1))).format(*d.history)
             dict_txt += '\n'
         return dict_txt
-    
+
     def add_donor(self, d_name, contribution):
         key_name = d_name.lower()
         if key_name in self:
@@ -124,7 +124,7 @@ class Donor_Dict():
 
     def sort_by_hist(self, d_info):
         return d_info[1]
-    
+
     def sort_by_avg(self, d_info):
         return d_info[2]
 
@@ -133,10 +133,11 @@ class Donor_Dict():
 
     def sort_all_donor_info(self, by=0):
         sort_dict = {0: self.sort_by_name,
-                    1: self.sort_by_hist,
-                    2: self.sort_by_avg,
-                    3: self.sort_by_sum}
-        return sorted(self.all_donor_info(), key=sort_dict[by], reverse=(by>0))
+                     1: self.sort_by_hist,
+                     2: self.sort_by_avg,
+                     3: self.sort_by_sum}
+        return sorted(self.all_donor_info(), key=sort_dict[by],
+                      reverse=(by > 0))
 
     def donor_report_row(self, header=0):
         donor_col = "{:<" + f"{self.col_len[0]}" + "}"
@@ -144,7 +145,7 @@ class Donor_Dict():
         avg_col = "{:>" + f"{self.col_len[2]}" + (".2f") * (not header) + "}"
         sum_col = "{:>" + f"{self.col_len[3]}" + (".2f") * (not header) + "}"
         return (donor_col+"\t"+hist_col+"\t"+avg_col+"\t"+sum_col)
-    
+
     def donor_report(self, sort_by):
         if sort_by == 5:
             donor_list = self.all_donor_info()

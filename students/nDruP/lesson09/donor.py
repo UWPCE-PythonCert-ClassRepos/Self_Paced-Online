@@ -10,7 +10,7 @@ class Donor():
 
     def __len__(self):
         return len(self._history)
-    
+
     @property
     def name(self):
         return self._name
@@ -30,12 +30,11 @@ class Donor():
     @property
     def info(self):
         return (self.name, len(self.history), self.avg_gift, self.sum_gift)
-    
+
     def add_gift(self, value):
-        self._history.append(round(value,2))
+        self._history.append(round(value, 2))
 
-
-    def thank_u_letter_str(self, new_gift = False):
+    def thank_u_letter_str(self, new_gift=False):
         divider = "\n" + "*" * 50 + "\n"
         thank_u_letter = divider + f"Dearest {self.name},\n"
         if new_gift:
@@ -49,6 +48,6 @@ class Donor():
                            "living Pokemon.\n"
                            "You now have our eternal loyalty. Use it wisely.\n"
                            "Sincerely,\n"
-                           f"We're a Pyramid Scheme & so is {self.name}"
-                           + divider)
+                           f"We're a Pyramid Scheme & so is {self.name}" +
+                           divider)
         return thank_u_letter
