@@ -59,3 +59,14 @@ def test_donor_list_get_donor_donations():
 
     assert dl.get_donor_donations("Cayce") == "Donor not found."
     assert dl.get_donor_donations("Stuart") == []
+
+
+def test_donor_list_compose_donor_thank_you():
+    dl = DonorList()
+    dl.add_donor("Stuart")
+
+    stuart = dl.get_donor("Stuart")
+    stuart.add_donation(50)
+
+    assert dl.compose_donor_thank_you(stuart) == "Dear Stuart, "\
+        "thanks so much for your generous donation in the amount of: $50."

@@ -55,7 +55,21 @@ class DonorList:
     def get_donor_donations(self, name):
         if not name:
             raise ValueError("Please provide a donor name.")
+
         if name in self.donors:
             return self.donors[name].donations
         else:
             return "Donor not found."
+
+    def compose_donor_thank_you(self, donor):
+        if not donor:
+            raise ValueError("Please provide a donor.")
+
+        message_obj = {
+            'donor_name': donor.name,
+            'donation': donor.donations[-1]
+        }
+        message = 'Dear {donor_name}, thanks so much '\
+                  'for your generous donation in the amount of: '\
+                  '${donation}.'.format(**message_obj)
+        return message
