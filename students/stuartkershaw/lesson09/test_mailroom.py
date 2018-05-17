@@ -36,11 +36,13 @@ def test_donor_list_add_donor():
                                  "argument: 'name'"
     dl.add_donor("Stuart")
 
-    assert dl.donors == {"Stuart": {"donations": []}}
+    assert dl.donors["Stuart"].name == "Stuart"
+    assert dl.donors["Stuart"].donations == []
 
     dl.add_donor("Cayce")
 
-    assert dl.donors == {"Stuart": {"donations": []}, "Cayce": {"donations": []}}
+    assert dl.donors["Cayce"].name == "Cayce"
+    assert dl.donors["Cayce"].donations == []
 
 
 def test_donor_list_get_donor():
@@ -48,7 +50,7 @@ def test_donor_list_get_donor():
     dl.add_donor("Stuart")
 
     assert dl.get_donor("Cayce") == "Donor not found."
-    assert dl.get_donor("Stuart") == {"Stuart": {"donations": []}}
+    assert dl.get_donor("Stuart").name == "Stuart"
 
 
 def test_donor_list_get_donor_donations():
@@ -56,4 +58,4 @@ def test_donor_list_get_donor_donations():
     dl.add_donor("Stuart")
 
     assert dl.get_donor_donations("Cayce") == "Donor not found."
-    assert dl.get_donor_donations("Stuart") == {"donations": []}
+    assert dl.get_donor_donations("Stuart") == []
