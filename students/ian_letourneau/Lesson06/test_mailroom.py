@@ -1,10 +1,10 @@
 from mailroom import send_thank_you, create_report, send_all
-import pytest
+import pytest, os
 
 # Test the send_thank_you function: basic
 
 
-def test_1():
+def test_send_thank_you_valid_input():
     assert send_thank_you("Angelina Jolie", 3.47) == ('Dear Angelina Jolie,'
                                                       ' we wanted to say thank'
                                                       ' you for your generous'
@@ -13,7 +13,7 @@ def test_1():
 # Test the send_thank_you function: long name
 
 
-def test_2():
+def test_send_thank_you_long_input():
     assert send_thank_you("The Great Leader of the"
                           " Azerothian people", 3.47) == ('Dear The Great'
                                                           ' Leader of the'
@@ -27,27 +27,28 @@ def test_2():
 # Test the send_thank_you function: integer input
 
 
-def test_3():
+def test_send_thank_you_int_input():
     assert send_thank_you("Angelina Jolie", 3) == ('Dear Angelina Jolie,'
                                                    ' we wanted to say thank'
                                                    ' you for your generous'
                                                    ' donation of $3.00!')
 
-# Test the send_thank_you function: string input error
-
-
-def test_4():
-    with pytest.raises(ValueError):
-        assert send_thank_you('Angelina Jolie', 'donation')
 
 # Test the create_report function
 
 
-def test_5():
-    assert create_report() == ('Report has been created.')
+def test_create_report_sorted():
+    assert create_report() == ['LeBron James,6609558.50,4,1652389.62',
+                              'Bill Gates,4040233.25,3,1346744.42',
+                              'Jimmy Kimmel,1002495.96,5,200499.19',
+                              'Angelina Jolie,6.47,2,3.24',
+                      'The Great Leader of the Azerothian people,3.47,1,3.47']
 
 # Test the send_all function
 
 
-def test_6():
-    assert send_all() == ('Letters have been sent to all donors.')
+def test_send_all_outputs():
+    files = send_all()
+    # directory = "C:\\Users\\letoui\\Documents\\PythonCert\\Self_Paced-Online\\students\\ian_letourneau\\Lesson06"
+    for file in files:
+        assert os.path.isfile(file) == True
