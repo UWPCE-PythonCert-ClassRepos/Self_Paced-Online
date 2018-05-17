@@ -27,7 +27,7 @@ def test_donor_donation():
     assert d.donations == [50]
 
 
-def test_donor_list_add():
+def test_donor_list_add_donor():
     dl = DonorList()
 
     with pytest.raises(Exception) as excinfo:
@@ -41,3 +41,19 @@ def test_donor_list_add():
     dl.add_donor("Cayce")
 
     assert dl.donors == {"Stuart": {"donations": []}, "Cayce": {"donations": []}}
+
+
+def test_donor_list_get_donor():
+    dl = DonorList()
+    dl.add_donor("Stuart")
+
+    assert dl.get_donor("Cayce") == "Donor not found."
+    assert dl.get_donor("Stuart") == {"Stuart": {"donations": []}}
+
+
+def test_donor_list_get_donor_donations():
+    dl = DonorList()
+    dl.add_donor("Stuart")
+
+    assert dl.get_donor_donations("Cayce") == "Donor not found."
+    assert dl.get_donor_donations("Stuart") == {"donations": []}

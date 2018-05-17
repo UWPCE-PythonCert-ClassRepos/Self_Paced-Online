@@ -41,4 +41,18 @@ class DonorList:
 
     def add_donor(self, name):
         donor = Donor(name)
-        self._donors[donor.name] = {"donations": donor.donations}
+        self.donors[donor.name] = {"donations": donor.donations}
+
+    def get_donor(self, name):
+        if not name:
+            raise ValueError("Please provide a donor name.")
+
+        if name in self.donors:
+            return {name: self.donors[name]}
+        else:
+            return "Donor not found."
+
+    def get_donor_donations(self, name):
+        if not name:
+            raise ValueError("Please provide a donor name.")
+        return self.donors.get(name, "Donor not found.")
