@@ -6,7 +6,7 @@
     File Name: kata.py
     Author: Matt Hudgins
     Date created: 5/15/18
-    Date last modified: 5/15/18
+    Date last modified: 5/16/18
     Python Version 3.6.4
 '''
 
@@ -23,10 +23,12 @@ def randvalue(i, k):
     """ This function returns a random value from values list"""
     return random.choice(i[k])
 
+# Determining size of sory
+size = input('What is the size of your new story?')
 
 if __name__ == "__main__":
-    input_file = 'sherlock.txt'
-    with open(input_file, 'r') as fp:
+    book = 'sherlock.txt'
+    with open(book, 'r') as fp:
         input = fp.read()
         fp.close()
 
@@ -53,7 +55,7 @@ if __name__ == "__main__":
     value_init = randvalue(trigrams, key_init)
     out_list = list(key_init)
     out_list.append(value_init)
-    for i in range(256):
+    for i in range(1000):
         k = tuple(out_list[-2:])
         if k in trigrams:
             v = randvalue(trigrams, k)
