@@ -27,7 +27,7 @@ def test_donor_donation():
     assert d.donations == [50]
 
 
-def test_donor_list():
+def test_donor_list_add():
     dl = DonorList()
 
     with pytest.raises(Exception) as excinfo:
@@ -36,13 +36,8 @@ def test_donor_list():
                                  "argument: 'name'"
     dl.add_donor("Stuart")
 
-    assert dl.donors == {
-                            0: {"Stuart": {"donations": []}}
-                        }
+    assert dl.donors == {"Stuart": {"donations": []}}
 
     dl.add_donor("Cayce")
 
-    assert dl.donors == {
-                            0: {"Stuart": {"donations": []}},
-                            1: {"Cayce": {"donations": []}}
-                        }
+    assert dl.donors == {"Stuart": {"donations": []}, "Cayce": {"donations": []}}

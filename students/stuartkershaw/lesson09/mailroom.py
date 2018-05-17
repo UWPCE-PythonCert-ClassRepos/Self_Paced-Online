@@ -41,5 +41,4 @@ class DonorList:
 
     def add_donor(self, name):
         donor = Donor(name)
-        donorId = len(self._donors)
-        self._donors[donorId] = {donor.name: {"donations": donor.donations}}
+        self._donors[donor.name] = {"donations": donor.donations}
