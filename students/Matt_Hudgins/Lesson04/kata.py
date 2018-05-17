@@ -37,7 +37,7 @@ if __name__ == "__main__":
     for p in punctuation:
         input = input.replace(p, f'{p}')
     words = input.split()
-#   print(seed)
+
 
     # Trigram Dict
     trigrams = {}
