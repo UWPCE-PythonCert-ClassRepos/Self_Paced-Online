@@ -43,12 +43,12 @@ def test_gen_letter():
 
 
 def test_filename():
-    assert m.filename('Pete John') == 'Pete John.txt'
+    assert m.filename('Pete John') == 'Pete_John.txt'
 
 
 def test_write_letters_on_disk():
     m.write_letters_on_disk(test_donors)
-    assert os.path.isfile('Pete John.txt')
-    with open('Pete John.txt') as f:
+    assert os.path.isfile('Pete_John.txt')
+    with open('Pete_John.txt') as f:
         size = len(f.read())
     assert size > 0
