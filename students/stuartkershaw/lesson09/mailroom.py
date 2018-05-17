@@ -28,3 +28,18 @@ class Donor:
         if val < 1:
             raise ValueError("A positive donation value is required.")
         self.donations.append(val)
+
+
+class DonorList:
+
+    def __init__(self):
+        self._donors = {}
+
+    @property
+    def donors(self):
+        return self._donors
+
+    def add_donor(self, name):
+        donor = Donor(name)
+        donorId = len(self._donors)
+        self._donors[donorId] = {donor.name: {"donations": donor.donations}}

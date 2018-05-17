@@ -1,5 +1,5 @@
 import pytest
-from mailroom import Donor
+from mailroom import Donor, DonorList
 
 
 def test_donor_name():
@@ -21,7 +21,28 @@ def test_donor_donation():
 
     with pytest.raises(Exception) as excinfo:
         d.add_donation(-50)
-        assert str(excinfo.value) == "A positive donation valie is required."
+    assert str(excinfo.value) == "A positive donation value is required."
 
     d.add_donation(50)
     assert d.donations == [50]
+
+
+def test_donor_list():
+    dl = DonorList()
+
+    with pytest.raises(Exception) as excinfo:
+        dl.add_donor()
+    assert str(excinfo.value) == "add_donor() missing 1 required positional "\
+                                 "argument: 'name'"
+    dl.add_donor("Stuart")
+
+    assert dl.donors == {
+                            0: {"Stuart": {"donations": []}}
+                        }
+
+    dl.add_donor("Cayce")
+
+    assert dl.donors == {
+                            0: {"Stuart": {"donations": []}},
+                            1: {"Cayce": {"donations": []}}
+                        }
