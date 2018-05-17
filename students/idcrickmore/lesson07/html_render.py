@@ -99,7 +99,7 @@ class  Li(Element):
     
     
 class H(OneLineTag):
-    def __init__(self, level_number, content):
+    def __init__(self, level_number, content = None):
         super().__init__(content)
         self.tag_name = "h%s" % level_number
 
