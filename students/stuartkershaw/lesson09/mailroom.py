@@ -123,3 +123,63 @@ class DonorList:
         for f in pth.iterdir():
             if '.txt' in str(f):
                 print(f)
+
+    def set_donation(self, donor):
+        while True:
+            try:
+                donation = int(input('Please enter a donation amount: '))
+                if not donation > 0:
+                    raise ValueError
+            except ValueError:
+                print('Please provide a whole number greater than zero.')
+            else:
+                self.donors[donor].add_donation(donation)
+                print(self.compose_thank_you(self.donors[donor]))
+                self.get_selection()
+
+    def send_thank_you(self):
+        instruction = 'Please enter a full name or type \'list\' to see donors:\n'
+        name_input = input(instruction)
+        if name_input == 'list':
+            self.get_donor_names()
+            self.send_thank_you()
+        elif name_input in self.donors:
+            self.set_donation(name_input)
+        else:
+            self.add_donor(name_input)
+            self.set_donation(name_input)
+
+    def apply_selection(self, selection):
+        arg_dict = {
+            '1': self.send_thank_you,
+            '2': self.generate_table,
+            '3': self.generate_letters,
+            '4': quit
+        }
+        try:
+            if not arg_dict.get(selection):
+                raise KeyError
+            arg_dict.get(selection)()
+        except KeyError:
+            print('Oops, invalid selection.')
+
+    def get_selection(self):
+        options = 'Please select 1, 2, 3, or 4:\n'\
+                  '1) send a thank you\n'\
+                  '2) create a report\n'\
+                  '3) send letters to everyone\n'\
+                  '4) quit\n'
+        while True:
+            selection = input(options)
+            self.apply_selection(selection)
+            if selection == '2':
+                self.get_selection()
+
+
+def main():
+    dl = DonorList()
+    dl.get_selection()
+
+
+if __name__ == "__main__":
+    main()
