@@ -125,25 +125,60 @@ class Mailroom:
             sql_total = 'select sum(donation) from mailroom where donation'
             sql = 'update mailroom set donation = donation * ?'
             werte = (factor,)
+
+            self.map_multiply(factor)
+
         elif below:
             sql_show = 'select count(*) from mailroom where donation < ' + below
             sql_total = 'select sum(donation) from mailroom where donation < ' + below
             sql = 'update mailroom set donation = donation * ? where donation < ?'
             werte = (factor, below)
+
+            self.map_multiply(factor, below)
+
+
         elif above:
             sql_show = 'select count(*) from mailroom where donation > ' + above
             sql_total = 'select sum(donation) from mailroom where donation > ' + above
             sql = 'update mailroom set donation = donation * ? where donation > ?'
             werte = (factor, above)
 
+            self.map_multiply(factor, above)
+
         try:
             self._preview(sql_show)
             self._preview_total(sql_total)
-            self.cursor.execute(sql, werte)
-            self.db.commit()
+            # self.cursor.execute(sql, werte)
+            # self.db.commit()
             return True
         except sqlite3.Error as e:
             print('Exception raised 3: {}'.format(e))
+
+
+    # def map_multiply_all(self):
+    def map_multiply(self, factor, above=None, below=None):
+        
+        self.cursor.execute('select donation from mailroom where donation')
+        donations_all = self._beautify(self.cursor.fetchall())
+        print('==== donations_all: ', donations_all)
+        
+        if above is None and below is None: 
+            donations_after = list(map(lambda x: x * int(factor), donations_all))
+            for i in zip(donations_all, donations_after):
+                print('before: {}   after: {}'.format(i[0], i[1]))
+        elif above:
+            donations_above = list(filter(lambda x: x > int(above), donations_all))
+            print('==== donations_above: ', donations_above)
+            donations_after = list(map(lambda x: x * int(factor), donations_above))
+            print('==== donations_after: ', donations_after)
+
+            # for i in zip(donations_all, donations_above):
+            for i in zip(donations_above, donations_after):
+                print('before: {}   after: {}'.format(i[0], i[1]))
+        
+
+
+
 
 
     # ToDo: make more consistent usage of this function throughout the program... or omit it at all.
