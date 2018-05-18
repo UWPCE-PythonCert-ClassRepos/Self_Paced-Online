@@ -83,7 +83,7 @@ class DonorList:
         message = 'Dear {donor_name}, thanks so much '\
                   'for your generous donation in the amount of: '\
                   '${donation}.'.format(**message_obj)
-        print(message)
+        return message
 
     def get_donor_names(self):
         print("\n".join([donor for donor in self.donors]))
@@ -113,3 +113,13 @@ class DonorList:
             cur_donor = self.donors[donor]
             print('{:<20}'.format(cur_donor.name), ('{:<15}' * len(cur_donor.rollup))
                   .format(*cur_donor.rollup.values()))
+
+    def generate_letters(self):
+        self.generate_rollup()
+        for donor in self.donors:
+            with open(donor.replace(' ', '_') + '.txt', 'w') as outfile:
+                outfile.write(self.compose_thank_you(self.donors[donor]))
+        print('Letters generated: ')
+        for f in pth.iterdir():
+            if '.txt' in str(f):
+                print(f)

@@ -1,4 +1,8 @@
 import pytest
+
+from os import listdir
+from os.path import isfile, join
+
 from mailroom import Donor, DonorList
 
 
@@ -68,7 +72,7 @@ def test_donor_list_compose_thank_you(capsys):
     stuart = dl.get_donor("Stuart")
     stuart.add_donation(50)
 
-    dl.compose_thank_you(stuart)
+    print(dl.compose_thank_you(stuart))
 
     captured = capsys.readouterr()
     assert captured.out  == "Dear Stuart, "\
@@ -124,3 +128,30 @@ def test_donor_list_generate_table(capsys):
         '_________________________________________________________________\n'\
         'Stuart               2              75             37.5           \n'\
         'Cayce                2              150            75.0           \n'\
+
+
+
+def test_donor_list_generate_letters(tmpdir, capsys):
+    dl = DonorList()
+    dl.add_donor("Stuart")
+    dl.add_donor("Cayce")
+
+    stuart = dl.get_donor("Stuart")
+    cayce = dl.get_donor("Cayce")
+
+    stuart.add_donation(25)
+    stuart.add_donation(50)
+
+    cayce.add_donation(100)
+    cayce.add_donation(50)
+
+    p = tmpdir.mkdir('sub')
+    with p.as_cwd():
+        dl.generate_letters()
+        captured = capsys.readouterr()
+        assert captured.out == 'Letters generated: \n'\
+            'Cayce.txt\n'\
+            'Stuart.txt\n'\
+
+    tempFiles = [f for f in listdir(p) if isfile(join(p, f))]
+    assert tempFiles == ['Cayce.txt', 'Stuart.txt']
