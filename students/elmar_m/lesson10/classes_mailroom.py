@@ -166,6 +166,17 @@ class Mailroom:
             donations_after = list(map(lambda x: x * int(factor), donations_all))
             for i in zip(donations_all, donations_after):
                 print('before: {}   after: {}'.format(i[0], i[1]))
+
+        elif below:
+            donations_below = list(filter(lambda x: x < int(below), donations_all))
+            print('==== donations_below: ', donations_below)
+            donations_after = list(map(lambda x: x * int(factor), donations_below))
+            print('==== donations_after: ', donations_after)
+
+            # for i in zip(donations_all, donations_above):
+            for i in zip(donations_below, donations_after):
+                print('before: {}   after: {}'.format(i[0], i[1]))
+
         elif above:
             donations_above = list(filter(lambda x: x > int(above), donations_all))
             print('==== donations_above: ', donations_above)
@@ -175,7 +186,6 @@ class Mailroom:
             # for i in zip(donations_all, donations_above):
             for i in zip(donations_above, donations_after):
                 print('before: {}   after: {}'.format(i[0], i[1]))
-        
 
 
 
