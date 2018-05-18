@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 # initialize lists
-donors = ['Mike', 'Joe', 'Kyle', 'Nick', 'Sid']
-i_amount = [3000, 20, 40607, 65, 400]
-i_count = [4, 2, 3, 6, 7]
+import datetime
+
+donors = ['Jeff Bezos', 'Mark Zuckerberg', 'Bill Gates', 'Paul Allen']
+i_amount = [3000, 20, 40607, 65]
+i_count = [4, 2, 3, 6]
 quit = 0
 
 # initialize amt_dict
@@ -17,10 +19,10 @@ for i in range(len(donors)):
 
 
 msg = """
-\nDearest {},\n\nThank you for your most recent donation, did you \
+\nDear {},\n\nThank you for your recent donation, did you \
 realize you have now made {} lifetime donations? Wow, look at you all star! \
 We are most grateful for your total donation amount of ${}.\n\nI will \
-personally ensure these gifts are put towards purchase of yummy \
+personally ensure these funds are put towards purchase of yummy \
 donuts! Also, any additional contributions you make in the next 24 hours \
 will be matched up to $1000. What a deal! Don't delay.\n\nHumbly yours,\n
 Dime for Donuts\n
@@ -80,17 +82,30 @@ def menu_sel_2():
                        db_sort[i][3]))
 
 
+def menu_sel_3():
+    y = datetime.datetime.now()
+    for i in range(len(donors)):
+        don_name = donors[i]
+        file_name = '{}_{}_{}_{}.txt'.format(don_name, y.month, y.day, y.year)
+        new_file = open(file_name, 'w')
+        msg_vars = (don_name, cnt_dict[don_name], amt_dict[don_name])
+        new_file.write(msg.format(*msg_vars))
+        new_file.close()
+
+
 menu_switch_dict = {
     '1': menu_sel_1,
     'send a thank you': menu_sel_1,
     '2': menu_sel_2,
-    'create a report': menu_sel_2}
+    'create a report': menu_sel_2,
+    '3': menu_sel_3,
+    'send letters to everyone': menu_sel_3}
 
 
 if __name__ == "__main__":
     while quit == 0:
-        sel = input('What do you want to do: (1)"send a thank you",'
-                    + '(2)"create a report", (3)"quit"? ')
-        if sel in ('3', 'quit'):
+        sel = input('\nWhat do you want to do?\n\t(1) send a thank you\n\t\
+(2) create a report\n\t(3) send letters to everyone\n\t(4) quit\n')
+        if sel in ('4', 'quit'):
             break
         menu_switch_dict[sel]()
