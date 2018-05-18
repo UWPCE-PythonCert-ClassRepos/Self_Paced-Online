@@ -73,3 +73,6 @@ class DonorList:
                   'for your generous donation in the amount of: '\
                   '${donation}.'.format(**message_obj)
         return message
+
+    def get_donor_names(self):
+        return "\n".join([donor for donor in self.donors])

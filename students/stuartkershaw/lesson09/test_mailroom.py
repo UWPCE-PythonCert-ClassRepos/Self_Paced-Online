@@ -70,3 +70,16 @@ def test_donor_list_compose_donor_thank_you():
 
     assert dl.compose_donor_thank_you(stuart) == "Dear Stuart, "\
         "thanks so much for your generous donation in the amount of: $50."
+
+
+def test_donor_list_donor_names(capsys):
+    dl = DonorList()
+    dl.add_donor("Stuart")
+    dl.add_donor("Cayce")
+
+    names = dl.get_donor_names()
+
+    print(names)
+
+    captured = capsys.readouterr()
+    assert captured.out == "Stuart\nCayce\n"
