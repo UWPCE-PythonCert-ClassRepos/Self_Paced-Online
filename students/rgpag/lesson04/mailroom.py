@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-# init lists
+# initialize lists
 donors = ['Mike', 'Joe', 'Kyle', 'Nick', 'Sid']
 i_amount = [3000, 20, 40607, 65, 400]
 i_count = [4, 2, 3, 6, 7]
+quit = 0
 
 # initialize amt_dict
 amt_dict = {}
@@ -49,40 +50,47 @@ def getKey(item):
     return item[1]
 
 
+def menu_sel_1():
+    name = input('Please provide full name ')
+    if name == 'quit':
+        quit = 1
+        return quit
+    elif name == 'list':
+        for z in donors:
+            print(z)
+    elif name not in (donors):
+        msg_vars = new_donor(name)
+        print(msg.format(*msg_vars))
+    else:
+        msg_vars = update_don(name)
+        print(msg.format(*msg_vars))
+
+
+def menu_sel_2():
+    db = []
+    print('{:<20}| {:^15}| {:^10}| {:>12}'.format('Donor Name',
+          'Total Given', 'Num Gifts', 'Avg Gift'))
+    print('-'*63)
+    s = '{:<20} ${:>15}  {:^10} ${:>12.2f}'
+    for x in (donors):
+        db.append([x, amt_dict[x], cnt_dict[x], avg_dict[x]])
+    db_sort = sorted(db, key=getKey, reverse=True)
+    for i in range(len(db_sort)):
+        print(s.format(db_sort[i][0], db_sort[i][1], db_sort[i][2],
+                       db_sort[i][3]))
+
+
+menu_switch_dict = {
+    '1': menu_sel_1,
+    'send a thank you': menu_sel_1,
+    '2': menu_sel_2,
+    'create a report': menu_sel_2}
+
+
 if __name__ == "__main__":
-    while True:
+    while quit == 0:
         sel = input('What do you want to do: (1)"send a thank you",'
                     + '(2)"create a report", (3)"quit"? ')
-        # (1)send thank you
-        if sel in ('1', 'send a thank you'):
-            name = input('Please provide full name ')
-            if name == 'quit':
-                break
-            elif name == 'list':
-                for z in donors:
-                    print(z)
-                continue
-            elif name not in (donors):
-                msg_vars = new_donor(name)
-            else:
-                msg_vars = update_don(name)
-            print(msg.format(*msg_vars))
-            continue
-
-        # (2) create a report
-        elif sel in('2', 'create a report'):
-            db = []
-            print('{:<20}| {:^15}| {:^10}| {:>12}'.format('Donor Name',
-                  'Total Given', 'Num Gifts', 'Avg Gift'))
-            print('-'*63)
-            s = '{:<20} ${:>15}  {:^10} ${:>12.2f}'
-            for x in (donors):
-                db.append([x, amt_dict[x], cnt_dict[x], avg_dict[x]])
-            db_sort = sorted(db, key=getKey, reverse=True)
-            for i in range(len(db_sort)):
-                print(s.format(db_sort[i][0], db_sort[i][1], db_sort[i][2],
-                               db_sort[i][3]))
-
-        # (3) quit
-        elif sel in ('3', 'quit'):
+        if sel in ('3', 'quit'):
             break
+        menu_switch_dict[sel]()
