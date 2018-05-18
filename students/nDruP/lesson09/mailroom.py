@@ -26,7 +26,8 @@ def main_menu(user_prompt=None):
     valid_prompts = {"1": create_thank_u,
                      "2": create_donor_report,
                      "3": write_letters_to_all,
-                     "4": exit}
+                     "4": simulate,
+                     "5": mr_exit}
     options = list(valid_prompts.keys())
     print(divider + "We're a Pyramid Scheme & So Are You! E-Mailroom" +
           divider)
@@ -36,7 +37,8 @@ def main_menu(user_prompt=None):
         print("1. Send a Thank you")
         print("2. Create Donor Report")
         print("3. Send letters to everyone")
-        print("4. Quit")
+        print("4. Simulate Project")
+        print("5. Quit")
         user_prompt = input(">")
         print(divider)
     return valid_prompts.get(user_prompt)
@@ -111,36 +113,63 @@ def conv_str(conv_str, conv_type=int):
     try:
         conv_yes = conv_type(conv_str)
         return conv_yes
-    except:
+    except ValueError:
         return None
 
 
-def input_donor_name(donor_name="list"):
+def input_donor_name(donor_name="list", *arg):
     """
     Prompt user for donor name
     Prompt->"list": show a list of the donor names
     """
     while donor_name.lower() == "list":
-        print(divider)
         print("Enter Name (Pull up the list of donors by entering 'list')")
         donor_name = user_input()
         if donor_name.lower() == "list":
-            print(divider + d.names_str())
+            print('\n' + d.names_str('\n', *arg) + '\n')
     return donor_name
 
 
-def input_donor_amt(d_amt=0):
+def input_challenge_name(d_dict = d):
+    donor_list = []
+    more_donors = None
+    challenge_donor = None
+    #input donor name as long as user wants to input more donors
+    while True:
+        while challenge_donor not in (d_dict.names + ["", "all"]):
+            print("Which donor would like to alter their donations?")
+            print("Enter 'all' to alter all donors' donations")
+            challenge_donor = input_donor_name("list", *donor_list)
+        if challenge_donor:
+            if challenge_donor == "all":
+                donor_list = d_dict.names
+                break
+            else:
+                donor_list.append(challenge_donor)
+                while more_donors not in ['y', 'n', '']:
+                    print("Would another donor like to alter their" +
+                          " donations?[y/n]")
+                    more_donors = user_input().lower()
+                if more_donors =='y':
+                    challenge_donor = None
+                    more_donors = None
+                    continue
+        break
+    if challenge_donor == "" or more_donors == "":
+        return False
+    return donor_list
+
+
+def input_donor_float(d_amt=0):
     """
-    Prompt user for donation amount
+    Prompt user for valid float
     If input cannot be converted to float, prompt again.
     """
     while True:
-        print("\nEnter a nonzero Donation Amount:")
         d_amt = user_input()
-        if not d_amt:
-            break
-        d_amt = conv_str(d_amt, float)
         if d_amt:
+            d_amt = conv_str(d_amt, float)
+        if d_amt != None:
             break
         print("Enter a valid amount")
     return d_amt
@@ -153,10 +182,12 @@ def create_thank_u():
     """
     print(divider)
     print("Let's craft a very personal thank you note for our donor!")
-
+    print(divider)
+    
     d_name = input_donor_name()
     if d_name:
-        gift_amt = input_donor_amt()
+        print("\nEnter a nonzero Donation Amount:")
+        gift_amt = input_donor_float()
         if gift_amt:
             d.add_donor(d_name, gift_amt)
             thanks = d[d_name.lower()].thank_u_letter_str(1)
@@ -165,10 +196,11 @@ def create_thank_u():
     return
 
 
-def sort_report_by(report_sort=None):
+def sort_report_by():
     """
     Prompt user to determine how to display donor report.
     """
+    report_sort = None
     while report_sort not in ['1', '2', '3', '4', '5']:
         print(divider)
         print("How would you like to sort the report?")
@@ -181,20 +213,20 @@ def sort_report_by(report_sort=None):
     return int(report_sort)
 
 
-def create_donor_report():
+def create_donor_report(d_dict = d, rep_name="donor_report"):
     """
     Print a list of donors sorted by method chosen in sort_report_by.
     Donor Name, Num Gifts, Average Gift, Total Given
     """
     sort_by = sort_report_by()
     if sort_by:
-        report = d.donor_report(sort_by)
+        report = d_dict.donor_report(sort_by)
         print(divider + report + divider)
-        print(save_to_dir("donor_report", report))
+        print(save_to_dir(rep_name, report))
     return
 
 
-def write_letters_to_all(write_dir=""):
+def write_letters_to_all():
     """
     Write a full set of letters to each donor to individual files on disk.
     Go through all donors in donor_dict, generate a thank you letter,
@@ -210,7 +242,34 @@ def write_letters_to_all(write_dir=""):
     return
 
 
-def exit():
+def simulate(d_dict = d):
+    """
+    Display Donor Report altered by user's specifications.
+    """
+    donor_list = input_challenge_name()
+    if donor_list:
+        print("Input a factor to multiply contributions by.")
+        fctr = input_donor_float()
+        if fctr != "":
+            print("Input a min donation such that all donations above"+
+                  " this amount will be altered.")
+            print("Enter -1 for default value")
+            min_g = input_donor_float()
+            if min_g != "":
+                print("Input a max donation such that all donations below"+
+                      " this amount will be altered")
+                print("Enter -1 for default value")
+                max_g = input_donor_float()
+                while max_g < min_g:
+                    print("Please enter a valid amount")
+                    max_g = input_donor_float()
+                if max_g != "":
+                    sim_d = d_dict.challenge(fctr, min_g, max_g, *donor_list)
+                    create_donor_report(sim_d, "projected_report")
+    return
+
+
+def mr_exit():
     """
     Prompt user to save donor dict before exiting program.
     """

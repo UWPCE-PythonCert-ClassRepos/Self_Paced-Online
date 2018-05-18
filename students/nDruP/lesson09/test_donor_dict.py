@@ -74,8 +74,7 @@ def test_save_dict():
 
 
 def test_challenge():
-    aang = a.challenge(2)
-    bang = b.challenge(3, 9000)
-
+    aang = a.challenge(2, -1.0, -1.0)
+    bang = b.challenge(3, 9000, -1.0) 
     assert aang.histories == [[round(1234.6*2,2)]]
     assert bang.histories == [[round(9843.23*3,2), 483.24], [round(45632.39*3,2)]]

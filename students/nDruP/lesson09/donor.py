@@ -27,17 +27,17 @@ class Donor():
         self.history.append(round(value, 2))
 
     def challenge(self, factor, min_gift=None, max_gift=None):
-        if max_gift is None:
-            max_gift = max(self.history)
         if min_gift is None:
             min_gift = min(self.history)
-        filt_hist = list(filter(lambda x: (x>=min_gift) and (x<=max_gift),
+        if max_gift is None:
+            max_gift = max(self.history)
+        filt_hist = list(filter(lambda x: x >= min_gift and x <= max_gift,
                                 self.history))
-        remain_hist = list(filter(lambda x: (x<min_gift) or (x>max_gift),
+        remain_hist = list(filter(lambda x: x < min_gift or x > max_gift,
                                   self.history))
-        self.history = list(map(lambda x: x*factor, filt_hist))
-        return Donor(self.name, self.history+remain_hist)
-        
+        filt_hist = list(map(lambda x: x*factor, filt_hist))
+        return Donor(self.name, filt_hist+remain_hist)
+    
     def thank_u_letter_str(self, new_gift=False):
         divider = "\n" + "*" * 50 + "\n"
         thank_u_letter = divider + f"Dearest {self.name},\n"

@@ -54,6 +54,18 @@ class Donor_Dict():
         return [d.history for d in self.donors]
 
     @property
+    def total_gifts(self):
+        return sum([len(x) for x in self.histories])
+
+    @property
+    def total_avg(self):
+        return sum([x[2] for x in self.all_donor_info])/len(self)
+
+    @property
+    def total_sum(self):
+        return sum([sum(x) for x in self.histories])
+    
+    @property
     def keys(self):
         return list(self._dict.keys())
 
@@ -67,15 +79,10 @@ class Donor_Dict():
     
     @property
     def col_len(self):
-        name_col = len("Donor Name")
-        hist_col = len("Gifts")
-        avg_col = len("Avg Gift")
-        sum_col = len("Total Given")
-        for d_name, d_hist, d_avg, d_sum in self.all_donor_info:
-            name_col = max(name_col, len(d_name))
-            hist_col = max(hist_col, len(str(d_hist)))
-            avg_col = max(avg_col, len(str(d_avg)))
-            sum_col = max(sum_col, len(str(d_sum)))
+        name_col = max(len("Donor Name"), max([len(x) for x in self.names]))
+        hist_col = max(len("Gifts"), len(str(self.total_gifts)))
+        avg_col = max(len("Avg Gift"), len(str(self.total_avg)))
+        sum_col = max(len("Total Given"), len(str(self.total_sum)))
         return [name_col, hist_col, avg_col, sum_col]
 
     def dict_to_txt(self):
@@ -93,16 +100,21 @@ class Donor_Dict():
         else:
             self._dict[key_name] = Donor(d_name, contribution)
 
-    def challenge(self, factor, min_gift=None, max_gift=None):
-        if max_gift is None:
-            max_gift = max([max(g) for g in self.histories])
-        if min_gift is None:
-            min_gift = min([min(g) for g in self.histories])
-        new_d = [d.challenge(factor, min_gift, max_gift) for d in self.donors]
-        return Donor_Dict(*new_d)
+    def challenge(self, alter, min_gift=-1.0, max_gift=-1.0, *d_names):
+        if min_gift == -1.0:
+            min_gift = min([min(g) for g in self.histories]) - .01
+        if max_gift == -1.0:
+            max_gift = max([max(g) for g in self.histories]) + .01
+        if not d_names:
+            d_names = self.names
+        filt_d = list(filter(lambda x: x.name in d_names, self.donors))
+        remain_d = list(filter(lambda x: x.name not in d_names, self.donors))
+        new_d = [d.challenge(alter, min_gift, max_gift) for d in filt_d]
+        return Donor_Dict(*(new_d+remain_d))
 
-    def names_str(self, separator='\n'):
-        return ((separator+"{}")*len(self)).format(*self.names)
+    def names_str(self, sep='\n', *excl_names):
+        names = list(filter(lambda x: x not in excl_names, self.names))
+        return ((sep+"{}")*len(names)).format(*names)
 
     def sort_by_name(self, d_info):
         return d_info[0].lower()
@@ -126,8 +138,8 @@ class Donor_Dict():
     def donor_report_row(self, header=0):
         donor_col = "{:<" + f"{self.col_len[0]}" + "}"
         hist_col = "{:>" + f"{self.col_len[1]}" + "}"
-        avg_col = "{:>" + f"{self.col_len[2]}" + (".2f") * (not header) + "}"
-        sum_col = "{:>" + f"{self.col_len[3]}" + (".2f") * (not header) + "}"
+        avg_col = "{:>" + f"{self.col_len[2]}" + ((".2f")*(not header)) + "}"
+        sum_col = "{:>" + f"{self.col_len[3]}" + ((".2f")*(not header)) + "}"
         return (donor_col+"\t"+hist_col+"\t"+avg_col+"\t"+sum_col)
 
     def donor_report(self, sort_by):
@@ -141,4 +153,6 @@ class Donor_Dict():
         for name, hist, avg_gift, sum_gift in donor_list:
             row_data = [name, hist, avg_gift, sum_gift]
             report += "\n" + row.format(*row_data)
+        total_row = ["TOTAL", self.total_gifts, self.total_avg, self.total_sum]
+        report += "\n" + row.format(*total_row)
         return report
