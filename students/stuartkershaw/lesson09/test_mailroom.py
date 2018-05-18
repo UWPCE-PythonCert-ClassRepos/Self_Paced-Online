@@ -100,3 +100,27 @@ def test_donor_list_generate_rollup():
     dl.generate_rollup()
 
     assert stuart.rollup == {"number": 2, "total": 75, "average": 37.50}
+
+
+def test_donor_list_generate_table(capsys):
+    dl = DonorList()
+    dl.add_donor("Stuart")
+    dl.add_donor("Cayce")
+
+    stuart = dl.get_donor("Stuart")
+    cayce = dl.get_donor("Cayce")
+
+    stuart.add_donation(25)
+    stuart.add_donation(50)
+
+    cayce.add_donation(100)
+    cayce.add_donation(50)
+
+    dl.generate_table()
+
+    captured = capsys.readouterr()
+    assert captured.out == 'Donor Name          Total Given    Num Gifts'\
+        '      Average Gift   \n'\
+        '_________________________________________________________________\n'\
+        'Stuart               2              75             37.5           \n'\
+        'Cayce                2              150            75.0           \n'\

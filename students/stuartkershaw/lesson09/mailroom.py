@@ -104,12 +104,12 @@ class DonorList:
             cur_donor.rollup = dict(zip(('number', 'total', 'average'),
                                         (number, total, average)))
 
-    def show_donor_table(self):
+    def generate_table(self):
         self.generate_rollup()
         headings = ('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift')
         print('{:20}{:<15}{:<15}{:<15}'.format(*headings))
         print('{:_<65}'.format(''))
         for donor in self.donors:
             cur_donor = self.donors[donor]
-            print('{:<20}'.format(donor), ('{:<15}' * len(cur_donor['rollup']))
-                  .format(*cur_donor['rollup'].values()))
+            print('{:<20}'.format(cur_donor.name), ('{:<15}' * len(cur_donor.rollup))
+                  .format(*cur_donor.rollup.values()))
