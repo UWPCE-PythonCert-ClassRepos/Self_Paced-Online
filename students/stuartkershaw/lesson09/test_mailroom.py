@@ -53,23 +53,26 @@ def test_donor_list_get_donor():
     assert dl.get_donor("Stuart").name == "Stuart"
 
 
-def test_donor_list_get_donor_donations():
+def test_donor_list_get_donations():
     dl = DonorList()
     dl.add_donor("Stuart")
 
-    assert dl.get_donor_donations("Cayce") == "Donor not found."
-    assert dl.get_donor_donations("Stuart") == []
+    assert dl.get_donations("Cayce") == "Donor not found."
+    assert dl.get_donations("Stuart") == []
 
 
-def test_donor_list_compose_donor_thank_you():
+def test_donor_list_compose_thank_you(capsys):
     dl = DonorList()
     dl.add_donor("Stuart")
 
     stuart = dl.get_donor("Stuart")
     stuart.add_donation(50)
 
-    assert dl.compose_donor_thank_you(stuart) == "Dear Stuart, "\
-        "thanks so much for your generous donation in the amount of: $50."
+    dl.compose_thank_you(stuart)
+
+    captured = capsys.readouterr()
+    assert captured.out  == "Dear Stuart, "\
+        "thanks so much for your generous donation in the amount of: $50.\n"
 
 
 def test_donor_list_donor_names(capsys):
@@ -77,9 +80,23 @@ def test_donor_list_donor_names(capsys):
     dl.add_donor("Stuart")
     dl.add_donor("Cayce")
 
-    names = dl.get_donor_names()
-
-    print(names)
+    dl.get_donor_names()
 
     captured = capsys.readouterr()
     assert captured.out == "Stuart\nCayce\n"
+
+
+def test_donor_list_generate_rollup():
+    dl = DonorList()
+    dl.add_donor("Stuart")
+
+    stuart = dl.get_donor("Stuart")
+
+    stuart.add_donation(25)
+    stuart.add_donation(50)
+
+    assert stuart.donations == [25, 50]
+
+    dl.generate_rollup()
+
+    assert stuart.rollup == {"number": 2, "total": 75, "average": 37.50}

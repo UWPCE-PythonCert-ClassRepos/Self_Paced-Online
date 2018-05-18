@@ -9,6 +9,7 @@ class Donor:
     def __init__(self, name):
         self._name = name
         self._donations = []
+        self._rollup = {}
 
     @property
     def name(self):
@@ -28,6 +29,16 @@ class Donor:
         if val < 1:
             raise ValueError("A positive donation value is required.")
         self.donations.append(val)
+
+    @property
+    def rollup(self):
+        return self._rollup
+
+    @rollup.setter
+    def rollup(self, val):
+        if not val:
+            raise ValueError("Rollup values are required.")
+        self._rollup = val
 
 
 class DonorList:
@@ -52,7 +63,7 @@ class DonorList:
         else:
             return "Donor not found."
 
-    def get_donor_donations(self, name):
+    def get_donations(self, name):
         if not name:
             raise ValueError("Please provide a donor name.")
 
@@ -61,7 +72,7 @@ class DonorList:
         else:
             return "Donor not found."
 
-    def compose_donor_thank_you(self, donor):
+    def compose_thank_you(self, donor):
         if not donor:
             raise ValueError("Please provide a donor.")
 
@@ -72,7 +83,33 @@ class DonorList:
         message = 'Dear {donor_name}, thanks so much '\
                   'for your generous donation in the amount of: '\
                   '${donation}.'.format(**message_obj)
-        return message
+        print(message)
 
     def get_donor_names(self):
-        return "\n".join([donor for donor in self.donors])
+        print("\n".join([donor for donor in self.donors]))
+
+    def generate_rollup(self):
+        for donor in self.donors:
+            cur_donor = self.donors[donor]
+            number = len(cur_donor.donations)
+            total = sum(cur_donor.donations)
+            average = float(
+                format(
+                    sum(
+                        cur_donor.donations) / len(
+                            cur_donor.donations
+                        ), '.2f'
+                    )
+                )
+            cur_donor.rollup = dict(zip(('number', 'total', 'average'),
+                                        (number, total, average)))
+
+    def show_donor_table(self):
+        self.generate_rollup()
+        headings = ('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift')
+        print('{:20}{:<15}{:<15}{:<15}'.format(*headings))
+        print('{:_<65}'.format(''))
+        for donor in self.donors:
+            cur_donor = self.donors[donor]
+            print('{:<20}'.format(donor), ('{:<15}' * len(cur_donor['rollup']))
+                  .format(*cur_donor['rollup'].values()))
