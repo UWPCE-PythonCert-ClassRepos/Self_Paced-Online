@@ -130,11 +130,13 @@ def input_donor_name(donor_name="list", *arg):
     return donor_name
 
 
-def input_challenge_name(d_dict = d):
+def input_challenge_name(d_dict=d):
+    """
+    Prompt user for existing names in dict or 'all'.
+    """
     donor_list = []
     more_donors = None
     challenge_donor = None
-    #input donor name as long as user wants to input more donors
     while True:
         while challenge_donor not in (d_dict.names + ["", "all"]):
             print("Which donor would like to alter their donations?")
@@ -150,7 +152,7 @@ def input_challenge_name(d_dict = d):
                     print("Would another donor like to alter their" +
                           " donations?[y/n]")
                     more_donors = user_input().lower()
-                if more_donors =='y':
+                if more_donors == 'y':
                     challenge_donor = None
                     more_donors = None
                     continue
@@ -169,7 +171,7 @@ def input_donor_float(d_amt=0):
         d_amt = user_input()
         if d_amt:
             d_amt = conv_str(d_amt, float)
-        if d_amt != None:
+        if d_amt is not None:
             break
         print("Enter a valid amount")
     return d_amt
@@ -183,7 +185,7 @@ def create_thank_u():
     print(divider)
     print("Let's craft a very personal thank you note for our donor!")
     print(divider)
-    
+
     d_name = input_donor_name()
     if d_name:
         print("\nEnter a nonzero Donation Amount:")
@@ -213,7 +215,7 @@ def sort_report_by():
     return int(report_sort)
 
 
-def create_donor_report(d_dict = d, rep_name="donor_report"):
+def create_donor_report(d_dict=d, rep_name="donor_report"):
     """
     Print a list of donors sorted by method chosen in sort_report_by.
     Donor Name, Num Gifts, Average Gift, Total Given
@@ -242,7 +244,7 @@ def write_letters_to_all():
     return
 
 
-def simulate(d_dict = d):
+def simulate(d_dict=d):
     """
     Display Donor Report altered by user's specifications.
     """
@@ -251,12 +253,12 @@ def simulate(d_dict = d):
         print("Input a factor to multiply contributions by.")
         fctr = input_donor_float()
         if fctr != "":
-            print("Input a min donation such that all donations above"+
+            print("Input a min donation such that all donations above" +
                   " this amount will be altered.")
             print("Enter -1 for default value")
             min_g = input_donor_float()
             if min_g != "":
-                print("Input a max donation such that all donations below"+
+                print("Input a max donation such that all donations below" +
                       " this amount will be altered")
                 print("Enter -1 for default value")
                 max_g = input_donor_float()

@@ -64,7 +64,7 @@ class Donor_Dict():
     @property
     def total_sum(self):
         return sum([sum(x) for x in self.histories])
-    
+
     @property
     def keys(self):
         return list(self._dict.keys())
@@ -76,7 +76,7 @@ class Donor_Dict():
     @property
     def all_donor_info(self):
         return [d.info for d in self.donors]
-    
+
     @property
     def col_len(self):
         name_col = max(len("Donor Name"), max([len(x) for x in self.names]))

@@ -22,7 +22,7 @@ class Donor():
     @property
     def info(self):
         return (self.name, len(self.history), self.avg_gift, self.sum_gift)
-    
+
     def add_gift(self, value):
         self.history.append(round(value, 2))
 
@@ -37,7 +37,7 @@ class Donor():
                                   self.history))
         filt_hist = list(map(lambda x: x*factor, filt_hist))
         return Donor(self.name, filt_hist+remain_hist)
-    
+
     def thank_u_letter_str(self, new_gift=False):
         divider = "\n" + "*" * 50 + "\n"
         thank_u_letter = divider + f"Dearest {self.name},\n"
