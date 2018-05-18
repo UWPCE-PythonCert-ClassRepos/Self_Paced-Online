@@ -24,45 +24,40 @@ def send_thank_you(name, amount):
 
     # Once amount is input, add the donation to the donor key if existing
     # or add both the donor and the donation to the dictionary if new
-    while True:
-        try:
-            amount = float(amount)
-        except ValueError:
-            raise ValueError
-            amount = input(
-                "Invalid. Please enter the amount that was donated: ")
-            continue
-        break
-
     if name in donors.keys():
         donors[name].append(amount)
     else:
         donors.setdefault(name, [])
         donors[name].append(amount)
 
-    print('\nDear {}, we wanted to say thank you for your generous'
+    out_string = ('Dear {}, we wanted to say thank you for your generous'
           ' donation of ${:.2f}!'.format(name, amount))
-    return('Dear {}, we wanted to say thank you for your generous'
-          ' donation of ${:.2f}!'.format(name, amount))
+    display_thank_you(out_string)
+    return out_string
+
+def display_thank_you(string):
+    print("")
+    print (string)
 
 
 def create_report():
     """A function that takes no paramters. This function creates a report
     from existing donors and their donations to output donor name,
-    total amount donated, number of donations, and average donation amount."""
+    total amount donated, number of donations, and average donation amount
+    to a compiled list and returns it."""
+
     # Find longest name to adjust size of table
     name_length = 0
     running_total = 0
     total_dict = {}
     sorted_dict = {}
     sorted_list = []
+    out_list = []
 
     # Loop through donors and track longest name and total donations.
     # Sort donors by total donations
     for name in donors:
         total = 0
-        if len(name) > name_length:
-            name_length = len(name)
         donations = donors[name]
         for value in donations:
             total += value
@@ -71,6 +66,35 @@ def create_report():
     sorted_dict = {key: value for sorted_key in sorted_list for key,
                    value in total_dict.items() if value == sorted_key}
 
+    # Loop through each donor and print their entry based on data in dictionary
+    for name in sorted_dict:
+        donations = donors[name]
+        don_length = (len(donations))
+        average = (sorted_dict[name]/don_length)
+
+        out_list.append("{},{:.2f},{},{:.2f}".format(name, sorted_dict[name],
+                                                        don_length, average))
+    display_report(out_list)
+    return out_list
+
+def display_report(sorted_list):
+    """A function that displays the compiled list returned from
+    create_report()."""
+    names = []
+    totals = []
+    donations = []
+    averages = []
+
+    for donor in sorted_list:
+        donor_split = donor.split(",")
+        names.append(donor_split[0])
+        totals.append(float(donor_split[1]))
+        donations.append(int(donor_split[2]))
+        averages.append(float(donor_split[3]))
+
+    # Find longest name for formatting
+    name_length = len(max(names, key=len))
+
     # Print header line of table adjusting column length by length of name
     print("")
     print("{:{align}{width}} | {:<10} | {:<10} | {:<10}".format(
@@ -78,16 +102,10 @@ def create_report():
         align='<', width=str(name_length+1)))
     print("-"*(name_length+43))
 
-    # Loop through each donor and print their entry based on data in dictionary
-    for name in sorted_dict:
-        donations = donors[name]
-        don_length = (len(donations))
-        average = (sorted_dict[name]/don_length)
-
+    for row in range(len(names)):
         print("{:{align}{width}} $ {:>11.2f}   {:>10d} $ {:>10.2f}".format(
-            name, sorted_dict[name], don_length, average,
-            align='<', width=str(name_length+2)))
-    return "Report has been created."
+            names[row], totals[row], donations[row], averages[row], align='<',
+            width=str(name_length+2)))
 
 
 def send_all():
@@ -96,6 +114,7 @@ def send_all():
     date. The .txt includes their name and their total donations within the
     thank you memo."""
     now = datetime.datetime.now()
+    letters = []
     # Loop through each donor in the list and calculate total donations.
     for donor in list(donors.keys()):
         total = 0
@@ -113,8 +132,62 @@ def send_all():
                 ' the future!'.format(
                     donor, float(total)))
         f.close()
-    print("Letters have been sent to all donors.")
-    return "Letters have been sent to all donors."
+        letters.append(filename)
+    display_letters_created(letters)
+    return letters
+
+def display_letters_created(letters):
+    """A function that displays which .txt files were created to the user."""
+    letter_string = ("{} "*len(letters)).format(*letters)
+    print ("The following letters have been created: {}".format(letter_string))
+
+def name_amount_veri():
+    """A function that goes through various input validation loops to ensure
+    user input will run through the funcion. 'q' will quit back to the main
+    menu."""
+    print("")
+    name_prompt = ("Please enter a full name to send to or enter"
+                   " 'list' for a full list of donors('q' to quit"
+                   " to menu): ")
+    name = input(name_prompt)
+    if name == 'q':
+        return 0, 0
+    # If list is chosen, print a list of donors and reprompt for a
+    #  name, 'q' # to quit to main menu
+    while name == 'list':
+        for donor in donors:
+            print(donor)
+        name = input(name_prompt)
+    if name == 'q':
+        return 0, 0
+    # Once name is input, prompt for a donation amount, 'q' to quit
+    amount = input(
+        "Please enter the amount that was donated('q' to quit"
+        " to menu): ")
+    if amount == 'q':
+        return 0, 0
+    while True:
+        try:
+            amount = float(amount)
+        except ValueError:
+            amount = input(
+                "Invalid. Please enter the amount that was donated: ")
+            continue
+        break
+    return name, amount
+
+def menu():
+    """A function to store the menu prompt. Called first in __main__"""
+    print("""\nHello User! What would you like to do?
+1) Send a Thank You card
+2) Create a report of donors
+3) Send a Thank You to everyone
+4) Quit \n""")
+
+def menu_exit():
+    """A function to return an exit prompt to the dictionary switch
+    in __main__."""
+    return "exit menu"
 
 
 if __name__ == '__main__':
@@ -122,48 +195,26 @@ if __name__ == '__main__':
     prompt as well as the calls to the previous two functions depending on which
     option was chosen. The third option allows the user to quit the script."""
     response = ''
+    function_dict= {'1': send_thank_you,
+                    '2': create_report,
+                    '3': send_all,
+                    '4': menu_exit}
     # Prompt menu and repeat until the "Quit" option has been chosen
-    while response != '4':
-        print("""\nHello User! What would you like to do?
-1) Send a Thank You card
-2) Create a report of donors
-3) Send a Thank You to everyone
-4) Quit \n""")
-        response = (
-            input("Please input a numerical value for"
-                  " what you would like to do: "))
+    while True:
+        menu()
+        prompt = ("Please input a numerical value for"
+                  " what you would like to do: ")
+        response = input(prompt)
         while response not in ('1', '2', '3', '4'):
-            response = (
-                input("Invalid input. Please input a numerical"
-                      " value for what you would like to do: "))
+            response = input("Invalid input. " + prompt)
 
         # Once response has been verified and is not 3 to quit, call the
         # appropriate function
         if response == '1':
-            print("")
-            name_prompt = ("Please enter a full name to send to or enter"
-                           " 'list' for a full list of donors('q' to quit"
-                           " to menu): ")
-            name = input(name_prompt)
-            if name == 'q':
-                continue
-            # If list is chosen, print a list of donors and reprompt for a
-            #  name, 'q' # to quit to main menu
-            while name == 'list':
-                for donor in donors:
-                    print(donor)
-                name = input(name_prompt)
-            if name == 'q':
-                continue
-            # Once name is input, prompt for a donation amount, 'q' to quit
-            amount = input(
-                "Please enter the amount that was donated('q' to quit"
-                " to menu): ")
-            if amount == 'q':
+            name, amount = name_amount_veri()
+            if name == 0:
                 continue
             # Call the send Thank You latter function passing user input
-            send_thank_you(name, amount)
-        elif response == '2':
-            create_report()
-        elif response == '3':
-            send_all()
+            function_dict[response](name, amount)
+        elif function_dict[response]() == 'exit menu':
+            break
