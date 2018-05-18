@@ -5,5 +5,5 @@ for i in range(100):
 		print('Buzz')
 	elif i%3 ==0:
 		print('Fizz')
-	else print(i)
+	else: print(i)
 		
