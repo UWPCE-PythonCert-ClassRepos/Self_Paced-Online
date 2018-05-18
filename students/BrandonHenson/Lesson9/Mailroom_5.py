@@ -1,26 +1,27 @@
 # Brandon Henson
-# 5/16/18
+# 5/17/18
 # Lesson 09 mailroom_5.py
 # Refactoring
+
 
 class Donor(object):
 
     donor_history = {'Brandon Henson': [1005.49, 3116.72, 5200],
-                    'Alicia Henson': [21.47, 1500],
-                    'Michael Green': [2400.54],
-                    'Brandon Henson Jr': [355.42, 579.31],
-                    'Kaiya Henson': [636.9, 850.13, 125.23]}
+                        'Alicia Henson': [21.47, 1500],
+                        'Michael Green': [2400.54],
+                        'Brandon Henson Jr': [355.42, 579.31],
+                        'Kaiya Henson': [636.9, 850.13, 125.23]}
 
     name_list = [i for i in donor_history]
 
-    def __init__(self,name,*donation):
+    def __init__(self, name, *donation):
         self.donations = []
         self.name = name
         self.donation = donation
         for i in self.donation:
             self.donations.append(i)
         Donor.name_list.append(self.name)
-        Donor.donor_history[self.name]=self.donation
+        Donor.donor_history[self.name] = self.donation
 
     @property
     def total(self):
@@ -35,8 +36,24 @@ class Donor(object):
         return len(self.donations)
 
 
+class All(Donor):
+    def __init__(self):
+        pass
 
-
+    def all_total(self):
+        list_of_sums = []
+        count = 0
+        for k, v in Donor.donor_history.items():
+            for i in v:
+                count = count+1
+            total = sum(v)
+            list_of_sums.append(total)
+        gt = (sum(list_of_sums))
+        av = gt/count
+        gt = str(round(gt, 2))
+        av = str(round(av, 2))
+        print('The grand total of all donations is ${}.\
+ The average amount per donation is ${}.'.format(gt, av))
 
 
 def main_menu():
@@ -100,6 +117,7 @@ def menu_2():
         for i in sorted_report:
             print("{:<20}   ${:>8} {:>8}        ${:<1}".format(
                 i[0], i[1], i[2], i[3]))
+        print(All.all_total(self=All))
     except TypeError:
         print()
 
@@ -118,4 +136,3 @@ totaling ${}\nThe money will be put to good use.\n\n\
 
 if __name__ == '__main__':
     main_menu()
-
