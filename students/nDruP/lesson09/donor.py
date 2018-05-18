@@ -36,7 +36,7 @@ class Donor():
         remain_hist = list(filter(lambda x: x < min_gift or x > max_gift,
                                   self.history))
         filt_hist = list(map(lambda x: x*factor, filt_hist))
-        return Donor(self.name, filt_hist+remain_hist)
+        return Donor("*"+self.name, filt_hist+remain_hist)
 
     def thank_u_letter_str(self, new_gift=False):
         divider = "\n" + "*" * 50 + "\n"

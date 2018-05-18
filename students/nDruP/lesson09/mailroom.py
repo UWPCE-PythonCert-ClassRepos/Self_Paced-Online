@@ -37,7 +37,7 @@ def main_menu(user_prompt=None):
         print("1. Send a Thank you")
         print("2. Create Donor Report")
         print("3. Send letters to everyone")
-        print("4. Simulate Project")
+        print("4. Run Projections")
         print("5. Quit")
         user_prompt = input(">")
         print(divider)
@@ -135,9 +135,9 @@ def input_challenge_name(d_dict=d):
     Prompt user for existing names in dict or 'all'.
     """
     donor_list = []
-    more_donors = None
-    challenge_donor = None
     while True:
+        more_donors = None
+        challenge_donor = None
         while challenge_donor not in (d_dict.names + ["", "all"]):
             print("Which donor would like to alter their donations?")
             print("Enter 'all' to alter all donors' donations")
@@ -153,8 +153,6 @@ def input_challenge_name(d_dict=d):
                           " donations?[y/n]")
                     more_donors = user_input().lower()
                 if more_donors == 'y':
-                    challenge_donor = None
-                    more_donors = None
                     continue
         break
     if challenge_donor == "" or more_donors == "":
@@ -188,9 +186,9 @@ def create_thank_u():
 
     d_name = input_donor_name()
     if d_name:
-        print("\nEnter a nonzero Donation Amount:")
+        print("\nEnter a Donation Amount:")
         gift_amt = input_donor_float()
-        if gift_amt:
+        if gift_amt != "":
             d.add_donor(d_name, gift_amt)
             thanks = d[d_name.lower()].thank_u_letter_str(1)
             print(thanks)
