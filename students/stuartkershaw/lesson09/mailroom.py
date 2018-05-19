@@ -130,6 +130,16 @@ class DonorList:
             if '.txt' in str(f):
                 print(f)
 
+
+class DonorCli:
+
+    def __init__(self, donorCollection):
+        self._donorCollection = donorCollection
+
+    @property
+    def donorCollection(self):
+        return self._donorCollection
+
     def set_donor(self):
         while True:
             try:
@@ -140,10 +150,10 @@ class DonorList:
                 print('Oops, name is required.')
                 return
             else:
-                self.add_donor(name)
+                self.donorCollection.add_donor(name)
                 self.set_donation(name)
                 print('{} added. Current donors: '.format(name))
-                self.get_donor_names()
+                self.donorCollection.get_donor_names()
                 return
 
     def set_donation(self, donor):
@@ -155,20 +165,20 @@ class DonorList:
             except ValueError:
                 print('Please provide a whole number greater than zero.')
             else:
-                self.donors[donor].add_donation(donation)
+                self.donorCollection.donors[donor].add_donation(donation)
                 print('${} donation received.'.format(donation))
                 self.get_selection()
 
     def accept_donation(self):
-        if not self.donors:
+        if not self.donorCollection.donors:
             print('The list of donors is empty.')
             return
         instruction = 'Please enter a full name or type \'list\' to see donors:\n'
         name_input = input(instruction)
         if name_input == 'list':
-            self.get_donor_names()
+            self.donorCollection.get_donor_names()
             self.accept_donation()
-        elif name_input in self.donors:
+        elif name_input in self.donorCollection.donors:
             self.set_donation(name_input)
         else:
             print('Donor not found.')
@@ -177,8 +187,8 @@ class DonorList:
         arg_dict = {
             '1': self.set_donor,
             '2': self.accept_donation,
-            '3': self.generate_table,
-            '4': self.generate_letters,
+            '3': self.donorCollection.generate_table,
+            '4': self.donorCollection.generate_letters,
             '5': quit
         }
         try:
@@ -204,7 +214,8 @@ class DonorList:
 
 def main():
     dl = DonorList()
-    dl.get_selection()
+    cli = DonorCli(dl)
+    cli.get_selection()
 
 
 if __name__ == "__main__":
