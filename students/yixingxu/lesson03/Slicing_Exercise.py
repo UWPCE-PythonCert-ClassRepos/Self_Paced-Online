@@ -41,6 +41,7 @@ if __name__ == '__main__':
 	# test the first and last items exchanged
 	assert remove_every_other_item(a_string) == "ti sasrn"
 	assert remove_every_other_item(a_tuple) == (2, 13, 5)	
+	assert remove_every_other_item(a_tuple) == (2, 13, 5)	
 	
 	#test with the first 4 and the last 4 items removed, and then every other item in between	
 	assert four_letters_exchange_remove(a_string) == " sas"
