@@ -5,6 +5,8 @@ import datetime
 
 
 class MailroomTest(unittest.TestCase):
+    maxDiff = None
+
     def setUp(self):
         self.donors_amts = mailroom4fp.get_donors_amts()
 
@@ -101,4 +103,22 @@ class MailroomTest(unittest.TestCase):
                           'Wojcicki': {'title': 'Ms.', 'donations': 375000,
                                        'num_of_donations': 1},
                           'Avey': {'title': 'Ms.', 'donations': 666000,
+                                   'num_of_donations': 3}})
+
+    def test_challenge_filter(self):
+        self.assertEqual(mailroom4fp.challenge_map(2, min_donation=125000,
+                                                   max_donation=200000),
+                         {'Gates': {'title': 'Mr.', 'donations': 300000,
+                                    'num_of_donations': 3},
+                          'Brin': {'title': 'Mr.', 'donations': 300000,
+                                   'num_of_donations': 3},
+                          # 'Cerf': {'title': 'Mr.', 'donations': 150000,
+                          #          'num_of_donations': 2},
+                          # 'Musk': {'title': 'Mr.', 'donations': 300000,
+                          #          'num_of_donations': 1},
+                          # 'Berners-Lee': {'title': 'Mr.', 'donations':
+                          #                 150000, 'num_of_donations': 2},
+                          'Wojcicki': {'title': 'Ms.', 'donations': 250000,
+                                       'num_of_donations': 1},
+                          'Avey': {'title': 'Ms.', 'donations': 400000,
                                    'num_of_donations': 3}})
