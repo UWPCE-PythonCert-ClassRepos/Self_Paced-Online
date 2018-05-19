@@ -55,12 +55,12 @@ def compose_letter(donor, donations):
         The Team""")
 
 
-def create_report_header():
-    """ Generate formatted header for report """
-    header = '{:20}|{:^15}|{:^15}|{:>15}'.format("Donor Name", "Total Given", "Num Gifts", "Average Gift")
-    header += '\n'
-    header += ("-" * len(header))
-    return header
+# def create_report_header():
+#     """ Generate formatted header for report """
+#     header = '{:20}|{:^15}|{:^15}|{:>15}'.format("Donor Name", "Total Given", "Num Gifts", "Average Gift")
+#     header += '\n'
+#     header += ("-" * len(header))
+#     return header
 
 
 def create_report_data(donations):
@@ -88,11 +88,11 @@ def print_report():
     print(create_report_rows(data))
 
 
-def create_email(donor, donation):
-    """ Create formatted email thanking donor """
-    letter_details = {'name': donor, 'donation_amount': donation}
-    letter = "\nDear {name},\n\nThank you so very much for your kind donation of ${donation_amount}. We can assure you that it will be put to great use.\n\nBest,\nChris".format(**letter_details)
-    return letter
+# def create_email(donor, donation):
+#     """ Create formatted email thanking donor """
+#     letter_details = {'name': donor, 'donation_amount': donation}
+#     letter = "\nDear {name},\n\nThank you so very much for your kind donation of ${donation_amount}. We can assure you that it will be put to great use.\n\nBest,\nChris".format(**letter_details)
+#     return letter
 
 
 def print_email(donor, donation):
