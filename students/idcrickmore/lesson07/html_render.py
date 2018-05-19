@@ -23,8 +23,7 @@ class Element():
         else:
             open_tag = f"<{self.tag_name}>"
             close_tag = f"</{self.tag_name}>"
-        # print(open_tag)
-        # print(close_tag)
+
         for item in self.content:
             if isinstance(item, Element):
                 item.render(file_out, "    ")
@@ -55,7 +54,12 @@ class SelfClosingTag(Element):
         
         
 class Html(Element):
-    pass
+    tag = 'html'
+
+
+    def render(self, file_out, cur_ind=""):
+        file_out.write("<!DOCTYPE html>\n")
+        Element.render(self, file_out, cur_ind="")
     
     
 class Body(Element):
@@ -89,7 +93,6 @@ class A(Element):
         super().__init__(content, href=link)
 
 
-	
 class Ul(Element):
     tag_name = 'ul'
     
@@ -103,7 +106,8 @@ class H(OneLineTag):
         super().__init__(content)
         self.tag_name = "h%s" % level_number
 
-
+class Meta(SelfClosingTag):
+    tag = 'meta'
 
 
     
