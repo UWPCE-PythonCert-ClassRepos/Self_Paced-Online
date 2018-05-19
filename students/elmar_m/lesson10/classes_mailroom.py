@@ -133,8 +133,9 @@ class Mailroom:
             sql_total = 'select sum(donation) from mailroom where donation < ' + below
             sql = 'update mailroom set donation = donation * ? where donation < ?'
             werte = (factor, below)
+            print('==== im below zweig, below: ', below)
 
-            self.map_multiply(factor, below)
+            self.map_multiply(factor, below=below)
 
 
         elif above:
@@ -143,7 +144,7 @@ class Mailroom:
             sql = 'update mailroom set donation = donation * ? where donation > ?'
             werte = (factor, above)
 
-            self.map_multiply(factor, above)
+            self.map_multiply(factor, above=above)
 
         try:
             self._preview(sql_show)
@@ -160,18 +161,21 @@ class Mailroom:
         
         self.cursor.execute('select donation from mailroom where donation')
         donations_all = self._beautify(self.cursor.fetchall())
-        print('==== donations_all: ', donations_all)
+        print('==== donations_all 0: ', donations_all)
+        print('==== above: ', above)
+        print('==== below: ', below)
         
         if above is None and below is None: 
             donations_after = list(map(lambda x: x * int(factor), donations_all))
+            print('==== donations_after 1: ', donations_after)
             for i in zip(donations_all, donations_after):
                 print('before: {}   after: {}'.format(i[0], i[1]))
 
         elif below:
             donations_below = list(filter(lambda x: x < int(below), donations_all))
-            print('==== donations_below: ', donations_below)
+            print('==== donations_below 2: ', donations_below)
             donations_after = list(map(lambda x: x * int(factor), donations_below))
-            print('==== donations_after: ', donations_after)
+            print('==== donations_after 3: ', donations_after)
 
             # for i in zip(donations_all, donations_above):
             for i in zip(donations_below, donations_after):
@@ -179,9 +183,9 @@ class Mailroom:
 
         elif above:
             donations_above = list(filter(lambda x: x > int(above), donations_all))
-            print('==== donations_above: ', donations_above)
+            print('==== donations_above 4: ', donations_above)
             donations_after = list(map(lambda x: x * int(factor), donations_above))
-            print('==== donations_after: ', donations_after)
+            print('==== donations_after 5: ', donations_after)
 
             # for i in zip(donations_all, donations_above):
             for i in zip(donations_above, donations_after):
