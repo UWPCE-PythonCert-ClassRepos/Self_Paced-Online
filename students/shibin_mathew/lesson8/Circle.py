@@ -1,40 +1,26 @@
-#!/usr/bin/env python3
-
 from math import pi
 
 
 class Circle:
-
     def __init__(self, radius):
-        self._radius = radius
-
-    @property
-    def radius(self):
-        return self._radius
-
-    @radius.setter
-    def radius(self, val):
-        if val < 0:
-            raise ValueError("A positive radius value is required.")
-        self._radius = val
+        self.radius = radius
+        # self.area = pi * self.radius**2
 
     @property
     def diameter(self):
-        return 2 * self.radius
+        return self.radius * 2
 
     @diameter.setter
-    def diameter(self, val):
-        if val < 0:
-            raise ValueError("A positive radius value is required.")
-        self._radius = val / 2
-
+    def diameter(self, value):
+        self.radius = value/2
     @property
     def area(self):
-        return self.radius * self.radius * pi
+        return pi*self.radius**2
 
     @classmethod
-    def from_diameter(cls, val):
-        return cls(val / 2)
+    def from_diameter(cls, diameter):
+        self = cls(diameter/2)
+        return self
 
     def __str__(self):
         return "Circle with radius: {}".format(self.radius)
@@ -54,5 +40,13 @@ class Circle:
     def __lt__(self, other):
         return self.radius < other.radius
 
-    def sort_key(self):
-        return self.radius
+    def __gt__(self, other):
+        return self.radius > other.radius
+
+    def __le__(self, other):
+        return self.radius <= other.radius
+
+    def __ge__(self, other):
+        return self.radius >= other.radius
+
+    # def sort(self):
