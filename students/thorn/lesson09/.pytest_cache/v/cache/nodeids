@@ -1,0 +1,13 @@
+[
+  "test_mailroom_oo.py::test_name",
+  "test_mailroom_oo.py::test_first_donations",
+  "test_mailroom_oo.py::test_donor_totals",
+  "test_mailroom_oo.py::test_add_donations",
+  "test_mailroom_oo.py::test_num_donations",
+  "test_mailroom_oo.py::test_average_donations",
+  "test_mailroom_oo.py::test_list_donor_names",
+  "test_mailroom_oo.py::test_add_donor",
+  "test_mailroom_oo.py::test_add_donation",
+  "test_mailroom_oo.py::test_add_donor_and_donation",
+  "test_mailroom_oo.py::test_order_donors"
+]
