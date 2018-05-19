@@ -89,7 +89,7 @@ class MailroomTest(unittest.TestCase):
           self.donors_amts['Cerf']['donations'], factor=3), 150000)
 
     def test_challenge_map(self):
-        self.assertEqual(mailroom4fp.challenge_map(3),
+        self.assertEqual(mailroom4fp.challenge_map(factor=3),
                          {'Gates': {'title': 'Mr.', 'donations': 450000,
                                     'num_of_donations': 3},
                           'Brin': {'title': 'Mr.', 'donations': 450000,
@@ -120,5 +120,5 @@ class MailroomTest(unittest.TestCase):
                           #                 150000, 'num_of_donations': 2},
                           'Wojcicki': {'title': 'Ms.', 'donations': 250000,
                                        'num_of_donations': 1},
-                          'Avey': {'title': 'Ms.', 'donations': 400000,
+                          'Avey': {'title': 'Ms.', 'donations': 444000,
                                    'num_of_donations': 3}})
