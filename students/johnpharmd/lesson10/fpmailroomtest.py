@@ -103,4 +103,4 @@ class MailroomTest(unittest.TestCase):
                           'Wojcicki': {'title': 'Ms.', 'donations': 375000,
                                        'num_of_donations': 1},
                           'Avey': {'title': 'Ms.', 'donations': 666000,
-                                   'num_of_donations': 2}})
+                                   'num_of_donations': 3}})
