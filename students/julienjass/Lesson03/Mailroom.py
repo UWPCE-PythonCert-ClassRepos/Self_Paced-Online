@@ -8,14 +8,11 @@ donor_list = [("William Gates, III", [261514, 392270.49]),
             ("Jeff Bezos", [877.33]),
             ("Paul Allen", [354.21, 212.53, 141.68])]
 
+
 def mainloop():
-    """This function takes no parameters. It contains the main menu prompt which allows the user: with choice 1 to
-    send a Thank You message (calling the function thank_you), with choice 2 to display a report with the donors'
-    information (calling the function report), and with choice 3 to leave the application (calling the function
-    leave)."""
+    """Main menu"""
     print('Mailroom Application')
     print()
-    response = ''
     while True:
         print('Please select one of the 3 options:')
         print('''
@@ -35,12 +32,10 @@ def mainloop():
         elif response == '3':
             leave()
 
+
 def thank_you():
-    """This function takes no parameters. A menu prompt allows the user: with choice 1 to enter a donor name and a
-    donation amount (calling the function enter_name), with choice 2 to see the list of all the donors, and with
-    choice 3 to return to the previous menu (calling the function mainloop)."""
+    """Thank You menu"""
     print('You have chosen to Send a Thank You message')
-    choice_user = ''
     while True:
         print('''
         1) Enter the name of the donor
@@ -70,10 +65,9 @@ def thank_you():
             print()
             mainloop()
 
+
 def report():
-    """This function takes no parameters. It allows to display in a table the formatted information on donations:
-    donor name, total given, number of gifts, and average gifts, ordered by the total amount given."""
-    print("{:24s} | {:11s} | {:9s} | {:12s}".format("Donor Name", "Total Given", "Num Gifts", "Average Gift"))
+    """Generate the formatted report"""
     print("-" * 67)
     sorted_donor_list = donor_list[:]
     sorted_donor_list.sort(key=sum_donation, reverse=True)
@@ -82,9 +76,11 @@ def report():
     print()
     mainloop()
 
+
 def leave():
-    """This function takes no parameters. It allows the user to end the application."""
+    """Quit the application"""
     sys.exit()
+
 
 def names():
     """This function takes no parameters. It allows to refresh the list of the current donors and return it."""
@@ -93,11 +89,9 @@ def names():
         names.append(person[0])
     return names
 
+
 def enter_name(name, amount):
-    """This function takes 2 parameters: a donor name and a donation amount. If the name already exists in the donors'
-    database, it will add the donation amount to an existing donor name. If it doesn't already exist, it will add a new
-    donor name with the corresponding donation amount. Then it will display a nicely formatted thank you message with
-    the donor name and the donation amount."""
+    """Add name and/or donation to donors' database"""
     amount = float(amount)
     if name in names():
         donor_list[names().index(name)][1].append(amount)
@@ -109,9 +103,11 @@ def enter_name(name, amount):
     print()
     mainloop()
 
+
 def avg_donation(donation):
     """This function takes 1 parameter: a list of numbers. It computes the average and returns it."""
     return sum(donation[1]) / len(donation[1])
+
 
 def sum_donation(donation):
     """This function takes 1 parameter: a list of numbers. It computes the total sum and returns it."""
@@ -119,6 +115,5 @@ def sum_donation(donation):
 
 
 if __name__ == '__main__':
-    """This area is always executed by the script. It is calling the mainloop function displaying the main menu
-    prompt."""
+    """Always executed by the script"""
     mainloop()

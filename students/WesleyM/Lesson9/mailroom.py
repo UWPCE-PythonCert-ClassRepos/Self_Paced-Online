@@ -1,14 +1,14 @@
-class donor:
-    def __init__(self, name, donation = None):
-        if not donation:
-            donation = []
+class Donor:
+    def __init__(self, name, donation=None):
+        self.donation = donation if donation is not None else []
         self.name = name
-        self.donation = donation
         self.total = sum(self.donation)
         if donation:
             self.average = self.total/len(self.donation)
         else:
             self.average = 0
+    
+    @property
     def add_donation(self, amount):
         self.donation.append(amount)
         self.total += amount
@@ -16,11 +16,8 @@ class donor:
 
 class DonorDatabase:
 
-    def __init__(self, name):
-        if not name:
-            self.donors = []
-        else:
-            self.donors = name
+    def __init__(self, name=None):
+        self.donors = [] if name is None else name
     
     def add_donor(self, name):
         self.donors.append(name)
@@ -54,18 +51,18 @@ class DonorDatabase:
             except ValueError:
                 print("Enter donations numerically")
 
-        if don_input not in self.get_all_donor_names():
-            try:
-                d1 = donor(don_input, [donation])
-                self.add_donor(d1)
-            except ValueError:
-                print("Please enter a name")
-        else:
+        if don_input in self.get_all_donor_names():
             for d in self.donors:
                 if d.name == don_input:
                     d.add_donation(donation)
+        else:
+            try:
+                d2 = Donor(don_input, [donation])
+                self.add_donor(d2)
+            except ValueError:
+                print("Please enter a name")
 
-        print("Thank you {} for your donation of ${:.2f}".format(d1.name, d1.total))
+        print("Thank you {} for your donation of ${:.2f}".format(don_input, donation))
     
     def donation_prompt(self):
         return float(input("Enter a donation amount \n>"))
@@ -95,11 +92,11 @@ def user_input():
     return action
 
 donors = [
-    donor('Alice Adams Ron', [20]),
-    donor('Bob Be-Lake', [100]),
-    donor('Charles Cruz', [30, 50, 10]),
-    donor('Denise Dnice', [10, 5]),
-    donor('Edward Eduardo', [25, 20, 20, 20, 10])
+    Donor('Alice Adams Ron', [20]),
+    Donor('Bob Be-Lake', [100]),
+    Donor('Charles Cruz', [30, 50, 10]),
+    Donor('Denise Dnice', [10, 5]),
+    Donor('Edward Eduardo', [25, 20, 20, 20, 10])
     ]
     
 donor_db = DonorDatabase(donors)

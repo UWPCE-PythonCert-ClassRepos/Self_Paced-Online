@@ -55,14 +55,12 @@ def test_circle_str(capsys):
 def test_circle_add():
     c1 = Circle(2)
     c2 = Circle(4)
-    c1 + c2
-    assert Circle(6)
+    assert c1 + c2 == Circle(6)
 
 
 def test_circle_mul():
     c1 = Circle(4)
-    c1 * 3
-    assert Circle(12)
+    assert c1 * 3 == Circle(12)
 
 
 def test_circle_compare():
