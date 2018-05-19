@@ -172,11 +172,10 @@ def send_letters():
 
 
 def challenge(donations, factor):
-    donations *= factor
-    return donations
+    return donations * factor
 
 
-def challenge_map(challenge):
+def challenge_map(factor):
     donors_list = []
     donations_list = []
     factor_list = []
@@ -184,13 +183,10 @@ def challenge_map(challenge):
         donors_list.append(donor)
         donations_list.append(donor_dict['donations'])
         factor_list.append(factor)
-    # print('donations_list is:', donations_list)
-    # print('\ncmap.__dir__():', cmap.__dir__())
-    cmap = map(challenge, donations_list, factor_list)
-    new_list = zip(donors_list, donations_list)
-    print('new_list is:', list(new_list))
-    # for donor_tuple in list(new_list):
-    #    donors_amts[donor]['donations'] = clist[1]
+    donations_map = map(challenge, donations_list, factor_list)
+    new_donors_amts_zip = zip(donors_list, donations_map)
+    for donor_tuple in new_donors_amts_zip:
+        donors_amts[donor_tuple[0]]['donations'] = donor_tuple[1]
     return donors_amts
 
 
