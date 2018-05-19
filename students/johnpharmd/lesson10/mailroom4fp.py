@@ -171,17 +171,28 @@ def send_letters():
         print('Generated a letter, just now, for each donor in the db.\n')
 
 
-def challenge(*donation, factor=1):
-    return donation *= factor
+def challenge(donations, factor):
+    donations *= factor
+    return donations
 
 
 def challenge_map(challenge):
-    donations_list = [[donor, donors_amts[donor]['donations']] for donor in donors_amts]
-    cmap = map(challenge, [donor[1] for donor in donations_list])
-    for donor in donors_amts:
-        donors_amts[donor]['donations'] = list(cmap)[1]
+    donors_list = []
+    donations_list = []
+    factor_list = []
+    for donor, donor_dict in donors_amts.items():
+        donors_list.append(donor)
+        donations_list.append(donor_dict['donations'])
+        factor_list.append(factor)
+    # print('donations_list is:', donations_list)
+    # print('\ncmap.__dir__():', cmap.__dir__())
+    cmap = map(challenge, donations_list, factor_list)
+    new_list = zip(donors_list, donations_list)
+    print('new_list is:', list(new_list))
+    # for donor_tuple in list(new_list):
+    #    donors_amts[donor]['donations'] = clist[1]
     return donors_amts
- 
+
 
 def program_run():
     menu_dict = {'1': prepare_ty, '2': get_report,
