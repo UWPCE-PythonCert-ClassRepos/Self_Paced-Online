@@ -66,4 +66,4 @@ new_list.pop()
 print('last item deleted list',new_list)
 print('original list',a_list)
 
-
+input("Close.") # keep python open until closing

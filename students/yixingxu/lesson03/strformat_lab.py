@@ -59,7 +59,8 @@ for item in a_list:
 # can you work how to quickly print the tuple in columns that are 5 charaters wide? It’s easily done on one short line!
 a_tuple = tuple(range(1,11))
 print(('{:<5}'*len(a_tuple)).format(*a_tuple))    
-    
+
+input("Close.") # keep python open until closing
 
     
     
