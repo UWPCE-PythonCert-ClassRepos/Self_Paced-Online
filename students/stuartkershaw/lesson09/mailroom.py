@@ -78,11 +78,11 @@ class DonorList:
 
         message_obj = {
             'donor_name': donor.name,
-            'donation': donor.donations[-1]
+            'donations': sum(donor.donations)
         }
         message = 'Dear {donor_name}, thanks so much '\
-                  'for your generous donation in the amount of: '\
-                  '${donation}.'.format(**message_obj)
+                  'for your generous donations in the amount of: '\
+                  '${donations}.'.format(**message_obj)
         return message
 
     def get_donor_names(self):
@@ -105,8 +105,11 @@ class DonorList:
                                         (number, total, average)))
 
     def generate_table(self):
+        if not self.donors:
+            print('The list of donors is empty.')
+            return
         self.generate_rollup()
-        headings = ('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift')
+        headings = ('Donor Name', 'Num Gifts', 'Total Given', 'Average Gift')
         print('{:20}{:<15}{:<15}{:<15}'.format(*headings))
         print('{:_<65}'.format(''))
         for donor in self.donors:
@@ -115,6 +118,9 @@ class DonorList:
                   .format(*cur_donor.rollup.values()))
 
     def generate_letters(self):
+        if not self.donors:
+            print('The list of donors is empty.')
+            return
         self.generate_rollup()
         for donor in self.donors:
             with open(donor.replace(' ', '_') + '.txt', 'w') as outfile:
@@ -123,6 +129,22 @@ class DonorList:
         for f in pth.iterdir():
             if '.txt' in str(f):
                 print(f)
+
+    def set_donor(self):
+        while True:
+            try:
+                name = input('Please enter a donor name: ')
+                if not name:
+                    raise ValueError
+            except ValueError:
+                print('Oops, name is required.')
+                return
+            else:
+                self.add_donor(name)
+                self.set_donation(name)
+                print('{} added. Current donors: '.format(name))
+                self.get_donor_names()
+                return
 
     def set_donation(self, donor):
         while True:
@@ -134,27 +156,30 @@ class DonorList:
                 print('Please provide a whole number greater than zero.')
             else:
                 self.donors[donor].add_donation(donation)
-                print(self.compose_thank_you(self.donors[donor]))
+                print('${} donation received.'.format(donation))
                 self.get_selection()
 
-    def send_thank_you(self):
+    def accept_donation(self):
+        if not self.donors:
+            print('The list of donors is empty.')
+            return
         instruction = 'Please enter a full name or type \'list\' to see donors:\n'
         name_input = input(instruction)
         if name_input == 'list':
             self.get_donor_names()
-            self.send_thank_you()
+            self.accept_donation()
         elif name_input in self.donors:
             self.set_donation(name_input)
         else:
-            self.add_donor(name_input)
-            self.set_donation(name_input)
+            print('Donor not found.')
 
     def apply_selection(self, selection):
         arg_dict = {
-            '1': self.send_thank_you,
-            '2': self.generate_table,
-            '3': self.generate_letters,
-            '4': quit
+            '1': self.set_donor,
+            '2': self.accept_donation,
+            '3': self.generate_table,
+            '4': self.generate_letters,
+            '5': quit
         }
         try:
             if not arg_dict.get(selection):
@@ -164,11 +189,12 @@ class DonorList:
             print('Oops, invalid selection.')
 
     def get_selection(self):
-        options = 'Please select 1, 2, 3, or 4:\n'\
-                  '1) send a thank you\n'\
-                  '2) create a report\n'\
-                  '3) send letters to everyone\n'\
-                  '4) quit\n'
+        options = 'Please select from the menu:\n'\
+                  '1) add new donor\n'\
+                  '2) log donation\n'\
+                  '3) create a report\n'\
+                  '4) send letters to everyone\n'\
+                  '5) quit\n'
         while True:
             selection = input(options)
             self.apply_selection(selection)

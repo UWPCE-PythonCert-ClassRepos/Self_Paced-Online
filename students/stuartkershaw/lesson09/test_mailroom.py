@@ -123,8 +123,8 @@ def test_donor_list_generate_table(capsys):
     dl.generate_table()
 
     captured = capsys.readouterr()
-    assert captured.out == 'Donor Name          Total Given    Num Gifts'\
-        '      Average Gift   \n'\
+    assert captured.out == 'Donor Name          Num Gifts      Total Given'\
+        '    Average Gift   \n'\
         '_________________________________________________________________\n'\
         'Stuart               2              75             37.5           \n'\
         'Cayce                2              150            75.0           \n'\
