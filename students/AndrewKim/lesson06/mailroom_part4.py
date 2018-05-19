@@ -25,7 +25,7 @@ def thank_you():
         print("Not a valid number! Please enter a valid number\n")
     
 def thank_you_msg(name):
-	return 'thank you {} for your generoous donation of {}'.format(name, sum(donor_history[name]))
+	return 'thank you {} for your generous donation of {}'.format(name, sum(donor_history[name]))
     
 def report():
     print('{:20}|{:15}|{:10}|{:15}'.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift'))

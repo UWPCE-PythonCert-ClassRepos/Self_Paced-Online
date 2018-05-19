@@ -18,7 +18,7 @@ class TestMailRoom(unittest.TestCase):
 
     def test_thank_you_msg(self):
         msg = thank_you_msg('Jamie Park')
-        assert msg == 'thank you Jamie Park for your generoous donation of 4.0'
+        assert msg == 'thank you Jamie Park for your generous donation of 4.0'
 	
 if __name__ == '__main__':
     unittest.main()
