@@ -1,12 +1,12 @@
 import unittest
-import mailroom4
+import mailroom4fp
 import os
 import datetime
 
 
 class MailroomTest(unittest.TestCase):
     def setUp(self):
-        self.donors_amts = mailroom4.get_donors_amts()
+        self.donors_amts = mailroom4fp.get_donors_amts()
 
     def test_donors(self):
         for donor in self.donors_amts:
@@ -29,7 +29,7 @@ class MailroomTest(unittest.TestCase):
             assert str(self.donors_amts[donor]['num_of_donations']).isdigit()
 
     def test_add_donor(self):
-        mailroom4.add_donor('Anderson', 'Mr.')
+        mailroom4fp.add_donor('Anderson', 'Mr.')
         try:
             assert 'Anderson' in self.donors_amts
         except KeyError:
@@ -40,15 +40,15 @@ class MailroomTest(unittest.TestCase):
         self.donors_amts.pop('Anderson')
 
     def test_add_donation_amt(self):
-        mailroom4.add_donation_amt('Avey',
-                                   title='Ms.',
-                                   new_donor=False,
-                                   donation_amt=22000)
+        mailroom4fp.add_donation_amt('Avey',
+                                     title='Ms.',
+                                     new_donor=False,
+                                     donation_amt=22000)
         assert self.donors_amts['Avey']['donations'] == 222000
         assert self.donors_amts['Avey']['num_of_donations'] == 3
 
     def test_send_ty(self):
-        actual = mailroom4.send_ty('Mr.', 'Anderson', 22000)
+        actual = mailroom4fp.send_ty('Mr.', 'Anderson', 22000)
         expected = """
                      Dear Mr. Anderson,
                      Thank you for your generous donation in the
@@ -60,7 +60,7 @@ class MailroomTest(unittest.TestCase):
             pass
 
     def test_get_report(self):
-        actual = mailroom4.get_report()
+        actual = mailroom4fp.get_report()
         expected = """
         Donor Name     | Total Given | Num Gifts| Average Gift
         -------------------------------------------------------
@@ -74,21 +74,22 @@ class MailroomTest(unittest.TestCase):
         """
 
     # def test_send_letters(self):
-    #     mailroom4.send_letters()
+    #     mailroom4fp.send_letters()
     #     cwd_list = os.listdir(os.getcwd())
     #     today = datetime.date.today()
-    #     for donor in mailroom4.get_donors_amts():
+    #     for donor in mailroom4fp.get_donors_amts():
     #         donor_letter = donor + today.strftime('%Y%m%d') + '.txt'
     #         donor_letter = donor_letter.strip('\'')
     #         assert donor_letter in cwd_list
 
     def test_challenge(self):
-        self.assertEqual(mailroom4.challenge('Cerf', factor=3),
-                         {'title': 'Mr.', 'donations': 150000,
-                          'num_of_donations': 2})
+        self.assertEqual(mailroom4fp.challenge(
+          self.donors_amts['Cerf']['donations'], factor=3), 150000)
 
     def test_challenge_map(self):
-        self.assertEqual(mailroom4.challenge_map(mailroom4.challenge()),
+        self.assertEqual(mailroom4fp.challenge_map(mailroom4fp.challenge(
+                         [['donations'] for donor in
+                          self.donors_amts], factor=3)),
                          {'Gates': {'title': 'Mr.', 'donations': 450000,
                                     'num_of_donations': 3},
                           'Brin': {'title': 'Mr.', 'donations': 450000,
@@ -101,5 +102,5 @@ class MailroomTest(unittest.TestCase):
                                           150000, 'num_of_donations': 2},
                           'Wojcicki': {'title': 'Ms.', 'donations': 375000,
                                        'num_of_donations': 1},
-                          'Avey': {'title': 'Ms.', 'donations': 600000,
+                          'Avey': {'title': 'Ms.', 'donations': 666000,
                                    'num_of_donations': 2}})
