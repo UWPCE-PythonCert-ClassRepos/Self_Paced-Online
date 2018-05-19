@@ -14,17 +14,24 @@ from except_test import fun, more_fun, last_fun
 # in that catch block, try again with the second item in the list
 first_try = ['spam', 'cheese', 'mr death']
 
-joke = fun(first_try[0])
+try:
+    joke = fun(first_try[0])
+except NameError:
+    print('''First_try with {} failed. Trying with second_try {}'''.format(first_try[0],first_try[1]))
+
+
 
 # Here is a try/except block. Add an else that prints not_joke
 try:
     not_joke = fun(first_try[2])
 except SyntaxError:
     print('Run Away!')
+else:
+    print(not_joke)
 
 # What did that do? You can think of else in this context, as well as in
 # loops as meaning: "else if nothing went wrong"
-# (no breaks in  loops, no exceptions in try blocks)
+# (no breaks in loops, no exceptions in try blocks)
 
 # Figure out what the exception is, catch it and in that same block
 #
@@ -40,4 +47,12 @@ except SyntaxError:
 
 langs = ['java', 'c', 'python']
 
-more_joke = more_fun(langs[0])
+#more_joke = more_fun(langs[0])
+try:
+    more_joke = more_fun(langs[0])
+except IndexError:
+    next_joke = more_fun(langs[1])
+else:
+    more_fun(langs[2])
+finally:
+    last_fun()
