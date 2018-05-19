@@ -33,6 +33,7 @@ print(a_list)
 # Ask the user for a fruit to delete, find it and delete it.
 fruit_delete = input("Which fruit to delete from the list? > ")
 a_list.remove(fruit_delete)
+print(a_list)
 
 # Series 3
 # Ask the user for input displaying a line like “Do you like apples?” for each fruit in the list (making the fruit all lowercase).
@@ -50,13 +51,14 @@ for fruit in list_copy:
 print('The fruit you like',a_list)
 
 # Series 4
+
 # Once more, using the list from series 1:
 a_list = series_1_list[:]
 # Make a copy of the list and reverse the letters in each fruit in the copy.
 list_copy = a_list[:]
 for i,fruit in enumerate(list_copy):
 	list_copy[i] = fruit[::-1]
-print('reversed fruit names:',a_list)
+print('reversed fruit names:',list_copy)
 # Delete the last item of the original list. Display the original list and the copy.		
 a_list = ["Apples", "Pears", "Oranges" , "Peaches"]	
 new_list = a_list[:]
