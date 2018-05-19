@@ -17,17 +17,18 @@ DONORS_DICT = {"William Gates": [326892.24, 122, 22, 12],
 
 def menu_selection(prompt, dispatch_dict):
     """menu function"""
-    while True:  # loop forever until they quit
-        response = input(prompt)
-        print(response)
-        if dispatch_dict[response]() == "exit menu":
-            print("I am here")
-            break
+    try:
+        while True:  # loop forever until they quit
+            response = input(prompt)
+            if dispatch_dict[response]() == "exit menu":
+                break
+    except KeyError:
+        print("Invalid input, quitting program")
 
 
 def single_print_sub_menu():
     '''Sub Menu for Print single Thank you menu'''
-    menu_selection(single_print_sub_prompt, single_print_sub_dispatch)
+    menu_selection(SINGLE_PRINT_SUB_PROMPT, SINGLE_PRINT_SUB_DISPACTH)
 
 
 def quit_menu():
@@ -35,8 +36,8 @@ def quit_menu():
     print("Quitting this menu now")
     return "exit menu"
 
-# functions for prompts ----
 
+# functions for prompts ----
 
 def get_name_input():
     ''' Function to select user input to return to print function'''
@@ -46,7 +47,8 @@ def get_name_input():
     for donor, donations in DONORS_DICT.items():
         if name_input.lower() in donor.lower():
             donor_check = input(
-                "Is this the donor you are looking for: {}?\nPlease type yes or no >> ".format(donor))
+                "Is this the donor you are looking for: {}?\nPlease type yes or no >> ".format(
+                    donor))
             if donor_check == 'yes':
                 return donor
 
@@ -73,7 +75,7 @@ def send_single_thank_you():
     """ function for sending thank you message - gets/ adds single donation and prints thank you"""
     donor_name = get_name_input()
     if donor_name == "quit":
-        print("No donor name chosed, exit to menu")
+        print("No donor name entered, exiting to menu")
     else:
         donor_amount = check_number_input()
 
@@ -106,17 +108,16 @@ def check_number_input():
         try:
             number = float(input('Please enter a donation amount : '))
         except ValueError:
-            print("Please enter a number for donation amaount!")
+            print("Please enter a number for donation amount!")
         else:
             return number
 
 
 def print_thank_you(donor_name, amount):
     """ prints thank you message"""
-    d = {'name': donor_name, 'donation': amount}
     thank_you = '\nDear {},\n '.format(donor_name)
-    thank_you += '\tThank you for your generous donation of ${donation:,.2f}\n'.format(
-        **d)
+    thank_you += '\tThank you for your generous donation of ${:,.2f}\n'.format(
+        amount)
     thank_you += 'Sincerely, \nThe ChickTech Donations Department\n'
     return thank_you
 
@@ -124,12 +125,9 @@ def print_thank_you(donor_name, amount):
 def print_thank_you_total(donor):
     """ prints thank you message"""
     donor_output = {"name": donor}
-    print(donor)
     all_donations = DONORS_DICT[donor]
     donor_output['last_donation'] = all_donations[- 1]
-    total = 0
-    for gift in all_donations:
-        total += gift
+    total = sum(all_donations)
     donor_output['total_donations'] = total
     thank_you = '''\nDear {name} \n
         \t Thank you for your most recent generous donation of ${last_donation:,.2f}
@@ -139,13 +137,6 @@ def print_thank_you_total(donor):
             \n The ChickTech Donations Department\n
     '''.format(**donor_output)
     return thank_you
-
-
-def print_report_test():
-    '''test print all function'''
-    print()
-    for donor in DONORS_DICT:
-        print(print_thank_you_total(donor))
 
 
 def print_report():
@@ -162,14 +153,14 @@ def print_report():
     for donor, donations in DONORS_DICT.items():
         # donor object will hold fullname, donation total, donation times, average donation
         donor_info = [donor, 0, 0, 0]
-        for donor_amount in donations:
-            donor_info[1] += donor_amount
-            donor_info[2] += 1
+        donor_info[1] = sum(donations)
+        donor_info[2] = len(donations)
         donor_info[3] = donor_info[1] // donor_info[2]
         donor_list.append(donor_info)
 
         print('{:<22}{}{:>12.2f}{:>10}{:>8}{:>12.2f}'.format(donor, '$',
-                                                             donor_info[1], donor_info[2], '$', donor_info[3]))
+                                                             donor_info[1], donor_info[2],
+                                                             '$', donor_info[3]))
     print()
 
 
@@ -188,44 +179,38 @@ def send_letters_everyone():
         filename = "./{}/{}.txt".format(new_folder, donor)
         with open(filename, 'w') as donor_thanks:
             letter_output = print_thank_you_total(donor)
-            donor_thanks.write(''.join(letter_output))
+            donor_thanks.write(letter_output)
         letters_count += 1
     print("Created {} Thank You letters in this folder: {}".format(
         letters_count, new_folder))
 
 
-#------Needs to be after the functions or code won't wrk. -------
-main_prompt = ("\nWelcome to the Mailroom App\n"
+#------Needs to be after the functions or code won't work. -------
+MAIN_PROMPT = ("\nWelcome to the Mailroom App\n"
                "Options Menu:\n"
                '\t1. Send a Single Thank You\n'
                '\t2. Create a Report\n'
                '\t3. Send Letters to Everyone\n'
-               '\t4. report test\n'
                '\tq. Quit Program\n'
-               "Type 1,2,3,4 or q to exit >> "
-               )
+               "Type 1,2,3, or q to exit >> ")
 
-main_dispatch = {"1": single_print_sub_menu,
+MAIN_DISPATCH = {"1": single_print_sub_menu,
                  "2": print_report,
                  "3": send_letters_everyone,
-                 "4": print_report_test,
-                 "q": quit_menu,
-                 }
+                 "q": quit_menu, }
 
-single_print_sub_prompt = ("\nWelcome to the Send A Thank You Menu:\n"
+SINGLE_PRINT_SUB_PROMPT = ("\nWelcome to the Send A Thank You Menu:\n"
                            "How would you like to find a donor: \n"
                            '\t1. Lookup Donor By Name \n'
                            '\t2. Print List of donors\n'
                            '\t3. Print Donors list with donations\n'
-                           "Type 1,2,3 or q to return to main menu >>> "
-                           )
+                           "Type 1,2,3 or q to return to main menu >>> ")
 
-single_print_sub_dispatch = {"1": send_single_thank_you,
+SINGLE_PRINT_SUB_DISPACTH = {"1": send_single_thank_you,
                              "2": print_donors_names,
                              "3": print_donors_and_donations,
-                             "q": quit_menu,
-                             }
+                             "q": quit_menu, }
 
 if __name__ == '__main__':
     while True:
-        menu_selection(main_prompt, main_dispatch)
+        menu_selection(MAIN_PROMPT, MAIN_DISPATCH)
