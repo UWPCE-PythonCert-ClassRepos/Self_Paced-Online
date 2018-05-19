@@ -171,11 +171,16 @@ def send_letters():
         print('Generated a letter, just now, for each donor in the db.\n')
 
 
+
+def donation_range(donations, min_donation=0, max_donation=1):
+    return min_donation < donations < max_donation
+
+
 def challenge(donations, factor):
     return donations * factor
 
 
-def challenge_map(factor):
+def challenge_map(factor, **donation_min_and_max):
     donors_list = []
     donations_list = []
     factor_list = []
@@ -183,10 +188,14 @@ def challenge_map(factor):
         donors_list.append(donor)
         donations_list.append(donor_dict['donations'])
         factor_list.append(factor)
+    if donation_min_and_max:
+        donations_list = list(filter(donation_range, donations_list))
+        print('donations list after filtering:', donations_list)
     donations_map = map(challenge, donations_list, factor_list)
     new_donors_amts_zip = zip(donors_list, donations_map)
     for donor_tuple in new_donors_amts_zip:
         donors_amts[donor_tuple[0]]['donations'] = donor_tuple[1]
+    # print(donors_amts)
     return donors_amts
 
 
