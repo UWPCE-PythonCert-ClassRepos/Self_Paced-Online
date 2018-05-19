@@ -110,13 +110,14 @@ class Mailroom:
     def _preview(self, show):
         self.cursor.execute(show)
         rows = self._beautify(self.cursor.fetchall())
-        print('\n\tThis operation will affect {} already existing donations'.format(rows[0]))
+        print('\n\tThis operation will affect {} already existing donations!'.format(rows[0]))
+        print('\tSee a listing:\n')
 
     
     def _preview_total(self, total): 
         self.cursor.execute(total)
         value = self._beautify(self.cursor.fetchall())
-        print('\tYou have to give an additional donation of {} to pass the CHALLENGE !'.format(value[0]))
+        print('\n\tYou would have to give an additional donation of {} to pass the CHALLENGE !'.format(value[0]))
 
 
     def multiply(self, factor, above=None, below=None):
@@ -126,17 +127,36 @@ class Mailroom:
             sql = 'update mailroom set donation = donation * ?'
             werte = (factor,)
 
+            self._preview(sql_show)
             self.map_multiply(factor)
+            self._preview_total(sql_total)
+
+            decision = input('\n\tDo you really want to accept this CHALLENGE ? (Y/N)')
+            if decision == 'Y':
+                self._write_to_db(sql, werte)
+            else:
+                print('\n\tCHALLENGE aborted.')
+            
+
 
         elif below:
             sql_show = 'select count(*) from mailroom where donation < ' + below
             sql_total = 'select sum(donation) from mailroom where donation < ' + below
             sql = 'update mailroom set donation = donation * ? where donation < ?'
             werte = (factor, below)
-            print('==== im below zweig, below: ', below)
 
+            # print('==== im below zweig, below: ', below)
+
+            self._preview(sql_show)
             self.map_multiply(factor, below=below)
+            self._preview_total(sql_total)
 
+            decision = input('\n\tDo you really want to accept this CHALLENGE ? (Y/N)')
+            if decision == 'Y':
+                self._write_to_db(sql, werte)
+            else:
+                print('\n\tCHALLENGE aborted.')
+            # print('ende vom lied... 2')
 
         elif above:
             sql_show = 'select count(*) from mailroom where donation > ' + above
@@ -144,16 +164,37 @@ class Mailroom:
             sql = 'update mailroom set donation = donation * ? where donation > ?'
             werte = (factor, above)
 
-            self.map_multiply(factor, above=above)
-
-        try:
             self._preview(sql_show)
+            self.map_multiply(factor, above=above)
             self._preview_total(sql_total)
-            # self.cursor.execute(sql, werte)
-            # self.db.commit()
-            return True
+
+            decision = input('\n\tDo you really want to accept this CHALLENGE ? (Y/N)')
+            if decision == 'Y':
+                self._write_to_db(sql, werte)
+            else:
+                print('\n\tCHALLENGE aborted.')
+            # print('ende vom lied... 3')
+
+        #try:
+        #    # self._preview(sql_show)
+        #    # self._preview_total(sql_total)
+        #    # self.cursor.execute(sql, werte)
+        #    # self.db.commit()
+        #    return True
+        #except sqlite3.Error as e:
+        #    print('Exception raised 3: {}'.format(e))
+
+        return True
+
+
+    def _write_to_db(self, sql, werte):
+        try:
+            self.cursor.execute(sql, werte)
+            self.db.commit()
+            print('\n\tDonations successfully updated in database!')
         except sqlite3.Error as e:
-            print('Exception raised 3: {}'.format(e))
+            print('Exception raised 4: {}'.format(e))
+        
 
 
     # def map_multiply_all(self):
@@ -161,35 +202,34 @@ class Mailroom:
         
         self.cursor.execute('select donation from mailroom where donation')
         donations_all = self._beautify(self.cursor.fetchall())
-        print('==== donations_all 0: ', donations_all)
-        print('==== above: ', above)
-        print('==== below: ', below)
+        # print('==== donations_all 0: ', donations_all)
+        # print('==== above: ', above)
+        # print('==== below: ', below)
         
         if above is None and below is None: 
             donations_after = list(map(lambda x: x * int(factor), donations_all))
-            print('==== donations_after 1: ', donations_after)
+            # print('==== donations_after 1: ', donations_after)
             for i in zip(donations_all, donations_after):
-                print('before: {}   after: {}'.format(i[0], i[1]))
+                print('\tcurrent donation: {:<10}   multiplied: {}'.format(i[0], i[1]))
 
         elif below:
             donations_below = list(filter(lambda x: x < int(below), donations_all))
-            print('==== donations_below 2: ', donations_below)
+            # print('==== donations_below 2: ', donations_below)
             donations_after = list(map(lambda x: x * int(factor), donations_below))
-            print('==== donations_after 3: ', donations_after)
+            # print('==== donations_after 3: ', donations_after)
 
-            # for i in zip(donations_all, donations_above):
             for i in zip(donations_below, donations_after):
-                print('before: {}   after: {}'.format(i[0], i[1]))
+                print('\tcurrent donation: {:<10}   multiplied: {}'.format(i[0], i[1]))
 
         elif above:
             donations_above = list(filter(lambda x: x > int(above), donations_all))
-            print('==== donations_above 4: ', donations_above)
+            # print('==== donations_above 4: ', donations_above)
             donations_after = list(map(lambda x: x * int(factor), donations_above))
-            print('==== donations_after 5: ', donations_after)
+            # print('==== donations_after 5: ', donations_after)
 
             # for i in zip(donations_all, donations_above):
             for i in zip(donations_above, donations_after):
-                print('before: {}   after: {}'.format(i[0], i[1]))
+                print('\tcurrent donation: {:<10}   multiplied: {}'.format(i[0], i[1]))
 
 
 
