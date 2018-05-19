@@ -19,11 +19,13 @@ def thank_you():
     try:
         donor_history[name].append(float(donation_amount))
         #print thank you
-        print(f'Thank you {name}, for your generous donation of {donation_amount}!') 
+        print(thank_you_msg(name))
+		
     except ValueError:
         print("Not a valid number! Please enter a valid number\n")
     
-            
+def thank_you_msg(name):
+	return 'thank you {} for your generoous donation of {}'.format(name, sum(donor_history[name]))
     
 def report():
     print('{:20}|{:15}|{:10}|{:15}'.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift'))
