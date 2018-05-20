@@ -17,4 +17,4 @@ class Element:
         file_out.write(ind + '<' + self.tag + '>\n')
         for line in self.content:
             file_out.write(ind + '    ' + line + '\n')
-        file_out.write('</' + self.tag + '>')
+        file_out.write(ind + '</' + self.tag + '>')
