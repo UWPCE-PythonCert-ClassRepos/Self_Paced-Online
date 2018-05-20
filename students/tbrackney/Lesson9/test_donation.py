@@ -7,11 +7,12 @@ Date Created 5/16/2018
 Python Version: 3.6.4
 """
 from donation_tracker import Donor, Donorlist
+from io import StringIO
 import pytest
 
 init_donors = ['Tom Selleck', 'Burt Reynolds', 'Nick Offerman', 'Sam Elliot', 'John Waters']
 init_donations = [[2000.00, 1500.00, 500.00], [45.00], [1000.00, 1000.00], [1200.00, 550.00], [20.00, 20.00, 20.00]]
-init_dict = dict(zip(init_donors, init_donations))
+init_tuple = tuple(zip(init_donors, init_donations))
 
 
 def test_donor_init():
@@ -52,12 +53,85 @@ def test_avg_donation():
 
 
 def test_donation_list_init():
-    dl = Donorlist(**init_dict)
+    dl = Donorlist(init_tuple)
     for d in init_donors:
-        assert d in dl._donors.keys()
+        assert d in dl._donor_objects.keys()
+    for v in dl._donor_objects.values():
+        assert isinstance(v, Donor)
 
 
 def test_get_donor():
-    dl = Donorlist(**init_dict)
+    dl = Donorlist(init_tuple)
     d = dl.get_donor('Tom Selleck')
     assert isinstance(d, Donor)
+    assert d.name == 'Tom Selleck'
+    assert d.donations == [2000.00, 1500.00, 500.00]
+
+
+def test_list_donors():
+        dl = Donorlist(init_tuple)
+        assert type(dl.list_donors()) == list
+        assert dl.list_donors() == ['Burt Reynolds', 'John Waters', 'Nick Offerman', 'Sam Elliot', 'Tom Selleck']
+
+
+def test_add_donor():
+    dl = Donorlist(init_tuple)
+    dl.add_donor('Gene Shallit')
+    assert 'Gene Shallit' in dl.list_donors()
+    with pytest.raises(ValueError):
+        dl.add_donor('Tom Selleck')
+
+
+def test_contains():
+    dl = Donorlist(init_tuple)
+    assert 'Tom Selleck' in dl
+    assert 'Freddie Mercury' not in dl
+
+
+def test_list_donation():
+    dl = Donorlist(init_tuple)
+    assert dl.list_donations('John Waters') == [20.0, 20.0, 20.0]
+    with pytest.raises(ValueError):
+        dl.list_donations('Freddie Mercury')
+
+
+def test_add_donation():
+    dl = Donorlist(init_tuple)
+    dl.add_donation('Nick Offerman', 250)
+    assert 250 in dl.list_donations('Nick Offerman')
+    with pytest.raises(ValueError):
+        dl.add_donation('Nobody', 20)
+
+
+def test_thankyou():
+    dl = Donorlist(init_tuple)
+    email = 'Dear Test User, thank you for your generous donation of $77.77\n'
+    assert dl.send_thankyou('Test User', 77.77) == email
+
+
+def test_thankyou2():
+    email = ('Dear Test User,\n'
+             '\n'
+             '        Thank you for your kind donations totaling $77.77\n'
+             '\n'
+             '        Your gifts will be put to very good use.\n\n'
+             '                            Sincerely\n'
+             '                                -The Team\n'
+             )
+
+    dl = Donorlist(init_tuple)
+    assert dl.send_thankyou('Test User', 77.77, template='long') == email
+
+
+def test_report():
+    dl = Donorlist(init_tuple)
+    report = ('Donor Name          | Total Given |  Num Gifts | Average Gift\n'
+              'Tom Selleck          $    4000.00          3     $    1333.33\n'
+              'Nick Offerman        $    2000.00          2     $    1000.00\n'
+              'Sam Elliot           $    1750.00          2     $     875.00\n'
+              'John Waters          $      60.00          3     $      20.00\n'
+              'Burt Reynolds        $      45.00          1     $      45.00\n'
+              )
+    out = StringIO()
+    dl.create_report(out)
+    assert report == out.getvalue()
