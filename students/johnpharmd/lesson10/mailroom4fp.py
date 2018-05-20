@@ -188,17 +188,8 @@ def challenge_map(factor, **donation_min_and_max):
         donations_list.append(donor_dict['donations'])
         factor_list.append(factor)
     if donation_min_and_max:
-        # fixme: adding this 'for' loop on 5/19 crashed both test_challenge_map and
-        # test_challenge_filter. Previously, test_challenge_map passed.
-        for donations_amt in donations_list[:]:
-            filter(filter_donations(donations_amt, **donation_min_and_max),
-                   donations_list)
-
-        #                     filter(filter_donations(**donation_min_and_max),
-        #                            donations_list))
-        # donations_list = list(filter(donation_range(donations,
-        #  **donation_min_and_max), donations_list))
-        print('donations list after filtering:', donations_list)
+        # print('min_donation and max_donation parameters given.')
+        print(donation_min_and_max)
     donations_map = map(challenge, donations_list, factor_list)
     new_donors_amts_zip = zip(donors_list, donations_map)
     for donor_tuple in new_donors_amts_zip:
