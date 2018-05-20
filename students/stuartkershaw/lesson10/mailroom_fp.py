@@ -97,14 +97,17 @@ class DonorList:
             cur_donor = self.donors[donor]
             number = len(cur_donor.donations)
             total = sum(cur_donor.donations)
-            average = float(
-                format(
-                    sum(
-                        cur_donor.donations) / len(
-                            cur_donor.donations
-                        ), '.2f'
+            if cur_donor.donations:
+                average = float(
+                    format(
+                        sum(
+                            cur_donor.donations) / len(
+                                cur_donor.donations
+                            ), '.2f'
+                        )
                     )
-                )
+            else:
+                average = 0
             cur_donor.rollup = dict(zip(('number', 'total', 'average'),
                                         (number, total, average)))
 
@@ -137,9 +140,20 @@ class DonorList:
 
     def multiply_by(self, factor, min_donation=None, max_donation=None):
         for donor in self.donors:
-            filtered = filter(
-                lambda x: x >= min_donation and x <= max_donation, self.donors[donor].donations
-            )
+            if min_donation and max_donation:
+                filtered = filter(
+                    lambda x: x >= min_donation and x <= max_donation, self.donors[donor].donations
+                )
+            elif min_donation and not max_donation:
+                filtered = filter(
+                    lambda x: x >= min_donation, self.donors[donor].donations
+                )
+            elif not min_donation and max_donation:
+                filtered = filter(
+                    lambda x: x <= max_donation, self.donors[donor].donations
+                )
+            else:
+                filtered = self.donors[donor].donations
             mapped = map(
                 lambda x: x * factor, filtered
             )
@@ -203,7 +217,7 @@ class DonorCli:
 
     def set_min_max(self, factor):
         init_min_max = input('Would you like to filter donations '
-                             'by min/max? y/n... \n')[0].lower().strip()
+                             'by min/max? y/n...\n')[0].lower().strip()
         if not init_min_max == 'y':
             self.donorCollection.multiply_by(factor)
 
@@ -212,18 +226,31 @@ class DonorCli:
 
         while True:
             try:
-                min_donation = int(input('Please enter a minimum donation: '))
-                if not min_donation > 0:
-                    raise ValueError
-                max_donation = int(input('Please enter a maximum donation: '))
-                if not max_donation > min_donation:
-                    raise ValueError
+                init_min = input('Filter by min? y/n...\n')[0].lower().strip()
+                if init_min == 'y':
+                    min_donation = int(input('Please enter a minimum donation: '))
+                    if not min_donation > 0:
+                        raise ValueError
+                init_max = input('Filter by max? y/n...\n')[0].lower().strip()
+                if init_max == 'y':
+                    max_donation = int(input('Please enter a maximum donation: '))
+                    if not max_donation > min_donation:
+                        raise ValueError
             except ValueError:
                 print('Please provide a min and max donation to filter by: ')
             else:
-                self.donorCollection.multiply_by(
-                    factor, min_donation, max_donation
-                )
+                if min_donation and max_donation:
+                    self.donorCollection.multiply_by(
+                        factor, min_donation, max_donation
+                    )
+                elif min_donation and not max_donation:
+                    self.donorCollection.multiply_by(
+                        factor, min_donation
+                    )
+                elif not min_donation and max_donation:
+                    self.donorCollection.multiply_by(
+                        factor, None, max_donation
+                    )
 
     def accept_donation(self):
         if not self.donorCollection.donors:
