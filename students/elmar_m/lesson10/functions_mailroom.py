@@ -35,7 +35,6 @@ def enter_donor():
         dobj = Donor(fname, lname)
 
         if dobj.check_existence(donor):
-            # print('Donor / UID {} found in database...'.format(donor))
             break
         else:
             print('{} not found in database, creating it...'.format(donor))
@@ -78,18 +77,8 @@ def menu(prompt, dispatcher):
     try:
         while True:
             response = input(prompt)
-
-
             if dispatcher[response]() == 'exiting':
                 break
-            # elif response == 'a':
-            #     print('====Hier: Multiplying all donations...')
-            # #     dispatcher(give_factor)
-            # elif response == 'b':
-            #     print('Multiplying only donations below...')
-            # elif response == 'c':
-            #     print('Multiplying only donations above...')
-
     except KeyError:
         print('\n\tSorry, unknown option:', response, '\n')
         menu(prompt, dispatcher)
@@ -100,9 +89,6 @@ def challenge():
     global factor
     factor = input('Please give a factor: ')
     print('\nCongratulations, you will multiply by {}...'.format(factor))
-    # global preview
-    # preview = input('\nPlease type "yes" if you want to see a preview first:')
-
     print('Which donations do you want to multiply?\
     \nPlease choose:')
 

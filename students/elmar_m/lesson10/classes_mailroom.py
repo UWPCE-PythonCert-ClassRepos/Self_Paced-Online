@@ -23,15 +23,12 @@ class Donor:
         self.dcursor.execute('select * from donors where uid = ?', (uid,))
         result = self.dcursor.fetchall()
         if len(result) == 0:
-            # print('====Donor / UID not found: {}'.format(uid))
             return None
         else:
-            # print('====HOORAY, Donor / UID FOUND: {}'.format(uid))
             return True
         
     
     def create(self, uid, fname, lname, last_donation=None):
-        # print('++++ HOORAY, in create...')
         try:
             self.dcursor.execute('''insert into donors 
                     (uid, fname, lname, last_donation)
@@ -46,7 +43,6 @@ class Donor:
     def get_last_donation(self, donor):
         try:
             self.dcursor.execute('select from donors (last_donation) where uid = ?', (donor))
-            # return self._beutify(self.dcursor.fetchall())
             return self.dcursor.fetchall()
         except sqlite3.Error as e:
             print('Exception raised: {}'.format(e))
@@ -102,8 +98,6 @@ class Mailroom:
     def get_all_donors(self):
         self.cursor.execute('select donor from mailroom')
         raw = set(self.cursor.fetchall())    # unifying result by putting it into a set
-        # donors = self._beautify(raw) 
-        # return donors
         return raw
     
 
@@ -113,109 +107,80 @@ class Mailroom:
             sql_total = 'select sum(donation) from mailroom where donation'
             sql = 'update mailroom set donation = donation * ?'
             args = (factor,)
-
             self._preview(sql_show)
             self.map_multiply(factor)
-            self._preview_total(sql_total)
-
-            decision = input('\n\tDo you really want to accept this CHALLENGE ? (Y/N)')
-            if decision == 'Y':
-                self._write_to_db(sql, args)
-            else:
-                print('\n\tCHALLENGE aborted.')
-
+            self._preview_total(sql_total, factor)
+            self._decide(sql, args)
         elif below:
             sql_show = 'select count(*) from mailroom where donation < ' + below
             sql_total = 'select sum(donation) from mailroom where donation < ' + below
             sql = 'update mailroom set donation = donation * ? where donation < ?'
             args = (factor, below)
-
             self._preview(sql_show)
             self.map_multiply(factor, below=below)
-            self._preview_total(sql_total)
-
-            decision = input('\n\tDo you really want to accept this CHALLENGE ? (Y/N)')
-            if decision == 'Y':
-                self._write_to_db(sql, args)
-            else:
-                print('\n\tCHALLENGE aborted.')
-
+            self._preview_total(sql_total, factor)
+            self._decide(sql, args)
         elif above:
             sql_show = 'select count(*) from mailroom where donation > ' + above
             sql_total = 'select sum(donation) from mailroom where donation > ' + above
             sql = 'update mailroom set donation = donation * ? where donation > ?'
             args = (factor, above)
-
             self._preview(sql_show)
             self.map_multiply(factor, above=above)
-            self._preview_total(sql_total)
-
-            decision = input('\n\tDo you really want to accept this CHALLENGE ? (Y/N)')
-            if decision == 'Y':
-                self._write_to_db(sql, args)
-            else:
-                print('\n\tCHALLENGE aborted.')
+            self._preview_total(sql_total, factor)
+            self._decide(sql, args)
         return True
+    
+    
+    def _decide(self, sql, args):
+        decision = input('\n\tDo you really want to accept this CHALLENGE ? (Y/N)')
+        if decision == 'Y':
+            self._write_to_db(sql, args)
+        else:
+            print('\n\tCHALLENGE aborted.')
 
 
     def _preview(self, show):
         self.cursor.execute(show)
         rows = self._beautify(self.cursor.fetchall())
-        print('\n\tThis operation will affect {} already existing donations!'.format(rows[0]))
+        print('\n\tThis operation would affect {} already existing donations!'.format(rows[0]))
         print('\tSee a listing:\n')
 
     
-    def _preview_total(self, total): 
+    def _preview_total(self, total, factor): 
         self.cursor.execute(total)
         value = self._beautify(self.cursor.fetchall())
-        print('\n\tYou would have to give an additional donation of {} to pass the CHALLENGE !'.format(value[0]))
+        value_int = int(value[0])
+        result = value_int * int(factor)
+        print('\n\tYou would have to give an additional donation of {} to pass the CHALLENGE !'.format(result))
 
 
     def _write_to_db(self, sql, args):
         try:
             self.cursor.execute(sql, args)
             self.db.commit()
-            print('\n\tDonations successfully updated in database!')
+            print('\n\tThank you! Donations successfully updated in database.')
         except sqlite3.Error as e:
             print('Exception raised 4: {}'.format(e))
         
 
-    # def map_multiply_all(self):
     def map_multiply(self, factor, above=None, below=None):
-        
         self.cursor.execute('select donation from mailroom where donation')
         donations_all = self._beautify(self.cursor.fetchall())
-        # print('==== donations_all 0: ', donations_all)
-        # print('==== above: ', above)
-        # print('==== below: ', below)
-        
         if above is None and below is None: 
             donations_after = list(map(lambda x: x * int(factor), donations_all))
-            # print('==== donations_after 1: ', donations_after)
             for i in zip(donations_all, donations_after):
                 print('\tcurrent donation: {:<10}   multiplied: {}'.format(i[0], i[1]))
-
         elif below:
             donations_below = list(filter(lambda x: x < int(below), donations_all))
-            # print('==== donations_below 2: ', donations_below)
             donations_after = list(map(lambda x: x * int(factor), donations_below))
-            # print('==== donations_after 3: ', donations_after)
-
             for i in zip(donations_below, donations_after):
                 print('\tcurrent donation: {:<10}   multiplied: {}'.format(i[0], i[1]))
-
         elif above:
             donations_above = list(filter(lambda x: x > int(above), donations_all))
-            # print('==== donations_above 4: ', donations_above)
             donations_after = list(map(lambda x: x * int(factor), donations_above))
-            # print('==== donations_after 5: ', donations_after)
-
-            # for i in zip(donations_all, donations_above):
             for i in zip(donations_above, donations_after):
                 print('\tcurrent donation: {:<10}   multiplied: {}'.format(i[0], i[1]))
-
-
-
 
 
     # ToDo: make more consistent usage of this function throughout the program... or omit it at all.
@@ -241,12 +206,10 @@ class Mailroom:
             donordict[person].append(total)
             donordict[person].append(num)
             donordict[person].append(avg)
-        
         maxn += 3
         fstring = '\t{:<20} ' + '|' + '{:>' + str(maxn) + '} ' + '|' + '{:>9}' + '|' + '{:>20}' 
         print(fstring.format('Donor Name', 'Total', 'Num Gifts', 'Average Gift'))  
         print('\t' + '-' * (maxn + 54)) 
-
         for i in donordict:
             print(fstring.format(i, donordict[i][0], donordict[i][1], donordict[i][2])) 
         
@@ -254,23 +217,16 @@ class Mailroom:
     def mail(self):
         with open('./MAIL_TEMPLATE', 'r') as fr:
             lines = fr.readlines()
-
             for name in self._beautify(self.get_all_donors()):
                 ts = time.strftime('%Y%m%d-%H%M%S')
                 filename = name + '_' + ts + '.txt'
-    
-                # donation = '500'
                 self.cursor.execute('select * from donors where uid = ?', (name,))
                 result = self.cursor.fetchall()
                 if len(result) == 0:
                     print('====Last_donation not found: {}'.format(name))
                 else:
-                    # print('====Last_donation FOUND: {} {}'.format(name, result))
                     last_donation = result[0][3]
                     donation = str(last_donation)
-                    # print(donation)
-                    # return
-
                 with open(filename, 'w') as fw:
                     for i in lines:
                         if 'NAME' in i:
