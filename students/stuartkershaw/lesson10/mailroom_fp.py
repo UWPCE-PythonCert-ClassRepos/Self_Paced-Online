@@ -25,6 +25,10 @@ class Donor:
     def donations(self):
         return self._donations
 
+    @donations.setter
+    def donations(self, updated):
+        self._donations = updated
+
     def add_donation(self, val):
         if val < 1:
             raise ValueError("A positive donation value is required.")
@@ -43,8 +47,8 @@ class Donor:
 
 class DonorList:
 
-    def __init__(self):
-        self._donors = {}
+    def __init__(self, donors=None):
+        self._donors = donors if donors else {}
 
     @property
     def donors(self):
@@ -130,6 +134,18 @@ class DonorList:
             if '.txt' in str(f):
                 print(f)
 
+    def multiply_by(self, factor):
+        for donor in self.donors:
+            self.donors[donor].donations = list(map(lambda x: x * factor, self.donors[donor].donations))
+
+        newDL = DonorList(self.donors)
+
+        print('Congratulations, donations were multiplied by {}:'.format(factor))
+        newDL.generate_table()
+
+        cli = DonorCli(newDL)
+        cli.get_selection()
+
 
 class DonorCli:
 
@@ -169,6 +185,17 @@ class DonorCli:
                 print('${} donation received.'.format(donation))
                 self.get_selection()
 
+    def set_multiplier(self):
+        while True:
+            try:
+                factor = int(input('Please enter a factor to multiply by: '))
+                if not factor > 0:
+                    raise ValueError
+            except ValueError:
+                print('Please provide a whole number greater than zero.')
+            else:
+                self.donorCollection.multiply_by(factor)
+
     def accept_donation(self):
         if not self.donorCollection.donors:
             print('The list of donors is empty.')
@@ -187,9 +214,10 @@ class DonorCli:
         arg_dict = {
             '1': self.set_donor,
             '2': self.accept_donation,
-            '3': self.donorCollection.generate_table,
-            '4': self.donorCollection.generate_letters,
-            '5': quit
+            '3': self.set_multiplier,
+            '4': self.donorCollection.generate_table,
+            '5': self.donorCollection.generate_letters,
+            '6': quit
         }
         try:
             if not arg_dict.get(selection):
@@ -202,9 +230,10 @@ class DonorCli:
         options = 'Please select from the menu:\n'\
                   '1) add new donor\n'\
                   '2) log donation\n'\
-                  '3) create a report\n'\
-                  '4) send letters to everyone\n'\
-                  '5) quit\n'
+                  '3) multiply donations\n'\
+                  '4) create a report\n'\
+                  '5) send letters to everyone\n'\
+                  '6) quit\n'
         while True:
             selection = input(options)
             self.apply_selection(selection)
