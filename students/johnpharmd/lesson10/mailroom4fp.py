@@ -106,10 +106,9 @@ def send_ty(title, name, donation_amt):
                   'last_name': name,
                   'donation': donation_amt}
     ty_text = """
-                Dear {title} {last_name},
-                Thank you for your generous donation in the
-                amount of {donation} USD.
-              """
+Dear {title} {last_name},
+Thank you for your generous donation in the
+amount of {donation} USD. """
     if __name__ == '__main__':
         print(ty_text.format(**donor_dict))
     else:
@@ -175,7 +174,15 @@ def challenge(donations, factor):
     return donations * factor
 
 
-def challenge_map(factor, **min_and_max):
+def challenge_map(*args, **min_and_max):
+    factor = input('Enter a factor: ')
+    if not min_and_max:
+        min_and_max_text1 = """
+Enter a minimum donation to match: """
+        min_and_max_text2 = """
+Now a maximum donation to match: """
+        min_and_max = {'min_donation': int(input(min_and_max_text1)),
+                       'max_donation': int(input(min_and_max_text2))}
     copy_donors_amts = dict(donors_amts)
     donors_list = []
     donations_list = []
@@ -200,17 +207,18 @@ def challenge_map(factor, **min_and_max):
     new_donors_amts_zip = zip([l[1] for l in amts_donors_list], donations_map)
     for donor_tuple in new_donors_amts_zip:
         copy_donors_amts[donor_tuple[0]]['donations'] = donor_tuple[1]
-    return copy_donors_amts
+    print(copy_donors_amts)
 
 
 def program_run():
     menu_dict = {'1': prepare_ty, '2': get_report,
-                 '3': send_letters, 'q': sys.exit}
+                 '3': send_letters, '4': challenge_map, 'q': sys.exit}
     main_text = '\n'.join((
         'Choose from the following:',
         '"1" - Send a "Thank You",',
         '"2" - Create a Report,',
-        '"3" - Send Letters to All Donors, or',
+        '"3" - Send Letters to All Donors,',
+        '"4" - Donation Match Challenge, or',
         '"q" to Quit: '
       ))
     while True:
