@@ -15,6 +15,21 @@ class Element:
         cur_ind = 0 if cur_ind is None else cur_ind
         ind = cur_ind * '    '
         file_out.write(ind + '<' + self.tag + '>\n')
-        for line in self.content:
-            file_out.write(ind + '    ' + line + '\n')
-        file_out.write(ind + '</' + self.tag + '>')
+        for item in self.content:
+            if hasattr(item, 'render'):
+                item.render(file_out, cur_ind + 1)
+            else:
+                file_out.write(ind + '    ' + item + '\n')
+        file_out.write(ind + '</' + self.tag + '>\n')
+
+
+class Html(Element):
+    tag = 'html'
+
+
+class Body(Element):
+    tag = 'body'
+
+
+class P(Element):
+    tag = 'p'

@@ -2,7 +2,7 @@
 
 import pytest
 from io import StringIO
-from html_render import Element
+from html_render import Element, Html, Body, P
 
 
 def test_step1():
@@ -18,35 +18,36 @@ def test_step1():
 
     f = StringIO()
     el.render(f)
-    assert f.getvalue() == ('<html>\n    hi\n    bye\n</html>')
+    assert f.getvalue() == ('<html>\n    hi\n    bye\n</html>\n')
 
     f = StringIO()
     el.render(f, 1)
-    assert f.getvalue() == ('    <html>\n        hi\n        bye\n    </html>')
+    assert f.getvalue() == ('    <html>\n        hi\n        bye\n    '
+                            '</html>\n')
 
 
 def test_step2():
     html_el = Html()
     body_el = Body()
     p_el = P()
-    assert html_el.tag = 'html'
-    assert body_el.tag = 'body'
-    assert p_el.tag = 'p'
+    assert html_el.tag == 'html'
+    assert body_el.tag == 'body'
+    assert p_el.tag == 'p'
 
     html_el.append('hi')
     f = StringIO()
-    el.render(f)
-    assert f.getvalue() == ('<html>\n    hi\n</html>')
+    html_el.render(f)
+    assert f.getvalue() == ('<html>\n    hi\n</html>\n')
 
-    page = hr.Html()
-    body = hr.Body()
-    body.append(hr.P("Some text."))
-    body.append(hr.P("More text."))
+    page = Html()
+    body = Body()
+    body.append(P("Some text."))
+    body.append(P("More text."))
     page.append(body)
     f = StringIO()
     page.render(f)
-    expected = ('<hmtl>\n    <body>\n        <p>\n            Some text.\n'
-                '            More text.\n        </p>\n    </body>\n    '
-                '</html>'
+    expected = ('<html>\n    <body>\n        <p>\n            Some text.\n'
+                '        </p>\n        <p>\n            More text.\n        '
+                '</p>\n    </body>\n</html>\n'
                 )
     assert f.getvalue() == expected
