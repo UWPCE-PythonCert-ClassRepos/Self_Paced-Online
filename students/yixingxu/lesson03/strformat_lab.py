@@ -54,7 +54,7 @@ print(f'The weight of an {a_list[0].upper()} is {a_list[1]*1.2} and the weight o
 # Make sure some of the costs are in the hundreds and thousands to test your alignment specifiers.
 a_list = [['Name', 'Computer', 'Age', 10, 'Cost', '$10000'],['Name', 'Disk', 'Age', 1000, 'Cost', '$10'],['Name', 'Table','Age', 3, 'Cost', '$100']]
 for item in a_list:
-    print('{:<10}{:<10}{:<10}{:<10}'.format(*item))
+    print(('{:<10}'*len(item)).format(*item))
 # And for an extra task, given a tuple with 10 consecutive numbers, 
 # can you work how to quickly print the tuple in columns that are 5 charaters wide? It’s easily done on one short line!
 a_tuple = tuple(range(1,11))
