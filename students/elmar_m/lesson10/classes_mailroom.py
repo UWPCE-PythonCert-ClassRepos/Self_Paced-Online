@@ -107,6 +107,57 @@ class Mailroom:
         return raw
     
 
+    def multiply(self, factor, above=None, below=None):
+        if above is None and below is None:
+            sql_show = 'select count(*) from mailroom where donation'
+            sql_total = 'select sum(donation) from mailroom where donation'
+            sql = 'update mailroom set donation = donation * ?'
+            args = (factor,)
+
+            self._preview(sql_show)
+            self.map_multiply(factor)
+            self._preview_total(sql_total)
+
+            decision = input('\n\tDo you really want to accept this CHALLENGE ? (Y/N)')
+            if decision == 'Y':
+                self._write_to_db(sql, args)
+            else:
+                print('\n\tCHALLENGE aborted.')
+
+        elif below:
+            sql_show = 'select count(*) from mailroom where donation < ' + below
+            sql_total = 'select sum(donation) from mailroom where donation < ' + below
+            sql = 'update mailroom set donation = donation * ? where donation < ?'
+            args = (factor, below)
+
+            self._preview(sql_show)
+            self.map_multiply(factor, below=below)
+            self._preview_total(sql_total)
+
+            decision = input('\n\tDo you really want to accept this CHALLENGE ? (Y/N)')
+            if decision == 'Y':
+                self._write_to_db(sql, args)
+            else:
+                print('\n\tCHALLENGE aborted.')
+
+        elif above:
+            sql_show = 'select count(*) from mailroom where donation > ' + above
+            sql_total = 'select sum(donation) from mailroom where donation > ' + above
+            sql = 'update mailroom set donation = donation * ? where donation > ?'
+            args = (factor, above)
+
+            self._preview(sql_show)
+            self.map_multiply(factor, above=above)
+            self._preview_total(sql_total)
+
+            decision = input('\n\tDo you really want to accept this CHALLENGE ? (Y/N)')
+            if decision == 'Y':
+                self._write_to_db(sql, args)
+            else:
+                print('\n\tCHALLENGE aborted.')
+        return True
+
+
     def _preview(self, show):
         self.cursor.execute(show)
         rows = self._beautify(self.cursor.fetchall())
@@ -120,82 +171,14 @@ class Mailroom:
         print('\n\tYou would have to give an additional donation of {} to pass the CHALLENGE !'.format(value[0]))
 
 
-    def multiply(self, factor, above=None, below=None):
-        if above is None and below is None:
-            sql_show = 'select count(*) from mailroom where donation'
-            sql_total = 'select sum(donation) from mailroom where donation'
-            sql = 'update mailroom set donation = donation * ?'
-            werte = (factor,)
-
-            self._preview(sql_show)
-            self.map_multiply(factor)
-            self._preview_total(sql_total)
-
-            decision = input('\n\tDo you really want to accept this CHALLENGE ? (Y/N)')
-            if decision == 'Y':
-                self._write_to_db(sql, werte)
-            else:
-                print('\n\tCHALLENGE aborted.')
-            
-
-
-        elif below:
-            sql_show = 'select count(*) from mailroom where donation < ' + below
-            sql_total = 'select sum(donation) from mailroom where donation < ' + below
-            sql = 'update mailroom set donation = donation * ? where donation < ?'
-            werte = (factor, below)
-
-            # print('==== im below zweig, below: ', below)
-
-            self._preview(sql_show)
-            self.map_multiply(factor, below=below)
-            self._preview_total(sql_total)
-
-            decision = input('\n\tDo you really want to accept this CHALLENGE ? (Y/N)')
-            if decision == 'Y':
-                self._write_to_db(sql, werte)
-            else:
-                print('\n\tCHALLENGE aborted.')
-            # print('ende vom lied... 2')
-
-        elif above:
-            sql_show = 'select count(*) from mailroom where donation > ' + above
-            sql_total = 'select sum(donation) from mailroom where donation > ' + above
-            sql = 'update mailroom set donation = donation * ? where donation > ?'
-            werte = (factor, above)
-
-            self._preview(sql_show)
-            self.map_multiply(factor, above=above)
-            self._preview_total(sql_total)
-
-            decision = input('\n\tDo you really want to accept this CHALLENGE ? (Y/N)')
-            if decision == 'Y':
-                self._write_to_db(sql, werte)
-            else:
-                print('\n\tCHALLENGE aborted.')
-            # print('ende vom lied... 3')
-
-        #try:
-        #    # self._preview(sql_show)
-        #    # self._preview_total(sql_total)
-        #    # self.cursor.execute(sql, werte)
-        #    # self.db.commit()
-        #    return True
-        #except sqlite3.Error as e:
-        #    print('Exception raised 3: {}'.format(e))
-
-        return True
-
-
-    def _write_to_db(self, sql, werte):
+    def _write_to_db(self, sql, args):
         try:
-            self.cursor.execute(sql, werte)
+            self.cursor.execute(sql, args)
             self.db.commit()
             print('\n\tDonations successfully updated in database!')
         except sqlite3.Error as e:
             print('Exception raised 4: {}'.format(e))
         
-
 
     # def map_multiply_all(self):
     def map_multiply(self, factor, above=None, below=None):
