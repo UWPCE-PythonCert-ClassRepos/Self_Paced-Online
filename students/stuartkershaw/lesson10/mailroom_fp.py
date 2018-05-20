@@ -118,7 +118,8 @@ class DonorList:
         print('{:_<65}'.format(''))
         for donor in self.donors:
             cur_donor = self.donors[donor]
-            print('{:<20}'.format(cur_donor.name), ('{:<15}' * len(cur_donor.rollup))
+            print('{:<20}'.format(cur_donor.name),
+                  ('{:<15}' * len(cur_donor.rollup))
                   .format(*cur_donor.rollup.values()))
 
     def generate_letters(self):
@@ -134,9 +135,15 @@ class DonorList:
             if '.txt' in str(f):
                 print(f)
 
-    def multiply_by(self, factor):
+    def multiply_by(self, factor, min_donation=None, max_donation=None):
         for donor in self.donors:
-            self.donors[donor].donations = list(map(lambda x: x * factor, self.donors[donor].donations))
+            filtered = filter(
+                lambda x: x >= min_donation and x <= max_donation, self.donors[donor].donations
+            )
+            mapped = map(
+                lambda x: x * factor, filtered
+            )
+            self.donors[donor].donations = list(mapped)
 
         newDL = DonorList(self.donors)
         newDL.generate_table()
@@ -192,13 +199,38 @@ class DonorCli:
             except ValueError:
                 print('Please provide a whole number greater than zero.')
             else:
-                self.donorCollection.multiply_by(factor)
+                self.set_min_max(factor)
+
+    def set_min_max(self, factor):
+        init_min_max = input('Would you like to filter donations '
+                             'by min/max? y/n... \n')[0].lower().strip()
+        if not init_min_max == 'y':
+            self.donorCollection.multiply_by(factor)
+
+        min_donation = 0
+        max_donation = 0
+
+        while True:
+            try:
+                min_donation = int(input('Please enter a minimum donation: '))
+                if not min_donation > 0:
+                    raise ValueError
+                max_donation = int(input('Please enter a maximum donation: '))
+                if not max_donation > min_donation:
+                    raise ValueError
+            except ValueError:
+                print('Please provide a min and max donation to filter by: ')
+            else:
+                self.donorCollection.multiply_by(
+                    factor, min_donation, max_donation
+                )
 
     def accept_donation(self):
         if not self.donorCollection.donors:
             print('The list of donors is empty.')
             return
-        instruction = 'Please enter a full name or type \'list\' to see donors:\n'
+        instruction = 'Please enter a full name or'\
+                      ' type \'list\' to see donors:\n'
         name_input = input(instruction)
         if name_input == 'list':
             self.donorCollection.get_donor_names()
