@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 import unittest
-from mailroom_part4 import tup_donor_names, menu, subMenu, Files, update_donor, donor_list_creation,send_thankyou_option, \
-    create_report_option, exit_program_option,lifetime_donations,menu_dispatch,thankyou_dispatch
+from mailroom_part4 import tup_donor_names, Menu, SubMenu, Files, update_donor, donor_list_creation,send_thankyou_option, \
+    create_report_option, exit_program_option,lifetime_donations,menu_dispatch
 
 class MyTestCase(unittest.TestCase):
     def test_creatReport(self):
-        self.assertIsNone(subMenu.create_report())
+        self.assertIsNone(SubMenu.create_report())
 
     def test_donorEmail(self):
         str_salutation = "Dear John Banks,"
@@ -29,7 +29,6 @@ class MyTestCase(unittest.TestCase):
     def test_createReportOption(self):
         self.assertIsNone(create_report_option())
 
-
     def test_exitProgram(self):
         self.assertEqual(exit_program_option(),"exit")
 
@@ -39,8 +38,6 @@ class MyTestCase(unittest.TestCase):
     def test_menu_dispatch(self):
         self.assertDictEqual(menu_dispatch,menu_dispatch)
 
-    def test_thankyou_dispatch(self):
-        self.assertDictEqual(thankyou_dispatch, thankyou_dispatch)
 
 if __name__ == '__main__':
     unittest.main()

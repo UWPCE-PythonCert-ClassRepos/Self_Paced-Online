@@ -12,7 +12,7 @@
 
 # -----Data Section-----
 import os
-str_name = None     # --> User's name
+str_name = str()    # --> User's name
 int_option = int()  # --> User's option.
 tup_donor_names = (["William Gates, III",1,10000.0],["Mark Zuckerberg",1,20000.0],
                    ["Jeff Bezos",1,1200.0],["Paul Allen",1,5000.0],
@@ -25,7 +25,7 @@ str_valediction = ""  # --> Email valediction
 # -----Process Section-----
 #  Methods defined in the menu class are related to general menu checks or options based on user inputs.
 
-class menu(object):
+class Menu():
     @staticmethod
     def menu_options():
         '''
@@ -51,7 +51,7 @@ class menu(object):
 # Methods in the sub_menu class will execute code based off of the user's sub-menu choice.
 
 
-class subMenu(object):
+class SubMenu():
     @staticmethod
     def send_thankyou():
         '''
@@ -149,7 +149,7 @@ class subMenu(object):
 
 # Methods defined in the files class are related to opening and renaming files.
 # Modifications to the methods are needed if the files are not for a task priority list.
-class Files(object):
+class Files():
     @staticmethod
     def write_email(donors):
         '''
@@ -160,9 +160,9 @@ class Files(object):
         for donor_name in donors:
             # Open text file and assign a mode to the file.
             new_file = open(donor_name[0] + ".txt", mode="w")
-            new_file.write(thankyou_dispatch[int_option](donor_name[0], lifetime_donations(tup_donor_names)))
+            new_file.write(Files.donor_email(donor_name[0], lifetime_donations(tup_donor_names)))
             new_file.close()
-            print(donor_name[0] + "saved")
+            print(donor_name[0] + " saved to "+donor_name[0]+".txt.")
 
 
     @staticmethod
@@ -231,7 +231,7 @@ def send_thankyou_option():
     '''
     # User selects option 1. Can display a list of the donors and where the user can add donors and donations.
     print()  # --> Formatting
-    subMenu.send_thankyou()
+    SubMenu.send_thankyou()
 
 def create_report_option():
     '''
@@ -241,7 +241,7 @@ def create_report_option():
     # User selects option 2. Creates a donation summary for the user.
     print()  # --> Formatting
     try:
-        subMenu.create_report()
+        SubMenu.create_report()
     except ValueError:
         print("There are no donors on the list to create a report.")
 
@@ -293,8 +293,7 @@ def main():
               "\t\t3) Send letters to everyone\n\n"
               "\t\t4) Quit\n")
         # Error handles user's option choice.
-        global int_option
-        int_option = menu.menu_options()
+        int_option = Menu.menu_options()
         if menu_dispatch[int_option]() == "exit":
             break
 
@@ -305,27 +304,22 @@ menu_dispatch = {1 : send_thankyou_option,
                  4 : exit_program_option
                  }
 
-thankyou_dispatch = {3 : Files.donor_email}
-
 # -----Presentation Section-----
 # The main block checks to see the program is not being imported then runs the program.
 if __name__ == '__main__':
-    # Removed for unit test purposes. This line is causing the unit test not to run.
-    ## Asking the user for their name, strips spaces, and formats their name to be capitalized.
-    #str_name = input("Hello, for a more personal experience please enter your first name. ").strip(" ").capitalize()
+    # Asking the user for their name, strips spaces, and formats their name to be capitalized.
+    str_name = input("Hello, for a more personal experience please enter your first name. ").strip(" ").capitalize()
 
-    # Removed for unit test purposes. This line is causing the unit test not to run.
-    ## Welcoming the user to the program. --> Create into a function.
-    #print("\nWelcome, " + str_name + ", to the donor mail program; here you can add donors and mail a thank-you message. "
-    #                             + "\n")
+    # Welcoming the user to the program. --> Create into a function.
+    print("\nWelcome, " + str_name + ", to the donor mail program; here you can add donors and mail a thank-you message. "
+                                 + "\n")
     main()
 
 # Removed for unit test purposes. This line is causing the unit test not to run.
 #else:
 #    raise Exception("This file was not created to be imported")  # --> Gives an error if the program is being imported.
 
-# Removed for unit test purposes. This line is causing the unit test not to run.
-## Notifies the user that the program will be closing.
-#print("\n" + str_name + ", the program will be exiting now. Good bye!")
+# Notifies the user that the program will be closing.
+print("\n" + str_name + ", the program will be exiting now. Good bye!")
 
-#input("\n" + "Press enter to exit. ")
+input("\n" + "Press enter to exit. ")
