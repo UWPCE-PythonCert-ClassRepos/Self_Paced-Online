@@ -171,16 +171,16 @@ def send_letters():
         print('Generated a letter, just now, for each donor in the db.\n')
 
 
-def filter_donations(donations, min_donation, max_donation):
-    return min_donation < donations < max_donation
-
-
 def filter_lt(donations, max_donation):
     return donations < max_donation
 
 
 def filter_gt(donations, min_donation):
     return donations > min_donation
+
+
+def filter_donations(donations, min_donation, max_donation):
+    return min_donation < donations < max_donation
 
 
 def challenge(donations, factor):
@@ -193,19 +193,32 @@ def challenge_map(factor, **min_and_max):
     factor_list = []
     for donor, donor_dict in donors_amts.items():
         donors_list.append(donor)
-        donations_list.append(donor_dict['donations'])  
+        donations_list.append(donor_dict['donations'])
         factor_list.append(factor)
     if min_and_max:
         # filter_object = filter(function or None, iterable)
-        # dfilter = [filter(filter_donations(amt, donation_min_and_max['min_donation'],
-        #            donation_min_and_max['max_donation']), donations_list)
-        #            for amt in donations_list] 
-        dfilter = filter(filter_lt(min_and_max['max_donation'],
-                         donations_list))
-        dfilter = filter(filter_gt(min_and_max['min_donation'],
-                         dfilter))
-        donations_list = list(dfilter)
-        print('donations_list:', donations_list)
+        # attempted lambda creation, 5/20/18
+
+        # dfilter = filter(filter_donations(min_and_max['min_donation'],
+        #                  min_and_max['max_donation']), donations_list)
+        # # dfilter = filter(filter_lt(donations_list[:].pop(),
+        # #                  min_and_max['max_donation']),
+        # #                  donations_list)
+        # # print('dfilter:', dfilter)
+        # dlist = list(dfilter)
+        # print('dlist:', dlist)
+        # dfilter = filter(filter_gt(min_and_max['min_donation']),
+        #                  donations_list)
+        # print('dfilter after 2nd filter (gt):', dfilter)
+        # donations_list = dfilter
+        # print('donations_list:', donations_list)
+        clist = list(filter(lambda x: x > min_and_max['min_donation'],
+                     donations_list))
+        print('clist:', clist)
+        dlist = list(filter(lambda x: x < min_and_max['max_donation'],
+                     clist))
+        donations_list = dlist
+        print('dlist:', dlist)
     donations_map = map(challenge, donations_list, factor_list)
     new_donors_amts_zip = zip(donors_list, donations_map)
     for donor_tuple in new_donors_amts_zip:
