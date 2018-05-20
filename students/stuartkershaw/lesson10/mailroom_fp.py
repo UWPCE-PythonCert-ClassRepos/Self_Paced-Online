@@ -139,8 +139,6 @@ class DonorList:
             self.donors[donor].donations = list(map(lambda x: x * factor, self.donors[donor].donations))
 
         newDL = DonorList(self.donors)
-
-        print('Congratulations, donations were multiplied by {}:'.format(factor))
         newDL.generate_table()
 
         cli = DonorCli(newDL)
