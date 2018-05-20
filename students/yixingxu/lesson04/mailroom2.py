@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import sys # import sys, so i can use sys.exit(0) later
 import io
 donation_history = [
