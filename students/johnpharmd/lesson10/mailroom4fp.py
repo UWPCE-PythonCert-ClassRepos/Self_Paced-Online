@@ -175,11 +175,19 @@ def filter_donations(donations, min_donation, max_donation):
     return min_donation < donations < max_donation
 
 
+def filter_lt(donations, max_donation):
+    return donations < max_donation
+
+
+def filter_gt(donations, min_donation):
+    return donations > min_donation
+
+
 def challenge(donations, factor):
     return donations * factor
 
 
-def challenge_map(factor, **donation_min_and_max):
+def challenge_map(factor, **min_and_max):
     donors_list = []
     donations_list = []
     factor_list = []
@@ -187,10 +195,15 @@ def challenge_map(factor, **donation_min_and_max):
         donors_list.append(donor)
         donations_list.append(donor_dict['donations'])  
         factor_list.append(factor)
-    if donation_min_and_max:
+    if min_and_max:
         # filter_object = filter(function or None, iterable)
-        dfilter = [filter(filter_donations(amt, donation_min_and_max['min_donation'],
-                   donation_min_and_max['max_donation']), donations_list)] 
+        # dfilter = [filter(filter_donations(amt, donation_min_and_max['min_donation'],
+        #            donation_min_and_max['max_donation']), donations_list)
+        #            for amt in donations_list] 
+        dfilter = filter(filter_lt(min_and_max['max_donation'],
+                         donations_list))
+        dfilter = filter(filter_gt(min_and_max['min_donation'],
+                         dfilter))
         donations_list = list(dfilter)
         print('donations_list:', donations_list)
     donations_map = map(challenge, donations_list, factor_list)
