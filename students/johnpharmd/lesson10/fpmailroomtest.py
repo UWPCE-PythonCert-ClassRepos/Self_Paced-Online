@@ -88,37 +88,14 @@ class MailroomTest(unittest.TestCase):
         self.assertEqual(mailroom4fp.challenge(
           self.donors_amts['Cerf']['donations'], factor=3), 150000)
 
-    def test_challenge_map(self):
-        self.assertEqual(mailroom4fp.challenge_map(factor=2),
+    def test_challenge_filter(self):
+        self.assertEqual(mailroom4fp.challenge_map(factor=2,
+                         min_donation=100000, max_donation=250000),
                          {'Gates': {'title': 'Mr.', 'donations': 300000,
                                     'num_of_donations': 3},
                           'Brin': {'title': 'Mr.', 'donations': 300000,
                                    'num_of_donations': 3},
-                          'Cerf': {'title': 'Mr.', 'donations': 100000,
-                                   'num_of_donations': 2},
-                          'Musk': {'title': 'Mr.', 'donations': 200000,
-                                   'num_of_donations': 1},
-                          'Berners-Lee': {'title': 'Mr.', 'donations':
-                                          100000, 'num_of_donations': 2},
                           'Wojcicki': {'title': 'Ms.', 'donations': 250000,
                                        'num_of_donations': 1},
                           'Avey': {'title': 'Ms.', 'donations': 444000,
                                    'num_of_donations': 3}})
-
-    def test_challenge_filter(self):
-        self.assertEqual(mailroom4fp.challenge_map(factor=2,
-                         min_donation=100000, max_donation=250000),
-                         # 'Gates': {'title': 'Mr.', 'donations': 300000,
-                         #        'num_of_donations': 3},
-                         # 'Brin': {'title': 'Mr.', 'donations': 300000,
-                         #          'num_of_donations': 3},
-                         {'Cerf': {'title': 'Mr.', 'donations': 200000,
-                                   'num_of_donations': 2},
-                          'Musk': {'title': 'Mr.', 'donations': 400000,
-                                   'num_of_donations': 1},
-                          'Berners-Lee': {'title': 'Mr.', 'donations':
-                                          200000, 'num_of_donations': 2}})
-        # 'Wojcicki': {'title': 'Ms.', 'donations': 250000,
-        #              'num_of_donations': 1},
-        # 'Avey': {'title': 'Ms.', 'donations': 444000,
-        #          'num_of_donations': 3}})
