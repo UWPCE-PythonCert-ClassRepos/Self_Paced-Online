@@ -36,3 +36,11 @@ def test_donor_info():
     assert andrew.info == ("Andrew", 3, sum([12, 14, 24.05])/3, sum([12, 14, 24.05]))
     assert someone.info == ("Someone", 1, 384.23, 384.23)
     assert people.info == ("People", 2, 937852.15/2, 937852.15)
+
+def test_challenge():
+    a = andrew.challenge(2, 13, 24)
+    s = someone.challenge(4)
+    p = people.challenge(1.5, 0, 400)
+    assert a.history == [28, 12, 24.05]
+    assert s.history == [384.23*4]
+    assert p.history == [379.24*1.5, 937472.91]
