@@ -5,7 +5,7 @@ import datetime
 
 
 class MailroomTest(unittest.TestCase):
-    maxDiff = None
+    # maxDiff = None
 
     def setUp(self):
         self.donors_amts = mailroom4fp.get_donors_amts()
