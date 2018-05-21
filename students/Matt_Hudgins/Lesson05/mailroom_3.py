@@ -10,6 +10,7 @@
     Python Version 3.6.4
 '''
 import sys
+from collections import deque
 
 # This is the donor list
 donors = {}
