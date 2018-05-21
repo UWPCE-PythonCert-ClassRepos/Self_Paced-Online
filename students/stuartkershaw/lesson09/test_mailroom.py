@@ -76,7 +76,7 @@ def test_donor_list_compose_thank_you(capsys):
 
     captured = capsys.readouterr()
     assert captured.out  == "Dear Stuart, "\
-        "thanks so much for your generous donation in the amount of: $50.\n"
+        "thanks so much for your generous donations in the amount of: $50.\n"
 
 
 def test_donor_list_donor_names(capsys):
