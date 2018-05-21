@@ -1,17 +1,18 @@
 class Element:
     """Base class to run functions"""
     tag = ""
-    indent = " "
+    indent = "  "
 
 
     def __init__(self, content=None, **kwargs):
-        self.content = [content] if content else []
+        self.content = []
+        if content: self.content.append(content)
         self.attributes = kwargs
 
 
-    def append(self, guts):
+    def append(self, content):
         """append content to the element class object"""
-        self.content.append(guts)
+        self.content.append(content)
 
 
     def render(self, file_out, cur_ind=0):
@@ -23,9 +24,9 @@ class Element:
         tagstring += ">\n"
         file_out.write(tagstring)
         for item in self.content:
-            if isinstance(item, Element):
+            try:
                 item.render(file_out, cur_ind + 1)
-            else:
+            except AttributeError:
                 file_out.write((cur_ind*self.indent) + "{}\n".format(item))
         file_out.write((cur_ind*self.indent) + "</{}>\n".format(self.tag))
 
@@ -99,7 +100,8 @@ class A(OneLineTag):
     tag = "a"
     def __init__(self, link, content):
         self.attributes = {"href": link}
-        self.content = [content] if content else []
+        self.content = []
+        if content: self.content.append(content)
 
 
 class Ul(Element):

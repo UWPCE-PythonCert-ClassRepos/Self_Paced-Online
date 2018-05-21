@@ -8,7 +8,7 @@ from io import StringIO
 def test_element():
     elementest = hr.Element("testing my code", style="text-align: center; font-style: oblique;")
     assert elementest.content == ["testing my code"]
-    assert elementest.indent == " "
+    assert elementest.indent == "  "
     assert elementest.attributes == {'style': 'text-align: center; font-style: oblique;'}
     assert elementest.tag == ""
     
