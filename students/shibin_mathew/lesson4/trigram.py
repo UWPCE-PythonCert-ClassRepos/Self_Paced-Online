@@ -1,34 +1,59 @@
+import random
+
 
 def read_file(filename):
-    # with open(path+'/'+filename, 'r+') as f:
-    #     data = f.read()
-    list_story = []
-    f = open(filename, 'r')
-    for line in f:
-            list_story.append(line.split())
-    return list_story
+    with open(filename, 'r+') as f:
+        data = f.read().replace('\n', ' ').replace('.', '').replace('--', ' ')
+        return data.split()
 
 
-def word_library(list_story, dict_word):
+def word_library(list_story):
     #  Adds new words to current list from the story
-    list_punctutation = [',', '.', ';', "'", '"']
-    print(list_story)
-    for i in range(0, len(list_story)):
-        if i + 1 <= len(list_story) and i + 2 <= len(list_story):
-            for word in dict_word:
-                # print(list_story[i] + ' ' + list_story[i+1])
-                if list_story[i] + ' ' + list_story[i + 1] == word:
-                    # if list_story[i + 2] not in list_punctutation:
-                        dict_word[word].append(list_story[i + 2])
-    return dict_word
+    list_punctutation = [',', '.', ';', "'", '"', '--']
+    my_word_dict = {}
+    for i in range(len(list_story)-2):
+        two_adj_words = list_story[i] + ' ' + list_story[i+1]
+        if list_story[i+2] not in list_punctutation:
+            third_word = list_story[i+2]
+            my_word_dict.setdefault(two_adj_words, []).append(third_word)
+    # print(my_word_dict)
+    return my_word_dict
+
+
+def generate_story(sample_story, word_dict):
+    # Generate a story based on the trigram dictionary
+    rand_start = int(random.random()*len(word_dict))  # random starting point
+    story = ''
+    # TODO: start at a random point
+    for i in range(len(sample_story)-2):
+        try:
+            if sample_story[i] + ' ' + sample_story[i+1] in word_dict.keys():
+                # print(sample_story[i] + ' ' + sample_story[i+1])
+                if i == 0:
+                    story += sample_story[i] + ' ' + sample_story[i+1] + ' ' + word_dict[sample_story[i] + ' ' +
+                                                                                         sample_story[i+1]][0] + ' '
+                    try:
+                        word_dict[sample_story[i] + ' ' + sample_story[i+1]].remove(word_dict[sample_story[i] + ' ' +
+                                                                                              sample_story[i+1]][0])
+                    except keyError:
+                        print("{} is not in the list".format(word_dict[sample_story[i] + ' ' + sample_story[i+1]]))
+                else:
+                    story += sample_story[i+1] + ' ' + word_dict[sample_story[i] + ' ' + sample_story[i+1]][0] + ' '
+                    try:
+                        word_dict[sample_story[i] + ' ' + sample_story[i+1]].remove(word_dict[sample_story[i] + ' ' +
+                                                                                              sample_story[i+1]][0])
+                    except keyError:
+                        print("{} is not in the list".format(word_dict[sample_story[i] + ' ' + sample_story[i + 1]]))
+        except IndexError:
+            pass
+    print(story)
+    return story
 
 
 if __name__ == '__main__':
     filename = 'sherlock_small.txt'
-    dict_wordlist = {'I wish': ['I', 'I'], 'wish I': ['may', 'might'], 'may I': ['wish'], 'I may': ['I'],
-                     'it was': ['at'], 'with the': ['cat']}
+    file_test = 'sherlock_test.txt'
     list_story = read_file(filename)
-    print('Original List')
-    print(dict_wordlist)
-    print('New List')
-    print(word_library(list_story, dict_wordlist))
+    list_story_test = read_file(file_test)
+    word_lib = word_library(list_story)
+    story = generate_story(list_story_test, word_lib)
