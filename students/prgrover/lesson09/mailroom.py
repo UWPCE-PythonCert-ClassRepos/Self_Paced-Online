@@ -54,7 +54,6 @@ class DonorDirectory:
                 return donor
 
     def list_donors(self):
-
         output = '\n'.join([donor.donor_name for donor in self.donor_list])
         if len(output) == 0:
             output = "\nCurrently there are no donor records."
