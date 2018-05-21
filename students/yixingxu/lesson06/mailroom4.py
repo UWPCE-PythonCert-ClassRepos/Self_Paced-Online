@@ -1,4 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
+# added exception handling in this version
+# added list comprehension
 import sys # import sys, so i can use sys.exit(0) later
 import io
 donation_history = [
@@ -17,9 +20,11 @@ def generate_prompt(dispatch_dict):
 def menu_selection(prompt, dispatch_dict):
     while True:
         response = input(prompt)
-        if dispatch_dict[response]() == 'exit menu':
-            break
-        
+        try:
+            if dispatch_dict[response]() == 'exit menu':
+                break
+        except KeyError:
+            print('\nInvalid input. Please only choose from the availalbe options')
 # Sending a Thank You
 def send_a_thank_you(donation_history = donation_history):
     name = input("\nSend a Thank You. Please provide a name or type 'list' to display current names, or type 'back': ")
@@ -33,10 +38,17 @@ def send_a_thank_you(donation_history = donation_history):
             add_name(name)
         # If the user types a name in the list, use it.  Once a name has been selected, prompt for a donation amount.
         if name in list_name():       
-            donation_amount = input('\nPlease provide the amount of donation from {} : '.format(name))
-            add_donation_amount(name, float(donation_amount))
-            print_thankyou_email(name,donation_amount)   
-    
+            while True: 
+                donation_amount = input('\nPlease provide the amount of donation from {} : '.format(name))
+                # added exception handling in this version
+                try:
+                    add_donation_amount(name, float(donation_amount))
+                except ValueError:
+                    print('\nInvalid donation ammount. Please enter a valid number.')
+                else:
+                    break
+            print_thankyou_email(name,donation_amount)  
+        
 # print thank you email
 def print_thankyou_email(name,donation_amount):
     print(f"\nDear {name},\n"
@@ -44,10 +56,9 @@ def print_thankyou_email(name,donation_amount):
         )
 
 # construct list of names
+# use list comprehension 
 def list_name(donation_history = donation_history):
-    namelist = []
-    for item in donation_history:
-        namelist.append(item['name'])
+    namelist = [item['name'] for item in donation_history]
     return namelist     
 
 # add name to the list    
@@ -68,16 +79,16 @@ def create_a_report(donation_history=donation_history):
     sorted_list = summary_list[:]
     sort_list(sorted_list)
     print_report(sorted_list)
-
+    
 # print a list
 def print_report(list):
-    Donor_name_width = 20
-    Total_given_width = 15
-    Num_gifts_width = 5
-    Average_gift_width = 15
+    donor_name_width = 20
+    total_given_width = 15
+    num_gifts_width = 5
+    average_gift_width = 15
     seperator_width = 2
     title = ['Donor Name','|','Total Given', '|', 'Num Gifts', '|', 'Average Gift']
-    divider = '-'*(Donor_name_width+Total_given_width+Num_gifts_width+Average_gift_width+seperator_width*5)
+    divider = '-'*(donor_name_width+total_given_width+num_gifts_width+average_gift_width+seperator_width*5)
     print('{:<20}{:<2}{:<15}{:<2}{:<5}{:<2}{:<15}'.format(*title))
     print(divider)
     for item in list:
@@ -103,13 +114,13 @@ def sort_by_total_given(list):
     return list[2]
     
 # quit
-def Quit():
+def quit_program():
     print('Quit')
     return 'exit menu'
 
 def send_letters_to_everyone(donation_history = donation_history):
     for item in donation_history:     
-        Letter = "Dear {name},\n\n        Thank you for all your very kind donations of ${donations[-1]}\n\n        It will be put to very good use.\n\n                       Sincerely,\n                          -The Team".format(**item)
+        Letter = "Dear {name},\n\n        Thank you for all your very kind donations of ${donations}\n\n        It will be put to very good use.\n\n                       Sincerely,\n                          -The Team".format(**item)
         with open(item['name']+'.txt', 'w') as wf:
             wf.write(Letter)
     print("\nAll letters written to files")
@@ -120,9 +131,9 @@ if __name__ == "__main__":
                 '1': send_a_thank_you,
                 '2': create_a_report,
                 '3': send_letters_to_everyone,
-                '4': Quit
+                '4': quit_program
                 }
-    main_prompt = ("\n You are in the main menu now!\n"
+    main_prompt = ("\nYou are in the main menu now!\n"
                 "Choose an action:\n\n"
                 "1: Send a thank you\n"
                 "2: Create a report\n"
