@@ -5,6 +5,7 @@
 from Mailroom_Pt4 import *
 import os.path
 
+
 def test_add_donation():
     add_donation('James Franconstein', 3009375072340)
     assert 'James Franconstein' in donor_chart.keys()
@@ -25,7 +26,14 @@ def test_send_letters_1():
 
 
 def test_send_letters_2():
-    test_dump = "C:\\Users\\chris.kenyon\\Documents\\Kenyon\\UWPython\\Testing_File_dump"
+    test_dump = "C:\\Users\\chris.kenyon\\Documents\\"
+    "Kenyon\\UWPython\\Testing_File_dump"
     send_letters(test_dump)
     for item in donor_chart.items():
-        assert os.path.isfile((os.path.join(test_dump,item[0] + ".txt")))
+        assert os.path.isfile((os.path.join(test_dump, item[0] + ".txt")))
+
+
+def test_get_key():
+    for donor in donor_chart.items():
+        sumlist = get_key(donor)
+        assert sumlist == sum(donor[1])
