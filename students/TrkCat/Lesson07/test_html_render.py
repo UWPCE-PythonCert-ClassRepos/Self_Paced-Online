@@ -63,3 +63,15 @@ def test_step3():
     title = Title('hi')
     title.render(f)
     assert f.getvalue() == '<title>hi</title>\n'
+
+
+def test_step4():
+    p = P('hi', style='some_style', style2='other_style')
+    assert p.content == ['hi']
+    assert p.indent == 0
+    assert p.attr == {'style': 'some_style', 'style2': 'other_style'}
+
+    f = StringIO()
+    p.render(f)
+    assert f.getvalue() == ('<p style="some_style" style2="other_style">\n'
+                            '    hi\n</p>\n')
