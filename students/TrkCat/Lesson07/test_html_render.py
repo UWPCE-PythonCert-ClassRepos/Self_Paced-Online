@@ -2,7 +2,7 @@
 
 import pytest
 from io import StringIO
-from html_render import Element, Html, Body, P, OneLineTag, Title, Hr, Br
+from html_render import Element, Html, Body, P, OneLineTag, Title, Hr, Br, A
 
 
 def test_step1():
@@ -93,3 +93,13 @@ def test_step5():
 
     with pytest.raises(TypeError):
         br = Br('anything')
+
+
+def test_step6():
+    a = A("http://google.com", "link to google")
+    assert a.attr == {'href': "http://google.com"}
+    assert a.content == ["link to google"]
+
+    f = StringIO()
+    a.render(f)
+    assert f.getvalue() == ('<a href="http://google.com">link to google</a>\n')

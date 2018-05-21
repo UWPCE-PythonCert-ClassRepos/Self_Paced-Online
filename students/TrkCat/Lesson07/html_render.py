@@ -55,7 +55,7 @@ class Head(Element):
 
 class OneLineTag(Element):
     def render(self, file_out, cur_ind=None):
-        self.render_open_tag(file_out, cur_ind)
+        self.render_open_tag(file_out, cur_ind, self.attr)
         for item in self.content:
             file_out.write(item)
         self.render_close_tag(file_out)
@@ -80,3 +80,10 @@ class Hr(SelfClosingTag):
 
 class Br(SelfClosingTag):
     tag = 'br /'
+
+
+class A(OneLineTag):
+    tag = 'a'
+
+    def __init__(self, link, content):
+        Element.__init__(self, content, href=link)
