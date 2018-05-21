@@ -2,7 +2,8 @@
 
 import pytest
 from io import StringIO
-from html_render import Element, Html, Body, P, OneLineTag, Title, Hr, Br, A
+from html_render import (Element, Html, Body, P, OneLineTag, Title, Hr, Br, A,
+                         Ul, Li, H)
 
 
 def test_step1():
@@ -103,3 +104,23 @@ def test_step6():
     f = StringIO()
     a.render(f)
     assert f.getvalue() == ('<a href="http://google.com">link to google</a>\n')
+
+
+def test_step7():
+    li = Li('something')
+    ul = Ul('something')
+    h = H(2, 'something')
+    assert li.tag == 'li'
+    assert ul.tag == 'ul'
+    assert h.tag == 'h2'
+    assert h.content == ['something']
+
+    f = StringIO()
+    ul = Ul(Li('something'))
+    ul.render(f)
+    assert f.getvalue() == ('<ul>\n    <li>\n        something\n    </li>\n'
+                            '</ul>\n')
+
+    f = StringIO()
+    h.render(f)
+    assert f.getvalue() == ('<h2>something</h2>\n')

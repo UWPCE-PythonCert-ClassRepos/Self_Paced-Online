@@ -86,4 +86,18 @@ class A(OneLineTag):
     tag = 'a'
 
     def __init__(self, link, content):
-        Element.__init__(self, content, href=link)
+        OneLineTag.__init__(self, content, href=link)
+
+
+class Li(Element):
+    tag = 'li'
+
+
+class Ul(Element):
+    tag = 'ul'
+
+
+class H(OneLineTag):
+    def __init__(self, level, content):
+        self.tag = 'h' + str(level)
+        OneLineTag.__init__(self, content)
