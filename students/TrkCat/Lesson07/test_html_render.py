@@ -2,13 +2,13 @@
 
 import pytest
 from io import StringIO
-from html_render import Element, Html, Body, P, OneLineTag, Title
+from html_render import Element, Html, Body, P, OneLineTag, Title, Hr, Br
 
 
 def test_step1():
     el = Element()
     assert el.tag == 'html'
-    assert el.indent == 0
+    assert el.indent == 4
     assert el.content == []
 
     el.append('hi')
@@ -68,10 +68,28 @@ def test_step3():
 def test_step4():
     p = P('hi', style='some_style', style2='other_style')
     assert p.content == ['hi']
-    assert p.indent == 0
+    assert p.indent == 4
     assert p.attr == {'style': 'some_style', 'style2': 'other_style'}
 
     f = StringIO()
     p.render(f)
     assert f.getvalue() == ('<p style="some_style" style2="other_style">\n'
                             '    hi\n</p>\n')
+
+
+def test_step5():
+    hr = Hr()
+    f = StringIO()
+    hr.render(f)
+    assert f.getvalue() == ('<hr />\n')
+
+    br = Br()
+    f = StringIO()
+    br.render(f)
+    assert f.getvalue() == ('<br />\n')
+
+    with pytest.raises(TypeError):
+        hr = Hr('anything')
+
+    with pytest.raises(TypeError):
+        br = Br('anything')
