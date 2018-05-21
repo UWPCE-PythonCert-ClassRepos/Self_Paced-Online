@@ -184,12 +184,10 @@ def challenge_map(factor, **min_and_max):
     #         min_and_max = {'min_donation': int(input(min_and_max_text1)),
     #                        'max_donation': int(input(min_and_max_text2))}
     copy_donors_amts = dict(donors_amts)
-    donors_list = []
     donations_list = []
     amts_donors_list = []
     factor_list = []
     for donor, donor_dict in donors_amts.items():
-        donors_list.append(donor)
         donations_list.append(donor_dict['donations'])
         amts_donors_list.append([donor_dict['donations'], donor])
         factor_list.append(factor)
@@ -211,7 +209,19 @@ def challenge_map(factor, **min_and_max):
 
 
 def run_projection(donor, contrib_ceiling=None, contrib_floor=None, factor=1):
-    pass
+    """determines donor's total contribution if:
+    a) all contributions under x amount were doubled,
+    b) all contributions over x amount were tripled"""
+    factor_list = [factor for i in
+                   range(donors_amts[donor]['num_of_donations'])]
+    donations = [donors_amts[donor]['donations'] // len(factor_list) for
+                 factor in factor_list]
+    if contrib_ceiling:
+        return sum(map(challenge, factor_list, filter(lambda x:
+                   x < contrib_ceiling, donations)))
+    elif contrib_floor:
+        return sum(map(challenge, factor_list, filter(lambda x:
+                   x >= contrib_floor, donations)))
 
 
 def program_run():
