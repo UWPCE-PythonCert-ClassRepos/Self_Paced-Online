@@ -22,23 +22,20 @@ def menu_selection(prompt, dispatch_dict):
         
 # Sending a Thank You
 def send_a_thank_you(donation_history = donation_history):
-    name = input('\nSend a Thank You. Please provide a name or list current names (or type \'back\' to go back to main menu): ')
-    if name == 'back':        
-        menu_selection(main_prompt, main_dispatch)
-    # If the user types ‘list’, show them a list of the donor names and re-prompt    
-    while name == 'list':
-        print(list_name())
-        name = input('\nSend a Thank You. Please provide a name: ')
-    # If the user types a name not in the list, add that name to the data structure and use it.    
-    if name not in list_name():
-        add_name(name)
-    # If the user types a name in the list, use it.  Once a name has been selected, prompt for a donation amount.
-    if name in list_name():
-        donation_amount = input('\nPlease provide the amount of donation from {} (or type \'back\' to go back to main menu): '.format(name))
-        if donation_amount == 'back':        
-            menu_selection(main_prompt, main_dispatch)    
-        add_donation_amount(name, float(donation_amount))
-    print_thankyou_email(name,donation_amount)  
+    name = input("\nSend a Thank You. Please provide a name or type 'list' to display current names, or type 'back': ")
+    if name != 'back':        
+        # If the user types ‘list’, show them a list of the donor names and re-prompt    
+        while name == 'list':
+            print(list_name())
+            name = input('\nSend a Thank You. Please provide a name: ')
+        # If the user types a name not in the list, add that name to the data structure and use it.    
+        if name not in list_name():
+            add_name(name)
+        # If the user types a name in the list, use it.  Once a name has been selected, prompt for a donation amount.
+        if name in list_name():       
+            donation_amount = input('\nPlease provide the amount of donation from {} : '.format(name))
+            add_donation_amount(name, float(donation_amount))
+            print_thankyou_email(name,donation_amount)   
     
 # print thank you email
 def print_thankyou_email(name,donation_amount):
