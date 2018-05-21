@@ -33,3 +33,21 @@ class Body(Element):
 
 class P(Element):
     tag = 'p'
+
+
+class Head(Element):
+    tag = 'head'
+
+
+class OneLineTag(Element):
+    def render(self, file_out, cur_ind=None):
+        cur_ind = 0 if cur_ind is None else cur_ind
+        ind = cur_ind * '    '
+        file_out.write(ind + '<' + self.tag + '>')
+        for item in self.content:
+            file_out.write(item)
+        file_out.write('</' + self.tag + '>\n')
+
+
+class Title(OneLineTag):
+    tag = 'title'

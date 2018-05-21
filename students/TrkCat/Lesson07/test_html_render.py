@@ -2,7 +2,7 @@
 
 import pytest
 from io import StringIO
-from html_render import Element, Html, Body, P
+from html_render import Element, Html, Body, P, OneLineTag, Title
 
 
 def test_step1():
@@ -51,3 +51,15 @@ def test_step2():
                 '</p>\n    </body>\n</html>\n'
                 )
     assert f.getvalue() == expected
+
+
+def test_step3():
+    f = StringIO()
+    olt = OneLineTag('hi')
+    olt.render(f)
+    assert f.getvalue() == '<html>hi</html>\n'
+
+    f = StringIO()
+    title = Title('hi')
+    title.render(f)
+    assert f.getvalue() == '<title>hi</title>\n'
