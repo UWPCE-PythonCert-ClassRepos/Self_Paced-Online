@@ -101,5 +101,7 @@ class MailroomTest(unittest.TestCase):
                                    'num_of_donations': 3}})
 
     def test_run_projection(self):
-        self.assertEqual(mailroom4fp.run_projection(donor, contrib_ceiling, factor), None)
-        self.assertEqual(mailroom4fp.run_projection(donor, contrib_floor, factor), None)
+        self.assertEqual(mailroom4fp.run_projection(donor,
+                         contrib_ceiling=100000, factor=2), None)
+        self.assertEqual(mailroom4fp.run_projection(donor,
+                         contrib_floor=50000, factor=3), None)
