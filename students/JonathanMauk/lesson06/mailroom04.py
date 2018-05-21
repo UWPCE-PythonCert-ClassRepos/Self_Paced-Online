@@ -15,8 +15,7 @@ def thank_you():
     user_input = input('Enter a donor\'s full name, or type \'list\' for a full list. ' +
                        'Type \'e\' to exit and return to the main menu.\n> ').title()
     if user_input.lower() == 'list':
-        donor_list = [k for k in donor_db]
-        print(donor_list)
+        print(list_donors())
         thank_you()
     elif user_input.lower() == 'e':
         mailroom()
@@ -43,6 +42,11 @@ def thank_you():
                 print("Printing thank you email...")
                 print("---------------------------")
                 create_letter(1, user_input, donation)
+
+
+def list_donors():
+    donor_list = [k for k in donor_db]
+    return donor_list
 
 
 def report():
