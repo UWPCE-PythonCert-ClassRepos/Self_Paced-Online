@@ -50,6 +50,17 @@ class CircleTest(unittest.TestCase):
         c2 = c1 * 3
         self.assertEqual(c2.radius, 15)
 
+    def test_comparison(self):
+        c1 = Circle(2)
+        c2 = Circle(4)
+        c3 = Circle(2)
+        self.assertFalse(c1 > c2)
+        self.assertTrue(c1 < c2)
+        self.assertEqual(c1, c3)
+
+    # def test_sorting(self):
+    #     c =
+
 
 if __name__ == '__main__':
     unittest.main()
