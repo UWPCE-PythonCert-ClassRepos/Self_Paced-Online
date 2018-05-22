@@ -79,6 +79,7 @@ def create_a_report(donation_history=donation_history):
     sorted_list = summary_list[:]
     sort_list(sorted_list)
     print_report(sorted_list)
+    return sorted_list
     
 # print a list
 def print_report(list):
