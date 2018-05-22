@@ -1,4 +1,4 @@
-"""tests the html_render.py file"""
+"""tests all major functions in the html_render.py file"""
 
 import html_render as hr
 from io import StringIO

@@ -13,6 +13,7 @@ class Element():
         self.content.append(content)
 
     def render(self, file_out, cur_ind=""):
+        # render method for writing content and tags
         if self.attributes != {}:
             attributes = " ".join([' %s="%s"' % (k, v)
                                   for k, v in self.attributes.items()])
@@ -35,6 +36,7 @@ class Element():
 
 
 class OneLineTag(Element):
+    # subclass of Element that overwrites render for simple one line tags
     def render(self, file_out, cur_ind=""):
         for item in self.content:
             if isinstance(item, Element):
@@ -46,6 +48,7 @@ class OneLineTag(Element):
 
 
 class SelfClosingTag(Element):
+    # subclass of Element that overwrites render for self closing tags
     def render(self, file_out, cur_ind=""):
         tag_close = "/"
         print(f"<{self.tag_name}{tag_close}>")
