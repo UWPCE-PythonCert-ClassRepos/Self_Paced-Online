@@ -25,8 +25,7 @@ def send_1():
         for i, item in enumerate(donor_data):
             if donor_data[i][0] == input1:
                 donor_data[i][1].append(input2)
-                print('Thank you {} for your donation in the amount of ${:02.02f}; it is very generous.'\
-                      .format(input1, input2))
+                print('Thank you {} for your donation in the amount of ${:02.02f}; it is very generous.'.format(input1, input2))
     else:
         donor_data.append([input1])
         input3 = float(input('Donation amount: '))
