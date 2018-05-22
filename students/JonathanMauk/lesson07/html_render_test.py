@@ -1,5 +1,6 @@
 import unittest
 import html_render as hr
+from io import StringIO
 
 
 class HtmlRenderingTests(unittest.TestCase):
@@ -9,9 +10,19 @@ class HtmlRenderingTests(unittest.TestCase):
         self.assertEqual(element.content, [])
 
     def test_append(self):
-        element = hr.Element()
-        element.append('Testing.')
-        self.assertEqual(element.content, ['Testing.'])
+        element1 = hr.Element()
+        element1.append('Testing.')
+        self.assertEqual(element1.content, ['Testing.'])
+        element2 = hr.Element('Testing.')
+        element2.append('1, 2, 3.')
+        self.assertEqual(element2.content, ['Testing.', '1, 2, 3.'])
+
+    def test_render(self):
+        element = hr.Element('Testing.')
+        f = StringIO()
+        element.render(f)
+        self.assertEqual(f.getvalue(), "<html>\n" + element.indent + "Testing.\n</html>\n")
+
 
 
 if __name__ == '__main__':
