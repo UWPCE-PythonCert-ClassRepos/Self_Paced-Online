@@ -1,5 +1,4 @@
 class Element:
-
     tag = ''
     indent = '    '
 
@@ -27,27 +26,22 @@ class Element:
 
 
 class Html(Element):
-
     tag = 'html'
 
 
 class Body(Element):
-
     tag = 'body'
 
 
 class P(Element):
-
     tag = 'p'
 
 
 class Head(Element):
-
     tag = 'head'
 
 
 class OneLineTag(Element):
-
     def render(self, file_out, cur_ind=""):
         file_out.write(cur_ind + "<{}".format(self.tag))
         for key, value in self.kwargs.items():
@@ -62,12 +56,10 @@ class OneLineTag(Element):
 
 
 class Title(OneLineTag):
-
     tag = 'title'
 
 
 class SelfClosingTag(Element):
-
     def __init__(self, content=None, **kwargs):
         if content:
             raise TypeError('Error: the SelfClosingTag type does not take content.')
@@ -81,18 +73,30 @@ class SelfClosingTag(Element):
 
 
 class Hr(SelfClosingTag):
-
     tag = 'hr'
 
 
 class Br(SelfClosingTag):
-
     tag = 'br'
 
 
 class A(OneLineTag):
-
     tag = 'a'
 
     def __init__(self, link, content):
         super().__init__(content, href=link)
+
+
+class Ul(Element):
+    tag = 'ul'
+
+
+class Li(Element):
+    tag = 'li'
+
+
+class H(OneLineTag):
+    def __init__(self, level, content, **kwargs):
+        Element.__init__(self, content, **kwargs)
+        self.level = level
+        self.tag = 'h{}'.format(level)

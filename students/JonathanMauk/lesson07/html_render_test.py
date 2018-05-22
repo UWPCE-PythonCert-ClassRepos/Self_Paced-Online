@@ -47,6 +47,19 @@ class HtmlRenderingTests(unittest.TestCase):
         anchor.render(f)
         self.assertEqual(f.getvalue(), '<a href="http://www.google.com">a link</a>\n')
 
+    def test_list(self):
+        list = hr.Li("The first item in a list")
+        f = StringIO()
+        list.render(f)
+        self.assertEqual(f.getvalue(), "<li>\n    The first item in a list\n</li>\n")
+
+    def test_header(self):
+        header = hr.H(2, "The text of the header")
+        f = StringIO()
+        header.render(f)
+        self.assertEqual(f.getvalue(), "<h2>The text of the header</h2>\n")
+
+
 
 if __name__ == '__main__':
     unittest.main()
