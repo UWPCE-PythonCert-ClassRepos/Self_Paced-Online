@@ -58,8 +58,12 @@ class CircleTest(unittest.TestCase):
         self.assertTrue(c1 < c2)
         self.assertEqual(c1, c3)
 
-    # def test_sorting(self):
-    #     c =
+    def test_sorting(self):
+        circles = [Circle(3), Circle(1), Circle(4), Circle(2), Circle(5)]
+        print(circles)
+        circles.sort()
+        self.assertEqual(circles, [Circle(1), Circle(2), Circle(3), Circle(4), Circle(5)])
+        print(circles)
 
 
 if __name__ == '__main__':
