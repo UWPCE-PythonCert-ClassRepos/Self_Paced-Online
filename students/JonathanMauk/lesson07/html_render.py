@@ -12,21 +12,25 @@ class Element:
     def append(self, content):
         self.content.append(content)
 
-    def render(self, file_out, cur_ind=""):
-        file_out.write(cur_ind + "<{}".format(self.tag))
+    def render(self, file_out, cur_ind=''):
+        file_out.write(cur_ind + '<{}'.format(self.tag))
         for key, value in self.kwargs.items():
             file_out.write(' {}="{}"'.format(key, value))
-        file_out.write(">\n")
+        file_out.write('>\n')
         for item in self.content:
             if isinstance(item, Element):
                 item.render(file_out, cur_ind + self.indent)
             else:
                 file_out.write(cur_ind + self.indent + item + "\n")
-        file_out.write(cur_ind + "</{}>\n".format(self.tag))
+        file_out.write(cur_ind + '</{}>\n'.format(self.tag))
 
 
 class Html(Element):
     tag = 'html'
+
+    def render(self, file_out, cur_ind=''):
+        file_out.write('<!DOCTYPE html>\n')
+        Element.render(self, file_out, cur_ind='')
 
 
 class Body(Element):
@@ -42,17 +46,17 @@ class Head(Element):
 
 
 class OneLineTag(Element):
-    def render(self, file_out, cur_ind=""):
-        file_out.write(cur_ind + "<{}".format(self.tag))
+    def render(self, file_out, cur_ind=''):
+        file_out.write(cur_ind + '<{}'.format(self.tag))
         for key, value in self.kwargs.items():
             file_out.write(' {}="{}"'.format(key, value))
-        file_out.write(">")
+        file_out.write('>')
         for item in self.content:
             if isinstance(item, Element):
                 item.render(file_out)
             else:
                 file_out.write(item)
-        file_out.write("</{}>\n".format(self.tag))
+        file_out.write('</{}>\n'.format(self.tag))
 
 
 class Title(OneLineTag):
@@ -65,11 +69,11 @@ class SelfClosingTag(Element):
             raise TypeError('Error: the SelfClosingTag type does not take content.')
         self.kwargs = kwargs
 
-    def render(self, file_out, cur_ind=""):
-        file_out.write(cur_ind + "<{}".format(self.tag))
+    def render(self, file_out, cur_ind=''):
+        file_out.write(cur_ind + '<{}'.format(self.tag))
         for key, value in self.kwargs.items():
             file_out.write(' {}="{}"'.format(key, value))
-        file_out.write(" />\n")
+        file_out.write(' />\n')
 
 
 class Hr(SelfClosingTag):
@@ -100,3 +104,7 @@ class H(OneLineTag):
         Element.__init__(self, content, **kwargs)
         self.level = level
         self.tag = 'h{}'.format(level)
+
+
+class Meta(SelfClosingTag):
+    tag = 'meta'

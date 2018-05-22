@@ -59,6 +59,11 @@ class HtmlRenderingTests(unittest.TestCase):
         header.render(f)
         self.assertEqual(f.getvalue(), "<h2>The text of the header</h2>\n")
 
+    def test_html(self):
+        html = hr.Html()
+        f = StringIO()
+        html.render(f)
+        self.assertEqual(f.getvalue(), '<!DOCTYPE html>\n<html>\n</html>\n')
 
 
 if __name__ == '__main__':
