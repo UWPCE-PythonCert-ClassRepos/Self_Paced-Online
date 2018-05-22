@@ -62,8 +62,8 @@ class CircleTest(unittest.TestCase):
         circles = [Circle(3), Circle(1), Circle(4), Circle(2), Circle(5)]
         print(circles)
         circles.sort()
-        self.assertEqual(circles, [Circle(1), Circle(2), Circle(3), Circle(4), Circle(5)])
         print(circles)
+        self.assertEqual(circles, [Circle(1), Circle(2), Circle(3), Circle(4), Circle(5)])
 
 
 if __name__ == '__main__':
