@@ -87,7 +87,7 @@ class Donorlist:
         pass
 
     def get_donor(self, val):
-        #Not sure I need this
+        """Returns a single donor object.  Not using in mailroom"""
         if val in self._donor_objects.keys():
             return self._donor_objects[val]
 
@@ -96,6 +96,8 @@ class Donorlist:
         return sorted(self._donor_objects.keys())
 
     def list_by_total(self):
+        """Returns a list of donors sorted by total donations"""
+
         return tuple(
                      sorted(self._donor_objects.values(),
                             key=Donor.sort_by_total,
@@ -140,4 +142,5 @@ class Donorlist:
             file_out.write(spacing.format(donor.name, donor.total, donor.count, donor.average))
 
     def get_total(self, name):
+        """Returns total donations for donor"""
         return self._donor_objects[name].total

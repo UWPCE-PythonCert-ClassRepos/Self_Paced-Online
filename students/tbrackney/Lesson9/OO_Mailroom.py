@@ -16,7 +16,7 @@ dl = Donorlist(init_tuple)
 
 
 def get_donation(d_name):
-    '''Appends a donation to existing donor '''
+    """Appends a donation to existing donor """
     # Formats float to 2 decimal places"
     prompt = f"Enter a Donation amount for {d_name}\n"
     error_message = 'Invalid donation amount'
@@ -35,7 +35,7 @@ def print_list():
 
 
 def t_menu():
-    ''' Prints Thank You menu.'''
+    """ Prints Thank You menu."""
     # Wasn't sure how to implement this using dispatch func
     # Not liking this, need to refactor.
     while True:
@@ -59,7 +59,7 @@ def t_menu():
 
 
 def create_report():
-    '''Prints report of all donors'''
+    """Prints report of all donors"""
     output = StringIO()
     dl.create_report(output)
     print(output.getvalue())
@@ -67,6 +67,10 @@ def create_report():
 
 
 def mail_all():
+    """
+    Generates letter from template for all donors.  Saves to file and Prints
+    to consoleself.
+    """
     for donor_name in dl.list_donors():
         filename = donor_name.replace(' ', '_') + '.txt'
         total = dl.get_total(donor_name)
@@ -85,10 +89,6 @@ def mail_all():
 def quit():
     print("Exiting Menu")
     return 'exit menu'
-
-
-def main_default():
-    print('Please enter one of the following selections')
 
 
 def menu(prompt, dispatch):
