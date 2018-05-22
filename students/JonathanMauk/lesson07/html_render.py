@@ -27,18 +27,22 @@ class Element:
 
 
 class Html(Element):
+
     tag = 'html'
 
 
 class Body(Element):
+
     tag = 'body'
 
 
 class P(Element):
+
     tag = 'p'
 
 
 class Head(Element):
+
     tag = 'head'
 
 
@@ -58,4 +62,29 @@ class OneLineTag(Element):
 
 
 class Title(OneLineTag):
+
     tag = 'title'
+
+
+class SelfClosingTag(Element):
+
+    def __init__(self, content=None, **kwargs):
+        if content:
+            raise TypeError('Error: the SelfClosingTag type does not take content.')
+        self.kwargs = kwargs
+
+    def render(self, file_out, cur_ind=""):
+        file_out.write(cur_ind + "<{}".format(self.tag))
+        for key, value in self.kwargs.items():
+            file_out.write(' {}="{}"'.format(key, value))
+        file_out.write(" />\n")
+
+
+class Hr(SelfClosingTag):
+
+    tag = 'hr'
+
+
+class Br(SelfClosingTag):
+
+    tag = 'br'
