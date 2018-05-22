@@ -167,16 +167,18 @@ class DonorCollection():
 
         :folder:  The folder in which to save the files. If an invalid
                   folder is specified or no folder is specified, the
-                  current folder is used.
+                  current folder is used. If the folder does not exist,
+                  the method attempts to create the folder to continue.
 
         :return:  The folder containing the thank-you letters.
         """
         cur_dir = os.getcwd()
+        if not folder:
+            folder = cur_dir
         try:
             os.mkdir(folder)
-        except FileNotFoundError:
-            if not folder:
-                folder = cur_dir
+        except FileExistsError:  # Okay if folder already exists
+            pass
         finally:  # Save each letter, with donor name in each file name
             os.chdir(folder)
             folder = os.getcwd()  # Set folder name to the full OS path

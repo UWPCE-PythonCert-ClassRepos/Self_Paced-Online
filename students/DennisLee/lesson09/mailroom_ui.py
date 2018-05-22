@@ -72,7 +72,7 @@ class DonorUI():
 
         :return:  None.
         """
-        print(f"\n'{choice}' is in invalid response.")
+        print(f"\n'{choice}' is an invalid response.")
 
     def exit_screen(self):
         """
@@ -101,8 +101,8 @@ class DonorUI():
             response = input("\nType full donor name "
                     "(or 'list' to show all donors, or 'quit'): ").strip()
 
-        self.call_menu_function(
-                alt_choices, self.collection[response], self.get_donation_amount)
+        self.call_menu_function(alt_choices,
+                self.collection[response], self.get_donation_amount)
         if response == 'list':
             self.send_thank_you()  # Still want to get a donor to thank
 
@@ -134,7 +134,11 @@ class DonorUI():
         new_dir = input('\nType the directory to save the letters in'
                         ' (invalid entry defaults to the current directory): '
                         ).strip()
-        self.collection.save_letters(new_dir)
+        try:
+            self.collection.save_letters(new_dir)
+        except FileNotFoundError:
+            print(f"Can't open or create folder '{new_dir}' - exiting "
+                    "without creating the thank-you letters.")
 
 
 
@@ -155,9 +159,14 @@ if __name__ == '__main__':
     for name, amts in donor_history.items():
         for amt in amts:
             coll.add(name, amt)
-    coll.print_donors()
-    coll.create_report()
-    for k, v in coll.donors.items():
-        print(v.form_letter)
-    coll.save_letters()
+
+    # coll.print_donors()
+    # coll.create_report()
+    # for k, v in coll.donors.items():
+    #     print(v.form_letter)
+    # coll.save_letters()
     
+    dui = DonorUI(coll)
+    dui.manage_donors()
+
+    del coll, dui, mailroom_oo
