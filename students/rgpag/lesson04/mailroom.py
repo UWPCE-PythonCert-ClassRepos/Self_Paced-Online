@@ -5,7 +5,6 @@ import datetime
 donors = ['Jeff Bezos', 'Mark Zuckerberg', 'Bill Gates', 'Paul Allen']
 i_amount = [3000, 20, 40607, 65]
 i_count = [4, 2, 3, 6]
-quit = 0
 
 # initialize amt_dict
 amt_dict = {}
@@ -48,19 +47,19 @@ def update_don(ret_don):
     return ret_don, cnt_dict[ret_don], amt_dict[ret_don]
 
 
-def getKey(item):
+def get_key(item):
     return item[1]
 
 
 def menu_sel_1():
     name = input('Please provide full name ')
     if name == 'quit':
-        quit = 1
-        return quit
+        q = 1
+        return q
     elif name == 'list':
         for z in donors:
             print(z)
-    elif name not in (donors):
+    elif name not in donors:
         msg_vars = new_donor(name)
         print(msg.format(*msg_vars))
     else:
@@ -76,7 +75,7 @@ def menu_sel_2():
     s = '{:<20} ${:>15}  {:^10} ${:>12.2f}'
     for x in (donors):
         db.append([x, amt_dict[x], cnt_dict[x], avg_dict[x]])
-    db_sort = sorted(db, key=getKey, reverse=True)
+    db_sort = sorted(db, key=get_key, reverse=True)
     for i in range(len(db_sort)):
         print(s.format(db_sort[i][0], db_sort[i][1], db_sort[i][2],
                        db_sort[i][3]))
@@ -103,7 +102,8 @@ menu_switch_dict = {
 
 
 if __name__ == "__main__":
-    while quit == 0:
+    q = 0
+    while q == 0:
         sel = input('\nWhat do you want to do?\n\t(1) send a thank you\n\t\
 (2) create a report\n\t(3) send letters to everyone\n\t(4) quit\n')
         if sel in ('4', 'quit'):
