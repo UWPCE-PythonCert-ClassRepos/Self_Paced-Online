@@ -58,6 +58,7 @@ class Donor:
         except ZeroDivisionError:
             return 0
 
+
 class Donorlist:
     """
     Instance of a list of donors, implemented as a dictionary.  Implements
@@ -110,15 +111,12 @@ class Donorlist:
     def add_donor(self, name):
         """Adds a new donor to the list with a blank donation history"""
         if name not in self._donor_objects.keys():
-            self._donor_objects[name] = []
+            self._donor_objects[name] = Donor(name, [])
         else:
             raise ValueError(f"Duplicate name in {type(self)}")
 
     def add_donation(self, name, amt):
-        if name in self._donor_objects.keys():
-            self._donor_objects[name].add_donation(amt)
-        else:
-            raise ValueError(f"Duplicate name in {type(self)}")
+        self._donor_objects[name].add_donation(amt)
 
     def send_thankyou(self, name, amt, template='short'):
         """
@@ -141,5 +139,5 @@ class Donorlist:
         for donor in sorted_tuple:
             file_out.write(spacing.format(donor.name, donor.total, donor.count, donor.average))
 
-    def mail_all(self):
-        pass
+    def get_total(self, name):
+        return self._donor_objects[name].total

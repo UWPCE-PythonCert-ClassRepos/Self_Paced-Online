@@ -78,6 +78,8 @@ def test_add_donor():
     dl = Donorlist(init_tuple)
     dl.add_donor('Gene Shallit')
     assert 'Gene Shallit' in dl.list_donors()
+    assert isinstance(dl.get_donor('Gene Shallit'), Donor)
+    assert dl.list_donations('Gene Shallit') == []
     with pytest.raises(ValueError):
         dl.add_donor('Tom Selleck')
 
@@ -98,8 +100,10 @@ def test_list_donation():
 def test_add_donation():
     dl = Donorlist(init_tuple)
     dl.add_donation('Nick Offerman', 250)
+    dl.add_donation('Nick Offerman', 55)
     assert 250 in dl.list_donations('Nick Offerman')
-    with pytest.raises(ValueError):
+    assert 55 in dl.list_donations('Nick Offerman')
+    with pytest.raises(KeyError):
         dl.add_donation('Nobody', 20)
 
 
@@ -135,3 +139,10 @@ def test_report():
     out = StringIO()
     dl.create_report(out)
     assert report == out.getvalue()
+
+
+def test_get_total():
+    dl = Donorlist(init_tuple)
+    assert dl.get_total('Tom Selleck') == 4000.0
+    with pytest.raises(KeyError):
+        dl.get_total('Fake Name')
