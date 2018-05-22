@@ -19,8 +19,7 @@ class Element:
             if isinstance(item, Element):
                 item.render(file_out, cur_ind + self.indent)
             else:
-                file_out.write(cur_ind + self.indent + item)
-                file_out.write("\n")
+                file_out.write(cur_ind + self.indent + item + "\n")
         file_out.write(cur_ind + "</{}>\n".format(self.tag))
 
 
@@ -34,3 +33,23 @@ class Body(Element):
 
 class P(Element):
     tag = 'p'
+
+
+class Head(Element):
+    tag = 'head'
+
+
+class OneLineTag(Element):
+
+    def render(self, file_out, cur_ind=""):
+        file_out.write(cur_ind + "<{}>".format(self.tag))
+        for item in self.content:
+            if isinstance(item, Element):
+                item.render(file_out)
+            else:
+                file_out.write(item)
+        file_out.write("</{}>\n".format(self.tag))
+
+
+class Title(OneLineTag):
+    tag = 'title'

@@ -21,8 +21,13 @@ class HtmlRenderingTests(unittest.TestCase):
         element = hr.Element('Testing.')
         f = StringIO()
         element.render(f)
-        self.assertEqual(f.getvalue(), "<html>\n" + element.indent + "Testing.\n</html>\n")
+        self.assertEqual(f.getvalue(), "<>\n" + element.indent + "Testing.\n</>\n")
 
+    def test_title(self):
+        title = hr.Title("A Title")
+        f = StringIO()
+        title.render(f)
+        self.assertEqual(f.getvalue(), "<title>A Title</title>\n")
 
 
 if __name__ == '__main__':
