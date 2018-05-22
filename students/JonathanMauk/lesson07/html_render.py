@@ -14,7 +14,10 @@ class Element:
         self.content.append(content)
 
     def render(self, file_out, cur_ind=""):
-        file_out.write(cur_ind + "<{}>\n".format(self.tag))
+        file_out.write(cur_ind + "<{}".format(self.tag))
+        for key, value in self.kwargs.items():
+            file_out.write(' {}="{}"'.format(key, value))
+        file_out.write(">\n")
         for item in self.content:
             if isinstance(item, Element):
                 item.render(file_out, cur_ind + self.indent)
@@ -42,7 +45,10 @@ class Head(Element):
 class OneLineTag(Element):
 
     def render(self, file_out, cur_ind=""):
-        file_out.write(cur_ind + "<{}>".format(self.tag))
+        file_out.write(cur_ind + "<{}".format(self.tag))
+        for key, value in self.kwargs.items():
+            file_out.write(' {}="{}"'.format(key, value))
+        file_out.write(">")
         for item in self.content:
             if isinstance(item, Element):
                 item.render(file_out)

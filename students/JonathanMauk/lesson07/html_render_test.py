@@ -29,6 +29,13 @@ class HtmlRenderingTests(unittest.TestCase):
         title.render(f)
         self.assertEqual(f.getvalue(), "<title>A Title</title>\n")
 
+    def test_attributes(self):
+        title = hr.Title("A Title", style="text-align: center; font-style: oblique;")
+        f = StringIO()
+        title.render(f)
+        self.assertEqual(f.getvalue(), "<title style=\"text-align: center; font-style: oblique;\">A Title</title>\n")
+
+
 
 if __name__ == '__main__':
     unittest.main()
