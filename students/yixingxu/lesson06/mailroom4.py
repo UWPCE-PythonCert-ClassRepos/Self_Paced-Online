@@ -121,9 +121,9 @@ def quit_program():
 
 def send_letters_to_everyone(donation_history = donation_history):
     for item in donation_history:     
-        Letter = "Dear {name},\n\n        Thank you for all your very kind donations of ${donations}\n\n        It will be put to very good use.\n\n                       Sincerely,\n                          -The Team".format(**item)
+        letter = "Dear {name},\n\n        Thank you for all your very kind donations of ${donations}\n\n        It will be put to very good use.\n\n                       Sincerely,\n                          -The Team".format(**item)
         with open(item['name']+'.txt', 'w') as wf:
-            wf.write(Letter)
+            wf.write(letter)
     print("\nAll letters written to files")
    
     
