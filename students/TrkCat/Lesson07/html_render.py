@@ -40,6 +40,10 @@ class Element:
 class Html(Element):
     tag = 'html'
 
+    def render(self, file_out, cur_ind=None):
+        file_out.write(self.conv_ind(cur_ind) + '<!DOCTYPE html>\n')
+        super(Html, self).render(file_out, cur_ind)
+
 
 class Body(Element):
     tag = 'body'
@@ -101,3 +105,12 @@ class H(OneLineTag):
     def __init__(self, level, content):
         self.tag = 'h' + str(level)
         OneLineTag.__init__(self, content)
+
+
+class Meta(SelfClosingTag):
+    def __init__(self, **kwargs):
+        self.tag = 'meta'
+        self.attr = kwargs
+        for key, value in self.attr.items():
+            self.tag = self.tag + ' ' + key + '="' + value + '"'
+        self.tag = self.tag + ' /'

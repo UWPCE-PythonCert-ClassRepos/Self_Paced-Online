@@ -3,7 +3,7 @@
 import pytest
 from io import StringIO
 from html_render import (Element, Html, Body, P, OneLineTag, Title, Hr, Br, A,
-                         Ul, Li, H)
+                         Ul, Li, H, Meta)
 
 
 def test_step1():
@@ -38,7 +38,7 @@ def test_step2():
     html_el.append('hi')
     f = StringIO()
     html_el.render(f)
-    assert f.getvalue() == ('<html>\n    hi\n</html>\n')
+    assert f.getvalue() == ('<!DOCTYPE html>\n<html>\n    hi\n</html>\n')
 
     page = Html()
     body = Body()
@@ -47,9 +47,9 @@ def test_step2():
     page.append(body)
     f = StringIO()
     page.render(f)
-    expected = ('<html>\n    <body>\n        <p>\n            Some text.\n'
-                '        </p>\n        <p>\n            More text.\n        '
-                '</p>\n    </body>\n</html>\n'
+    expected = ('<!DOCTYPE html>\n<html>\n    <body>\n        <p>\n           '
+                ' Some text.\n        </p>\n        <p>\n            More text'
+                '.\n        </p>\n    </body>\n</html>\n'
                 )
     assert f.getvalue() == expected
 
@@ -124,3 +124,16 @@ def test_step7():
     f = StringIO()
     h.render(f)
     assert f.getvalue() == ('<h2>something</h2>\n')
+
+
+def test_step8():
+    html_el = Html('test')
+    f = StringIO()
+    html_el.render(f)
+    assert f.getvalue() == ('<!DOCTYPE html>\n<html>\n    test\n</html>\n')
+
+    meta = Meta(charset="UTF-8")
+    assert meta.attr == {'charset': 'UTF-8'}
+    f = StringIO()
+    meta.render(f)
+    assert f.getvalue() == ('<meta charset="UTF-8" />\n')
