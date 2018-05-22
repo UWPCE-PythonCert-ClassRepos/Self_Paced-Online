@@ -31,6 +31,15 @@ class Donor:
     def add_donation(self, donation):
         self.donations.append(donation)
 
+    def print_thanks(self, new_donation):
+        message = f"""Dear {self.name},
+        Thank you for you generous donation of ${new_donation:.2f}.
+        It will truly help the children.
+
+        Sincerely,
+        Donation Recievers"""
+        print(message)
+
     """
     OO Sorting.
     """
@@ -60,11 +69,7 @@ class DonorList:
 
     def list_donor_names(self):
         donor_names = [donor.name for donor in self.donors]
-        return ('\n'.join(donor_names))
-
-    # def add_donor(self, new_donor):
-    #     """ Deprecated --> function is contained in add_donor and donation """
-    #     self.donors.append(new_donor)
+        return '\n'.join(donor_names)
 
     def add_donation(self, target_donor, new_donation):
         target_donor.add_donation(new_donation)
@@ -73,36 +78,21 @@ class DonorList:
         """ Called for a brand new donor only.  Creates new donor object """
         new_donor = Donor(target_donor, [new_donation])
         self.donors.append(new_donor)
-        # self.add_donor(new_donor) --> deprecated
-        print(f"{new_donor.name} has given {new_donor.donor_totals}")
-    
-    def send_thanks(self):
-        """ Determines if the donor exists and gets the donation amount. """
-        # Get donor
-        target_donor = input("Please enter the donor's full name.  ")
 
-        # Get donation
-        try:
-            new_donation = float(input("Please enter the donation amount for {}.  ".format(target_donor)))
-        except ValueError:
-            print("Please enter a number.  ")
+        # Thank the donor
+        new_donor.print_thanks(new_donation)
 
-        # Find donor or create and add new donor object.
+    def determine_donor_status(self, target_donor, new_donation):
         if target_donor in self.donors:
             self.add_donation(target_donor, new_donation)
         else:
-            self.add_donor_and_donation(target_donor, new_donation)
-
-        self.print_thanks(target_donor, new_donation)
-
-    def print_thanks(self, target_donor, new_donation):
-        message = f"""Dear {target_donor},
-        Thank you for you generous donation of ${new_donation:.2f}.
-        It will truly help the children.
-
-        Sincerely,
-        Donation Recievers"""
-        print(message)
+            self.add_donor_and_donation(target_donor, new_donation)     
+    
+    def send_thanks(self, target_donor, new_donation):
+        """ Determines if the donor exists and gets the donation amount. """
+        # Find donor or create and add new donor object.
+        self.determine_donor_status(target_donor, new_donation)
+        # self.print_thanks(target_donor, new_donation)
 
     def order_donors(self):
         """ 
@@ -172,7 +162,14 @@ def main():
         4 - Quit\n")
         print()
         if choice == '1':
-            donors.send_thanks()
+             # Get donor
+            target_donor = input("Please enter the donor's full name.  ")
+            # Get donation
+            try:
+                new_donation = float(input("Please enter the donation amount for {}.  ".format(target_donor)))
+            except ValueError:
+                print("Please enter a number.  ")
+            donors.send_thanks(target_donor, new_donation)
         if choice == '2':
             donors.create_report()
         if choice == '3':

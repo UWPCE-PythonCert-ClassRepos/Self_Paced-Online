@@ -25,6 +25,10 @@ class Donor:
     def donations(self):
         return self._donations
 
+    @donations.setter
+    def donations(self, updated):
+        self._donations = updated
+
     def add_donation(self, val):
         if val < 1:
             raise ValueError("A positive donation value is required.")
@@ -43,8 +47,8 @@ class Donor:
 
 class DonorList:
 
-    def __init__(self):
-        self._donors = {}
+    def __init__(self, donors=None):
+        self._donors = donors if donors else {}
 
     @property
     def donors(self):
@@ -93,14 +97,17 @@ class DonorList:
             cur_donor = self.donors[donor]
             number = len(cur_donor.donations)
             total = sum(cur_donor.donations)
-            average = float(
-                format(
-                    sum(
-                        cur_donor.donations) / len(
-                            cur_donor.donations
-                        ), '.2f'
+            if cur_donor.donations:
+                average = float(
+                    format(
+                        sum(
+                            cur_donor.donations) / len(
+                                cur_donor.donations
+                            ), '.2f'
+                        )
                     )
-                )
+            else:
+                average = 0
             cur_donor.rollup = dict(zip(('number', 'total', 'average'),
                                         (number, total, average)))
 
@@ -114,7 +121,8 @@ class DonorList:
         print('{:_<65}'.format(''))
         for donor in self.donors:
             cur_donor = self.donors[donor]
-            print('{:<20}'.format(cur_donor.name), ('{:<15}' * len(cur_donor.rollup))
+            print('{:<20}'.format(cur_donor.name),
+                  ('{:<15}' * len(cur_donor.rollup))
                   .format(*cur_donor.rollup.values()))
 
     def generate_letters(self):
@@ -129,6 +137,33 @@ class DonorList:
         for f in pth.iterdir():
             if '.txt' in str(f):
                 print(f)
+
+    def multiply_by(self, factor, min_donation=None, max_donation=None):
+        for donor in self.donors:
+            if min_donation and max_donation:
+                filtered = filter(
+                    lambda x: x >= min_donation and x <= max_donation, self.donors[donor].donations
+                )
+            elif min_donation and not max_donation:
+                filtered = filter(
+                    lambda x: x >= min_donation, self.donors[donor].donations
+                )
+            elif not min_donation and max_donation:
+                filtered = filter(
+                    lambda x: x <= max_donation, self.donors[donor].donations
+                )
+            else:
+                filtered = self.donors[donor].donations
+            mapped = map(
+                lambda x: x * factor, filtered
+            )
+            self.donors[donor].donations = list(mapped)
+
+        newDL = DonorList(self.donors)
+        newDL.generate_table()
+
+        cli = DonorCli(newDL)
+        cli.get_selection()
 
 
 class DonorCli:
@@ -169,11 +204,60 @@ class DonorCli:
                 print('${} donation received.'.format(donation))
                 self.get_selection()
 
+    def set_multiplier(self):
+        while True:
+            try:
+                factor = int(input('Please enter a factor to multiply by: '))
+                if not factor > 0:
+                    raise ValueError
+            except ValueError:
+                print('Please provide a whole number greater than zero.')
+            else:
+                self.set_min_max(factor)
+
+    def set_min_max(self, factor):
+        init_min_max = input('Would you like to filter donations '
+                             'by min/max? y/n...\n')[0].lower().strip()
+        if not init_min_max == 'y':
+            self.donorCollection.multiply_by(factor)
+
+        min_donation = 0
+        max_donation = 0
+
+        while True:
+            try:
+                init_min = input('Filter by min? y/n...\n')[0].lower().strip()
+                if init_min == 'y':
+                    min_donation = int(input('Please enter a minimum donation: '))
+                    if not min_donation > 0:
+                        raise ValueError
+                init_max = input('Filter by max? y/n...\n')[0].lower().strip()
+                if init_max == 'y':
+                    max_donation = int(input('Please enter a maximum donation: '))
+                    if not max_donation > min_donation:
+                        raise ValueError
+            except ValueError:
+                print('Please provide a min and max donation to filter by: ')
+            else:
+                if min_donation and max_donation:
+                    self.donorCollection.multiply_by(
+                        factor, min_donation, max_donation
+                    )
+                elif min_donation and not max_donation:
+                    self.donorCollection.multiply_by(
+                        factor, min_donation
+                    )
+                elif not min_donation and max_donation:
+                    self.donorCollection.multiply_by(
+                        factor, None, max_donation
+                    )
+
     def accept_donation(self):
         if not self.donorCollection.donors:
             print('The list of donors is empty.')
             return
-        instruction = 'Please enter a full name or type \'list\' to see donors:\n'
+        instruction = 'Please enter a full name or'\
+                      ' type \'list\' to see donors:\n'
         name_input = input(instruction)
         if name_input == 'list':
             self.donorCollection.get_donor_names()
@@ -187,9 +271,10 @@ class DonorCli:
         arg_dict = {
             '1': self.set_donor,
             '2': self.accept_donation,
-            '3': self.donorCollection.generate_table,
-            '4': self.donorCollection.generate_letters,
-            '5': quit
+            '3': self.set_multiplier,
+            '4': self.donorCollection.generate_table,
+            '5': self.donorCollection.generate_letters,
+            '6': quit
         }
         try:
             if not arg_dict.get(selection):
@@ -202,9 +287,10 @@ class DonorCli:
         options = 'Please select from the menu:\n'\
                   '1) add new donor\n'\
                   '2) log donation\n'\
-                  '3) create a report\n'\
-                  '4) send letters to everyone\n'\
-                  '5) quit\n'
+                  '3) multiply donations\n'\
+                  '4) create a report\n'\
+                  '5) send letters to everyone\n'\
+                  '6) quit\n'
         while True:
             selection = input(options)
             self.apply_selection(selection)
