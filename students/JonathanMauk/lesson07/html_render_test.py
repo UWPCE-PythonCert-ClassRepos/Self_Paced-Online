@@ -41,6 +41,12 @@ class HtmlRenderingTests(unittest.TestCase):
         br.render(f)
         self.assertEqual(f.getvalue(), "<br />\n")
 
+    def test_anchor(self):
+        anchor = hr.A("http://www.google.com", "a link")
+        f = StringIO()
+        anchor.render(f)
+        self.assertEqual(f.getvalue(), '<a href="http://www.google.com">a link</a>\n')
+
 
 if __name__ == '__main__':
     unittest.main()

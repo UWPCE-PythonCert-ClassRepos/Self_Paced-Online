@@ -88,3 +88,11 @@ class Hr(SelfClosingTag):
 class Br(SelfClosingTag):
 
     tag = 'br'
+
+
+class A(OneLineTag):
+
+    tag = 'a'
+
+    def __init__(self, link, content):
+        super().__init__(content, href=link)
