@@ -1,6 +1,6 @@
 class Element:
 
-    tag = 'html'
+    tag = ''
     indent = '    '
 
     def __init__(self, content=None, **kwargs):
@@ -22,3 +22,15 @@ class Element:
                 file_out.write(cur_ind + self.indent + item)
                 file_out.write("\n")
         file_out.write(cur_ind + "</{}>\n".format(self.tag))
+
+
+class Html(Element):
+    tag = 'html'
+
+
+class Body(Element):
+    tag = 'body'
+
+
+class P(Element):
+    tag = 'p'
