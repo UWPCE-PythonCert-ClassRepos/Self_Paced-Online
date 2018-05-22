@@ -1,6 +1,43 @@
 import os
 import sys
 
+
+class Donor:
+    def __init__(self, name, donations=None):
+        self._name = name
+        if donations is None:
+            self._donations = []
+        else:
+            self._donations = donations
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, val):
+        self._name = val
+
+    @property
+    def donations(self):
+        return self._donations
+
+    def append_donations(self, amt):
+        try:
+            self.donations.append(float(amt))
+        except ValueError:
+            print("Error: donations can only be entered as integers and floats.")
+
+    def sum_donations(self):
+        return sum(self.donations)
+
+    def number_donations(self):
+        return len(self.donations)
+
+    def avg_donations(self):
+        return self.sum_donations() / self.number_donations()
+
+
 donor_names = ["John Smith", "Jane Doe", "Alan Smithee", "Tom D.A. Harry", "Joe Shmoe"]
 donation_amounts = [[18774.48, 8264.47, 7558.71], [281918.99, 8242.13], [181.97, 955.16], [67.10, 500.98], [200.01]]
 
@@ -77,22 +114,16 @@ def report_generation():
     return report
 
 
-def quit_program():
-    """Quit Mailroom program."""
-    print("Exiting...")
-    sys.exit()
-
-
 def create_letter(donor_status, donor_name, donation_amt):
     """Return formatted letters, depending on options selected. Not intended to be used by itself."""
     if donor_status == 0:
         letter_text = '''
         Dear {0},
-    
+
             Thank you for your very kind donation of ${1}, and for your continuing support.
-    
+
             Your generous contribution will be put to very good use.
-    
+
                            Sincerely,
                               -The Team
                               '''.format(donor_name, donation_amt)
@@ -153,6 +184,12 @@ def mailroom():
         except TypeError:
             print("Invalid value. Enter a number from 1-4.")
             pass
+
+
+def quit_program():
+    """Quit Mailroom program."""
+    print("Exiting...")
+    sys.exit()
 
 
 if __name__ == "__main__":
