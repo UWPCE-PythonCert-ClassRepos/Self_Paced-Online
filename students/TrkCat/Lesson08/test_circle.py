@@ -25,3 +25,15 @@ def test_step4():
     assert c.area == pi * 2 ** 2
     with pytest.raises(AttributeError):
         c.area = 10
+
+
+def test_step5():
+    c = Circle.from_diameter(8)
+    assert c.diameter == 8
+    assert c.radius == 4
+
+
+def test_step6():
+    c = Circle(4)
+    assert str(c) == 'Circle with radius: 4'
+    assert repr(c) == 'Circle(4)'
