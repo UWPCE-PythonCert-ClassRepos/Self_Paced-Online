@@ -45,7 +45,7 @@ class DonorDatabase:
         if donors:
             self._donors = donors
         else:
-            self._donors = {}
+            self._donors = []
 
     @property
     def donors(self):
@@ -86,7 +86,7 @@ def thank_you():
     user_input = input('Enter a donor\'s full name, or type \'list\' for a full list. ' +
                        'Type \'e\' to exit and return to the main menu.\n> ').title()
     if user_input.lower() == 'list':
-        print(donor_db.find_donors())
+        print(donor_db.list_donors())
         thank_you()
     elif user_input.lower() == 'e':
         mailroom()
@@ -97,7 +97,7 @@ def thank_you():
             print("Error: donations can only be entered as numbers and decimals.")
             print("Returning to previous menu...")
             thank_you()
-        donor_list = donor_db.find_donors()
+        donor_list = donor_db.list_donors()
         for donor in donor_db.donors:
             if user_input in donor_list and donor.name == user_input:
                 donor.append_donations(donation)
@@ -125,20 +125,9 @@ def report_printing():
     while True:
         print('Donor Name' + ' ' * 16 + '| Total Given | Num Gifts | Average Gift')
         print('-' * 66)
-        print(DonorDatabase(donor_db).create_report())
+        print(donor_db.create_report())
         print('Returning to main menu...\n')
         return
-
-
-def report_generation():
-    """Generate and return report based on donor_db."""
-    report = ""
-    for k, v in donor_db:
-        num_gifts = len(donor_db[k])
-        total_given = sum(donor_db[k])
-        average_gifts = total_given / num_gifts
-        report = report + f'{k: <26}| ${total_given:>10.2f} |{num_gifts:^11}| ${average_gifts:>11.2f}\n'
-    return report
 
 
 def create_letter(donor_status, donor_name, donation_amt):
