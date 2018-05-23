@@ -61,10 +61,11 @@ class DonorDatabase:
 
     def create_report(self):
         report = ""
-        for k, v in self.donors:
-            num_gifts = Donor(k, v).number_donations()
-            total_given = Donor(k, v).sum_donations()
-            average_gifts = Donor(k, v).avg_donations()
+        for donor in self.donors:
+            k = donor.name
+            num_gifts = donor.number_donations()
+            total_given = donor.sum_donations()
+            average_gifts = donor.avg_donations()
             report = report + f'{k: <26}| ${total_given:>10.2f} |{num_gifts:^11}| ${average_gifts:>11.2f}\n'
         return report
 
