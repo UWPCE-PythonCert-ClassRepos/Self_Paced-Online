@@ -1,1 +1,4 @@
-{}
+{
+  "test_mailroom_oo.py::test_add_donor": true,
+  "test_mailroom_oo.py::test_add_donor_and_donation": true
+}
