@@ -23,12 +23,6 @@ class Donor:
     def donations(self):
         return self._donations
 
-    def append_donations(self, amt):
-        try:
-            self.donations.append(float(amt))
-        except ValueError:
-            print("Error: donations can only be entered as integers and floats.")
-
     def sum_donations(self):
         return sum(self.donations)
 
@@ -51,26 +45,28 @@ class DonorDatabase:
     def donors(self):
         return self._donors
 
-    def find_donor(self, name):
-        if name in self.donors:
-            return self.donors[name]
-        else:
-            return "Donor not found."
-
     def find_donors(self):
         """List all donors by name. Called by thank_you() menu."""
         donor_list = [k for k in self.donors]
         return donor_list
 
-    def get_donations(self, name):
-        if name in self.donors:
-            return self.donors[name].donations
-        else:
-            return "Donor not found."
+    def append_donations(self, name, amt):
+        try:
+            self.donors[name].append(float(amt))
+        except ValueError:
+            print("Error: donations can only be entered as integers and floats.")
 
     def add_new_donor(self, name, amt):
         self.donors[name] = [amt]
 
+    def create_report(self):
+        report = ""
+        for k, v in self.donors:
+            num_gifts = Donor(k, v).number_donations()
+            total_given = Donor(k, v).sum_donations()
+            average_gifts = Donor(k, v).avg_donations()
+            report = report + f'{k: <26}| ${total_given:>10.2f} |{num_gifts:^11}| ${average_gifts:>11.2f}\n'
+        return report
 
 donor_names = ["John Smith", "Jane Doe", "Alan Smithee", "Tom D.A. Harry", "Joe Shmoe"]
 donation_amounts = [[18774.48, 8264.47, 7558.71], [281918.99, 8242.13], [181.97, 955.16], [67.10, 500.98], [200.01]]
@@ -101,7 +97,7 @@ def thank_you():
         donor_list = DonorDatabase(donor_db).find_donors()
         for k in donor_db:
             if user_input in donor_list and k == user_input:
-                donor_db[user_input].append_donations(donation)
+                DonorDatabase(donor_db).append_donations(user_input, donation)
                 print("Existing donor found.")
                 print("Appending the amount of {0} to {1}'s file...".format(donation, user_input))
                 print("Printing thank you email...")
@@ -126,7 +122,7 @@ def report_printing():
     while True:
         print('Donor Name' + ' ' * 16 + '| Total Given | Num Gifts | Average Gift')
         print('-' * 66)
-        print(report_generation())
+        print(DonorDatabase(donor_db).create_report())
         print('Returning to main menu...\n')
         return
 
@@ -134,7 +130,7 @@ def report_printing():
 def report_generation():
     """Generate and return report based on donor_db."""
     report = ""
-    for k in donor_db:
+    for k, v in donor_db:
         num_gifts = len(donor_db[k])
         total_given = sum(donor_db[k])
         average_gifts = total_given / num_gifts
