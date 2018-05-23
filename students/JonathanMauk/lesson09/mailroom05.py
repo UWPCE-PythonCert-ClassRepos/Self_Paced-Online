@@ -3,6 +3,7 @@ import sys
 
 
 class Donor:
+    """Container for a single donor's data, and methods to access/manipulate that data."""
     def __init__(self, name, donations=None):
         self._name = name
         if donations is None:
@@ -38,6 +39,39 @@ class Donor:
         return self.sum_donations() / self.number_donations()
 
 
+class DonorDatabase:
+    """Class and methods for donors in aggregate."""
+    def __init__(self, donors=None):
+        if donors:
+            self._donors = donors
+        else:
+            self._donors = {}
+
+    @property
+    def donors(self):
+        return self._donors
+
+    def find_donor(self, name):
+        if name in self.donors:
+            return self.donors[name]
+        else:
+            return "Donor not found."
+
+    def find_donors(self):
+        """List all donors by name. Called by thank_you() menu."""
+        donor_list = [k for k in self.donors]
+        return donor_list
+
+    def get_donations(self, name):
+        if name in self.donors:
+            return self.donors[name].donations
+        else:
+            return "Donor not found."
+
+    def add_new_donor(self, name, amt):
+        self.donors[name] = [amt]
+
+
 donor_names = ["John Smith", "Jane Doe", "Alan Smithee", "Tom D.A. Harry", "Joe Shmoe"]
 donation_amounts = [[18774.48, 8264.47, 7558.71], [281918.99, 8242.13], [181.97, 955.16], [67.10, 500.98], [200.01]]
 
@@ -52,7 +86,8 @@ def thank_you():
     user_input = input('Enter a donor\'s full name, or type \'list\' for a full list. ' +
                        'Type \'e\' to exit and return to the main menu.\n> ').title()
     if user_input.lower() == 'list':
-        print(list_donors())
+        d = DonorDatabase(donor_db)
+        print(d.find_donors())
         thank_you()
     elif user_input.lower() == 'e':
         mailroom()
@@ -63,11 +98,10 @@ def thank_you():
             print("Error: donations can only be entered as numbers and decimals.")
             print("Returning to previous menu...")
             thank_you()
-        donor_list = []
+        donor_list = DonorDatabase(donor_db).find_donors()
         for k in donor_db:
-            donor_list.append(k)
             if user_input in donor_list and k == user_input:
-                donor_db[k].append(donation)
+                donor_db[user_input].append_donations(donation)
                 print("Existing donor found.")
                 print("Appending the amount of {0} to {1}'s file...".format(donation, user_input))
                 print("Printing thank you email...")
@@ -77,7 +111,7 @@ def thank_you():
                 print("Returning to thank you letter menu...")
                 thank_you()
             else:
-                donor_db[user_input] = [donation]
+                DonorDatabase(donor_db).add_new_donor(user_input, donation)
                 print("New donor detected. Creating record for {0}...".format(user_input))
                 print("Printing thank you email...")
                 print("---------------------------")
@@ -85,12 +119,6 @@ def thank_you():
                 print("---------------------------")
                 print("Returning to thank you letter menu...")
                 thank_you()
-
-
-def list_donors():
-    """List all donors by name. Called by thank_you() menu."""
-    donor_list = [k for k in donor_db]
-    return donor_list
 
 
 def report_printing():
