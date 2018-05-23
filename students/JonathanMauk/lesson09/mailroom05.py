@@ -51,13 +51,12 @@ class DonorDatabase:
     def donors(self):
         return self._donors
 
-    def find_donors(self):
+    def list_donors(self):
         """List all donors by name. Called by thank_you() menu."""
-        donor_list = [k for k in self.donors]
-        return donor_list
+        return [donor.name for donor in self.donors]
 
-    def add_new_donor(self, name, amt):
-        self.donors[name] = [amt]
+    def add_new_donor(self, donor):
+        self.donors.append(donor)
 
     def create_report(self):
         report = ""
@@ -87,8 +86,7 @@ def thank_you():
     user_input = input('Enter a donor\'s full name, or type \'list\' for a full list. ' +
                        'Type \'e\' to exit and return to the main menu.\n> ').title()
     if user_input.lower() == 'list':
-        d = DonorDatabase(donor_db)
-        print(d.find_donors())
+        print(donor_db.find_donors())
         thank_you()
     elif user_input.lower() == 'e':
         mailroom()
@@ -99,10 +97,10 @@ def thank_you():
             print("Error: donations can only be entered as numbers and decimals.")
             print("Returning to previous menu...")
             thank_you()
-        donor_list = DonorDatabase(donor_db).find_donors()
-        for k in donor_db:
-            if user_input in donor_list and k == user_input:
-                DonorDatabase(donor_db).append_donations(user_input, donation)
+        donor_list = donor_db.find_donors()
+        for donor in donor_db.donors:
+            if user_input in donor_list and donor.name == user_input:
+                donor.append_donations(donation)
                 print("Existing donor found.")
                 print("Appending the amount of {0} to {1}'s file...".format(donation, user_input))
                 print("Printing thank you email...")
@@ -112,7 +110,7 @@ def thank_you():
                 print("Returning to thank you letter menu...")
                 thank_you()
             else:
-                DonorDatabase(donor_db).add_new_donor(user_input, donation)
+                donor_db.add_new_donor(Donor(user_input, [donation]))
                 print("New donor detected. Creating record for {0}...".format(user_input))
                 print("Printing thank you email...")
                 print("---------------------------")
