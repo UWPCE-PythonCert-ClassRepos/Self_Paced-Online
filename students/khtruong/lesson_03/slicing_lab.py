@@ -31,7 +31,7 @@ def reverse_seq(seq):
 def reorder_seq(seq):
     """Return a copy of sequence with the middle third, then last third,
     then the first third in the new order."""
-    third = int(len(seq)/3)
+    third = int(len(seq) / 3)
     mod_seq = seq[third:] + seq[:third]
     return mod_seq
 
