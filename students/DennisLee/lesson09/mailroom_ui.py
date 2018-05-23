@@ -30,8 +30,8 @@ class DonorUI():
             for k, v in choices.items():
                 print(k, v['option'])
             response = input("Type a menu selection number: ").strip()
-            self.call_menu_function(
-                    choices, response, self.respond_to_bad_main_menu_choice)
+            self.call_menu_function(choices, response, 
+                    self.respond_to_bad_main_menu_choice, bad_choice=response)
             if response == '4':  # Exit if "Quit" is chosen
                 return
 
@@ -59,20 +59,20 @@ class DonorUI():
         try:  # Get the selection number and call helper function
             choice_dict[choice]['function']()
         except KeyError:
-            unfound_key_handler(choice, **kwargs)
+            unfound_key_handler(**kwargs)
             return False
         else:
             return True
 
-    def respond_to_bad_main_menu_choice(self, choice):
+    def respond_to_bad_main_menu_choice(self, bad_choice):
         """
         Show error message if the user's main menu choice is invalid.
         
-        :choice:  The menu choice string as entered by the user.
+        :bad_choice:  The menu choice string as entered by the user.
 
         :return:  None.
         """
-        print(f"\n'{choice}' is an invalid response.")
+        print(f"\n'{bad_choice}' is an invalid response.")
 
     def exit_screen(self):
         """
@@ -96,13 +96,11 @@ class DonorUI():
                 'list': {'function': self.collection.print_donors}
         }
         # Get the donor name, show all donors, or quit
-        response = ""
-        while response not in alt_choices and response not in self.collection:
-            response = input("\nType full donor name "
-                    "(or 'list' to show all donors, or 'quit'): ").strip()
+        response = input("\nType full donor name "
+                "(or 'list' to show all donors, or 'quit'): ").strip()
 
-        self.call_menu_function(alt_choices,
-                self.collection[response], self.get_donation_amount)
+        self.call_menu_function(alt_choices, response, 
+                self.get_donation_amount, donor=response)
         if response == 'list':
             self.send_thank_you()  # Still want to get a donor to thank
 
@@ -118,10 +116,13 @@ class DonorUI():
                 '': {'function': self.exit_screen},
                 'quit': {'function': self.exit_screen}
         }
-        donation = input(
-                f"Type amount donated by '{donor.name}' (or type 'quit'): "
+        donation = input(f"Type amount to donate (or type 'quit'): "
                 ).strip().lower()
-        self.call_menu_function(donation_choices, donation, donor.add)
+        try:
+            self.call_menu_function(donation_choices, donation, 
+                    self.collection.add, name=donor, amount=donation)
+        except ValueError:
+            print(f"'{donation}' is not a valid donation amount.")
 
     def send_all_letters(self):
         """
@@ -132,13 +133,17 @@ class DonorUI():
         # Ask for the directory to save the letters to
         print('\nThe current directory is %s' % os.getcwd())
         new_dir = input('\nType the directory to save the letters in'
-                        ' (invalid entry defaults to the current directory): '
+                        ' (blank entry defaults to the current directory): '
                         ).strip()
         try:
             self.collection.save_letters(new_dir)
         except FileNotFoundError:
             print(f"Can't open or create folder '{new_dir}' - exiting "
                     "without creating the thank-you letters.")
+        except PermissionError:
+            print(f"Not allowed to write to '{new_dir}'.")
+        except OSError:
+            print(f"Specified folder '{new_dir}' is not valid.")
 
 
 

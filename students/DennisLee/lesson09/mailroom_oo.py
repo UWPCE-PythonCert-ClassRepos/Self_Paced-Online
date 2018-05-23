@@ -3,8 +3,10 @@
 import os
 
 class Donor():
+    """Contains methods and properties for a single donor."""
 
     def __init__(self, name, amount):
+        """Initialize with the donor name & initial donation amount."""
         if not name or not name.strip():
             raise ValueError("A non-blank name must be specified.")
         if not amount:
@@ -14,45 +16,50 @@ class Donor():
         self.add(amount)
 
     def __repr__(self):
-        return "Donor(name, amount)"
+        return "Donor(name, initial_donation_amount)"
 
     @property
-    def total(self):  # Cumulative donation amount
+    def total(self):
+        """Return the cumulative donation amount from the donor."""
         if self.donations:
             return sum(self.donations)
         else:
             return 0.00
 
     @property
-    def gifts(self):  # Number of donations
+    def gifts(self):
+        """Return the total number of donations from the donor."""
         return len(self.donations)
 
     @property
-    def average(self):  # Average donation amount
+    def average(self):
+        """Return the average donation amount from the donor."""
         if self.gifts:
             return 1.0 * self.total / self.gifts
         else:
-            return '0.00'
+            return 0.00
 
     @property
-    def largest(self):  # Largest donation amount
+    def largest(self):
+        """Return the largest donation amount from the donor."""
         if self.gifts:
             return max(self.donations)
         else:
-            return '0.00'
+            return 0.00
 
     @property
-    def smallest(self):  # Smallest donation amount
+    def smallest(self):
+        """Return the smallest donation amount from the donor."""
         if self.gifts:
             return min(self.donations)
         else:
-            return '0.00'
+            return 0.00
 
     def add(self, amount):
+        """Add a new amount to the donor's gift history."""
         amount = float(amount)
-        if amount <= 0.0:
-            raise ValueError(
-                    "The 'amount' argument must contain a positive number.")
+        if amount < 0.005:
+            raise ValueError("The 'amount' argument must be at least $0.01.")
         else:
             self.donations.append(round(amount, 2))
 
@@ -106,14 +113,24 @@ class Donor():
 
 
 class DonorCollection():
+    """Contains methods and properties for an entire donor roster."""
 
     def __init__(self):
+        """Create a dict of donor names and associated `Donor` objects."""
         self.donors = {}
 
     def __repr__(self):
         return "DonorCollection()"
 
     def __getitem__(self, key):
+        """
+        Allows a specific donor to be referenced as an index of this
+        donor collection object.
+
+        :key:  The name of the donor.
+
+        :return:  The `Donor` object associated with the donor name.
+        """
         if not isinstance(key, str):
             raise TypeError(f"Donor item name '{key}' is type "
                     f"'{type(key)}' - it should be a string instead.")
@@ -124,6 +141,17 @@ class DonorCollection():
                     f"Name '{key}' is not in the donor collection.")
 
     def add(self, name, amount):
+        """
+        Add a new donation with the specified donor name and amount.
+        If the donor is not currently in the donation history, a new
+        entry is added to the `donors` dict.
+
+        :name:  The name of the donor.
+
+        :amount:  The amount given.
+
+        :return:  None.        
+        """
         if not name or not name.strip():
             raise ValueError("A non-blank name must be specified.")
         clean_name = name.strip()
@@ -145,7 +173,7 @@ class DonorCollection():
 
     def create_report(self):
         """
-        Print out statistics for the entire donor list.
+        Print out statistics for the entire donor roster.
 
         :return:  None.
         """
@@ -168,7 +196,8 @@ class DonorCollection():
         :folder:  The folder in which to save the files. If an invalid
                   folder is specified or no folder is specified, the
                   current folder is used. If the folder does not exist,
-                  the method attempts to create the folder to continue.
+                  the method attempts to create the folder and save
+                  the letters in the created folder.
 
         :return:  The folder containing the thank-you letters.
         """
