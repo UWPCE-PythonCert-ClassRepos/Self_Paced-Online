@@ -99,7 +99,9 @@ def thank_you():
             thank_you()
         donor_list = donor_db.list_donors()
         for donor in donor_db.donors:
-            if user_input in donor_list and donor.name == user_input:
+            if user_input in donor_list and donor.name != user_input:
+                continue
+            elif user_input in donor_list and donor.name == user_input:
                 donor.append_donations(donation)
                 print("Existing donor found.")
                 print("Appending the amount of {0} to {1}'s file...".format(donation, user_input))
