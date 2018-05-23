@@ -23,6 +23,12 @@ class Donor:
     def donations(self):
         return self._donations
 
+    def append_donations(self, amt):
+        try:
+            self.donations.append(float(amt))
+        except ValueError:
+            print("Error: donations can only be entered as integers and floats.")
+
     def sum_donations(self):
         return sum(self.donations)
 
@@ -49,12 +55,6 @@ class DonorDatabase:
         """List all donors by name. Called by thank_you() menu."""
         donor_list = [k for k in self.donors]
         return donor_list
-
-    def append_donations(self, name, amt):
-        try:
-            self.donors[name].append(float(amt))
-        except ValueError:
-            print("Error: donations can only be entered as integers and floats.")
 
     def add_new_donor(self, name, amt):
         self.donors[name] = [amt]
