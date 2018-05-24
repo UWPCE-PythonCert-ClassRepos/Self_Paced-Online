@@ -6,6 +6,7 @@ donation_amounts = [[18774.48, 8264.47, 7558.71], [281918.99, 8242.13], [181.97,
 
 donor_db = {name: donation for name, donation in zip(donor_names, donation_amounts)}
 
+
 def thank_you():
     """Module with three functions:
     1) Append donation to record (if existing donor) or create a new record in database (if not an existing donor.
@@ -151,8 +152,8 @@ def create_txt_files():
 
 def challenge_menu():
     """Generate challenge menu text and get user input."""
-    user_input1 = input('Enter a multiplier (float or integer) to create a matching challenge for existing donations. ' +
-                        'Type \'e\' to exit and return to the main menu.\n> ')
+    user_input1 = input('Enter a multiplier (float or integer) to create a matching challenge for existing donations.' +
+                        ' Type \'e\' to exit and return to the main menu.\n> ')
     if user_input1.lower() == 'e':
         mailroom()
     else:
@@ -190,14 +191,46 @@ def challenge(factor, **min_max):
         print('-' * 66)
         print(filter_report_generation(challenge_db))
     else:
-        print('Showing list of donation matching challenge values based on selected multiplier of: {0}x.'.format(factor))
+        print('Showing list of donation matching challenge values based on selected multiplier of: {0}x.'.
+              format(factor))
         print('Donor Name' + ' ' * 16 + '| Total Given | Num Gifts | Average Gift')
         print('-' * 66)
         print(report_generation(challenge_db))
 
 
-def run_projections():
-    return
+def projection_under():
+    less_than = float(input("Donations under which value should be filtered out? (Enter integer or float).\n> "))
+    factor = float(input("Enter a multiplier for donations.\n> "))
+    matching_db = dict(list((key, list(filter(lambda x: x <= less_than, value))) for key, value in donor_db.items()))
+    matching_db = dict(list((key, list(map(lambda x: x * factor, value))) for key, value in matching_db.items()))
+    for k in matching_db:
+        print("Projected total donation if excluding donations that are less than ${0} and multiplying by {1}: {2}."
+              .format(less_than, factor, sum(matching_db[k])))
+    projection_menu()
+
+
+def projection_over():
+    more_than = float(input("Donations over which value should be filtered out? (Enter integer or float).\n> "))
+    factor = float(input("Enter a multiplier for donations.\n> "))
+    matching_db = dict(list((key, list(filter(lambda x: x >= more_than, value))) for key, value in donor_db.items()))
+    matching_db = dict(list((key, list(map(lambda x: x * factor, value))) for key, value in matching_db.items()))
+    for k in matching_db:
+        print("Projected total donation if excluding donations that are more than ${0}and multiplying by {1}: {2}."
+              .format(more_than, factor, sum(matching_db[k])))
+    projection_menu()
+
+
+def projection_menu():
+    while True:
+        selection = input('Donor Projections Menu\n------------------------\n' +
+                          'Choose an option:\n1) Donation matching (under)\n2) Donation matching (over)\n' +
+                          '3) Quit\n> ')
+        menu_dict = {'1': projection_under, '2': projection_over, '3': mailroom}
+        try:
+            menu_dict.get(selection)()
+        except TypeError:
+            print("Invalid value. Enter a number from 1-3.")
+            pass
 
 
 def mailroom():
@@ -207,7 +240,7 @@ def mailroom():
                           'Choose an option:\n1) Send a thank you\n2) Create a report\n3) Send letters to everyone' +
                           '\n4) Donation matching challenge\n5) Run projections\n6) Quit\n> ')
         menu_dict = {'1': thank_you, '2': report_printing, '3': thank_all, '4': challenge_menu,
-                     '5': run_projections, '6': quit_program}
+                     '5': projection_menu, '6': quit_program}
         try:
             menu_dict.get(selection)()
         except TypeError:
