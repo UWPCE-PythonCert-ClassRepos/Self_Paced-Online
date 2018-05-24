@@ -144,21 +144,26 @@ def create_txt_files():
 def challenge_menu():
     """Generate challenge menu text and get user input."""
     user_input = input('Enter a multiplier (float or integer) to create a matching challenge for existing donations. ' +
-                       'Type \'c\' to see a list of current challenge values. ' +
                        'Type \'e\' to exit and return to the main menu.\n> ')
     if user_input.lower() == 'e':
         mailroom()
-    # elif
-    elif user_input != (float or int):
-        print("Please enter a number and try again.")
-        challenge_menu()
     else:
-        challenge(user_input)
+        try:
+            challenge(float(user_input))
+            print('Returning to challenge menu...\n')
+            challenge_menu()
+        except ValueError:
+            print("Invalid value. Please enter a number and try again.")
+            pass
+
 
 def challenge(factor):
-    """Create challenge database using multiplier, map(), and existing database."""
-    challenge_db = {}  # Clears out values, in case challenge has been run before.
-    # for k, v in donor_db:
+    """Create challenge database + report using multiplier, map(), and existing database."""
+    challenge_db = dict(list((key, list(map(lambda i: i * factor, value))) for key, value in donor_db.items()))
+    print('Showing list of donation matching challenge values based on selected multiplier of: {0}x.'.format(factor))
+    print('Donor Name' + ' ' * 16 + '| Total Given | Num Gifts | Average Gift')
+    print('-' * 66)
+    print(report_generation(challenge_db))
 
 
 def run_projections():
@@ -170,7 +175,7 @@ def mailroom():
     while True:
         selection = input('MAILROOM v0.4.1: Functional Programming Branch\n------------------------\n' +
                           'Choose an option:\n1) Send a thank you\n2) Create a report\n3) Send letters to everyone' +
-                          '\n4) Donation matching\n5) Run projections\n6) Quit\n> ')
+                          '\n4) Donation matching challenge\n5) Run projections\n6) Quit\n> ')
         menu_dict = {'1': thank_you, '2': report_printing, '3': thank_all, '4': challenge_menu,
                      '5': run_projections, '6': quit_program}
         try:
