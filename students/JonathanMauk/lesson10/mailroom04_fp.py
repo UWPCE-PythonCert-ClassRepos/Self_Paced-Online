@@ -6,8 +6,6 @@ donation_amounts = [[18774.48, 8264.47, 7558.71], [281918.99, 8242.13], [181.97,
 
 donor_db = {name: donation for name, donation in zip(donor_names, donation_amounts)}
 
-challenge_db = {}
-
 def thank_you():
     """Module with three functions:
     1) Append donation to record (if existing donor) or create a new record in database (if not an existing donor.
@@ -78,6 +76,16 @@ def report_generation(database):
     return report
 
 
+def filter_report_generation(database):
+    """New version of above for filter(). Excludes average, as donors may have 0 values when filtered."""
+    report = ""
+    for k in database:
+        num_gifts = len(database[k])
+        total_given = sum(database[k])
+        report = report + f'{k: <26}| ${total_given:>10.2f} |{num_gifts:^11}\n'
+    return report
+
+
 def quit_program():
     """Quit Mailroom program."""
     print("Exiting...")
@@ -143,27 +151,49 @@ def create_txt_files():
 
 def challenge_menu():
     """Generate challenge menu text and get user input."""
-    user_input = input('Enter a multiplier (float or integer) to create a matching challenge for existing donations. ' +
-                       'Type \'e\' to exit and return to the main menu.\n> ')
-    if user_input.lower() == 'e':
+    user_input1 = input('Enter a multiplier (float or integer) to create a matching challenge for existing donations. ' +
+                        'Type \'e\' to exit and return to the main menu.\n> ')
+    if user_input1.lower() == 'e':
         mailroom()
     else:
-        try:
-            challenge(float(user_input))
-            print('Returning to challenge menu...\n')
-            challenge_menu()
-        except ValueError:
-            print("Invalid value. Please enter a number and try again.")
-            pass
+        user_input2 = input('Would you like to enter a minimum and maximum?\n> ')
+        if user_input2.lower() == 'yes' or user_input2.lower() == 'y':
+            user_input3 = input('Please enter the minimum (numbers only!):\n>')
+            user_input4 = input('Please enter the maximum (numbers only!):\n>')
+            try:
+                challenge(float(user_input1), min_donation=float(user_input3), max_donation=float(user_input4))
+                print('Returning to challenge menu...\n')
+                challenge_menu()
+            except ValueError:
+                print("Invalid value. Please enter a number and try again.")
+                pass
+        else:
+            try:
+                challenge(float(user_input1))
+                print('Returning to challenge menu...\n')
+                challenge_menu()
+            except ValueError:
+                print("Invalid value. Please enter a number and try again.")
+                pass
 
 
-def challenge(factor):
+def challenge(factor, **min_max):
     """Create challenge database + report using multiplier, map(), and existing database."""
     challenge_db = dict(list((key, list(map(lambda i: i * factor, value))) for key, value in donor_db.items()))
-    print('Showing list of donation matching challenge values based on selected multiplier of: {0}x.'.format(factor))
-    print('Donor Name' + ' ' * 16 + '| Total Given | Num Gifts | Average Gift')
-    print('-' * 66)
-    print(report_generation(challenge_db))
+    if min_max:
+        challenge_db = dict(list((key, list(filter(lambda x: min_max['min_donation'] <= x <= min_max['max_donation'],
+                                            value))) for key, value in donor_db.items()))
+        print('Showing list of donation matching challenge values based on selected multiplier of: {0}x,'
+              'as well as selected filters: min ({1}) and max ({2}).'.
+              format(factor, min_max['min_donation'], min_max['max_donation']))
+        print('Donor Name' + ' ' * 16 + '| Total Given | Num Gifts')
+        print('-' * 66)
+        print(filter_report_generation(challenge_db))
+    else:
+        print('Showing list of donation matching challenge values based on selected multiplier of: {0}x.'.format(factor))
+        print('Donor Name' + ' ' * 16 + '| Total Given | Num Gifts | Average Gift')
+        print('-' * 66)
+        print(report_generation(challenge_db))
 
 
 def run_projections():
@@ -181,7 +211,7 @@ def mailroom():
         try:
             menu_dict.get(selection)()
         except TypeError:
-            print("Invalid value. Enter a number from 1-4.")
+            print("Invalid value. Enter a number from 1-6.")
             pass
 
 
