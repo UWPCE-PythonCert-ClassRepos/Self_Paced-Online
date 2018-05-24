@@ -201,22 +201,22 @@ def challenge(factor, **min_max):
 def projection_under():
     less_than = float(input("Donations under which value should be filtered out? (Enter integer or float).\n> "))
     factor = float(input("Enter a multiplier for donations.\n> "))
-    matching_db = dict(list((key, list(filter(lambda x: x <= less_than, value))) for key, value in donor_db.items()))
+    matching_db = dict(list((key, list(filter(lambda x: x >= less_than, value))) for key, value in donor_db.items()))
     matching_db = dict(list((key, list(map(lambda x: x * factor, value))) for key, value in matching_db.items()))
     for k in matching_db:
-        print("Projected total donation if excluding donations that are less than ${0} and multiplying by {1}: {2}."
-              .format(less_than, factor, sum(matching_db[k])))
+        print("Projected total matching donation for {0} if excluding donations that are less than ${1} "
+              "and multiplying by {2}: {3}.\n".format(k, less_than, factor, sum(matching_db[k])))
     projection_menu()
 
 
 def projection_over():
     more_than = float(input("Donations over which value should be filtered out? (Enter integer or float).\n> "))
     factor = float(input("Enter a multiplier for donations.\n> "))
-    matching_db = dict(list((key, list(filter(lambda x: x >= more_than, value))) for key, value in donor_db.items()))
+    matching_db = dict(list((key, list(filter(lambda x: x <= more_than, value))) for key, value in donor_db.items()))
     matching_db = dict(list((key, list(map(lambda x: x * factor, value))) for key, value in matching_db.items()))
     for k in matching_db:
-        print("Projected total donation if excluding donations that are more than ${0}and multiplying by {1}: {2}."
-              .format(more_than, factor, sum(matching_db[k])))
+        print("Projected total matching donation for {0} if excluding donations that are more than ${1} "
+              "and multiplying by {2}: {3}.\n".format(k, more_than, factor, sum(matching_db[k])))
     projection_menu()
 
 
