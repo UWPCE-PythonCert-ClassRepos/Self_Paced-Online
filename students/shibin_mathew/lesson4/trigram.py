@@ -16,7 +16,6 @@ def word_library(list_story):
         if list_story[i+2] not in list_punctutation:
             third_word = list_story[i+2]
             my_word_dict.setdefault(two_adj_words, []).append(third_word)
-    # print(my_word_dict)
     return my_word_dict
 
 
@@ -24,7 +23,6 @@ def generate_story(sample_story, word_dict):
     # Generate a story based on the trigram dictionary
     rand_start = int(random.random()*len(word_dict))  # random starting point
     story = ''
-    # TODO: start at a random point
     for i in range(len(sample_story)-2):
         try:
             if sample_story[i] + ' ' + sample_story[i+1] in word_dict.keys():
@@ -35,25 +33,25 @@ def generate_story(sample_story, word_dict):
                     try:
                         word_dict[sample_story[i] + ' ' + sample_story[i+1]].remove(word_dict[sample_story[i] + ' ' +
                                                                                               sample_story[i+1]][0])
-                    except keyError:
+                    except KeyError:
                         print("{} is not in the list".format(word_dict[sample_story[i] + ' ' + sample_story[i+1]]))
                 else:
-                    story += sample_story[i+1] + ' ' + word_dict[sample_story[i] + ' ' + sample_story[i+1]][0] + ' '
+                    story += word_dict[sample_story[i] + ' ' + sample_story[i+1]][0] + ' '
                     try:
                         word_dict[sample_story[i] + ' ' + sample_story[i+1]].remove(word_dict[sample_story[i] + ' ' +
                                                                                               sample_story[i+1]][0])
-                    except keyError:
+                    except KeyError:
                         print("{} is not in the list".format(word_dict[sample_story[i] + ' ' + sample_story[i + 1]]))
         except IndexError:
             pass
-    print(story)
     return story
 
 
 if __name__ == '__main__':
     filename = 'sherlock_small.txt'
-    file_test = 'sherlock_test.txt'
+    file_test = 'sherlock_small.txt'
     list_story = read_file(filename)
     list_story_test = read_file(file_test)
     word_lib = word_library(list_story)
     story = generate_story(list_story_test, word_lib)
+    print(story)
