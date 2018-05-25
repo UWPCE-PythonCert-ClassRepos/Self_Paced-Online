@@ -3,17 +3,14 @@ class Element:
     tag = ""
     indent = "  "
 
-
     def __init__(self, content=None, **kwargs):
         self.content = []
         if content: self.content.append(content)
         self.attributes = kwargs
 
-
     def append(self, content):
         """append content to the element class object"""
         self.content.append(content)
-
 
     def render(self, file_out, cur_ind=0):
         """general render for html file"""
@@ -34,7 +31,6 @@ class Element:
 class OneLineTag(Element):
     """Single line Element sublclass"""
 
-
     def render(self, file_out, cur_ind=0):
         """unique render for single line element"""
         tagstring = (cur_ind*self.indent) + "<{}".format(self.tag)
@@ -51,10 +47,8 @@ class OneLineTag(Element):
 class SelfClosingTag(Element):
     """Self closing format tags with no content"""
 
-
     def __init__(self, **kwargs):
         self.attributes = kwargs
-
 
     def render(self, file_out, cur_ind=0):
         """unique render for self closing tags"""
@@ -67,6 +61,7 @@ class SelfClosingTag(Element):
 
 class Html(Element):
     tag = 'html'
+
     def render(self, file_out, cur_ind=0):
         file_out.write("<!DOCTYPE html>\n")
         Element.render(self, file_out, cur_ind=0)
@@ -98,6 +93,7 @@ class Br(SelfClosingTag):
 
 class A(OneLineTag):
     tag = "a"
+
     def __init__(self, link, content):
         self.attributes = {"href": link}
         self.content = []
@@ -114,7 +110,6 @@ class Li(Element):
 
 class H(OneLineTag):
 
-
     def __init__(self, size, content, **kwargs):
         OneLineTag.__init__(self, content, **kwargs)
         self.size = size
@@ -123,5 +118,3 @@ class H(OneLineTag):
 
 class Meta(SelfClosingTag):
     tag = 'meta'
-
-        
