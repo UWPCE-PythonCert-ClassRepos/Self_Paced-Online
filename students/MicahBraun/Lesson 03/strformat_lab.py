@@ -1,5 +1,6 @@
 # ------------------------------------------------------------------------
 # NAME: MICAH BRAUN
+
 # PROJECT: strformat_lab.py
 # PURPOSE: Manipulating strings
 # DATE: 5/19/2018
@@ -175,3 +176,6 @@ for index, elem in enumerate(ten_tup):  # evaluate index, values in tuple
             print('\n{:>10}'.format(elem) + ", ", end="")  # print newline and index[5]
         else:
             print('{:>10}'.format(elem) + ", ", end="")  # all other indexes print
+
+
+
