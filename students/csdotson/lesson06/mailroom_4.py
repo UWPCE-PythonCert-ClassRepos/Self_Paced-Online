@@ -48,9 +48,7 @@ def write_letters():
 
 def compose_letter(donor, donations):
         return (f"""Dear {donor},
-
         Thank you very much for your generosity! Your most recent gift of ${(donations[donor][-1])} will be put to great use. So far, you've donated a total of ${sum(donations[donor])}!
-
         Sincerely,
         The Team""")
 
