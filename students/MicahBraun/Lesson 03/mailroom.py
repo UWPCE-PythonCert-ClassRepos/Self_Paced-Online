@@ -27,8 +27,6 @@ data_list = [['NAMES', 'DONATION AMOUNT', 'NUMBER OF GIFTS', 'AVG. GIFTS'],
              ['Tanya Essex', 50000, 1, 50000],
              ['Garrett Hartsell', 800, 2, 1400]]
 
-search_names = [elem[0] for elem in data_list]
-
 # Processing --------------------------------------------------------------
 
 def menu():
@@ -67,6 +65,7 @@ def thankyou():
     """Method for sending 'Thank You' messages to Donors, using names *"""
 
     while True:
+        search_names = [elem[0] for elem in data_list]                  # update search_names
         print("Enter the name of the person you are writing to (or enter 'list' to see a list of names or Q to quit) ")
         fname_prompt = input("First Name: ").strip().capitalize()       # first name variable (strip any spaces)
         if fname_prompt.upper() == "Q":                                 # if Q, then quit to menu()
@@ -223,5 +222,4 @@ def createreport():
 
 # Display -------------------------------------------------------------------
 
-menu()                                                                            # Program starts here
-
+menu() # Program starts here
