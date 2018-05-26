@@ -20,7 +20,7 @@ class MailroomTest(unittest.TestCase):
     def donor_list_test(self):
         self.assertEqual(mailroom_4.donor_list(), list(donors))
 
-    def test_adding_a_donor(self):
+    def test_adding_a_donor(self):gi
             mailroom_4.adding_a_donor('Matt Hudgins')
             self.assertEqual(list(donors), ['Rick Grimes', 'Shane Walsh', 'Carl Grimes', 'Morgan Jones', 'Matt Hudgins'])
 
