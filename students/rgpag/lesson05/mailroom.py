@@ -1,21 +1,13 @@
 #!/usr/bin/env python3
-# initialize lists
 import datetime
 
-donors = ['Jeff Bezos', 'Mark Zuckerberg', 'Bill Gates', 'Paul Allen']
-i_amount = [3000, 20, 40607, 65]
-i_count = [4, 2, 3, 6]
-
-# initialize amt_dict
-amt_dict = {}
-cnt_dict = {}
-avg_dict = {}
-i = 0
-for i in range(len(donors)):
-    amt_dict[donors[i]] = i_amount[i]
-    cnt_dict[donors[i]] = i_count[i]
-    avg_dict[donors[i]] = i_amount[i]/i_count[i]
-
+# initialize donor dictionary
+donors = {
+    'Jeff Bezos': [250, 750, 1000, 1000],
+    'Mark Zuckerberg': [10, 10],
+    'Bill Gates': [10000, 20000, 10607],
+    'Paul Allen': [10, 10, 10, 10, 10, 15],
+}
 
 msg = """
 \nDear {},\n\nThank you for your recent donation, did you \
@@ -29,22 +21,17 @@ Dime for Donuts\n
 
 
 def new_donor(new_name):
-    donors.append(new_name)
     don_amt = int(input('What was the donation amount?'))
-    amt_dict[new_name] = don_amt
-    cnt_dict[new_name] = 1
-    avg_dict[new_name] = don_amt/1
+    donors[new_name] = [don_amt]
     return new_name, 1, don_amt
 
 
 def update_don(ret_don):
     don_amt = int(input('What was the donation amount?'))
-    if don_amt == 0:
-        return ret_don, cnt_dict[ret_don], amt_dict[ret_don]
-    cnt_dict[ret_don] += 1
-    amt_dict[ret_don] += don_amt
-    avg_dict[ret_don] = amt_dict[ret_don]/cnt_dict[ret_don]
-    return ret_don, cnt_dict[ret_don], amt_dict[ret_don]
+    donors[ret_don].append(don_amt)
+    count = len(donors[ret_don])
+    total_amt = sum(donors[ret_don])
+    return ret_don, count, total_amt
 
 
 def get_key(item):
@@ -74,7 +61,10 @@ def menu_sel_2():
     print('-'*63)
     s = '{:<20} ${:>15}  {:^10} ${:>12.2f}'
     for x in (donors):
-        db.append([x, amt_dict[x], cnt_dict[x], avg_dict[x]])
+        amt = sum(donors[x])
+        count = len(donors[x])
+        avg = amt/count
+        db.append([x, amt, count, avg])
     db_sort = sorted(db, key=get_key, reverse=True)
     for i in range(len(db_sort)):
         print(s.format(db_sort[i][0], db_sort[i][1], db_sort[i][2],
@@ -83,11 +73,10 @@ def menu_sel_2():
 
 def menu_sel_3():
     y = datetime.datetime.now()
-    for i in range(len(donors)):
-        don_name = donors[i]
-        file_name = '{}_{}_{}_{}.txt'.format(don_name, y.month, y.day, y.year)
+    for i in donors:
+        file_name = '{}_{}_{}_{}.txt'.format(i, y.month, y.day, y.year)
         new_file = open(file_name, 'w')
-        msg_vars = (don_name, cnt_dict[don_name], amt_dict[don_name])
+        msg_vars = (i, len(donors[i]), sum(donors[i]))
         new_file.write(msg.format(*msg_vars))
         new_file.close()
 
