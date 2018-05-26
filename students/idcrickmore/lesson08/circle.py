@@ -27,3 +27,7 @@ class Circle:
     @classmethod
     def from_diameter(cls, val):
         return cls(val/2)
+
+    # step 6
+    def __str__(self):  
+        return "Circle with a radius of {}." .format(self.radius)

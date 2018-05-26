@@ -34,5 +34,17 @@ class test_circle(unittest.TestCase):
         test = c.Circle.from_diameter(10)
         self.assertEqual(test.radius, 5)
     
+    # step 6.1
+    def test_str(self):
+        test = c.Circle (5)
+        self.assertEqual(str(test), "Circle with a radius of 5.")
+        
+    # step 6.2
+    def test_rpr(self):
+        
+    
+    
+    
+        
 if __name__ == '__main__':
     unittest.main()
