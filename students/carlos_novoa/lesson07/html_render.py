@@ -45,8 +45,9 @@ class Element:
 
 
 class Html(Element):
+    tag = 'html'
+
     def __init__(self, content=None, **kwargs):
-        self.tag = 'html'
         super().__init__(**{'lang': 'en'})
 
     def render(self, file_out, cur_ind=""):
@@ -55,28 +56,19 @@ class Html(Element):
 
 
 class Body(Element):
-    def __init__(self, content=None, **kwargs):
-        self.tag = 'body'
-        super().__init__(**kwargs)
+    tag = 'body'
 
 
 class P(Element):
-    def __init__(self, content=None, **kwargs):
-        self.tag = 'p'
-        super().__init__(content, **kwargs)
+    tag = 'p'
 
 
 class Head(Element):
-    def __init__(self, content=None, **kwargs):
-        self.tag = 'head'
-        super().__init__(**kwargs)
+    tag = 'head'
 
 
 class OneLineTag(Element):
     tag = ''
-
-    def __init__(self, content=None, **kwargs):
-        super().__init__(content)
 
     def render(self, file_out, cur_ind=""):
         atts = Element.format_atts(self.atts)
@@ -86,20 +78,16 @@ class OneLineTag(Element):
 
 
 class Title(OneLineTag):
-    def __init__(self, content=None, **kwargs):
-        self.tag = 'title'
-        super().__init__(content, **kwargs)
+    tag = 'title'
 
 
 class SelfClosingTag(Element):
+
     def __init__(self, content=None, **kwargs):
         self.content = content
         self.atts = kwargs if kwargs else ''
-        try:
-            if self.content:
-                raise TypeError
-        except TypeError as e:
-            raise
+        if content:
+            raise TypeError
 
     def render(self, file_out, cur_ind=""):
         atts = Element.format_atts(self.atts)
@@ -107,39 +95,31 @@ class SelfClosingTag(Element):
 
 
 class Hr(SelfClosingTag):
-    def __init__(self, content=None, **kwargs):
-        self.tag = 'hr'
-        super().__init__()
+    tag = 'hr'
 
 
 class Br(SelfClosingTag):
-    def __init__(self, content=None, **kwargs):
-        self.tag = 'hr'
-        super().__init__()
+    tag = 'br'
 
 
 class A(Element):
+    tag = 'a'
+
     def __init__(self, href, content):
-        self.tag = 'a'
         self.href = href
         self.content = content
         super().__init__(content=content, **{'href': self.href})
 
 
 class Ul(Element):
-    def __init__(self, content=None, **kwargs):
-        self.tag = 'ul'
-        super().__init__(**kwargs)
+    tag = 'ul'
 
 
 class Li(Element):
-    def __init__(self, content=None, **kwargs):
-        self.tag = 'li'
-        super().__init__(content, **kwargs)
+    tag = 'li'
 
 
 class H(OneLineTag):
-    tag = ''
 
     def __init__(self, size, content, **kwargs):
         self.tag = 'h{}'.format(size)
