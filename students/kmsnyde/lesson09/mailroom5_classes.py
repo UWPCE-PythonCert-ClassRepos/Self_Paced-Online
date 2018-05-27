@@ -130,6 +130,6 @@ if __name__ == '__main__':
     ex = Main()
     ex.main_menu()
     ex.selection()
-    our_donors = Donors()
+our_donors = Donors()
         
         

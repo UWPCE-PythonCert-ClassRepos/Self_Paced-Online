@@ -1,0 +1,14 @@
+{
+  "test_cigar_party.py::test_1": true,
+  "test_cigar_party.py::test_10": true,
+  "test_cigar_party.py::test_11": true,
+  "test_cigar_party.py::test_2": true,
+  "test_cigar_party.py::test_3": true,
+  "test_cigar_party.py::test_4": true,
+  "test_cigar_party.py::test_5": true,
+  "test_cigar_party.py::test_6": true,
+  "test_cigar_party.py::test_7": true,
+  "test_cigar_party.py::test_8": true,
+  "test_cigar_party.py::test_9": true,
+  "test_mailroom4.py::test_create_summary": true
+}
