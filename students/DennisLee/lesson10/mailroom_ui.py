@@ -6,6 +6,7 @@ import os
 class DonorUI():
 
     def __init__(self, coll):
+        self.feedback = self.get_resp
         if isinstance(coll, mailroom_oo.DonorCollection):
             self.collection = coll
         else:
@@ -29,7 +30,7 @@ class DonorUI():
             print("\nMENU:")
             for k, v in choices.items():
                 print(k, v['option'])
-            response = input("Type a menu selection number: ").strip()
+            response = self.feedback("Type a menu selection number: ")
             self.call_menu_function(choices, response, 
                     self.respond_to_bad_main_menu_choice, bad_choice=response)
             if response == '4':  # Exit if "Quit" is chosen
@@ -96,8 +97,8 @@ class DonorUI():
                 'list': {'function': self.collection.print_donors}
         }
         # Get the donor name, show all donors, or quit
-        response = input("\nType full donor name "
-                "(or 'list' to show all donors, or 'quit'): ").strip()
+        response = self.feedback("\nType full donor name "
+                "(or 'list' to show all donors, or 'quit'): ")
 
         self.call_menu_function(alt_choices, response, 
                 self.get_donation_amount, donor=response)
@@ -116,8 +117,8 @@ class DonorUI():
                 '': {'function': self.exit_screen},
                 'quit': {'function': self.exit_screen}
         }
-        donation = input(f"Type amount to donate (or type 'quit'): "
-                ).strip().lower()
+        donation = self.feedback(
+                f"Type amount to donate (or type 'quit'): ").lower()
         try:
             self.call_menu_function(donation_choices, donation, 
                     self.collection.add, name=donor, amount=donation)
@@ -132,9 +133,8 @@ class DonorUI():
         """
         # Ask for the directory to save the letters to
         print('\nThe current directory is %s' % os.getcwd())
-        new_dir = input('\nType the directory to save the letters in'
-                        ' (blank entry defaults to the current directory): '
-                        ).strip()
+        new_dir = self.feedback('\nType the directory to save the letters in'
+                        ' (blank entry defaults to the current directory): ')
         try:
             self.collection.save_letters(new_dir)
         except FileNotFoundError:
@@ -144,6 +144,9 @@ class DonorUI():
             print(f"Not allowed to write to '{new_dir}'.")
         except OSError:
             print(f"Specified folder '{new_dir}' is not valid.")
+
+    def get_resp(self, prompt, **kwargs):
+        return input(prompt).strip()
 
 
 
@@ -165,12 +168,6 @@ if __name__ == '__main__':
         for amt in amts:
             coll.add(name, amt)
 
-    # coll.print_donors()
-    # coll.create_report()
-    # for k, v in coll.donors.items():
-    #     print(v.form_letter)
-    # coll.save_letters()
-    
     dui = DonorUI(coll)
     dui.manage_donors()
 
