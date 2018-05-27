@@ -41,9 +41,16 @@ class test_circle(unittest.TestCase):
         
     # step 6.2
     def test_rpr(self):
-        
+        test = c.Circle(5)
+        self.assertEqual(repr(test), "Circle(5)")
     
+    # step 7
+    def test_add(self):
+        test1 = c.Circle(2)
+        test2 = c.Circle(4)
+        self.assertEqual(test1 + test2, c.Circle(6))
     
+
     
         
 if __name__ == '__main__':
