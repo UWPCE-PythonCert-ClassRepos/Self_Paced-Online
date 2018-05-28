@@ -1,5 +1,9 @@
 #!/usr/bin/python
-
+"""
+Sean Tasaki
+5/27/2018
+Lesson05.except_exercise
+"""
 """
 An exercise in playing with Exceptions.
 Make lots of try/except blocks for fun and profit.
