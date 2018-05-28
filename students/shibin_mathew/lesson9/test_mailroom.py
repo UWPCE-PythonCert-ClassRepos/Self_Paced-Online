@@ -32,7 +32,7 @@ class MailroomTests(unittest.TestCase):
 
     def test_print_donor_names(self):
         c = Collection(("Shibin", "Jordy"))
-        self.assertEqual(c.print_donor_names(c.donors2), ["Shibin", "Jordy"])
+        self.assertEqual(c.print_donor_names(), ["Shibin", "Jordy"])
 
 
 if __name__ == '__main__':
