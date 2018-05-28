@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-import mailroom_oo
+import mailroom
 import os
 
 class DonorUI():
 
     def __init__(self, coll):
         self.feedback = self.get_resp
-        if isinstance(coll, mailroom_oo.DonorCollection):
+        if isinstance(coll, mailroom.DonorCollection):
             self.collection = coll
         else:
             raise TypeError("Must initialize with a DonorCollection object.")
@@ -163,12 +163,27 @@ if __name__ == '__main__':
             'Daphne Dastardly': [82]
     }
 
-    coll = mailroom_oo.DonorCollection()
+    coll = mailroom.DonorCollection()
     for name, amts in donor_history.items():
-        for amt in amts:
-            coll.add(name, amt)
+            coll.add(name, amts)
 
+    print("\n\nViewing original database.\n\n")
     dui = DonorUI(coll)
     dui.manage_donors()
 
-    del coll, dui, mailroom_oo
+    print("\n\nMultiplying all donations by 3!\n\n")
+    coll2 = coll.challenge(3)
+
+    print("\n\nHere's collection 1:\n", coll)
+    print("\nCollection 1 donors/donations:\n", coll.donors)
+    print("\n\nHere's collection 2:\n", coll2)
+    print("\nCollection 2 donors/donations:\n", coll2.donors)
+
+    print("\n\nCheck whether the original donor collection is intact.\n\n")
+    dui.manage_donors()
+
+    print("\n\nNow look at the new collection.\n\n")
+    dui2 = DonorUI(coll2)
+    dui2.manage_donors()
+
+    del coll, coll2, dui, dui2, mailroom

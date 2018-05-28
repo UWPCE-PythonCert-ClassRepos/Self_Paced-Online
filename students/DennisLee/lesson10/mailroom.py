@@ -16,7 +16,7 @@ class Donor():
         self.add(amount)
 
     def __repr__(self):
-        return "Donor(name, initial_donation_amount)"
+        return f"Donor('{self.name}', '{self.donations}')"
 
     @property
     def total(self):
@@ -56,12 +56,17 @@ class Donor():
             return 0.00
 
     def add(self, amount):
-        """Add a new amount to the donor's gift history."""
-        amount = float(amount)
-        if amount < 0.005:
-            raise ValueError("The 'amount' argument must be at least $0.01.")
+        """Add new amount(s) to the donor's gift history."""
+        if isinstance(amount, (list, tuple)):
+            for i in amount:
+                self.add(i)
         else:
-            self.donations.append(round(amount, 2))
+            amount = float(amount)
+            if amount < 0.005:
+                raise ValueError(f"The 'amount' argument is '{amount}' - "
+                        "it must be at least $0.01.")
+            else:
+                self.donations.append(round(amount, 2))
 
     @property
     def form_letter(self, index=-1):
@@ -148,7 +153,8 @@ class DonorCollection():
 
         :name:  The name of the donor.
 
-        :amount:  The amount given.
+        :amount:  The amount(s) given. Multiple amounts can be specified
+                  by using a list or a tuple.
 
         :return:  None.        
         """
@@ -223,3 +229,31 @@ class DonorCollection():
                         f.write(line + '\n')
             os.chdir(cur_dir)
             return folder
+
+    def challenge(self, factor):
+        """
+        Multiply all gifts by a certain amount.
+
+        :factor:  The amount to multiply all existing gifts by.
+
+        :return:  A `DonorCollection` object containing the new list of
+                  donations.
+        """
+        self.factor = float(factor)
+        if self.factor < 1.0:
+            raise ValueError(f"The 'factor' argument is '{self.factor}' - "
+                    "it should be at least 1.0 or more.")
+        print("Collection items are: ", list(self.donors.items()))
+        transformed_donors = map(self.multiplier1, list(self.donors.items()))
+
+        new_coll = DonorCollection()
+        new_coll.donors = dict(transformed_donors)
+        return new_coll
+        
+    def multiplier1(self, x):
+        transformed_gifts = map(self.multiplier2, x[1].donations)
+        new_donations = list(transformed_gifts)
+        return (x[0], Donor(x[0], new_donations))
+        
+    def multiplier2(self, x):
+        return x * self.factor
