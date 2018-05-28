@@ -256,4 +256,4 @@ class DonorCollection():
         return (x[0], Donor(x[0], new_donations))
         
     def multiplier2(self, x):
-        return x * self.factor
+        return round(x * self.factor, 2)
