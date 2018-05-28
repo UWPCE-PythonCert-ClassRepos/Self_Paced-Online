@@ -243,17 +243,34 @@ class DonorCollection():
         if self.factor < 1.0:
             raise ValueError(f"The 'factor' argument is '{self.factor}' - "
                     "it should be at least 1.0 or more.")
-        print("Collection items are: ", list(self.donors.items()))
-        transformed_donors = map(self.multiplier1, list(self.donors.items()))
+
+        # Create temp 3-member tuple containing donor name, a new Donor
+        # object (with a dummy donation gift), and the old donation list
+        donor_map = map(  
+                lambda x: (x, Donor(x, 0.01), self.donors[x].donations), 
+                list(self.donors))
+
+        # Do multiplication & assign new values to the new Donor objects
+        transformed_donors = map(self.multiply_mapper, list(donor_map))
 
         new_coll = DonorCollection()
         new_coll.donors = dict(transformed_donors)
         return new_coll
         
-    def multiplier1(self, x):
-        transformed_gifts = map(self.multiplier2, x[1].donations)
-        new_donations = list(transformed_gifts)
-        return (x[0], Donor(x[0], new_donations))
-        
-    def multiplier2(self, x):
-        return round(x * self.factor, 2)
+    def multiply_mapper(self, x):
+        """
+        Multiply all donations in a donation list by a certain number
+        (the `factor` class member).
+
+        :x:  A list of 3-member tuples, where the first member is the
+             donor name, the second member is a newly created `Donor`
+             object (whose donation list will be overwritten by this
+             method), and the third member is the original donation list
+             for this donor.
+
+        :return:  A map of 2-member tuples, where the first member is
+                  the donor name, and the second member is a `Donor`
+                  object with the multiplied donation list.
+        """
+        x[1].donations = list(map(lambda y: round(y*self.factor, 2), x[2]))
+        return (x[0], x[1])
