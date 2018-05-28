@@ -180,7 +180,7 @@ class TestCircle(unittest.TestCase):
         self.assertTrue(self.c > circle3, msg=(self.c, circle3))
         self.assertFalse(self.c > circle4, msg=(self.c, circle4))
         with self.assertRaises(AttributeError):
-            self.c >= 5
+            self.c > 5
 
     def test_less_than_comparisons(self):
         """testing less than comparison"""
@@ -192,7 +192,7 @@ class TestCircle(unittest.TestCase):
         self.assertFalse(self.c < circle3, msg=(self.c, circle3))
         self.assertTrue(self.c < circle4, msg=(self.c, circle4))
         with self.assertRaises(AttributeError):
-            self.c <= 5
+            self.c < 5
 
     def test_sorted_circles(self):
         """testing sorting circles"""
