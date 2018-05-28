@@ -179,11 +179,26 @@ if __name__ == '__main__':
     print("\n\nHere's collection 2:\n", coll2)
     print("\nCollection 2 donors/donations:\n", coll2.donors)
 
-    print("\n\nCheck whether the original donor collection is intact.\n\n")
-    dui.manage_donors()
-
     print("\n\nNow look at the new collection.\n\n")
     dui2 = DonorUI(coll2)
     dui2.manage_donors()
 
-    del coll, coll2, dui, dui2, mailroom
+    print("\n\nNow filter out donations below 100.\n\n")
+    coll3 = coll.challenge(3, 100)
+    dui3 = DonorUI(coll3)
+    dui3.manage_donors()
+
+    print("\n\nNow filter out donations above 1000.\n\n")
+    coll4 = coll.challenge(3, 0, 1000)
+    dui4 = DonorUI(coll4)
+    dui4.manage_donors()
+
+    print("\n\nNow filter out donations below 100 and above 1000.\n\n")
+    coll5 = coll.challenge(3, 100, 1000)
+    dui5 = DonorUI(coll5)
+    dui5.manage_donors()
+
+    print("\n\nCheck whether the original donor collection is intact.\n\n")
+    dui.manage_donors()
+
+    del coll, coll2, coll3, coll4, coll5, dui, dui2, dui3, dui4, dui5, mailroom

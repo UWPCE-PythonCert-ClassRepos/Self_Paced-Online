@@ -230,7 +230,7 @@ class DonorCollection():
             os.chdir(cur_dir)
             return folder
 
-    def challenge(self, factor):
+    def challenge(self, factor, min_donation=0.0, max_donation=1e12):
         """
         Multiply all gifts by a certain amount.
 
@@ -244,14 +244,19 @@ class DonorCollection():
             raise ValueError(f"The 'factor' argument is '{self.factor}' - "
                     "it should be at least 1.0 or more.")
 
+        self.floor = float(min_donation)
+        self.ceiling = float(max_donation)
+
+
         # Create temp 3-member tuple containing donor name, a new Donor
         # object (with a dummy donation gift), and the old donation list
         donor_map = map(  
-                lambda x: (x, Donor(x, 0.01), self.donors[x].donations), 
+                lambda x: [x, Donor(x, 0.01), self.donors[x].donations], 
                 list(self.donors))
+        filtered_donor_map = list(filter(self.filter_mapper, list(donor_map)))
 
         # Do multiplication & assign new values to the new Donor objects
-        transformed_donors = map(self.multiply_mapper, list(donor_map))
+        transformed_donors = map(self.multiply_mapper, list(filtered_donor_map))
 
         new_coll = DonorCollection()
         new_coll.donors = dict(transformed_donors)
@@ -270,7 +275,13 @@ class DonorCollection():
 
         :return:  A map of 2-member tuples, where the first member is
                   the donor name, and the second member is a `Donor`
-                  object with the multiplied donation list.
+                  object with the multiplied donation list. These tuples
+                  can then be easily converted to the dict format used
+                  to store donors in the `DonorCollection` object.
         """
         x[1].donations = list(map(lambda y: round(y*self.factor, 2), x[2]))
         return (x[0], x[1])
+
+    def filter_mapper(self, x):
+        x[2] = list(filter(lambda y: self.floor <= y <= self.ceiling, x[2]))
+        return x
