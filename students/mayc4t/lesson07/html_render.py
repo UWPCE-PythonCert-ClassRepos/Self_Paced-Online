@@ -11,12 +11,12 @@ class TextWrapper:
     def render(self, file_out, cur_ind='', new_line=True):
         out_str = self.text
         if new_line:
-            out_str = "%s\n" % out_str
-        file_out.write(out_str)
+            out_str = "{}\n".format(out_str)
+        file_out.write("{}{}".format(cur_ind, out_str))
 
 class Element:
     tag = 'html'
-    ind = 4
+    ind = '  '
     content =""
 
 
@@ -29,7 +29,7 @@ class Element:
         
         self.attributes = ''
         for key, value in kwargs.items():
-            self.attributes = '%s %s="%s"' % (self.attributes, key, value)
+            self.attributes = '{} {}="{}"'.format(self.attributes, key, value)
 
 
     def append( self, content ):
@@ -40,23 +40,22 @@ class Element:
 
     def render(self, file_out, cur_ind='', new_line=True):
         if new_line :
-            file_out.write("<{}{}>\n".format(self.tag, self.attributes))
+            file_out.write("{}<{}{}>\n".format(cur_ind, self.tag, self.attributes))
         else: 
-            file_out.write("<{}{}>".format(self.tag, self.attributes))
+            file_out.write("{}<{}{}>".format(cur_ind, self.tag, self.attributes))
         for idx_elm in self.sub_elements: 
-            idx_elm.render(file_out, cur_ind, new_line)
-        file_out.write("</{}>\n".format(self.tag))
+            idx_elm.render(file_out, '{}{}'.format(cur_ind, self.ind), new_line)
+        file_out.write("{}</{}>\n".format(cur_ind, self.tag))
 
     def dump(self):
-        print('Element internals: tag=%s, sub_elements=%s' %
-                (self.tag, self.sub_elements))
+        print('Element internals: tag={}, sub_elements={}'.format(self.tag, self.sub_elements))
 
 
 class Html(Element):
     tag = "html"
     def render(self, file_out, cur_ind='', new_line=True):
         file_out.write("<!DOCTYPE html>\n")
-        super().render(file_out, cur_ind, new_line)
+        super().render(file_out, '{}'.format(cur_ind), new_line)
 
 class Body(Element):
     tag = "body"
@@ -70,8 +69,9 @@ class Head(Element):
 class OneLineTag(Element):
     onelinetag = True
     tag = ""
+    ind = ''
     def render(self, file_out, cur_ind, parent_new_line):
-        super().render(file_out, cur_ind, False)
+        super().render(file_out, '{}{}'.format(cur_ind, self.ind), False)
 
 class Title(OneLineTag):
     tag="title"
@@ -84,13 +84,13 @@ class SelfClosingTag(Element):
             raise TypeError
     
     def render( self, file_out, cur_ind='', new_line=True):
-        file_out.write("<{}{} />\n".format(self.tag, self.attributes))
+        file_out.write("{}<{}{} />\n".format(cur_ind, self.tag, self.attributes))
 
 class Hr(SelfClosingTag):
     tag = "hr"
 
 class Br(SelfClosingTag):
-    tag = "hr"
+    tag = "br"
 
 class A(Element):
     tag = 'a'
@@ -99,8 +99,8 @@ class A(Element):
         self.link = link 
 
     def render( self, file_out, cur_ind='', new_line=True):
-        file_out.write('<{} href="{}">{}</{}>\n'.format(
-            self.tag, self.link, self.sub_elements[0].text,
+        file_out.write('{}<{} href="{}">{}</{}>\n'.format(
+            cur_ind, self.tag, self.link, self.sub_elements[0].text,
             self.tag))
 
 class Ul(Element):
@@ -120,4 +120,6 @@ class Meta(SelfClosingTag):
     def __init__(self, charset):
         super().__init__()
         self.tag += "charset={}".format(charset)
+
+
 

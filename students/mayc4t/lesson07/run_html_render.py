@@ -26,9 +26,8 @@ def render_page(page, filename, indent=None):
     f = StringIO()
     #print (f)
     if indent is None:
-        print ("use 1")
-        page.render(f)  # this means f is already declared StringIO
-                        # can just call j.write()  in render function
+        #print ("use 1")
+        page.render(f)   
     else:
         print("use 2")
         page.render(f, indent)
@@ -55,9 +54,8 @@ render_page(page, "test_html_output1.html")
 # The rest of the steps have been commented out.
 #  Uncomment them as you move along with the assignment.
 
-# Step 2
-#########
-
+print("\n\nStep 2")
+print("#########")
 page = hr.Html()
 
 body = hr.Body()
@@ -74,8 +72,8 @@ page.append(body) # --> need to modify the append func -->
 
 render_page(page, "test_html_output2.html")
 
-# Step 3
-##########
+print("\n\nStep 3")
+print("##########")
 
 page = hr.Html()
 
@@ -94,8 +92,10 @@ page.append(body)
 
 render_page(page, "test_html_output3.html")
 
-# Step 4
-##########
+
+
+print("\n\n# Step 4")
+print("##########")
 
 page = hr.Html()
 
@@ -114,8 +114,10 @@ page.append(body)
 
 render_page(page, "test_html_output4.html")
 
-# Step 5
-#########
+
+
+print("\n\nStep 5")
+print("#########")
 
 page = hr.Html()
  
@@ -136,8 +138,10 @@ page.append(body)
 
 render_page(page, "test_html_output5.html")
 
-# Step 6
-#########
+
+
+print("\n\nStep 6")
+print("#########")
 
 page = hr.Html()
 
@@ -162,9 +166,10 @@ page.append(body)
 
 render_page(page, "test_html_output6.html")
 
-# Step 7
-#########
 
+print("\n\nStep 7")
+print("#########")
+ 
 page = hr.Html()
 
 head = hr.Head()
@@ -200,8 +205,8 @@ page.append(body)
 
 render_page(page, "test_html_output7.html")
 
-# # Step 8
-# ########
+print("\n\nStep 8")
+print("# ########")
 
 page = hr.Html()
 
@@ -239,3 +244,4 @@ body.append(list)
 page.append(body)
 
 render_page(page, "test_html_output8.html")
+
