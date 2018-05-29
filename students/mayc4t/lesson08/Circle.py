@@ -1,4 +1,13 @@
 #!/usr/bin/env python
+# #############################################################################
+# Written By: Mayc4t
+# May 28, 2018
+# Self-paced Python
+# lesson 8 - Properties and Magic Method
+# fileID: Circle.py
+# #############################################################################
+
+
 
 import math
 
@@ -8,6 +17,7 @@ class Circle:
 
     @classmethod
     def from_diameter(self, d):
+        #return cls(d/2)
         return self(d/2)
 
     @property
@@ -22,34 +32,27 @@ class Circle:
     
     @property
     def diameter(self):
-        return 2*self._r
+        return self.radius * 2
     
     @diameter.setter
     def diameter(self, val):
+        self._d =val
         self.radius= val/2
 
     @property
     def area(self):
-        return math.pi * (2*self.radius)
+        ret_val = round(math.pi * (2*self.radius),5) 
+        return ret_val
 
+    # DUNDER METHOD
     def __str__(self):
         return "Circle with radius {}".format(self.radius)
 
     def __repr__(self):
         return "'Circle ({})'".format(self.radius)
 
-    def __add__(self, other):
-        r = self.radius + other.radius
-        return Circle(r)
-    def __mul__(self, other):
-        if isinstance ( other, Circle):
-            return Circle( self.radius * other.radius)
-        else:
-            return Circle(self.radius * other)
-
-    def __rmul__(self, other):
-        return self.__mul__(other)
-
+    
+    #comparison
     def __lt__(self, other):
         return (self.radius < other.radius)
 
@@ -63,11 +66,10 @@ class Circle:
     def __eq__(self, other):
         return(self.radius==other.radius)
     
-    @staticmethod
-    def sort_key(self):
-        return(self.radius)
-
-
+    # addition
+    def __add__(self, other):
+        r = self.radius + other.radius
+        return Circle(r)
     def __iadd__(self, other):
         if isinstance(other, Circle):
             self.radius += other.radius
@@ -77,6 +79,17 @@ class Circle:
             return self
         else:
             raise Exception("invalid argument")
+    #multiplication
+    def __mul__(self, other):
+        if isinstance ( other, Circle):
+            return Circle( self.radius * other.radius)
+        else:
+            return Circle(self.radius * other)
+
+    def __rmul__(self, other):
+        return self.__mul__(other)
+
+
     def __imul__(self, other):
         if isinstance(other, Circle):
             self.radius *= other.radius
@@ -86,4 +99,6 @@ class Circle:
             return self
         else:
             raise Exception("invalid argument")
-            
+    @staticmethod
+    def sort_key(self):
+        return(self.radius)
