@@ -123,6 +123,9 @@ class DonorCollection():
     def __init__(self):
         """Create a dict of donor names and associated `Donor` objects."""
         self.donors = {}
+        self.factor = 1.0
+        self.floor = 0.0
+        self.ceiling = 1.0e12
 
     def __repr__(self):
         return "DonorCollection()"
@@ -233,21 +236,31 @@ class DonorCollection():
 
     def challenge(self, factor, min_donation=0.0, max_donation=1e12):
         """
-        Multiply all gifts by a certain amount.
+        Create new donor collection with gifts multiplied by an amount.
 
         :factor:  The amount to multiply all existing gifts by.
 
         :return:  A `DonorCollection` object containing the new list of
                   donations.
         """
-        self.factor = float(factor)
-        if self.factor < 1.0:
-            raise ValueError(f"The 'factor' argument is '{self.factor}' - "
-                    "it should be at least 1.0 or more.")
+        new_coll = DonorCollection()
+        new_coll.donors = self.projector(factor, min_donation, max_donation)
+        return new_coll
 
+    def projector(self, factor, min_donation, max_donation):
+        """
+        Project a donor list with gifts multiplied by a certain amount.
+
+        :factor:  The amount to multiply all existing gifts by.
+
+        :return:  A dict of donor names and associated objects.
+        """
+        self.factor = float(factor)
+        if self.factor <= 0.0:
+            raise ValueError(f"The 'factor' argument is '{self.factor}' - "
+                    "it should be a positive number.")
         self.floor = float(min_donation)
         self.ceiling = float(max_donation)
-
 
         # Create temp 3-member tuple containing donor name, a new Donor
         # object (with a dummy donation gift), and the old donation list
@@ -258,10 +271,7 @@ class DonorCollection():
 
         # Do multiplication & assign new values to the new Donor objects
         transformed_donors = map(self.multiply_mapper, list(filtered_donor_map))
-
-        new_coll = DonorCollection()
-        new_coll.donors = dict(transformed_donors)
-        return new_coll
+        return dict(transformed_donors)        
         
     def multiply_mapper(self, x):
         """
