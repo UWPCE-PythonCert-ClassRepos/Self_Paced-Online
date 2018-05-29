@@ -9,6 +9,7 @@ Lesson8 - Circle Class
 
 class Circle(object):
     version = '0.1'
+    radius = ''
 
     def __init__(self, radius=None, diameter=None):
 
@@ -23,7 +24,7 @@ class Circle(object):
                 print('Radius must be positive.')
                 return
             else:
-                self._radius = radius
+                self.radius = radius
                 self._diameter = radius * 2
                 self._area = round(math.pi * radius ** 2.0, 6)
 
@@ -35,9 +36,9 @@ class Circle(object):
                 print('Diameter must be positive.')
                 return
             else:
-                self._radius = diameter / 2
+                self.radius = diameter / 2
                 self._diameter = diameter
-                self._area = round(math.pi * self._radius ** 2.0, 6)
+                self._area = round(math.pi * self.radius ** 2.0, 6)
 
     @property
     def diameter(self):
@@ -46,19 +47,11 @@ class Circle(object):
     @diameter.setter
     def diameter(self, diameter=None):
         self._diameter = diameter
-        self._radius = diameter / 2
-
-    @property
-    def radius(self):
-        return self._radius
-
-    @radius.setter
-    def radius(self, radius=None):
-        self._radius = radius
-        self._diameter = radius * 2
+        self.radius = diameter / 2
 
     @property
     def area(self):
+        self._area = round(math.pi * self.radius ** 2.0, 6)
         return self._area
 
     @classmethod
