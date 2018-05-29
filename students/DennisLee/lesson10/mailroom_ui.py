@@ -23,7 +23,8 @@ class DonorUI():
         '1': {'option': 'Send a thank you', 'function': self.send_thank_you},
         '2': {'option': 'Create a report', 'function': self.collection.create_report},
         '3': {'option': 'Send all letters', 'function': self.send_all_letters},
-        '4': {'option': 'Quit', 'function': self.exit_screen}
+        '4': {'option': 'Make projections', 'function': self.make_projections},
+        '9': {'option': 'Quit', 'function': self.exit_screen}
         }
         
         while True:  # Print the menu list (with numbered choices)
@@ -33,7 +34,7 @@ class DonorUI():
             response = self.feedback("Type a menu selection number: ")
             self.call_menu_function(choices, response, 
                     self.respond_to_bad_main_menu_choice, bad_choice=response)
-            if response == '4':  # Exit if "Quit" is chosen
+            if response == '9':  # Exit if "Quit" is chosen
                 return
 
     def call_menu_function(
@@ -109,7 +110,7 @@ class DonorUI():
         """
         Ask user for a donation amount from the specified donor.
 
-        :donor:  A `Donor` object for which to add a donation amount.
+        :donor:  The name of the donor.
 
         :return:  None.
         """
@@ -119,11 +120,22 @@ class DonorUI():
         }
         donation = self.feedback(
                 f"Type amount to donate (or type 'quit'): ").lower()
+
+        if donor in self.collection.donors:
+            gifts = len(self.collection.donors[donor].donations)
+        else:
+            gifts = 0
+
         try:
             self.call_menu_function(donation_choices, donation, 
                     self.collection.add, name=donor, amount=donation)
         except ValueError:
             print(f"'{donation}' is not a valid donation amount.")
+        else:
+            if donor in self.collection.donors:
+                donor_obj = self.collection.donors[donor]
+                if len(donor_obj.donations) == gifts + 1:
+                    print("\n\n", donor_obj.form_letter, "\n\n")
 
     def send_all_letters(self):
         """
@@ -147,6 +159,9 @@ class DonorUI():
 
     def get_resp(self, prompt, **kwargs):
         return input(prompt).strip()
+
+    def make_projections(self):
+        pass
 
 
 

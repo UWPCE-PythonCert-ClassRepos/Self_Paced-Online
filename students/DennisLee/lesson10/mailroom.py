@@ -191,8 +191,9 @@ class DonorCollection():
         print('-'*25 + '-|-' + '-'*15 + 4*('-|--' + '-'*18))
 
         for i in self.donors.values():
-            stats = (i.name, i.gifts, i.total, i.average, i.largest, i.smallest)
-            print(('{:<25s} | {:>15d}' + 4*' | ${:>18,.2f}').format(*stats))
+            if i.gifts:
+                stats = (i.name, i.gifts, i.total, i.average, i.largest, i.smallest)
+                print(('{:<25s} | {:>15d}' + 4*' | ${:>18,.2f}').format(*stats))
         print('\n')
 
     def save_letters(self, folder=""):
@@ -251,9 +252,9 @@ class DonorCollection():
         # Create temp 3-member tuple containing donor name, a new Donor
         # object (with a dummy donation gift), and the old donation list
         donor_map = map(  
-                lambda x: [x, Donor(x, 0.01), self.donors[x].donations], 
+                lambda x: tuple((x, Donor(x, 0.01), self.donors[x].donations)), 
                 list(self.donors))
-        filtered_donor_map = list(filter(self.filter_mapper, list(donor_map)))
+        filtered_donor_map = list(map(self.filter_mapper, list(donor_map)))
 
         # Do multiplication & assign new values to the new Donor objects
         transformed_donors = map(self.multiply_mapper, list(filtered_donor_map))
@@ -283,5 +284,22 @@ class DonorCollection():
         return (x[0], x[1])
 
     def filter_mapper(self, x):
-        x[2] = list(filter(lambda y: self.floor <= y <= self.ceiling, x[2]))
-        return x
+        """
+        Filter out all current donations that are below a minimum value
+        or are above a maximum value.
+
+        :x:  A list of 3-member tuples, where the first member is the
+             donor name, the second member is a newly created `Donor`
+             object (whose donation list will be overwritten by this
+             method), and the third member is the original donation list
+             for this donor.
+
+        :return:  A map of 3-member tuples, where the first member is
+                  the donor name, the second member is the `Donor`
+                  object with an unchanged donation list, and the third
+                  member is the filtered list of original donations.
+        """
+        return (x[0], 
+                x[1], 
+                list(filter(lambda y: self.floor <= y <= self.ceiling, x[2]))
+        )
