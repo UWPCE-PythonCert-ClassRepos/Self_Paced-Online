@@ -2,17 +2,25 @@ class Element:
     tag = 'html'
     indent = '    '
 
-    def __init__(self, content=None):
+    def __init__(self, content=None,**kwargs):
         if content is None:
             self.content = []
         else:
             self.content = [content]
+        self.attrs = kwargs
+
 
     def append(self, added_content):
         self.content.append(added_content)
 
     def render(self, file_out, cur_ind=''):
-        file_out.write(cur_ind + '<{}>\n'.format(self.tag))
+        # file_out.write(cur_ind + '<{}>\n'.format(self.tag)) # when there is no attributes
+        # when there are attributes
+        file_out.write(cur_ind + '<{}'.format(self.tag))
+        for attr_name, attr_value in self.attrs.items():
+            file_out.write(' {} = "{}"'.format(attr_name,attr_value))
+        file_out.write('>\n')
+
         for item in self.content:
             try:
                 item.render(file_out)
