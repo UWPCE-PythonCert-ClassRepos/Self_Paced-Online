@@ -52,3 +52,16 @@ class OneLineTag(Element):
 
 class Title(OneLineTag):
     tag = 'title'
+
+class SelfClosingTag(Element):
+    def render(self, file_out, cur_ind=''):
+        file_out.write(cur_ind + '<{}'.format(self.tag))
+        for attr_name, attr_value in self.attrs.items():
+            file_out.write(' {} = "{}"'.format(attr_name, attr_value))
+        file_out.write(' />\n')
+
+class Hr(SelfClosingTag):
+    tag = 'hr'
+
+class Br(SelfClosingTag):
+    tag = 'br'
