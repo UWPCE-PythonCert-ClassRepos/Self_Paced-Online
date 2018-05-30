@@ -9,8 +9,6 @@ class Donor():
         """Initialize with the donor name & initial donation amount."""
         if not name or not name.strip():
             raise ValueError("A non-blank name must be specified.")
-        if not amount:
-            raise ValueError("A donation amount must be specified.")
         self.name = name.strip()
         self.donations = []
         self.add(amount)
@@ -57,16 +55,10 @@ class Donor():
 
     def add(self, amount):
         """Add new amount(s) to the donor's gift history."""
-        if isinstance(amount, (list, tuple)):
-            for i in amount:
-                self.add(i)
-        else:
-            amount = float(amount)
-            if amount < 0.005:
-                raise ValueError(f"The 'amount' argument is '{amount}' - "
-                        "it must be at least $0.01.")
-            else:
-                self.donations.append(round(amount, 2))
+        amts = list(filter(
+            lambda x: isinstance(x, (int, float)) and x > 0.005, list(amount)))
+        if amts:
+            self.donations = list(map(lambda x: round(x, 2), amts))
 
     @property
     def form_letter(self, index=-1):
@@ -244,7 +236,8 @@ class DonorCollection():
                   donations.
         """
         new_coll = DonorCollection()
-        new_coll.donors = self.projector(factor, min_donation, max_donation)
+        name_and_donations = self.projector(factor, min_donation, max_donation)
+        new_coll.donors = dict(map(self.map_to_collection, name_and_donations))
         return new_coll
 
     def projector(self, factor, min_donation, max_donation):
@@ -253,7 +246,7 @@ class DonorCollection():
 
         :factor:  The amount to multiply all existing gifts by.
 
-        :return:  A dict of donor names and associated objects.
+        :return:  A list of donor names and projected donation lists.
         """
         self.factor = float(factor)
         if self.factor <= 0.0:
@@ -262,54 +255,63 @@ class DonorCollection():
         self.floor = float(min_donation)
         self.ceiling = float(max_donation)
 
-        # Create temp 3-member tuple containing donor name, a new Donor
-        # object (with a dummy donation gift), and the old donation list
-        donor_map = map(  
-                lambda x: tuple((x, Donor(x, 0.01), self.donors[x].donations)), 
-                list(self.donors))
+        # Create temp 2-member tuple containing donor name, and the old
+        # donation list
+        donor_map = list(map(  
+                lambda x: tuple((x, self.donors[x].donations)), 
+                list(self.donors)))
+
+        # Filter the donor history for min and max donations
         filtered_donor_map = list(map(self.filter_mapper, list(donor_map)))
 
-        # Do multiplication & assign new values to the new Donor objects
-        transformed_donors = map(self.multiply_mapper, list(filtered_donor_map))
-        return dict(transformed_donors)        
+        # Do multiplication on the filtered donation list
+        transformed_donors = list(map(self.multiply_mapper, filtered_donor_map))
+        return transformed_donors
+        
+    def filter_mapper(self, x):
+        """
+        Filter out all current donations that are below a minimum value
+        or are above a maximum value.
+
+        :x:  A list of 2-member tuples, where the first member is the
+             donor name, and the second member is the original donation
+             list for this donor.
+
+        :return:  A map of 2-member tuples, where the first member is
+                  the donor name, and the second member is the filtered
+                  list of original donations.
+        """
+        return (x[0], 
+                list(filter(lambda y: self.floor <= y <= self.ceiling, x[1]))
+        )
         
     def multiply_mapper(self, x):
         """
         Multiply all donations in a donation list by a certain number
         (the `factor` class member).
 
-        :x:  A list of 3-member tuples, where the first member is the
-             donor name, the second member is a newly created `Donor`
-             object (whose donation list will be overwritten by this
-             method), and the third member is the original donation list
-             for this donor.
+        :x:  A list of 2-member tuples, where the first member is the
+             donor name, and the second member is the original donation
+             list (filtered or unfiltered) for this donor.
 
         :return:  A map of 2-member tuples, where the first member is
-                  the donor name, and the second member is a `Donor`
-                  object with the multiplied donation list. These tuples
-                  can then be easily converted to the dict format used
-                  to store donors in the `DonorCollection` object.
-        """
-        x[1].donations = list(map(lambda y: round(y*self.factor, 2), x[2]))
-        return (x[0], x[1])
-
-    def filter_mapper(self, x):
-        """
-        Filter out all current donations that are below a minimum value
-        or are above a maximum value.
-
-        :x:  A list of 3-member tuples, where the first member is the
-             donor name, the second member is a newly created `Donor`
-             object (whose donation list will be overwritten by this
-             method), and the third member is the original donation list
-             for this donor.
-
-        :return:  A map of 3-member tuples, where the first member is
-                  the donor name, the second member is the `Donor`
-                  object with an unchanged donation list, and the third
-                  member is the filtered list of original donations.
+                  the donor name, and the second member is the
+                  multiplied donation list. 
         """
         return (x[0], 
-                x[1], 
-                list(filter(lambda y: self.floor <= y <= self.ceiling, x[2]))
+                list(map(lambda y: round(y * self.factor, 2), x[1]))
         )
+
+    def map_to_collection(self, x):
+        """
+        Map the name/donation list tuple to a name/`Donor` object tuple.
+
+        :x:  A map of 2-member tuples, where the first member is the
+             donor name, and the second member is the multiplied
+             donation list (filtered or unfiltered).
+
+        :return:  A map of 2-member tuples, where the first member is
+                  donor name, and the second member is a `Donor` object
+                  containing the name and the multiplied donation list.
+        """
+        return (x[0], Donor(x[0], x[1]))
