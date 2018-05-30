@@ -14,7 +14,10 @@ class Element:
     def render(self, file_out, cur_ind=''):
         file_out.write(cur_ind + '<{}>\n'.format(self.tag))
         for item in self.content:
-            file_out.write(item + '\n')
+            try:
+                item.render(file_out)
+            except AttributeError:
+                file_out.write(str(item)+'\n')
         file_out.write('</{}>\n'.format(self.tag))
 
 class Html(Element):
