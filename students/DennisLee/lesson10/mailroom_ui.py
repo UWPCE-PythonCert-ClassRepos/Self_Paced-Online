@@ -127,11 +127,12 @@ class DonorUI():
             gifts = 0
 
         try:
-            self.call_menu_function(donation_choices, donation, 
-                    self.collection.add, name=donor, amount=donation)
+            donation = float(donation)
         except ValueError:
             print(f"'{donation}' is not a valid donation amount.")
         else:
+            self.call_menu_function(donation_choices, donation, 
+                    self.collection.add, name=donor, amount=donation)
             if donor in self.collection.donors:
                 donor_obj = self.collection.donors[donor]
                 if len(donor_obj.donations) == gifts + 1:
@@ -161,7 +162,40 @@ class DonorUI():
         return input(prompt).strip()
 
     def make_projections(self):
-        pass
+        proj_params = self.feedback(
+                "\nProject your estimated donations by entering (1) your "
+                "\nmatching factor (e.g., 1 means you double existing "
+                "\ndonations, 2 means you triple existing donations, etc.), "
+                "\n(2) the minimum existing donation amount, and (3) the "
+                "\nmaximum existing donation amount, separated by whitespace:"
+                "\n\n"
+        )
+        proj_vals = proj_params.split(None, 3)
+        try:
+            match_factor = float(proj_vals[0])
+            min_gift = float(proj_vals[1])
+            max_gift = float(proj_vals[2])
+        except ValueError:
+            print("\n\nOne of your entries is not a valid number.\n\n")
+            self.exit_screen()
+        except IndexError:
+            print("\n\nYou did not enter three numbers.\n\n")
+            self.exit_screen()
+        else:
+            if match_factor > 0.0:
+                cur_total = self.collection.projection_sum(
+                        self.collection.projector(1.0, 0.0, 1e12))
+                gifts_used_to_multiply = self.collection.projection_sum(
+                        self.collection.projector(1.0, min_gift, max_gift))
+                proj_gift = self.collection.projection_sum(
+                        self.collection.projector(match_factor, min_gift, max_gift))
+                print(f"\n\nCurrent contribution total: {cur_total}",
+                        f"Portion used for matching: {gifts_used_to_multiply}",
+                        f"Your projected contribution: {proj_gift}",
+                        sep = "\n")
+            else:
+                print(f"The matching factor '{match_factor}' must be above 0.")
+
 
 
 
@@ -198,17 +232,17 @@ if __name__ == '__main__':
     dui2 = DonorUI(coll2)
     dui2.manage_donors()
 
-    print("\n\nNow filter out donations below 100.\n\n")
+    print("\n\nNow filter out donations below 100 before multiplying.\n\n")
     coll3 = coll.challenge(3, 100)
     dui3 = DonorUI(coll3)
     dui3.manage_donors()
 
-    print("\n\nNow filter out donations above 1000.\n\n")
+    print("\n\nNow filter out donations above 1000 before multiplying.\n\n")
     coll4 = coll.challenge(3, 0, 1000)
     dui4 = DonorUI(coll4)
     dui4.manage_donors()
 
-    print("\n\nNow filter out donations below 100 and above 1000.\n\n")
+    print("\n\nNow filter out donations below 100 and above 1000 before multiplying.\n\n")
     coll5 = coll.challenge(3, 100, 1000)
     dui5 = DonorUI(coll5)
     dui5.manage_donors()

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+from functools import reduce
 
 class Donor():
     """Contains methods and properties for a single donor."""
@@ -55,8 +56,10 @@ class Donor():
 
     def add(self, amount):
         """Add new amount(s) to the donor's gift history."""
-        amts = list(filter(
-            lambda x: isinstance(x, (int, float)) and x > 0.005, list(amount)))
+        if isinstance(amount, (int, float)):
+            amount = [amount]
+        amts = list(filter(lambda x: isinstance(x, (int, float)) 
+                and x > 0.005, list(amount)))
         if amts:
             self.donations = list(map(lambda x: round(x, 2), amts))
 
@@ -315,3 +318,17 @@ class DonorCollection():
                   containing the name and the multiplied donation list.
         """
         return (x[0], Donor(x[0], x[1]))
+
+    def projection_sum(self, donation_list):
+        """
+        Get cumulative value of a name/donation list tuple.
+
+        :x:  A map of 2-member tuples, where the first member is the
+             donor name, and the second member is the donation list
+             (multiplied and filtered, if requested).
+
+        :return:  A single number value, representing all numbers in
+                  the donation lists of each donor added up.
+        """
+        all_gifts = reduce(lambda x, y: x + y, dict(donation_list).values())
+        return round(sum(all_gifts), 2)
