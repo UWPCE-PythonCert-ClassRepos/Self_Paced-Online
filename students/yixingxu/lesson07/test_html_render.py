@@ -83,67 +83,151 @@ def test_render_element():
 # ########
 
 
-# # tests for the new tags
-# def test_html():
-#     e = Html("this is some text")
-#     e.append("and this is some more text")
+# tests for the new tags
+def test_html():
+    e = Html("this is some text")
+    e.append("and this is some more text")
 
-#     file_contents = render_result(e).strip()
+    file_contents = render_result(e).strip()
 
-#     assert("this is some text") in file_contents
-#     assert("and this is some more text") in file_contents
-#     print(file_contents)
-#     assert file_contents.endswith("</html>")
-
-
-# def test_body():
-#     e = Body("this is some text")
-#     e.append("and this is some more text")
-
-#     file_contents = render_result(e).strip()
-
-#     assert("this is some text") in file_contents
-#     assert("and this is some more text") in file_contents
-
-#     assert file_contents.startswith("<body>")
-#     assert file_contents.endswith("</body>")
+    assert("this is some text") in file_contents
+    assert("and this is some more text") in file_contents
+    print(file_contents)
+    assert file_contents.endswith("</html>")
 
 
-# def test_p():
-#     e = P("this is some text")
-#     e.append("and this is some more text")
+def test_body():
+    e = Body("this is some text")
+    e.append("and this is some more text")
 
-#     file_contents = render_result(e).strip()
+    file_contents = render_result(e).strip()
 
-#     assert("this is some text") in file_contents
-#     assert("and this is some more text") in file_contents
+    assert("this is some text") in file_contents
+    assert("and this is some more text") in file_contents
 
-#     assert file_contents.startswith("<p>")
-#     assert file_contents.endswith("</p>")
+    assert file_contents.startswith("<body>")
+    assert file_contents.endswith("</body>")
 
 
-# def test_sub_element():
-#     """
-#     tests that you can add another element and still render properly
-#     """
-#     page = Html()
-#     page.append("some plain text.")
-#     page.append(P("A simple paragraph of text"))
-#     page.append("Some more plain text.")
+def test_p():
+    e = P("this is some text")
+    e.append("and this is some more text")
 
-#     file_contents = render_result(page)
-#     print(file_contents) # so we can see it if the test fails
+    file_contents = render_result(e).strip()
 
-#     # note: The previous tests should make sure that the tags are getting
-#     #       properly rendered, so we don't need to test that here.
-#     assert "some plain text" in file_contents
-#     assert "A simple paragraph of text" in file_contents
-#     assert "Some more plain text." in file_contents
-#     assert "some plain text" in file_contents
-#     # but make sure the embedded element's tags get rendered!
-#     assert "<p>" in file_contents
-#     assert "</p>" in file_contents
+    assert("this is some text") in file_contents
+    assert("and this is some more text") in file_contents
 
+    assert file_contents.startswith("<p>")
+    assert file_contents.endswith("</p>")
+
+
+def test_sub_element():
+    """
+    tests that you can add another element and still render properly
+    """
+    page = Html()
+    page.append("some plain text.")
+    page.append(P("A simple paragraph of text"))
+    page.append("Some more plain text.")
+
+    file_contents = render_result(page)
+    print(file_contents) # so we can see it if the test fails
+
+    # note: The previous tests should make sure that the tags are getting
+    #       properly rendered, so we don't need to test that here.
+    assert "some plain text" in file_contents
+    assert "A simple paragraph of text" in file_contents
+    assert "Some more plain text." in file_contents
+    assert "some plain text" in file_contents
+    # but make sure the embedded element's tags get rendered!
+    assert "<p>" in file_contents
+    assert "</p>" in file_contents
+
+def test_head():
+    e = Head()
+
+    file_contents = render_result(e).strip()
+
+    assert file_contents.startswith("<head>")
+    assert file_contents.endswith("</head>")
+
+def test_title():
+    e = Title("PythonClass = Revision 1087:")
+
+    file_contents = render_result(e).strip()
+
+    assert "PythonClass = Revision 1087:" in file_contents
+    assert file_contents.startswith("<title>")
+    assert file_contents.endswith("</title>")
+
+def test_Hr():
+    e = Hr()
+
+    file_contents = render_result(e).strip()
+
+    assert file_contents.startswith("<hr />")
+    assert file_contents.endswith("<hr />")
+
+def test_Br():
+    e = Br()
+
+    file_contents = render_result(e).strip()
+
+    assert file_contents.startswith("<br />")
+    assert file_contents.endswith("<br />")
+
+def test_A():
+    e = A("http://google.com", "link")
+
+    file_contents = render_result(e).strip()
+
+    assert "http://google.com", "link" in file_contents
+    assert "link" in file_contents
+    assert file_contents.index("http://google.com") < file_contents.index("link")
+
+    assert file_contents.startswith("<a href =")
+    assert file_contents.endswith("</a>")
+
+def test_ul():
+    e = Ul()
+
+    file_contents = render_result(e).strip()
+
+    assert file_contents.startswith("<ul>")
+    assert file_contents.endswith("</ul>")
+
+def test_li():
+    e = Li("this is some text")
+    e.append("and this is some more text")
+
+    file_contents = render_result(e).strip()
+
+    assert("this is some text") in file_contents
+    assert("and this is some more text") in file_contents
+
+    assert file_contents.startswith("<li>")
+    assert file_contents.endswith("</li>")
+
+def test_h():
+    e = H(2,'2nd header level')
+
+    file_contents = render_result(e).strip()
+
+    assert("2nd header level") in file_contents
+
+    assert file_contents.startswith("<h2>")
+    assert file_contents.endswith("</h2>")
+
+def test_meta():
+    e =  Meta(charset="UTF-8")
+
+    file_contents = render_result(e).strip()
+
+    assert('charset = "UTF-8"') in file_contents
+
+    assert file_contents.startswith("<meta")
+    assert file_contents.endswith("/>")
 
 # #####################
 # # indentation testing
