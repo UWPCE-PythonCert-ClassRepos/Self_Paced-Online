@@ -71,3 +71,14 @@ class A(Element):
     def __init__(self, link, content):
         super().__init__(content, href=link)
 
+class Ul(Element):
+    tag = 'ul'
+
+class Li(Element):
+    tag = 'li'
+
+class H(OneLineTag):
+    tag = 'h'
+    def __init__(self,header_level, content):
+        self.tag = 'h'+ str(header_level)
+        super().__init__(content)
