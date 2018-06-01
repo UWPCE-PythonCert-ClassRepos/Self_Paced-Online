@@ -54,12 +54,21 @@ class Donor():
         else:
             return 0.00
 
+    @property
+    def latest(self):
+        """Return the most recent donation amount from the donor."""
+        if self.gifts:
+            return self.donations[-1]
+        else:
+            return 0.00
+        
+
     def add(self, amount):
         """Add new amount(s) to the donor's gift history."""
         if isinstance(amount, (int, float)):
             amount = [amount]
         amts = list(filter(lambda x: isinstance(x, (int, float)) 
-                and x > 0.005, list(amount)))
+                and x > 0.005, self.donations + list(amount)))
         if amts:
             self.donations = list(map(lambda x: round(x, 2), amts))
 
@@ -110,7 +119,6 @@ class Donor():
         
         return text.format(self.name, self.donations[index], extra)
     
-
 
 class DonorCollection():
     """Contains methods and properties for an entire donor roster."""
@@ -182,16 +190,17 @@ class DonorCollection():
         :return:  None.
         """
         col_headings = (
-                'Donor name', 'Number of gifts', 'Total given', 
+                'Donor name', 'Number of gifts', 'Total given', 'Latest gift', 
                 'Average gift', 'Largest gift', 'Smallest gift')
         print('\n')
-        print(('{:<25s} | {:>15s}' + 4*' |  {:>18s}').format(*col_headings))
-        print('-'*25 + '-|-' + '-'*15 + 4*('-|--' + '-'*18))
+        print(('{:<25s} | {:>15s}' + 5*' |  {:>18s}').format(*col_headings))
+        print('-'*25 + '-|-' + '-'*15 + 5*('-|--' + '-'*18))
 
         for i in self.donors.values():
             if i.gifts:
-                stats = (i.name, i.gifts, i.total, i.average, i.largest, i.smallest)
-                print(('{:<25s} | {:>15d}' + 4*' | ${:>18,.2f}').format(*stats))
+                stats = (i.name, i.gifts, i.total, i.latest, 
+                        i.average, i.largest, i.smallest)
+                print(('{:<25s} | {:>15d}' + 5*' | ${:>18,.2f}').format(*stats))
         print('\n')
 
     def save_letters(self, folder=""):

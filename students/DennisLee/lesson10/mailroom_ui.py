@@ -97,8 +97,9 @@ class DonorUI():
                 'quit': {'function': self.exit_screen},
                 'list': {'function': self.collection.print_donors}
         }
+        print("\n")
         # Get the donor name, show all donors, or quit
-        response = self.feedback("\nType full donor name "
+        response = self.feedback("Type full donor name "
                 "(or 'list' to show all donors, or 'quit'): ")
 
         self.call_menu_function(alt_choices, response, 
@@ -114,10 +115,6 @@ class DonorUI():
 
         :return:  None.
         """
-        donation_choices = {  # Dict of functions if user wants to quit
-                '': {'function': self.exit_screen},
-                'quit': {'function': self.exit_screen}
-        }
         donation = self.feedback(
                 f"Type amount to donate (or type 'quit'): ").lower()
 
@@ -131,12 +128,14 @@ class DonorUI():
         except ValueError:
             print(f"'{donation}' is not a valid donation amount.")
         else:
-            self.call_menu_function(donation_choices, donation, 
-                    self.collection.add, name=donor, amount=donation)
+            self.collection.add(donor, donation)
             if donor in self.collection.donors:
                 donor_obj = self.collection.donors[donor]
                 if len(donor_obj.donations) == gifts + 1:
                     print("\n\n", donor_obj.form_letter, "\n\n")
+                else:
+                    print(f"\n\nDonation by '{donor}' of '{donation}' "
+                            "was unsuccessful.\n\n")
 
     def send_all_letters(self):
         """
@@ -145,11 +144,11 @@ class DonorUI():
         :return:  None.
         """
         # Ask for the directory to save the letters to
-        print('\nThe current directory is %s' % os.getcwd())
-        new_dir = self.feedback('\nType the directory to save the letters in'
+        print('\nThe current directory is %s\n' % os.getcwd())
+        new_dir = self.feedback('Type the directory to save the letters in'
                         ' (blank entry defaults to the current directory): ')
         try:
-            self.collection.save_letters(new_dir)
+            full_dir_name = self.collection.save_letters(new_dir)
         except FileNotFoundError:
             print(f"Can't open or create folder '{new_dir}' - exiting "
                     "without creating the thank-you letters.")
@@ -157,6 +156,8 @@ class DonorUI():
             print(f"Not allowed to write to '{new_dir}'.")
         except OSError:
             print(f"Specified folder '{new_dir}' is not valid.")
+        else:
+            print(f"\nLetters saved in folder '{full_dir_name}'.\n")
 
     def get_resp(self, prompt, **kwargs):
         return input(prompt).strip()
@@ -182,23 +183,20 @@ class DonorUI():
             print("\n\nYou did not enter three numbers.\n\n")
             self.exit_screen()
         else:
-            if match_factor > 0.0:
-                cur_total = self.collection.projection_sum(
-                        self.collection.projector(1.0, 0.0, 1e12))
-                gifts_used_to_multiply = self.collection.projection_sum(
-                        self.collection.projector(1.0, min_gift, max_gift))
+            cur_total = self.collection.projection_sum(
+                    self.collection.projector(1.0, 0.0, 1e12))
+            gifts_used_to_multiply = self.collection.projection_sum(
+                    self.collection.projector(1.0, min_gift, max_gift))
+            try:
                 proj_gift = self.collection.projection_sum(
                         self.collection.projector(match_factor, min_gift, max_gift))
+            except ValueError:
+                pass
+            else:
                 print(f"\n\nCurrent contribution total: {cur_total}",
                         f"Portion used for matching: {gifts_used_to_multiply}",
                         f"Your projected contribution: {proj_gift}",
                         sep = "\n")
-            else:
-                print(f"The matching factor '{match_factor}' must be above 0.")
-
-
-
-
 
 
 if __name__ == '__main__':
