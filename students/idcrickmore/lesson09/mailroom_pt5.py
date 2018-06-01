@@ -8,60 +8,68 @@ import datetime
               
 # defines donor metrics
 class Donor:
-    def __init__(self, donor_name, donation=None):
-        self.name = donor_name
+    def __init__(self, donation=None):
         self.donation = donation if donation else []
         self.total = sum(self.donation)
         self.ave = self.total/len(self.donation) if donation else 0
         self.num_donations = len(self.donation)
-            
 
-donor_data = [
-              Donor("Galileo Galilei", [348, 8377, 123]),
-              Donor("Giovanni Cassini", [209]),
-              Donor("Christiaan Huygens", [9135, 39]),
-              Donor("Edmond Halley", [399, 1100, 357]),
-              Donor("Edwin Hubble", [1899]),
-              Donor("Mr. NoDonation")
-              ]
-              
+
+donor_data = {
+              "Galileo Galilei": [348, 8377, 123],
+              "Giovanni Cassini": [209],
+              "Christiaan Huygens": [9135, 39],
+              "Edmond Halley": [399, 1100, 357],
+              "Edwin Hubble": [1899],
+              "Mr. NoDonation":[]
+              }
+
 # stores and updates donar data, makes reports 
 class Donor_operations:
     def __init__(self, donors):
         self.donors_data = donors
     
+    # 'append' function here
+    def donor_append(name, don):
+        try:
+            donor_data[name].append(don)
+        except KeyError:
+        # if 'name_check' isn't in the donor dict...
+        # set  the default format value as a list ([]) and append it
+            donor_data.setdefault((name), []).append(don)
+            
     # calls input class and returns donor object    
     def donation_query():
         text = ["\nEnter the name of the donar\nor 'list' for a list of donors\nor 'menu' for the main menu\n->", "Enter the donation amount\n->"]
         donor = user_input.donation_query(text)
         return donor
-        
+
     # 'thank you' function here that calls 'donoration_query()'
     def thank_you():
-        item = Donor_operations.donation_query()
-        
-        if type(item) == list:
-            letter_dict = {"name": item[0], "don": item[1]}
+        donor = Donor_operations.donation_query()
+
+        if type(donor) == list:
+            donor_dict = {"name": donor[0], "don": donor[1]}
+            Donor_operations.donor_append(donor_dict["name"], donor_dict["don"])
             print("\n---------------- Thank You Letter ----------------\n"
                   "Dear {name},\n\n"
                   "You rock. Your fat contribution of ${don:,.2f}\n"
                   "will go a long way to lining my pockets.\n\n"
                   "Sincerely,\n"
-                  "Scrooge McDuck\n".format(**letter_dict))
+                  "Scrooge McDuck\n".format(**donor_dict))
                   
-        elif item == 'list':
+        elif donor == 'list':
             Donor_operations.list_donors()
 
 
     # List donors
     def list_donors():
         print("\n---------------- List of Donors ----------------\n")
-        for item in donor_data:
-            print(item.name)
+        for donor in donor_data:
+            print(donor)
             
-    # 'append' function here
+
     
-    # 'name check' function here
  
 # list of donor instances  
 
@@ -99,11 +107,12 @@ class user_input:
 
 def Simple_print():
     for name in donor_data:
-        print(name.name, name.donation)                
+        metrics = Donor(donor_data[name])
+        print(name, metrics.donation)                
 
         
 def Ex():
-    sys.exit("quitting")  
+    sys.exit("quitting")
         
         
 main_menu_text = ["1. Simple Print", "2. Donor Thank You", "3. Quit"]
