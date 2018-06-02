@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from operator import itemgetter
+from functools import reduce
 
 
 class Donor():
@@ -96,6 +97,13 @@ class Donors_List():
         write_dir = '.' if not write_dir else write_dir
         for donor in self.donors.values():
             donor.letter_to_file(write_dir)
+            
+    def challenge(self, factor):
+        new_donor_list = self
+        for donor in new_donor_list.donors.values():
+            donor.donations = list(map(lambda don: don * factor, 
+                                       donor.donations))
+        return new_donor_list
 
 
 def send_thank_you():
