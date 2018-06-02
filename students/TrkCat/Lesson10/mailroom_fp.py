@@ -99,12 +99,12 @@ class Donors_List():
         write_dir = '.' if not write_dir else write_dir
         for donor in self.donors.values():
             donor.letter_to_file(write_dir)
-            
+
     def challenge(self, factor, min_donation=0, max_donation=inf):
         new_donor_list = deepcopy(self)
         for donor in new_donor_list.donors.values():
-            donor.donations = list(map(lambda donation: donation * factor, 
-                                       filter(lambda x: min_donation <= x <= 
+            donor.donations = list(map(lambda donation: donation * factor,
+                                       filter(lambda x: min_donation <= x <=
                                               max_donation, donor.donations)))
         return new_donor_list
 
@@ -152,6 +152,39 @@ def new_donation():
     return False
 
 
+def run_projection():
+    print('\nRun Donation Match Projection:')
+    while True:
+        try:
+            factor = float(input('  Please input match factor (multiplier): '))
+            break
+        except ValueError:
+            print('Error: Please enter a numeric value for the factor.\n')
+    while True:
+        min_donation = input('  Please enter minimum donation to '
+                             'match (leave blank for no min): ')
+        try:
+            min_donation = 0 if min_donation == '' else float(min_donation)
+            break
+        except ValueError:
+            print('Error: Please enter a numeric value for the amount.\n')
+    while True:
+        max_donation = input('  Please enter maximum donation to '
+                             'match (leave blank for no max): ')
+        try:
+            max_donation = inf if max_donation == '' else float(max_donation)
+            break
+        except ValueError:
+            print('Error: Please enter a numeric value for the amount.\n')
+    proj_donors = cur_donors.challenge(factor, min_donation, max_donation)
+    tot_proj = sum(map(lambda donor: sum(donor.donations),
+                       proj_donors.donors.values()))
+    num_matches = sum(map(lambda donor: len(donor.donations),
+                          proj_donors.donors.values()))
+    print('\nProjected Total Match Amount: $ {:,.2f}'.format(tot_proj))
+    print('Total donations to be matched: {:d}'.format(num_matches))
+
+
 def quit_menu():
     """Quit current menu"""
     return False
@@ -182,12 +215,14 @@ if __name__ == '__main__':
                    '1 - Send a Thank You\n'
                    '2 - Create a Report\n'
                    '3 - Send Thank You Letters to All\n'
-                   '4 - Quit Menu\n'
+                   '4 - Run Donation Match Projection\n'
+                   '5 - Quit Menu\n'
                    '>> '
                    )
     main_menu = {'1': send_thank_you,
                  '2': cur_donors.print_report,
                  '3': send_all_letters,
-                 '4': quit_menu
+                 '4': run_projection,
+                 '5': quit_menu
                  }
     show_menu(main_prompt, main_menu)
