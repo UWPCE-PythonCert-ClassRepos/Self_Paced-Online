@@ -15,6 +15,7 @@
 #   the order of the sequence to middle/end/beginning
 # ------------------------------------------------------------------------
 
+
 # Processing --------------------------------------------------------------
 
 #  ---  USER NOTIFICATION: If entry is too low  ---  #
@@ -79,12 +80,11 @@ def div_thirds(seq):
         ends = seq[(div + div): l:]
         final = middle + ends + beginning
 
-        print("    ", final)                    # display results
+        print("    ", final)                    # display
 
 # ---------------------------------------------------------------------------
 
 # Display -------------------------------------------------------------------
-
 
 # Function I
 print("1.  Result: ", end="")
