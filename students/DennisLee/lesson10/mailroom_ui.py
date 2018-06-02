@@ -190,12 +190,13 @@ class DonorUI():
             try:
                 proj_gift = self.collection.projection_sum(
                         self.collection.projector(match_factor, min_gift, max_gift))
-            except ValueError:
-                pass
+            except ValueError as ve:
+                print(ve)
             else:
-                print(f"\n\nCurrent contribution total: {cur_total}",
-                        f"Portion used for matching: {gifts_used_to_multiply}",
-                        f"Your projected contribution: {proj_gift}",
+                print("\n\n",
+                        f"Current donation total:  ${cur_total:>18,.2f}",
+                        f"Matched donations:       ${gifts_used_to_multiply:>18,.2f}",
+                        f"Your projected donation: ${proj_gift:>18,.2f}",
                         sep = "\n")
 
 

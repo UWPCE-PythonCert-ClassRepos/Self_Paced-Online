@@ -19,6 +19,29 @@ class MailroomTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_challenge_100(self):
+        new_coll = self.coll.challenge(3)
+        self.assertEqual(new_coll['Red Herring'].donations,
+                [197461.5, 93379.11, 45000, 7500])
+        self.assertEqual(new_coll['Daphne Dastardly'].donations, [246.0])
+
+    def test_challenge_200(self):
+        new_coll = self.coll.challenge(3, 100, 1e12)
+        self.assertEqual(new_coll['Red Herring'].donations,
+                [197461.5, 93379.11, 45000, 7500])
+        self.assertEqual(new_coll['Daphne Dastardly'].donations, [])
+
+    def test_challenge_300(self):
+        new_coll = self.coll.challenge(3, 0, 1000)
+        self.assertEqual(new_coll['Karl-Heinz Berthold'].donations, [])
+        self.assertEqual(new_coll['Papa Smurf'].donations, 
+                [631.92, 3000, 173.58, 1053.66, 144.0])
+
+    def test_challenge_400(self):
+        new_coll = self.coll.challenge(3, 100, 1000)
+        self.assertEqual(new_coll['Red Herring'].donations, [])
+        self.assertEqual(new_coll['Mama Murphy'].donations, [1800.0, 2355.6])
+
     def test_projector_100(self):
         projected = dict(self.coll.projector(3, 100, 1e12))
         self.assertEqual(projected['Papa Smurf'], [631.92, 3000, 8414.49, 1053.66])
@@ -48,6 +71,7 @@ class MailroomTestCase(unittest.TestCase):
             '1', 'Seymour Candy', '-34.45',
             '1', 'Seymour Candy', '0',
             '1', 'Seymour Candy', '650.25',  # Add new donor/gift
+            '1', 'Seymour Candy', '2000',  # Add new donor/gift
             '1', 'Pat Panda', '',
             '1', 'Pat Panda', 'quit',
             '1', 'list', 'Pat Panda', 'five thousand',
@@ -57,7 +81,7 @@ class MailroomTestCase(unittest.TestCase):
             '1', 'list', 'Pat Panda', '200.99',  
             '2',  # Show updated donor history
             '3', 'jfdasojdfsao^*&)^#$*^*#$@',
-            '3', 'c:\\windows'
+            '3', 'c:\\windows\\'
             '3', 'x:\\',
             '3', 'test',  # Save letters to relative subfolder
             '3', '',  # Save letters in current folder
