@@ -2,6 +2,7 @@
 from operator import itemgetter
 from functools import reduce
 from copy import deepcopy
+from math import inf
 
 
 class Donor():
@@ -99,11 +100,12 @@ class Donors_List():
         for donor in self.donors.values():
             donor.letter_to_file(write_dir)
             
-    def challenge(self, factor):
+    def challenge(self, factor, min_donation=0, max_donation=inf):
         new_donor_list = deepcopy(self)
         for donor in new_donor_list.donors.values():
             donor.donations = list(map(lambda donation: donation * factor, 
-                                       donor.donations))
+                                       filter(lambda x: min_donation <= x <= 
+                                              max_donation, donor.donations)))
         return new_donor_list
 
 
