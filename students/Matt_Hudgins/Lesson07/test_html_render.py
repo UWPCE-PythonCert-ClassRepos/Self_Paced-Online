@@ -10,3 +10,23 @@
     Python Version 3.6.4
 '''
 
+from io import StringIO
+import html_render as hr
+import unittest
+
+class test_html_rendering(unittest.TestCase):
+
+    def element_test(self):
+        element = hr.Element()
+        self.assertEqual(element.content, [])
+
+    def test_render(self):
+        element = hr.Element('Testing.')
+        f = StringIO()
+        element.render(f)
+        self.assertEqual(f.getvalue(), "<>\n" + element.indent + "Testing.\n</>\n")
+
+
+
+if __name__ == '__main__':
+    unittest.main()
