@@ -1,9 +1,5 @@
 #!/usr/bin/python
-"""
-Sean Tasaki
-5/27/2018
-Lesson05.except_exercise
-"""
+
 """
 An exercise in playing with Exceptions.
 Make lots of try/except blocks for fun and profit.
@@ -17,10 +13,12 @@ from except_test import fun, more_fun, last_fun
 # Figure out what the exception is, catch it and while still
 # in that catch block, try again with the second item in the list
 first_try = ['spam', 'cheese', 'mr death']
+
 try:
     joke = fun(first_try[0])
 except NameError:
-    print(f"{first_try[0]} is not a valid joke.")
+    print("Whoops! There is no joke for {}".format(first_try[0]))
+    # joke2 = fun(first_try[1])
 
 # Here is a try/except block. Add an else that prints not_joke
 try:
@@ -47,6 +45,7 @@ else:
 # parameters. (pun intended)
 
 langs = ['java', 'c', 'python']
+
 try:
     more_joke = more_fun(langs[0])
 except IndexError:

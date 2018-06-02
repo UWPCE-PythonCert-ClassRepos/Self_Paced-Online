@@ -1,21 +1,13 @@
 #!/usr/bin/env python3
-# initialize lists
 import datetime
 
-donors = ['Jeff Bezos', 'Mark Zuckerberg', 'Bill Gates', 'Paul Allen']
-i_amount = [3000, 20, 40607, 65]
-i_count = [4, 2, 3, 6]
-
-# initialize amt_dict
-amt_dict = {}
-cnt_dict = {}
-avg_dict = {}
-i = 0
-for i in range(len(donors)):
-    amt_dict[donors[i]] = i_amount[i]
-    cnt_dict[donors[i]] = i_count[i]
-    avg_dict[donors[i]] = i_amount[i]/i_count[i]
-
+# initialize donor dictionary
+donors = {
+    'Jeff Bezos': [250, 750, 1000, 1000],
+    'Mark Zuckerberg': [10, 10],
+    'Bill Gates': [10000, 20000, 10607],
+    'Paul Allen': [10, 10, 10, 10, 10, 15],
+}
 
 msg = """
 \nDear {},\n\nThank you for your recent donation, did you \
@@ -28,43 +20,49 @@ Dime for Donuts\n
 """
 
 
+def don_in():
+    while True:
+        try:
+            don_amt = int(input('What was the donation amount?'))
+        except ValueError:
+            print('input must be an integer, try again')
+        else:
+            return don_amt
+
+
 def new_donor(new_name):
-    donors.append(new_name)
-    don_amt = int(input('What was the donation amount?'))
-    amt_dict[new_name] = don_amt
-    cnt_dict[new_name] = 1
-    avg_dict[new_name] = don_amt/1
+    don_amt = don_in()
+    donors[new_name] = [don_amt]
     return new_name, 1, don_amt
 
 
 def update_don(ret_don):
-    don_amt = int(input('What was the donation amount?'))
-    if don_amt == 0:
-        return ret_don, cnt_dict[ret_don], amt_dict[ret_don]
-    cnt_dict[ret_don] += 1
-    amt_dict[ret_don] += don_amt
-    avg_dict[ret_don] = amt_dict[ret_don]/cnt_dict[ret_don]
-    return ret_don, cnt_dict[ret_don], amt_dict[ret_don]
+    # prompt user for donation amount
+    don_amt = don_in()
+    donors[ret_don].append(don_amt)
+    count = len(donors[ret_don])
+    total_amt = sum(donors[ret_don])
+    return ret_don, count, total_amt
+
+
+def menu_sel_1():
+    name_in = input('Please provide full name ')
+    if name_in == 'quit':
+        q = 1
+        return q
+    elif name_in == 'list':
+        for donor in donors:
+            print(donor)
+    elif name_in not in donors:
+        msg_vars = new_donor(name_in)
+        print(msg.format(*msg_vars))
+    else:
+        msg_vars = update_don(name_in)
+        print(msg.format(*msg_vars))
 
 
 def get_key(item):
     return item[1]
-
-
-def menu_sel_1():
-    name = input('Please provide full name ')
-    if name == 'quit':
-        q = 1
-        return q
-    elif name == 'list':
-        for z in donors:
-            print(z)
-    elif name not in donors:
-        msg_vars = new_donor(name)
-        print(msg.format(*msg_vars))
-    else:
-        msg_vars = update_don(name)
-        print(msg.format(*msg_vars))
 
 
 def menu_sel_2():
@@ -73,23 +71,26 @@ def menu_sel_2():
           'Total Given', 'Num Gifts', 'Avg Gift'))
     print('-'*63)
     s = '{:<20} ${:>15}  {:^10} ${:>12.2f}'
-    for x in (donors):
-        db.append([x, amt_dict[x], cnt_dict[x], avg_dict[x]])
+    for donor in (donors):
+        amt = sum(donors[donor])
+        count = len(donors[donor])
+        avg = amt/count
+        db.append([donor, amt, count, avg])
     db_sort = sorted(db, key=get_key, reverse=True)
+    # prints donor name, amount, count, average sorted by amount
     for i in range(len(db_sort)):
         print(s.format(db_sort[i][0], db_sort[i][1], db_sort[i][2],
                        db_sort[i][3]))
 
 
 def menu_sel_3():
-    y = datetime.datetime.now()
-    for i in range(len(donors)):
-        don_name = donors[i]
-        file_name = '{}_{}_{}_{}.txt'.format(don_name, y.month, y.day, y.year)
-        new_file = open(file_name, 'w')
-        msg_vars = (don_name, cnt_dict[don_name], amt_dict[don_name])
-        new_file.write(msg.format(*msg_vars))
-        new_file.close()
+    date = datetime.datetime.now()
+    for donor in donors:
+        file_name = '{}_{}_{}_{}.txt'.format(donor, date.month, date.day,
+                                             date.year)
+        msg_vars = (donor, len(donors[donor]), sum(donors[donor]))
+        with open(file_name, 'w') as new_file:
+            new_file.write(msg.format(*msg_vars))
 
 
 menu_switch_dict = {
