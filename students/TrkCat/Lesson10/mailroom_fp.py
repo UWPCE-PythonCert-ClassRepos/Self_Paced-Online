@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from operator import itemgetter
 from functools import reduce
+from copy import deepcopy
 
 
 class Donor():
@@ -99,9 +100,9 @@ class Donors_List():
             donor.letter_to_file(write_dir)
             
     def challenge(self, factor):
-        new_donor_list = self
+        new_donor_list = deepcopy(self)
         for donor in new_donor_list.donors.values():
-            donor.donations = list(map(lambda don: don * factor, 
+            donor.donations = list(map(lambda donation: donation * factor, 
                                        donor.donations))
         return new_donor_list
 
