@@ -7,7 +7,6 @@ $ chmod +x mailroom_fp.py
 import datetime
 import os
 
-
 class Donor:
 
     def __init__(self, firstname, lastname, donations=None):
@@ -163,6 +162,8 @@ class DonorFunctions:
 
 
     def new_donors_list(self, factor, min_don=None, max_don=None):
+        """Calls the challenge function and returns new database.
+        **Attempted to do this in challenge - but kept encountering an error.**"""
         updated_donor_list = self.challenge(factor, min_don, max_don)
         return DonorFunctions(updated_donor_list)
 
@@ -173,14 +174,13 @@ class DonorFunctions:
         for donor in self._donorslist:
             new_d_list.append(Donor(donor.firstname, donor.lastname,
                                     self.filter_factor_map(factor, donor.donations, min_don, max_don)))
-        # return new database
+        #return list of donors
         return new_d_list
 
     def projection(self, factor, min_donation=None, max_donation=None):
         """Return projection value for donations. a feature that could show them, 
         based on past contributions, what their total contribution would become under different scenarios
         """
-
         projected_contribution = 0
         for donor in self._donorslist:
             projected_contribution += sum(self.filter_factor_map(factor,
@@ -319,6 +319,7 @@ def check_number_input():
 
 
 def challenge():
+    """Gets user input for donations muliplier challenge. Prints the list to screen for added fun!"""
     print('''Welcome to the Challenge Option. Here you can multiply all donations by any number, 
         or you can multiply donations within an optional min and max donation amount.
         ''')
@@ -339,7 +340,7 @@ def challenge():
 
 
 def projected():
-
+    """Gets user input for projection muliplier functionality. Takes min and max and prints contribution."""
     print('''Welcome to the Projection Option. Here you can run projections for contributions. 
         Help Companies structure their matching donations based on past contribution amounts.
         Simply enter the minumum and maximum donation range that will be matched and see the total contribution:''')
