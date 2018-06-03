@@ -60,20 +60,13 @@ class Donor:
 class DonorFunctions:
 
     def __init__(self, donors=None):
-        # if donors is None:
-        #     self._donorslist = []
-        # else:
-        #     self._donorslist = donors
         self._donorslist = donors if donors else []
 
-        # super().__init__(Donor, {d.firstname,d.lastname: d for d in donors})
-
-    #@property
     def donorslist(self):
         return self._donorslist
 
     def add_donor(self, donor):
-        self.donorslist.append(donor)
+        self._donorslist.append(donor)
 
     def get_all_donors(self):
         return [d.fullname for d in self._donorslist]
@@ -83,7 +76,6 @@ class DonorFunctions:
 
     def send_single_thank_you(self):
         """function for sending thank you message-gets/ adds single donation and prints thank you"""
-
         donor_name = get_name_input(self.get_all_donors())
         if donor_name == "quit":
             print("No donor name entered, exiting to menu")
@@ -145,6 +137,9 @@ class DonorFunctions:
         for donor in self._donorslist:
             print(print_thank_you_total(donor))
 
+    def print_donors(self):
+        print(self.print_report())
+
     def print_donors_names(self):
         """ prints list of donors"""
         print("\nDonors")
@@ -157,8 +152,7 @@ class DonorFunctions:
         print("-"*30, "\n")
         [print(donor.fullname, "=>", donor.donations, '\n')
          for donor in self._donorslist]
-        # for key, val in DONORS_DICT.items():
-        #     print(key, "=>", val)
+
 
     def print_donors_and_donation_totals(self):
         """Prints all letters to screen - for view and testing"""
@@ -166,55 +160,60 @@ class DonorFunctions:
         print("-"*30, "\n")
         [print(donor.fullname, "=>", donor.donations_total(), '\n')
          for donor in self._donorslist]
-        # for key, val in DONORS_DICT.items():
-        #     print(key, "=>", val)
 
-    @staticmethod
-    def filter_factor_map(factor, donations, min_donation=None, max_donation=None):
-        """Uses filter, map and the factor to provide the new list of filtered donations"""
-        if min_donation and max_donation:
-            if min_donation > max_donation:
-                raise ValueError(
-                    'Minimum Donation listed is larger than Maximum Donation. Try Again!')
-            return list(map(lambda x: x * factor,
-                            filter(lambda d: min_donation <= d <= max_donation, donations)))
-        elif max_donation:
-            return list(map(lambda x: x * factor,
-                            filter(lambda d: d <= max_donation, donations)))
-        elif min_donation:
-            return list(map(lambda x: x * factor,
-                            filter(lambda d: d >= min_donation, donations)))
-        else:
-            return list(map(lambda x: x * factor, donations))
 
-    def challenge(self, factor, min_donation=None, max_donation=None):
+    def new_donors_list(self, factor, min_don=None, max_don=None):
+        updated_donor_list = self.challenge(factor, min_don, max_don)
+        return DonorFunctions(updated_donor_list)
+
+    def challenge(self, factor, min_don=None, max_don=None):
         """Returns a new db of donors multiplied by the factor provided. 
         Creates new db calling the filter_factor_map"""
-        new_donors_list = []
+        new_d_list = []
         for donor in self._donorslist:
-            new_donors_list.append(Donor(donor.firstname, donor.lastname,
-                                    self.filter_factor_map(factor,
-                                                           donor.donations,
-                                                           min_donation=min_donation,
-                                                           max_donation=max_donation)))
+            new_d_list.append(Donor(donor.firstname, donor.lastname,
+                                    self.filter_factor_map(factor, donor.donations, min_don, max_don)))
         # return new database
-        return DonorFunctions(*new_donors_list)
+        return new_d_list
 
     def projection(self, factor, min_donation=None, max_donation=None):
         """Return projection value for donations. a feature that could show them, 
         based on past contributions, what their total contribution would become under different scenarios
         """
-        projection = 0
+
+        projected_contribution = 0
         for donor in self._donorslist:
-            projection += sum(self.filter_factor_map(factor,
-                                                     donor.donations,
-                                                     min_donation=min_donation,
-                                                     max_donation=max_donation))
+            projected_contribution += sum(self.filter_factor_map(factor,
+                                                                 donor.donations,
+                                                                 min_donation,
+                                                                 max_donation))
         # returns the projection
-        return projection
+        return projected_contribution
+
+    def filter_factor_map(self, factor, donations, min_donation=None, max_donation=None):
+        """Uses filter, map and the factor to provide the new list of filtered donations"""
+        if min_donation and max_donation:
+            if min_donation > max_donation:
+                raise ValueError(
+                    'Minimum Donation listed is larger than Maximum Donation. Try Again!')
+            else:
+                # for donation in donations:
+                return list(map(lambda x: x * factor,
+                                filter(lambda y: min_donation <= y <= max_donation, donations)))
+        elif min_donation:
+            # for donation in donations:
+            return list(map(lambda x: x * factor,
+                            filter(lambda y: y >= min_donation, donations)))
+        elif max_donation:
+            # for donation in donations:
+            return list(map(lambda x: x * factor,
+                            filter(lambda y: y <= max_donation, donations)))
+        else:
+            # for donation in donations:
+            return list(map(lambda x: x * factor, donations))
+
 
 # Mailroom menu functions
-
 def menu_selection(menu_input, user_entry):
     """menu function"""
     try:
@@ -225,10 +224,12 @@ def menu_selection(menu_input, user_entry):
     else:
         return True
 
+
 def main_menu():
     '''Create Main Menu'''
     main_menu_title = "\nWelcome to the Mailroom App\nWhat would you like to do?\n"
     print_menu_options(MAIN_MENU, main_menu_title)
+
 
 def print_menu_options(menu_input, menu_title):
     ''' Prints  Menu'''
@@ -242,15 +243,18 @@ def print_menu_options(menu_input, menu_title):
         if response == 'q':
             return
 
+
 def single_print_menu():
     '''Create single print sub Menu'''
     single_print_menu_title = "\nWelcome to the Send A Thank You Menu:\nHow would you like to find a donor: \n"
     print_menu_options(SINGLE_PRINT_SUB_MENU, single_print_menu_title)
 
+
 def quit_menu():
     '''Quit menu function and method'''
     print("Quitting this menu now")
     return "exit menu"
+
 
 def get_name_input(donors_list):
     ''' Function to select user input to return to print function 
@@ -284,6 +288,7 @@ def get_name_input(donors_list):
             print(
                 "Let's try entering the donor name again. Or type 'exit' to quit to menu.")
 
+
 def print_thank_you_total(donor):
     """ prints thank you message"""
     thank_you = '''\n\nDear {}
@@ -312,32 +317,44 @@ def check_number_input():
             else:
                 print('Please enter a donation amount above 0.')
 
-def get_factor_input():
-    """Return user input prompt asking for the factor."""
-    while True:
-        try:
-            factor_input = float(input('Enter the factor to muliply by or "0" to quit\n'
-                                       ' --> '))
-            minimum_input = float(input('OPTIONAL: Enter minimum donation for filter, 0 to skip \n'
-                                        ' --> '))
-            maximum_input = float(input('OPTIONAL: Enter maximum donation for filter, 0 to skip \n'
-                                        ' --> '))
-            # catch if user wants to quit
-            if factor_input == 0:
-                break
-            else:
-                return factor_input, minimum_input, maximum_input
-        except ValueError:
-            print('Please follow instructions and enter a number only')
 
-def create_projection(mailroom_donors):
-    """Create contribution projection based on supplied info from philanthropists. """
-    factor, min_donation, max_donation = get_factor_input()
+def challenge():
+    print('''Welcome to the Challenge Option. Here you can multiply all donations by any number, 
+        or you can multiply donations within an optional min and max donation amount.
+        ''')
+    try:
+        minimum_input = float(
+            input('Enter a minimum donation amount (0 if none):  '))
+        maximum_input = float(
+            input('Enter a maximum donation amount (0 if none):  '))
+        factor = float(
+            input('Please enter the factor you wish to multiply these donations by >>  '))
+    except ValueError:
+        print('Please follow instructions and enter a number only')
 
-    projection_output = mailroom_donors.projection(
-        factor, min_donation=min_donation, max_donation=max_donation)
+    new_donor_list = mailroom_donors.new_donors_list(
+        factor, minimum_input, maximum_input)
+    new_donor_list.print_report()
+    return new_donor_list
 
-    # print output of projection return
+
+def projected():
+
+    print('''Welcome to the Projection Option. Here you can run projections for contributions. 
+        Help Companies structure their matching donations based on past contribution amounts.
+        Simply enter the minumum and maximum donation range that will be matched and see the total contribution:''')
+    try:
+        minimum_input = float(
+            input('Enter a minimum donation amount (0 if none):  '))
+        maximum_input = float(
+            input('Enter a maximum donation amount (0 if none):  '))
+        factor = float(
+            input('Please enter the factor you wish to multiply these donations by >>  '))
+    except ValueError:
+        print('Please follow instructions and enter a number only')
+
+    projection = mailroom_donors.projection(
+        factor, minimum_input, maximum_input)
     print('\nProjected contribution value: ${:,.2f}'.format(projection))
 
 
@@ -348,7 +365,8 @@ donor4 = Donor("Paul", "Allen", [877.33, 22])
 donor5 = Donor("Steven", "Hawking", [326892.24, 123, 123.33, 123, 123])
 donor6 = Donor("Justin", "Timberlake", [999658.25, 1233, 123])
 
-mailroom_donors = DonorFunctions([donor1, donor2, donor3, donor4, donor5, donor6])
+mailroom_donors = DonorFunctions(
+    [donor1, donor2, donor3, donor4, donor5, donor6])
 
 #------Menu Dictionaries of Dictionaries .Needs to be after the functions or code won't work. ------
 MAIN_MENU = {
@@ -356,8 +374,8 @@ MAIN_MENU = {
     "2": {'menu_prompt': 'Create a Report', 'menu_dispatch': mailroom_donors.print_report},
     "3": {'menu_prompt': 'Send Letters to Everyone', 'menu_dispatch': mailroom_donors.send_letters_everyone},
     "4": {'menu_prompt': 'Test Print All', 'menu_dispatch': mailroom_donors.print_letters_to_everyone},
-    "5": {'menu_prompt': 'Challenge', 'menu_dispatch': lambda: mailroom_donors.challenge(get_factor_input())},
-    "6": {'menu_prompt': 'Create Projection', 'menu_dispatch': lambda: mailroom_donors.projection(create_projection(mailroom_donors))},
+    "5": {'menu_prompt': 'Challenge', 'menu_dispatch': challenge},
+    "6": {'menu_prompt': 'Create Projection', 'menu_dispatch': projected},
     "q": {'menu_prompt': 'Quit Program', 'menu_dispatch': quit_menu}
 }
 SINGLE_PRINT_SUB_MENU = {
