@@ -329,7 +329,7 @@ def challenge():
         maximum_input = float(
             input('Enter a maximum donation amount (0 if none):  '))
         factor = float(
-            input('Please enter the factor you wish to multiply these donations by >>  '))
+            input('Enter the factor you wish to multiply these donations by >>  '))
     except ValueError:
         print('Please follow instructions and enter a number only')
 
@@ -350,7 +350,7 @@ def projected():
         maximum_input = float(
             input('Enter a maximum donation amount (0 if none):  '))
         factor = float(
-            input('Please enter the factor you wish to multiply these donations by >>  '))
+            input('Enter the factor you wish to multiply these donations by >>  '))
     except ValueError:
         print('Please follow instructions and enter a number only')
 
