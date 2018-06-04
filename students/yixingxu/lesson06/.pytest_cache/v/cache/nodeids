@@ -1,0 +1,5 @@
+[
+  "test_mailroom4.py::test_list_name",
+  "test_mailroom4.py::test_create_a_report",
+  "test_mailroom4.py::test_create_summary"
+]
