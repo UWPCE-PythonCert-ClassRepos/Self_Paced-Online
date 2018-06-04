@@ -352,4 +352,4 @@ def test_8():
     file_contents = render_result(page)
     #print(file_contents)
     assert "<meta charset=UTF-8 />" in file_contents
-test_8()
+test_8()                                                                                                                                                                                             
