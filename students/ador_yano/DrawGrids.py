@@ -21,7 +21,7 @@ def print_grid1():
         print("+", "- " * 4, end="")
     print("+")
 
-#print_grid()
+
 
 
 def print_grid2(n):
@@ -39,7 +39,7 @@ def print_grid2(n):
     print("+")
 
 
-#    print("print_grid(n)")
+
 
 def print_grid3(a,b):
     rows = a
@@ -56,4 +56,3 @@ def print_grid3(a,b):
     for i in range(columns):                      # draw bottom line
         print("+", "- " * scale, end="")        # size side per scale
     print("+")
-#    print("print_grid(a,b)")
