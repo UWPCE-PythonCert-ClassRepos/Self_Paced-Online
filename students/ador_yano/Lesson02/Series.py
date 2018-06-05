@@ -42,3 +42,10 @@ def sum_series(n,a=0,b=1):
         return b                        # second value set by b parameters
     else:
         return sum_series(n-2,a,b) + sum_series(n-1,a,b) # nth value is the sum of the previous two values in the series
+
+def tests():
+    assert fib(9) == 34
+    assert lucas(9) == 76
+    assert sum_series(9) == 34
+    assert sum_series(9,2,1) == 76
+    assert sum_series(5,3,8) == 49
