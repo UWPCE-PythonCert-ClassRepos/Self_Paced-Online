@@ -10,23 +10,25 @@ each series, generalized series function with three parameters
 print(intro)
 
 def fib(n):
-    if n < 1:
+    """ Return nth value in Fibonacci series """
+    if n < 1:                           # check for 0 and negative numbers
         print("Invalid argument")
-    elif n == 1:
+    elif n == 1:                        # first value in Fibonacci is 0
         return 0
-    elif n == 2:
+    elif n == 2:                        # second value in Fibonacci is 1
         return 1
     else:
-        return fib(n-2) + fib(n-1)
+        return fib(n-2) + fib(n-1)      # nth value is the sum of the previous two values in the series
 
 def lucas(n):
-    if n < 1:
+    """ Return nth value in Lucas series """
+    if n < 1:                           # check for 0 and negative numbers
         print("Invalid argument")
-    elif n == 1:
+    elif n == 1:                        # first value in Lucas is 2
         return 2
-    elif n == 2:
+    elif n == 2:                        # second value in Lucas is 1
         return 1
     else:
-        return lucas(n-2) + lucas(n-1)
+        return lucas(n-2) + lucas(n-1)  # nth value is the sum of the previous two values in the series
 
 # def sum_series(n,a,b)
