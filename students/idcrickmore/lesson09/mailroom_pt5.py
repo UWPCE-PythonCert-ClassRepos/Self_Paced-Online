@@ -13,6 +13,9 @@ class Donor:
         self.total = sum(self.donation)
         self.ave = self.total/len(self.donation) if donation else 0
         self.num_donations = len(self.donation)
+        
+    def __str__(self):
+        return '{:<15}{:<15,.2f}{:<15}'.format(self.total, self.ave, self.num_donations)
 
 
 donor_data = {
@@ -21,7 +24,6 @@ donor_data = {
               "Christiaan Huygens": [9135, 39],
               "Edmond Halley": [399, 1100, 357],
               "Edwin Hubble": [1899],
-              "Mr. NoDonation":[]
               }
 
 # stores and updates donar data, makes reports 
@@ -34,8 +36,6 @@ class Donor_operations:
         try:
             donor_data[name].append(don)
         except KeyError:
-        # if 'name_check' isn't in the donor dict...
-        # set  the default format value as a list ([]) and append it
             donor_data.setdefault((name), []).append(don)
             
     # calls input class and returns donor object    
@@ -44,7 +44,7 @@ class Donor_operations:
         donor = user_input.donation_query(text)
         return donor
 
-    # 'thank you' function here that calls 'donoration_query()'
+    # 'thank you' function calls 'donoration_query()'
     def thank_you():
         donor = Donor_operations.donation_query()
 
@@ -61,35 +61,54 @@ class Donor_operations:
         elif donor == 'list':
             Donor_operations.list_donors()
 
-
     # List donors
     def list_donors():
         print("\n---------------- List of Donors ----------------\n")
         for donor in donor_data:
             print(donor)
             
+    def report():
+        columns = ["DONOR", "TOTAL", "AVERAGE", "NUMBER"]
+        print("\n--------------- Report -------------")
+        print('{:<30}{:<15}{:<15}{:<15}'.format(*columns))
+        
+        for name in donor_data:
+            print(f'{name:<30}', end="")
+            print(Donor(donor_data[name]))
+            
+    def letters():
+        print("\n--------- Exporting Letters to Everyone ---------\n")
+        print("Thank you letters have been exported to {}".format(os.getcwd()))
 
+        for name in donor_data:
+            letter = f"""Dear {name},
+
+Your most recent contribution of ${donor_data[name][-1]:,.2f} to my money vault
+is very appreciated. I will spend it freely but wisely.
+
+Sincerely,
+Scrooge McDuck"""
+            with open(str(name) + "_" + str(datetime.date.today()) + '.txt', 'w') as out_file:
+                out_file.write(letter)
     
- 
-# list of donor instances  
 
 class user_input:
     # user input for menu selection
     def menu_render(text, key):
-        while True:
-            print("\n---------------Main Menu-------------")
-            print("Enter the number coresponding to your choice\n")
-            for line in text:
-                print(line)                
-            choice = input("-> ")
-            try:
-                key[choice]()
-            except (KeyError):
-                print("\nPlease enter one of the following options...")
-                for item in key:
-                    print(f'"{item}",', end=" ")
-                print("\n")
-                    
+
+        print("\n---------------Main Menu-------------")
+        print("Enter the number coresponding to your choice\n")
+        for line in text:
+            print(line)                
+        choice = input("-> ")
+        try:
+            key[choice]()
+        except (KeyError):
+            print("\nPlease enter one of the following options...")
+            for item in key:
+                print(f'"{item}",', end=" ")
+            print("\n")
+                
     # user input for new donations
     def donation_query(text):
         new_donor = input(text[0])
@@ -113,11 +132,16 @@ def Simple_print():
         
 def Ex():
     sys.exit("quitting")
+
+    
+def main():
+    while True:
+        user_input.menu_render(main_menu_text, main_menu_key)
         
         
-main_menu_text = ["1. Simple Print", "2. Donor Thank You", "3. Quit"]
-main_menu_key = {'1': Simple_print, '2': Donor_operations.thank_you, '3': Ex}
+main_menu_text = ["1. Donor Thank You", "2. Report", "3. Letters", "4. Quit"]
+main_menu_key = {'1': Donor_operations.thank_you, '2': Donor_operations.report, '3': Donor_operations.letters, '4': Ex}
 
   
 if __name__ == '__main__':
-    user_input.menu_render(main_menu_text, main_menu_key)
+    main()
