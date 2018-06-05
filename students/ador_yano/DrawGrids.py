@@ -2,13 +2,13 @@
 
 intro = '''UWPCE Python Programming: Lesson 2 Assignment
 Three functions to print grid three ways
-1. print_grid1(): display on screen a simple 2 x 2 grid
-2. print_grid2(n): display on screen a scalable 2 x 2 grid based on the size specified by the argument "n"
-3. print_grid3(a,b): diplay on screen a grid specified by "a" rows & "a" columns of "b" size
+1. print_grid(): display on screen a simple 2 x 2 grid
+2. print_grid1(n): display on screen a scalable 2 x 2 grid based on the size specified by the argument "n"
+3. print_grid2(a,b): diplay on screen a grid specified by "a" rows & "a" columns of "b" size
 '''
 print(intro)
 
-def print_grid1():
+def print_grid():
     for i in range(2):                      # draw 2 rows of 2 columns
         for i in range(2):                  # draw top line
             print("+", "- " * 4, end="")
@@ -21,7 +21,7 @@ def print_grid1():
         print("+", "- " * 4, end="")
     print("+")
 
-def print_grid2(n):
+def print_grid1(n):
     scale = n//2                            # convert n to scale defined by assignment
     for i in range(2):                      # draw 2 rows of 2 columns
         for i in range(2):                  # draw top line
@@ -35,7 +35,7 @@ def print_grid2(n):
         print("+", "- " * scale, end="")        # size side per scale
     print("+")
 
-def print_grid3(a,b):
+def print_grid2(a,b):
     rows = a
     columns = a
     scale = b                            # grid box size
