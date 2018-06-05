@@ -11,10 +11,10 @@ def easy_grid():
     hor_line = (plus + ( 4 * minus) + plus + (4 * minus) + plus)
     vert_line = (vert + (4 * spaces) + vert + (4 * spaces) + vert)
     print(hor_line)
-    for i in range(1, 4):
+    for i in range(1, 5):
         print(vert_line)
     print(hor_line)
-    for i in range(1, 4):
+    for i in range(1, 5):
         print(vert_line)
     print(hor_line)
 
