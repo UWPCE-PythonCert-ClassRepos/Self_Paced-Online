@@ -21,9 +21,6 @@ def print_grid1():
         print("+", "- " * 4, end="")
     print("+")
 
-
-
-
 def print_grid2(n):
     scale = n//2                            # convert n to scale defined by assignment
     for i in range(2):                      # draw 2 rows of 2 columns
@@ -38,21 +35,18 @@ def print_grid2(n):
         print("+", "- " * scale, end="")        # size side per scale
     print("+")
 
-
-
-
 def print_grid3(a,b):
     rows = a
     columns = a
-    scale = b                            # convert n to scale defined by assignment
-    for i in range(rows):                      # draw rows columns
-        for i in range(columns):                  # draw top line
-            print("+", "- " * scale, end="")    # size side per scale
+    scale = b                            # grid box size
+    for i in range(rows):                      # draw rows
+        for i in range(columns):                  # draw top line across number of columns
+            print("+", "- " * scale, end="")    # draw column per scale
         print("+")
         for i in range(scale):                  # draw row per scale
-            for i in range(columns):              # draw columns
+            for i in range(columns):              # draw column per scale
                 print("|", "  " * scale, end="")
             print("|")
-    for i in range(columns):                      # draw bottom line
-        print("+", "- " * scale, end="")        # size side per scale
+    for i in range(columns):                      # draw bottom line across number of columns
+        print("+", "- " * scale, end="")        # draw column per scale
     print("+")
