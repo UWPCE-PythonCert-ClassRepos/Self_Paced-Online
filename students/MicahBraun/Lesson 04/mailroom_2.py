@@ -2,7 +2,7 @@
 # NAME: MICAH BRAUN
 # PROJECT: mailroom.py
 # PURPOSE: Working with arrays(nested lists), manipulating data
-# DATE: 06/01/2018
+# DATE: 06/06/2018
 #
 # DESCRIPTION: Program is menu-driven user interface for interacting
 #              with a nested list of stored information. User is able
@@ -31,6 +31,7 @@ donor_dict = {'Columns': ['NAMES', 'DONATION AMOUNT', 'NUMBER OF GIFTS', 'AVG. G
               'Mee Heine': ['Mee Heine', 4600, 4, 1150],
               'Tanya Essex': ['Tanya Essex', 75000, 2, 37500]}
 
+
 # Processing -----------------------------------------------------------------------------------------------------------
 
 
@@ -46,22 +47,22 @@ def menu():
     whole_menu_header = header + '\n' + title + '\n' + header  # header strung together as one uni
 
     while True:
-        print(whole_menu_header)                                # display header
-        print(directions.center(110, ' '), '\n')                # center directions with header display
+        print(whole_menu_header)  # display header
+        print(directions.center(110, ' '), '\n')  # center directions with header display
         print(optA + optB.center(37, ' ') + optC.center(36, ' ') + optD.center(25, ' ') + '\n')
 
         switch_function = {
-            'A': thankyou,										# dictionary holding menu options
+            'A': thankyou,  # dictionary holding menu options
             'B': createreport,
             'C': writeletters,
             'D': quit_program,
         }
-        usr_sel = (input("Menu Selection: ")).upper()			# user input for menu
-        if usr_sel in switch_function:							# if check (used to display error msg)
-            switch_function.get(usr_sel)()						# get user entry from dict
+        usr_sel = (input("Menu Selection: ")).upper()  # user input for menu
+        if usr_sel in switch_function:  # if check (used to display error msg)
+            switch_function.get(usr_sel)()  # get user entry from dict
         else:
-            print("Invalid Entry. Only enter A, B, C, or D.")	# display error on any other entry
-        continue												# continue back to start of menu
+            print("Invalid Entry. Only enter A, B, C, or D.")  # display error on any other entry
+        continue  # continue back to start of menu
 
 
 def thankyou():
@@ -71,7 +72,7 @@ def thankyou():
     while True:
         print("Enter the name of the person you are writing to (or enter 'list' to see a list of names or Q to quit) ")
         fname_prompt = input("First Name: ").strip().capitalize()  # first name variable (strip any spaces)
-        if fname_prompt.upper() == "Q":                     # if Q, then quit to menu()
+        if fname_prompt.upper() == "Q":  # if Q, then quit to menu()
             menu()
         elif fname_prompt.lower() == "list":
             displaylist()
@@ -86,31 +87,36 @@ def thankyou():
                 if key in donor_dict.keys():
                     existing_donor = input(
                         "That value is already in the list! Do you want to proceed with that selection? (Y/N): ")
-                    if existing_donor.upper() == "Y":                            # if user proceeds, print display
+                    if existing_donor.upper() == "Y":  # if user proceeds, print display
                         donation_amt = int(input("Enter in the donation amount from Donor {0}: $".format(key)))
                         if str(donation_amt).upper() == "Q":
                             menu()
                         else:
-                            print('{0} has donated ${1:,.2f}'.format(key, donation_amt))              # display name and donation amt
+                            print(
+                                '{0} has donated ${1:,.2f}'.format(key, donation_amt))  # display name and donation amt
                             int(donation_amt)
-                            get_index = 0                                                             # index variable
-                            for item in range(0, len(donor_dict)):                                    # set index var to current name
+                            get_index = 0  # index variable
+                            for item in range(0, len(donor_dict)):  # set index var to current name
                                 if list(donor_dict.values())[item][0] == key:
                                     get_index = item
                                     break
-                            firstname = list(donor_dict.values())[get_index][0].split(' ', ).pop(0)  # separate first name, create variable
-                            current_donations = int(list(donor_dict.values())[get_index][1])         # current amt/ var from dict{[val]}
-                            sum_donations = current_donations + donation_amt                         # sum of all donations (current + new)
-                            list(donor_dict.values())[get_index][1] = float(sum_donations)           # update sum
-                            num_donations = int(list(donor_dict.values())[get_index][2]) + 1         # num donations = self + 1
-                            list(donor_dict.values())[get_index][2] = num_donations                  # update num of donations
-                            list(donor_dict.values())[get_index][3] = averagedonations(sum_donations, num_donations)    # update avg
-                            email_display = str(input("Display Donor Email? (Y/N or Q): "))          # ask user if they want to to
-                            if email_display.upper() == "Y":                                         # write email with name/amount
+                            firstname = list(donor_dict.values())[get_index][0].split(' ', ).pop(
+                                0)  # separate first name, create variable
+                            current_donations = int(
+                                list(donor_dict.values())[get_index][1])  # current amt/ var from dict{[val]}
+                            sum_donations = current_donations + donation_amt  # sum of all donations (current + new)
+                            list(donor_dict.values())[get_index][1] = float(sum_donations)  # update sum
+                            num_donations = int(list(donor_dict.values())[get_index][2]) + 1  # num donations = self + 1
+                            list(donor_dict.values())[get_index][2] = num_donations  # update num of donations
+                            list(donor_dict.values())[get_index][3] = averagedonations(sum_donations,
+                                                                                       num_donations)  # update avg
+                            email_display = str(
+                                input("Display Donor Email? (Y/N or Q): "))  # ask user if they want to to
+                            if email_display.upper() == "Y":  # write email with name/amount
                                 print(spacing)
                                 print('Dear {0}, \n\nThank you for your continued support through your \
 contribution of ${1:,.2f} towards our Foundation\'s fundraising goal.\n\nBest wishes,\n\
-Foundation Board of Directors\n'.format(firstname,sum_donations))
+Foundation Board of Directors\n'.format(firstname, sum_donations))
                                 print(spacing)
                             elif email_display.upper() == 'Q':
                                 menu()
@@ -118,29 +124,31 @@ Foundation Board of Directors\n'.format(firstname,sum_donations))
                                 continue
                 else:
                     add_name = str(input("That name is not in the Donor list. Do you want to add it to the list?  "))
-                    if add_name.upper() == "Y":                                     # if input response == "Y", proceed
+                    if add_name.upper() == "Y":  # if input response == "Y", proceed
                         pair = {key: [key]}
                         donor_dict.update(pair)
                         displaylist()
-                        num_donations = 1                                           # add new item to new name index
+                        num_donations = 1  # add new item to new name index
                         donation_amt = int(input("Enter in the donation amount from Donor {0}: $".format(key)))
                         if str(donation_amt).upper() == 'Q':
                             menu()
                         else:
                             print('{0} has donated ${1:,.2f}'.format(key, donation_amt))
-                            get_index = 0                                               # counter, start at 0
+                            get_index = 0  # counter, start at 0
                             for item in range(0, int(len(list(donor_dict.values())))):  # for items in donor_dict
-                                if list(donor_dict.values())[item][0] == key:           # if item at[0] == full_name
-                                    get_index = item                                    # set index to item
+                                if list(donor_dict.values())[item][0] == key:  # if item at[0] == full_name
+                                    get_index = item  # set index to item
                                     break
-                            list(donor_dict.values())[get_index].append(donation_amt)   # append donation amount to end of current lst [don_idx]
+                            list(donor_dict.values())[get_index].append(
+                                donation_amt)  # append donation amount to end of current lst [don_idx]
                             list(donor_dict.values())[get_index].append(num_donations)  # append donation count to end
                             avg = averagedonations(donation_amt, num_donations)
-                            list(donor_dict.values())[get_index].append(avg)            # append average to end of current index
-                            firstname = list(donor_dict.values())[get_index][0].split(' ', ).pop(0)  # separate first name, create variable
+                            list(donor_dict.values())[get_index].append(avg)  # append average to end of current index
+                            firstname = list(donor_dict.values())[get_index][0].split(' ', ).pop(
+                                0)  # separate first name, create variable
                             email_display = str(input("Display Donor Email? (Y/N): "))  # ask user if they want to
-                            if email_display.upper() == "Y":                            # print email message
-                                print(spacing)                                          # if Y, then print
+                            if email_display.upper() == "Y":  # print email message
+                                print(spacing)  # if Y, then print
                                 print('Dear {0}, \n\nThank you for your continued support through your \
 contribution of ${1:,.2f} towards our Foundation\'s fundraising goal.\n\nBest wishes,\n\
 Foundation Board of Directors\n'.format(firstname, donation_amt))
@@ -155,21 +163,21 @@ def createreport():
     """Function creates organized report of donor information based on current dictionary contents.
     Information is sorted in descending order based on total donation amounts."""
     print("Leaving menu...")
-    while True:                                                             # continual loop unless user terminates
-        proceed = str(input("Generate Donor report? (Y/N): "))              # solicit user response to proceed
-        if proceed.upper() == "Y":                                          # if user indicates yes
-            input("Generating Donor report... [Press Enter]")               # on Enter press, proceed
-            new_list = list(donor_dict.values())[1:]                        # blank list to hold only values after headers
-            new_list.sort(key=lambda sort_on: sort_on[1], reverse=True)     # sort list based on donation totals
-            lst_heading = list(donor_dict.values())[0:1]                    # container for only header
-            final_lst = lst_heading + new_list                              # join sorted list back with header
+    while True:  # continual loop unless user terminates
+        proceed = str(input("Generate Donor report? (Y/N): "))  # solicit user response to proceed
+        if proceed.upper() == "Y":  # if user indicates yes
+            input("Generating Donor report... [Press Enter]")  # on Enter press, proceed
+            new_list = list(donor_dict.values())[1:]  # blank list to hold only values after headers
+            new_list.sort(key=lambda sort_on: sort_on[1], reverse=True)  # sort list based on donation totals
+            lst_heading = list(donor_dict.values())[0:1]  # container for only header
+            final_lst = lst_heading + new_list  # join sorted list back with header
             print(spacing)
-            print('{:>15s}'.format(str(final_lst[0][0])), end='')           # format header for display
+            print('{:>15s}'.format(str(final_lst[0][0])), end='')  # format header for display
             print('         |{:>20s}'.format(str(final_lst[0][1])), end='')
             print('   |{:>19s}'.format(str(final_lst[0][2])), end='')
             print('    |{:>15s}'.format(str(final_lst[0][3])))
             print(spacing)
-            for i in range(1, int(len(final_lst))):                         # format list contents
+            for i in range(1, int(len(final_lst))):  # format list contents
                 print('{:>20s}'.format(str(final_lst[i][0])), end='')
                 print('            ${:>10,.2f}{:>17}'.format(float(final_lst[i][1]), int(final_lst[i][2])), end='')
                 print('                 ${:>10,.2f}'.format(float(final_lst[i][3])))
@@ -195,17 +203,18 @@ def writeletters():
 
             working_directory = str(input('\nEnter the file path where you want to write the letters - '
                                           'don\'t forget to use ''two \n\'\\\\\' as file separators to make sure'
-                                          ' it is compatible if using Windows - (e.g. \'C:\\\\\': '))  # working directory variable assignment by user - if blank, use default
+                                          ' it is compatible if using Windows - (e.g. \'C:\\\\\': '))
+            # working directory variable assignment by user - if blank, use default
             if working_directory == "":  # check for input on working_directory
                 working_directory = default
 
             for x in range(int(len(donor_dict))):  # for items in the span of donor_dict
-                firstname = donor_dict[x][0]  # firstname = donor_dict at index[item], column[0]
+                firstname = list(donor_dict.values())[x][0]  # firstname = donor_dict at index[item], column[0]
                 firstname = firstname.split(' ', ).pop(0)  # format var to split on whitespace (only first name)
                 first_names.append(firstname)  # append this value to empty list first_names
 
-            for i in range(int(len(donor_dict))):  # for items in the span of donor_dict
-                elem = donor_dict[i][0]  # elem = donor_dict at index[i], column[0]
+            for i in range(int(len(list(donor_dict.values())))):  # for items in the span of donor_dict
+                elem = list(donor_dict.values())[i][0]  # elem = donor_dict at index[i], column[0]
                 elem = elem.replace(" ", "")  # format name w/o whitespace
                 names_list.append(elem)  # append to name_list
 
@@ -217,7 +226,7 @@ def writeletters():
                                    'of {1} towards our Foundation\'s fundraising goal.\n\nBest wishes,\n'
                                    'Foundation Board of Directors'
                                    '\n'.format(str(first_names[names]),
-                                               locale.currency(donor_dict[names][1], grouping=True)))
+                                               locale.currency(list(donor_dict.values())[names][1], grouping=True)))
                 # print letter message (first name and donation amount)
             print("Files being written to " + working_directory + "...")
             print("Done!")  # message to user advising where files are going, and when it is done
@@ -250,7 +259,7 @@ def displaylist():
                 continue
             else:
                 print('{:>30s}'.format(list(donor_dict.values())[i][0]),
-                '{:>35s}'.format(list(donor_dict.values())[cut_off + i][0]))
+                      '{:>35s}'.format(list(donor_dict.values())[cut_off + i][0]))
     else:
         for i in range(0, int(len(list(donor_dict.values())) / 2)):
             if i == 0:  # header check
@@ -259,7 +268,7 @@ def displaylist():
                 print(spacing)
             else:
                 print('{:>30s}'.format(list(donor_dict.values())[i][0]),
-                '{:>35s}'.format(list(donor_dict.values())[cut_off + i][0]))
+                      '{:>35s}'.format(list(donor_dict.values())[cut_off + i][0]))
     print()
 
 
@@ -271,6 +280,8 @@ def averagedonations(donations, num):
     average_donation = sumgifts / numgifts
     return average_donation
 
-# Display -------------------------------------------------------------------
+
+# Display --------------------------------------------------------------------------------------------------------------
+
 
 menu()  # Program starts here
