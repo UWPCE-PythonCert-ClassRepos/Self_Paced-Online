@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Sean Tasaki
 5/21/2018
@@ -5,7 +6,7 @@ Lesson06.mailroom_part_4
 """
 from collections import defaultdict
 
-donor_dict = defaultdict(lambda : [0, 0, 0], {'Bob Dylan': [20000.00, 3, 40000.00], 'Leonard Cohen' : [600.00, 2, 300.00], 'Soren Kierkegaard' : [1000.00, 2, 500.00], 'Italo Calvino' : [20000.00, 4, 5000.00], 'Florence Feist' : [300.00, 3, 100.00]})
+donor_dict = defaultdict(lambda : [0, 0, 0], {'Bob Dylan': [20000.00, 3, 40000.00], 'Leonard Cohen' : [600.00, 2, 300.00], 'Soren Kierkegaard' : [1000.00, 2, 500.00], 'Italo Calvino' : [15000.00, 4, 5000.00], 'Florence Feist' : [300.00, 3, 100.00]})
 
 
 def main_menu():
@@ -34,29 +35,36 @@ def thank_you():
         main_menu()
     else:
         add_donor_to_dict(name.title())
-    try:
-        if donor_dict[name.title()][1] == 0:
-            amount = input(f"{name.title()} is a new donor. Enter the donation amount.\n>> ")
-            add_donor_amount(name.title(), amount)
-            print(f"Thank you {name.title()} for becoming a new donor to our charity! Your genereous donation of ${float(amount):.2f} is much appreciated.")
-        else:
-            amount = input(f"{name.title()} is a previous donor. Enter the donation amount.\n>> ")
-            add_donor_amount(name.title(), amount)
-            print(f"Thank you {name.title()} for your loyal support to our charity! Your genereous donation of ${float(amount):.2f} is much appreciated.")
-
-
-    except ValueError:
-        print("Invalid input. Please enter a numerical donation amount.")
         
         thank_you()
     
 
 def add_donor_to_dict(name):
+    # Prompt user for donation amount of donor as well as add donor to donor_dict
     if isinstance(name, str) is False:
         print('Please enter a valid name')
         add_donor_to_dict()
     else:
         donor_dict[name]
+    amount = 0
+    while not amount:
+        try:
+            amount = donation_amount()
+        except ValueError:
+            print("Invalid input. Please enter a numerical donation amount.")
+
+    if donor_dict[name.title()][1] == 0:
+        print(f"{name.title()} is a new donor.")
+        add_donor_amount(name.title(), amount)
+        print(f"Thank you {name.title()} for becoming a new donor to our charity! Your genereous donation of ${float(amount):.2f} is much appreciated.")    
+    else:
+        amount = input(f"{name.title()} is a previous donor. Enter the donation amount.\n>> ")
+        add_donor_amount(name.title(), amount)
+        print(f"Thank you {name.title()} for your loyal support to our charity! Your genereous donation of ${float(amount):.2f} is much appreciated.")
+   
+def donation_amount():
+    return float(input("Please enter the donation amount:\n>>"))
+
 
 def add_donor_amount(name, amount):
         donor_dict[name][0] += float(amount)
@@ -64,8 +72,6 @@ def add_donor_amount(name, amount):
         donor_dict[name][2] = float(donor_dict[name][0]/donor_dict[name][1])     
         
             
-    
-
 def quit():
     return "exit menu"
 
