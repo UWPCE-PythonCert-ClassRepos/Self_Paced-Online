@@ -9,7 +9,6 @@ def print_grid(n):
     y='|'
     z=' '
 
-
     row=plus + minus*(n/2) + plus + minus*(n/2) + plus
     row2=y + z*(row2_size) + y + z*(row2_size) + y
 
@@ -25,4 +24,23 @@ def print_grid(n):
 
     print(row)
 
-print_grid(3)
+
+def print_grid2(grid,size):
+
+    plus='+ '
+    minus='- '
+    bar='| '
+    z='  '
+
+    row=minus*(size) + plus
+
+    row2= z*size + bar
+
+    for x in xrange(grid):
+        print(plus+row*grid)
+        for y in xrange(size):
+            print(bar + row2*grid)
+    print(plus+row*grid)
+
+#print_grid(3)
+#print_grid2(10,5)
