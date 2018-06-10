@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
 # -------------------------------------#
-# Desc: Mailroom Part 2
+# Desc: Mailroom Part 3
 # Dev: Will White
 # Date: 5/8/2018
 # ChangeLog: (When,Who,What)
 # -------------------------------------#
-
+import math
 
 dict_donations = {
     "bill gates": [25000.00, 3], "monet holt": [50000.00, 2], "jeff bezos": [123500.09, 3],
@@ -14,16 +14,33 @@ dict_donations = {
 }  # List of donors
 
 
+def prompt_for_number_in_range(prompt_text, min, max):
+
+    min = float(min)
+    max = float(max)
+
+    while True:
+        try:
+            return_number = input(prompt_text)
+            return_number = float(return_number)
+
+            if min <= return_number <= max:
+                break
+            else:
+                print("Number out of range.")
+        except:
+            print("Invalid input.")
+
+    return return_number
+
+
 def menu_options():  # Function to run the menu options
-    user_input = input('''
-Please enter a number from the following options:
-
-[1] Send a Thank You
-[2] Create a Report
-[3] Send Letters to Everyone
-[4] Quit the Program
-
-''')
+    user_input = prompt_for_number_in_range(
+        'Please enter a number from the following options:\n'+
+        '[1] Send a Thank You\n'+
+        '[2] Create a Report\n'+
+        '[3] Send Letters to Everyone\n'
+        '[4] Quit the Program\n', 1, 4)
     return user_input  # Function returns user_input
 
 
@@ -50,13 +67,8 @@ Your Favorite Local Charity
 
 
 def add_donation(donor_name):  # Function for the user to add a donation
-    while True:
-        try:
-            donation_amount = input("Please input the donation amount: ")
-            donation_amount = float(donation_amount)
-            break
-        except:
-            print("Invalid donation amount.")
+
+    donation_amount = prompt_for_number_in_range("Please input the donation amount: ", 0, math.inf)
 
     if donor_name in dict_donations:
         dict_donations[donor_name][0] += donation_amount
@@ -79,9 +91,9 @@ def create_a_report():  # Function to create a report of all the current donor i
     sorted_dict = sorted(list2sort, key=lambda x: x[1], reverse=True)
 
     for i in sorted_dict:
-        donorName = i[0]
-        donorCount = dict_donations[donorName][1]
-        print('{:<10}{:>20.2f}{:>20}{:>20.2f}'.format(donorName.title(), i[1], donorCount, (i[1] / donorCount)))
+        donor_name = i[0]
+        donor_count = dict_donations[donor_name][1]
+        print('{:<10}{:>20.2f}{:>20}{:>20.2f}'.format(donor_name.title(), i[1], donor_count, (i[1] / donor_count)))
 
 
 def send_letters():
@@ -91,7 +103,6 @@ def send_letters():
 
 
 switch_func_dict = {
-    0: menu_options,
     1: prompt_for_name,
     2: add_donation,
     3: create_a_report,
@@ -102,16 +113,15 @@ switch_func_dict = {
 if __name__ == "__main__":  # If this is the main file, run the below
 
     while True:
-        str_input = menu_options()  # Run the menu options function and save the input
-        if str_input == '1':  # If user entered 1, get the name and run the add_donation function
+        option_selected = menu_options()  # Run the menu options function and save the input
+        if option_selected == 1:  # If user entered 1, get the name and run the add_donation function
             name = switch_func_dict.get(1)()
             switch_func_dict.get(2)(name)
 
-
-        elif str_input == '2':  # If the user enters 2, create a report and then return to the original report
+        elif option_selected == 2:  # If the user enters 2, create a report and then return to the original report
             switch_func_dict.get(3)()
 
-        elif str_input == '3':  # If the user enters 3, create letters for everyone, saved in individual text files
+        elif option_selected == 3:  # If the user enters 3, create letters for everyone, saved in individual text files
             switch_func_dict.get(4)()
 
         else:  # If the user enters anything else, quit the program
