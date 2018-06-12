@@ -3,7 +3,7 @@
 # -------------------------------------#
 # Desc: Mailroom Part 3
 # Dev: Will White
-# Date: 5/8/2018
+# Date: 6/11/2018
 # ChangeLog: (When,Who,What)
 # -------------------------------------#
 import math
@@ -14,17 +14,17 @@ dict_donations = {
 }  # List of donors
 
 
-def prompt_for_number_in_range(prompt_text, min, max):
+def prompt_for_number_in_range(prompt_text, min_limit, max_limit):
 
-    min = float(min)
-    max = float(max)
+    min_limit = float(min_limit)
+    max_limit = float(max_limit)
 
     while True:
         try:
             return_number = input(prompt_text)
             return_number = float(return_number)
 
-            if min <= return_number <= max:
+            if min_limit <= return_number <= max_limit:
                 break
             else:
                 print("Number out of range.")
@@ -36,10 +36,10 @@ def prompt_for_number_in_range(prompt_text, min, max):
 
 def menu_options():  # Function to run the menu options
     user_input = prompt_for_number_in_range(
-        'Please enter a number from the following options:\n'+
-        '[1] Send a Thank You\n'+
-        '[2] Create a Report\n'+
-        '[3] Send Letters to Everyone\n'
+        'Please enter a number from the following options:\n\n' +
+        '[1] Send a Thank You\n' +
+        '[2] Create a Report\n' +
+        '[3] Send Letters to Everyone\n' +
         '[4] Quit the Program\n', 1, 4)
     return user_input  # Function returns user_input
 
@@ -97,9 +97,9 @@ def create_a_report():  # Function to create a report of all the current donor i
 
 
 def send_letters():
-    for name in dict_donations:
-        with open("{}.txt".format(name), 'w') as txt_file:
-            txt_file.write(print_letter(name, dict_donations[name][0]))
+    for donor_name in dict_donations:
+        with open("{}.txt".format(donor_name), 'w') as txt_file:
+            txt_file.write(print_letter(donor_name, dict_donations[donor_name][0]))
 
 
 switch_func_dict = {
