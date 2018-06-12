@@ -1,0 +1,12 @@
+[
+  "test_circle.py::test_init",
+  "test_circle.py::test_diameter",
+  "test_circle.py::test_area",
+  "test_circle.py::test_from_diameter",
+  "test_circle.py::test_str_",
+  "test_circle.py::test_repr_",
+  "test_circle.py::test_add_",
+  "test_circle.py::test_mul_",
+  "test_circle.py::test_ls_",
+  "test_circle.py::test_sort"
+]
