@@ -7,6 +7,7 @@ def test_Donor():
     new_donor.add_donation(40)
     assert (new_donor.donations == [40]) is True
 
+
 def test_Donors_Collection_add_new_donor():
     donors_collection = donation_history_initialization()
     new_donor = Donor('New')
@@ -14,6 +15,7 @@ def test_Donors_Collection_add_new_donor():
     donors_collection.add_new_donor(new_donor)
     assert( donors_collection.donors[-1].name == 'New') is True
     assert( donors_collection.donors[-1].donations == [40]) is True
+
 
 def test_Donors_Collection_add_donation_amount():
     donors_collection = donation_history_initialization()

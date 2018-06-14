@@ -1,5 +1,6 @@
 import sys
 import os
+from functools import reduce
 
 class Donor():
     def __init__(self, name):
@@ -109,8 +110,58 @@ class Donors_Collection():
                 wf.write(letter)
         print("\nAll letters written to files")
 
+    # def challenge(self):
+    #     # without considering min and max donation filter
+    #     factor = int(input('\nPlease enter the challenge factor: '))
+    #     challenge_dict = {}
+    #     for donors in donors_collection._donors:
+    #         print(donors.name)
+    #         print(donors.donations)
+    #         challenge_dict[donors.name] = list(map(lambda i: i * factor, donors.donations))
+    #     print('After applying the challenge factor: {}\nThe new donation history is:\n'.format(factor))
+    #     print(challenge_dict)
+    #     return challenge_dict
+
+    def challenge(self):
+        factor = int(input('\nPlease enter the challenge factor: '))
+        min_donation = int(input('\nPlease enter the min donation to apply challenge factor or enter 0 if no min donation: '))
+        max_donation = int(input('\nPlease enter the max donation tp apply challenge factor or enter 0 if no max donation: '))
+        challenge_dict = {}
+        for donors in donors_collection._donors:
+            print(donors.name)
+            print(donors.donations)
+            if min_donation > 0:
+                challenge_dict[donors.name] = list(map(lambda i: i * factor, list(filter(lambda i: i >= min_donation, donors.donations))))
+            elif max_donation > 0:
+                challenge_dict[donors.name] = list(map(lambda i: i * factor, list(filter(lambda i: i <= max_donation, donors.donations))))
+            else:
+                challenge_dict[donors.name] = list(map(lambda i: i * factor, donors.donations))
+        print('After applying the challenge factor: {}\nThe new donation history is:\n'.format(factor))
+        print(challenge_dict)
+        return challenge_dict
+
+    def projection(self):
+        factor = int(input('\nPlease enter the challenge factor: '))
+        min_donation = int(input('\nPlease enter the min donation to apply challenge factor or enter 0 if no min donation: '))
+        max_donation = int(input('\nPlease enter the max donation tp apply challenge factor or enter 0 if no max donation: '))
+        challenge_total_dict = {}
+        for donors in donors_collection._donors:
+            print(donors.name)
+            print(donors.donations)
+            if min_donation > 0:
+                challenge_total_dict[donors.name] = sum(list(map(lambda i: i * factor, list(filter(lambda i: i >= min_donation, donors.donations)))))
+            elif max_donation > 0:
+                challenge_total_dict[donors.name] = sum(list(map(lambda i: i * factor, list(filter(lambda i: i <= max_donation, donors.donations)))))
+            else:
+                challenge_total_dict[donors.name] = reduce(lambda x,y: x+y, list(map(lambda i: i * factor, donors.donations)))
+        print('After applying the challenge factor: {}\nThe new total donation is:\n'.format(factor))
+        print(challenge_total_dict)
+        return challenge_total_dict
+
+
 def generate_prompt(dispatch_dict):
     print('Please type your selection from the above options: ')
+
 
 #  prompt the user (you) to choose from a menu
 def menu_selection(prompt, dispatch_dict):
@@ -122,10 +173,12 @@ def menu_selection(prompt, dispatch_dict):
         except KeyError:
             print('\nInvalid input. Please only choose from the availalbe options')
 
+
 # quit
 def quit_program():
     print('Quit')
     return 'exit menu'
+
 
 def donation_history_initialization():
     # initialize a history of donations to work on
@@ -143,20 +196,26 @@ def donation_history_initialization():
         donors_collection.add_new_donor(donor)
     return donors_collection
 
+
 if __name__ == "__main__":
     donors_collection = donation_history_initialization()
+
     main_dispatch = {
                 '1': donors_collection.send_a_thank_you,
                 '2': donors_collection.create_a_report,
                 '3': donors_collection.send_letters_to_everyone,
-                '4': quit_program
+                '4': donors_collection.challenge,
+                '5': donors_collection.projection,
+                '6': quit_program
                 }
     main_prompt = ("\nYou are in the main menu now!\n"
                 "Choose an action:\n\n"
                 "1: Send a thank you\n"
                 "2: Create a report\n"
                 "3: Send letters to everyone\n"
-                "4: Quit\n"
+                "4: Apply challenge factor\n"
+                "5: Calculate projections\n"
+                "6: Quit\n"
                 "Type 1,2,3,4 >> "
               )
     menu_selection(main_prompt, main_dispatch)
