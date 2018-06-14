@@ -11,12 +11,6 @@ with modifications:
 '''
 print(intro)
 
-# seq = ["Four", "score", "and", "seven", "years", "ago"]
-# seq = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-# seq = ("Four score and seven years ago")
-# print("Test sequence: seq = ", seq)
-
-
 def exchange_first_last(seq):
     return seq[-1:]+seq[1:-1]+seq[:1]
 
