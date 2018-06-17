@@ -93,7 +93,7 @@ def thank_you_input():
 
 
 def calc_data():
-    summary_data = map(calc_data_2, donor_data.values(), donor_data.keys())
+    summary_data = list(map(calc_data_2, donor_data.values(), donor_data.keys()))
     return summary_data
 
 
@@ -111,14 +111,17 @@ def report():
 
 def send_all_letters():
     summary_data = calc_data()
-    for item in summary_data:
-        filename_format = "{}_{}.txt".format(item[0].split()[0], item[0].split()[1])
-        thank_you_text = open(filename_format, 'w+')
-        thank_you_text.write("Dear {},\n\nThank you very much for your {} generous donations totalling ${}.\n"
-                             "\nYour donations will significantly aid our scholarship fund\n\n"
-                             "Sincerely,\n - Advancement Office".format(item[0], item[1], item[2]))
-        thank_you_text.close()
+    list(map(send_letter, summary_data))
     print("\nAll thank you letters drafted")
+
+
+def send_letter(item):
+    filename_format = "{}_{}.txt".format(item[0].split()[0], item[0].split()[1])
+    thank_you_text = open(filename_format, 'w+')
+    thank_you_text.write("Dear {},\n\nThank you very much for your {} generous donations totalling ${}.\n"
+                         "\nYour donations will significantly aid our scholarship fund\n\n"
+                         "Sincerely,\n - Advancement Office".format(item[0], item[1], item[2]))
+    thank_you_text.close()
 
 
 def exit_program():
