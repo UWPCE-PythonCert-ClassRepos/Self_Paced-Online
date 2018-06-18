@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Ian Letourneau
-# 6/18/2018
+# 6/8/2018
 # Test script for mailroomOO.py
 
 import mailroomOO as m
