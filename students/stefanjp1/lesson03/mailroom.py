@@ -38,6 +38,7 @@ def send_thank_you():
     
     
 def create_report():
+    """Return a report with metadata about the donors"""
     donors = donor_names()
     
     total_given = list()
@@ -62,6 +63,7 @@ donor_db = [('William Gates, III', 1000, 2000, 8000),
             ('Jeff Bezos', 9000, 1500),
             ('Paul Allen', 16000),
             ('Donald Trump', 2)]
+
 
 if __name__ == '__main__':
     prompt = ''
