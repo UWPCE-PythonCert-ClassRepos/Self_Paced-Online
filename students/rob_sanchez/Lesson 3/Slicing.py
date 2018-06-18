@@ -24,6 +24,7 @@ def remove_first_last_four(seq):
 def reverse_sequence(seq):
     new_seq = seq[::-1]
     return new_seq
+
 #Divides the sequence into thirds and returns the middle, last, and first third.
 def mid_last_first(seq):
     l=len(seq)/3
@@ -32,3 +33,23 @@ def mid_last_first(seq):
     first = seq[:l]
     new_seq = mid + last + first
     return new_seq
+
+#Test values
+num=(99, 32, 51, 47, 23, 93, 18)
+str="Difficult roads often lead to beautiful destinations"
+
+#Assert statements
+assert exchange_first_last(num) == (18, 32, 51, 47, 23, 93, 99)
+assert exchange_first_last(str) == "sifficult roads often lead to beautiful destinationD"
+
+assert remove_every_other(num) == (99, 51, 23, 18)
+assert remove_every_other(str) == "Dfiutrasotnla obatfldsiain"
+
+assert remove_first_last_four(num) == ()
+assert remove_first_last_four(str) == "iutrasotnla obatfldsia"
+
+assert reverse_sequence(num) == (18, 93, 23, 47, 51, 32, 99)
+assert reverse_sequence(str) == "snoitanitsed lufituaeb ot dael netfo sdaor tluciffiD"
+
+assert mid_last_first(num) == (51, 47, 23, 93, 18, 99, 32)
+assert mid_last_first(str) == "ften lead to beautiful destinationsDifficult roads o"
