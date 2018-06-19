@@ -45,20 +45,8 @@ def main_menu ():
 			create_report()
 		elif response == '3':
 			print("\nGoodbye.\n")
-			return
+			return   # to quit program
 
-def main_menu_1 ():
-	print_main_menu()
-	response=''
-	while response not in ['1', '2', '3']:
-		response=input("Please choose one of three options:")
-	if response == '1':
-		send_thank_you()
-	elif response == '2':
-		create_report()
-	elif response == '3':
-		print("\nGoodbye.\n")
-		return
 		
 def send_thank_you():
 	print("Sending thank you mail...")
@@ -68,10 +56,9 @@ def send_thank_you():
 		print("Donors list: "+", ".join(["{}"]*(len(donors))).format(*donors))
 		name = input("Type donor name or 'list' to print all donors, or 'quit' to go back:")
 	if name.lower() == 'quit':
-		return ## go to main_menu() at the bottom
+		return # go back to main_menu()
 	elif name not in donors:
-		new_donor=[]
-		new_donor.append(name)
+		new_donor=[name]
 		donation=input("Donation in USD: ")
 		while not donation.isdigit():
 			donation=input("Donation in USD: ")
@@ -85,18 +72,29 @@ def send_thank_you():
 		indx=donors.index(name)
 		donors_hist[indx].append(float(donation))
 		greetings(donors_hist[indx])
-	return # main_menu()
-	
+	#return 
+
+def bubblesort(ListOfLists):
+        for i in range(0,len(ListOfLists)):
+            madeSwap = False
+            for j in range(0,len(ListOfLists)-1):
+                if sum(ListOfLists[j][1:]) > sum(ListOfLists[j+1][1:]):
+                    temp = ListOfLists[j+1]
+                    ListOfLists[j+1] = ListOfLists[j]
+                    ListOfLists[j] = temp
+                    madeSwap = True
+            if not madeSwap:
+                return ListOfLists
+        return ListOfLists
+
+    
 def create_report():
-	print("Creating a report...")
+	print("Creating a report...\n")
 	print( "{:<30}| {:<18}| {:<8}| {:<18}".format('Donor Name','Total Given','Num Gifts','Average Gift'))
 	print("{:-<80}".format(''))
-	for i in donors_hist:
+	for i in bubblesort(donors_hist)[::-1]:
 		print('{:<30}{}{:>18.2f}{:>11}{}{:>17.2f}'.format(i[:1][0], ' $', sum(i[1:]), len(i[1:]), ' $', sum(i[1:])/len(i[1:])))
-	return
 
-def main():
-	main_menu ()
 
 if __name__ == "__main__":
-	main()
+	main_menu ()
