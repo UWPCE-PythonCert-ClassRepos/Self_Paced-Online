@@ -1,4 +1,4 @@
-#!/usr/bin/#!/usr/bin/env python3
+#!/usr/bin/env python3
 import sys
 import time
 
@@ -48,6 +48,7 @@ def series_1():
 
     print("These {} fruits begin with 'P':".format(len(filtered_items)))
     print(filtered_items)
+    print()
 
 
 def series_2():
@@ -96,7 +97,7 @@ def series_2():
     print()
     print("All ocurrences of {} have been deleted...".format(value_to_delete))
     print(new_list)
-
+    print()
 
 def series_3():
     # List of fruits
@@ -136,6 +137,7 @@ def series_3():
     else:
         print(format_list_output("Fruits you like: ", new_list))
 
+    print()
 
 def series_4():
     # List of fruits
@@ -162,7 +164,7 @@ def series_4():
     print()
     copy_list.reverse()
     print(format_list_output("Copy List: ", copy_list))
-
+    print()
 
 # ***Helper Functions***
 
@@ -195,3 +197,10 @@ def reverse_letters(list):
     for item in list:
         reversed.append(item[::-1])
     return reversed
+
+
+# Execute each action in order
+series_1()
+series_2()
+series_3()
+series_4()
