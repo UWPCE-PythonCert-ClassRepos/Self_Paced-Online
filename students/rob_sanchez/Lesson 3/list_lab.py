@@ -12,7 +12,7 @@ def series_1():
     print()
 
     # Print list of fruits
-    print("List of fruits: " + ", ".join(["{}"] * len(fruits)).format(*fruits))
+    print(format_list_output("List of fruits: ", fruits))
     print()
     time.sleep(1)
 
@@ -44,10 +44,9 @@ def series_1():
     print()
 
     # Filter all fruits from the list that begin with the letter "P"
-    length = len(new_list)
     filtered_items = get_items_beginning_with_p(new_list)
 
-    print("These {} fruits begin with 'P':".format(length))
+    print("These {} fruits begin with 'P':".format(len(filtered_items)))
     print(filtered_items)
 
 
@@ -59,7 +58,7 @@ def series_2():
     print()
 
     # Print list of fruits
-    print("List of fruits: " + ", ".join(["{}"] * len(fruits)).format(*fruits))
+    print(format_list_output("List of fruits: ", fruits))
     print()
     time.sleep(1)
 
@@ -107,9 +106,10 @@ def series_3():
     print()
 
     # Print list of fruits
-    print("List of fruits: " + ", ".join(["{}"] * len(fruits)).format(*fruits))
+    print(format_list_output("List of fruits: ", fruits))
     print()
 
+    # List to store fruits based on user preferences
     new_list = []
 
     for item in fruits:
@@ -132,17 +132,40 @@ def series_3():
     # Print list of fruit the user likes
     list_lenght = len(new_list)
     if list_lenght == 0:
-        print("List of fruits is empty.")
+        print("Fruit list is empty.")
     else:
-        print("Fruits you like: " + ", ".join(["{}"] * list_lenght).format(*new_list))
+        print(format_list_output("Fruits you like: ", new_list))
 
 
 def series_4():
+    # List of fruits
     fruits = ["Apples", "Pears", "Oranges", "Peaches"]
-    print (fruits)
+
+    print("*** Series 3 ***")
+    print()
+
+    # Print list of fruits
+    print(format_list_output("List of fruits: ", fruits))
+    print()
+
+    # Copy the list and reverse the letters in each fruit in the copy
+    copy_list = fruits[:]
+    reversed_list = reverse_letters(copy_list)
+    print(format_list_output("Reversed copy: ", reversed_list))
+    print()
+
+    # Delete last item of the original list, then display both lists
+    print("...Deleting last item of the original list...")
+    print()
+    fruits.pop()
+    print(format_list_output("Original List: ", fruits))
+    print()
+    copy_list.reverse()
+    print(format_list_output("Copy List: ", copy_list))
 
 
 # ***Helper Functions***
+
 # Returns a filtered list of items that begin with the letter "P"
 def get_items_beginning_with_p(list_of_values):
     filtered_list = []
@@ -159,3 +182,16 @@ def remove_all_instances(list_of_values, instance):
         if instance not in item:
             filtered_list.append(item)
     return filtered_list
+
+
+# Returns a list with no brackets
+def format_list_output(text, list):
+    return(text + ", ".join(["{}"] * len(list)).format(*list))
+
+
+# Reverses the letters of each list item
+def reverse_letters(list):
+    reversed = []
+    for item in list:
+        reversed.append(item[::-1])
+    return reversed
