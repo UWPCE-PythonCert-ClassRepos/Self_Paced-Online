@@ -74,26 +74,16 @@ def send_thank_you():
 		greetings(donors_hist[indx])
 	#return 
 
-def bubblesort(ListOfLists):
-        for i in range(0,len(ListOfLists)):
-            madeSwap = False
-            for j in range(0,len(ListOfLists)-1):
-                if sum(ListOfLists[j][1:]) > sum(ListOfLists[j+1][1:]):
-                    temp = ListOfLists[j+1]
-                    ListOfLists[j+1] = ListOfLists[j]
-                    ListOfLists[j] = temp
-                    madeSwap = True
-            if not madeSwap:
-                return ListOfLists
-        return ListOfLists
+def custom_key(x):
+    return sum(x[1:])
 
-    
 def create_report():
-	print("Creating a report...\n")
-	print( "{:<30}| {:<18}| {:<8}| {:<18}".format('Donor Name','Total Given','Num Gifts','Average Gift'))
-	print("{:-<80}".format(''))
-	for i in bubblesort(donors_hist)[::-1]:
-		print('{:<30}{}{:>18.2f}{:>11}{}{:>17.2f}'.format(i[:1][0], ' $', sum(i[1:]), len(i[1:]), ' $', sum(i[1:])/len(i[1:])))
+    print("Creating a report...\n")
+    print( "{:<30}| {:<18}| {:<8}| {:<18}".format('Donor Name','Total Given','Num Gifts','Average Gift'))
+    print("{:-<80}".format(''))
+    for x in sorted(donors_hist, key=custom_key,reverse=True):
+        print('{:<30}{}{:>18.2f}{:>11}{}{:>17.2f}'.format(x[:1][0], ' $', sum(x[1:]), len(x[1:]), ' $', sum(x[1:])/len(x[1:])))
+    
 
 
 if __name__ == "__main__":
