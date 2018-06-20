@@ -15,7 +15,7 @@ def rem_first_last_4(seq):
 	return seq[4:-4:2]
 
 ### with the elements reversed (just with slicing).
-def reversed(seq):
+def reverse_order(seq):
 	return seq[::-1]
 
 ### with the middle third, then last third, then the first third in the new order.
@@ -54,8 +54,8 @@ def main():
 	print("Testing reversed()...")
 	d_string="abc def ghj"
 	d_tuple=(1,2,3,4,5,6,7,8,9,10)
-	assert reversed(d_string) == "jhg fed cba"
-	assert reversed(d_tuple) == (10,9,8,7,6,5,4,3,2,1)
+	assert reverse_order(d_string) == "jhg fed cba"
+	assert reverse_order(d_tuple) == (10,9,8,7,6,5,4,3,2,1)
 
 	# Testing 5
 	print("Testing mid_last_first()...")
