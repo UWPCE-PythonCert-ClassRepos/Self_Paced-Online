@@ -30,9 +30,9 @@ fruits.insert(0, "Plums")
 print(fruits)
 
 # Display all the fruits that begin with “P”, using a for loop.
-for i in range(len(fruits)):
-    if "P" in fruits[i]:
-        print(fruits[i])
+for fruit in fruits:
+    if fruit.startswith("P"):
+        print(fruit)
 
 
 # SERIES 2
@@ -52,21 +52,24 @@ fruits.remove(response_del)
 
 
 # (Bonus: Multiply the list times two. Keep asking until a match is found. Once found, delete all occurrences.)
+"""
+Assignment feedback was to do this in one for loop. However, I can't figure out how to
+'keep asking until a match is found' without a while loop. I did clean this up, however.
+
+Additional feedback always appreciated.
+"""
 fruits = fruits[:] * 2
-while True:  # we'll break out of loop once we've found a match and deleted the fruits
-    match = 0
+delete_loop = 1
+while delete_loop:
     response_new_fruit = input("Type a new fruit to delete: ")
-    for n in range(len(fruits)):
-        if response_new_fruit == fruits[n]:
-            match += 1  # counting number of matches makes this extensible to a list with any # of repetitions
-    if not match:
+    if response_new_fruit in fruits:
+        delete_loop = 0
+    else:
         print("Fruit not found in list.")
-        match -= 1  # sets match to -1 to avoid the break statement
-    while match > 0:
-        fruits.remove(response_new_fruit)
-        match -= 1
-    if not match:
-        break  # breaks the top loop if match == 0, i.e. if all found fruits were removed
+for i in fruits:
+    if i == response_new_fruit:
+        fruits.remove(i)
+
 
 
 # SERIES 3
@@ -76,7 +79,7 @@ tracker = [] #this will track which fruits to remove()
 for fruit in fruits:
     response_r = input("Do you like {}? ".format(fruit.lower()))
 # For any answer that is not “yes” or “no”, prompt the user to answer with one of those two values (a while loop is good here)
-    while (response_r.lower() != "yes"): # i.e., Yes, YES, yes, etc.
+    while response_r.lower() != "yes": # i.e., Yes, YES, yes, etc.
         if response_r.lower() == "no":
             tracker.append(fruit) # if we remove() now, we will be off by one in our list
             break
