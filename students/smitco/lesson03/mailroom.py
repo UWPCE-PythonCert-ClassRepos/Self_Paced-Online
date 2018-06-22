@@ -2,12 +2,12 @@
 #!/usr/bin/env python3
 
 #starting list of 5+ donors and 1-3 donations each
-donors = ["John", "Jane", "Judith", "Joseph", "Jenny"]
+donors = ["John Travolta", "Jane Fonda", "Judy Blume", "Joey Tribbiani", "Jenny Gump"]
 amounts = [(5000, 7500), (10000, 8000, 6500), (3000, 3000), (9000,), (10300, 13750, 12500)]
 
 #prompt user for actions: send a thank you, create a report, quit
 #thank you: ask for name, add to list if needed, ask for amount, add to list
-#report:
+#report: print report of each donor with total donated, number of donations, average donation
 #quit: exit
 
 def menu():
@@ -20,7 +20,8 @@ def menu():
             card(name, value)
             flag = True
         elif choice == "2":
-            flag = False
+            report()
+            flag = True
         else:
             flag = False
     else:
@@ -44,25 +45,43 @@ def intro():
     else:
         return addressee    
 def donation(n):
-    dollars = input("What is the donation amount? ")
-    if int(dollars) < (10 ** 6):
-        position = donors.index(n)
-        a = amounts[position]
-        a = a + (int(dollars),)
-        amounts[position] = a
-        return dollars
+    if n == "quit":
+        print()
+        pass
     else:
-        print("\nNice try, Moneybags.")
-        quit()
+        dollars = input("What is the donation amount? ")
+        if dollars == "quit":
+            donors.remove(n)
+            print()
+            pass
+        elif int(dollars) < (10 ** 6):
+            position = donors.index(n)
+            a = amounts[position]
+            a = a + (int(dollars),)
+            amounts[position] = a
+            return dollars
+        else:
+            print("\nNice try, Moneybags.\n")
+            quit()
 def card(n, v):
-    print("\nThank you, %s, for supporting The Derek Zoolander School for Kids Who Can't Read Good and Want to Do Other Stuff Good Too. Here, we teach kids that there's more to life than being really, really ridiculously good-looking. Because of your generous donation of $%s, we will be able to build a center that is not for ants but can fit real children.\n" % (n, v))
+    if v == None:
+        pass
+    else:
+        print("\nThank you, %s, for supporting The Brave Heart Foundation. Your generous donation of $%s will make a positive, life-changing impact for teens nationwide.\n" % (n, v))
 def quit():
     pass
 
-        
-        
-        
-if __name__ == '__main__':        
+def report():
+    print()
+    print("{:<20} {:<15} {:^12} {:<15}".format("Donor", "Total Given", "Number", "Average Given"))
+    for i in range(len(donors)):
+        tot = sum(amounts[i])
+        num = len(amounts[i])
+        print("{:<20} ${:^15.2f} {:^12} ${:^15.2f}".format(donors[i], tot, num, tot/num))
+    print()
+    
+    
+if __name__ == '__main__':
     menu()
 
 
