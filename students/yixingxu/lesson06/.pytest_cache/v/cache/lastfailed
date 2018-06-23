@@ -9,6 +9,5 @@
   "test_cigar_party.py::test_6": true,
   "test_cigar_party.py::test_7": true,
   "test_cigar_party.py::test_8": true,
-  "test_cigar_party.py::test_9": true,
-  "test_mailroom4.py::test_create_summary": true
+  "test_cigar_party.py::test_9": true
 }
