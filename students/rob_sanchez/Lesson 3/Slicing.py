@@ -1,6 +1,5 @@
-#!/usr/bin/#!/usr/bin/env python3
+#!/usr/bin/env python3
 import sys
-
 
 # Returns a string with the first and last items exchanged
 def exchange_first_last(seq):

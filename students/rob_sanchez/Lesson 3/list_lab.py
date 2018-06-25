@@ -99,6 +99,7 @@ def series_2():
     print(new_list)
     print()
 
+
 def series_3():
     # List of fruits
     fruits = ["Apples", "Pears", "Oranges", "Peaches"]
@@ -139,6 +140,7 @@ def series_3():
 
     print()
 
+
 def series_4():
     # List of fruits
     fruits = ["Apples", "Pears", "Oranges", "Peaches"]
@@ -168,11 +170,12 @@ def series_4():
 
 # ***Helper Functions***
 
+
 # Returns a filtered list of items that begin with the letter "P"
 def get_items_beginning_with_p(list_of_values):
     filtered_list = []
     for item in list_of_values:
-        if item.startswith('P') or item.startswith('p'):
+        if item.lower().startswith('p'):
             filtered_list.append(item)
     return filtered_list
 
@@ -188,14 +191,14 @@ def remove_all_instances(list_of_values, instance):
 
 # Returns a list with no brackets
 def format_list_output(text, list):
-    return(text + ", ".join(["{}"] * len(list)).format(*list))
+    return text + ", ".join(["{}"] * len(list)).format(*list)
 
 
 # Reverses the letters of each list item
 def reverse_letters(list):
-    reversed = []
+    rev = []
     for item in list:
-        reversed.append(item[::-1])
+        rev.append(item[::-1])
     return reversed
 
 
