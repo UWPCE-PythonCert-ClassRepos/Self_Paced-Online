@@ -2,20 +2,25 @@
 import sys
 
 # List of donors and donation amounts
-donor_dict = {"John": {
+donor_dict = {"Tom Cruise": {
                 "donations": [
                   {"donation-number": '1', "amount": '100'},
                   {"donation-number": '2', "amount": '200'},
                   {"donation-number": '3', "amount": '300'}
                 ]},
-              "Michael": {
+              "Michael Jordan": {
                 "donations": [
                     {"donation-number": '1', "amount": '1300'}
                 ]},
-              "Sarah": {
+              "Katy Perry": {
                 "donations": [
                     {"donation-number": '1', "amount": '4500'},
                     {"donation-number": '2', "amount": '1500'}
+                ]},
+              "Adam Sandler": {
+                "donations": [
+                    {"donation-number": '1', "amount": '500'},
+                    {"donation-number": '2', "amount": '2400'}
                 ]}
               }
 
@@ -92,6 +97,7 @@ def create_report():
 
     welcome()
 
+
 # Helper methods
 def welcome_options():
     # Menu options
@@ -139,9 +145,9 @@ def get_summary():
         for item in history:
             total_given.append(float(item.get('amount')))
             num_gifts.append(item.get('donation-number'))
-        donor_names[i].append(sum_values(total_given))
+        donor_names[i].append("{:.2f}".format(sum_values(total_given)))
         donor_names[i].append(len(num_gifts))
-        donor_names[i].append(sum_values(total_given)/len(num_gifts))
+        donor_names[i].append("{:.2f}".format(sum_values(total_given)/len(num_gifts)))
         total_given = []
         num_gifts = []
         i += 1
