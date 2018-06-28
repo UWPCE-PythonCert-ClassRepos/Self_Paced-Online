@@ -11,8 +11,8 @@ donor_dict = {"Tom Cruise": [100, 200, 300],
 
 
 def main():
-
-    welcome()
+    while True:
+        welcome()
 
 
 # Displays the initial welcome prompt
@@ -24,10 +24,9 @@ def welcome():
 
     welcome_options(options)
 
-    while True:
-        # User selection
-        user_selection = input()
-        options.get(int(user_selection), welcome_options(options))()
+    # User selection
+    user_selection = input()
+    options.get(int(user_selection), welcome_options(options))()
 
 
 # Sends a thank you email to the selected donor
@@ -52,13 +51,13 @@ def send_thank_you():
         history["donor_name"] = donor_name
         history["Amount"] = amt_input
 
-        donor_dict[donor_name] = [amt_input]
+        donor_dict[donor_name] = [int(amt_input)]
         send_email(history)
     # Append their last contribution to their history
     else:
         amt_input = input("\nDonation amount:\n")
 
-        donor_dict[donor_name].append(amt_input)
+        donor_dict[donor_name].append(int(amt_input))
 
         history["donor_name"] = donor_name
         history["Amount"] = donor_dict[donor_name][-1]
@@ -70,20 +69,28 @@ def send_thank_you():
 # Creates a summary report of the donations
 def create_report():
     headers = ["Donor Name", "Total Given", "Num Gifts", "Average Gift"]
+    str_format = "{:<30} ${:>17} {:>16} ${:>14}"
     print(("{:<30} | {:^15} | {:^15} | {:^15}").format(*headers))
     print("-"*82)
 
-    donor_report = get_summary()
+    donor_avg = {}
+    num_gifts = {}
+    avg_gift = {}
 
-    for item in donor_report:
-        print(("{:<30} ${:>17} {:>16} ${:>14}").format(*item))
+    donor_avg = {key: sum(donor_dict[key]) for key in donor_dict}
+    num_gifts = {key: len(donor_dict[key]) for key in donor_dict}
+    avg_gift = {key: sum(donor_dict[key])/len(donor_dict[key]) for key in donor_dict}
+
+    for key, value in donor_dict.items():
+        print(str_format.format(key, donor_avg[key], num_gifts[key], avg_gift[key]))
 
     return False
 
 
 # Helper methods
 def welcome_options(menu_options):
-    print("\nSelect an option below:\n")
+    print("\nChoose an actions:\n")
+
     for key in sorted(menu_options):
         print(key, "-", menu_options[key].__name__)
 
@@ -102,38 +109,6 @@ def send_email(new_donor):
             " to continue supporting more individuals in need of our services."
             "\n\nSincerely,\nCharity Inc.\n").format(**new_donor)
     print(body)
-    welcome()
-
-
-# Returns donation summary of each donor
-def get_summary():
-    donor_names = []
-    total_given = []
-    num_gifts = []
-    i = 0
-
-    for donor, value in donor_dict.items():
-        history = donor_dict[donor]["donations"]
-        donor_names.append([])
-        donor_names[i].append(donor)
-        for item in history:
-            total_given.append(float(item.get('amount')))
-            num_gifts.append(item.get('donation-number'))
-        donor_names[i].append("{:.2f}".format(sum_values(total_given)))
-        donor_names[i].append(len(num_gifts))
-        donor_names[i].append("{:.2f}".format(sum_values(total_given)/len(num_gifts)))
-        total_given = []
-        num_gifts = []
-        i += 1
-    return donor_names
-
-
-# Adds all the values of a list
-def sum_values(num_list):
-    if len(num_list) == 1:
-        return num_list[0]
-    else:
-        return num_list[0] + sum_values(num_list[1:])
 
 
 if __name__ == "__main__":
