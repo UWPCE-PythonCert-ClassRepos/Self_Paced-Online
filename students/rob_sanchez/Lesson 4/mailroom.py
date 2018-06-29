@@ -11,8 +11,7 @@ donor_dict = {"Tom Cruise": [100, 200, 300],
 
 
 def main():
-    while True:
-        welcome()
+    welcome()
 
 
 # Displays the initial welcome prompt
@@ -21,12 +20,21 @@ def welcome():
     options = {1: send_thank_you,
                2: create_report,
                3: sys.exit}
-
-    welcome_options(options)
+    prompt = "\nChoose an action:\n"
+    menu_sel = "\n1. Send a Thank You\n2. Create a Report\n3. Quit\n"
 
     # User selection
-    user_selection = input()
-    options.get(int(user_selection), welcome_options(options))()
+    while True:
+        try:
+            user_selection = input(prompt + menu_sel)
+            options.get(int(user_selection))()
+            # user_selection = input()
+        except ValueError:
+            pass
+        except NameError:
+            pass
+        except TypeError:
+            pass
 
 
 # Sends a thank you email to the selected donor
@@ -51,13 +59,13 @@ def send_thank_you():
         history["donor_name"] = donor_name
         history["Amount"] = amt_input
 
-        donor_dict[donor_name] = [int(amt_input)]
+        donor_dict[donor_name] = [float(amt_input)]
         send_email(history)
     # Append their last contribution to their history
     else:
         amt_input = input("\nDonation amount:\n")
 
-        donor_dict[donor_name].append(int(amt_input))
+        donor_dict[donor_name].append(float(amt_input))
 
         history["donor_name"] = donor_name
         history["Amount"] = donor_dict[donor_name][-1]
@@ -70,7 +78,7 @@ def send_thank_you():
 def create_report():
     headers = ["Donor Name", "Total Given", "Num Gifts", "Average Gift"]
     str_format = "{:<30} ${:>17} {:>16} ${:>14}"
-    print(("{:<30} | {:^15} | {:^15} | {:^15}").format(*headers))
+    print(("\n{:<30} | {:^15} | {:^15} | {:^15}").format(*headers))
     print("-"*82)
 
     donor_avg = {}
@@ -88,12 +96,6 @@ def create_report():
 
 
 # Helper methods
-def welcome_options(menu_options):
-    print("\nChoose an actions:\n")
-
-    for key in sorted(menu_options):
-        print(key, "-", menu_options[key].__name__)
-
 
 # Returns a list of formatted values
 def print_list(in_val):
