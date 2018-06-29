@@ -42,9 +42,8 @@ def write_letter(first, last):
     message = donor_greeting(first, last)
     if message:
         try:
-            f = open(first+'_'+last+'.txt', 'w')
-            f.write(message)
-            f.close()
+            with open(first+'_'+last+'.txt', 'w') as f:
+                f.write(message)
         except IOErrors as e:
             print("""
                 Cannot write a file, cought
@@ -74,7 +73,7 @@ def select_user(first, last):
 
 
 def list_donors():
-    for donor in sorted(dict_all.keys()):
+    for donor in sorted(dict_all):
         print("{} {},".format(donor[0], donor[1]))
 
 
