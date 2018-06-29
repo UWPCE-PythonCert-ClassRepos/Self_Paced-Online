@@ -1,0 +1,5 @@
+[
+  "test_mailroom5.py::test_Donor",
+  "test_mailroom5.py::test_Donors_Collection_add_new_donor",
+  "test_mailroom5.py::test_Donors_Collection_add_donation_amount"
+]
