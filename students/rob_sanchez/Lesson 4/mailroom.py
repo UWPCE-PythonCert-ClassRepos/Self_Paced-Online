@@ -19,9 +19,11 @@ def welcome():
     # Menu options
     options = {1: send_thank_you,
                2: create_report,
-               3: sys.exit}
+               3: send_letters,
+               4: sys.exit}
     prompt = "\nChoose an action:\n"
-    menu_sel = "\n1. Send a Thank You\n2. Create a Report\n3. Quit\n"
+    menu_sel = ("\n1 - Send a Thank You\n2 - Create a Report\n"
+                "3 - Send letters to everyone\n4 - Quit\n")
 
     # User selection
     while True:
@@ -60,7 +62,7 @@ def send_thank_you():
         history["Amount"] = amt_input
 
         donor_dict[donor_name] = [float(amt_input)]
-        send_email(history)
+        print(send_email(history))
     # Append their last contribution to their history
     else:
         amt_input = input("\nDonation amount:\n")
@@ -70,7 +72,7 @@ def send_thank_you():
         history["donor_name"] = donor_name
         history["Amount"] = donor_dict[donor_name][-1]
 
-        send_email(history)
+        print(send_email(history))
     return False
 
 
@@ -81,16 +83,33 @@ def create_report():
     print(("\n{:<30} | {:^15} | {:^15} | {:^15}").format(*headers))
     print("-"*82)
 
-    donor_avg = {}
+    donor_total = {}
     num_gifts = {}
     avg_gift = {}
 
-    donor_avg = {key: sum(donor_dict[key]) for key in donor_dict}
+    donor_total = {key: sum(donor_dict[key]) for key in donor_dict}
     num_gifts = {key: len(donor_dict[key]) for key in donor_dict}
     avg_gift = {key: sum(donor_dict[key])/len(donor_dict[key]) for key in donor_dict}
 
     for key, value in donor_dict.items():
-        print(str_format.format(key, donor_avg[key], num_gifts[key], avg_gift[key]))
+        print(str_format.format(key, donor_total[key], num_gifts[key], avg_gift[key]))
+
+    return False
+
+
+def send_letters():
+    new_list = {}
+    donor_total = {}
+
+    donor_total = {key: sum(donor_dict[key]) for key in donor_dict}
+
+    for key, value in donor_dict.items():
+        f = open(key+'.txt', 'w')
+        new_list["donor_name"] = key
+        new_list["last_donation"] = donor_dict[key][-1]
+        new_list["total"] = donor_total[key]
+        f.write(create_letter(new_list))
+        f.close()
 
     return False
 
@@ -110,7 +129,18 @@ def send_email(new_donor):
             "of ${Amount} to our charity organization.\nYour support allows us"
             " to continue supporting more individuals in need of our services."
             "\n\nSincerely,\nCharity Inc.\n").format(**new_donor)
-    print(body)
+    return body
+
+# Thank you letter template
+def create_letter(donations):
+    body = ("\nDear {donor_name},\n\n"
+            "I would like to personally thank you for your recent "
+            "donation of ${last_donation} to our charity organization. "
+            "You have donated a total of ${total} as of today. "
+            "Your support allows us to continue supporting more individuals "
+            "in need of our services."
+            "\n\nSincerely,\nCharity Inc.\n").format(**donations)
+    return body
 
 
 if __name__ == "__main__":
