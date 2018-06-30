@@ -134,6 +134,7 @@ def send_email(new_donor):
             "\n\nSincerely,\nCharity Inc.\n").format(**new_donor)
     return body
 
+
 # Thank you letter template
 def create_letter(donations):
     body = ("\nDear {donor_name},\n\n"
