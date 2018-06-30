@@ -86,13 +86,16 @@ def create_report():
     donor_total = {}
     num_gifts = {}
     avg_gift = {}
+    summary = {}
 
     donor_total = {key: sum(donor_dict[key]) for key in donor_dict}
-    num_gifts = {key: len(donor_dict[key]) for key in donor_dict}
-    avg_gift = {key: sum(donor_dict[key])/len(donor_dict[key]) for key in donor_dict}
+    donor_total = dict(sorted(donor_total.items(), key=lambda t: t[1], reverse=True))
+    num_gifts = {key: len(donor_dict[key]) for key in donor_total}
+    avg_gift = {key: sum(donor_dict[key])/len(donor_dict[key]) for key in donor_total}
 
-    for key, value in donor_dict.items():
-        print(str_format.format(key, donor_total[key], num_gifts[key], avg_gift[key]))
+    for key, value in donor_total.items():
+        print(str_format.format(key, round(donor_total[key], 2),
+              num_gifts[key], round(avg_gift[key], 2)))
 
     return False
 
