@@ -7,13 +7,14 @@ import random
 
 
 def main():
-    string_words("to", "sherlock")
+    welcome()
+    # string_words("to", "sherlock")
 
 
 # Reads the contents of text file and returns a list of words
-def get_book():
+def get_book(name):
     word_list = []
-    with open("sherlock.txt", 'r') as book:
+    with open(name, 'r') as book:
         for txt in book:
             txt = re.sub('[-]', ' ', txt)
             raw_text = txt.translate({ord(c): None for c in string.punctuation})
@@ -43,11 +44,11 @@ def build_trigram(in_list):
 
 
 # Strings words together using the generated trigram and two initial words.
-def string_words(word1, word2):
+def string_words(word1, word2, name):
     current_words = word1, word2
     output_string = []
 
-    book_dict = build_trigram(get_book())
+    book_dict = build_trigram(get_book(name))
     for i in current_words:
         output_string.append(i)
 
@@ -62,6 +63,20 @@ def string_words(word1, word2):
 
     form_string = "{} " * len(output_string)
     print(form_string.format(*output_string))
+
+
+# Displays the initial welcome prompt
+def welcome():
+
+    # User selection
+    text = input("Enter name of text file:")
+    word1 = input("Enter first word:")
+    word2 = input("Enter s word:")
+
+    if(".txt" not in text):
+        text = text + ".txt"
+
+    string_words(word1, word2, text)
 
 
 if __name__ == "__main__":
