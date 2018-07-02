@@ -29,11 +29,11 @@ b = input("Which fruit would you like to delete? ")
 fruit.remove(b)
 print(fruit)
 fruit = fruit * 2
-print(fruit)
-c = input ("Which fruit would you like to delete? ")
-for i in fruit:
-	if i == c:
-		fruit.remove(c)
+while fruit != []:
+	c = input ("Which other fruit would you like to delete " + str(fruit) + "..? ")
+	for i in fruit:
+		while c in fruit:
+			fruit.remove(c)
 print(fruit)
 
 #SERIES 3
@@ -47,4 +47,15 @@ for elem in fruit:
 	if response == "no":
 		fruit2.remove(elem)
 print (fruit2)
+
+#SERIES 4
+print ("~~~~~~~~~~~~~~~SERIES 4~~~~~~~~~~~~~~~")
+fruit = ["Apples", "Pears", "Oranges", "Peaches"]
+copy = [i[::-1] for i in fruit]
+fruit.pop(0)
+print(fruit)
+print(copy)
+
+
+
 
