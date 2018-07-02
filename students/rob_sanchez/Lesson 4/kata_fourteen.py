@@ -8,7 +8,6 @@ import random
 
 def main():
     welcome()
-    # string_words("to", "sherlock")
 
 
 # Reads the contents of text file and returns a list of words
@@ -30,10 +29,8 @@ def build_trigram(in_list):
     for item in range(len(in_list)-1):
         try:
             if (in_list[item], in_list[item+1]) not in new_dict:
-                # new_dict[in_list[item], in_list[item+1]] = in_list[item+2]
                 new_dict[in_list[item], in_list[item+1]] = [in_list[item+2]]
             else:
-                # new_dict[(in_list[item], in_list[item+1])] = new_dict.get((in_list[item], in_list[item+1])), in_list[item+2]
                 new_dict[(in_list[item], in_list[item+1])].append(in_list[item+2])
         except IndexError:
             pass
