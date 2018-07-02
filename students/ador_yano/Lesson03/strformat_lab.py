@@ -17,17 +17,12 @@ print("Formatted tuple: 'file_{:0>3d}: {:.2f}, {:.2e}, {:.2e}'".format(t[0], t[1
 print("Task 2")
 t = (2, 123.4567, 10000, 12345.67)    # starting tuple
 print("Initial tuple: ", t)              # show starting tuple
-print("Formatted tuple: 'file_{fname}: {fnum}, {enum}, {efloat}".format\
+# show alternative formatted output -  should be 'file_002, 123.46, 1.00e+04, 1.23e+04'
+print("Formatted tuple: 'file_{fname}: {fnum:.2f}, {enum:.2e}, {efloat:.2e}".format\
     (fname = str(t[0]).zfill(3),\
     fnum = t[1],\
     enum = t[2],\
     efloat = t[3]))
-'''
-Using your results from Task One, repeat the exercise, but this time using an
-alternate type of format string (hint: think about alternative ways to use .format() (keywords anyone?),
-and also consider f-strings if you’ve not used them already).
-'''
-
 
 #Task 3
 print("Task 3: dynamic formatter")
