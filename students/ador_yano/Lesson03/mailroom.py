@@ -1,164 +1,114 @@
 #!/usr/bin/env python3
 # mailroom.py implements the Lesson 3 - Mailroom Part 1 assignment from UWPCE Python Programming
 
-intro = '''UWPCE Python Programming: Lesson 3 Assignment -- Mailroom Part 1
+intro = '''
+UWPCE Python Programming: Lesson 3 Assignment -- Mailroom Part 1
 '''
 print(intro)
 
-# Donor database - initially populated with 5 donors, 1-3 donations each
+####################################
+# Global variables
+#####################################
 
-donors_db = [("Anne",100, 200, 300, 400),("Bill",500, 600, 300, 400),("Cathy",500, 600, 700),("David",900),("Ellen",900, 1000, 1300)]
+# Donors database - initially populated with 5 donors, 1-3 donations each
+# Data structure: List of lists in which first item is donor name, followed by varying number of amounts donated
+donors_db = \
+[["Mark Zucherberg",200.00, 300.00, 400.00],\
+["William Gates, III",500.00, 600.00],\
+["Paul Allen",750.00, 620.00],\
+["Elon Musk",9500.00, 5500.00],\
+["Jeff Bezos",700.00]]
 
-# Function: show list
+#####################################
+# Sub Functions
+#####################################
+# Function: introduce program and prompt user for user_input
+def prompt_user(response):
+    print("-" * 66)
+    print("This donor management program enables you to: \n\t1. Send a Thank You\n\t2. Display a Report")
+    print("Enter 1, 2, or 'quit' to get out of the program.")
+    response = input("What do you want to do? ")        # Prompt user for a response
+    return response                                     # Value sent back as string
+
+
+
+# Function: show list of donors in the donors database,
 def show_list():
     print("List of Donors")
     print("-" * 66)
-    for donor_record in donors_db:
-        donor_name = donor_record[0]
-        print("{:<26}".format(donor_name))
+    for donor_record in donors_db:              # Loop through the donors database for each donor
+        donor_name = donor_record[0]            # Get the name of the donor
+        print("{:<26}".format(donor_name))      # Display donor name
 
+# Function: check if donor is in database
+def in_list(name):
+    for donor_record in donors_db:              # Loop through donor records in donors database
+        if name == donor_record[0]:             # check if donor has a record already
+            return True
+
+# Function: show thank you note
+def display_note(name, gift):                 # Display email to terminal
+    print("Dear {}, \nThank you for your gift of ${:,.2f}. \nWe appreciate your support.\nBest regards,\nJohn Cleese".format(name, gift))
+
+# Function: add donation
+def add_donation(name, gift):
+    for donor_record in donors_db:              # Loop through donor records in donors database
+        if name != donor_record[0]:             # Check if donor has a record
+            continue
+        else:
+            donor_record.append(gift)           # If donor has a record, add this new donation
+
+# Function: add donor
+def add_newdonor(name, gift):                   # Add a new donor with the first gift to the database
+    donors_db.append([name, gift])
+
+# Function: show list of donors if asked, then get donor info thank you note
+def send_thanks():
+    donor = input("What's the full name of the donor? (Get a list by entering 'list') ")          # Prompt for full name
+    if donor == "list":
+        show_list()                             # Show list if requested
+    else:
+        donation = float(input("How much is being donated by this donor? ")) # prompt for donation amounts (convert entry to number)
+        if in_list(donor):                      # Check if donor is already in the donors database
+            add_donation(donor, donation)       # If so, add the donation to his list of gifts
+        else:
+            add_newdonor(donor, donation)       # If not, add a new record with a new donor and first gift
+        display_note(donor, donation)           # Show the thank you message to the screen
+
+
+# Function: show full report of donors and their donation history
 def show_report():
     print("Donor Name                | Total Given | Num Gifts | Average Gift")
     print("-" * 66)
-    for donor_record in donors_db:
-        donor_name = donor_record[0]
-        gifts = donor_record[1:]
-        num_gifts = len(gifts)
+    for donor_record in donors_db:                  # loop through each record of donors
+        donor_name = donor_record[0]                # get donor name
+        gifts = donor_record[1:]                    # get list of gift amounts that follow name
+        num_gifts = len(gifts)                      # count number of gifts given by donor
         total_given = 0
-        for gift in gifts:
-            total_given = total_given + gift
-        if num_gifts != 0:
-            ave_gift = total_given//num_gifts
+        for gift in gifts:                          # loop through list of gifts
+            total_given = total_given + gift        # add all the gift amounts for total gifts
+        if num_gifts != 0:                          # check if zero gifts to prevent dividing by zero
+            ave_gift = total_given//num_gifts       # get average gift amount
         else:
-            ave_gift = 0
-        print("{:<26} ${:>12d}  {:>9d}   ${:>11d}".format(donor_name, total_given, num_gifts, ave_gift))
-
-
-# Function: add donor
-def add_donor(donor_name, target_db = donors_db):
-    target_db.append((donor_name,))
-
-# Function: add donation
-#def add_donation(amount, donor_name, target_db = donors_db):
+            ave_gift = 0                            # if not gifts, set average amount to zero
+        print("{:<26} ${:>12.2f}  {:>9d}   ${:>11.2f}".format(donor_name, total_given, num_gifts, ave_gift)) # display donor database in formatted rows and columns
 
 
 
-
-
-
-
-# Function: send thank you
-# Prompt for full name
-# Show list if requested
-# If not on list, add name entered by user to donor database
-# If in list, prompt for donation amounts (convert entry to number)
-# Add amount entered to donor's donation history
-# Compose thank you email to donor
-# Display email to terminal
-# Go to menu
-
-
-# Function: create report
-# Display list of donors with donation history
-# Columns: Donor Name, total donated, number of donations and average donation amount
-# Go to menu
-
-
-# Function: display menu and user interaction
-# Prompt user
-# Choose from menu:
-# Send a "Thank You"
-# Create a report
-# Quit
-
-print("This donor program enables you to: 'List Donors', 'Send Thank You' or 'Display Report'.\n")
-print("Type 'quit' to get out of the program.")
-user_entry = input("What do you want to do?")
-while user_entry != "quit":
-    if user_entry == "List Donors":
-        show_list()
-        break
-    elif user_entry == "Send Thank You":
-        print(user_entry)
-        break
-    elif user_entry == "Display Report":
-        show_report()
-        break
-    else:
-        user_entry = input("What do you want to do?")
-
-
-
-
-
-'''
-p
-
-'''
-
-'''
-The script should accomplish the following goals:
-
-It should have a data structure that holds  a list of your donors and a history of the amounts they have donated.
-This structure should be populated at first with at least five donors, with between 1 and 3 donations each.
-
-You can store that data structure in the global namespace.
-
-The script should prompt the user (you) to choose from a menu of 3 actions:
-“Send a Thank You”, “Create a Report” or “quit”)
-
-Sending a Thank You
-If the user (you) selects ‘Send a Thank You’, prompt for a Full Name.
-If the user types ‘list’, show them a list of the donor names and re-prompt
-If the user types a name not in the list, add that name to the data structure and use it.
-If the user types a name in the list, use it.
-
-Once a name has been selected, prompt for a donation amount.
-Turn the amount into a number – it is OK at this point for the program to crash if someone types a bogus amount.
-
-Once an amount has been given, add that amount to the donation history of the selected user.
-
-Finally, use string formatting to compose an email thanking the donor for their generous donation.
-Print the email to the terminal and return to the original prompt.
-It is fine (for now) to forget new donors once the script quits running.
-
-Creating a Report
-If the user (you) selected “Create a Report”, print a list of your donors, sorted by total historical donation amount.
-Include Donor Name, total donated, number of donations and average donation amount as values in each row.
-You do not need to print out all their donations, just the summary info.
-Using string formatting, format the output rows as nicely as possible.
-The end result should be tabular (values in each column should align with those above and below)
-After printing this report, return to the original prompt.
-At any point, the user should be able to quit their current task and return to the original prompt.
-From the original prompt, the user should be able to quit the script cleanly.
-Your report should look something like this:
-
-Donor Name                | Total Given | Num Gifts | Average Gift
-------------------------------------------------------------------
-William Gates, III         $  653784.49           2  $   326892.24
-Mark Zuckerberg            $   16396.10           3  $     5465.37
-Jeff Bezos                 $     877.33           1  $      877.33
-Paul Allen                 $     708.42           3  $      236.14
-
-
-Guidelines
-
-
-First, factor your script into separate functions.
-Each of the above tasks can be accomplished by a series of steps.
-Write discreet functions that accomplish individual steps and call them.
-
-Second, use loops to control the logical flow of your program.
-Interactive programs are a classic use-case for the while loop.
-
-Of course, input() will be useful here.
-
-Put the functions you write into the script at the top.
-
-Put your main interaction into an if __name__ == '__main__' block.
-
-Finally, use only functions and the basic Python data types you’ve learned about so far.
-There is no need to go any farther than that for this assignment.
-
-
-'''
+#####################################
+# Main program
+#####################################
+if __name__ == '__main__':
+# Main function: display menu and user interaction based on user choice
+    user_choice = ''
+    while user_choice != "quit":
+        user_choice = prompt_user(user_choice)      # call prompt_user function until user chooses to quit
+        if user_choice == '1':
+            send_thanks()                           # call send_thanks function if user chooses 1
+            continue                                # continue prompting user until user quits
+        elif user_choice == '2':                    # call show_report function if user chooses 2
+            show_report()                           # call show_report function if user chooses 2
+            continue                               # continue prompting user until user quits
+        else:
+            continue                               # continue prompting user until user quits
+    print("Goodbye.")                              # if user chooses quit, while loop stops, ending program
