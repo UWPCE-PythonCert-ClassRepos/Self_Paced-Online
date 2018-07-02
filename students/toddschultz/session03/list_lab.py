@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+#SERIES 1
+print ("~~~~~~~~~~~~~~~SERIES 1~~~~~~~~~~~~~~~")
 fruit = ["Apple", "Pears", "Oranges", "Peaches"]
 print (fruit)
 another = input("What other fruit would you like: ")
@@ -16,3 +18,19 @@ print(fruit)
 for i in fruit:
 	if i[0] == "P":
 		print(i)
+
+#SERIES 2
+print ("~~~~~~~~~~~~~~~SERIES 2~~~~~~~~~~~~~~~")
+print (fruit)
+del fruit [0]
+print (fruit)
+b = input("Which fruit would you like to delete? ")
+fruit.remove(b)
+print(fruit)
+fruit = fruit * 2
+print(fruit)
+c = input ("Which fruit would you like to delete? ")
+for i in fruit:
+	if i == c:
+		fruit.remove(c)
+print(fruit)
