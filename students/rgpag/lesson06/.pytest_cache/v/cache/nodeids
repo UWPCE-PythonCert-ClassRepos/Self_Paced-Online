@@ -1,0 +1,8 @@
+[
+  "test_mailroom.py::test_don_in",
+  "test_mailroom.py::test_new_donor",
+  "test_mailroom.py::test_update_don",
+  "test_mailroom.py::test_menu_sel_1",
+  "test_mailroom.py::test_menu_sel_3",
+  "test_mailroom.py::test_menu_switch_dict"
+]
