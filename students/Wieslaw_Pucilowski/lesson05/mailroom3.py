@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # lesson04 mailroom part2
 from operator import itemgetter
+from collections import defaultdict
 
 __author__ = "Wieslaw Pucilowski"
 
@@ -40,9 +41,14 @@ def donor_greeting(first, last):
 def write_letter(first, last):
     message = donor_greeting(first, last)
     if message:
-        f = open(first+'_'+last+'.txt', 'w')
-        f.write(message)
-        f.close()
+        try:
+            with open(first+'_'+last+'.txt', 'w') as f:
+                f.write(message)
+        except IOErrors as e:
+            print("""
+                Cannot write a file, cought
+                {}
+            """.format(e))
 
 
 def send_letter_all():
@@ -58,16 +64,16 @@ def print_greetings(first, last):
 
 
 def select_user(first, last):
-    if (first, last) in dict_all.keys():
+    try:
         return {'first_name': first, 'last_name': last,
                 'donations': len(dict_all[(first, last)]),
                 'total': sum(dict_all[(first, last)])}
-    else:
+    except KeyError:
         return None
 
 
 def list_donors():
-    for donor in sorted(dict_all.keys()):
+    for donor in sorted(dict_all):
         print("{} {},".format(donor[0], donor[1]))
 
 
@@ -79,17 +85,24 @@ def add_donor():
         print("Only First name added")
         first = name.split()[0]
         last = ""
-    donation = input("Donation in USD: ")
-    while not donation.isdigit():
-        donation = input("Donation in USD: ")
-    add_donor_dict(first, last, float(donation))
-    print_greetings(first, last)
+    donation_in = input("Donation in USD: ")
+    try:
+        donation = float(donation_in)
+    except ValueError as e:
+        print("""
+                ValueError exception cought: {}
+                Please add donor with the right donation in USD.
+               """.format(e))
+        print()
+    else:
+        add_donor_dict(first, last, float(donation))
+        print_greetings(first, last)
 
 
 def add_donor_dict(first, last, donation):
-    if (first, last) in dict_all.keys():
+    try:
         dict_all[(first, last)].append(donation)
-    else:
+    except KeyError:
         dict_all[(first, last)] = [donation]
 
 
@@ -112,11 +125,11 @@ def create_report():
 def menu_selection(prompt, dispatch_dict):
     while True:
         response = input(prompt)
-        if dispatch_dict.get(response, "default") == "default":
+        try:
+            if dispatch_dict[response]() == "exit menu":
+                break
+        except KeyError:
             print(response, wrong_option)
-            continue
-        elif dispatch_dict[response]() == "exit menu":
-            break
 
 
 wrong_option = "{:<20}".format(" - Wrong option !!!")
