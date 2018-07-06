@@ -38,9 +38,9 @@ class Element:
 class OneLineTag(Element):
 
     def render(self, resp, cur_ind=0):
-        ax = f'{(cur_ind) * self.indent}<{self.tag}>{self.content[0]}\
-              {self.extra_attrib()}</{self.tag}>\n'
-        resp.write(ax)
+        ax = f'{(cur_ind) * self.indent}<{self.tag}>'
+        ay = f'{self.content[0]}{self.extra_attrib()}</{self.tag}>\n'
+        resp.write(ax+ay)
 
 
 class H(OneLineTag):
@@ -53,8 +53,8 @@ class H(OneLineTag):
 class SelfClosingTag(Element):
 
     def render(self, resp, cur_ind=0):
-        resp.write(f'{(cur_ind) * self.indent}<{self.tag}\
-                   {self.extra_attrib()} />\n')
+        resp.write(
+            f'{(cur_ind) * self.indent}<{self.tag}{self.extra_attrib()} />\n')
 
 
 class Html(Element):
