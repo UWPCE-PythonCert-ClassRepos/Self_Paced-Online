@@ -165,4 +165,4 @@ if __name__ == "__main__":  # If this is the main file, run the below
             break
 
     print("Thank you, the program will now exit")
-    raise SystemExit  # Exit the program
+    raise SystemExit  # Exit the progra
