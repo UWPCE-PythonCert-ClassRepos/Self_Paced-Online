@@ -1,9 +1,10 @@
 # lesson 04 mailroom pt 2
 # !/usr/bin/env python3
 
+
 import os
 import datetime
-from statistics import mean
+
 
 # starting list of 5+ donors and 1-3 donations each
 donors = {"John Travolta": [5000, 7500],
