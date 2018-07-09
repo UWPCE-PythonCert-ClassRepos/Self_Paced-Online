@@ -42,8 +42,8 @@ five_tuple = ( 4, 30, 2017, 2, 27)
 
 def TaskFour(five_tuple):
     reformat = "{0:02d} {1:d} {2:d} {3:02d} {4:d}"
-    print(reformat.format(five_tuple[3], five_tu
-                           uit_list = ['oranges', 1.3, 'lemons', 1.1]
+    print(reformat.format(five_tuple[3], five_tuple[4], five_tuple[2], five_tuple[0], five_tuple[1]))
+
 
 # Task 5
 
