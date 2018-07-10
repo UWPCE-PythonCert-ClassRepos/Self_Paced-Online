@@ -1,32 +1,33 @@
 import unittest
 import os
-from mailroom4 import *
+import mailroom4 as mlr
+
 
 
 class MyFuncTestCase(unittest.TestCase):
     def test_1_select_user(self):
         test_user = ('Haruto', 'Asai')
         expected = {'first_name': test_user[0], 'last_name': test_user[1],
-                    'donations': len(dict_all[test_user]),
-                    'total': sum(dict_all[test_user])}
-        actual = select_user('Haruto', 'Asai')
+                    'donations': len(mlr.dict_all[test_user]),
+                    'total': sum(mlr.dict_all[test_user])}
+        actual = mlr.select_user('Haruto', 'Asai')
         self.assertEqual(expected, actual)
 
     def test_2_all_users(self):
-        for test_user in dict_all:
+        for test_user in mlr.dict_all:
             expected = {'first_name': test_user[0], 'last_name': test_user[1],
-                        'donations': len(dict_all[test_user]),
-                        'total': sum(dict_all[test_user])}
-            actual = select_user(test_user[0], test_user[1])
+                        'donations': len(mlr.dict_all[test_user]),
+                        'total': sum(mlr.dict_all[test_user])}
+            actual = mlr.select_user(* test_user)
             self.assertEqual(expected, actual)
 
     def test_3_write_letter(self):
-        for test_user in dict_all:
-            write_letter(test_user[0], test_user[1])
+        for test_user in mlr.dict_all:
+            mlr.write_letter(test_user[0], test_user[1])
             assert os.path.isfile(test_user[0]+'_'+test_user[1]+'.txt')
 
     def test_4_donor_greeting(self):
-        for first, last in dict_all:
+        for first, last in mlr.dict_all:
             expected = """
     Ex Programmers Charity
     1999 Heartbeat Avenue
@@ -41,8 +42,8 @@ class MyFuncTestCase(unittest.TestCase):
                        Sincerely,
                           -The Team
 
-    """.format(**select_user(first, last))
-            actual = donor_greeting(first, last)
+    """.format(**mlr.select_user(first, last))
+            actual = mlr.donor_greeting(first, last)
             self.assertEqual(expected, actual)
 
     def test_5_create_report(self):
@@ -58,14 +59,14 @@ Richard Lionheart              $            366.80          3 $           122.27
 Denis Donuts                   $             68.00          1 $            68.00
 Great Gatsby                   $              0.50          1 $             0.50
 """
-        actual = create_report()
+        actual = mlr.create_report()
         self.assertEqual(expected, actual)
 
     def test_6_add_donor_dict(self):
-        add_donor_dict('Johny', 'Holiday', 10)
-        add_donor_dict('Johny', 'Holiday', 30.55)
+        mlr.add_donor_dict('Johny', 'Holiday', 10)
+        mlr.add_donor_dict('Johny', 'Holiday', 30.55)
         expected = [10, 30.55]
-        actual = dict_all[('Johny', 'Holiday')]
+        actual = mlr.dict_all[('Johny', 'Holiday')]
         self.assertEqual(expected, actual)
 
 
