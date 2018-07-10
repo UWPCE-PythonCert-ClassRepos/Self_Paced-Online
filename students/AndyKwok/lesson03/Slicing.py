@@ -1,4 +1,4 @@
-#Description: 
+#Description: To resequence string or tuple inputs
 #Author: Andy Kwok
 #Last Updated: 07/09/2018
 #ChangeLog: 
