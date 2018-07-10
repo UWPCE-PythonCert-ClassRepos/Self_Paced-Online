@@ -301,5 +301,5 @@ def averagedonations(donations, num):
 
 
 #  -------------------------------------------------- DISPLAY ----------------------------------------------------------
-
-menu()  # Program starts here
+if __name__ == '__main__':
+    menu()  # Program starts here
