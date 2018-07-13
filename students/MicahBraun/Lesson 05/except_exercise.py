@@ -52,9 +52,14 @@ else:
 
 langs = ['java', 'c', 'python']                   # new list
 try:
-    # more_joke = more_fun(langs[0])              # test list val 1
+    # more_joke = more_fun(langs[0])              # test list val 1, index out of range
     more_joke = more_fun(langs[1])                # test list val 2
+
+except IndexError as e:
+    pass
+
+else:
     more_joke = more_fun(langs[2])                # test list val 3
-    final_joke = last_fun()                       # test list without indicating value
-except Exception as e:
-    print('Oh no!', e)
+
+finally:
+    end_me = last_fun()
