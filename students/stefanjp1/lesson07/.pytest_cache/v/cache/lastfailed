@@ -1,0 +1,4 @@
+{
+  "test_html_render.py::test_OneLineTag": true,
+  "test_html_render.py::test_Ul": true
+}
