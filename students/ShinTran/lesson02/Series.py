@@ -13,7 +13,7 @@ def fibonacci(n):
 		print(x)
 	if n >= 2:
 		print(y)
-	for i in range(3,n):
+	for i in range(3,n+1):
 		z = x + y
 		x = y
 		y = z
@@ -29,7 +29,7 @@ def lucas(n):
 		print(x)
 	if n >= 2:
 		print(y)
-	for j in range(3,n):
+	for j in range(3,n+1):
 		z = x + y
 		x = y
 		y = z
