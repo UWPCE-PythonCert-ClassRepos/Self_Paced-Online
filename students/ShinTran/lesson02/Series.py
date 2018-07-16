@@ -9,6 +9,10 @@ Lesson 2 Assignment
 def fibonacci(n):
 	x = 0
 	y = 1
+	if n >= 1:
+		print(x)
+	if n >= 2:
+		print(y)
 	for i in range(3,n):
 		z = x + y
 		x = y
@@ -21,6 +25,10 @@ def fibonacci(n):
 def lucas(n):
 	x = 2
 	y = 1
+	if n >= 1:
+		print(x)
+	if n >= 2:
+		print(y)
 	for j in range(3,n):
 		z = x + y
 		x = y
