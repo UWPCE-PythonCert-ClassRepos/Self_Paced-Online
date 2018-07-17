@@ -1,7 +1,14 @@
-#!/usr/bin/env python3
-"""HTML Render Module
-This module contains all of the functions for the HTML Render module
-"""
+# ----------------------------------------------------------------------------------------------------------------------
+# NAME: MICAH BRAUN
+# PROJECT: Assignment 07 - html_render.py
+# PURPOSE: html-page-creating module
+# DATE: 07/16/2018
+#
+# DESCRIPTION: class Element and subclasses combine to form a module which can write out HTML-compatible page
+# information (in the style of class example). Using <tag> conventions.
+#
+# NOTE: I had hoped to add a <style> and body{} element to add more CSS customization but ran out of time for now.
+# ----------------------------------------------------------------------------------------------------------------------
 
 
 class Element:

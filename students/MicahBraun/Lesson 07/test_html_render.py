@@ -2,14 +2,14 @@
 # NAME: MICAH BRAUN
 # PROJECT: Assignment 07 - test_html_render.py
 # PURPOSE: Testing html-creating doc with unittest
-# DATE: 07/10/2018
+# DATE: 07/16/2018
 #
-# DESCRIPTION:
+# DESCRIPTION: Runs tests against html_render.py to check for integrity of module(s) and expected behaviour.
 # ----------------------------------------------------------------------------------------------------------------------
 import unittest
 from io import StringIO
 import html_render as h
-from html_render import Element
+
 
 class TestElementClass(unittest.TestCase):
     """
