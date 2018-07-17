@@ -3,8 +3,6 @@
 # PROJECT: mailroom_3.py - Lesson 05 Assignment
 # PURPOSE: Working with exception handlers
 # DATE: 06/23/2018
-# EDITS MADE: 06/29/2018 -- Try, Except blocks added for exception handling, .get() removed from menu(),
-# 'pair' var updated to handle error on quitting before assigning donation value to new name entry in thankyou()
 #
 # DESCRIPTION: Adding try/except blocks where appropriate to existing mailroom program to streamline code
 #  and handle problems that could arise during runtime. ** NOTE: I had already built-in many if/else blocks
@@ -65,13 +63,13 @@ def menu():
             usr_sel = (input("Menu Selection: ")).upper()  # user input for menu
             switch_function[usr_sel]()  # get user entry from dict
 
-        except KeyError:
-            print("Invalid Entry! Only enter A, B, C, or D.")  # display error on any other entry
+        except KeyError as e:
+            print("That entry is invalid! Only enter A, B, C, or D. \nYou entered: ", e)  # display error on any other entry
         continue  # continue back to start of menu
 
 
 def thankyou():
-    """Function enables user to add to dictionary data (adding new donors and donation amounts as well as
+    """Function enables user to add to dictionary data (adding new donors and dontation amounts as well as
     number of donations and average donations for new keys, and also updates existing keys."""
     print("Leaving menu...\n")
     while True:
@@ -93,17 +91,13 @@ def thankyou():
                     existing_donor = input(
                         "That value is already in the list! Do you want to proceed with that selection? (Y/N): ")
                     if existing_donor.upper() == "Y":  # if user proceeds, print display
-                        donation_amt_str = input("Enter in the donation amount from Donor {0}: $".format(key))
-                        if donation_amt_str.lower() == 'q':
+                        donation_amt = input("Enter in the donation amount from Donor {0}: $".format(key))
+                        if str(donation_amt).upper() == "Q":
                             menu()
-                        try:
-                            donation_amt = int(donation_amt_str)
-                        except ValueError:
-                            print("Error: invalid entry.\n")
                         else:
-                            print(
-                                '{0} has donated ${1:,.2f}'.format(key, donation_amt))  # display name and donation amt
                             int(donation_amt)
+                            print(
+                                '{0} has donated ${1:,.2f}'.format(key, int(donation_amt)))  # display name and donation amt
                             get_index = 0  # index variable
                             for item in range(0, len(donor_dict)):  # set index var to current name
                                 if list(donor_dict.values())[item][0] == key:
@@ -113,7 +107,7 @@ def thankyou():
                                 0)  # separate first name, create variable
                             current_donations = int(
                                 list(donor_dict.values())[get_index][1])  # current amt/ var from dict{[val]}
-                            sum_donations = current_donations + donation_amt  # sum of all donations (current + new)
+                            sum_donations = current_donations + int(donation_amt)  # sum of all donations (current + new)
                             list(donor_dict.values())[get_index][1] = float(sum_donations)  # update sum
                             num_donations = int(list(donor_dict.values())[get_index][2]) + 1  # num donations = self + 1
                             list(donor_dict.values())[get_index][2] = num_donations  # update num of donations
@@ -134,37 +128,36 @@ Foundation Board of Directors\n'.format(firstname, sum_donations))
                 else:
                     add_name = str(input("That name is not in the Donor list. Do you want to add it to the list? (Y/N) "))
                     if add_name.upper() == "Y":  # if input response == "Y", proceed
-                        pair = {key: [key, 0, 0, 0]}
+                        pair = {key: [key]}
                         donor_dict.update(pair)
                         displaylist()
                         num_donations = 1  # add new item to new name index
-                        donation_amt_str = input("Enter in the donation amount from Donor {0}: $".format(key))
-                        if donation_amt_str.lower() == 'q':
+                        donation_amt = input("Enter in the donation amount from Donor {0}: $".format(key))
+                        if str(donation_amt).upper() == 'Q':
                             menu()
-                        try:
-                            donation_amt = int(donation_amt_str)
-                        except ValueError:
-                            print("Error: Invalid entry.\n")
                         else:
-                            print('{0} has donated ${1:,.2f}'.format(key, donation_amt))
+                            int(donation_amt)
+                            print('{0} has donated ${1:,.2f}'.format(key, int(donation_amt)))
                             get_index = 0  # counter, start at 0
                             for item in range(0, int(len(list(donor_dict.values())))):  # for items in donor_dict
                                 if list(donor_dict.values())[item][0] == key:  # if item at[0] == full_name
                                     get_index = item  # set index to item
                                     break
                             # noinspection PyTypeChecker
-                            list(donor_dict.values())[get_index].append(donation_amt)
+                            list(donor_dict.values())[get_index].append(
+                                donation_amt)  # append donation amount to end of current lst [don_idx]
                             # noinspection PyTypeChecker
                             list(donor_dict.values())[get_index].append(num_donations)  # append donation count to end
                             avg = averagedonations(donation_amt, num_donations)
                             list(donor_dict.values())[get_index].append(avg)  # append average to end of current index
-                            firstname = list(donor_dict.values())[get_index][0].split(' ', ).pop(0)  # separate first name, create variable
+                            firstname = list(donor_dict.values())[get_index][0].split(' ', ).pop(
+                                0)  # separate first name, create variable
                             email_display = str(input("Display Donor Email? (Y/N): "))  # ask user if they want to
                             if email_display.upper() == "Y":  # print email message
                                 print(spacing)  # if Y, then print
                                 print('Dear {0}, \n\nThank you for your continued support through your \
 contribution of ${1:,.2f} towards our Foundation\'s fundraising goal.\n\nBest wishes,\n\
-Foundation Board of Directors\n'.format(firstname, donation_amt))
+Foundation Board of Directors\n'.format(firstname, int(donation_amt)))
                                 print(spacing)
                             elif email_display.upper() == 'Q':
                                 menu()
