@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 """
 a simple script can run and test your html rendering classes.
@@ -14,7 +14,7 @@ import html_render as hr
 
 
 # writing the file out:
-def render_page(page, filename, indent=None):
+def render_page(page, filename):
     """
     render the tree of elements
 
@@ -23,18 +23,15 @@ def render_page(page, filename, indent=None):
     """
 
     f = StringIO()
-    if indent is None:
-        page.render(f)
-    else:
-        page.render(f, indent)
+    page.render(f)
 
     print(f.getvalue())
     with open(filename, 'w') as outfile:
         outfile.write(f.getvalue())
 
 
-# # Step 1
-# #########
+# Step 1
+#########
 
 page = hr.Element()
 
@@ -48,8 +45,8 @@ render_page(page, "test_html_output1.html")
 # The rest of the steps have been commented out.
 #  Uncomment them as you move along with the assignment.
 
-# ## Step 2
-# ##########
+## Step 2
+##########
 
 page = hr.Html()
 
@@ -64,8 +61,8 @@ page.append(body)
 
 render_page(page, "test_html_output2.html")
 
-# Step 3
-##########
+# # Step 3
+# ##########
 
 page = hr.Html()
 
@@ -84,8 +81,8 @@ page.append(body)
 
 render_page(page, "test_html_output3.html")
 
-# Step 4
-##########
+# # Step 4
+# ##########
 
 page = hr.Html()
 
@@ -104,8 +101,8 @@ page.append(body)
 
 render_page(page, "test_html_output4.html")
 
-# Step 5
-#########
+# # Step 5
+# #########
 
 page = hr.Html()
 
@@ -152,8 +149,8 @@ page.append(body)
 
 render_page(page, "test_html_output6.html")
 
-# Step 7
-#########
+# # Step 7
+# #########
 
 page = hr.Html()
 
@@ -190,8 +187,8 @@ page.append(body)
 
 render_page(page, "test_html_output7.html")
 
-# Step 8
-#######
+# # Step 8
+# ########
 
 page = hr.Html()
 
