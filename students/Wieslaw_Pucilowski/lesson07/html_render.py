@@ -36,7 +36,7 @@ class Html(Element):
 
     def render(self, file_out, cur_ind=''):
         file_out.write('<!DOCTYPE html>\n')
-        Element.render(self, file_out, cur_ind='')
+        super().render(file_out, cur_ind='')
 
 
 class Body(Element):
