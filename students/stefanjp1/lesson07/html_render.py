@@ -1,6 +1,6 @@
 
 class Element():
-    tag_name = ''
+    tag_name = 'html'
     indent = 0
     
     def __init__(self, content=None, **kwargs):
@@ -51,12 +51,6 @@ class TextWrapper:
 class Html(Element):
     tag_name = 'html'
     
-    def __init__(self, content=None, **kwargs):
-        self.content = []
-        if content != None:
-            self.content.append(TextWrapper(content))
-        self.kwargs = kwargs 
-    
     def render(self, file_out, cur_ind = ""):
         file_out.write("<!DOCTYPE html>\n")
         
@@ -65,23 +59,11 @@ class Html(Element):
 
 class Body(Element):
     tag_name = 'body'
-    
-    def __init__(self, content=None, **kwargs):
-        self.content = []
-        if content != None:
-            self.content.append(TextWrapper(content))
-        self.kwargs = kwargs 
 
 
 class P(Element):
     tag_name = 'p'
     
-    def __init__(self, content=None, **kwargs):
-        self.content = []
-        if content != None:
-            self.content.append(TextWrapper(content))
-        self.kwargs = kwargs 
-
 
 class Head(Element):
     tag_name = 'head'
@@ -105,14 +87,9 @@ class OneLineTag(Element):
 
 class Title(OneLineTag):
     tag_name = 'title'
-    
-    def __init__(self, content=None, **kwargs):
-        self.content = []
-        if content != None:
-            self.content.append(TextWrapper(content))
-        self.kwargs = kwargs 
+
         
-class SelfClosingTag:
+class SelfClosingTag(Element):
     tag_name = ''
     
     def __init__(self, content=None, **kwargs):
@@ -140,24 +117,15 @@ class A(OneLineTag):
             self.content.append(TextWrapper(content))
         self.kwargs = kwargs  
         self.kwargs['href'] = link
+    
         
 class Ul(Element):
     tag_name = 'ul'
     
-    def __init__(self, content=None, **kwargs):
-        self.content = []
-        if content != None:
-            self.content.append(TextWrapper(content))
-        self.kwargs = kwargs 
 
 class Li(Element):
     tag_name = 'li'
     
-    def __init__(self, content=None, **kwargs):
-        self.content = []
-        if content != None:
-            self.content.append(TextWrapper(content))
-        self.kwargs = kwargs 
         
 class H(OneLineTag):
     tag_name = 'h'
