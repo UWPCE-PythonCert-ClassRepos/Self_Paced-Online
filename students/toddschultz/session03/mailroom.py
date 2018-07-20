@@ -9,36 +9,43 @@ def prompt():
         thank_you()
     elif action.lower() == "c":
         create_report()
-    elif action.lower() == "q":
+    elif action.lower() == "q" or action.lower() == "quit":
         print("Have a nice day!")
     else:
         print("Please enter S, C, or Q.")
         prompt()
 
 def thank_you():
-    person = (input("Who would you like to send a Thank You to? "))
-    if person.lower() == "list":
+    person = (input("Who would you like to send a Thank You to?\nYou can type 'list' to get a list of current donors: "))
+    if person.lower() == "quit" or person.lower() == "q":
+        print ("Have a nice day!")
+    elif person.lower() == "list":
         try_again()
-    elif person in donors: 
+    elif person in donors:
         donation = float(input("How much was the donation? "))
         location = donors.index(person)
         donors.insert((location + 1),donation)
-        print("\n\n" + person + ":\n")
-        print("\tThank you very much for your generouse donation.")
-        print(f'Your ${donors[location+1]:.2f} donation will allow us to continue our efforts.')
+        print("\n" + person + ":\n")
+        print("\tThank you very much for your generouse donation. Your")
+        print(f'${donors[location+1]:.2f} donation will allow us to continue our efforts.')
         print("Our charity would not exist without your support.\n")
         print("Sincerely:\n\nLeadership Team at Charity X.\n\n")
         prompt()
     else:
-        try_again()
+        new = (input("That looks like a new donor. Would you like to add a new donor? (Y)es or (N)o? "))
+        if new.lower() == "yes" or new.lower() == "y":
+            donors.append(person)
+            prompt()
+        else:
+            prompt()
 
 def try_again():
         donors_list = []
         for i in donors:
             if type(i) is str:
                 donors_list.append(i)
-        print(donors_list) #todo: Make this appear not in bracket, join?
-        print("Please select from the names above, be sure to spell them correctly.")
+        print("\nPlease select from the names below, be sure to spell them correctly.")
+        print(', '.join(donors_list))
         thank_you()
 
 def create_report():
@@ -69,4 +76,5 @@ def create_report():
     print("\n")
     prompt()
 
-prompt()
+if __name__ == '__main__':
+    prompt() 
