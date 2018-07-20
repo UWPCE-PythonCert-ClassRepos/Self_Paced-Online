@@ -1,0 +1,15 @@
+[
+  "test_html_render.py::test_class_init",
+  "test_html_render.py::test_content",
+  "test_html_render.py::test_append",
+  "test_html_render.py::test_render",
+  "test_html_render.py::test_Html",
+  "test_html_render.py::test_Body",
+  "test_html_render.py::test_P",
+  "test_html_render.py::test_Head",
+  "test_html_render.py::test_Title",
+  "test_html_render.py::test_kwargs",
+  "test_html_render.py::test_Hr",
+  "test_html_render.py::test_A",
+  "test_html_render.py::test_H"
+]

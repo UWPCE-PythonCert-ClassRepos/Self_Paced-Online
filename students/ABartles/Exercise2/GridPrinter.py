@@ -1,5 +1,5 @@
 
-def gridprint(numrow=2,numcol=2, widthofcol=4, hightofcol=4):
+def grid_print( numrow=2, numcol=2, widthofcol=4, hightofcol=4):
     """Returns a user defined grid.
 
         Parameters
@@ -10,9 +10,9 @@ def gridprint(numrow=2,numcol=2, widthofcol=4, hightofcol=4):
         hightofcol - Define the character hight of a column (default 4)
     """
 
-    firstcol =  "+" + "-" * widthofcol + "+"
-    subcol =  "-" * widthofcol + "+"
-    firstcolline =  "|" + " " * widthofcol + "|"
+    firstcol = "+" + "-" * widthofcol + "+"
+    subcol = "-" * widthofcol + "+"
+    firstcolline = "|" + " " * widthofcol + "|"
     subcolline = " " * widthofcol + "|"
 
     if (numrow == 1):
@@ -37,15 +37,15 @@ def gridprint(numrow=2,numcol=2, widthofcol=4, hightofcol=4):
             if (numcol == 1):
                 print(firstcol)
             elif (numcol > 1):
-                print(firstcol + subcol * (numcol -1))
+                print(firstcol + subcol * (numcol - 1))
 
             for i in range(hightofcol):
                 if (numcol == 1):
                     print(firstcolline)
                 elif (numcol > 1):
-                    print(firstcolline + subcolline * (numcol -1))
+                    print(firstcolline + subcolline * (numcol - 1))
 
         if (numcol == 1):
             print(firstcol)
         elif (numcol > 1):
-            print(firstcol + subcol * (numcol -1))
+            print(firstcol + subcol * (numcol - 1))
