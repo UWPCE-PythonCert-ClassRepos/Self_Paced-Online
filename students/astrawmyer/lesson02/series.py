@@ -1,37 +1,13 @@
 def fibonacci(n):
     """add a doc string"""
-    a=0
-    b=1
-    c=0
-    if n == 0:
-        return 0
-    elif n == 1:
-        return 1
-    else:
-        for i in range(n-1):
-            c=a+b
-            a=b
-            b=c
-        return c
+    return sum_series(n)
 
 
 
 
 def lucas(n):
     """add a doc string"""
-    a=2
-    b=1
-    c=0
-    if n == 0:
-        return 2
-    elif n == 1:
-        return 1
-    else:
-        for i in range(n-1):
-            c=a+b
-            a=b
-            b=c
-        return c
+    return sum_series(n,2,1)
 
 
 
