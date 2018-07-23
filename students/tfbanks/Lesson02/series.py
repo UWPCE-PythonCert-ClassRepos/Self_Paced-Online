@@ -52,33 +52,21 @@ def sum_series(n, f=None, s=None):  # Defines a series to run either Fibonacci, 
     else:
         return other(n)  # Calls the Other Series Function when f is not 0 or 2 and s is not 1
 
-# Test fib function
-
-
-# print(fib(8))
-# print(fib(11))
-
-# Test luc function
-# print(luc(15))
-
-# Values to test correct functioning of the sum_series function
-# print(sum_series(-5, 0, 1))
-# sum_series(8, 0, 1)
-# sum_series(6, 2, 1)
-# sum_series(8)
-# sum_series(3, 5, 4)
 
 # Assertion tests
+# Fibonacci Series
 assert fib(7) == 13
 assert(fib(12) == 144)
 assert(fib(22) == 17711)
 print("All Fibonacci Assert Tests Passed")
 
+# Lucas Series
 assert(luc(4) == 7)
 assert(luc(10) == 123)
 assert(luc(15) == 1364)
 print("All Lucas Assert Tests Passed")
 
+# sum_series
 assert sum_series(8, 0, 1) == 21
 assert sum_series(6, 2, 1) == 18
 assert sum_series(3, 5, 4) == 13
