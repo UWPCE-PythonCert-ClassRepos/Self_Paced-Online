@@ -48,15 +48,20 @@ def try_again():
         thank_you()
 
 def create_report():
-#First gather the names of the donors from the global list
+    donors_list = []
+    z = 0
+    for i in donors:
+        donors_list.append([i[0]]) #name
+        donors_list[z].append(sum(i[1:])) #total
+        donors_list[z].append(len(i)) #number + 1
+        aa=sum(i[1:])
+        donors_list[z].append(aa/len(i)) #average
+        z += 1
     print("\nDonor Name\t\t| Total Given | Num Gifts | Average Gift")
     print("----------------------------------------------------------------")
-    for x in donors:
-        name = x[0]
-        total = (sum(x[1:]))
-        num = (len(x))
-        average = total/num
-        print("{:<22}".format(name).title(), "  $", "{:11.2f}".format(total), "\t\t{:<2}".format(num-1), "{:2}".format("$"), "{:10.2f}".format(average))
+    donors_list.sort(key = lambda x: int(x[1]),reverse=True)
+    for i in donors_list:
+        print("{:<22}".format(i[0]).title(), "  $", "{:11.2f}".format(i[1]), "\t\t{:<2}".format(i[2]-1), "{:2}".format("$"), "{:10.2f}".format(i[3]))
     print("\n")
     prompt()
 
@@ -67,7 +72,7 @@ if __name__ == '__main__':
 Instructor Feedback:
 DONE!  you could add lower() at the end to avoid calling it each time: action = input("").lower()
 a better alternative to calling prompt() all over the place is to have a while True loop so that it forever loops until program is terminated.
-it would be easier (code-wise) to have a list of lists here like: donors  = [["baby huey", 1123, 456], ["mighty mouse", 99, 100]]
+DONE! it would be easier (code-wise) to have a list of lists here like: donors  = [["baby huey", 1123, 456], ["mighty mouse", 99, 100]]
 don't forget this report is supposed to be sorted (check requirements)
 '''
 
