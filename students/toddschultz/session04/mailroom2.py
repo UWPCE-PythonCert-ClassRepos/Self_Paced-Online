@@ -1,39 +1,39 @@
 #!/usr/bin/env python3
 
 global donors
-donors = ["Baby Huey", 1123.00, 456.00, 1789.00, "Mighty Mouse", 99.99, "Fred Flintstone", 5550.00, 5555.00, "Road Runner", 199999.00, "Papa Smurf", 1001.00, 1002.00, 1003.00]
+donors = ["baby huey", 1123.00, 456.00, 1789.00, "mighty mouse", 99.99, "fred flintstone", 5550.00, 5555.00, "road runner", 199999.00, "papa smurf", 1001.00, 1002.00, 1003.00]
 
 def prompt():
-    action = input("Would you like to (S)end a Thank You, (C)reate a Report or (Q)uit? ")
-    if action.lower() == "s":
+    action = (input("Would you like to (S)end a Thank You, (C)reate a Report or (Q)uit? ").lower())
+    if action == "s":
         thank_you()
-    elif action.lower() == "c":
+    elif action == "c":
         create_report()
-    elif action.lower() == "q" or action.lower() == "quit":
+    elif action == "q" or action == "quit":
         print("Have a nice day!")
     else:
         print("Please enter S, C, or Q.")
         prompt()
 
 def thank_you():
-    person = (input("Who would you like to send a Thank You to?\nYou can type 'list' to get a list of current donors: "))
-    if person.lower() == "quit" or person.lower() == "q":
+    person = (input("Who would you like to send a Thank You to?\nYou can type 'list' to get a list of current donors: ").lower())
+    if person == "quit" or person == "q":
         print ("Have a nice day!")
-    elif person.lower() == "list":
+    elif person == "list":
         try_again()
     elif person in donors:
         donation = float(input("How much was the donation? "))
         location = donors.index(person)
         donors.insert((location + 1),donation)
-        print("\n" + person + ":\n")
+        print("\n" + person.title() + ":\n")
         print("\tThank you very much for your generouse donation. Your")
         print(f'${donors[location+1]:.2f} donation will allow us to continue our efforts.')
         print("Our charity would not exist without your support.\n")
         print("Sincerely:\n\nLeadership Team at Charity X.\n\n")
         prompt()
     else:
-        new = (input("That looks like a new donor. Would you like to add a new donor? (Y)es or (N)o? "))
-        if new.lower() == "yes" or new.lower() == "y":
+        new = (input("That looks like a new donor. Would you like to add a new donor? (Y)es or (N)o? ").lower())
+        if new == "yes" or new == "y":
             donors.append(person)
             prompt()
         else:
@@ -72,9 +72,19 @@ def create_report():
                 break
 #Now we have donor, donations, number of donations, total, and average; need to format it. 
 
-        print("{:<22}".format(donors[a]), "  $", "{:11.2f}".format(total), "\t\t{:<2}".format(num), "{:2}".format("$"), "{:10.2f}".format(total/num))
+        print("{:<22}".format(donors[a]).title(), "  $", "{:11.2f}".format(total), "\t\t{:<2}".format(num), "{:2}".format("$"), "{:10.2f}".format(total/num))
     print("\n")
     prompt()
 
 if __name__ == '__main__':
     prompt() 
+
+
+'''
+Instructor Feedback:
+DONE!  you could add lower() at the end to avoid calling it each time: action = input("").lower()
+a better alternative to calling prompt() all over the place is to have a while True loop so that it forever loops until program is terminated.
+it would be easier (code-wise) to have a list of lists here like: donors  = [["baby huey", 1123, 456], ["mighty mouse", 99, 100]]
+don't forget this report is supposed to be sorted (check requirements)
+'''
+
