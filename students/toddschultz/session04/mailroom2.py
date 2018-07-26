@@ -11,7 +11,7 @@ def prompt():
         create_report()
     elif action == "3":
         letters()
-    elif action == "q" or action == "quit":
+    elif action == "4" or action == "4":
         print("Have a nice day!")
     else:
         print("Please enter 1, 2, 3, or 4\n")
@@ -36,6 +36,13 @@ def thank_you():
     new = (input("That looks like a new donor. Would you like to add a new donor? (Y)es or (N)o? ").lower())
     if new == "yes" or new == "y":
         donors.append([person])
+        donation = float(input("How much was the donation? "))
+        donors[-1].append(donation)
+        print("\n" + person.title() + ":\n")
+        print("\tThank you very much for your generouse donation. Your")
+        print(f'${donation:.2f} donation will allow us to continue our efforts.')
+        print("Our charity would not exist without your support.\n")
+        print("Sincerely:\n\nLeadership Team at Charity X.\n\n")
         prompt()
     else:
         prompt()
@@ -52,6 +59,7 @@ def try_again():
 def create_report():
     donors_list = []
     z = 0
+    print(donors)
     for i in donors:
         donors_list.append([i[0]]) #name
         donors_list[z].append(sum(i[1:])) #total
