@@ -2,7 +2,10 @@
 # I cleaned up during the process and deleted the old methods so the end result is just the function
 
 
-def grid (x,y): #Defines a function to print grid to specified dimensions
+def grid(x,y): #Defines a function to print grid to specified dimensions -
+                #x being the size of the squares,
+                #y being the number of columns and rows to print of the square
+    
     p = '+ ' # This prints a + sign
     d = '- ' # This prints a dash
     b = '| ' # this prints a bar
@@ -11,5 +14,5 @@ def grid (x,y): #Defines a function to print grid to specified dimensions
         for i in range(x):
             print ((b + '  '*x) * y + b) #Prints the bar section to x dimension, repeated y times
         print ((p + d * x) * y + p) #completes the "squares" and repeats y times
-grid (3,4) #Prints a 4 x 4 matrix of 3x3 squares, + being the corners
+grid (3,8) #Prints a 4 x 4 matrix of 3x3 squares, + being the corners
 
