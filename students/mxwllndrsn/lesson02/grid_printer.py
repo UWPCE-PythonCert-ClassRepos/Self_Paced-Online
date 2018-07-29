@@ -23,7 +23,7 @@ def grid_printer(n, o=2):
     # must add a joint by default
     o += 1
 
-    #build a row and print it
+    #build our row
     for i in range(o):
         row += joint
 
@@ -34,18 +34,18 @@ def grid_printer(n, o=2):
                 else:
                     row += void + span
 
-    print(row)
-
-    #build a column and print it
-
+    #build our column
     for i in range(n):
         column = ''
         for i in range(o):
             column += pipe + void*(n + (n-1))
 
-        print(column)
-
-# column and row production has been consistently demonstrated
+    #print the grid
+    for i in range(o):
+        print(row)
+        if i != o-1:
+            for i in range(n):
+                print(column)
 
 
 
