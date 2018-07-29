@@ -3,7 +3,7 @@
 # for multiple of 5 print BUzz
 # for multiple of both 3 and 5 print FizzBuzz
 
-def FizzBuzz():
+def fizz_buzz():
 
     for i in range(1,101):
         output =""
@@ -19,4 +19,4 @@ def FizzBuzz():
         print(output)
 
 if __name__ == '__main__':
-    FizzBuzz()
+    fizz_buzz()
