@@ -4,7 +4,7 @@
 
 # o controls number of cells w/ a default value of 2
 # 2 cells are required for a grid
-# n controls cell width
+# n controls cell width and height
 
 def grid_printer(n, o=2):
 
