@@ -8,65 +8,65 @@ import os
 
 #!/usr/bin/env python
 
-list = ['Apples', 'Pears', 'Oranges', 'Peaches']
+list_a = ['Apples', 'Pears', 'Oranges', 'Peaches']
 
 #Series 1
-def series_one(list):
+def series_one(list_a):
     """ Function to display and add item to list
-    list: list of fruit
+    list_a: list of fruit
     new_list = list after mod in fruit
     new_fruit: new element to add to list
     id: index value
     new_fruit_2: another new element to add to list
     selection: list item scan
     """ 
-    print(list)
+    print(list_a)
     new_fruit = input('Please enter another fruit > ')
-    list = list + [new_fruit]
-    print(list)
+    list_a = list_a + [new_fruit]
+    print(list_a)
     id = input('Number on the list to display? ')
-    print('Number {} on the list is {}'.format(id, list[int(id)-1]))
+    print('Number {} on the list is {}'.format(id, list_a[int(id)-1]))
     new_fruit_2 = input('Please enter another fruit > ')    
-    list = [new_fruit_2] + list
-    print('Add: ', list)
-    list.insert(0,new_fruit_2)
-    print('Add & insert', list)
+    list_a = [new_fruit_2] + list_a
+    print('Add: ', list_a)
+    list_a.insert(0,new_fruit_2)
+    print('Add & insert', list_a)
     new_list = []
-    for selection in list:
+    for selection in list_a:
         if selection[0] == 'P':
             new_list += [selection]
     print('Fruit with P: ', new_list)    
-    return list
+    return list_a
 
 #Series 2    
-def series_two(list):
+def series_two(list_a):
     """ Function to remove item from list
-    list: input list
+    list_a: input list
     fruit: fruit from list
     respond: fruit to delete
     """
-    print('Series 2: ', list)
-    list.remove(list[-1])
-    print('Removed Last: ', list)
-    double_list = list.copy()
-    list += double_list
-    print(list)
+    print('Series 2: ', list_a)
+    list_a.remove(list_a[-1])
+    print('Removed Last: ', list_a)
+    double_list = list_a.copy()
+    list_a += double_list
+    print(list_a)
     respond = input('What fruit do you want to delete from the list? ')
-    while respond in list:
-        list.remove(respond)
-    print(list)
+    while respond in list_a:
+        list_a.remove(respond)
+    print(list_a)
 
 
 #Series 3
-def series_three(list):
+def series_three(list_a):
     """Function to remove dislike fruit
-    list: input list
+    list_a: input list
     mod_list: list with removed fruit
     fruit: fruit from list
     respond: fruit to delete
     """
-    mod_list = list.copy()
-    for fruit in list:
+    mod_list = list_a.copy()
+    for fruit in list_a:
         print('Do you like {}?'.format(fruit.lower())) 
         respond = None
         while respond != 'no' and respond != 'yes':
@@ -74,7 +74,7 @@ def series_three(list):
             if respond == 'no':
                 mod_list.remove(fruit)
     print('Modified List: ' , mod_list)
-    print('Existing list: ' , list)
+    print('Existing list: ' , list_a)
 
 #Series 4
 def series_four(org_list):
@@ -96,7 +96,7 @@ def series_four(org_list):
     
 
 # Run all tasks in the program
-list_one = series_one(list)
+list_one = series_one(list_a)
 series_two(list_one)
 series_three(list_one)
 series_four(list_one)
