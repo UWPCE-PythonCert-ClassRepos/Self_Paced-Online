@@ -3,8 +3,9 @@ but for multiple of 3 print Fizz
  for multiple of 5 print BUzz
  for multiple of both 3 and 5 print FizzBuzz   """
 
-def fizz_buzz():
 
+def fizz_buzz():
+    """Prints Fizz for n%3 and Buzz for n%5 and FizzBuzz for both"""
     for i in range(1, 101):
         output = ""
         if i % 3 == 0:
