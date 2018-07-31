@@ -36,12 +36,26 @@ fruit2.remove(response)
 print(fruit2) """
 
 # Series 3
-fruit = ["Apples", "Pears", "Oranges", "Peaches"]
+""" fruit = ["Apples", "Pears", "Oranges", "Peaches"]
 fruit3 = fruit
 for i in fruit3:
     response = input("Do you like " + i.lower() + "?")
     if response == "no":
         fruit3.remove(i)
-print(fruit3)
+print(fruit3) """
 
 # look into how enumerate woorks to fix this/make it easier.
+# Using the remove() function in the for loop causes the next iteration to skip the next item
+# in the list because the next utem slides up to the current index.
+# getting around this an am making a separate copy of the list.
+
+fruit = ["Apples", "Pears", "Oranges", "Peaches"]
+fruit3 = fruit
+new_fruit = []
+for i in fruit3:
+    response = input("Do you like " + i.lower() + "?")
+    while response not in ['no','yes']:
+        response = input("Respond with only 'yes' or 'no'")
+    if response == "yes":
+        new_fruit.append(i) 
+    print(new_fruit)
