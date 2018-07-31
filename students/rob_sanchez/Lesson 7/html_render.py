@@ -91,3 +91,20 @@ class Hr(SelfClosingTag):
 
 class Br(SelfClosingTag):
     tag = "br"
+
+
+class A(Element):
+    tag = "a"
+
+    def __init__(self, link, content):
+        Element.__init__(self, content, href=link)
+
+    def render(self, file_out, cur_ind=""):
+        style_tag = ' href="{}"'.format(self.kwargs['href']) if ("href" in self.kwargs) else ''
+        open_tag = '{}<{}{}>{}'
+        close_tag = '</{}>\n'
+
+        for val in self.content:
+            file_out.write(open_tag.format(cur_ind, self.tag, style_tag.format(self.kwargs), val))
+
+        file_out.write(close_tag.format(self.tag))
