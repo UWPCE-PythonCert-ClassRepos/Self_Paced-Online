@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Series 1
-""" fruit = ["Apples", "Pears", "Oranges", "Peaches"]
+fruit = ["Apples", "Pears", "Oranges", "Peaches"]
 response = input("Add another fruit: ")
 fruit.append(response)
 print(fruit)
@@ -25,15 +25,17 @@ for i in fruit:
     j=j+1
 print(p_fruit)
 
+
 # Series 2
 # Made fruit2 so list from first sequence unchanged for series 3 and 4.
-fruit2 = fruit
+fruit2 = fruit.copy()
 print(fruit2)
 fruit2.pop()
 print(fruit2)
 response = input("Type a fruit to delete:")
 fruit2.remove(response)
-print(fruit2) """
+print(fruit2)
+
 
 # Series 3
 
@@ -42,7 +44,7 @@ print(fruit2) """
 # getting around this an am making a separate copy of the list.
 
 #fruit = ["Apples", "Pears", "Oranges", "Peaches"]
-""" fruit3 = fruit
+fruit3 = fruit.copy()
 new_fruit = []
 for i in fruit3:
     response = input("Do you like " + i.lower() + "? ")
@@ -50,11 +52,12 @@ for i in fruit3:
         response = input("Respond with only 'yes' or 'no': ")
     if response == "yes":
         new_fruit.append(i) 
-print(new_fruit) """
+print(new_fruit)
+
 
 # Series 4
 
-fruit = ["Apples", "Pears", "Oranges", "Peaches"]
+#fruit = ["Apples", "Pears", "Oranges", "Peaches"]
 fruit4 = fruit.copy()
 fruit_reverse = fruit.copy()
 for i, f in enumerate(fruit4):
