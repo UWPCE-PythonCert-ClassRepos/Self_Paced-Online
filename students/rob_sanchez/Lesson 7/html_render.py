@@ -19,12 +19,18 @@ class Element:
 
     # renders the tag and the strings in the content
     def render(self, file_out, cur_ind=""):
-        style_tag = ' style="{}"'.format(self.kwargs['style']) if ("style" in self.kwargs) else ''
+        attrs = ""
+        for key, value in self.kwargs.items():
+            style_tag = ' {}="{}"'
+            attrs = attrs + style_tag.format(key, value)
+
+        # style_tag = ' style="{}"'.format(self.kwargs['style']) if ("style" in self.kwargs) else ''
+
         open_tag = "{}<{}{}>\n"
         # open_tag = "{}<{}{}>\n" if (self.one_line == "False") else "{}<{}>"
         close_tag = "{}</{}>\n"
 
-        file_out.write(open_tag.format(cur_ind, self.tag, style_tag))
+        file_out.write(open_tag.format(cur_ind, self.tag, attrs))
 
         for values in self.content:
             if hasattr(values, "render"):
@@ -108,3 +114,18 @@ class A(Element):
             file_out.write(open_tag.format(cur_ind, self.tag, style_tag.format(self.kwargs), val))
 
         file_out.write(close_tag.format(self.tag))
+
+
+class Ul(Element):
+    tag = "ul"
+
+
+class Li(Element):
+    tag = "li"
+
+
+class H(OneLineTag):
+
+    def __init__(self, level, content, **kwargs):
+        OneLineTag.__init__(self, content, **kwargs)
+        self.tag = "h" + str(level)
