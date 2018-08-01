@@ -24,10 +24,7 @@ class Element:
             style_tag = ' {}="{}"'
             attrs = attrs + style_tag.format(key, value)
 
-        # style_tag = ' style="{}"'.format(self.kwargs['style']) if ("style" in self.kwargs) else ''
-
         open_tag = "{}<{}{}>\n"
-        # open_tag = "{}<{}{}>\n" if (self.one_line == "False") else "{}<{}>"
         close_tag = "{}</{}>\n"
 
         file_out.write(open_tag.format(cur_ind, self.tag, attrs))
@@ -81,14 +78,19 @@ class Title(OneLineTag):
 
 
 class SelfClosingTag(Element):
-    def __init__(self, content=None):
+    def __init__(self, content=None, **kwargs):
+        self.kwargs = kwargs
         if content is not None:
             raise TypeError("Self closing tags must be empty!")
 
     def render(self, file_out, cur_ind=""):
-        sc_tag = "{}<{} /> \n"
+        sc_tag = "{}<{}{} /> \n"
+        attrs = ""
+        for key, value in self.kwargs.items():
+            style_tag = ' {}="{}"'
+            attrs = attrs + style_tag.format(key, value)
 
-        file_out.write(sc_tag.format(cur_ind, self.tag))
+        file_out.write(sc_tag.format(cur_ind, self.tag, attrs))
 
 
 class Hr(SelfClosingTag):
@@ -129,3 +131,7 @@ class H(OneLineTag):
     def __init__(self, level, content, **kwargs):
         OneLineTag.__init__(self, content, **kwargs)
         self.tag = "h" + str(level)
+
+
+class Meta(SelfClosingTag):
+    tag = "meta"
