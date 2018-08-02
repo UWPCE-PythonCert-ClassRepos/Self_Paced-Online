@@ -35,14 +35,24 @@ else:
 #
 # try calling the more_fun function with the 2nd language in the list,
 # again assigning it to more_joke.
+
+
+langs = ['java', 'c', 'python']
+more_fun(langs[1])
+
 #
 # If there are no exceptions, call the more_fun function with the last
 # language in the list
+more_fun(langs[2])
 
 # Finally, while still in the try/except block and regardless of whether
 # there were any exceptions, call the function last_fun with no
 # parameters. (pun intended)
 
-langs = ['java', 'c', 'python']
+try:
+	langs = ['java', 'c', 'python']
+	more_joke = more_fun(langs[0])
+except IndexError:
+	more_joke = more_fun(1)
 
-#more_joke = more_fun(langs[0])
+last_fun()
