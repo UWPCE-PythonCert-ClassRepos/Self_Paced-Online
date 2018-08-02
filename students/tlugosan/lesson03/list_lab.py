@@ -40,6 +40,7 @@ print(fruit_list)
 print()
 
 """Display all the fruits that start with P using a for loop"""
+print("Fruit that start with letter P: ", end=" ")
 for item in fruit_list:
     if item.startswith("P"):
         print(item, end=" ")
@@ -53,16 +54,18 @@ print(fruit_list)
 
 """Remove the last fruit from the list."""
 fruit_list.remove(fruit_list[len(fruit_list) - 1])
+print("Last fruit from the list was removed")
 
 """Display list."""
 print(fruit_list)
+print ()
 
 """Prompt the user to delete for a fruit to delete, find it and remove it( This assumes just first occurrence."""
 response5 = input("Pick a fruit from the list to delete: ")
-for item in fruit_list:
-    if item.lower() == response5.lower():
-        fruit_list.remove(item)
+if fruit_list.__contains__(response5.capitalize()):
+    fruit_list.remove(response5.capitalize())
 print(fruit_list)
+print ()
 
 """ Multiply the list times two. Keep asking until a match is found. Once found, delete all occurrences."""
 fruit_list += fruit_list
@@ -70,9 +73,8 @@ print(fruit_list)
 response6 = input("Pick another fruit from the list to delete: ")
 while True:
     if fruit_list.__contains__(response6.capitalize()):
-        for i in range(len(fruit_list)):
-            if i <= len(fruit_list) and fruit_list[i].lower() == response6.lower():
-                fruit_list.remove(response6.capitalize())
+        while fruit_list.__contains__(response6.capitalize()):
+            fruit_list.remove(response6.capitalize())
         break
     else:
         response6 = input("This fruit doesn't exist in the list. Please try again: ")
