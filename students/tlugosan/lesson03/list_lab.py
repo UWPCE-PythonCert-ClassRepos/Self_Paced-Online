@@ -56,16 +56,17 @@ print("Last fruit from the list was removed")
 
 """Display list."""
 print(fruit_list)
-print ()
+print()
 
-"""Prompt the user to delete for a fruit to delete, find it and remove it( This assumes just first occurrence."""
+"""Prompt the user to delete for a fruit to delete, find it and remove it."""
 response5 = input("Pick a fruit from the list to delete: ")
 if fruit_list.__contains__(response5.capitalize()):
     fruit_list.remove(response5.capitalize())
 print(fruit_list)
-print ()
+print()
 
-""" Multiply the list times two. Keep asking until a match is found. Once found, delete all occurrences."""
+""" Multiply the list times two. Keep asking until a match is found.
+Once found, delete all occurrences."""
 fruit_list += fruit_list
 print(fruit_list)
 response6 = input("Pick another fruit from the list to delete: ")
@@ -92,7 +93,7 @@ temp_fruit_list = []
 for item in fruit_list3:
     response7 = input("Do you like %s? Please answer with yes or no: " % item.lower())
     while not (response7.lower() == YES.lower() or response7.lower() == NO.lower()):
-            response7 = input("Please answer only with yes or no: ")
+        response7 = input("Please answer only with yes or no: ")
     if response7.lower() == YES.lower():
         temp_fruit_list.append(item)
 fruit_list3 = temp_fruit_list
@@ -114,7 +115,7 @@ for item in fruit_list4:
 print("Copy of reversed items list: %s" % reversed_fruit_list)
 print()
 
-fruit_list4.pop(len(fruit_list4) -1)
+fruit_list4.pop(len(fruit_list4) - 1)
 print("Original list once the last item was removed: %s" % fruit_list4)
 print("Copy of reversed items list: %s" % reversed_fruit_list)
 # endregion
