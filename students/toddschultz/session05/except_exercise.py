@@ -25,7 +25,7 @@ try:
 except SyntaxError:
     print('Run Away!')
 else:
- 	print("not_joke")
+ 	print(not_joke)
 
 # What did that do? You can think of else in this context, as well as in
 # loops as meaning: "else if nothing went wrong"
@@ -43,6 +43,7 @@ more_fun(langs[1])
 #
 # If there are no exceptions, call the more_fun function with the last
 # language in the list
+
 more_fun(langs[2])
 
 # Finally, while still in the try/except block and regardless of whether
