@@ -1,4 +1,4 @@
-#! python
+#!/usr/bin/env python3
 
 # region series1
 """Create a list that contains “Apples”, “Pears”, “Oranges” and “Peaches”"""
