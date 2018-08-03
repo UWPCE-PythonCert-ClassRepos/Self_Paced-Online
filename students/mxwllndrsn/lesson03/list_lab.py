@@ -69,3 +69,16 @@ def fruits_3():
             fruits.remove(fruit)
 
     print(fruits)
+
+def fruits_4():
+
+    fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
+
+    cp_fruits = fruits[:]
+
+    for i in range(len(cp_fruits)):
+        cp_fruits[i] = fruits[i][::-1]
+
+    del fruits[len(fruits)-1]
+    print(fruits)
+    print(cp_fruits)
