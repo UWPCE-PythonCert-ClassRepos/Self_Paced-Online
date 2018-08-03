@@ -8,8 +8,8 @@ fruit_list = ["Apples", "Pears", "Oranges", "Peaches"]
 print(fruit_list)
 
 """Ask for another fruit and add it to the end"""
-response1 = input("Please provide another fruit: ")
-fruit_list.append(response1.capitalize())
+response1 = input("Please provide another fruit: ").lower().capitalize()
+fruit_list.append(response1)
 
 """Display list."""
 print(fruit_list)
@@ -26,14 +26,14 @@ print("%d : %s" % (int(response2), fruit_list[int(response2) - 1]))
 print()
 
 """Add another fruit at the beginning of the list using +  then print the list"""
-response3 = input("Please provide another fruit: ")
-fruit_list = [response3.capitalize()] + fruit_list
+response3 = input("Please provide another fruit: ").lower().capitalize()
+fruit_list = [response3] + fruit_list
 print(fruit_list)
 print()
 
 """ Add another fruit at the beginning at the list using insert() function"""
-response4 = input("Please provide another fruit: ")
-fruit_list.insert(0, response4.capitalize())
+response4 = input("Please provide another fruit: ").lower().capitalize()
+fruit_list.insert(0, response4)
 print(fruit_list)
 print()
 
@@ -51,7 +51,7 @@ print("---------------------------------")
 print(fruit_list)
 
 """Remove the last fruit from the list."""
-fruit_list.pop(len(fruit_list) - 1)
+fruit_list.pop()
 print("Last fruit from the list was removed")
 
 """Display list."""
@@ -59,9 +59,9 @@ print(fruit_list)
 print()
 
 """Prompt the user to delete for a fruit to delete, find it and remove it."""
-response5 = input("Pick a fruit from the list to delete: ")
-if fruit_list.__contains__(response5.capitalize()):
-    fruit_list.remove(response5.capitalize())
+response5 = input("Pick a fruit from the list to delete: ").lower().capitalize()
+if response5 in fruit_list:
+    fruit_list.remove(response5)
 print(fruit_list)
 print()
 
@@ -69,14 +69,14 @@ print()
 Once found, delete all occurrences."""
 fruit_list += fruit_list
 print(fruit_list)
-response6 = input("Pick another fruit from the list to delete: ")
+response6 = input("Pick another fruit from the list to delete: ").lower().capitalize()
 while True:
-    if fruit_list.__contains__(response6.capitalize()):
-        while fruit_list.__contains__(response6.capitalize()):
-            fruit_list.remove(response6.capitalize())
+    if response6 in fruit_list:
+        while response6 in fruit_list:
+            fruit_list.remove(response6)
         break
     else:
-        response6 = input("This fruit doesn't exist in the list. Please try again: ")
+        response6 = input("This fruit doesn't exist in the list. Please try again: ").lower().capitalize()
 print(fruit_list)
 print("---------------------------------")
 # endregion
@@ -87,14 +87,14 @@ print("---------------------------------")
 
 fruit_list3 = ["Apples", "Pears", "Oranges", "Peaches"]
 print(fruit_list3)
-YES = "Yes"
-NO = "No"
+YES = "yes"
+NO = "no"
 temp_fruit_list = []
 for item in fruit_list3:
-    response7 = input("Do you like %s? Please answer with yes or no: " % item.lower())
-    while not (response7.lower() == YES.lower() or response7.lower() == NO.lower()):
-        response7 = input("Please answer only with yes or no: ")
-    if response7.lower() == YES.lower():
+    response7 = input("Do you like %s? Please answer with yes or no: " % item.lower()).lower()
+    while response7 not in (YES, NO):
+        response7 = input("Please answer only with yes or no: ").lower()
+    if response7 == YES:
         temp_fruit_list.append(item)
 fruit_list3 = temp_fruit_list
 print("The fruit that you like are: %s" % fruit_list3)
@@ -115,7 +115,7 @@ for item in fruit_list4:
 print("Copy of reversed items list: %s" % reversed_fruit_list)
 print()
 
-fruit_list4.pop(len(fruit_list4) - 1)
+fruit_list4.pop()
 print("Original list once the last item was removed: %s" % fruit_list4)
 print("Copy of reversed items list: %s" % reversed_fruit_list)
 # endregion
