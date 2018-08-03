@@ -48,12 +48,24 @@ def fruits_2():
     print(fruits)
     print()
 
-    dislike = input('what fruit don\'t you like? >')
+    preference = input('what fruit don\'t you like? >')
 
     try:
-        fruits.remove(dislike)
+        fruits.remove(preference)
     except ValueError:
         print('didn\'t find that one!')
 
     print('got rid of it for you: ', fruits)
 
+def fruits_3():
+
+    fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
+
+    for fruit in fruits[:]:
+        preference = input('Do you like {}? '.format(fruit.lower()))
+        while (preference != 'yes' and preference != 'no'):
+            preference = input('Please answer either \'yes\' or \'no\' >')
+        if preference == 'no':
+            fruits.remove(fruit)
+
+    print(fruits)
