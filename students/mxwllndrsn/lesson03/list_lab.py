@@ -39,4 +39,21 @@ def fruits():
         else:
             "no p fruits found"
 
+def fruits_2():
+
+    fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
+    print(fruits)
+
+    fruits.pop()
+    print(fruits)
+    print()
+
+    dislike = input('what fruit don\'t you like? >')
+
+    try:
+        fruits.remove(dislike)
+    except ValueError:
+        print('didn\'t find that one!')
+
+    print('got rid of it for you: ', fruits)
 
