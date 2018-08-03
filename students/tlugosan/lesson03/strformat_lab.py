@@ -61,5 +61,5 @@ for row in table:
 print()
 
 consecutive_number= (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-length_consec_numbers = len(consecutive_number)
-print(" ".join(["{:^5}"] * length_consec_numbers).format(*consecutive_number))
+length_consecutive_numbers = len(consecutive_number)
+print(" ".join(["{:>5}"] * length_consecutive_numbers).format(*consecutive_number))
