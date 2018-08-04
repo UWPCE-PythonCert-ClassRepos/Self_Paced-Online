@@ -27,7 +27,7 @@ def thank_you():  # Coded out to focus on the report part
         d_name = donor.index(ty_donor.title())
         amount = float(input('Please enter the donation amount: '))
         donor_db[d_name].append(amount)
-        print('Dear {},\n'
+        print('\n\nDear {},\n'
               '\nThank you for your additional generous donation of ${}, your generosity is so greatly appreciated.\n'
               'We are pleased to have you continue to help in our effort to teach Python to the next generation.\n'
               '\nSincerely,\n'
@@ -41,7 +41,7 @@ def thank_you():  # Coded out to focus on the report part
         new_donor.append(ty_donor.title())
         new_donor.append(amount)
         donor_db.append(new_donor)
-        print('Dear {},\n'
+        print('\n\nDear {},\n'
               '\nThank you for your generous donation of ${}, your generosity is greatly appreciated.\n'
               'These funds will help insure that our efforts to teach Python to the next generation.\n'
               '\nSincerely,\n'
