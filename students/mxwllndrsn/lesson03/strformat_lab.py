@@ -4,20 +4,23 @@
 
 #string lab
 
+#task 1
 def str_format():
 
     atuple = (2, 123.4567, 10000, 12345.67)
 
-    print('file_00{:d}: {:.2f}, {:.2e}, {:.2e}'.format(*atuple))
+    print('file_{:03d}: {:.2f}, {:.2e}, {:.2e}'.format(*atuple))
 
+#task 1.1
 def alt_format():
 
     atuple = (2, 123.4567, 10000, 12345.67)
 
-    print(f'file_00{atuple[0]}: {atuple[1]:.2f},' + \
+    print(f'file_{atuple[0]:03d}: {atuple[1]:.2f},' + \
                 f' {atuple[2]:.2e}, {atuple[3]:.2e}')
+    #how would you go about generating this for fstrings?
 
-
+#task 2
 def arb_number():
 
     atuple = (2, 5, 6, 3, 2, 1)
@@ -27,6 +30,7 @@ def arb_number():
     print('The {} numbers are: '.format(l) + \
           ', '.join(['{}']*l).format(*atuple))
 
+#task fun
 def form_string():
 
     form_string = "{:d}, {:.2e}"
@@ -35,9 +39,30 @@ def form_string():
 
     print(f'this is an f string ' + ' '.join(f'{x:.2e}'for x in nums))
 
+#task 3
 def formatter(intuple):
 
     l = len(intuple)
     form_string = 'The {} numbers are: ' + ', '.join(['{}']*l)
 
     return form_string.format(l, *intuple)
+
+#task 4
+def five_el():
+
+    tuple5 = (4, 30, 2017, 2, 27)
+
+    print('{3:02d} {4} {2} {0:02d} {1}'.format(*tuple5))
+
+#task 5
+def fruit_string():
+
+    f = ['oranges', 1.3, 'lemons', 1.1]
+
+    print(f'The weight of an {f[0]} is {f[1]:.1f}' + \
+          f' and the weight of a {f[2]} is {f[3]:.1f}')
+    print()
+    print(f'The weight of an {f[0].upper()} is {f[1]*1.2:.1f}' + \
+          f' and the weight of a {f[2].upper()} is {f[3]*1.2:.1f}')
+    #same q, how to pass tuple to fstring and replace by index
+    #instead of being so verbose
