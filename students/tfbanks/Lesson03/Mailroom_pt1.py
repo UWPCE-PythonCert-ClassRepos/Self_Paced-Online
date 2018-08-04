@@ -11,19 +11,19 @@ donor_db = [
     ['Marlene Wheeler', 820, 1222.80]
 ]
 
-donor = []
+donor = []  # Craate Donor List
 for dname in donor_db:
     d = dname[0]
     donor.append(d)
 
 
-def thank_you():  # Coded out to focus on the report part
+def thank_you():  # Code for selecting Donor and writing a Thank You Note
     ty_donor = input('Enter the Full Name of a donor (for list of previous donors type list): ')
 
-    if ty_donor.title() == 'List':
+    if ty_donor.title() == 'List':  # If List, Prints Donor List and restarts the function
         print(donor)
         thank_you()
-    elif ty_donor.title() in donor:
+    elif ty_donor.title() in donor:   #  If Donor is on list, print a letter thanking them for another donation
         d_name = donor.index(ty_donor.title())
         amount = float(input('Please enter the donation amount: '))
         donor_db[d_name].append(amount)
@@ -33,8 +33,8 @@ def thank_you():  # Coded out to focus on the report part
               '\nSincerely,\n'
               '\nJoesef Edword Bringingham\n\n'.format(ty_donor, amount))
 
-        what_to_do_2()
-    elif ty_donor.title() not in donor:
+        what_to_do_2()  #  Takes to a new what to do that reflects the fact they just wrote a thank you note
+    elif ty_donor.title() not in donor:  #  If donor is not on the list, this collects the data, appends to the lists, and writes a new letter.
         donor.append(ty_donor.title())
         new_donor = []
         amount = float(input('Please enter the donation amount: '))
@@ -46,10 +46,10 @@ def thank_you():  # Coded out to focus on the report part
               'These funds will help insure that our efforts to teach Python to the next generation.\n'
               '\nSincerely,\n'
               '\nJoesef Edword Bringingham\n\n'.format(ty_donor, amount))
-        what_to_do_2()
+        what_to_do_2() # Takes to a new what to do statement that reflects the fact they just wrote a thank you note
 
 
-def report():
+def report():  # Defines parameters of the report of donors and prints it.
     print('Donor Name            |  Total Given | Num Gifts |  Average Gift')
     print('------------------------------------------------------------------\n')
     donor_names = []
@@ -68,10 +68,10 @@ def report():
     for p in range(len(donor_names)):
         print(f'{donor_names[p]:<22s}  ${total_given[p]:>13}   {num_gifts[p]:^8}    ${average_gift[p]:>12}')
     print('\n')
-    what_to_do_3()
+    what_to_do_3()  # takes the user to another what to do statement that reflects they just ran a report
 
 
-def what_to_do():
+def what_to_do():  # Original What to do question, asks what is wanted to be done.
     answer = input('What would you like to do? Send an Thank You note? (n), Create a report (r), or Quit (q): ')
     while answer.title() not in ['N', 'R', 'Q']:
         answer = input('What would you like to do? Send an Thank You note? (n), Create a report (r) or Quit (q): ')
@@ -86,7 +86,7 @@ def what_to_do():
         quit()
 
 
-def what_to_do_2():
+def what_to_do_2():  # 2nd statement, recognizes a letter was written and asks if another is desired, or report or quit.
     answer = input(
         'Anything else you would like to do? Send another Thank You note? (n), Create a report (r), or Quit (q): ')
     while answer.title() not in ['N', 'R', 'Q']:
@@ -101,7 +101,7 @@ def what_to_do_2():
         quit()
 
 
-def what_to_do_3():
+def what_to_do_3():   # 3nd statement, recognizes a report was run, and if wanted to run again or write a letter or quit.
     answer = input(
         'Anything else you would like to do? Send an Thank You note? (n), Create another report (r), or Quit (q): ')
     while answer.title() not in ['N', 'R', 'Q']:
