@@ -40,8 +40,6 @@ class Donor():
     def number(self):
         return len(self.donations)
 
-    # TODO replace positional args by **kwargs or
-    # TODO make name display flexible to print out any James Sr Junior
     @property
     def greetings(self):
         g1 = """
