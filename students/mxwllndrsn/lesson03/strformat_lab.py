@@ -66,3 +66,26 @@ def fruit_string():
           f' and the weight of a {f[2].upper()} is {f[3]*1.2:.1f}')
     #same q, how to pass tuple to fstring and replace by index
     #instead of being so verbose
+
+#task 6
+def alignment():
+
+  #  atuple = (2234, 5, 26, 333, 44442, 133, 2)
+
+ #   l = len(atuple)
+ #   width = 10
+
+#    print('\n'.join(['{:<{width}}']*l).format(*atuple, width = width))
+
+    rows = ('Name', 'Age', 72, 'Cost', '$', 82342.3423002)
+
+    for row in rows:
+        print('{:10}{:<5}{:<10}{:<6}{:<2}{:.2f}'.format(*rows))
+
+def quick_tup():
+
+    #if you passed this tup in then yeah it would be a one liner
+    tup = (0,1,2,3,4,5,6,7,8,9)
+
+    print(''.join(['{:<5}']*len(tup)).format(*tup))
+    #neat
