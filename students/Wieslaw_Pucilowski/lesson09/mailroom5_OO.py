@@ -83,51 +83,6 @@ class DonorsCollection():
         self._donors = {}
         self.donors = val
         self.rep = ""
-        self.wrong_option = "{:<20}".format(" - Wrong option !!!")
-        self.main_prompt = """
-        {:-^30}
-
-        1 - Send a Thank You
-        2 - Create a Report
-        3 - Send letters to everyone
-        q - Quit
-    """.format(' Main Menu ')
-        self.sub_prompt = """
-        {:-^30}
-
-        1 - Add new donor, donation
-        2 - List donors
-        q - Go to Main Menu
-
-    """.format(' Add/List donors ')
-        self.main_dispatch = {
-            '1': self.sub_menu,
-            '2': self.print_report,
-            '3': self.write_letters,
-            'q': self.quit_menu, }
-        self.sub_dispatch = {
-            '1': self.add_donor,
-            '2': self.display,
-            'q': self.quit_menu, }
-
-    def menu_selection(self, prompt, dispatch_dict):
-        while True:
-            response = input(prompt)
-            try:
-                if dispatch_dict[response]() == "exit menu":
-                    break
-            except KeyError:
-                print(response, self.wrong_option)
-
-    def main_menu(self):
-        self.menu_selection(self.main_prompt, self.main_dispatch)
-
-    def sub_menu(self):
-        self.menu_selection(self.sub_prompt, self.sub_dispatch)
-
-    def quit_menu(self):
-        print("Goodbye...\n")
-        return "exit menu"
 
     @property
     def donors(self):
@@ -191,7 +146,85 @@ class DonorsCollection():
             d.write_letter()
 
 
+# Donors DB initialization
+dd = DonorsCollection()
+
+
+class Main:
+    @staticmethod
+    def report():
+        dd.print_report()
+
+    @staticmethod
+    def letters():
+        dd.write_letters()
+
+    @staticmethod
+    def donor():
+        dd.add_donor()
+
+    @staticmethod
+    def show():
+        dd.display()
+
+    def quit(msg):
+        print("{}".format(msg))
+        return "exit menu"
+
+    @classmethod
+    def main_quit(cls):
+        return cls.quit("Goodbye...")
+
+    @classmethod
+    def sub_quit(cls):
+        return cls.quit("Back to Main menu...")
+
+    def menu_selection(prompt, dispatcher):
+            while True:
+                response = input(prompt)
+                try:
+                    if dispatcher[response]() == "exit menu":
+                        break
+                except KeyError:
+                    print(response, "Wrong response !")
+
+    @classmethod
+    def sub_menu(cls):
+        cls.menu_selection(submenu, subfeatures)
+
+
 if __name__ == "__main__":
+
+    menu = """
+        {:-^30}
+
+        1 - Send a Thank You
+        2 - Create a Report
+        3 - Send letters to everyone
+        q - Quit
+    """.format(' Main Menu ')
+
+    submenu = """
+        {:-^30}
+
+        1 - Add new donor, donation
+        2 - List donors
+        q - Go to Main Menu
+
+    """.format(' Add/List donors ')
+
+    features = {
+            '1': Main.sub_menu,
+            '2': Main.report,
+            '3': Main.letters,
+            'q': Main.main_quit,
+            }
+
+    subfeatures = {
+            '1': Main.donor,
+            '2': Main.show,
+            'q': Main.sub_quit,
+            }
 
     d1 = Donor("Stephan LeClerc")
     d2 = Donor("Chris Ping")
@@ -199,9 +232,8 @@ if __name__ == "__main__":
     for i in range(4):
         d1.donations, d2.donations, d3.donations = (10*i)+10, \
                                                    (10*i+2)+10, (10*i+3)+10
-    dd = DonorsCollection()
     dd.donors = d1
     dd.donors = d2
     dd.donors = d3
-    # start menu
-    dd.main_menu()
+    # start program menu
+    Main.menu_selection(menu, features)
