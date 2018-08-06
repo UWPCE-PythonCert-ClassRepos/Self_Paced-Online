@@ -95,6 +95,7 @@ class DonorsCollection():
                 self._donors[val.name] = val
             else:
                 raise ValueError("Must be instance od Donor class")
+                return
 
     def add_donor(self):
         name = input("Type donor first and last name: ")
@@ -104,7 +105,15 @@ class DonorsCollection():
                 input(" Donation in USD: "))
         else:
             d = Donor(name)
-            d.donations = float(input("Donation in USD: "))
+            try:
+                d.donations = float(input("Donation in USD: "))
+            except ValueError:
+                print("""
+                      Donation must be in USD...
+                      Donor not added
+                      """)
+                del(d)
+                return
             self.donors = d
         self.donors[donor_name].print_greetings
 
@@ -113,7 +122,7 @@ class DonorsCollection():
 
     def display(self):
         for donor in sorted(self.donors, key=self.display_key):
-            print("{} {},".format(donor[0], donor[1]))
+            print("".join(["{} "]*len(donor)).format(*donor))
 
     def custom_key(self, a):
         return(a[1].total)  # 2nd arg => dict value => Donor instance
@@ -121,20 +130,22 @@ class DonorsCollection():
     @property
     def report(self):
         self.rep = ""
-        self.rep += "{:<30}| {:<18}| {:<8}| {:<18}\n".format('Donor Name',
+        self.rep += "{:<40}| {:<18}| {:<8}| {:<18}\n".format('Donor Name',
                                                              'Total Given',
                                                              'Num Gifts',
                                                              'Average Gift')
+        self.rep += "{:-<90}\n".format('')
         for k, v in sorted(self.donors.items(),
                            key=self.custom_key, reverse=True):
-            self.rep += "{:<30}{}{:>18.2f} \
-                        {:>11}{}{:>17.2f}\n".format(k[0]+' '
-                                                    + k[1],
-                                                    ' $',
-                                                    v.total,
-                                                    v.number,
-                                                    ' $',
-                                                    v.average)
+
+            name = " ".join(["{} "]*len(k)).format(*k)
+            self.rep += "{:<40}{}{:>18.2f}{:>11}{}{:>17.2f}\n".format(name,
+                                                        ' $',
+                                                        v.total,
+                                                        v.number,
+                                                        ' $',
+                                                        v.average)
+
         return(self.rep)
 
     def print_report(self):
