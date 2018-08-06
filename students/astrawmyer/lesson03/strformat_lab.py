@@ -30,4 +30,11 @@ def formatter(input_tuple):
 
 four = (4, 30, 2017, 2, 27)
 out_four = '{3:0>2} {4} {2} {0:0>2} {1}'.format(*four)
-print(out_four)
+#print(out_four)
+
+#Task FIve
+
+five = ['oranges', 1.3, 'lemons', 1.1]
+
+five_out = f"The weight of an {five[0][:-1]} is {five[1]} and the weight of a {five[2][:-1]} is {five[3]}"
+print(five_out)
