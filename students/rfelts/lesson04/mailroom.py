@@ -11,6 +11,9 @@ donor_data = {"Lionel Messi": [100], "Cristiano Ronaldo": [5000, 25, 9450], "Gia
 def prompt_user(prompt, menu):
     """
     Prompt the user to choose from a menu of 3 actions: “Send a Thank You”, “Create a Report” or “quit”.
+    :param prompt: String representing the menu options to present to the user
+    :param menu: Dictionary of valid menu values
+
     """
     input_string = "\nPlease enter one of the following options: " + ', '.join(prompt) + ": "
 
@@ -91,7 +94,7 @@ def list_donors():
 
 def create_name_list():
     """
-    Create a list containing the names of the donors
+    Create a list containing the names of the donors.
     :return: a list of donor names
     """
     return donor_data.keys()
@@ -125,7 +128,7 @@ def add_donation():
 def prompt_donation_amount(donor):
     """
     Prompt the user for the amount donated
-    :param: string representing the name of the person making the donation
+    :param donor: string representing the name of the person making the donation
     :return: a float representing the amount donated
     """
     prompt_string = "\nPlease enter " + donor + "'s donation amount: "
