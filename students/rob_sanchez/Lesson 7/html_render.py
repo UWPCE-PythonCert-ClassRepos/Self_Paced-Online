@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 
-# Class for rendering an html element
+# Class for rendering an html elements
 class Element:
     tag = ""
-    ind_level = 1
-    indent = ind_level * " " * 4
+    ind_level = 4
+    indent = " " * ind_level
 
     def __init__(self, content=None, **kwargs):
 
@@ -33,19 +33,18 @@ class Element:
 
         for values in self.content:
             if hasattr(values, "render"):
-                values.render(file_out, ind_level=1)
+                values.render(file_out, ind_level=self.indent)
             else:
-                file_out.write("   " + self.indent + str(values) + "\n")
+                file_out.write(" "*4 + self.indent + str(values) + "\n")
 
         file_out.write(close_tag.format(self.indent, self.tag))
-        # self.ind_level = self.ind_level + 1
 
 
 class Html(Element):
     tag = "html"
     indent = ""
 
-    def render(self, file_out, ind_level=""):
+    def render(self, file_out, ind_level=1):
         initial_tag = "<!DOCTYPE html>\n"
         file_out.write(initial_tag)
         Element.render(self, file_out)
@@ -71,7 +70,7 @@ class OneLineTag(Element):
         open_tag = "{}<{}>"
         close_tag = "</{}>\n"
 
-        file_out.write(open_tag.format(self.indent * ind_level, self.tag))
+        file_out.write(open_tag.format(self.indent, self.tag))
 
         for values in self.content:
             file_out.write(str(values))
@@ -96,7 +95,7 @@ class SelfClosingTag(Element):
             style_tag = ' {}="{}"'
             styles = styles + style_tag.format(key, value)
 
-        file_out.write(sc_tag.format(self.indent*ind_level, self.tag, styles))
+        file_out.write(sc_tag.format(self.indent, self.tag, styles))
 
 
 class Hr(SelfClosingTag):
@@ -109,18 +108,19 @@ class Br(SelfClosingTag):
 
 class A(Element):
     tag = "a"
-    indent = " " * 12
+    addtl = " " * 8
 
     def __init__(self, link, content):
         Element.__init__(self, content, href=link)
 
-    def render(self, file_out, ind_level=3):
+    def render(self, file_out, ind_level):
         open_tag = '{}<{}{}>{}'
         style_tag = ' href="{}"'.format(self.kwargs['href']) if ("href" in self.kwargs) else ''
         close_tag = '</{}>\n'
 
         for val in self.content:
-            file_out.write(open_tag.format(self.indent, self.tag, style_tag.format(self.kwargs), val))
+            file_out.write(open_tag.format(self.indent+self.addtl, self.tag,
+                           style_tag.format(self.kwargs), val))
 
         file_out.write(close_tag.format(self.tag))
 
