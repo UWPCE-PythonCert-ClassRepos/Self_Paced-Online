@@ -62,7 +62,7 @@ def print_report():
             sum_donations = sum_donations + x
         total_gifts = len(v)
         average_gift = sum_donations / total_gifts
-        print("{0:<20}${1:>20.2f}{2:>20}${3:>20.2f}".format(k, sum_donations, total_gifts, average_gift))
+        print("{0:<20} ${1:>19.2f} {2:>20} ${3:>19.2f}".format(k, sum_donations, total_gifts, average_gift))
 
 
 if __name__ == '__main__':
