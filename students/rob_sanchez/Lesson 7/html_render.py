@@ -4,6 +4,8 @@
 # Class for rendering an html element
 class Element:
     tag = ""
+    ind_level = 1
+    indent = ind_level * " " * 4
 
     def __init__(self, content=None, **kwargs):
 
@@ -18,37 +20,40 @@ class Element:
         self.content.append(content)
 
     # renders the tag and the strings in the content
-    def render(self, file_out, cur_ind=""):
-        attrs = ""
+    def render(self, file_out, ind_level=ind_level):
+        styles = ""
         for key, value in self.kwargs.items():
             style_tag = ' {}="{}"'
-            attrs = attrs + style_tag.format(key, value)
+            styles = styles + style_tag.format(key, value)
 
         open_tag = "{}<{}{}>\n"
         close_tag = "{}</{}>\n"
 
-        file_out.write(open_tag.format(cur_ind, self.tag, attrs))
+        file_out.write(open_tag.format(self.indent, self.tag, styles))
 
         for values in self.content:
             if hasattr(values, "render"):
-                values.render(file_out, cur_ind)
+                values.render(file_out, ind_level=1)
             else:
-                file_out.write(cur_ind + str(values) + "\n")
+                file_out.write("   " + self.indent + str(values) + "\n")
 
-        file_out.write(close_tag.format(cur_ind, self.tag))
+        file_out.write(close_tag.format(self.indent, self.tag))
+        # self.ind_level = self.ind_level + 1
 
 
 class Html(Element):
     tag = "html"
+    indent = ""
 
-    def render(self, file_out, cur_ind=""):
+    def render(self, file_out, ind_level=""):
         initial_tag = "<!DOCTYPE html>\n"
         file_out.write(initial_tag)
-        Element.render(self, file_out, cur_ind)
+        Element.render(self, file_out)
 
 
 class Body(Element):
     tag = "body"
+    indent = ""
 
 
 class P(Element):
@@ -57,20 +62,21 @@ class P(Element):
 
 class Head(Element):
     tag = "head"
+    indent = ""
 
 
 class OneLineTag(Element):
 
-    def render(self, file_out, cur_ind=""):
+    def render(self, file_out, ind_level):
         open_tag = "{}<{}>"
-        close_tag = "{}</{}>\n"
+        close_tag = "</{}>\n"
 
-        file_out.write(open_tag.format(cur_ind, self.tag))
+        file_out.write(open_tag.format(self.indent * ind_level, self.tag))
 
         for values in self.content:
-            file_out.write(cur_ind + str(values))
+            file_out.write(str(values))
 
-        file_out.write(close_tag.format(cur_ind, self.tag))
+        file_out.write(close_tag.format(self.tag))
 
 
 class Title(OneLineTag):
@@ -83,14 +89,14 @@ class SelfClosingTag(Element):
         if content is not None:
             raise TypeError("Self closing tags must be empty!")
 
-    def render(self, file_out, cur_ind=""):
+    def render(self, file_out, ind_level):
         sc_tag = "{}<{}{} /> \n"
-        attrs = ""
+        styles = ""
         for key, value in self.kwargs.items():
             style_tag = ' {}="{}"'
-            attrs = attrs + style_tag.format(key, value)
+            styles = styles + style_tag.format(key, value)
 
-        file_out.write(sc_tag.format(cur_ind, self.tag, attrs))
+        file_out.write(sc_tag.format(self.indent*ind_level, self.tag, styles))
 
 
 class Hr(SelfClosingTag):
@@ -103,17 +109,18 @@ class Br(SelfClosingTag):
 
 class A(Element):
     tag = "a"
+    indent = " " * 12
 
     def __init__(self, link, content):
         Element.__init__(self, content, href=link)
 
-    def render(self, file_out, cur_ind=""):
-        style_tag = ' href="{}"'.format(self.kwargs['href']) if ("href" in self.kwargs) else ''
+    def render(self, file_out, ind_level=3):
         open_tag = '{}<{}{}>{}'
+        style_tag = ' href="{}"'.format(self.kwargs['href']) if ("href" in self.kwargs) else ''
         close_tag = '</{}>\n'
 
         for val in self.content:
-            file_out.write(open_tag.format(cur_ind, self.tag, style_tag.format(self.kwargs), val))
+            file_out.write(open_tag.format(self.indent, self.tag, style_tag.format(self.kwargs), val))
 
         file_out.write(close_tag.format(self.tag))
 
@@ -124,6 +131,7 @@ class Ul(Element):
 
 class Li(Element):
     tag = "li"
+    indent = " " * 8
 
 
 class H(OneLineTag):
