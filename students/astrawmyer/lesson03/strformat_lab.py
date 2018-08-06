@@ -22,6 +22,12 @@ def formatter(input_tuple):
     value_string = value_string[0:-2]
     format_string = "the " + str(num_values) + " numbers are: " + value_string
     return format_string.format(*input_tuple)
+    # ???Do I need a print function here???
 
+#formatter((1,2,3,4))
 
-formatter((1,2,3,4))
+#Task Four
+
+four = (4, 30, 2017, 2, 27)
+out_four = '{3:0>2} {4} {2} {0:0>2} {1}'.format(*four)
+print(out_four)
