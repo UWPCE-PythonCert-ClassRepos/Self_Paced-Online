@@ -6,6 +6,8 @@
 
 #mailroom.py
 
+import os
+import io
 
 donor_list = [
               ['Andrew Jackson', 10000, 5, 2000],
@@ -29,46 +31,41 @@ def menu_select(prompt, menu):
             select = input('Please try again: ')
         if menu[select]() == 'exit':
             break
-    print('Goodbye.')
 
 
 def exit_menu():
+    print('Exiting...')
     return 'exit'
 
 
-def thank_you():
+def manage_donors():
+    menu_select(manage_prompt, manage_menu)
+
+
+def enter_donation():
     print()
-    name = input('Enter full name of \'Thank You\' recipient: ').title()
+    name = input('Enter full name of \'Donor\': ').title()
+    if in_list(name): donation_update(name)
+    elif not in_list(name): donation_update(new_donor(name))
 
-    while(name == 'List'):
-        list_donors()
-        name = input('Enter full name of \'Thank You\' recipient: ').title()
-
-    if name in ('E', 'Exit'):
-        print('Exiting...')
-        return 1
-
-    if in_list(name): enter_donation(name)
-    elif not in_list(name): new_donor(name)
-
-    format_thx(name)
-    return 1
+    letter = input('Create thank you letter? y/n').title()
+    if letter == 'Y': format_thx(name)
+    elif letter == 'N': return
 
 
 def list_donors():
     print()
     for donor in donor_list:
         print(donor[0])
-    print()
 
 
 def new_donor(name):
     donor_list.append([name, 0, 0, 0])
     print('New donor added. \n')
-    enter_donation(name)
+    return name
 
 
-def enter_donation(name):
+def donation_update(name):
     amount = float(input('Enter donation amount: '))
     i = get_index(name)
     #add amount to donation totals
@@ -119,24 +116,53 @@ def create_report():
     return 1
 
 
+#def generate_letters():
+#    for donor in donor_list:
+
+
 main_menu = {
-             '1': thank_you,
+             '1': manage_donors,
              '2': create_report,
-             '3': exit_menu,
+             #'3': generate_letters,
+             '4': exit_menu,
             }
 
 
 main_prompt = (
                '\n'
-               'Welcome to Mail Room™ \n'
-               '--------------------- \n'
-               '1) Send a Thank You \n'
-               '2) Create a Report \n'
-               '3) Exit \n\n'
+               'Main Menu\n'
+               '--------- \n'
+               '1) Manage Donors \n'
+               '2) Create Report \n'
+               '3) Generate Letters \n'
+               '4) Exit \n\n'
                'Enter a number: '
               )
 
 
+manage_menu = {
+               '1': enter_donation,
+               '2': list_donors,
+               '3': exit_menu,
+              }
+
+manage_prompt = (
+                 '\n'
+                 'Manage Donors \n'
+                 '------------- \n'
+                 '1) Enter Donation \n'
+                 '2) List Current \n'
+                 '3) Exit \n\n'
+                 'Enter a number: '
+                )
+
+
 if __name__ == "__main__":
+
+    print('\n'
+          '---------------------- \n'
+          'Welcome to Mail Room™ \n'
+          '----------------------'
+          )
 
     menu_select(main_prompt, main_menu)
