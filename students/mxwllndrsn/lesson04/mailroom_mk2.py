@@ -8,6 +8,7 @@
 
 import os
 import io
+from datetime import date
 
 donor_list = [
               ['Andrew Jackson', 10000, 5, 2000],
@@ -22,6 +23,7 @@ donor_list = [
 # Index 2 - Number of Donations
 # Index 3 - Average Donation
 
+ymdate = str(date.today())
 
 #implementing dictionary function menu
 def menu_select(prompt, menu):
@@ -48,8 +50,8 @@ def enter_donation():
     if in_list(name): donation_update(name)
     elif not in_list(name): donation_update(new_donor(name))
 
-    letter = input('Create thank you letter? y/n').title()
-    if letter == 'Y': format_thx(name)
+    letter = input('Create thank you letter? (y/n) ').title()
+    if letter == 'Y': print(format_thx(name))
     elif letter == 'N': return
 
 
@@ -93,19 +95,19 @@ def get_index(name):
 
 def format_thx(name):
     i = get_index(name)
+    prntstr = (f'{ymdate} \n\n')
+    prntstr += (f'Dear {name}, \n\n')
+    prntstr += ('Thank you for your generosity. '
+                'Having donated {:} times for a total of ${:,.2f}, '
+                'your most recent gift enables us to continue our mission '
+                'of serving vulnerable populations in your local community. '
+                'We can not overstate how important contributions like this '
+                'are to our organization and those we serve. \n\n'
+                .format(donor_list[i][2], donor_list[i][1]))
+    prntstr += ('Sincerely, \n\n')
+    prntstr += ('Automated Form letter')
 
-    print()
-    print(f'Dear {name}, \n')
-    print('Thank you for your generosity. '
-          'Having donated {:} times for a total of ${:,.2f}, '
-          'your most recent gift enables us to continue our mission '
-          'of serving vulnerable populations in your local community. '
-          'We can not overstate how important contributions like this '
-          'are to our organization and those we serve. \n'
-          .format(donor_list[i][2], donor_list[i][1]))
-    print('Sincerely, \n')
-    print('Automated Form letter')
-
+    return prntstr
 
 def create_report():
     print()
@@ -116,14 +118,30 @@ def create_report():
     return 1
 
 
-#def generate_letters():
-#    for donor in donor_list:
+def generate_letters():
+    path = write_dir()
+    for donor in donor_list:
+        filename = ('{}_Thanks_{}.txt'.format(donor[0], ymdate))
+        filename = os.path.join(path, filename)
+        with open(filename, 'w+') as f:
+            f.write(format_thx(donor[0]))
+
+
+def write_dir():
+    folder = input('Write to new folder? (y/n) ').title()
+    if folder == 'Y':
+        path = input('Folder name: ')
+        os.makedirs(path)
+    elif folder == 'N':
+        print(f'Writing to current directory: {os.getcwd()}')
+        path = ''
+    return path
 
 
 main_menu = {
              '1': manage_donors,
              '2': create_report,
-             #'3': generate_letters,
+             '3': generate_letters,
              '4': exit_menu,
             }
 
