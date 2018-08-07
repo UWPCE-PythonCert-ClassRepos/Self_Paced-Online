@@ -71,7 +71,7 @@ print("Welcome to Series 3\n")
 
 no_no_fruit = []
 for fruit in s3_fruits:
-    answer = input(f"Do you like {fruit.lower()}? Please enter Yes/No ").format(fruit.lower())
+    answer = input(f"Do you like {fruit.lower()}? Please enter Yes/No ")
     while answer.lower() != "yes" and answer.lower() != "no":
         answer = input(f"Do you like {fruit.lower()}? Please enter Yes/No ")
     if answer.lower() == "no":
