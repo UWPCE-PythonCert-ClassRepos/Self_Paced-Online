@@ -178,17 +178,8 @@ class Main:
     def show():
         dd.display()
 
-    def quit(msg):
-        print("{}".format(msg))
-        return "exit menu"
 
-    @classmethod
-    def main_quit(cls):
-        return cls.quit("Goodbye...")
-
-    @classmethod
-    def sub_quit(cls):
-        return cls.quit("Back to Main menu...")
+if __name__ == "__main__":
 
     def menu_selection(prompt, dispatcher):
             while True:
@@ -199,12 +190,18 @@ class Main:
                 except KeyError:
                     print(response, "Wrong response !")
 
-    @classmethod
-    def sub_menu(cls):
-        cls.menu_selection(submenu, subfeatures)
+    def quit(msg):
+        print("{}".format(msg))
+        return "exit menu"
 
+    def main_quit():
+        return quit("Goodbye...")
 
-if __name__ == "__main__":
+    def sub_quit():
+        return quit("Back to Main menu...")
+
+    def sub_menu():
+        menu_selection(submenu, subfeatures)
 
     menu = """
         {:-^30}
@@ -225,16 +222,16 @@ if __name__ == "__main__":
     """.format(' Add/List donors ')
 
     features = {
-            '1': Main.sub_menu,
+            '1': sub_menu,
             '2': Main.report,
             '3': Main.letters,
-            'q': Main.main_quit,
+            'q': main_quit,
             }
 
     subfeatures = {
             '1': Main.donor,
             '2': Main.show,
-            'q': Main.sub_quit,
+            'q': sub_quit,
             }
 
     d1 = Donor("Stephan LeClerc")
@@ -247,4 +244,5 @@ if __name__ == "__main__":
     dd.donors = d2
     dd.donors = d3
     # start program menu
-    Main.menu_selection(menu, features)
+    menu_selection(menu, features)
+
