@@ -44,7 +44,7 @@ class Html(Element):
     tag = "html"
     indent = ""
 
-    def render(self, file_out, ind_level=1):
+    def render(self, file_out, ind_level=0):
         initial_tag = "<!DOCTYPE html>\n"
         file_out.write(initial_tag)
         Element.render(self, file_out)
