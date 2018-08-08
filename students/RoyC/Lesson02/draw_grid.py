@@ -8,23 +8,42 @@ vert = "|"
 # grid fill character (no fill)
 sp = " "
 
-def drawDivider():
-    """Returns one horizontal divider line for the grid"""
-    return corner + 4*horiz + corner + 4*horiz + corner
+def drawDivider(cellWidth):
+    """Return one horizontal divider line for the grid"""
+    return corner + cellWidth*horiz + corner + cellWidth*horiz + corner
 
-def drawBlankLine():
-    """Returns one horizontal inner-cell line for the grid"""
-    return vert + 4*sp + vert + 4*sp + vert
+def drawBlankLine(cellWidth):
+    """Return one horizontal inner-cell line for the grid"""
+    return vert + cellWidth*sp + vert + cellWidth*sp + vert
 	
-# Draw the grid!
-print(drawDivider())
+def printGrid(gridWidth):
+    """Draw a 4x4 grid gridWidth spaces wide (rounded to even cell widths)"""
+    cellWidth = (gridWidth-1)//2
+	
+	# draw the top edge
+    print(drawDivider(cellWidth))
+    
+	# draw the upper cell 
+    for i in range(cellWidth):
+        print(drawBlankLine(cellWidth))
+    
+	# draw the middle divider 
+    print(drawDivider(cellWidth))
+    
+	# draw the lower cell 
+    for i in range(cellWidth):
+        print(drawBlankLine(cellWidth))
+	
+	# draw the bottom edge
+    print(drawDivider(cellWidth))
 
-for i in range(4):
-    print(drawBlankLine())
+#Let's test some sizes
+print("\n10:\n")
+printGrid(10)
 
-print(drawDivider())
+print("\n15:\n")
+printGrid(15)
 
-for i in range(4):
-    print(drawBlankLine())
+print("\n3:\n")
+printGrid(3)
 
-print(drawDivider())
