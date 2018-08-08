@@ -1,49 +1,25 @@
-# grid square corner character
-corner = "+"
-
-# grid horizontal and vertical edge characters
-horiz = "-"
-vert = "|"
-
-# grid fill character (no fill)
-sp = " "
-
-def drawDivider(cellWidth):
-    """Return one horizontal divider line for the grid"""
-    return corner + cellWidth*horiz + corner + cellWidth*horiz + corner
-
-def drawBlankLine(cellWidth):
-    """Return one horizontal inner-cell line for the grid"""
-    return vert + cellWidth*sp + vert + cellWidth*sp + vert
+def printGrid(cellWidth, gridWidth):
+    """Draw a grid gridWidth cells square, each cell cellWidth square """
+    dividerLine = gridWidth*("+" + cellWidth*" -" + " ") + "+"
+    innerLine = gridWidth*("|" + cellWidth*"  " + " ") + "|"
 	
-def printGrid(gridWidth):
-    """Draw a 4x4 grid gridWidth spaces wide (rounded to even cell widths)"""
-    cellWidth = (gridWidth-1)//2
-	
-	# draw the top edge
-    print(drawDivider(cellWidth))
-    
-	# draw the upper cell 
-    for i in range(cellWidth):
-        print(drawBlankLine(cellWidth))
-    
-	# draw the middle divider 
-    print(drawDivider(cellWidth))
-    
-	# draw the lower cell 
-    for i in range(cellWidth):
-        print(drawBlankLine(cellWidth))
-	
-	# draw the bottom edge
-    print(drawDivider(cellWidth))
+    for i in range(gridWidth):	
+        # draw cells with top edges
+        print(dividerLine)
+        for i in range(cellWidth):
+            print(innerLine)
+			
+    # draw the bottom edge
+    print(dividerLine)
 
-#Let's test some sizes
-print("\n10:\n")
-printGrid(10)
+if __name__ == "__main__":
+    #Let's test some sizes
+    print("\n10/4:\n")
+    printGrid(10, 4)
 
-print("\n15:\n")
-printGrid(15)
+    print("\n15/2:\n")
+    printGrid(15, 2)
 
-print("\n3:\n")
-printGrid(3)
+    print("\n3/8:\n")
+    printGrid(3, 8)
 
