@@ -5,58 +5,39 @@
 import os
 import datetime
 
-donors = {"John Travolta": [5000, 7500],
-          "Jane Fonda": [10000, 8000, 6500],
-          "Judy Blume": [3000, 3000],
-          "Joey Tribbiani": [9000],
-          "Jenny Gump": [10300, 13750, 12500]}
 
 class Donor(object):
     def __init__(self, name, *args, **kwargs):
-       self.name = name
-    
-    def donor_name(self, name):
-        if self.name.lower() == "list":
-            print(list(donors.keys()))
-        elif self.name.lower() == "exit":
-            print("\nExiting.\n")
-        return self.name
-    
-    def donor_amount(self, name, amount):
-        self.amount = amount
-        try:
-            if self.amount.lower() == "exit":
-                print("\nExiting.")
-                self.amount = "exit"
-            elif int(self.amount) >= 10**6:
-                print("\nThe amount entered is too large.")
-                self.amount = "large"
-            else:
-                self.amount = int(self.amount)
-        except ValueError:
-            print("\nInvalid entry.")
-            self.amount = "invalid"
-        return self.amount
-
-    def donor_append(self, name, amount):
-        if self.name in donors:
-            donors[self.name].append(self.amount)
-        else:
-            donors[self.name] = [self.amount]
+        self.name = name
 
     def donor_email(self, name, amount):
+        self.amount = amount
         print("\nThank you, {}, for your generous donation of ${} "
               "to the Brave Heart Foundation.".format(self.name, self.amount))
 
-class All_Donors(Donor):
-    def __init__(self, name, amount, *args, **kwargs):
-        Donor.__init__(self, name, amount, *args, **kwargs)
+class AllDonors(object):
+    donors = {}
     
+    def __init__(self, *args, **kwargs):
+        self.donors["John Travolta"] = [5000,7500]
+        self.donors["Jane Fonda"] = [10000, 8000, 6500]
+        self.donors["Judy Blume"] = [3000, 3000]
+        self.donors["Joey Tribbiani"] = [9000]
+        self.donors["Jenny Gump"] = [10300, 13750, 12500]
+
+    def donor_append(self, name, amount):
+        self.name = name
+        self.amount = amount
+        if self.name in self.donors:
+            self.donors[self.name].append(self.amount)
+        else:
+            self.donors[self.name] = [self.amount]        
+
     def donor_details(self):
         self.donor_details = {}
-        for d in donors:
-            total = sum(donors[d])
-            count = len(donors[d])
+        for d in self.donors:
+            total = sum(self.donors[d])
+            count = len(self.donors[d])
             average = total/count
             self.donor_details[d] = [total, count, average]
         sorted_details = sorted(self.donor_details.items(), 
@@ -64,6 +45,7 @@ class All_Donors(Donor):
         self.details = sorted_details
     
     def donor_report(self):
+        self.donor_details()
         print("\n{:<20} {:<15} {:^12} {:<15}".format("Donor", "Total Given", 
               "Number", "Average Given"))
         for i in range(len(self.details)):
@@ -76,6 +58,7 @@ class All_Donors(Donor):
         print()
     
     def donor_letters(self):
+        self.donor_details()
         current = datetime.datetime.now()
         date = [str(current.month), str(current.day), str(current.year)]
         current_date = "_".join(date)
@@ -113,28 +96,33 @@ def thank_you():
                           "'Exit' will return to main menu.\n"
                           ">>") 
         donor = Donor(addressee)
-        donor.donor_name(addressee)
+        all_donors = AllDonors()
         if donor.name.lower() == "list":
-            pass
+            print(list(all_donors.donors.keys()))
         elif donor.name.lower() == "exit":
+            print("\nExiting.\n")
             flag = False
         else:
             donation = input("\nWhat is the donation amount?\n>>")
-            donor.donor_amount(addressee, donation)
-            if donor.amount in ["exit", "large", "invalid"]:
-                pass
-            else:
-                donor.donor_append(addressee, donation)
-                donor.donor_email(addressee, donation)
+            try:
+                if donation == "exit":
+                    print("\nExiting.")
+                elif int(donation) >= 10**6:
+                    print("\nThe amount entered is too large.")
+                else:
+                    donation = int(donation)
+                    donor.donor_email(addressee, donation)
+                    all_donors.donor_append(addressee, donation)
+            except ValueError:
+                print("\nInvalid entry.")
+
 
 def report():
-    all_donors = All_Donors("None", 0)
-    all_donors.donor_details()
+    all_donors = AllDonors()
     all_donors.donor_report()
 
 def letters():
-    all_donors = All_Donors("None", 0)
-    all_donors.donor_details()
+    all_donors = AllDonors()
     all_donors.donor_letters()
 
 def quit():
