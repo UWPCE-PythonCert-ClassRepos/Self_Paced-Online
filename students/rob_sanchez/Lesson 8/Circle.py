@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import math
 
 
 class Circle:
@@ -12,3 +13,13 @@ class Circle:
     @property
     def diameter(self):
         return self.radius * 2
+
+    # Returns teh diameter of a circle
+    @diameter.setter
+    def diameter(self, diameter):
+        self.radius = diameter / 2
+
+    # Returns teh area of a circle
+    @property
+    def area(self):
+        return round(math.pi * self.radius**2, 5)
