@@ -17,23 +17,20 @@ def enterdonation():
 def thankyou():
     
 
-    #This block checks if the input name is in the list of donors.
     loop_trigger = True
-    stopint = 0
+
     while loop_trigger == True:
-        stopint = stopint + 1
-        while stopint>10:
-            loop_trigger = False
         input_name = input("Enter full name: ")
+
         for i, donor_row in enumerate(donors):
-            #print(i, donor_row)
+
             if donor_row[0] == input_name:
                 #this section for if name typed is correct.
                 #ask for number and add it to list of donations.
-                print(i,donor_row)
+                # print(i,donor_row)
                 donation = float(input("Enter donation amount:"))
                 donors[i][1].append(int(donation))
-                print(donors)
+                # print(donors)
                 #need to add to original donors structure. need to index???
                 #loop_trigger = False
                 break
@@ -43,7 +40,9 @@ def thankyou():
             else:
                 break
 
-
+# to do: make the add to donation into a separate function.
+# make a function to write a letter.
+# these need a way to keep track of which name and which value is new.
 
 
 
