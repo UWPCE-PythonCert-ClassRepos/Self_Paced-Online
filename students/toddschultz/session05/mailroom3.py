@@ -19,7 +19,12 @@ def fun1(): #Thank you
         print ("Have a nice day!")
     elif person == "list":
         try_again()
-    donation = float(input("How much was the donation? "))
+    try:
+        donation = float(input("How much was the donation? "))
+    except ValueError:
+        print("Please enter a number.")
+        fun1()
+
     for i in donors:
         if i[0] == person:
             i.append(donation)
