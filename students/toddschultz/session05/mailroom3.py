@@ -4,10 +4,14 @@ global donors
 donors = [["baby huey", 1123.00, 456.00, 1789.00], ["mighty mouse", 99.99], ["fred flintstone", 5550.00, 5555.00], ["road runner", 199999.00], ["papa smurf", 1001.00, 1002.00, 1003.00]]
 
 def menu_selection(prompt, dispatch_dict):
-    while True:
-        response = input(prompt)
-        if dispatch_dict[response]() == "exit menu":
-            break
+    try:
+        while True:
+            response = input(prompt)
+            if dispatch_dict[response]() == "exit menu":
+                break
+    except KeyError:
+        print ("\nPlease enter 1, 2, 3, or 4.")
+        menu_selection(main_prompt, main_dispatch)
 
 def fun1(): #Thank you
     person = (input("Who would you like to send a Thank You to?\nYou can type 'list' to get a list of current donors: ").lower())
@@ -17,7 +21,7 @@ def fun1(): #Thank you
         try_again()
     donation = float(input("How much was the donation? "))
     for i in donors:
-        if [i] == person:
+        if i[0] == person:
             i.append(donation)
             d = dict()
             d['name'] = i[0].title()
@@ -36,7 +40,6 @@ def fun1(): #Thank you
         if new == "yes" or new == "y":
             donors.append([person])
             donors[-1].append(donation)
-            print(donors)
             d = dict()
             d['name'] = person
             d['amount'] = donation
@@ -51,7 +54,6 @@ def fun1(): #Thank you
 def fun2(): #Report
     donors_list = []
     z = 0
-    print(donors)
     for i in donors:
         donors_list.append([i[0]]) #name
         donors_list[z].append(sum(i[1:])) #total
@@ -106,14 +108,9 @@ main_dispatch = {"1": fun1,
                  "4": quit,}
 
 def try_again():
-        donors_list = []
-        for i in donors:
-            if type(i[0]) is str:
-                donors_list.append(i[0])
-        print("\nPlease select from the names below, be sure to spell them correctly.")
-        print(', '.join(donors_list), "\n")
+        print("\nPlease select from the names below, be sure to spell them correctly.\n")
+        donors_list = [print(i[0].title()) for i in donors if type(i[0]) is str]
         fun1()
-
 
 if __name__ == '__main__':
     menu_selection(main_prompt, main_dispatch)
