@@ -11,6 +11,48 @@ import sys
 from unittest import mock
 
 
+def test_donor_email(capsys):
+    d = m.Donor("JK Rowling")
+    d.donor_email("JK Rowling", 8752)
+    sys.stderr.write("error")
+    out, err = capsys.readouterr()
+    assert "JK Rowling" and "8752" in out
+
+
+def test_donor_append():
+    ad = m.AllDonors()
+    ad.donor_append("Jim Carrey", 3425)
+    assert "Jim Carrey" in ad.donors
+
+
+def test_donor_details():
+    ad = m.AllDonors()
+    ad.donor_details()
+    assert ("Joey Tribbiani", [9000, 1, 9000.0]) in ad.details
+    assert ad.details[0][1] > ad.details[1][1]
+    assert ad.details[1][1] > ad.details[2][1]
+
+
+def test_donor_report(capsys):
+    ad = m.AllDonors()
+    ad.donor_report()
+    sys.stderr.write("error")
+    out, err = capsys.readouterr()
+    assert "Joey Tribbiani" in out
+    assert "9000.00" in out
+
+
+def test_donor_letters():
+    ad = m.AllDonors()
+    ad.donor_letters()
+    current = datetime.datetime.now()
+    date = [str(current.month), str(current.day), str(current.year)]
+    current_date = "_".join(date)
+    letter_name = ("Joey Tribbiani" + " " + current_date + ".txt")
+    test_file = open(letter_name, "r")
+    assert "Joey Tribbiani" and "9000" in test_file.read()
+
+
 def test_menu_valid_choice(capsys):
     with mock.patch("builtins.input", return_value="3"):
         m.menu()

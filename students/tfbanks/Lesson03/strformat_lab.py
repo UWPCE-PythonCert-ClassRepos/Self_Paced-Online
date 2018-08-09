@@ -21,6 +21,7 @@ def formatter(in_tuple):
     print(format_string.format(*in_tuple))  # Prints the format string for the items in the tuple
 
 # three different scenarios
+
 tuple_4nums = (5, 10, 15, 20)
 tuple_8nums = (3, 6, 9, 12, 15, 18, 21, 24)
 tuple_12nums = (2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24)

@@ -26,3 +26,5 @@ if __name__ == "__main__":
         with open('secrets2.txt', 'w+') as outstream:
             line = instream.read()
             outstream.write(line)
+
+    instream = open()
