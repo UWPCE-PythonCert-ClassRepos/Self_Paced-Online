@@ -10,30 +10,38 @@ def displaylist():
         print(sublist[0])
     return
 
+def enterdonation():
+    return
+
 #function to send a thank you
 def thankyou():
-    input_name = input("Enter full name: ")
+    
 
     #This block checks if the input name is in the list of donors.
     loop_trigger = True
-    #while loop_trigger == True:
-    for i, donor_row in enumerate(donors):
-        print(i, donor_row)
-        if donor_row[0] == input_name:
-            #this section for if name typed is correct.
-            #ask for number and add it to list of donations.
-            print(i,donor_row)
-            donation = float(input("Enter donation amount:"))
-            #need to add to original donors structure. need to index???
-            #loop_trigger = False
-            break
-        elif input_name == 'list':
-            #Prints a list of donors.
-            displaylist()
-            input_name = "a"
-        else:
-            #Back to requesting input name.
-            break
+    stopint = 0
+    while loop_trigger == True:
+        stopint = stopint + 1
+        while stopint>10:
+            loop_trigger = False
+        input_name = input("Enter full name: ")
+        for i, donor_row in enumerate(donors):
+            #print(i, donor_row)
+            if donor_row[0] == input_name:
+                #this section for if name typed is correct.
+                #ask for number and add it to list of donations.
+                print(i,donor_row)
+                donation = float(input("Enter donation amount:"))
+                donors[i][1].append(int(donation))
+                print(donors)
+                #need to add to original donors structure. need to index???
+                #loop_trigger = False
+                break
+            elif input_name == 'list':
+                displaylist()
+                break
+            else:
+                break
 
 
 
