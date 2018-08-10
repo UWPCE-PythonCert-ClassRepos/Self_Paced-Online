@@ -11,38 +11,38 @@ donor_db = [
     ['Marlene Wheeler', 820, 1222.80]
 ]
 
-donor = []  # Craate Donor List
+donor = []  # Create Donor List
 for dname in donor_db:
     d = dname[0]
     donor.append(d)
 
 
 def thank_you():  # Code for selecting Donor and writing a Thank You Note
-    ty_donor = input('Enter the Full Name of a donor (for list of previous donors type list): ')
+    ty_donor = input('Enter the Full Name of a donor (for list of previous donors type list): '.title())
 
     if ty_donor.title() == 'List':  # If List, Prints Donor List and restarts the function
         print(donor)
         thank_you()
-    elif ty_donor.title() in donor:   #  If Donor is on list, print a letter thanking them for another donation
-        d_name = donor.index(ty_donor.title())
+    elif ty_donor in donor:   #  If Donor is on list, print a letter thanking them for another donation
+        d_name = donor.index(ty_donor)
         amount = float(input('Please enter the donation amount: '))
         donor_db[d_name].append(amount)
         print('\n\nDear {},\n'
-              '\nThank you for your additional generous donation of ${}, your generosity is so greatly appreciated.\n'
+              '\nThank you for your additional generous donation of ${:,.2f}, your generosity is so greatly appreciated.\n'
               'We are pleased to have you continue to help in our effort to teach Python to the next generation.\n'
               '\nSincerely,\n'
               '\nJoesef Edword Bringingham\n\n'.format(ty_donor, amount))
 
         what_to_do_2()  #  Takes to a new what to do that reflects the fact they just wrote a thank you note
     elif ty_donor.title() not in donor:  #  If donor is not on the list, this collects the data, appends to the lists, and writes a new letter.
-        donor.append(ty_donor.title())
+        donor.append(ty_donor)
         new_donor = []
         amount = float(input('Please enter the donation amount: '))
-        new_donor.append(ty_donor.title())
+        new_donor.append(ty_donor)
         new_donor.append(amount)
         donor_db.append(new_donor)
         print('\n\nDear {},\n'
-              '\nThank you for your generous donation of ${}, your generosity is greatly appreciated.\n'
+              '\nThank you for your generous donation of ${:,.2f}, your generosity is greatly appreciated.\n'
               'These funds will help insure that our efforts to teach Python to the next generation.\n'
               '\nSincerely,\n'
               '\nJoesef Edword Bringingham\n\n'.format(ty_donor, amount))
