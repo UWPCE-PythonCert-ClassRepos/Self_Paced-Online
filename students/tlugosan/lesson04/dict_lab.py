@@ -45,9 +45,9 @@ print()
 # region dictionaries 2
 
 dict2 = dict()
-for k, v in dict1.items():
+for k in dict1:
     if k not in dict2:
-        dict2[k] = v.lower().count('t')
+        dict2[k] = dict1[k].lower().count('t')
 print(dict2.items())
 print()
 # endregion
