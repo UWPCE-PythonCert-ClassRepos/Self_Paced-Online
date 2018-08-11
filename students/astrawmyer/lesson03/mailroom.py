@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-donors = [["Manny Machado",[1.2,2.51,3.20]],["Adam Jones",[1.14,22.21,323.45]]]
+donors = [["Manny Machado",[12.2,2.51,3.20]],["Adam Jones",[1024.14,22.21,323.45]]]
 names = ["manny", "adam"]
 
 # Thank you Module
@@ -40,10 +40,22 @@ def thankyou():
             elif input_name == 'list':
                 displaylist()
                 break
+    return
 
 
 
-#def createreport():
+def createreport():
+    donors_report = []
+    sum_donation = 0
+    for i, name in enumerate(donors):
+        for j in donors[0][1]:
+            sum_donation = sum_donation + j
+        num_donation = len(donors[i][1])
+        avg_donation = sum_donation/num_donation
+        donors_report.append([name[0],sum_donation, num_donation,avg_donation])
+        print(name[0],sum_donation, num_donation,avg_donation)
+        print(donors_report)
+    return
 
 
 
