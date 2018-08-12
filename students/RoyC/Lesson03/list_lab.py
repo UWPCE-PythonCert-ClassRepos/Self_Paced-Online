@@ -27,3 +27,29 @@ print("....")
 for fruit in fruits:
     if fruit[0] == "P" or fruit[0] == "p":
         print(fruit)
+        
+# Series 2
+# Print the list of fruits
+print(fruits)
+
+# Remove last fruit from list and print again
+fruits.pop()
+print(fruits)
+
+# Double the fruit list (for BONUS!) and display again
+fruits *= 2
+print(fruits)
+
+# Prompt for fruit to delete (prompt until a match is found)
+fruit_to_delete = ""
+while fruit_to_delete not in fruits:
+    fruit_to_delete = input("\nEnter fruit to delete -> ")
+
+# Delete all occurrences of the entered fruit
+while fruit_to_delete in fruits:
+    fruits.remove(fruit_to_delete)
+    
+# Display the list to show fruit was removed
+print(fruits)
+
+
