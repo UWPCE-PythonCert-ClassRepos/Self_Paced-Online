@@ -10,12 +10,11 @@ print(fruits)
 fruits.append(input("\nPlease enter a fruit to add -> "))
 print(fruits)
 
-# Prompt for index of fruit to display and display it
-index = int(input("\nEnter index of fruit to display -> "))
-if index > 0 and index <= len(fruits):
-    print(index, fruits[index-1])
-else:
-    print("There are ", len(fruits), " fruits, enter a number in that range")
+# Prompt for index of fruit to display and display it (make them enter a number in range)
+index = 0
+while index < 1 or index > len(fruits):
+    index = int(input("\nEnter index of fruit (between 1 and " + str(len(fruits)) + ") to display -> "))
+print("Fruit number {} is {}".format(index, fruits[index-1]))
     
 # Using two different methods, add another fruit to beginning
 fruits = ["Banana"] + fruits
