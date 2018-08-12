@@ -29,3 +29,12 @@ def reverse(seq):
         seq - the sequence to reverse
     """
     return seq[::-1]
+    
+def mid_last_first(seq):
+    """
+    For a given sequence, return a copy reordered to the middle, last and first third of the original
+    Argument:
+        seq - the sequence to manipulate
+    """
+    third_len = len(seq)//3
+    return seq[third_len:] + seq[:third_len]
