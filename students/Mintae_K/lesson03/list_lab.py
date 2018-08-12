@@ -24,8 +24,25 @@ print(a_list)
 a_list = a_list * 2
 response = input("Tell me a fruit to delete > ")
 while response not in a_list:
-    response = input("Tell me a fruit to delete > ")
+    response = input("Tell me a fruit to delete (it must be in this list) > ")
 while response in a_list:
     a_list.remove(response)
 print(a_list)
 #Series 3
+a_list_b = a_list[:]
+for x in range(len(a_list)):
+    response = input("Do you like {name}? (yes/no) > ".format(name=a_list[x].lower()))
+    while not(response == 'yes'or response == 'no'):
+        response = input("Do you like {name}? (yes/no) > ".format(name=a_list[x].lower()))
+    if response == 'no':
+        while a_list[x] in a_list_b:
+            a_list_b.remove(a_list[x])
+a_list = a_list_b[:]
+print(a_list)
+#Series 4
+a_list_c = a_list[:]
+for x in range(len(a_list_c)):
+    a_list_c[x] = a_list_c[x][::-1]
+a_list.pop()
+print(a_list)
+print(a_list_c)
