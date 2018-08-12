@@ -14,3 +14,18 @@ def every_other(seq):
     """
     return seq[::2]
     
+def some_from_middle(seq):
+    """
+    Return a copy of the given sequence with first four, last four, and then every other element removed
+    Argument:
+        seq - the sequence to manipulate
+    """
+    return seq[4:-4:2]
+    
+def reverse(seq):
+    """
+    Return a reversed copy of the given sequence
+    Argument:
+        seq - the sequence to reverse
+    """
+    return seq[::-1]
