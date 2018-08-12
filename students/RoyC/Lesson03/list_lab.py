@@ -2,6 +2,8 @@
 # Lesson 03, Series lab
 
 # Series 1
+print("\nSERIES 1\n")
+
 # Print out initial list of fruit
 fruits = ["Apples", "Pears", "Oranges", "Peaches"]
 print(fruits)
@@ -17,7 +19,7 @@ while index < 1 or index > len(fruits):
 print("Fruit number {} is {}".format(index, fruits[index-1]))
     
 # Using two different methods, add another fruit to beginning
-fruits = ["Banana"] + fruits
+fruits = ["Bananas"] + fruits
 print("....\n", fruits)
 fruits.insert(0, "Kumquats")
 print("....\n", fruits)
@@ -29,27 +31,49 @@ for fruit in fruits:
         print(fruit)
         
 # Series 2
+print("\nSERIES 2\n")
+
+# Make a copy of the list for use in Series 2, since instructions for Series 3 say to use list from Series 1
+fruits2 = fruits[:]
+
 # Print the list of fruits
-print(fruits)
+print(fruits2)
 
 # Remove last fruit from list and print again
-fruits.pop()
-print(fruits)
+fruits2.pop()
+print(fruits2)
 
 # Double the fruit list (for BONUS!) and display again
-fruits *= 2
-print(fruits)
+fruits2 *= 2
+print(fruits2)
 
 # Prompt for fruit to delete (prompt until a match is found)
 fruit_to_delete = ""
-while fruit_to_delete not in fruits:
+while fruit_to_delete not in fruits2:
     fruit_to_delete = input("\nEnter fruit to delete -> ")
 
 # Delete all occurrences of the entered fruit
-while fruit_to_delete in fruits:
-    fruits.remove(fruit_to_delete)
+while fruit_to_delete in fruits2:
+    fruits2.remove(fruit_to_delete)
     
 # Display the list to show fruit was removed
+print(fruits2)
+
+# Series 3
+# Start with ending list from Series 1, display it to start
+print("\nSERIES 3\n")
 print(fruits)
 
+# make a copy of the list to iterate
+fruits_copy = fruits[:]
+for fruit in fruits_copy:
+    while True:
+        response = input("Do you like " + fruit.lower() + " (yes or no)? ")
+        if response == "yes":
+            break
+        elif response == "no":
+            fruits.remove(fruit)
+            break
 
+# Display new list with fruit they hate removed
+print(fruits)
