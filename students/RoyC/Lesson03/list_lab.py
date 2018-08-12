@@ -62,18 +62,40 @@ print(fruits2)
 # Series 3
 # Start with ending list from Series 1, display it to start
 print("\nSERIES 3\n")
-print(fruits)
+
+# Again make a copy of the list for use in Series 3, since instructions for Series 4 say to use list from Series 1
+fruits3 = fruits[:]
+ 
+print(fruits3)
 
 # make a copy of the list to iterate
-fruits_copy = fruits[:]
+fruits_copy = fruits3[:]
 for fruit in fruits_copy:
     while True:
         response = input("Do you like " + fruit.lower() + " (yes or no)? ")
         if response == "yes":
             break
         elif response == "no":
-            fruits.remove(fruit)
+            fruits3.remove(fruit)
             break
 
 # Display new list with fruit they hate removed
-print(fruits)
+print(fruits3)
+
+# Series 4
+print("\nSERIES 4\n")
+
+# Make a new copy of the list for manipulation in this series
+fruits4 = fruits[:]
+
+# Iterate the copy list and reverse the letters in each fruit
+for i, fruit in enumerate(fruits4):
+    fruits4[i] = fruit[::-1]
+    
+# Remove last fruit on original list
+fruits.pop()
+
+# Display both lists
+print("Original:", fruits)
+print("Copy:    ", fruits4)
+
