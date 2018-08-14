@@ -20,3 +20,7 @@ def formatter(in_tuple):
 print(formatter((1, 4, 2, 11, 9)))
 print(formatter((5, 1, 0)))
 print(formatter((3, 6, 9, 12, 15, 18)))
+
+# Task Four
+it = ( 4, 30, 2017, 2, 27)
+print(f"{it[3]:02} {it[4]:02} {it[2]:04} {it[0]:02} {it[1]:02}")
