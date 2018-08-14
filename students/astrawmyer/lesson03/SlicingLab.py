@@ -15,7 +15,7 @@ def remove_every_other(seq):
 #print(remove_every_other(seqtup))
 
 def remove_4(seq):
-    new_seq = seq[0:3] + seq[4:-4]
+    new_seq = seq[4:-4:2]
     return new_seq
 
 
@@ -29,5 +29,5 @@ def thirds(seq):
     new_seq = seq[int(length/3):] + seq[0:int(length/3)]
     return new_seq
 
-seqtup= (2, 54, 13, 12, 5, 32, 32, 1, 2, 3, 4, 5)
-print(thirds(seqtup))
+seqtup= (2, 54, 13, 12, 5, 33, 25, 58, 32, 1, 2, 3, 4, 5)
+print(remove_4(seqtup))
