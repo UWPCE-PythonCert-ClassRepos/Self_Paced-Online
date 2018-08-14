@@ -29,6 +29,16 @@ class circle_tests(unittest.TestCase):
         c = Circle(2)
         self.assertEqual(12.566370, c.area)
 
+    def test_str(self):
+        c = Circle(4)
+        test_str = "Circle with radius: 4.000000"
+        self.assertEqual(test_str, str(c))
+
+    def test_repr(self):
+        c = Circle(4)
+        test_str = 'Circle(4)'
+        self.assertEqual(test_str, repr(c))
+
 
 if __name__ == '__main__':
     unittest.main()

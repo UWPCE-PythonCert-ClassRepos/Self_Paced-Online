@@ -23,3 +23,11 @@ class Circle:
     @property
     def area(self):
         return round(math.pi * self.radius**2, 5)
+
+    # Informal string representation of an object
+    def __str__(self):
+        return "Circle with radius: {0:.6f}".format(self.radius)
+
+    # Official string representation of an object
+    def __repr__(self):
+        return "Circle({})".format(self.radius)
