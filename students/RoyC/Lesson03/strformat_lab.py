@@ -24,3 +24,8 @@ print(formatter((3, 6, 9, 12, 15, 18)))
 # Task Four
 it = ( 4, 30, 2017, 2, 27)
 print(f"{it[3]:02} {it[4]:02} {it[2]:04} {it[0]:02} {it[1]:02}")
+
+# Task Five
+the_list = ['oranges', 1.3, 'lemons', 1.1]
+print(f"The weight of an {the_list[0][:-1]} is {the_list[1]} and the weight of a {the_list[2][:-1]} is {the_list[3]}")
+print(f"The weight of an {the_list[0][:-1].upper()} is {1.2*the_list[1]} and the weight of a {the_list[2][:-1].upper()} is {1.2*the_list[3]}")
