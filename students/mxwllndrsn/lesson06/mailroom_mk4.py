@@ -5,7 +5,7 @@
 #max anderson
 
 #mailroom_mk4.py
-#general refactor and unit tests
+#general refactor
 
 import os
 import io
@@ -21,6 +21,7 @@ donor = defaultdict(lambda: [0, 0, 0],
         'Jim Jones': [918, 1, 918]
         })
 
+# Defaulting Dictionary Value [0, 0, 0]
 # Key: Donor Name
 # Value: 3 item list
 # Index 0 - Donation Totals
@@ -49,22 +50,24 @@ def manage_donors():
 
 
 def enter_donation():
-    prompt_thx(entry_update())
+    name = get_name()
+    donation = get_donation()
+    entry_update(name, donation)
+    prompt_thx(name)
 
 
 def list_donors():
     for key in donor.keys():
         print(key)
+    return list(donor.keys())
 
 
-def entry_update():
-    name = get_name()
-    donation = get_donation()
+def entry_update(name, donation):
     entry = donor[name]
     entry[0] += donation
     entry[1] += 1
     entry[2] = entry[0]/entry[1]
-    return name
+    return entry
 
 
 def prompt_thx(name):
@@ -79,7 +82,7 @@ def prompt_thx(name):
 
 # Reading from external template file makes changes to formatting easier,
 # however, a file stream is opened every time this function is called.
-# In the case of generate_letters() for every item in the dict.
+# In the case of generate_letters() for every key in the dict.
 # Bad practice?
 def format_thx(name):
     prntstr = ''
@@ -101,7 +104,6 @@ def create_report():
         print(' {name:<23}$ {total:<17,.2f}{num:<8d}$ {avg:<0,.2f}'
               .format(name = k, total = donor.get(k)[0],
                       num = donor.get(k)[1], avg = donor.get(k)[2]))
-    return
 
 
 # grab and return sort of biggest donors
@@ -182,6 +184,7 @@ manage_menu = {
                '2': list_donors,
                '3': exit_menu,
               }
+
 
 manage_prompt = (
                  '\n'
