@@ -38,13 +38,31 @@ class Circle:
         return "Circle({})".format(self.radius)
 
     # Returns the addition of two circles
-    def __add__(self, new):
-        return Circle(self.radius + new.radius)
+    def __add__(self, new_circ):
+        return Circle(self.radius + new_circ.radius)
 
-    # Returns the mutliplication of two circles
+    # Returns the subtraction of two circles
+    def __sub__(self, new_circ):
+        return Circle(self.radius - new_circ.radius)
+
+    # Returns the mutliplication of a circle times a value
     def __mul__(self, val):
         return Circle(self.radius * val)
 
     # Fixes unsupported operand
     def __rmul__(self, val):
         return Circle(self.radius * val)
+
+    #  ##Compare methods## ##
+
+    # Greater than
+    def __gt__(self, other):
+        return self.radius > other.radius
+
+    # Less than
+    def __lt__(self, other):
+        return self.radius < other.radius
+
+    # Equal
+    def __eq__(self, other):
+        return self.radius == other.radius
