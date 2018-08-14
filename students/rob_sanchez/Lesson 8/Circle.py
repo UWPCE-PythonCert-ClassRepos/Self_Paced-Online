@@ -42,5 +42,9 @@ class Circle:
         return Circle(self.radius + new.radius)
 
     # Returns the mutliplication of two circles
-    def __mul__(self, new):
-        return Circle(self.radius * new.radius)
+    def __mul__(self, val):
+        return Circle(self.radius * val)
+
+    # Fixes unsupported operand
+    def __rmul__(self, val):
+        return Circle(self.radius * val)

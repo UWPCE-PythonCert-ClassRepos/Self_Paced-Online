@@ -56,10 +56,9 @@ class circle_tests(unittest.TestCase):
 
     # Step 7 test - test multiply two circles
     def test_multiply(self):
-        c1 = Circle(2)
-        c2 = Circle(4)
-        result = 'Circle(8)'
-        self.assertEqual(result, repr(c1 * c2))
+        c = Circle(2)
+        self.assertEqual('Circle(8)', repr(c * 4))
+        self.assertEqual('Circle(6)', repr(3 * c))
 
 if __name__ == '__main__':
     unittest.main()
