@@ -24,6 +24,11 @@ class Circle:
     def area(self):
         return round(math.pi * self.radius**2, 5)
 
+    # Altenate constructor
+    @classmethod
+    def from_diameter(self, diameter):
+        return Circle(diameter / 2)
+
     # Informal string representation of an object
     def __str__(self):
         return "Circle with radius: {0:.6f}".format(self.radius)
@@ -31,3 +36,11 @@ class Circle:
     # Official string representation of an object
     def __repr__(self):
         return "Circle({})".format(self.radius)
+
+    # Returns the addition of two circles
+    def __add__(self, new):
+        return Circle(self.radius + new.radius)
+
+    # Returns the mutliplication of two circles
+    def __mul__(self, new):
+        return Circle(self.radius * new.radius)
