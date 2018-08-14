@@ -29,3 +29,20 @@ print(f"{it[3]:02} {it[4]:02} {it[2]:04} {it[0]:02} {it[1]:02}")
 the_list = ['oranges', 1.3, 'lemons', 1.1]
 print(f"The weight of an {the_list[0][:-1]} is {the_list[1]} and the weight of a {the_list[2][:-1]} is {the_list[3]}")
 print(f"The weight of an {the_list[0][:-1].upper()} is {1.2*the_list[1]} and the weight of a {the_list[2][:-1].upper()} is {1.2*the_list[3]}")
+
+# Task Six
+def get_row(name, age, cost):
+    """
+    Return a column formatted row of data for display
+    """
+    return "{:<12}{:>4d}{:>10.2f}".format(name, age, cost)
+    
+print("{:<12}{:>4}{:>10}".format("Name", "Age", "Cost"))
+print(get_row("Roy", 29, 999.99))
+print(get_row("Terri", 59, 1122.50))
+print(get_row("Kirby", 12, 555.25))
+print(get_row("Amanda", 33, 1944.32))
+print(get_row("Erin", 19, 800.21))
+
+ten_nums = (range(995, 1005))
+print(("{:<5d}"*10).format(*ten_nums))
