@@ -27,12 +27,20 @@ def thankyou():
             if donor_row[0] == input_name:
                 donation = float(input("Enter donation amount:"))
                 donors[i][1].append(float(donation))
-                print(donors)
+                #print(donors)
                 writeletter(donors[i][0],donors[i][1][len(donors[i][1])-1])
                 loop_trigger = False
                 break
             elif input_name == 'list':
                 displaylist()
+                break
+            else:
+                print("adding {} to list".format(input_name))
+                donation = float(input("Enter donation amount:"))
+                donors.append([input_name,[donation]])
+                #print(donors)
+                writeletter(donors[len(donors)-1][0],donors[len(donors)-1][1][0])
+                loop_trigger = False
                 break
 
 
@@ -54,11 +62,12 @@ def createreport():
 
 
 if __name__ == "__main__":
-    print("What do you want to do?")
-    response = input("1. Send a Thank You, 2. Create a Report, 3. Quit: ")
-    if response == '1':
-        thankyou()
-    if response == '2':
-        createreport()
-    if response == '3':
-        exit()
+    while True:
+        print("What do you want to do?")
+        response = input("1. Send a Thank You, 2. Create a Report, 3. Quit: ")
+        if response == '1':
+            thankyou()
+        elif response == '2':
+            createreport()
+        elif response == '3':
+            exit()
