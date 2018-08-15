@@ -81,6 +81,20 @@ def test_numeric():
     else:
         assert(False)
 
+def test_comparisons():
+    c = Circle(10)
+    c2 = Circle(5)
+
+    assert(c2 < c)
+    assert(c2 <= c)
+    assert(c > c2)
+    assert(c >= c2)
+    assert(c != c2)
+    c = Circle(5)
+    assert(c == c2)
+    assert(c2 <= c)
+    assert(c >= c2)
+
 def test_sort():
     circles = [Circle(6), Circle(7), Circle(8), Circle(4), Circle(2), Circle(3), Circle(5), Circle(9), Circle(1)]
     circles.sort()
