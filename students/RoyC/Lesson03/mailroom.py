@@ -10,8 +10,44 @@ donors = [
     ["Martin Prince", 12.22, 19.56]
 ]
 
+def print_thank_you_letter(donor_name, amt):
+    """
+    Print a thank you letter to the given donor for the given donation amount
+    Arguments:
+        donor_name - name of this donor
+        amt - amount of the donation (floating point)
+    """
+    print("\nDear {},\n".format(donor_name))
+    print("Thank you for your generous donation of ${:.2f}.".format(amt))
+    print("Your kind help is greatly appreciated.")
+    print("\nKindest regards, Monty Burns\n")
+    
 def send_thanx():
-    pass
+    """
+    Prompt operator for donor name, or 'list' to see names of donors on record.
+    Take name entered and either use existing donor, or add new record.
+    Then prompt for amount of this donation, then save the donation record and
+    print a thank you note.
+    """
+    while True:
+        donor_name = input("\nEnter full name of donor (or 'list' to see names of donors): ")
+        if donor_name == "list":
+            for d_list in donors:
+                print(d_list[0])
+            print()
+        else:
+            donor = [donor_name]
+            for d in donors:
+                if d_list[0] == donor_name:
+                    donor = d_list
+                    break
+            else:
+                donors.append(donor)
+            amt = float(input("Enter amount of donation: "))
+            donor.append(amt)
+            print_thank_you_letter(donor_name, amt)
+            break
+    
 
 def create_report():
     pass
