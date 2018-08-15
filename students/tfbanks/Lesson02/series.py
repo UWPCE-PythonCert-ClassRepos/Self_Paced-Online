@@ -4,7 +4,10 @@
 
 
 def fib(n):  # Defines the nth value in the Fibonacci Series starting with integers 0 and 1
-    if n == 0:
+
+    if n < 0:
+        return "Please insert a number greater than 0"  # Tells to only insert values greater than Zero
+    elif n == 0:
         return 0  # Sets the first starting integer to 0
     elif n == 1:
         return 1  # sets the second starting integer to 1
@@ -13,7 +16,10 @@ def fib(n):  # Defines the nth value in the Fibonacci Series starting with integ
 
 
 def luc(n):  # Defines the nth position in the Lucas Series starting with integers 2 and 1
-    if n == 0:
+
+    if n < 0:
+        return "Please insert a number greater than 0"  # Tells to only insert values greater than Zero
+    elif n == 0:
         return 2  # Sets the first starting integer to 2
     elif n == 1:
         return 1  # sets the second starting integer to 1
@@ -38,36 +44,32 @@ def sum_series(n, f=None, s=None):  # Defines a series to run either Fibonacci, 
             return other(n-1) + other(n-2)  # Returns the value at the nth position
 
     if n < 0:
-        print("Please insert a number greater than 0")  # Tells to only insert values greater than Zero
+        return "Please insert a number greater than 0"  # Tells to only insert values greater than Zero
     elif f == 2 and s == 1:
-        print(luc(n))  # Calls Lucas Series Function when f = 2 and s = 1
+        return luc(n)  # Calls Lucas Series Function when f = 2 and s = 1
     elif f == 0 and s == 1:
-        print(fib(n))  # Calls the Fibonacci Function when f = 0 and s = 1 (either by input or default)
+        return fib(n)  # Calls the Fibonacci Function when f = 0 and s = 1 (either by input or default)
     else:
-        print(other(n))  # Calls the Other Series Function when f is not 0 or 2 and s is not 1
+        return other(n)  # Calls the Other Series Function when f is not 0 or 2 and s is not 1
 
-# Test fib function
-# print(fib(7))
-
-# Test luc function
-# print(luc(4))
-
-# Values to test correct functioning of the sum_series function
-# sum_series(-5, 0, 1)
-# sum_series(5, 0, 1)
-# sum_series(5, 2, 1)
-# sum_series(8)
-# sum_series(5, 1, 2)
 
 # Assertion tests
-# assert(fib(10) == 100), "Fibonacci Assert Test 1 Failed"
-# assert(fib(8) == 22), "Fibonacci Assert Test 2 Failed"
-# assert(fib(5) == 11), "Fibonacci Assert Test 3 Failed"
+# Fibonacci Series
+assert fib(7) == 13
+assert(fib(12) == 144)
+assert(fib(22) == 17711)
+print("All Fibonacci Assert Tests Passed")
 
-# assert (luc(2) == 2),  "Lucas Assert Test 1 Failed"
-# assert (luc(5) == 23),  "Lucas Assert Test 2 Failed"
-# assert (luc(7) == 45),  "Lucas Assert Test 3 Failed"
+# Lucas Series
+assert(luc(4) == 7)
+assert(luc(10) == 123)
+assert(luc(15) == 1364)
+print("All Lucas Assert Tests Passed")
 
-# assert(sum_series(4, 3, 2)) == 23, "Sum_Series Assert Test 1 Failed"
-# assert(sum_series(2, 2, 2)) == 8, "Sum_Series Assert Test 2 Failed"
-# assert(sum_series(3, 5, 4)) == 23, "Sum_Series Assert Test 3 Failed"
+# sum_series
+assert sum_series(8, 0, 1) == 21
+assert sum_series(6, 2, 1) == 18
+assert sum_series(3, 5, 4) == 13
+assert sum_series(11) == 89
+print("All sum_series Assert Tests Passed")
+
