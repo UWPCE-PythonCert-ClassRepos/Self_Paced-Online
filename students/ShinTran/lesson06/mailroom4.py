@@ -5,10 +5,8 @@ Lesson 5 Assignment
 '''
 
 master_dict = {"Jennifer Miller": [145076.19,2],
-    "Mary Johnson": [90146.28,3],
     "William Rodriguez": [161585.16,3],
-    "Patricia Brown": [100863.96,2],
-    "Michael David": [88196.96,2]
+    "Patricia Brown": [100863.96,2]
 } # For all donations made
 
 # Prompts the user to enter an option
@@ -42,8 +40,10 @@ def action(user_input):
 
 # Creates a list of all the distinct donors
 def list_func():
-    for name in master_dict:
+    name_list = [k for k, v in master_dict.items()]
+    for name in name_list:
         print(name)
+    return name_list
 
 # Prompts the user to type a name of a donor, enter a donation amount,
 # prints an email thanking the donor
@@ -56,45 +56,49 @@ def send_thanks():
         donation_amt = input("Enter a donation amount: ")
         if (donation_amt != 'exit'):
             temp_list.append(float(donation_amt))
-            #master_dict.append(temp_list)
             if donor_name in master_dict:
                 temp_list2 = master_dict.pop(donor_name)
                 master_dict[donor_name] = [temp_list[1]+temp_list2[0],temp_list2[1]+1]
             else:
                 master_dict[donor_name] = [temp_list[1],1]
-            print_email(temp_list)
+            print(print_email(temp_list))
 
 # Prints a thank you email to a donator
 # Donor name and amount is passed in as a parameter
 def print_email(currentDonation):
-    print("Dear {:s},\n\
+    return "Dear {:s},\n\
         Thank you for the generous donation of ${:,.2f}.\n\
         Sincerely,\n\
-        Your Local Charity".format(*currentDonation))
+        Your Local Charity".format(*currentDonation)
 
 # Goes through all the previous donators, gets their total donated,
 # sends a thank you letter that is output on a .txt file
 def send_letters():
+    letter_list = []
     message = "Dear {:s},\n\
-    Thank you for the your generous total donation of ${:,.2f}.\n\
+    Thank you for donating ${:,.2f}.\n\
     Sincerely,\n\
     Your Local Charity"
     for name, vals in master_dict.items():
         with open(name + ".txt",'w') as output:
             output.write(message.format(name, vals[0]))
+            letter_list.append(message.format(name, vals[0]))
+    return letter_list
 
 # Prints a report of all the previous donators
 # Report includes name, total donated, count of donations, average gift
 # Report is also formatted with a certain spacing
 def print_report():
-    donation_total = []
-    for name, vals in master_dict.items():
-        donation_total.append([name, round(vals[0],2), vals[1], round(vals[0]/vals[1],2)])
+    donation_total = [[key, round(val[0],2), val[1], round(val[0]/val[1],2)] for key, val in master_dict.items()]
     donation_total.sort(key=lambda l: l[1], reverse = True)
-    print("Donor Name          |   Total Given  |  Num Gifts |  Average Gift")
-    print("-----------------------------------------------------------------")
+    s1 = "Donor Name          |   Total Given  |  Num Gifts |  Average Gift\n"
+    s2 = "-----------------------------------------------------------------\n"
+    final_string = s1 + s2
     for z in range(0, len(donation_total)):
-        print('{:20} ${:13,.2f}{:14}  ${:13,.2f}'.format(*donation_total[z]))
+        s3 = '{:20} ${:13,.2f}{:14}  ${:13,.2f}\n'.format(*donation_total[z])
+        final_string += s3
+    print(final_string)
+    return final_string
 
 # Python program to use main for function call
 if __name__ == "__main__":
