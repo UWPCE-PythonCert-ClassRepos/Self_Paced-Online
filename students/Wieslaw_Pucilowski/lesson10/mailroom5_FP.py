@@ -201,21 +201,7 @@ class DonorsCollection():
         for k, d in self.donors.items():
             d.write_letter()
 
-    def projections(self):
-        try:
-            factor = int(input("What is the multiplication factor:"))
-        except ValueError:
-            print("Multiplication factor should be integer...")
-            return
-        try:
-            x = input("Above Min donation:")
-            min_donation = float(x) if x != '' else None
-            y = input("Below Max donation:")
-            max_donation = float(y) if y != '' else None
-        except ValueError:
-            print("Min, Max donation should be in USD...")
-            return
-
+    def projections(self, factor, min_donation=None, max_donation=None):
         for donor in self.donors.values():
             temp = cp.deepcopy(donor)  # projection done on donor copy
             print("Donor: {} Current total of dination: {} \
@@ -265,8 +251,8 @@ class Main:
         dd.challenge()
 
     @staticmethod
-    def project():
-        dd.projections()
+    def project(factor, min_donation, max_donation):
+        dd.projections(factor, min_donation, max_donation)
 
 
 if __name__ == "__main__":
@@ -293,6 +279,22 @@ if __name__ == "__main__":
     def sub_menu():
         menu_selection(submenu, subfeatures)
 
+    def projections_prompt():
+        try:
+            factor = int(input("What is the multiplication factor:"))
+        except ValueError:
+            print("Multiplication factor should be integer...")
+            return
+        try:
+            x = input("Above Min donation:")
+            min_donation = float(x) if x != '' else None
+            y = input("Below Max donation:")
+            max_donation = float(y) if y != '' else None
+        except ValueError:
+            print("Min, Max donation should be in USD...")
+            return
+        Main.project(factor=factor, min_donation=min_donation, max_donation=max_donation)
+
     menu = """
         {:-^30}
 
@@ -316,7 +318,7 @@ if __name__ == "__main__":
             '1': sub_menu,
             '2': Main.report,
             '3': Main.letters,
-            '4': Main.project,
+            '4': projections_prompt,
             'q': main_quit,
             }
 
