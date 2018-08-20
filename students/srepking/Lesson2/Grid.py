@@ -21,4 +21,23 @@ def grid(scale):
 	    print('|','  '*scale,'|','  '*scale,'|')
     print('+','- '*scale,'+','- '*scale,'+')
 
-grid(3)
+#grid(3)
+
+#Part 3 - A Function with Two Parameters
+
+def grid_2(rowscolumns,scale):
+    if rowscolumns>0:
+        for k in range(rowscolumns):
+            for i in range(rowscolumns):
+	            print('+','- '*scale, end=' ')
+            print ('+')
+            for j in range(scale):
+                for i in range(rowscolumns):
+                    print('|','  '*scale, end=' ')
+                print ('|')
+        for i in range(rowscolumns):
+	        print('+','- '*scale, end=' ')
+        print ('+')
+    else:
+        print('Must Enter column/row value greater than zero')
+grid_2(3,0)
