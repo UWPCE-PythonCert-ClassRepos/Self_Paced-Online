@@ -30,5 +30,12 @@ def sum_series(n,x=0,y=1):
     if n>1:
         return sum_series(n-2,x,y)+sum_series(n-1,x,y)
         
-print(sum_series(4,0,1))
-        
+
+print('This is th 4th result of Fibonacci series, starting at index 0')
+print (fibonacci(4))
+
+print('This is the 4th result of the Lucas series, starting at index 0')
+print (lucas(4))
+
+print('This is the 4th result of a series starting with x and y,where sum_series=sum_series[n-2]+sum_series[n-1]. The nth result is displayed, staring index 0.')
+print (sum_series(4,3,2))
