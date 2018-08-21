@@ -48,20 +48,8 @@ def thankyou():
 
 
 # Function to write a report of the donors.
-""" def createreport():
-    donors_report = []
-    for i, name in enumerate(donors):
-        sum_donation = 0
-        avg_donation = 0
-        for j in donors[i][1]:
-            sum_donation = sum_donation + j
-            num_donation = len(donors[i][1])
-        avg_donation = sum_donation/num_donation
-        donors_report.append([sum_donation, name[0], num_donation, avg_donation])
-    donors_report.sort(reverse=True)
-    writereport(donors_report) """
-
 def createreport():
+    donors_report = []
     for name, amount in ddonors.items():
         sum_donation = 0
         avg_donation = 0
@@ -69,7 +57,10 @@ def createreport():
             sum_donation = sum_donation + i
             num_donation = len(amount)
         avg_donation = sum_donation/num_donation
-        print(name, sum_donation, num_donation)
+        #print(name, sum_donation, num_donation)
+        donors_report.append([sum_donation, name, num_donation, avg_donation])
+    donors_report.sort(reverse=True)
+    writereport(donors_report)
 
 
 
