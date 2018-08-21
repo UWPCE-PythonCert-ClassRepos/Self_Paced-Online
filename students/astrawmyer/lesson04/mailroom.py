@@ -3,6 +3,7 @@
 # new file for lesson 4 work
 
 donors = [["Manny Machado",[12.2,2.51,3.20]],["Adam Jones",[1024.14,22.21,323.45]],["Chris Davis",[3.2,5.55,4.20]]]
+ddonors = {"Manny Machado": [12.2,2.51,3.20], "Adam Jones": [1024.14,22.21,323.45], "Chris Davis": [3.2,5.55,4.20]}
 
 
 def displaylist():    
@@ -47,7 +48,7 @@ def thankyou():
 
 
 # Function to write a report of the donors.
-def createreport():
+""" def createreport():
     donors_report = []
     for i, name in enumerate(donors):
         sum_donation = 0
@@ -58,7 +59,17 @@ def createreport():
         avg_donation = sum_donation/num_donation
         donors_report.append([sum_donation, name[0], num_donation, avg_donation])
     donors_report.sort(reverse=True)
-    writereport(donors_report)
+    writereport(donors_report) """
+
+def createreport():
+    for name, amount in ddonors.items():
+        sum_donation = 0
+        avg_donation = 0
+        for i in amount:
+            sum_donation = sum_donation + i
+            num_donation = len(amount)
+        avg_donation = sum_donation/num_donation
+        print(name, sum_donation, num_donation)
 
 
 
@@ -68,12 +79,4 @@ if __name__ == "__main__":
     while True:
         print("What do you want to do?")
         response = input("1. Send a Thank You, 2. Create a Report, 3. Quit: ")
-        
         main_switch_function.get(response)()
-"""         if response == '1':
-            thankyou()
-        elif response == '2':
-            createreport()
-        elif response == '3':
-            exit() """
-
