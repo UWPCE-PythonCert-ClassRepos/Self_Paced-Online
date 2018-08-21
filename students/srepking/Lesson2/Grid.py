@@ -1,4 +1,4 @@
-#Part 1 - Making the grid
+#Part 1 - Making the grid with No Arguments
 print('+','- '*4,'+','- '*4,'+')
 print('|','  '*4,'|','  '*4,'|')
 print('|','  '*4,'|','  '*4,'|')
@@ -21,7 +21,7 @@ def grid(scale):
 	    print('|','  '*scale,'|','  '*scale,'|')
     print('+','- '*scale,'+','- '*scale,'+')
 
-#grid(3)
+
 
 #Part 3 - A Function with Two Parameters
 
@@ -40,4 +40,4 @@ def grid_2(rowscolumns,scale):
         print ('+')
     else:
         print('Must Enter column/row value greater than zero')
-grid_2(3,0)
+grid_2(5,5)
