@@ -8,12 +8,10 @@ def fibonacci(n):
         return fibonacci(n-2)+fibonacci(n-1)
      
 
-            
-        
-print(fibonacci(3))
+
 
 def lucas(n):
-    """Create a Lucas Series 2,1,3,4....and returns the nth value starting index 0."""
+    """Create a Lucas Series 2,1,3,4....and returns the nth value starting with index 0."""
     if n==0:
         return(2)
     if n==1:
@@ -21,4 +19,16 @@ def lucas(n):
     if n>1:
         return lucas(n-2)+lucas(n-1)
 
-print (lucas(3))
+
+def sum_series(n,x=0,y=1):
+    """Creates a Fibonacci series with a firs value x second value y, and a Lucas series if you change x,y=2,1.
+    This function returns the nth value starting with index 0."""
+    if n==0:
+        return(x)
+    if n==1:
+        return(y)
+    if n>1:
+        return sum_series(n-2,x,y)+sum_series(n-1,x,y)
+        
+print(sum_series(4,0,1))
+        
