@@ -24,7 +24,7 @@ def main_prompt():
 # If the user types exit it'll go back to the main prompt
 def action(user_input):
     switch_dict = {
-        'list': list_func,
+        'list': print_names,
         '1': send_thanks,
         '2': print_report,
         '3': send_letters,
@@ -38,12 +38,16 @@ def action(user_input):
     else:
         action(main_prompt())
 
-# Creates a list of all the distinct donors
-def list_func():
+# Creates a list of all the distinct donors, returns a list
+# helper method for print_names
+def generate_name_list():
     name_list = [k for k, v in master_dict.items()]
-    for name in name_list:
-        print(name)
     return name_list
+
+# Prints out all the names in the name list, references generate_name_list
+def print_names():
+    for name in generate_name_list():
+        print(name)
 
 # Prompts the user to type a name of a donor, enter a donation amount,
 # prints an email thanking the donor
@@ -61,11 +65,11 @@ def send_thanks():
                 master_dict[donor_name] = [temp_list[1]+temp_list2[0],temp_list2[1]+1]
             else:
                 master_dict[donor_name] = [temp_list[1],1]
-            print(print_email(temp_list))
+            print(get_email_text(temp_list))
 
 # Prints a thank you email to a donator
 # Donor name and amount is passed in as a parameter
-def print_email(currentDonation):
+def get_email_text(currentDonation):
     return "Dear {:s},\n\
         Thank you for the generous donation of ${:,.2f}.\n\
         Sincerely,\n\
@@ -83,12 +87,12 @@ def send_letters():
         with open(name + ".txt",'w') as output:
             output.write(message.format(name, vals[0]))
             letter_list.append(message.format(name, vals[0]))
-    return letter_list
 
-# Prints a report of all the previous donators
+# Generates a report of all the previous donators
 # Report includes name, total donated, count of donations, average gift
 # Report is also formatted with a certain spacing
-def print_report():
+# returns the report as a string
+def generate_report():
     donation_total = [[key, round(val[0],2), val[1], round(val[0]/val[1],2)] for key, val in master_dict.items()]
     donation_total.sort(key=lambda l: l[1], reverse = True)
     s1 = "Donor Name          |   Total Given  |  Num Gifts |  Average Gift\n"
@@ -97,8 +101,12 @@ def print_report():
     for z in range(0, len(donation_total)):
         s3 = '{:20} ${:13,.2f}{:14}  ${:13,.2f}\n'.format(*donation_total[z])
         final_string += s3
-    print(final_string)
     return final_string
+
+# Prints a report of all the previous donators
+# references generate_report
+def print_report():
+    print(generate_report())
 
 # Python program to use main for function call
 if __name__ == "__main__":
