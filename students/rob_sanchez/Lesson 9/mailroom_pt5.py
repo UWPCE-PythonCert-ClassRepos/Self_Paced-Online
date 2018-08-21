@@ -79,7 +79,6 @@ def send_letters():
     donor_total = {key: sum(donor_dict[key]) for key in donor_dict}
 
     for key, value in donor_dict.items():
-        # f = open(key+'.txt', 'w')
         with open(key+'.txt', 'w') as f:
             new_list["donor_name"] = key
             new_list["last_donation"] = donor_dict[key][-1]
@@ -88,13 +87,6 @@ def send_letters():
 
 
 # Helper methods:
-
-# Returns a list of formatted values
-def get_formatted_values(in_val):
-    form_string = ", ".join(["{:s}"] * len(in_val))
-    return form_string.format(*in_val)
-
-
 # Add donor if it doesn't exist in current dictionary,
 # otherwise append their last contribution
 def add_donor(donor, amt):
@@ -131,16 +123,6 @@ def get_donor_totals(in_list):
     donor_total = {key: sum(in_list[key]) for key in in_list}
     donor_total = dict(sorted(donor_total.items(), key=lambda t: t[1], reverse=True))
     return donor_total
-
-
-# Returns the totatl number of gifts from each donor
-def get_num_gifts(in_list):
-    return {key: len(in_list[key]) for key in in_list}
-
-
-# Returns the average donation amount for each donor
-def get_averages(in_list):
-    return {key: sum(in_list[key])/len(in_list[key]) for key in in_list}
 
 
 # Sends an email to the specified donor
