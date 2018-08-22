@@ -11,8 +11,10 @@ def displaylist():
         print(name)
 
 def writeletter(name,amount):
-    print('Dear {},'.format(name))
-    print("Thank you for donating ${:.2f} to the Human Fund. Your money will be used appropriately.".format(amount))
+    line_one = 'Dear {},'.format(name)
+    line_two = "Thank you for donating ${:.2f} to the Human Fund. Your money will be used appropriately.".format(amount)
+    letter = line_one + "\n" + line_two
+    return letter
 
 def writereport(donors):
     print('Donor Name                | Total Given | Num Gifts | Average Gift')
@@ -30,7 +32,7 @@ def thankyou():
         if input_name in ddonors.keys():
             donation = float(input("Enter donation amount:"))
             ddonors[input_name].append(donation)
-            writeletter(input_name,donation)
+            print(writeletter(input_name,donation))
             loop_trigger = False
             break
         elif input_name == 'list':
@@ -40,7 +42,7 @@ def thankyou():
             print("Adding {} to donor database".format(input_name))
             donation = float(input("Enter donation amount:"))
             ddonors[input_name] = donation
-            writeletter(input_name,donation)
+            print(writeletter(input_name,donation))
             loop_trigger = False
             break
 
@@ -66,8 +68,10 @@ def all_letters():
         f = open('{}.txt'.format(name), 'w')
         donation = ddonors[name][0]
         letter = writeletter(name, donation)
-        f.write("{}".format(letter))
+        f.write(writeletter(name, donation))
+        #f.write("{}".format(letter))
         f.close()
+    print("Letter files created.")
 
 
 if __name__ == "__main__":
