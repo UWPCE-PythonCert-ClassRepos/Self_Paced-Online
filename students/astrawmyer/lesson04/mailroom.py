@@ -7,8 +7,8 @@ ddonors = {"Manny Machado": [12.2,2.51,3.20], "Adam Jones": [1024.14,22.21,323.4
 
 
 def displaylist():    
-    for sublist in donors:
-        print(sublist[0])
+    for name in ddonors.keys():
+        print(name)
 
 def writeletter(name,amount):
     print('Dear {},'.format(name))
@@ -22,7 +22,7 @@ def writereport(donors):
 
 
 # Function to send a thank you letter.
-def thankyou():
+""" def thankyou():
     loop_trigger = True
     while loop_trigger == True:
         input_name = input("Enter full name: ")
@@ -45,6 +45,24 @@ def thankyou():
                 writeletter(donors[len(donors)-1][0],donors[len(donors)-1][1][0])
                 loop_trigger = False
                 break
+ """
+def thankyou():
+    loop_trigger = True
+    while loop_trigger == True:
+        input_name = input("Enter full name: ")
+        if input_name in ddonors.keys():
+            donation = float(input("Enter donation amount:"))
+            ddonors[input_name].append(donation)
+            writeletter(input_name,donation)
+            loop_trigger = False
+            break
+        elif input_name == 'list':
+            displaylist()
+            break
+        else:
+
+            loop_trigger = False
+            break
 
 
 # Function to write a report of the donors.
