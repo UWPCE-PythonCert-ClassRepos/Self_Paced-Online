@@ -67,9 +67,7 @@ def all_letters():
     for name in ddonors:
         f = open('{}.txt'.format(name), 'w')
         donation = ddonors[name][0]
-        letter = writeletter(name, donation)
         f.write(writeletter(name, donation))
-        #f.write("{}".format(letter))
         f.close()
     print("Letter files created.")
 
