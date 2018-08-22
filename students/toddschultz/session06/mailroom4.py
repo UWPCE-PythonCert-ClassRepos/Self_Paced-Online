@@ -13,7 +13,8 @@ def menu_selection(prompt, dispatch_dict):
         print ("\nPlease enter 1, 2, 3, or 4.")
         menu_selection(main_prompt, main_dispatch)
 
-def fun1(): #Thank you
+def send_thank_you():
+    ''' Check for list or quit, otherwise call create_thank_you. '''
     person = (input("Who would you like to send a Thank You to?\nYou can type 'list' to get a list of current donors: ").lower())
     if person == "quit" or person == "q":
         print ("Have a nice day!")
@@ -23,8 +24,12 @@ def fun1(): #Thank you
         donation = float(input("How much was the donation? "))
     except ValueError:
         print("Please enter a number.")
-        fun1()
+        send_thank_you()
 
+    create_thank_you(donation, person)
+
+def create_thank_you(donation, person):
+    ''' Create\Print the thank you if match is found, otherwise call new_donor(). '''
     for i in donors:
         if i[0] == person:
             i.append(donation)
@@ -41,22 +46,27 @@ def fun1(): #Thank you
             print("Sincerely:\n\nLeadership Team at Charity X.\n\n")
             menu_selection(main_prompt, main_dispatch)
     else:
-        new = (input("That looks like a new donor. Would you like to add a new donor? (Y)es or (N)o? ").lower())
-        if new == "yes" or new == "y":
-            donors.append([person])
-            donors[-1].append(donation)
-            d = dict()
-            d['name'] = person
-            d['amount'] = donation
-            print("\n{name}\n".format(**d))
-            print("\tThank you very much for your generouse donation. Your")
-            print("${amount:.2f} donation will allow us to continue our efforts.".format(**d))
-            print("Our charity would not exist without your support.\n")
-            print("Sincerely:\n\nLeadership Team at Charity X.\n\n")
-            menu_selection(main_prompt, main_dispatch)
-        else:
-            menu_selection(main_prompt, main_dispatch)
-def fun2(): #Report
+        new_donor(person, donation)
+
+def new_donor(person,donation):
+    ''' Provide the option to add a new donor, or go back to the main menu. '''
+    new = (input("That looks like a new donor. Would you like to add a new donor? (Y)es or (N)o? ").lower())
+    if new == "yes" or new == "y":
+        donors.append([person])
+        donors[-1].append(donation)
+        d = dict()
+        d['name'] = person
+        d['amount'] = donation
+        print("\n{name}\n".format(**d))
+        print("\tThank you very much for your generouse donation. Your")
+        print("${amount:.2f} donation will allow us to continue our efforts.".format(**d))
+        print("Our charity would not exist without your support.\n")
+        print("Sincerely:\n\nLeadership Team at Charity X.\n\n")
+        menu_selection(main_prompt, main_dispatch)
+    else:
+        menu_selection(main_prompt, main_dispatch)
+
+def create_report(): #Report
     donors_list = []
     z = 0
     for i in donors:
@@ -74,7 +84,7 @@ def fun2(): #Report
     print("\n")
     menu_selection(main_prompt, main_dispatch)
 
-def fun3(): #Letters
+def create_letters(): #Letters
     donors_list = []
     z = 0
     for i in donors:
@@ -87,7 +97,7 @@ def fun3(): #Letters
     for i in donors_list:
         name = (i[0])
         total = (i[1]) 
-        with open('/Users/toddschultz/Projects/UW/Self_Paced-Online/Students/toddschultz/session04/letters/' + name + ".txt", 'w') as f:
+        with open('/Users/toddschultz/Projects/UW/Self_Paced-Online/Students/toddschultz/session06/letters/' + name + ".txt", 'w') as f:
             f.write("\n\n" + name + ":\n\tThank you very much for your generous donations. ")
             f.write(f"your donation total of ${total:.2f} is awesome! ")
             f.write("Our charity would not exist without your support.\\n")
@@ -107,15 +117,15 @@ main_prompt = ("\nMAIN MENU\n"
                 "4 - Exit\n"
                 ">>> ")
 
-main_dispatch = {"1": fun1,
-                 "2": fun2,
-                 "3": fun3,
+main_dispatch = {"1": send_thank_you,
+                 "2": create_report,
+                 "3": create_letters,
                  "4": quit,}
 
 def try_again():
         print("\nPlease select from the names below, be sure to spell them correctly.\n")
         donors_list = [print(i[0].title()) for i in donors if type(i[0]) is str]
-        fun1()
+        send_thank_you()
 
 if __name__ == '__main__':
     menu_selection(main_prompt, main_dispatch)
