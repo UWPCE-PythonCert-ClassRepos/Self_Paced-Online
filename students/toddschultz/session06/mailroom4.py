@@ -67,6 +67,7 @@ def new_donor(person,donation):
         menu_selection(main_prompt, main_dispatch)
 
 def create_report(): #Report
+    ''' Create the list of donors for the report, then call display_report. '''
     donors_list = []
     z = 0
     for i in donors:
@@ -76,13 +77,17 @@ def create_report(): #Report
         aa=sum(i[1:])
         donors_list[z].append(aa/len(i)) #average
         z += 1
-    print("\nDonor Name\t\t| Total Given | Num Gifts | Average Gift")
-    print("----------------------------------------------------------------")
-    donors_list.sort(key = lambda x: int(x[1]),reverse=True)
-    for i in donors_list:
-        print("{:<22}".format(i[0]).title(), "  $", "{:11.2f}".format(i[1]), "\t\t{:<2}".format(i[2]-1), "{:2}".format("$"), "{:10.2f}".format(i[3]))
-    print("\n")
-    menu_selection(main_prompt, main_dispatch)
+    display_report(donors_list)
+
+def display_report(donors_list):
+    ''' format and print the report. '''
+        print("\nDonor Name\t\t| Total Given | Num Gifts | Average Gift")
+        print("----------------------------------------------------------------")
+        donors_list.sort(key = lambda x: int(x[1]),reverse=True)
+        for i in donors_list:
+            print("{:<22}".format(i[0]).title(), "  $", "{:11.2f}".format(i[1]), "\t\t{:<2}".format(i[2]-1), "{:2}".format("$"), "{:10.2f}".format(i[3]))
+        print("\n")
+        menu_selection(main_prompt, main_dispatch)
 
 def create_letters(): #Letters
     donors_list = []
