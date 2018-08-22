@@ -60,7 +60,10 @@ def thankyou():
             displaylist()
             break
         else:
-
+            print("adding {} to list".format(input_name))
+            donation = float(input("Enter donation amount:"))
+            ddonors[input_name] = donation
+            writeletter(input_name,donation)
             loop_trigger = False
             break
 
