@@ -7,7 +7,7 @@ def menu_selection(prompt, dispatch_dict):
     try:
         while True:
             response = input(prompt)
-            if dispatch_dict[response]() == "exit menu":
+            if dispatch_dict[response]() == "exit_menu":
                 break
     except KeyError:
         print ("\nPlease enter 1, 2, 3, or 4.")
@@ -46,9 +46,9 @@ def create_thank_you(donation, person):
             print("Sincerely:\n\nLeadership Team at Charity X.\n\n")
             menu_selection(main_prompt, main_dispatch)
     else:
-        new_donor(person, donation)
+        add_new_donor(person, donation)
 
-def new_donor(person,donation):
+def add_new_donor(person,donation):
     ''' Provide the option to add a new donor, or go back to the main menu. '''
     new = (input("That looks like a new donor. Would you like to add a new donor? (Y)es or (N)o? ").lower())
     if new == "yes" or new == "y":
@@ -57,16 +57,19 @@ def new_donor(person,donation):
         d = dict()
         d['name'] = person
         d['amount'] = donation
+        print_thank_you(d)
+    else:
+        menu_selection(main_prompt, main_dispatch)
+
+def print_thank_you(d):
         print("\n{name}\n".format(**d))
         print("\tThank you very much for your generouse donation. Your")
         print("${amount:.2f} donation will allow us to continue our efforts.".format(**d))
         print("Our charity would not exist without your support.\n")
         print("Sincerely:\n\nLeadership Team at Charity X.\n\n")
         menu_selection(main_prompt, main_dispatch)
-    else:
-        menu_selection(main_prompt, main_dispatch)
 
-def create_report(): #Report
+def create_report(): 
     ''' Create the list of donors for the report, then call display_report. '''
     donors_list = []
     z = 0
@@ -116,8 +119,7 @@ def create_letters(donors_list):
     menu_selection(main_prompt, main_dispatch)
 
 def quit():
-    print("Good Bye!")
-    return "exit menu"
+    return "exit_menu"
 
 main_prompt = ("\nMAIN MENU\n"
                 "what option would you like?\n"
