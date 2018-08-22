@@ -2,7 +2,7 @@
 
 # new file for lesson 4 work
 
-donors = [["Manny Machado",[12.2,2.51,3.20]],["Adam Jones",[1024.14,22.21,323.45]],["Chris Davis",[3.2,5.55,4.20]]]
+#donors = [["Manny Machado",[12.2,2.51,3.20]],["Adam Jones",[1024.14,22.21,323.45]],["Chris Davis",[3.2,5.55,4.20]]]
 ddonors = {"Manny Machado": [12.2,2.51,3.20], "Adam Jones": [1024.14,22.21,323.45], "Chris Davis": [3.2,5.55,4.20]}
 
 
@@ -22,30 +22,7 @@ def writereport(donors):
 
 
 # Function to send a thank you letter.
-""" def thankyou():
-    loop_trigger = True
-    while loop_trigger == True:
-        input_name = input("Enter full name: ")
-        for i, donor_row in enumerate(donors):
-            if donor_row[0] == input_name:
-                donation = float(input("Enter donation amount:"))
-                donors[i][1].append(float(donation))
-                #print(donors)
-                writeletter(donors[i][0],donors[i][1][len(donors[i][1])-1])
-                loop_trigger = False
-                break
-            elif input_name == 'list':
-                displaylist()
-                break
-            else:
-                print("adding {} to list".format(input_name))
-                donation = float(input("Enter donation amount:"))
-                donors.append([input_name,[donation]])
-                #print(donors)
-                writeletter(donors[len(donors)-1][0],donors[len(donors)-1][1][0])
-                loop_trigger = False
-                break
- """
+
 def thankyou():
     loop_trigger = True
     while loop_trigger == True:
@@ -60,7 +37,7 @@ def thankyou():
             displaylist()
             break
         else:
-            print("adding {} to list".format(input_name))
+            print("Adding {} to donor database".format(input_name))
             donation = float(input("Enter donation amount:"))
             ddonors[input_name] = donation
             writeletter(input_name,donation)
@@ -83,12 +60,19 @@ def createreport():
     donors_report.sort(reverse=True)
     writereport(donors_report)
 
-
+#Function to write letters for everyone.
+def all_letters():
+    for name in ddonors:
+        f = open('{}.txt'.format(name), 'w')
+        donation = ddonors[name][0]
+        letter = writeletter(name, donation)
+        f.write("{}".format(letter))
+        f.close()
 
 
 if __name__ == "__main__":
-    main_switch_function = {"1": thankyou, "2": createreport, "3": exit}
+    main_switch_function = {"1": thankyou, "2": createreport, "3": all_letters, "4": exit}
     while True:
         print("What do you want to do?")
-        response = input("1. Send a Thank You, 2. Create a Report, 3. Quit: ")
+        response = input("1. Send a Thank You, 2. Create a Report, 3. Send all letters, 4. Quit: ")
         main_switch_function.get(response)()
