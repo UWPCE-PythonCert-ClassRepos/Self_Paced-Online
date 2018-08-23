@@ -58,5 +58,5 @@ def print_grid_three(size1, size2):
 
 
 print_grid_one()
-print_grid_two(6)
-print_grid_three(8, 2)
+print_grid_two(10)
+print_grid_three(25, 2)
