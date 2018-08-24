@@ -62,3 +62,22 @@ for i in fruits:
 print(new_list) 
         
         
+#Start of Series 4
+print('\n''This is the start of Series 4')
+print('\n''This is our list of fruits starting Series 4')
+print(fruits)
+#Create a copy of fruit list and spell fruits backwards
+new_list=[]
+for i in fruits:
+    spell=[str(i[::-1])]
+    new_list+=spell
+print('\n''This is our fruit list with fruits spelled backwards')
+print(new_list)
+
+#Delete the last item of the original list
+del fruits[-1:]
+
+print('\n''This is the original fruit list with the last item deleted')
+print(fruits)
+
+
