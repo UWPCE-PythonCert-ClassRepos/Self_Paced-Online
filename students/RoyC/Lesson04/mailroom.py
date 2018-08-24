@@ -13,6 +13,7 @@ donors = {
 # template used to format thank you letter
 ltr_template = ("\n\nDear {donor_name},"
                 "\n\nThank you for your generous donation of ${amt}."
+                "\nThis brings your to-date total of donations to ${total}!"
                 "\nYour kind help is greatly appreciated."
                 "\n\nKindest regards, Monty Burns\n\n"
                )
@@ -34,10 +35,21 @@ def send_thanx():
             donations = donors.setdefault(donor_name, [])
             amt = float(input("Enter amount of donation: "))
             donations.append(amt)
-            record = {'donor_name' : donor_name, 'amt' : "{:.2f}".format(amt)}
+            record = {'donor_name' : donor_name, 'amt' : "{:.2f}".format(amt), 'total' : "{:.2f}".format(get_total(donations))}
             print(ltr_template.format(**record))
             break
     
+def thank_all():
+    """
+    Write thank you letters for all donors to separate files
+    """
+    for donor, donations in donors.items():
+        f = open(donor.replace(' ',  '_') + ".txt", 'w')
+        last_donation = donations[-1:][0]
+        donor_record = {'donor_name' : donor, 'amt' : "{:.2f}".format(last_donation), 'total' : "{:.2f}".format(get_total(donations))}
+        f.write(ltr_template.format(**donor_record))
+    print("\n{:d} thank you letters have been written!\n".format(len(donors)))
+
 def get_total(donations):
     """
     Return the total of the given list of donations
@@ -102,6 +114,7 @@ def display_menu(prompt, menu_dict):
 main_prompt = ("\nPlease choose one of these options:"
                "\n   1 - Send a Thank You"
                "\n   2 - Create a Report"
+               "\n   3 - Send letters to Everyone"
                "\n   q - Quit"
                "\nEnter your selection => "
             )
@@ -109,6 +122,7 @@ main_prompt = ("\nPlease choose one of these options:"
 # main menu dictionary, options and associated functions            
 main_menu = {"1": send_thanx,
              "2": create_report,
+             "3": thank_all,
              "q": quit_menu
             }
     
