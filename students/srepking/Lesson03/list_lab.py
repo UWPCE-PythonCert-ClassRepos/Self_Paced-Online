@@ -63,7 +63,7 @@ print(new_list)
         
         
 #Start of Series 4
-print('\n''This is the start of Series 4')
+print('\n''This is the start of Series 4')cd
 print('\n''This is our list of fruits starting Series 4')
 print(fruits)
 #Create a copy of fruit list and spell fruits backwards
