@@ -23,9 +23,9 @@ def write_report(donors):
         print('{1:27}${0:11.2f}{2:12}  ${3:12.2f}'.format(*i))
 
 
-# Function to send a thank you letter.
 
 def thank_you():
+    """Function to send a thank you letter."""
     while True:
         input_name = input("Enter full name: ")
         if input_name in ddonors.keys():
@@ -35,7 +35,7 @@ def thank_you():
             break
         elif input_name == 'list':
             display_list()
-            break
+            
         else:
             print("Adding {} to donor database".format(input_name))
             donation = float(input("Enter donation amount:"))
@@ -45,8 +45,8 @@ def thank_you():
             break
 
 
-# Function to write a report of the donors.
 def create_report():
+    """Function to write a report of the donors."""
     donors_report = []
     for name, amount in ddonors.items():
         sum_donation = 0
@@ -60,8 +60,9 @@ def create_report():
     donors_report.sort(reverse=True)
     write_report(donors_report)
 
-#Function to write letters for everyone.
+
 def all_letters():
+    """Function to write letters for everyone."""
     for name in ddonors:
         donation = ddonors[name][0]
         with open('{}.txt'.format(name), 'w') as f:
