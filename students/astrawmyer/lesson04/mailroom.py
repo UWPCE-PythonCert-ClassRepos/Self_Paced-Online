@@ -65,10 +65,9 @@ def createreport():
 #Function to write letters for everyone.
 def all_letters():
     for name in ddonors:
-        f = open('{}.txt'.format(name), 'w')
         donation = ddonors[name][0]
-        f.write(writeletter(name, donation))
-        f.close()
+        with open('{}.txt'.format(name), 'w') as f:
+            f.write(writeletter(name, donation))
     print("Letter files created.")
 
 
