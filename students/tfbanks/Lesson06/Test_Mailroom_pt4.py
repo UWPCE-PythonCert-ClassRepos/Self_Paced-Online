@@ -51,4 +51,3 @@ Marlene Wheeler         $   2,042.80        2        $   1,021.40
 Frank Petersmankempt    $     550.60        1        $     550.60
 '''
         assert out == expected
-        
