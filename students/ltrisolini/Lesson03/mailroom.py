@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-if __name__ == "__main__":
-	#this will only run if run as a script.
-    print("This is inside the name:main block.")
+
 donors = [['William Gates, III', [140.00]], ['Mark Zuckerberg', [456.00, 75.50]], ['Jeff Bezos ', [134.00, 134.00]], ['Paul Allen  ', [50.00, 5.00, 5540.00]]]
 
 
@@ -32,12 +30,30 @@ def thank_you():
 
 def donor_report():
     print('Here is the list of donors and donations')
-    print('Donor Name                 Total Given                Num Gifts            Average Gift')
-    for data in donors:
-        x = int(sum(data[1]))
-        y = int(len(data[1]))
-        #print("|{:<20}|{:>20}|{:>20}|{:>20}|".format(data[0], x, y, x/y))
-        print("|{:>20}|{:>20}|{:>20}|{:>20}|".format(data[0], x, y, round(x / y, 2)))
+    print("\nDonor Name           |  Total Given | Num Gifts | Average Gift")
+    print("---------------------------------------------------------------\n")
+    report = []  # initialize report
+
+    # for each_name in get_all_donor_names(donors):
+    for each_donor in donors:
+            total_donation = 0  # initialize total donation from the same donor
+            # Get total donation from each donor
+            for i in range(len(each_donor[1])):
+                    total_donation += each_donor[1][i]
+            report.append([each_donor[0], total_donation, len(each_donor[1])])
+
+    # sorting the report based on donations
+    r_sorted = sorted(report, key=lambda r: r[1], reverse=True)
+
+    # Create the report
+    for d in range(len(r_sorted)):
+            print("{:23}${:12.2f}{:10}   ${:12.2f}".format(r_sorted[d][0],
+                    r_sorted[d][1],
+                    r_sorted[d][2],
+                    r_sorted[d][1]/r_sorted[d][2]))
+
+    print("\n")
+    #main()
 
 def menu():
     quit_menu = False
@@ -57,5 +73,5 @@ def menu():
         else:
             print('Please press a number to make a selection')
 
-    # Run the Mailroom program.
-menu()
+if __name__ == "__main__":
+   menu()
