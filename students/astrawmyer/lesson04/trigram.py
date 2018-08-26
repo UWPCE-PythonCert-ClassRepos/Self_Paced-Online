@@ -3,7 +3,7 @@
 # Trigram analysis.
 
 # Change these for different initial pair and output length.
-seed = 5487
+seed = 200
 tri_length = 200
 
 # Opens text file and makes it a list of words.
