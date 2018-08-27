@@ -53,9 +53,9 @@ and the weight of a {our_list[2].upper()} is {our_list[3]*1.2}")
 # Start of Task 6
 print('\n''This is the beginning of Task 6')
 name = ('Buick', 'Honda', 'Porcheeeeeeee')
-wiN = int(len(str(max(name))))+2
+column_width_name = int(len(str(max(name))))+2
 age = (20, 18000, 2)
-wiA = int(len(str(max(age))))+2
+column_width_age = int(len(str(max(age))))+2
 cost = ('$2', '$200', '$200000')
 for idx, number in enumerate(name):
-    print(f"{name[idx]:{wiN}}{age[idx]:<{wiA}d} {cost[idx]:}")
+    print(f"{name[idx]:{column_width_name}}{age[idx]:<{column_width_age}d} {cost[idx]:}")
