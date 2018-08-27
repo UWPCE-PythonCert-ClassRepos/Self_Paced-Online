@@ -1,13 +1,25 @@
 #!/usr/bin/env python3
 import sys
 import re
+from donor_class import Donations
+from donor_class import Donor
 
 
 # List of donors and donation amounts
-donor_dict = {"Tom Cruise": [100, 200, 300],
-              "Michael Jordan": [1300],
-              "Katy Perry": [4500, 1500],
-              "Adam Sandler": [500, 2400]}
+donations_list = Donations()
+donor_list = Donor()
+
+donations_list.add_donation("Tom Cruise", 100)
+donations_list.add_donation("Tom Cruise", 200)
+donations_list.add_donation("Tom Cruise", 300)
+
+donations_list.add_donation("Michael Jordan", 1300)
+
+donations_list.add_donation("Katy Perry", 4500)
+donations_list.add_donation("Katy Perry", 1500)
+
+donations_list.add_donation("Adam Sandler", 500)
+donations_list.add_donation("Adam Sandler", 2400)
 
 
 def main():
@@ -33,68 +45,42 @@ def main():
 
 # Sends a thank you email to the selected donor
 def send_thank_you():
-    # Holds a history of the donor's name and donation amount
-    history = {}
 
     # Get name of donor
-    donor_name = get_donor_name()
+    donor_name = name_prompt()
 
     # Display list of donors when user types "list"
     while donor_name.lower() == "list":
-        print ("\nList of Donors: " + get_formatted_values(list(donor_dict)))
-        donor_name = get_donor_name()
+        print (donations_list.get_formatted_list_of_donors())
+        donor_name = name_prompt()
 
     # Get donation amount
-    amt_input = get_donation_amount()
+    amt_input = donation_prompt()
 
-    add_donor(donor_name, float(amt_input))
+    donations_list.add_donation(donor_name, float(amt_input))
 
-    history["donor_name"] = donor_name
-    history["amount"] = amt_input
+    donor_list.add_donor(donor_name)
+    donor_list.add_donation(float(amt_input))
 
-    print(send_email(history))
+    print(send_email(donor_list.get_donor_details()))
 
 
 # Creates a summary report of the donations
 def create_report():
-    headers = ["Donor Name", "Total Given", "Num Gifts", "Average Gift"]
-    str_format = "{:<30} ${:>17} {:>16} ${:>14}"
-    print(("\n{:<30} | {:^15} | {:^15} | {:^15}").format(*headers))
-    print("-"*82)
-
-    donor_total = get_donor_totals(donor_dict)
-    num_gifts = get_num_gifts(donor_dict)
-    avg_gift = get_averages(donor_dict)
-
-    for key, value in donor_total.items():
-        print(str_format.format(key, round(float(donor_total[key]), 2),
-              num_gifts[key], round(avg_gift[key], 2)))
+    donations_list.get_summary
 
 
 # Creates a thank you file for each donor
 def send_letters():
-    new_list = {}
-    donor_total = {}
 
-    donor_total = {key: sum(donor_dict[key]) for key in donor_dict}
-
-    for key, value in donor_dict.items():
-        with open(key+'.txt', 'w') as f:
-            new_list["donor_name"] = key
-            new_list["last_donation"] = donor_dict[key][-1]
-            new_list["total"] = donor_total[key]
-            f.write(create_letter(new_list))
+    for value in donations_list.get_list_of_donors():
+        with open(value+'.txt', 'w') as f:
+            f.write(create_letter(donations_list.get_donor_summary(value)))
 
 
 # Helper methods:
-# Add donor if it doesn't exist in current dictionary,
-# otherwise append their last contribution
-def add_donor(donor, amt):
-    donor_dict.setdefault(donor, []).append(float(amt))
-
-
 # Asks user for the name of donor to send thank you email
-def get_donor_name():
+def name_prompt():
     while True:
         try:
             name = input("\nPlease enter the Donor's full name:\n").strip()
@@ -108,7 +94,7 @@ def get_donor_name():
 
 
 # Asks user for the donation amount
-def get_donation_amount():
+def donation_prompt():
     while True:
         try:
             amount = re.sub("[, ]", "", input("\nDonation amount:\n$"))
@@ -116,13 +102,6 @@ def get_donation_amount():
             break
         except ValueError:
             print("\n>> Please enter a valid donation amount <<")
-
-
-# Returns the total donation amount and returns it in ascending order
-def get_donor_totals(in_list):
-    donor_total = {key: sum(in_list[key]) for key in in_list}
-    donor_total = dict(sorted(donor_total.items(), key=lambda t: t[1], reverse=True))
-    return donor_total
 
 
 # Sends an email to the specified donor

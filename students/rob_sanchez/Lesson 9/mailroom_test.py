@@ -1,47 +1,60 @@
 #!/usr/bin/env python3
 import unittest
-import mailroom_pt4
+import mailroom_pt5
 import os.path
+from donor_class import Donations
+from donor_class import Donor
 
 
 class mailroom_tests(unittest.TestCase):
 
-    # Initial setup of test values
-    def setUp(self):
-        self.donor_dict = mailroom_pt4.donor_dict
-
-    # Test sum values and donor ascending order
+    # Test sum values
     def test_sum_values(self):
-        test_values = {"Bill Gates": [100, 200, 300],
-                       "Mark Zuckerberg": [100],
-                       "Jeff Bezos": [100, 200]}
-        test_compare = {'Bill Gates': 600, 'Jeff Bezos': 300, 'Mark Zuckerberg': 100}
-        self.assertDictEqual(test_compare, mailroom_pt4.get_donor_totals(test_values))
+        donations_list = Donations()
 
-    # Test sum values
+        donations_list.add_donation("Bill Gates", 100)
+        donations_list.add_donation("Bill Gates", 200)
+        donations_list.add_donation("Bill Gates", 300)
+
+        test_compare = {'Bill Gates': 600}
+        self.assertDictEqual(test_compare, donations_list.donation_totals)
+
+    # Test number of values
     def test_num_gifts(self):
-        test_values = {"Bill Gates": [100, 200, 300]}
-        self.assertDictEqual({'Bill Gates': 3}, mailroom_pt4.get_num_gifts(test_values))
+        donations_list = Donations()
 
-    # Test sum values
+        donations_list.add_donation("Bill Gates", 100)
+        donations_list.add_donation("Bill Gates", 200)
+        donations_list.add_donation("Bill Gates", 300)
+
+        test_values = {"Bill Gates": [100, 200, 300]}
+        self.assertDictEqual({'Bill Gates': 3}, donations_list.num_donations)
+
+    # # Test average values
     def test_averages(self):
-        test_values = {"Bill Gates": [100, 200, 300]}
-        self.assertDictEqual({'Bill Gates': 200}, mailroom_pt4.get_averages(test_values))
+        donations_list = Donations()
 
-    # Test that all the text files for the corresponding donors are created
-    def test_send_letters(self):
-        mailroom_pt4.send_letters()
-        for values in self.donor_dict:
-            self.assertTrue(os.path.isfile(values + ".txt"))
+        donations_list.add_donation("Jeff Bezos", 100)
+        donations_list.add_donation("Jeff Bezos", 200)
+        donations_list.add_donation("Jeff Bezos", 300)
 
-    # Tests that the list of existing users is correctly formatted
+        test_values = {"Jeff Bezos": [100, 200, 300]}
+        self.assertDictEqual({'Jeff Bezos': 200}, donations_list.avg_donations)
+
+    # # Tests that the list of existing users is correctly formatted
     def test_get_formatted_values(self):
-        # Sample formatted list of users
-        tst_list = "Tom Cruise, Michael Jordan, Katy Perry, Adam Sandler"
-        self.assertEqual(tst_list, mailroom_pt4.get_formatted_values(list(self.donor_dict)))
+        donations_list = Donations()
 
-    # Tests the that the email template is correctly formatted
+        donations_list.add_donation("Tom Cruise", 100)
+        donations_list.add_donation("Michael Jordan", 200)
+        donations_list.add_donation("Katy Perry", 300)
+
+        tst_list = "List of Donors: Tom Cruise, Michael Jordan, Katy Perry"
+        self.assertEqual(tst_list, donations_list.get_formatted_list_of_donors())
+
+    # # Tests the that the email template is correctly formatted
     def test_send_email(self):
+
         new_donor = {"donor_name": "Billy Bob",
                      "amount": 2345}
 
@@ -51,9 +64,9 @@ class mailroom_tests(unittest.TestCase):
                 " to continue supporting more individuals in need of our services."
                 "\n\nSincerely,\nCharity Inc.\n").format(**new_donor)
 
-        self.assertEqual(body, mailroom_pt4.send_email(new_donor))
+        self.assertEqual(body, mailroom_pt5.send_email(new_donor))
 
-    # Tests the that the individual letter template is correctly formatted
+    # # Tests the that the individual letter template is correctly formatted
     def test_create_letter(self):
         new_donor = {"donor_name": "Billy Bob",
                      "last_donation": 2345,
@@ -67,26 +80,15 @@ class mailroom_tests(unittest.TestCase):
                 "in need of our services."
                 "\n\nSincerely,\nCharity Inc.\n").format(**new_donor)
 
-        self.assertEqual(body, mailroom_pt4.create_letter(new_donor))
+        self.assertEqual(body, mailroom_pt5.create_letter(new_donor))
 
-    # Test that a new donor is added to the List
+    # # Test that a new donor and donation are added to the List
     def test_add_donor(self):
-        mailroom_pt4.add_donor("Billy Bob", 2345)
-        self.assertEqual(mailroom_pt4.donor_dict.get("Billy Bob"), [2345])
+        donor_list = Donor()
 
-    # Test that if donor exists, the donation value is added to the history
-    def test_donor_exists(self):
-        mailroom_pt4.add_donor("Michael Jordan", 200)
-        self.assertListEqual(mailroom_pt4.donor_dict.get("Michael Jordan"), [1300, 200])
-
-    # Reset list of donors
-    def tearDown(self):
-        donor_dict = {"Tom Cruise": [100, 200, 300],
-                      "Michael Jordan": [1300],
-                      "Katy Perry": [4500, 1500],
-                      "Adam Sandler": [500, 2400]}
-        mailroom_pt4.donor_dict.clear()
-        mailroom_pt4.donor_dict = donor_dict
+        donor_list.add_donor("Billy Bob")
+        donor_list.add_donation(2345)
+        self.assertEqual({'amount': 2345, 'donor_name': 'Billy Bob'}, donor_list.get_donor_details())
 
 
 if __name__ == '__main__':
