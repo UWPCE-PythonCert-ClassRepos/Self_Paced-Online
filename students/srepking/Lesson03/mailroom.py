@@ -77,9 +77,10 @@ if __name__ == '__main__':
         response = input('Type \'1\' to Send a Thank You, \'2\' to Create a Report, or \'3\' to quit?')
         if response == '1':
             thank_you()
-        if response == '2':
+        elif response == '2':
             report()
-        if response == '3':
+        else:
+            response == '3'
             print('Goodbye!')
             break
         
