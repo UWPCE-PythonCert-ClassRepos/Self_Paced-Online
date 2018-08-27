@@ -3,7 +3,7 @@
 # !/usr/bin/env python3
 
 # pt4 update - I made some changes to clean up some code as well as broke out thank_you_letter so more easily test that function
-
+import os
 # Donor Database containing names and donations
 donor_names = {
     'Tim Cooker': [1500.50, 25050.50, 15680.75],
@@ -14,7 +14,7 @@ donor_names = {
 
 
 def selection(option):
-    switch_fun_dict = {1: thank_you_donor, 2: report, 3: mass_mail}
+    switch_fun_dict = {1: thank_you_donor, 2: report, 3: mass_mail, 4: quit_option}
     return switch_fun_dict[option]
 
 
@@ -44,19 +44,19 @@ def thank_you_letter(ty_donor, amount):
 Thank you for your generous donation of ${:,.2f}, your generosity is greatly appreciated.
 These funds will help continue our efforts to teach Python to the next generation.\n
 Sincerely,\n\n
-Joesef Edword Bringingham\n\n''')
-    print(letter.format(ty_donor, amount))
+Joesef Edword Bringingham''').format(ty_donor, amount)
+    print(letter)
+    return letter
 
-
+    
 def report():  # Defines parameters of the report of donors and prints it.
-    print('\nDonor Name            |  Total Given | Num Gifts |  Average Gift')
-    print('------------------------------------------------------------------')
     donor_rpt = [[donor, sum(donations), len(donations), sum(donations) / len(donations)] for donor, donations in
                  donor_names.items()]
     sorted_rpt = sorted(donor_rpt, key=lambda x: x[1], reverse=True)
+    print('\nDonor Name            |  Total Given | Num Gifts |  Average Gift\n'
+    '------------------------------------------------------------------')
     for donor_rpt in sorted_rpt:
-        print('{:24s}''${:11,.2f}''{:^12}''${:12,.2f}'.format(donor_rpt[0], donor_rpt[1], donor_rpt[2], donor_rpt[3]))
-    print('\n')
+        print('{:24s}''${:11,.2f}''{:^17}''${:11,.2f}'.format(donor_rpt[0], donor_rpt[1], donor_rpt[2], donor_rpt[3]))
 
 
 def mass_mail():
@@ -71,9 +71,14 @@ Joesef Edword Bringingham\n\n''')
     print('\nLetters are located in your working directory folder\n\n')
 
 
+def quit_option():
+    print('Have a nice day')
+    os._exit(0)
+
+
 if __name__ == '__main__':
     while True:
-        answer = input('''Please choose an action from the following options:
+        answer = input('''\nPlease choose an action from the following options:
     1 - Send a Thank You
     2 - Create a Report
     3 - Send letters to everyone
@@ -83,8 +88,8 @@ if __name__ == '__main__':
             answer = int(answer)
         except ValueError:
             print('''Enter the actions's associated number''')
-        if answer in [1, 2, 3]:
+ 
+        try:
             selection(answer)()
-        elif answer == 4:
-            print('Have a nice day')
-            break
+        except KeyError:
+            pass
