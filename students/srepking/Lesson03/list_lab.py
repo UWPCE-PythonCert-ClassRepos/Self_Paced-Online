@@ -21,7 +21,7 @@ print (fruits)
 # Display all the fruits that begin with P, using a for loop
 new_list = []
 for i in fruits:
-     if i[0] == 'P':
+     if i[0].lower() == 'p':
         new_list += [i]
 print('\n''These are the fruits that start with the letter P ')
 print(new_list)

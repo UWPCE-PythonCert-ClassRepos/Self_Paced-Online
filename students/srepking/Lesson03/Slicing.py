@@ -3,8 +3,6 @@ def first_to_last(x):
     new_list = x[-1:] + x[1:-1] + x[0:1]
     return new_list
 
-print('Swap first to last')
-print(first_to_last([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 2, 13, 14, 15, 16]))
 
 
 def remove_every_other(x):
@@ -13,8 +11,6 @@ def remove_every_other(x):
     return new_list
 
 
-print('Remove Every Other')
-print(remove_every_other([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 2, 13, 14, 15, 16]))
 
 
 def four_and_four(x):
@@ -23,8 +19,7 @@ def four_and_four(x):
     return x[4:-4:2]
 
 
-print('Trim first four and last four, then return every other')
-print(four_and_four([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 2, 13, 14, 15, 16]))
+
 
 
 def reverse_list(x):
@@ -32,28 +27,38 @@ def reverse_list(x):
     return x[::-1]
 
 
-print('Return the reverse list')
-print(reverse_list([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 2, 13, 14, 15, 16]))
-
 
 def thirds(x):
     """Creates a list with the middle third and last third, then the first
     third in the new order"""
-    if len(x) % 3 == 0:
-        # if list is divisible by three, make a new list out of the last two thirds.
-        third = int(len(x)/3)
-        new_list = (x[-(2*third):])
-        # If the new list is divisible by three, take the first third in the new list.
-        if len(new_list) % 3 ==0:
-            new_third = int(len(new_list)/3)
-            return new_list[0:new_third]
-        else:
-            print("Your list is not divisible by three the second time.")
-    else:
-        print('This list is not divisible by three')
-    return
+    third = len(x) // 3
+    return x[third:-third] + x[-third:] + x[:third]
 
 
-print('Creates a list with the middle third and last third, then the first third in the new order')
-print(thirds([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 2, 13, 14, 15, 16, 17, 18]))
+a_string="this is a string"
+a_tuple = (2, 54, 13, 12, 5, 32)
+
+print('Swap first to last')
+assert first_to_last(a_string) == 'ghis is a strint'
+assert first_to_last(a_tuple) == (32, 54, 13, 12, 5, 2)
+
+print('Remove Every Other')
+assert remove_every_other(a_string) == 'ti sasrn'
+assert remove_every_other(a_tuple) == (2, 13, 5)
+
+a_string="this is a string"
+a_tuple = (2, 54, 13, 12, 5, 32, 64, 100, 95)
+
+print('Trim first four and last four, then return every other')
+assert four_and_four(a_string) == ' sas'
+assert four_and_four(a_tuple) == (5,)
+
+print('Return the reverse list')
+assert reverse_list(a_string) == "gnirts a si siht"
+assert reverse_list(a_tuple) == (95, 100, 64, 32, 5, 12, 13, 54, 2)
+
+print('Creates a new list with the middle third, then last third, then the first third in the new order')
+assert thirds(a_string) == 'is a stringthis '
+
+assert thirds(a_tuple) == (12, 5, 32, 64, 100, 95, 2, 54, 13)
 
