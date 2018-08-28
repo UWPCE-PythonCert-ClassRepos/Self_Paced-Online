@@ -18,3 +18,11 @@ print('\n'"See if 'Mango' is in the dictionary")
 print('Mango' in dict1.values())
 
 # Starting Dictionaries 2 from Lesson 4
+dict2={}
+for i, values in dict1:
+	for j in values:
+		count=0
+		if values[j].lower()='t'
+		    count+=1
+	dict2[i]=count
+print('\n''This is the result of Dictionary 2')	
