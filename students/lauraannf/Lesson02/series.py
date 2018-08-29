@@ -49,3 +49,11 @@ def sum_series(n, val1=0, val2=1):
             val1 = val2
             val2 = valn
         return valn
+
+
+assert fibonacci(10) == 55
+assert fibonacci(5) == 5
+assert lucas(10) == 123
+assert lucas(5) == 11
+assert sum_series(10) == 55
+assert sum_series(10, 2, 1) == 123
