@@ -21,7 +21,7 @@ def thank_you():
 
 
 def report():
-        print('\n''Ok, you want to create a report, here it is:')
+        print('\n''A summary of your donors donations:')
         # Create a new dictionary with Total, number of donations, and average donation amount
         donors_f = {}
         for name, donations in donors.items():
@@ -70,18 +70,23 @@ def report():
         print('\n')
         return donors_f
 def letters_for_all():
+    path_letters = os.getcwd()
+    print(f"You chose to send letters for everyone. "
+          f"The letters have been completed and you can find them here: {path_letters}")
     donors_f = report()
-    print('Here is the list of donor in donors\n')
-    print(donors)
-    print('\n Here is the list of dors in donors_f')
-    print(donors_f)
     for donor, donation in donors.items():
-        print(f'Dear {donor}, thank you so much for your last contribution of ${donation[-1]}')
+        donation_summary = donors_f[donor]
+        letter = f'Dear {donor}, thank you so much for your last contribution of ${donation[-1]:.2f}!' \
+                 f' You have contributed a total of ${donation_summary[0]:.2f}, and we appreciate your support!'
+        # Write the letter to a destination
+        with open(donor+'.txt', 'w') as to_file:
+            to_file.write(letter)
 def goodbye():
     pass
 
 
 if __name__ == '__main__':
+    import os
     donors= {'Joe Edgar Allen Poe the Third ':[1,4,200],'Jack':[4,5], 'Jill':[4], 'Jake':[.30],'Jim':[1,2,1.04]}
     while True:
         response = input(
