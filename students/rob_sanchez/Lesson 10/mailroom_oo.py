@@ -40,8 +40,8 @@ def main():
             options.get(int(user_selection))()
         except ValueError:
             print("\nPlease select a numeric value...")
-        # except TypeError:
-        #     print("\nOption {} is invalid. Try again...".format(user_selection))
+        except TypeError:
+            print("\nOption {} is invalid. Try again...".format(user_selection))
 
 
 # Sends a thank you email to the selected donor
