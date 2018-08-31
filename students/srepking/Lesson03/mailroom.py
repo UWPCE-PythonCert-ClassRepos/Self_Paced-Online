@@ -79,8 +79,7 @@ if __name__ == '__main__':
             thank_you()
         elif response == '2':
             report()
-        else:
-            response == '3'
+        elif response == '3':
             print('Goodbye!')
             break
         

@@ -49,3 +49,22 @@ print('\n''Check if s3 is a subset of s2')
 print(all(x in s2 for x in s3))
 print('\n''Check if s4 is a subset of s2')
 print(all(x in s2 for x in s4))
+
+# Starting Sets 2 from Lesson 04
+
+s_python=set('Python')
+print('\n''Add the letter \'i\' to python')
+s_python.update('i')
+print(s_python)
+
+s_frozen= frozenset('marathon')
+print('\n''This is the frozen set')
+print(s_frozen)
+
+# Display the union of the two sets
+print('\n''Display the union of the two sets')
+print(s_python.union(s_frozen))
+
+#Display the interseciton of the two sets
+print('\n''Display the intersection of the two sets')
+print(s_python.intersection(s_frozen))
