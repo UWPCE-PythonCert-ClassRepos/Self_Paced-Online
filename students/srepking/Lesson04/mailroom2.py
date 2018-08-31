@@ -1,40 +1,42 @@
+import os
+
 def thank_you():
     print('\n''Ok, you chose 1, lets see what we can do.')
     while True:
         name = input('\n''Type the full name to add entry, '
                      '\'list\' to see list of names, or \'e\' to exit: > ')
-        # See if they want a list of names.
+        if name == 'e':
+            return
         if name != 'list':
             break
         for x in donors:
             print(x)
     # Add Name to list if not in list
-    if name not in donors and name != 'e':
+    if name not in donors:
         print('Name is not there, added to the list')
         donors[name] = []
-    if name != 'e':
         amount = input('\n''What is the donation amount? or \'e\' to exit >')
-        if amount != 'e':
-            new_amount = [float(amount)]
-            old_amount = donors[name]
-            donors[name] = old_amount + new_amount
-            print('Thank you so much for the generous gift of ${0:.2f}, {1}!'
-                  .format(float(amount), name))
+        if amount == 'e':
+            return
+        new_amount = [float(amount)]
+        old_amount = donors[name]
+        donors[name] = old_amount + new_amount
+        print('Thank you so much for the generous gift of ${0:.2f}, {1}!'
+              .format(float(amount), name))
 
 
-def report():
-    print('\n''A summary of your donors donations:')
+def summary_donors() -> object:
+
     # Create a new dictionary with Total, number of donations,
     # and average donation amount
     donors_f = {}
     for name, donations in donors.items():
         # Calculate total donation amount
-        total = 0
+        total = sum(donations)
         count = 0
         average = 0
         i = 0
-        for i in donations:
-            total = total + i
+
         # Calculate total number of donations, not counting $0
         for i in donations:
             if i != 0:
@@ -43,10 +45,15 @@ def report():
         if count > 0:
             average = total / count
         donors_f[name] = [total, count, average]
-    print('\n')
-    # Find the longest name in the list to format column width
+    return donors_f
+
+
+def report():
+    """Return a report on all the donors"""
+    donors_f = summary_donors()
+    print('\n''A summary of your donors donations:')
     name_list = list(donors_f.keys())  # creates a list of keys
-    name_wi = 11
+    name_wi = 11 # Establish minimum column width
     for i in name_list:
         if len(i) > name_wi:
             name_wi = (len(i))  # width of name column
@@ -76,7 +83,6 @@ def report():
               f"${temp[2]:>{ave_wi}.2f}")
 
     print('\n')
-    return donors_f
 
 
 def letters_for_all():
@@ -84,7 +90,7 @@ def letters_for_all():
     print(f"You chose to send letters for everyone. "
           f"The letters have been completed and you "
           f"can find them here: {path_letters}")
-    donors_f = report()
+    donors_f = summary_donors()
     for donor, donation in donors.items():
         donation_summary = donors_f[donor]
         letter = f'Dear {donor}, thank you so much for your last ' \
@@ -96,16 +102,18 @@ def letters_for_all():
             to_file.write(letter)
 
 
-def goodbye():
+def wrong_choice():
     pass
 
+def quit():
+    exit()
 
 if __name__ == '__main__':
-    import os
 
     donors = {'Joe Edgar Allen Poe the Third ': [1, 4, 200],
               'Jack': [4, 5], 'Jill': [4], 'Jake': [.30],
               'Jim': [1, 2, 1.04]}
+    switch_dict = {'1': thank_you, '2': report, '3': letters_for_all, '4': quit}
     while True:
         response = input(
             '\nChoose an Action:\n'
@@ -115,8 +123,6 @@ if __name__ == '__main__':
             '3 - Send letters to everyone\n'
             '4 - Quit\n'
             '>>')
-        switch_dict = {'1': thank_you, '2': report, '3': letters_for_all}
-        switch_dict.get(response, goodbye)()
-        if response == '4':
-            print('Goodbye!')
-            break
+
+        switch_dict.get(response, wrong_choice)()
+
