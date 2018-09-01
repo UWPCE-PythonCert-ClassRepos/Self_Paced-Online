@@ -38,7 +38,7 @@ def thank_you():
               .format(float(amount), name))
     except KeyError:
         while True:
-            yes_no = input('That name you entered is not in the database.'
+            yes_no = input('The name you entered is not in the database.'
                            'Would you like to add this name? y or n >>')
             if yes_no == 'e':
                 return
