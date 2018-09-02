@@ -11,87 +11,111 @@ def more_choices():
         if name == 'list':
             create_list(donors)
         else:
-            thank_you(name)
+            print('\n''Ok, you want to write a letter for {}, '
+                  'lets see what we can do.'.format(name))
+
+            if donors.get(name) is None:
+                yes_no = input('The name you entered is not in the database.'
+                               'Would you like to add this name? y or n >>')
+                if yes_no == 'n':
+                    return
+
+            amount = input('\n''What is the donation amount? or \'e\' to exit >')
+            if amount == 'e':
+                return
+            else:
+                thank_you(donors, name, amount)
+
 
 
 def create_list(some_donors):
     # This prints the list of donors
     for x in some_donors:
         print(x)
-def thank_you(some_name):
-    """Add a donation to a donors records and print a report."""
-    print('\n''Ok, you want to write a letter for {}, lets see what we can do.'.format(some_name))
-    # For Mailroom3, I modifed the code so that a name will not automatically
-    # be added to a list if it isn't there. The exception will be caught
-    # if the name isn't in the list, and the user will be prompted to see if
-    # they would like to add the name to the list, or try typing a new name.
 
-    amount = input('\n''What is the donation amount? or \'e\' to exit >')
-    if amount == 'e':
-        return
+
+def thank_you(dict_donors, some_name, some_amount):
+    """Add a donation to a donors records and print a report."""
+
+    if dict_donors.get(some_name) is None:
+        dict_donors[some_name] = []
     try:
-        if int(amount) <= 0:
+        if int(some_amount) <= 0:
             print('\nYou entered an invalid amount!!\n')
             return
     except ValueError:
         print('\nYou entered an invalid amount!!\n')
-        return
-    try:
-        donors[some_name].append(float(amount))
-        print('Thank you so much for the generous gift of ${0:.2f}, {1}!'
-              .format(float(amount), some_name))
-    except KeyError:
-        while True:
-            yes_no = input('The name you entered is not in the database.'
-                           'Would you like to add this name? y or n >>')
-            if yes_no == 'e':
-                return
-            elif yes_no == 'y':
-                donors[some_name] = [float(amount)]
-                print('Thank you so much for the generous'
-                      'gift of ${0:.2f}, {1}!'
-                      .format(float(amount), some_name))
-                break
-            elif yes_no == 'n':
-                break
+        return ValueError
 
-# For mailroom3, I used comprehensions to create this dictionary.
+    dict_donors[some_name].append(float(some_amount))
+    print('Thank you so much for the generous gift of ${0:.2f}, {1}!'
+          .format(float(some_amount), some_name))
+    return dict_donors
 
 
-def summary_donors() -> object:
+
+
+def summary_donors(some_donors) -> object:
     """Create a new dictionary with Total, number of donations,
     and average donation amount"""
 
-    donors_f = {name: [sum(donations), int(len(donations)),
+    donors_f = {some_name: [sum(donations), int(len(donations)),
                 sum(donations) / int(len(donations))]
-                for name, donations in donors.items()}
+                for some_name, donations in some_donors.items()}
     return donors_f
 
 
-def report():
-    """Return a report on all the donors"""
-    donors_f = summary_donors()
-    print('\n''A summary of your donors donations:')
+def column_name_width(donors_f):
     name_list = list(donors_f.keys())  # creates a list of keys
     name_wi = 11  # Establish minimum column width
     for i in name_list:
         if len(i) > name_wi:
             name_wi = (len(i))  # width of name column
-    # Find the longest donation amount
+    return name_wi
+
+
+def column_total_width(donors_f):
     tot_wi = 12
-    ave_wi = 12
-    num_wi = 12
     for name, summary in donors_f.items():
         if len(str(summary[0])) > tot_wi:
             # width of total column
             tot_wi = (len(str(summary[0]))) + 3
             # width of number of donations column
+    return tot_wi
+
+def column_average_width(donors_f):
+    ave_wi = 12
+    for name, summary in donors_f.items():
+        if len(str(summary[2])) > ave_wi:
+            # width of total column
+            ave_wi = (len(str(summary[2]))) + 3
+            # width of number of donations column
+    return ave_wi
+
+def column_number_width(donors_f):
+    num_wi = 12
+    for name, summary in donors_f.items():
         if len(str(summary[1])) > num_wi:
+            # width of total column
             num_wi = (len(str(summary[1]))) + 3
-            # width of total average column
-        if len(str(int(summary[2]))) > ave_wi:
-            ave_wi = (len(str(int(summary[2])))) + 3
+            # width of number of donations column
+    return num_wi
+
+def sort_list(donors_f):
     list_sorted = sorted(donors_f, key=donors_f.__getitem__, reverse=True)
+    return list_sorted
+
+
+def report():
+    """Return a report on all the donors"""
+    donors_f = summary_donors(donors)
+    print('\n''A summary of your donors donations:')
+    name_wi = column_name_width(donors_f)
+    tot_wi = column_total_width(donors_f)
+    num_wi = column_number_width(donors_f)
+    ave_wi = column_average_width(donors_f)
+
+    list_sorted = sort_list(donors_f)
     # Print the Table
     print(f"{'Donor Name':{name_wi}}| {'Total Given':^{tot_wi}}| "
           f"{'Num Gifts':^{num_wi}}| {'Average Gift':^{ave_wi}}")
@@ -110,7 +134,7 @@ def letters_for_all():
     print(f"You chose to send letters for everyone. "
           f"The letters have been completed and you "
           f"can find them here: {path_letters}")
-    donors_f: object = summary_donors()
+    donors_f= summary_donors(donors)
 
     for donor, donation in donors.items():
         donation_summary = donors_f[donor]
