@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-# new file for lesson 4 work
+# new file for lesson 5 work to add exceptions.
 
-#donors = [["Manny Machado",[12.2,2.51,3.20]],["Adam Jones",[1024.14,22.21,323.45]],["Chris Davis",[3.2,5.55,4.20]]]
 ddonors = {"Manny Machado": [12.2,2.51,3.20], "Adam Jones": [1024.14,22.21,323.45], "Chris Davis": [3.2,5.55,4.20]}
 
 
@@ -29,7 +28,13 @@ def thank_you():
     while True:
         input_name = input("Enter full name: ")
         if input_name in ddonors.keys():
-            donation = float(input("Enter donation amount:"))
+            while True:
+                try:
+                    donation = float(input("Enter donation amount:"))
+                except ValueError:
+                    print("Donation needs to be a number.")
+                else:
+                    break
             ddonors[input_name].append(donation)
             print(write_letter(input_name,donation))
             break
@@ -38,10 +43,16 @@ def thank_you():
             
         else:
             print("Adding {} to donor database".format(input_name))
-            donation = float(input("Enter donation amount:"))
+            while True:
+                try:
+                    donation = float(input("Enter donation amount:"))
+                except ValueError:
+                    print("Donation needs to be a number.")
+                else:
+                    break
             ddonors[input_name] = [donation]
             print(write_letter(input_name,donation))
-            print(ddonors)
+            #print(ddonors)
             break
 
 
@@ -75,4 +86,7 @@ if __name__ == "__main__":
     while True:
         print("What do you want to do?")
         response = input("1. Send a Thank You, 2. Create a Report, 3. Send all letters, 4. Quit: ")
-        main_switch_function.get(response)()
+        try:
+            main_switch_function.get(response)()
+        except TypeError:
+            print("Not a valid input.")
