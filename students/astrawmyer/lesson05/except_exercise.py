@@ -17,7 +17,7 @@ first_try = ['spam', 'cheese', 'mr death']
 try:
     joke = fun(first_try[0])
 except NameError:
-    print("No joke for {}".format(first_try[0]))
+    print("No joke for: {}".format(first_try[0]))
     joke = fun(first_try[1])
 
 # Here is a try/except block. Add an else that prints not_joke
@@ -25,6 +25,8 @@ try:
     not_joke = fun(first_try[2])
 except SyntaxError:
     print('Run Away!')
+else:
+    print(not_joke)
 
 # What did that do? You can think of else in this context, as well as in
 # loops as meaning: "else if nothing went wrong"
@@ -44,4 +46,11 @@ except SyntaxError:
 
 langs = ['java', 'c', 'python']
 
-more_joke = more_fun(langs[0])
+try:
+    more_joke = more_fun(langs[0])
+except IndexError:
+    more_joke = more_fun(langs[1])
+else:
+    more_joke = more_fun(langs[2])
+finally:
+    last_fun()
