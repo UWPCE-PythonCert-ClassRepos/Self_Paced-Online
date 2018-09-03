@@ -14,7 +14,11 @@ from except_test import fun, more_fun, last_fun
 # in that catch block, try again with the second item in the list
 first_try = ['spam', 'cheese', 'mr death']
 
-joke = fun(first_try[0])
+try:
+    joke = fun(first_try[0])
+except NameError:
+    print("No joke for {}".format(first_try[0]))
+    joke = fun(first_try[1])
 
 # Here is a try/except block. Add an else that prints not_joke
 try:
