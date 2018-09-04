@@ -17,7 +17,7 @@ class donor:
         if donation is None:
             self._donations = []
         else:
-            self._donations = [donation]
+            self._donations = donation
 
     @property
     def f_name(self):
@@ -30,23 +30,26 @@ class donor:
     @property
     def full_name(self):
         return self._f_name + " " + self._l_name
-
+    
+    @property
     def get_donation_count(self):
         return len(self._donations)
 
+    @property
     def get_donation_total(self):
         return sum(self._donations)
 
+    @property
     def get_avg_donation(self):
         return round(sum(self._donations) / len(self._donations), 2)
 
-    def donations(self, value):
+    def add_donation(self, value):
         self._donations.append(value)
 
 
 class donor_collection:
 
-    def __init__(self, donors = None):
+    def __init__(self, donors):
         self.donor_list = donors
 
     # Creates a list of all the distinct donors, returns a list
@@ -72,16 +75,16 @@ class donor_collection:
                 temp_list.append(float(donation_amt))
                 if donor_name in self.donor_list:
                     temp_donor = self.donor_list.pop(donor_name)
-                    temp_donor.donations(temp_list[2])
+                    temp_donor.add_donation(temp_list[2])
                     self.donor_list[donor_name] = temp_donor
                 else:
-                    self.donor_list[donor_name] = donor(*temp_list)
-                print(self.get_email_text(*temp_list))
+                    self.donor_list[donor_name] = donor(temp_list[0], temp_list[1], [temp_list[2]])
+                print(self.get_email_text(temp_list))
 
     # Prints a thank you email to a donator
     # Donor name and amount is passed in as a parameter
     def get_email_text(self, currentDonation):
-        return "Dear {:s}{:s},\n\
+        return "Dear {:s} {:s},\n\
             Thank you for the generous donation of ${:,.2f}.\n\
             Sincerely,\n\
             Your Local Charity".format(*currentDonation)
@@ -94,17 +97,18 @@ class donor_collection:
         Thank you for donating ${:,.2f}.\n\
         Sincerely,\n\
         Your Local Charity"
-        for name, vals in master_dict.items():
+        for name, vals in self.donor_list.items():
             with open(name + ".txt",'w') as output:
-                output.write(message.format(name, vals[0]))
-                letter_list.append(message.format(name, vals[0]))
+                output.write(message.format(name, vals.get_donation_total))
+                letter_list.append(message.format(name, vals.get_donation_total))
+        print("Letters have been generated.\n")
 
     # Generates a report of all the previous donators
     # Report includes name, total donated, count of donations, average gift
     # Report is also formatted with a certain spacing
     # returns the report as a string
     def generate_report(self):
-        donation_total = [[key, round(val[0],2), val[1], round(val[0]/val[1],2)] for key, val in master_dict.items()]
+        donation_total = [[k, v.get_donation_total, v.get_donation_count, v.get_avg_donation] for k, v in self.donor_list.items()]
         donation_total.sort(key=lambda l: l[1], reverse = True)
         s1 = "Donor Name          |   Total Given  |  Num Gifts |  Average Gift\n"
         s2 = "-----------------------------------------------------------------\n"
@@ -117,7 +121,7 @@ class donor_collection:
     # Prints a report of all the previous donators
     # references generate_report
     def print_report(self):
-        print(generate_report())
+        print(self.generate_report())
 
 
 """ Outside the donor collection class """
@@ -146,12 +150,11 @@ def action(user_input, switch_dict):
 
 # Python program to use main for function call
 if __name__ == "__main__":
-    d1 = donor("James", "Smith", 91561.25)
-    d2 = donor("John", "Williams", 41113.42)
-    d3 = donor("Robert", "Jones", 51227.53)
-    donation_dict = {"James Smith": d1, "John Williams": d2, "Robert Jones": d3}
-    dc = donor_collection(donation_dict)
-
+    d1 = donor("James", "Smith", [33558.77, 30929.47, 27173.01])
+    d2 = donor("John", "Williams", [41113.42])
+    d3 = donor("Robert", "Jones", [21067.11, 30160.42])
+    donor_dict = {"James Smith": d1, "John Williams": d2, "Robert Jones": d3}
+    dc = donor_collection(donor_dict)
     switch_dict = {
         'list': dc.print_names,
         '1': dc.send_thanks,
@@ -160,16 +163,3 @@ if __name__ == "__main__":
         '4': sys.exit
     }
     action(main_prompt(), switch_dict)
-    
-
-
-
-
-
-
-
-
-
-
-
-
