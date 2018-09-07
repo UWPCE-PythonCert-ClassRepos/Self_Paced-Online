@@ -26,3 +26,25 @@ def firstlastfour(seq):
 
 assert firstlastfour(a_string) == "aeas"
 assert firstlastfour(a_tuple) == (10,14)
+
+
+def reverse(seq):
+    return seq[-1::-1]
+
+assert reverse(a_string) == "gnirts a era uoy"
+assert reverse(a_tuple) == (22, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2)
+
+
+def thirds(seq):
+    if len(seq) % 3 != 0:
+        return 'the length of the sequence isn''t divisible by three and I don''t feel like deciding how to deal with that'
+    else:
+        n=int(len(seq) / 3)
+        return (seq[n:n+n] + seq[n+n:] + seq[:n])
+    
+
+a_new_string = "you are a string"
+a__new_tuple = (2, 4, 6, 8, 10, 12,14,16,18,20,22,24)
+
+assert thirds(a_string) == "e a string!!you ar"
+assert thirds(a_tuple) == (10, 12, 14, 16, 18, 20, 22, 24, 2, 4, 6, 8)
