@@ -9,18 +9,18 @@ class TestHTML(unittest.TestCase):
 # and test.
     def test_append(self):
         expected_text = "Here is a paragraph of text -- there could be more of them, " \
-                      "but this is enough  to show that we can do some text. " \
+                      "but this is enough  to show that we can do some text." \
                       "And here is another piece of text -- you should be able to " \
                       "add any number"
 
         page = hr.Element()
 
         page.append("Here is a paragraph of text -- there could be more of them, "
-                    "but this is enough  to show that we can do some text")
+                    "but this is enough  to show that we can do some text.")
 
         page.append("And here is another piece of text -- you should be able to add any number")
 
-        self.assertEqual(page.append(), expected_text)
+        self.assertEqual(page.content, expected_text)
 
 if __name__ == '__main__':
     unittest.main()
