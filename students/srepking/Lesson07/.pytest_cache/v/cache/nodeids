@@ -1,0 +1,13 @@
+[
+  "test_html_render.py::TestHTML::test_Head",
+  "test_html_render.py::TestHTML::test_OneLineTag",
+  "test_html_render.py::TestHTML::test_Title",
+  "test_html_render.py::TestHTML::test_append",
+  "test_html_render.py::TestHTML::test_body",
+  "test_html_render.py::TestHTML::test_html",
+  "test_html_render.py::TestHTML::test_p",
+  "test_html_render.py::TestHTML::test_render_1",
+  "test_html_render.py::TestHTML::test_render_2",
+  "test_html_render.py::TestHTML::test_sub_element",
+  "test_html_render.py::TestHTML::test_sub_element_2"
+]
