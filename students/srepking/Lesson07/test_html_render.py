@@ -1,6 +1,7 @@
 import unittest
 import html_render as hr
 from io import StringIO
+import pytest
 
 
 def render_result(element, ind=""):
@@ -104,7 +105,7 @@ class TestHTML(unittest.TestCase):
         assert("this is some text") in file_contents
         assert("and this is some more text") in file_contents
 
-        assert file_contents.startswith("<body>")
+        assert file_contents.startswith("<body")
         assert file_contents.endswith("</body>")
 
 
@@ -117,7 +118,7 @@ class TestHTML(unittest.TestCase):
         assert("this is some text") in file_contents
         assert("and this is some more text") in file_contents
 
-        assert file_contents.startswith("<p>")
+        assert file_contents.startswith("<p")
         assert file_contents.endswith("</p>")
 
     def test_sub_element(self):
@@ -139,7 +140,7 @@ class TestHTML(unittest.TestCase):
         assert "Some more plain text." in file_contents
         assert "some plain text" in file_contents
      # but make sure the embedded element's tags get rendered!
-        assert "<p>" in file_contents
+        assert "<p" in file_contents
         assert "</p>" in file_contents
 
 #################
@@ -155,7 +156,7 @@ class TestHTML(unittest.TestCase):
         assert "this is header" in file_contents
         assert "and this is some more text" in file_contents
         print(file_contents)
-        assert file_contents.startswith("<head>")
+        assert file_contents.startswith("<head")
         assert file_contents.endswith("</head>")
 
     def test_OneLineTag(self):
@@ -179,11 +180,12 @@ class TestHTML(unittest.TestCase):
 
     def test_sub_element_2(self):
         """
-        tests that you can add another element and still render properly
+        Test that you can add another element and still render properly
         """
 
         page = hr.Html()
         page.append(hr.Title('Some HTML Page'))
+        page.append(hr.Body('This is my body'))
         page.append("some plain text.")
         page.append(hr.P("A simple paragraph of text"))
         page.append("Some more plain text.")
@@ -191,16 +193,86 @@ class TestHTML(unittest.TestCase):
         file_contents = render_result(page)
         print(file_contents) # so we can see it if the test fails
 
-     # note: The previous tests should make sure that the tags are getting
-     #       properly rendered, so we don't need to test that here.
+        assert "Some HTML Page" in file_contents
+        assert "This is my body" in file_contents
         assert "some plain text" in file_contents
         assert "A simple paragraph of text" in file_contents
         assert "Some more plain text." in file_contents
-        assert "some plain text" in file_contents
      # but make sure the embedded element's tags get rendered!
-        assert "<p>" in file_contents
+        assert "<p" in file_contents
         assert "</p>" in file_contents
-        assert '<title>' in file_contents
+        assert '<title' in file_contents
+        assert '<html' in file_contents
+        assert '<body' in file_contents
+
+###########
+#  Step 4 #
+###########
+    def test_Element_attributes(self):
+        """Test that the new attributes are accessible from the subclasses"""
+
+        page = hr.Html(id='', style='')
+        body = hr.Body(id='', style='')
+        paragraph = hr.P(id='', style='')
+        title = hr.Title(id='', style='')
+
+        self.assertEqual(page.html_format['id'], "")
+        self.assertEqual(page.html_format['style'], "")
+        self.assertEqual(body.html_format['id'], "")
+        self.assertEqual(body.html_format['style'], "")
+        self.assertEqual(paragraph.html_format['id'], "")
+        self.assertEqual(paragraph.html_format['style'], "")
+        self.assertEqual(title.html_format['id'], "")
+        self.assertEqual(title.html_format['style'], "")
+
+
+
+    def test_Element_attributes1(self):
+        """Test that we can pass an arbitrary list of formatting keywords to Element"""
+        paragraph=hr.P('Some text', id="Format id", style="Format style")
+        file_contents = render_result(paragraph).strip()
+        print(file_contents)
+        assert 'style="Format style"' in file_contents
+        assert 'id="Format id"' in file_contents
+        assert '<p ' in file_contents
+
+###########
+#  Step 5 #
+###########
+
+
+    def test_Br1(self):
+        """Verify formatting a passing works in Br"""
+
+        Br=hr.Br(id="Format id", style="Format style")
+        file_contents = render_result(Br).strip()
+        print(file_contents)
+        assert 'style="Format style"' in file_contents
+        assert 'id="Format id"' in file_contents
+        assert '<br ' in file_contents
+
+
+    def test_Br2(self):
+        """a simple horizontal rule with no attributes"""
+        br = hr.Br()
+        file_contents = render_result(br)
+        print(file_contents)
+        assert file_contents == '<br />\n'
+
+    def test_Br3(self):
+        br = hr.Br()
+        file_contents = render_result(br)
+        print(file_contents)
+        assert file_contents == "<br />\n"
+
+    def test_content_in_br(self):
+        with pytest.raises(TypeError):
+           br = hr.Br("some content")
+
+    def test_append_content_in_br(self):
+        with pytest.raises(TypeError):
+            br = hr.Br()
+            br.append("some content")
 
 
 if __name__ == '__main__':

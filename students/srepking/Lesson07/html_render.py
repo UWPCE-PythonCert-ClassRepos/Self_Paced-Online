@@ -2,7 +2,10 @@ class Element:
     """Creates html code for given inputs"""
     tag = ''
 
-    def __init__(self, content = None):
+    def __init__(self,
+                 content = None,
+                 **kwargs):
+        self.html_format = kwargs
         if content == None:
             self.contents = []
         else:
@@ -11,15 +14,28 @@ class Element:
     def append(self, some_string):
         self.contents.append(some_string)
 
+    def _opentag(self):
+        open_tag = ["<{}".format(self.tag)]
+        for key, value in self.html_format.items():
+            open_tag.append(" {key}=\"{value}\"".format(key=key, value=value))
+        return "".join(open_tag)
+
+    def _closetag(self):
+        close_tag = "</{self.tag}>\n".format(self=self)
+        return close_tag
+
+
     def render(self, file_out, cur_ind=""):
-            file_out.write("<{}>\n".format(self.tag))
+
+            file_out.write(self._opentag())
+            file_out.write(">\n")
             for content in self.contents:
                     try:
                         content.render(file_out)
                     except AttributeError:
                         file_out.write(content)
                     file_out.write('\n')
-            file_out.write("</{}>\n".format(self.tag))
+            file_out.write(self._closetag())
 
 
 class Html(Element):
@@ -47,6 +63,43 @@ class OneLineTag(Element):
     def render(self, file_out, cur_ind=""):
             file_out.write("<{html}>{text}</{html}>\n".format(html=self.tag, text=self.contents[0]))
 
+
 class Title(OneLineTag):
     """Subclass of OneLineTag used for page title"""
     tag = 'title'
+
+
+class Br(Element):
+    """Subclass of OneLineTag used for page title"""
+    tag = 'br '
+
+    def render(self, file_out, cur_ind=""):
+        file_out.write(self._opentag() + '/>\n')
+
+    def append(self, some_string):
+        raise TypeError('No appending to this object.')
+
+    def __init__(self, content=None, **kwargs):
+        if content is not None:
+            raise TypeError('No appending to this object')
+        else:
+            super().__init__(content, **kwargs)
+
+
+class Hr(Element):
+    """Subclass of OneLineTag used for page title"""
+    tag = 'hr '
+
+    def render(self, file_out, cur_ind=""):
+        file_out.write(self._opentag() + '/>\n')
+
+    def append(self, some_string):
+        raise TypeError('No appending to this object.')
+
+    def __init__(self, content=None, **kwargs):
+        if content is not None:
+            raise TypeError('No appending to this object')
+        else:
+            super().__init__(content, **kwargs)
+
+
