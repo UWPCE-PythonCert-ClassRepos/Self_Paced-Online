@@ -42,3 +42,24 @@ def print_grid_custom(n):
 
 
 print_grid_custom(3)
+
+
+def print_grid_custom_two(number, units):
+    # takes a grid and column size value and prints the grid
+
+    joint = "+"
+    row_marks = " - "
+    column_marks = "|"
+    blank = len(row_marks)*units*" "
+    row = joint + (row_marks*units+joint)*number
+    column = column_marks + (blank + column_marks)*number
+    for i in range(number):
+        print(row)
+        print()
+        for j in range(units):
+            print(column)
+            print()
+    print(row)
+
+
+print_grid_custom_two(5,3)
