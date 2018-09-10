@@ -61,7 +61,10 @@ class Head(Element):
 class OneLineTag(Element):
     """Subclass of Element with html tag for paragraph"""
     def render(self, file_out, cur_ind=""):
-            file_out.write("<{html}>{text}</{html}>\n".format(html=self.tag, text=self.contents[0]))
+            file_out.write(self._opentag())
+            file_out.write('>')
+            file_out.write("".join(self.contents))
+            file_out.write(self._closetag())
 
 
 class Title(OneLineTag):
@@ -101,5 +104,14 @@ class Hr(Element):
             raise TypeError('No appending to this object')
         else:
             super().__init__(content, **kwargs)
+
+
+class A(OneLineTag):
+    """Take a link and a description of the line and wrap is with html anchor constructor."""
+    tag = 'a'
+    def __init__(self,
+                 link, content, **kwargs):
+        kwargs['href'] = link
+        super().__init__(content, **kwargs)
 
 

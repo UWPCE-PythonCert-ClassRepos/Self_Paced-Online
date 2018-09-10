@@ -1,4 +1,5 @@
 [
+  "test_html_render.py::TestHTML::test_A",
   "test_html_render.py::TestHTML::test_Br1",
   "test_html_render.py::TestHTML::test_Br2",
   "test_html_render.py::TestHTML::test_Br3",

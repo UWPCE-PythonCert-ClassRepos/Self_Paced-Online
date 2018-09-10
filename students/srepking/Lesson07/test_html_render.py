@@ -273,7 +273,17 @@ class TestHTML(unittest.TestCase):
         with pytest.raises(TypeError):
             br = hr.Br()
             br.append("some content")
+###########
+#  Step 6 #
+###########
+    def test_A(self):
+        """Test that the A class with render <a href="http://google.com">link to google</a>"""
 
+        a_class = hr.A("http://google.com", "link to google")
+        file_contents = render_result(a_class)
+        print(file_contents)
+        test_text = "<a href=\"http://google.com\">link to google</a>\n"
+        self.assertEqual(file_contents, test_text)
 
 if __name__ == '__main__':
     unittest.main()
