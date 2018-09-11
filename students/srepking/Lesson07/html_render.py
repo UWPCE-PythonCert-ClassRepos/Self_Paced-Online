@@ -21,12 +21,12 @@ class Element:
         return "".join(open_tag)
 
     def _closetag(self):
-        close_tag = "</{self.tag}>\n".format(self=self)
+        close_tag = "</{self.tag}>".format(self=self)
         return close_tag
 
 
     def render(self, file_out, cur_ind=""):
-
+            file_out.write(cur_ind)
             file_out.write(self._opentag())
             file_out.write(">\n")
             for content in self.contents:
@@ -35,6 +35,7 @@ class Element:
                     except AttributeError:
                         file_out.write(content)
                     file_out.write('\n')
+            file_out.write(cur_ind)
             file_out.write(self._closetag())
 
 
@@ -42,6 +43,9 @@ class Html(Element):
     """Creates html code for given inputs"""
     tag = 'html'
 
+    def render(self, file_out, cur_ind=""):
+        file_out.write('<!DOCTYPE html>\n')
+        Element.render(self, file_out)
 
 class Body(Element):
     """Subclass of Element with html tag for body"""
@@ -77,14 +81,14 @@ class Br(Element):
     tag = 'br '
 
     def render(self, file_out, cur_ind=""):
-        file_out.write(self._opentag() + '/>\n')
+        file_out.write(self._opentag() + '/>')
 
     def append(self, some_string):
         raise TypeError('No appending to this object.')
 
     def __init__(self, content=None, **kwargs):
         if content is not None:
-            raise TypeError('No appending to this object')
+            raise TypeError('No string object expected')
         else:
             super().__init__(content, **kwargs)
 
@@ -94,7 +98,7 @@ class Hr(Element):
     tag = 'hr '
 
     def render(self, file_out, cur_ind=""):
-        file_out.write(self._opentag() + '/>\n')
+        file_out.write(self._opentag() + '/>')
 
     def append(self, some_string):
         raise TypeError('No appending to this object.')
@@ -115,3 +119,22 @@ class A(OneLineTag):
         super().__init__(content, **kwargs)
 
 
+class Ul(Element):
+    tag = 'ul'
+
+
+class Li(Element):
+    tag = 'li'
+
+class H(OneLineTag):
+    """Create a header class to create this tag:
+        <h2>PythonClass - Class 6 example</h2>"""
+    def __init__(self,
+                 level, content, **kwargs):
+        self.tag = 'h' + str(level)
+        super().__init__(content, **kwargs)
+
+
+class Meta(Br):
+    """Add the meta element to the beginning of the head element"""
+    tag = 'meta'

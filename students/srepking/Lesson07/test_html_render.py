@@ -48,42 +48,38 @@ class TestHTML(unittest.TestCase):
         #The render function will take in a filename and indent,
         # and write html formatted content to the file that looks
         # like this:
-        test_text = "<html>\n" \
-                    "Some content.\n" \
-                    "Some more content.\n" \
-                    "</html>\n"
 
         page = hr.Html()
         page.append("Some content.")
         page.append("Some more content.")
         #And the render will wrap these two pieces of text with html tags, and output to this file.
 
-        f = StringIO()
-        page.render(f)
-        self.assertEqual(f.getvalue(), test_text)
+        file_contents = render_result(page).strip()
+        assert ("<html>") in file_contents
+        assert("Some content.") in file_contents
+        assert("Some more content.") in file_contents
+        print(file_contents)
+        assert file_contents.endswith("</html>")
 
     def test_render_2(self):
         # Same as test above, but checking that we can pass text through the Element() method:
-        test_text = "<html>\n" \
-                    "Start with....\n" \
-                    "Some content.\n" \
-                    "Some more content.\n" \
-                    "</html>\n"
 
         page = hr.Html("Start with....")
         page.append("Some content.")
-        page.append("Some more content.")
         #And the render will wrap these two pieces of text with html tags, and output to this file.
 
-        f = StringIO()
-        page.render(f)
-        self.assertEqual(f.getvalue(), test_text)
+        file_contents = render_result(page).strip()
+        assert ("<html>") in file_contents
+        assert("Start with....") in file_contents
+        assert("Some content.") in file_contents
+        print(file_contents)
+        assert file_contents.endswith("</html>")
 
 #
 # Step 2 Testing
 #
     # # tests for the new tags
-    def test_html(self):
+    def test_html_1(self):
         e = hr.Html("this is some text")
         e.append("and this is some more text")
 
@@ -257,13 +253,13 @@ class TestHTML(unittest.TestCase):
         br = hr.Br()
         file_contents = render_result(br)
         print(file_contents)
-        assert file_contents == '<br />\n'
+        assert file_contents == '<br />'
 
     def test_Br3(self):
         br = hr.Br()
         file_contents = render_result(br)
         print(file_contents)
-        assert file_contents == "<br />\n"
+        assert file_contents == "<br />"
 
     def test_content_in_br(self):
         with pytest.raises(TypeError):
@@ -282,8 +278,70 @@ class TestHTML(unittest.TestCase):
         a_class = hr.A("http://google.com", "link to google")
         file_contents = render_result(a_class)
         print(file_contents)
-        test_text = "<a href=\"http://google.com\">link to google</a>\n"
+        test_text = "<a href=\"http://google.com\">link to google</a>"
         self.assertEqual(file_contents, test_text)
+
+###########
+#  Step 7 #
+###########
+    def test_ul(self):
+        """Test the bulleted list <ul> tag."""
+        ul_class = hr.Ul(style="line-height:200%", id="TheList")
+        ul_class.append(hr.Li('The first item in a list.'))
+        ul_class.append(hr.Li('The second item in a list', style="color:red"))
+        file_contents = render_result(ul_class)
+        print(file_contents)
+        assert '<ul style="line-height:200%" id="TheList">' in file_contents
+        assert '</ul>' in file_contents
+
+
+    def test_Li(self):
+        """Test the Li element class."""
+        li_class = hr.Li(style='color:red')
+        li_class.append('The first item in a list')
+        li_class.append('The second item in a list')
+        file_contents = render_result(li_class)
+        print(file_contents)
+        assert '<li' in file_contents
+        assert '</li>' in file_contents
+        assert 'The first item in a list' in file_contents
+        assert 'style=\"color:red\"' in file_contents
+
+
+    def test_H(self):
+        """Test a header class to create this tag:
+        <h2>PythonClass - Class 6 example</h2>"""
+        h2_class = hr.H(2, "PythonClass - Class 6 example")
+        file_contents = render_result(h2_class)
+        print(file_contents)
+        assert '<h2>PythonClass - Class 6 example</h2>' in file_contents
+
+###########
+#  Step 8 #
+###########
+    def test_html_2(self):
+        """Test the updated Html class that adds “<!DOCTYPE html>”
+        tag at the head of the page"""
+        e = hr.Html("this is some text")
+        e.append("and this is some more text")
+
+        file_contents = render_result(e).strip()
+
+        assert("this is some text") in file_contents
+        assert("and this is some more text") in file_contents
+        assert file_contents.startswith("<!DOCTYPE html>")
+        assert file_contents.endswith("</html>")
+        print(file_contents)
+
+
+    def test_meta(self):
+        """Test the adding of meta tag to the beginning of the head element.
+        This looks like: <meta charset="UTF-8" />"""
+        meta_class = hr.Meta(charset="UTF-8")
+        file_contents = render_result(meta_class).strip()
+        assert "<meta charset=\"UTF-8\"/>" in file_contents
+        print(file_contents)
+
 
 if __name__ == '__main__':
     unittest.main()
