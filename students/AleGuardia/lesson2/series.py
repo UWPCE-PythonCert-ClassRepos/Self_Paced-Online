@@ -3,18 +3,12 @@
 
 def fibonacci(n):
     """Takes n parameter and returns the nth fibonacci number"""
-    series = [0,1]
-    for i in range(2, n+1):
-        series.append(series[i-2]+series[i-1])
-    return series[n]
+    return sum_series(7)
 
 
 def lucas(n):
     """Takes n parameter and returns the nth lucas number"""
-    series = [2,1]
-    for i in range(2, n+1):
-        series.append(series[i-2]+series[i-1])
-    return series[n]
+    return sum_series(7,2,1)
 
 
 def sum_series(element,first=0,second=1):
@@ -28,10 +22,22 @@ def sum_series(element,first=0,second=1):
     return series[element]
 
 
+# The following block of code builds the fibonacci and lucas series and tests the formulas
+
+fib_series = [0,1,1,2,3,5,8,13,21,34,55,89]
+luc_series = [2,1,3,4,7,11,18,29,47,76,123]
 
 
+def test_series(series,name):
+    """Takes the sequence and its name and tests the formula"""
+    for i in range(len(series)):
+        print("The expected " + str(i) + " element in the " + name + " sequence is: " + str(series[i]))
+        print("The result from the function is " + str(sum_series(i,2,1)))
+        if sum_series(i,2,1) == series[i]:
+            print("Test Passed")
+        else:
+            print("Test Failed)")
 
-print(fibonacci(7))
-print(lucas(7))
-print(sum_series(7))
-print(sum_series(7,2,1))
+
+test_series(fib_series,"Fibonacci")
+test_series(luc_series,"Lucas")
