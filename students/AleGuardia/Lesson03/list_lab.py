@@ -53,4 +53,13 @@ while response in fruit_list:
     fruit_list.remove(response)
 print(fruit_list)
 
+# Series 3
 
+fruit_list = ["Apples", "Pears", "Oranges", "Peaches"]
+for item in fruit_list:
+    response = ""
+    while response not in ["yes", "no"]:
+        response = input("Do you like {} ? ".format(item.lower()))
+    if response == "no":
+        fruit_list.remove(item)
+print(fruit_list)
