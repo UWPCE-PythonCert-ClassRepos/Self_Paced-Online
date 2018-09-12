@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# List Lab Exercise by alejandro Guardia
+# List Lab Exercise by Alejandro Guardia
 # Series 1
 
 # Create a list that contains “Apples”, “Pears”, “Oranges” and “Peaches”.
@@ -63,3 +63,16 @@ for item in fruit_list:
     if response == "no":
         fruit_list.remove(item)
 print(fruit_list)
+
+# Series 4
+
+fruit_list = ["Apples", "Pears", "Oranges", "Peaches"]
+# Make a copy of the list and reverse the letters in each fruit in the copy.
+
+reverse_list = fruit_list[::]
+for i, item in enumerate(reverse_list):
+    reverse_list[i] = item[::-1]
+fruit_list.pop()
+print(fruit_list)
+print(reverse_list)
+
