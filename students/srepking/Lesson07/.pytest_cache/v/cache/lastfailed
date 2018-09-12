@@ -1,4 +1,8 @@
 {
   "test_html_render.py::TestHTML::test_Br": true,
-  "test_html_render.py::TestHTML::test_render_3": true
+  "test_html_render.py::TestHTML::test_render_3": true,
+  "test_html_render.py::test_element_indent1": true,
+  "test_html_render.py::test_indent": true,
+  "test_html_render.py::test_indent_contents": true,
+  "test_html_render.py::test_multiple_indent": true
 }

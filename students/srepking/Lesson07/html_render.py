@@ -1,12 +1,13 @@
 class Element:
     """Creates html code for given inputs"""
-    tag = ''
+    tag = 'html'
+    indent = '   '  # three spaces for indent attribute
 
     def __init__(self,
-                 content = None,
+                 content=None,
                  **kwargs):
         self.html_format = kwargs
-        if content == None:
+        if content is None:
             self.contents = []
         else:
             self.contents = [content]
@@ -21,19 +22,18 @@ class Element:
         return "".join(open_tag)
 
     def _closetag(self):
-        close_tag = "</{self.tag}>".format(self=self)
+        close_tag = "</{self.tag}>\n".format(self=self)
         return close_tag
-
 
     def render(self, file_out, cur_ind=""):
             file_out.write(cur_ind)
             file_out.write(self._opentag())
             file_out.write(">\n")
             for content in self.contents:
-                    try:
-                        content.render(file_out)
-                    except AttributeError:
-                        file_out.write(content)
+                try:
+                    content.render(file_out, str(cur_ind+self.indent))
+                except AttributeError:
+                    file_out.write(cur_ind + self.indent + content)
                     file_out.write('\n')
             file_out.write(cur_ind)
             file_out.write(self._closetag())
@@ -44,31 +44,33 @@ class Html(Element):
     tag = 'html'
 
     def render(self, file_out, cur_ind=""):
-        file_out.write('<!DOCTYPE html>\n')
-        Element.render(self, file_out)
+        file_out.write(cur_ind + '<!DOCTYPE html>\n')
+        Element.render(self, file_out, cur_ind)
+
 
 class Body(Element):
-    """Subclass of Element with html tag for body"""
+    """Subclass of Element with 'body' tag for body"""
     tag = 'body'
 
 
 class P(Element):
-    """Subclass of Element with html tag for paragraph"""
+    """Subclass of Element with 'p' tag for paragraph"""
     tag = 'p'
 
 
 class Head(Element):
-    """Subclass of Element with html tag for header"""
+    """Subclass of Element with head tag for header"""
     tag = 'head'
 
 
 class OneLineTag(Element):
-    """Subclass of Element with html tag for paragraph"""
+    """Subclass of Element for one line tag."""
     def render(self, file_out, cur_ind=""):
-            file_out.write(self._opentag())
-            file_out.write('>')
-            file_out.write("".join(self.contents))
-            file_out.write(self._closetag())
+        file_out.write(cur_ind)
+        file_out.write(self._opentag())
+        file_out.write('>')
+        file_out.write("".join(self.contents))
+        file_out.write(self._closetag())
 
 
 class Title(OneLineTag):
@@ -81,7 +83,8 @@ class Br(Element):
     tag = 'br '
 
     def render(self, file_out, cur_ind=""):
-        file_out.write(self._opentag() + '/>')
+        file_out.write(cur_ind)
+        file_out.write(self._opentag() + '/>\n')
 
     def append(self, some_string):
         raise TypeError('No appending to this object.')
@@ -98,7 +101,8 @@ class Hr(Element):
     tag = 'hr '
 
     def render(self, file_out, cur_ind=""):
-        file_out.write(self._opentag() + '/>')
+        file_out.write(cur_ind)
+        file_out.write(self._opentag() + '/>\n')
 
     def append(self, some_string):
         raise TypeError('No appending to this object.')
@@ -111,8 +115,10 @@ class Hr(Element):
 
 
 class A(OneLineTag):
-    """Take a link and a description of the line and wrap is with html anchor constructor."""
+    """Take a link and a description of the line and wrap is
+    with html anchor constructor."""
     tag = 'a'
+
     def __init__(self,
                  link, content, **kwargs):
         kwargs['href'] = link
@@ -125,6 +131,7 @@ class Ul(Element):
 
 class Li(Element):
     tag = 'li'
+
 
 class H(OneLineTag):
     """Create a header class to create this tag:

@@ -14,7 +14,7 @@ from io import StringIO
 
 
 # writing the file out:
-def render_page(page, filename, indent=None):
+def render_page(page, filename, indent=""):
     """
     render the tree of elements
 
