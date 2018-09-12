@@ -5,7 +5,10 @@ import pytest
 import sys
 
 
-
+#this function can be fleshed out more.
+#https://stackoverflow.com/questions/26561822/pytest-capsys-checking-output-and-getting-it-reported
+#https://docs.pytest.org/en/latest/reference.html#capsys
+#https://docs.pytest.org/en/latest/capture.html
 def test_display_list(capsys):
     result = m.display_list()
     out, err = capsys.readouterr()
