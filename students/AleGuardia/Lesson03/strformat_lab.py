@@ -18,3 +18,8 @@ def formatter(in_tuple):
 
 print(formatter((1,2,3,4,5,6)))
 
+# Task Four
+
+five_element_tuple = (4,30,2017,2,27)
+print("{3:0>2d}, {4}, {2}, {0:0>2d}, {1}".format(*five_element_tuple))
+
