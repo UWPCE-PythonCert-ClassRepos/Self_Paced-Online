@@ -23,3 +23,8 @@ print(formatter((1,2,3,4,5,6)))
 five_element_tuple = (4,30,2017,2,27)
 print("{3:0>2d}, {4}, {2}, {0:0>2d}, {1}".format(*five_element_tuple))
 
+# Task Five
+
+four_element_list = ['oranges',1.3,'lemons',1.1]
+print(f"The weight of an {four_element_list[0][:-1]} is {four_element_list[1]} and the weight of a {four_element_list[2][:-1]} is {four_element_list[-1]}")
+print(f"The weight of an {four_element_list[0][:-1].upper()} is {four_element_list[1]*1.2} and the weight of a {four_element_list[2][:-1].upper()} is {four_element_list[-1]*1.2}")
