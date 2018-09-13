@@ -33,11 +33,20 @@ def initial_prompt():
     return resp
 
 
+def return_donors():
+    donors =""
+    for item in donations:
+        donors += item[0][0] + "\n"
+    return donors
+
+
 if __name__ == '__main__':
     response = initial_prompt()
     while response != responses[-1]:
         if response == responses[0]:
-            print("Thank you")
+            name = input("Please enter a donor name: ")
+            if name == 'list':
+                print(return_donors())
         elif response == responses[1]:
             print(return_report(donations))
         response = initial_prompt()
