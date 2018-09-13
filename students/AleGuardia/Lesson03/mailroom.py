@@ -11,10 +11,6 @@ def return_average(seq):
     return sum(seq)/len(seq)
 
 
-def return_count(seq):
-    return len(seq)
-
-
 def return_label():
     label ="{:18} | {:>12} | {:>9} | {:>12}\n".format('Donor Name','Total Given','Num Gifts','Average Gift')
     label += "-"*len(label)
@@ -24,13 +20,12 @@ def return_label():
 def return_report(data):
     report = f"{return_label()}\n"
     for item in data:
-        row = f"{item[0][0]:18} $ {'{sum(item[0]){:.2f}:>12}'}  {'{:>9d}'} $ {'{{:.2f}:>12}'}\n".format(*item[1])
-        print(sum(item[1]))
+        row = "{:18} $ {:>12.2f}  {:>9d}  $ {:>12.2f}\n".format(item[0][0],sum(item[1]),len(item[1]),return_average(item[1]))
         report += row
     return report
 
+
 if __name__ == '__main__':
-    print(len(donations))
     print(return_report(donations))
 
 
