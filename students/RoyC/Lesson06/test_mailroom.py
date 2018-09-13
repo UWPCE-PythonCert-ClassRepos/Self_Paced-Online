@@ -38,6 +38,26 @@ def test_donor_functions():
     assert len(m.donors) == 2
     assert len(m.donors["Sally Jones"]) == 1
     assert 300.33 in m.donors["Sally Jones"]
+
+def test_create_report():
+    """
+    Test the mailroom create_report function
+    """
+    m.donors.clear()
+    m.record_donation("Bob Smith", 1234.56)
+    m.record_donation("Bob Smith", 1234.56)
+    m.record_donation("Bob Smith", 1234.56)
+    m.record_donation("Sally Jones", 876.54)
+    m.record_donation("Sally Jones", 876.54)
+    m.record_donation("Sally Jones", 876.54)
+    m.record_donation("Sally Jones", 876.54)
+    report_text = m.create_report()
+    assert "Bob Smith" in report_text
+    assert "1234.56" in report_text       # Bob's average
+    assert "3703.68" in report_text       # Bob's total
+    assert "Sally Jones" in report_text
+    assert "876.54" in report_text        # Sally's average
+    assert "3506.16" in report_text       # Sally's total
     
 def test_thank_all():
     """

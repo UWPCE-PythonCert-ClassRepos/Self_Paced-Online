@@ -95,22 +95,28 @@ def total_sort(row_datum):
     """
     return row_datum[1]
 
+def print_report():
+    """
+    Print the donor report to the screen
+    """
+    print(create_report())
+    
 def create_report():
     """
-    Print out a report listing historical donor totals to date
+    Return a report listing historical donor totals to date
     """
     # print the report header
-    header_row = "\n\n{:25} | {:11} | {:9} | {:12}".format("Donor Name", "Total Given", "Num Gifts", "Average Gift")
-    print(header_row)
-    print("-" * len(header_row))
+    header_row = "\n\n{:25} | {:11} | {:9} | {:12}\n".format("Donor Name", "Total Given", "Num Gifts", "Average Gift")
+    report = header_row + ("-" * len(header_row)) + "\n"
     # create list of row data from donors
     row_data = [[donor, get_total(donations), len(donations), get_avg(donations)] for donor, donations in donors.items()]
     # sort the list of donors (total donations, most to least) before printing report
     row_data.sort(key=total_sort, reverse=True)
     # iterate sorted donor list printing formatted rows
     for row_datum in row_data:
-        print("{:28}${:>10.2f}{:>12}   ${:>12.2f}".format(row_datum[0], row_datum[1], row_datum[2], row_datum[3]))
-    print("\n\n")
+        report += ("{:28}${:>10.2f}{:>12}   ${:>12.2f}\n".format(row_datum[0], row_datum[1], row_datum[2], row_datum[3]))
+    report += "\n\n"
+    return report
     
 def quit_menu():
     """
@@ -143,7 +149,7 @@ main_prompt = ("\nPlease choose one of these options:"
 
 # main menu dictionary, options and associated functions            
 main_menu = {"1": send_thanx,
-             "2": create_report,
+             "2": print_report,
              "3": thank_all,
              "4": clear_donor_list,
              "q": quit_menu
