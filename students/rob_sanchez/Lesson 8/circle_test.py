@@ -5,9 +5,6 @@ from Circle import Circle
 
 class circle_tests(unittest.TestCase):
 
-    # Initial setup of test values
-    # def setUp(self):
-
     # Step 1 test - set radius
     def test_radius(self):
         c = Circle(5)
