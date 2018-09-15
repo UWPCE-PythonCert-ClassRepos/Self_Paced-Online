@@ -1,12 +1,11 @@
 import unittest
 import circle as c
-import pytest
 
 
 class TestCircle(unittest.TestCase):
     def test_radius(self):
         """Test that the radium attribute is correct"""
-        new_circle = c.Circle(4)  #create instance of circle with radius 4
+        new_circle = c.Circle(4)  # create instance of circle with radius 4
 
         self.assertEqual(new_circle.radius, 4)
 
@@ -74,12 +73,129 @@ class TestCircle(unittest.TestCase):
     def test_string_method(self):
         """Test the string method, returns 'Circle with radius: 4.0000"""
         new_circle = c.Circle(4)
-        expected_text ='Circle with radius: 4.0000'
+        expected_text = 'Circle with radius: 4.0000'
         self.assertEqual(new_circle.__str__(), expected_text)
-
 
     def test_repr_method(self):
         """Test the string method, returns 'Circle with radius: 4.0000"""
         new_circle = c.Circle(4)
-        expected_text ='Circle(4)'
+        expected_text = 'Circle(4)'
         self.assertEqual(new_circle.__repr__(), expected_text)
+
+    def test_add_circles(self):
+        """Test that you can add circles."""
+        circle1 = c.Circle(8)
+        circle2 = c.Circle(2)
+        circle3 = circle1+circle2
+        self.assertEqual(circle3.radius, c.Circle(10).radius)
+
+    def test_mul_circles(self):
+        """Test that you can add circles."""
+        circle1 = c.Circle(8)
+        circle2 = c.Circle(2)
+        circle3 = circle1*circle2
+        self.assertEqual(circle3.radius, c.Circle(16).radius)
+
+    def test_mul_number(self):
+        """Test that you can add circles."""
+        circle1 = c.Circle(8)*3
+        self.assertEqual(circle1.radius, c.Circle(24).radius)
+
+    def test_mul_number_1(self):
+        """Test that you can add circles."""
+        circle1 = 3*c.Circle(8)
+        self.assertEqual(circle1.radius, c.Circle(24).radius)
+
+    def test_invalid_multiplier(self):
+        """Test that you cannot multiply by string"""
+        with self.assertRaises(AttributeError):
+            c.Circle(8) * 'three'
+
+    def test_compare_lt(self):
+        """Test comparison of circles"""
+
+        circle1 = c.Circle(8)
+        circle2 = c.Circle(10)
+        circle3 = c.Circle(10)
+        self.assertTrue(circle1 < circle2)
+        self.assertFalse(circle2 < circle1)
+        self.assertFalse(circle2 < circle3)
+
+    def test_compare_le(self):
+        """Test comparison of circles"""
+
+        circle1 = c.Circle(8)
+        circle2 = c.Circle(10)
+        circle3 = c.Circle(10)
+        self.assertTrue(circle1 <= circle2)
+        self.assertFalse(circle2 <= circle1)
+        self.assertTrue(circle2 <= circle3)
+
+    def test_compare_eq(self):
+        """Test comparison of circles"""
+
+        circle1 = c.Circle(10)
+        circle2 = c.Circle(10)
+        circle3 = c.Circle(11)
+        self.assertTrue(circle1 == circle2)
+        self.assertFalse(circle2 == circle3)
+
+    def test_compare_ne(self):
+        """Test comparison of circles"""
+
+        circle1 = c.Circle(8)
+        circle2 = c.Circle(10)
+        circle3 = c.Circle(10)
+        self.assertTrue(circle1 != circle2)
+        self.assertFalse(circle2 != circle3)
+
+    def test_compare_ge(self):
+        """Test comparison of circles"""
+
+        circle1 = c.Circle(8)
+        circle2 = c.Circle(10)
+        circle3 = c.Circle(10)
+        self.assertTrue(circle2 >= circle1)
+        self.assertFalse(circle1 >= circle2)
+        self.assertTrue(circle2 >= circle3)
+
+    def test_compare_gt(self):
+        """Test comparison of circles"""
+
+        circle1 = c.Circle(8)
+        circle2 = c.Circle(10)
+        circle3 = c.Circle(10)
+        self.assertTrue(circle2 > circle1)
+        self.assertFalse(circle1 > circle2)
+        self.assertFalse(circle2 > circle3)
+
+    def test_sort_circles(self):
+        """Test that you can sort circles."""
+        circles = [c.Circle(6), c.Circle(7), c.Circle(8), c.Circle(4),
+                   c.Circle(0), c.Circle(2), c.Circle(3), c.Circle(5),
+                   c.Circle(9), c.Circle(1)]
+        circles.sort()
+        self_sort = [c.Circle(0), c.Circle(1), c.Circle(2), c.Circle(3),
+                     c.Circle(4), c.Circle(5), c.Circle(6), c.Circle(7),
+                     c.Circle(8), c.Circle(9)]
+        self.assertEqual(circles, self_sort)
+
+    def test_relected_numerics(self):
+        """Test if you can get reflected numerics to work"""
+        circle1 = 3 * c.Circle(3)
+        circle2 = c.Circle(3) * 3
+        self.assertTrue(circle2 == circle1)
+
+    def test_augmented_add(self):
+        """Test that you can use the augmented assignment"""
+        circle1 = c.Circle(3)
+        circle2 = c.Circle(4)
+        circle1 += circle2
+        self.assertEqual(circle1.radius, c.Circle(7).radius)
+
+    def test_augmented_mul(self):
+        """Test that you can use the augmented assignment"""
+        circle1 = c.Circle(3)
+        circle2 = c.Circle(4)
+        circle1 *= circle2
+        self.assertEqual(circle1.radius, c.Circle(12).radius)
