@@ -84,3 +84,14 @@ Created on Sun Sep  9 19:00:58 2018
 # Series 4
 print('------Series 4------')
 FruitList=['Apples', 'Pears', 'Oranges', 'Peaches']
+NewFruits=FruitList[:]
+for it in range(len(FruitList)):
+    NewFruits[it]=FruitList[it][-1::-1]
+FruitList.remove(FruitList[-1])
+print('Old List')
+for it in range(len(FruitList)):
+     print(FruitList[it])
+print()
+print('New List')
+for it in range(len(NewFruits)):
+     print(NewFruits[it])
