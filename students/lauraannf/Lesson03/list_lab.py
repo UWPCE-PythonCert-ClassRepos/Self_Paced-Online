@@ -4,6 +4,7 @@ Created on Sun Sep  9 19:00:58 2018
 
 @author: Laura.Fiorentino
 """
+print('Series 1')
 FruitList=['Apples', 'Pears', 'Oranges', 'Peaches']
 for it in range(len(FruitList)):
     print(FruitList[it])
@@ -26,5 +27,27 @@ print('Fruits that start with P:')
 for it in range(len(FruitList)):
     if FruitList[it][0] == 'P':
         print(FruitList[it])
-        
-        
+for it in range(3):
+    print()
+print('Series 2')
+for it in range(len(FruitList)):
+    print(FruitList[it])
+print()
+print('Remove last fruit')
+del FruitList[-1]
+for it in range(len(FruitList)):
+    print(FruitList[it])
+badfruit = input("Name fruit to get rid of > ")
+FruitList.remove(badfruit)
+for it in range(len(FruitList)):
+    print(FruitList[it])
+FruitList=FruitList*2
+print()
+print('Double the fruit')
+for it in range(len(FruitList)):
+    print(FruitList[it])
+badfruit = input("Name another fruit to get rid of > ")
+while badfruit in FruitList:
+    FruitList.remove(badfruit)
+for it in range(len(FruitList)):
+    print(FruitList[it])
