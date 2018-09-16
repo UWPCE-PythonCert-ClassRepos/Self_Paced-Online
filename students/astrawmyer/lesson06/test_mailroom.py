@@ -14,7 +14,7 @@ def test_display_list(capsys):
     out, err = capsys.readouterr()
     sys.stdout.write(out)
     sys.stderr.write(err)
-    assert out.startswith("Man")
+    assert out.startswith("Manny Machado\nAdam Jones\nChris Davis")
 
 def test_write_letter():
     expected = "Dear Manny,\nThank you for donating $8.00 to the Human Fund. " \
