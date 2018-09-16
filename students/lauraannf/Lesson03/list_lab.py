@@ -61,22 +61,26 @@ Created on Sun Sep  9 19:00:58 2018
 # 
 # =============================================================================
 # Series 3
-print('------Series 3------')
-FruitList=['Apples', 'Pears', 'Oranges', 'Peaches']
-NewFruits=FruitList[:]
-while True:
-    for fruit in FruitList:
-        yesorno = input("Do you like {} ?>".format(fruit.lower()))
-    while yesorno =='no' or yesorno=='yes':
-        if yesorno == 'no':
-            NewFruits.remove(fruit)
-            break
-        elif yesorno == 'yes':
-            break
-        else:
-            print('Please answer ''yes'' or ''no''')
-for it in range(len(NewFruits)):
-    print(NewFruits[it])
-
+# =============================================================================
+# print('------Series 3------')
+# FruitList=['Apples', 'Pears', 'Oranges', 'Peaches']
+# NewFruits=FruitList[:]
+# for fruit in FruitList:
+#     yesorno = input("Do you like {} ?>".format(fruit.lower()))
+#     while yesorno !='yes' and yesorno!='no':
+#         yesorno = input('Please answer yes or no>')
+#     if yesorno == 'yes':
+#         print('Ok, keeping {}'.format(fruit.lower()))
+#     elif yesorno == 'no':
+#         print('Ok, removing {}'.format(fruit.lower()))
+#         NewFruits.remove(fruit)
+# print()
+# print('Ok, here''s your fruit')
+# for it in range(len(NewFruits)):
+#     print(NewFruits[it])
+# =============================================================================
     
 
+# Series 4
+print('------Series 4------')
+FruitList=['Apples', 'Pears', 'Oranges', 'Peaches']
