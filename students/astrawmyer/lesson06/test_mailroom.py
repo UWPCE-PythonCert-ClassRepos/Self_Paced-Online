@@ -21,4 +21,18 @@ def test_write_letter():
             "Your money will be used appropriately."
     assert m.write_letter("Manny",8) == expected
 
+def test_write_report():
+    expected_1 = 'Donor Name                | Total Given | Num Gifts | Average Gift\n' \
+                '-'*67 + '\nAdam Jones                 $    1369.80           3  $      456.60'
+    expected_3 = 'Adam Jones                 $    1369.80           3  $      456.60'
+    #expected = expected_1 + '\n' + expected_2 + '\n' + expected_3
+     
+    report_input = [[1369.80,'Adam Jones',3,456.60]]
+    assert m.write_report(report_input) == expected_1
+    #expected.endswith
+
+
+
 #m.display_list()
+
+
