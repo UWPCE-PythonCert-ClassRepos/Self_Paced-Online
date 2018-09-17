@@ -3,13 +3,8 @@
 import mailroom as m
 import pytest
 import sys
-#import app
 
 
-#this function can be fleshed out more.
-#https://stackoverflow.com/questions/26561822/pytest-capsys-checking-output-and-getting-it-reported
-#https://docs.pytest.org/en/latest/reference.html#capsys
-#https://docs.pytest.org/en/latest/capture.html
 def test_display_list(capsys):
     result = m.display_list()
     out, err = capsys.readouterr()
@@ -31,6 +26,15 @@ def test_write_report(capsys):
     assert out == expected
 
 
-#def test_thank_you():
-#    app.input = 
-#
+def test_thank_you_add_donation():
+    input_val = ["Manny Machado", 2131]
+    def mock_input(s):
+        return input_val.pop(0)
+    m.input = mock_input
+    m.thank_you()
+    assert m.ddonors == {"Manny Machado": [12.2,2.51,3.20,2131], "Adam Jones": [1024.14,22.21,323.45], "Chris Davis": [3.2,5.55,4.20]}
+    
+""" def test_thank_you_add_donation(capsys):
+    m.input = 'list'
+    m.thank_you() """
+
