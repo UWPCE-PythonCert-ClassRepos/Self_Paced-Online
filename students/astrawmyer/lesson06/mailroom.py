@@ -2,7 +2,9 @@
 
 # new file for lesson 6 work to do unit tests.
 
-ddonors = {"Manny Machado": [12.2,2.51,3.20], "Adam Jones": [1024.14,22.21,323.45], "Chris Davis": [3.2,5.55,4.20]}
+ddonors = {"Manny Machado": [12.2,2.51,3.20],
+            "Adam Jones": [1024.14,22.21,323.45],
+            "Chris Davis": [3.2,5.55,4.20]}
 
 
 def display_list():    
