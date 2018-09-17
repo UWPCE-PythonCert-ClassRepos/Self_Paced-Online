@@ -21,15 +21,12 @@ def write_report(donors):
     for i in donors:
         print('{1:27}${0:11.2f}{2:12}  ${3:12.2f}'.format(*i))
 
-def ty_new_donation(name):
-    while True:
-        try:
-            donation = float(input("Enter donation amount:"))
-        except ValueError:
-            print("Donation needs to be a number.")
-        else:
-            break
-    ddonors[name].append(donation)
+#def ty_new_donation(name, donation):
+#    ddonors[name].append(donation)
+
+
+#def add_donor():
+
 
 
 
@@ -39,7 +36,6 @@ def thank_you():
     while True:
         input_name = input("Enter full name: ")
         if input_name in ddonors.keys():
-            #ty_new_donation(input_name)
             while True:
                 try:
                     donation = float(input("Enter donation amount:"))
@@ -64,6 +60,7 @@ def thank_you():
                     break
             ddonors[input_name] = [donation]
             print(write_letter(input_name,donation))
+            #print(ddonors)
             break
 
 

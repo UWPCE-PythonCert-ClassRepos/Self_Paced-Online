@@ -3,6 +3,7 @@
 import mailroom as m
 import pytest
 import sys
+#import app
 
 
 #this function can be fleshed out more.
@@ -12,27 +13,24 @@ import sys
 def test_display_list(capsys):
     result = m.display_list()
     out, err = capsys.readouterr()
-    sys.stdout.write(out)
-    sys.stderr.write(err)
-    assert out.startswith("Manny Machado\nAdam Jones\nChris Davis")
+    assert out == "Manny Machado\nAdam Jones\nChris Davis\n"
 
 def test_write_letter():
     expected = "Dear Manny,\nThank you for donating $8.00 to the Human Fund. " \
             "Your money will be used appropriately."
     assert m.write_letter("Manny",8) == expected
 
-def test_write_report():
-    expected_1 = 'Donor Name                | Total Given | Num Gifts | Average Gift\n' \
-                '-'*67 + '\nAdam Jones                 $    1369.80           3  $      456.60'
-    expected_3 = 'Adam Jones                 $    1369.80           3  $      456.60'
-    #expected = expected_1 + '\n' + expected_2 + '\n' + expected_3
-     
+def test_write_report(capsys):
+    expected_1 = 'Donor Name                | Total Given | Num Gifts | Average Gift\n'
+    expected_2 = '-------------------------------------------------------------------\n'
+    expected_3 = 'Adam Jones                 $    1369.80           3  $      456.60\n'
+    expected = expected_1 + expected_2 + expected_3
     report_input = [[1369.80,'Adam Jones',3,456.60]]
-    assert m.write_report(report_input) == expected_1
-    #expected.endswith
+    result = m.write_report(report_input)
+    out, err = capsys.readouterr()
+    assert out == expected
 
 
-
-#m.display_list()
-
-
+#def test_thank_you():
+#    app.input = 
+#
