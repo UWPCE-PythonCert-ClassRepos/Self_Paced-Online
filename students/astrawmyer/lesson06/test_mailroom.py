@@ -42,14 +42,20 @@ def test_thank_you_add_donation():
     out, err = capsys.readouterr()
     assert out == "Manny Machado\nAdam Jones\nChris Davis\n" """
 
+
 def test_thank_you_new_donor():
     input_val = ["Robert Wickens", 9000.1]
     def mock_input(s):
         return input_val.pop(0)
     m.input = mock_input
     m.thank_you()
-    assert m.ddonors == {"Manny Machado": [12.2,2.51,3.20,2131],
+    assert m.ddonors == {"Manny Machado": [12.2,2.51,3.20],
                         "Adam Jones": [1024.14,22.21,323.45], 
                         "Chris Davis": [3.2,5.55,4.20],
                         "Robert Wickens": [9000.1]}
+
+#find way to reset ddonors variable
+#def test_create_report():
+
+
 
