@@ -49,12 +49,14 @@ def prompt_donors():
         return prompt_donors()
     if name in return_donors():
         add_donation(name)
-    return initial_prompt()
+    if name not in return_donors():
+        add_donor(name)
+        add_donation(name)
 
 
 def add_donor(name):
     donations.append([[name],[]])
-    return print(donations)
+    return donations
 
 
 def return_pos(name):
@@ -65,9 +67,7 @@ def return_pos(name):
 
 def add_donation(name):
     amount = float(input("Please enter a donation amount for {}:".format(name)))
-    print(name)
     donations[return_pos(name)][1].append(float(amount))
-    return initial_prompt()
 
 
 if __name__ == '__main__':
