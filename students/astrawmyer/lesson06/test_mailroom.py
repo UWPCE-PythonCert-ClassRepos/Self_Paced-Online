@@ -2,7 +2,6 @@
 
 import mailroom as m
 import pytest
-import sys
 import os
 
 
@@ -37,12 +36,6 @@ def test_thank_you_add_donation():
                         "Adam Jones": [1024.14,22.21,323.45],
                         "Chris Davis": [3.2,5.55,4.20]}
     
-""" def test_thank_you_list(capsys):
-    m.input = lambda s: 'list'
-    m.thank_you()
-    out, err = capsys.readouterr()
-    assert out == "Manny Machado\nAdam Jones\nChris Davis\n" """
-
 
 def test_thank_you_new_donor():
     input_val = ["Robert Wickens", 9000.1]
