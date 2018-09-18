@@ -1,5 +1,4 @@
 def fibonacci(n):
-	assert (n > 0), "Must be greater than 0"
 	counter = 0
 	a = 0
 	b = 1
@@ -13,7 +12,11 @@ def fibonacci(n):
 		a=b
 		b=c
 		counter = counter + 1
-		
+	
+	if (counter == n):
+		return True
+	else:
+		return False
 
 
 def lucas(n):
@@ -31,6 +34,11 @@ def lucas(n):
 		b=c
 		counter = counter + 1
 
+	if (counter == n):
+		return True
+	else:
+		return False
+
 
 def sum_series(n, a=0, b=1):
 	if ( a != 0 and b != 1):
@@ -45,6 +53,11 @@ def sum_series(n, a=0, b=1):
 			a=b
 			b=c
 			counter = counter + 1
+
+		if (counter == n):
+			return True
+		else:
+			return False
 	else:
 		counter = 0
 		a = 0
@@ -60,16 +73,20 @@ def sum_series(n, a=0, b=1):
 			b=c
 			counter = counter + 1
 
-#TEST FUCNTIONS
-print("Testing each function")
-print("Testing fionacci(6)")
-fibonacci(6)
-print()
-print("Testing lucas(8)")
-lucas(8)
-print()
-print("Testing sum_series(6)")
-sum_series(6)
-print()
-print("Testing sum_series(6,5,6)")
-sum_series(6, 5, 6)
+		if (counter == n):
+			return True
+		else:
+			return False
+
+
+
+if __name__ == '__main__':
+	print("testing")
+	print()
+	assert fibonacci(6) == True
+	print()
+	assert lucas(5) == True
+	print()
+	assert sum_series(3,4,5) == True
+	print()
+	print("testing passed")

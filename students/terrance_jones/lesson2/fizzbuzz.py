@@ -1,13 +1,15 @@
 def test():
-	n = 1
-	while (n <= 100):
-		if(n%3 == 0 and n%5!=0):
+	
+	for i in range(100):
+		if i == 0:
+			print()
+		elif(i%3 == 0 and i%5!=0):
 			print("Fizz")
-		elif(n%5== 0 and n%3!=0):
+		elif(i%5== 0 and i%3!=0):
 			print("Buzz")
-		elif(n%3==0 and n%5==0):
+		elif(i%3==0 and i%5==0):
 			print("FizzBuzz")
 		else:
-			print(n)
+			print(i)
 
-		n = n + 1
+		i = i + 1
