@@ -34,19 +34,47 @@ def initial_prompt():
 
 
 def return_donors():
-    donors =""
+    donors = ""
     for item in donations:
         donors += item[0][0] + "\n"
     return donors
+
+
+def prompt_donors():
+    name = input("Please enter a donor name: ")
+    if name == 'quit':
+        return None
+    if name == 'list':
+        print(return_donors())
+        return prompt_donors()
+    if name in return_donors():
+        add_donation(name)
+    return initial_prompt()
+
+
+def add_donor(name):
+    donations.append([[name],[]])
+    return print(donations)
+
+
+def return_pos(name):
+    for i, donor in enumerate(donations):
+        if name == donor[0][0]:
+            return i
+
+
+def add_donation(name):
+    amount = float(input("Please enter a donation amount for {}:".format(name)))
+    print(name)
+    donations[return_pos(name)][1].append(float(amount))
+    return initial_prompt()
 
 
 if __name__ == '__main__':
     response = initial_prompt()
     while response != responses[-1]:
         if response == responses[0]:
-            name = input("Please enter a donor name: ")
-            if name == 'list':
-                print(return_donors())
+            prompt_donors()
         elif response == responses[1]:
             print(return_report(donations))
         response = initial_prompt()
