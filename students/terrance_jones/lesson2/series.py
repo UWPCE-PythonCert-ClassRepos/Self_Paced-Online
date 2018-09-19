@@ -1,92 +1,56 @@
 def fibonacci(n):
-	counter = 0
-	a = 0
-	b = 1
-
-	print(a, end= '')
-	print(b, end='')
-
-	for counter in range(n):
-		c = a + b
-		print(c, end= '')
-		a=b
-		b=c
-		counter = counter + 1
-	
-	if (counter == n):
-		return True
+	''' Returns the nth element'''
+	if n == 1:
+		return 1
+	elif n == 0:
+		return 0
 	else:
-		return False
+		return fibonacci(n-2) + fibonacci(n-1)
 
 
 def lucas(n):
-	counter = 0
-	a = 2
-	b = 1
-
-	print(a, end='')
-	print(b, end='')
-
-	for counter in range(n):
-		c = a + b
-		print(c, end='')
-		a=b
-		b=c
-		counter = counter + 1
-
-	if (counter == n):
-		return True
+	''' Returns the nth element'''
+	if n == 1:
+		return 1
+	elif n == 0:
+		return 2
 	else:
-		return False
+		return lucas(n-2) + lucas(n-1)
+
 
 
 def sum_series(n, a=0, b=1):
-	if ( a != 0 and b != 1):
-		counter = 0
-		
-		print(a, end='')
-		print(b, end='')
-
-		for counter in range(n):
-			c = a + b
-			print(c, end='')
-			a=b
-			b=c
-			counter = counter + 1
-
-		if (counter == n):
-			return True
-		else:
-			return False
+	''' Returns the nth element. a and b are the first two elements'''
+	if n == 1:
+		return b
+	elif n == 0:
+		return a
 	else:
-		counter = 0
-		a = 0
-		b = 1
-
-		print(a, end='')
-		print(b, end='')
-
-		for counter in range(n):
-			c = a + b
-			print(c, end='')
-			a=b
-			b=c
-			counter = counter + 1
-
-		if (counter == n):
-			return True
-		else:
-			return False
+		return sum_series(n-2, a ,b) + sum_series(n-1, a, b)
 
 
-
+#Running test to make sure functions work
 if __name__ == '__main__':
-	print("testing")
-	print()
-	assert fibonacci(6) == True
-	print()
-	assert lucas(5) == True
-	print()
-	assert sum_series(3,4,5) == True
-	print()
-	print("testing passed")
+	#Testing fibonacci function
+	assert(fibonacci(1) == 1)
+	assert(fibonacci(2)==1)
+	assert(fibonacci(6)==8)
+    	
+	#Testing lucas function
+	
+    assert(lucas(1) == 1)
+    assert(lucas(2) == 3)
+    assert(lucas(6) == 18)
+    
+	#Testing sum_series w/ 1 argument eqsumuals fibonacci
+	assert(sum_series(3) == fibonacci(3))
+    assert(sum_series(5) == fibonacci(5))
+
+    #Testing sum series w 2 and 1 arg
+    assert(sum_series(3, 2, 1) == lucas(3))
+
+    #Testing with different values
+    assert(sum_series(3,4,5))== 14
+
+    print("Testing Complete")
+   
