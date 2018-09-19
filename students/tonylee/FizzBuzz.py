@@ -9,6 +9,5 @@ def printFizzBuzz():
 			print "Buzz"
 		else:
 			print number
-		
-
+			
 printFizzBuzz()
