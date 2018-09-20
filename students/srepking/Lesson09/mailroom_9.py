@@ -1,45 +1,7 @@
 import os
+import donors as d
 
-
-class CollectionDonors:
-    _donor_raw = {'Joe': [3, 3, 3], 'Jack': [4, 5]}
-
-    def __init__(self, donor = '', amount = 0):
-        self._donor = donor
-        self._amount = amount
-
-    def get_donors(self):
-        return self._donor_raw
-
-    def add_donor(self):
-        if self._donor_raw.get(self._donor) is None:
-            self._donor_raw[self._donor] = []
-        self._donor_raw[self._donor].append(float(self._amount))
-
-
-
-    donors = property(get_donors)
-
-
-class Donor(CollectionDonors):
-    def __init__(self, donor, amount):
-        super().__init__(donor, amount)
-
-# Method to write a thank you
-    def thank_you(self):
-        """Add a donation to a donors records and print a report."""
-        CollectionDonors.add_donor(self)
-        print('Thank you so much for the generous gift of ${0:.2f}, {1}!'
-              .format(float(self._amount), self._donor))
-
-# Method to add a new donor
-
-# Method to search for a given donor
-
-
-# Generate reports about multiple donors
-
-
+mail = d.Group()
 
 
 def more_choices():
@@ -51,12 +13,12 @@ def more_choices():
         if name == 'e':
             return
         if name == 'list':
-            create_list()
+            mail.create_list()
         else:
             print('\n''Ok, you want to write a letter for {}, '
                   'lets see what we can do.'.format(name))
 
-            if donors.get(name) is None:
+            if mail.search(name) is None:
                 yes_no = input('The name you entered is not in the database.'
                                'Would you like to add this name? y or n >>')
                 if yes_no == 'n':
@@ -74,26 +36,9 @@ def more_choices():
                 print('\nYou entered an invalid amount!!\n')
                 return ValueError
             else:
-                Donor(name, amount).thank_you()
+                print (d.Individual.thank_you(name, amount))
+                mail.add(name, amount)
 
-
-def create_list():
-    # This prints the list of donors
-    for x in donors:
-        print(x)
-
-
-
-
-
-def summary_donors() -> object:
-    """Create a new dictionary with Total, number of donations,
-    and average donation amount"""
-
-    donors_f = {some_name: [sum(donations), int(len(donations)),
-                sum(donations) / int(len(donations))]
-                for some_name, donations in donors.items()}
-    return donors_f
 
 
 def column_name_width(donors_f):
@@ -142,7 +87,7 @@ def sort_list(donors_f):
 
 def report():
     """Return a report on all the donors"""
-    donors_f = summary_donors()
+    donors_f = mail.summary()
 
     name_wi = column_name_width(donors_f)
     tot_wi = column_total_width(donors_f)
@@ -163,7 +108,7 @@ def report():
 
 def print_report():
     print('\n''A summary of your donors donations:')
-    donors_f = summary_donors()
+    donors_f = mail.summary()
     name_wi = column_name_width(donors_f)
     tot_wi = column_total_width(donors_f)
     num_wi = column_number_width(donors_f)
@@ -180,7 +125,7 @@ def letters_for_all():
     print(f"You chose to send letters for everyone. "
           f"The letters have been completed and you "
           f"can find them here: {path_letters}")
-    donors_f = summary_donors()
+    donors_f = mail.summary()
 
     for donor, donation in donors.items():
         donation_summary = donors_f[donor]
