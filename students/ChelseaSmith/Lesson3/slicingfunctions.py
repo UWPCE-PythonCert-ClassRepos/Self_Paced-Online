@@ -21,3 +21,11 @@ def reversed(seq):
 def thirds(seq):
     cutter = seq[len(seq)//3:len(seq)*2//3] + seq[len(seq)*2//3:] + seq[:len(seq)//3]
     return cutter
+
+
+a_string = "i like kittens"
+assert flip_first_last(a_string) == ['s', ' ', 'l', 'i', 'k', 'e', ' ', 'k', 'i', 't', 't', 'e', 'n', 'i']  # i think the tuple and list stuff made this result weird
+assert remove_ev_other(a_string) == "ilk itn"
+assert ev_other_middle(a_string) == "k i"
+assert reversed(a_string) == "snettik ekil i"
+assert thirds(a_string) == "ke kittensi li"

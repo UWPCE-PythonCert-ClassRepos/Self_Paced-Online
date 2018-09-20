@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# series 1
+print("Series 1")
 fruit = ["Apples", "Pears", "Oranges", "Peaches"]
 
 print(fruit)
@@ -16,13 +16,13 @@ for item in fruit:
     if item[0] == "P":
         print(item)
 
-# series 2
+print("Series 2")
 print(fruit)
 fruit.pop()
 print(fruit)
 fruit.remove(input("Please select a fruit from the list to be removed: "))
 
-# series 3
+print("Series 3")
 for item in fruit:
     ans = input("Do you like " + item + "?")
     while ans.lower() != "yes" and ans.lower() != "no":
@@ -31,7 +31,7 @@ for item in fruit:
         fruit.remove(item)
 print(fruit)
 
-# series 4
+print("Series 4")
 reverse = list()
 for item in fruit:
     reverse.append(item[::-1])
