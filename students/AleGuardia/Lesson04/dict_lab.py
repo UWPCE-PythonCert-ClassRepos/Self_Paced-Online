@@ -23,3 +23,22 @@ dict_example2 = {}
 for i in dict_example:
     dict_example2[i] = dict_example[i].lower().count('t')
 
+
+# Sets 1
+
+s2 = set()
+s3 = set()
+s4 = set()
+for i in range(21):
+    for j in range(2,5):
+        if i%j == 0:
+            globals()["s{}".format(j)].update([i])
+        else:
+            continue
+
+print(s2)
+print(s3)
+print(s4)
+
+print(s3.issubset(s2))
+print(s4.issubset(s2))
