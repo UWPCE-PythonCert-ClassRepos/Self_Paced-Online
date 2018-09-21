@@ -42,3 +42,11 @@ print(s4)
 
 print(s3.issubset(s2))
 print(s4.issubset(s2))
+
+# Sets 2
+
+s_p = set("Python")
+s_p.update("i")
+mar = frozenset('marathon')
+print(s_p.intersection(mar))
+print(s_p.union(mar))
