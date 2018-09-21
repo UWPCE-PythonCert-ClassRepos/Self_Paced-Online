@@ -35,3 +35,13 @@ print(files4)
 print()
 
 print('----------Task Five--------')
+testlist = ['oranges', 1.3, 'lemons', 1.1]
+teststring = f"The weight of an {testlist[0][:-1]} is {testlist[1]} and the weight \
+of a {testlist[2][:-1]} is {testlist[3]}."
+teststring2 = f"The weight of an {testlist[0][:-1].upper()} is {testlist[1]*1.2} \
+and the weight of a {testlist[2][:-1].upper()} is {testlist[3]*1.2}."
+print(teststring)
+print(teststring2)
+print()
+
+print('----------Task Six--------')
