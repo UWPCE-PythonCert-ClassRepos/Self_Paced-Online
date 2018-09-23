@@ -39,14 +39,13 @@ def createreport(donors):
 def sendletters(donors):
     for keys in donors:
         s = "{}.txt".format(keys)
-        f = open(s,"w+")
+        f = open(s, "w+")
         f.write("Dear {},".format(keys))
         f.write("\n\n     Thank you for your very kind donation of ${:<10.2f}".format(sum(donors[keys])))
         f.write('\n\n     It will be put to very good use.')
         f.write('\n\n             Sincerely,')
         f.write('\n                   -The Team')
         f.close()
-
 
 
 def main():
