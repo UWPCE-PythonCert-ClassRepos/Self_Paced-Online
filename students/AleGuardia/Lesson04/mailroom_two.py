@@ -93,15 +93,27 @@ def send_note(name,donation,note):
     print(note.format(name,donation))
     print()
 
-def menu_selection(prompt, dispatch_dict):
 
+def menu_selection(prompt, dispatch_dict, key_def=None):
     while True:
         response = input(prompt)
-        if dispatch_dict[int(response)] == "quit":
-            break
+        try:
+            if dispatch_dict[response]() == "quit":
+                break
+        except KeyError:
+            key_def()
 
 
-main_dispatch = {1: prompt_donors, 2: return_report(donations), 3: "quit"}
+def print_report():
+    print()
+    print(return_report(donations))
+
+
+def quit_sys():
+    return "quit"
+
+
+main_dispatch = {"1": prompt_donors, "2": print_report, "3": quit_sys}
 
 
 if __name__ == '__main__':
