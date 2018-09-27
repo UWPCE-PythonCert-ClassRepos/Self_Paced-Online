@@ -10,12 +10,31 @@ class Element(object):
         self.content.append(new_content)
     
     def render(self,file_out,cur_ind=""):
-        file_out.write(cur_ind + "<html>")
+        #opening tag
+        file_out.write('{}<{}>\n'.format(cur_ind,self.tag))
+        #content
         for item in self.content:
-            file_out.write('{}</html>\n'.format(item))
+            if isinstance(item, Element):
+                item.render(file_out)
+            else:
+                file_out.write("empty\n")
+        #closing tag
+        file_out.write('{}</{}>\n'.format(cur_ind,self.tag))
+
+
+#subclasses for part 2
+class Html(Element):
+    tag = "html"
+
+class Body(Element):
+    tag = "body"
+
+class P(Element):
+    tag = "p"
 
 
 """ test_element = Element()
 test_element.append("This is content.")
 test_element.append("This is more content.")
-render(test_element,"test_html_output1.html") """
+test_element.render(test_element,"test_html_output1.html") """
+
