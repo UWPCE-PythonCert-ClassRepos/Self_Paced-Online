@@ -37,11 +37,11 @@ def more_choices():
                 return ValueError
             else:
                 print(d.Individual.thank_you(name, amount))
-                mail.add(name, int(amount))
+                mail.add(name, float(amount))
+
 
 def print_report():
-    donors_f = mail.summary()
-    print('\n'.join(mail.report(donors_f)))
+    print(mail.report)
 
 
 def letters_for_all():
@@ -49,18 +49,7 @@ def letters_for_all():
     print(f"You chose to send letters for everyone. "
           f"The letters have been completed and you "
           f"can find them here: {path_letters}")
-    donors_f = mail.summary()
-
-    for donor, donation in donors.items():
-        donation_summary = donors_f[donor]
-        letter = f'Dear {donor}, thank you so much for your ' \
-                 f'last contribution of ${donation[-1]:.2f}! ' \
-                 f'You have contributed a total of $' \
-                 f'{donation_summary[0]:.2f}, ' \
-                 f'and we appreciate your support!'
-        # Write the letter to a destination
-        with open(donor + '.txt', 'w') as to_file:
-            to_file.write(letter)
+    mail.letters()
 
 
 def wrong_choice():

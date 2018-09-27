@@ -4,10 +4,12 @@ class Group:
 
     def __init__(self):
 
-        self._donor_raw = {'Joe': [3, 3, 3], 'Jack': [4, 5]}
+        self._donor_raw = {}
 
     def get_donors(self):
         return self._donor_raw
+
+    donors = property(get_donors)
 
     def search(self, donor):
         if self._donor_raw.get(donor) is None:
@@ -16,10 +18,10 @@ class Group:
             return donor
 
     def add(self, donor, donation):
-        self._donor_raw[donor] = [donation]
-
-
-    donors = property(get_donors)
+        if self.search(donor) is None:
+            self._donor_raw[donor] = [donation]
+        else:
+            self._donor_raw[donor].append(donation)
 
     def create_list(self):
         # This prints the list of donors
@@ -79,9 +81,9 @@ class Group:
         list_sorted = sorted(donor_summary, key=donor_summary.__getitem__, reverse=True)
         return list_sorted
 
-    @staticmethod
-    def report(donor_summary):
+    def make_report(self):
         """Return a report on all the donors"""
+        donor_summary = self.summary()
         name_wi = Group.column_name_width(donor_summary)
         tot_wi = Group.column_total_width(donor_summary)
         num_wi = Group.column_number_width(donor_summary)
@@ -100,7 +102,23 @@ class Group:
                         f"{temp[1]:^{num_wi}}   "
                         f"${temp[2]:>{ave_wi}.2f}")
 
-        return rows
+        return '\n'.join(rows)
+
+    report = property(make_report)
+
+    def letters(self):
+        donors_f = self.summary()
+
+        for donor, donation in self._donor_raw.items():
+            donation_summary = donors_f[donor]
+            letter = f'Dear {donor}, thank you so much for your ' \
+                     f'last contribution of ${donation[-1]:.2f}! ' \
+                     f'You have contributed a total of $' \
+                     f'{donation_summary[0]:.2f}, ' \
+                     f'and we appreciate your support!'
+            # Write the letter to a destination
+            with open(donor + '.txt', 'w') as to_file:
+                to_file.write(letter)
 
 
 class Individual:
