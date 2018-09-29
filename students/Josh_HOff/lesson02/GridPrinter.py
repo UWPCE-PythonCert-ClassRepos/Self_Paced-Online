@@ -35,3 +35,42 @@ def print_grid(n):
         if mid == x + 1:
             print(plus_ + (dash_ * mid) + plus_ + (dash_ * mid) + plus_)
     print(plus_ + (dash_ * mid) + plus_ + (dash_ * mid) + plus_)
+
+#custom grid depending on number of rows/columns and grid cell size
+def print_grid2(r,n):
+    plus_ = '+ '
+    dash_ = '- '
+    line_ = '|'
+    spaces_ = ' ' * (n * 2 + 1)
+    for x in range(0, r):
+        if r > 1:
+            print(plus_ + (dash_ * n) + plus_, end='')
+            for x in range(0, (r - 1)):
+                if x == (r - 1):
+                    print((dash_ * n) + plus_)
+                if x < (r - 1):
+                    print((dash_ * n) + plus_, end='')
+        else:
+            print(plus_ + (dash_ * n) + plus_, end='')
+        print()
+        for x in range(0, n):
+            print((line_ + spaces_) * (r + 1))
+    if r > 1:
+        print(plus_ + (dash_ * n) + plus_, end='')
+        for x in range(0, (r - 1)):
+            if x == (r - 1):
+                print((dash_ * n) + plus_)
+            if x < (r - 1):
+                print((dash_ * n) + plus_, end='')
+    else:
+        print(plus_ + (dash_ * n) + plus_)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
