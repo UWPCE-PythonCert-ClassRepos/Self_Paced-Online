@@ -65,7 +65,21 @@ def print_grid2(r,n):
     else:
         print(plus_ + (dash_ * n) + plus_)
     
-    
+#def print_grid(size, units):
+#    minus = ' - '
+#    pipe = '|'
+#    plus = '+'
+#    space = '   '
+
+#    outer = plus + (units * minus + plus) * size
+#    middle = pipe + (space * units + pipe) * size
+
+#    for _ in range(size):
+#        print(outer)
+#        for _ in range(units):
+#            print(middle)
+#    print(outer)
+
     
     
     
