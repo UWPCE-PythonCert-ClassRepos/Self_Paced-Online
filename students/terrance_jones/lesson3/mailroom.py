@@ -78,10 +78,12 @@ def menu():
         thankyou()
     elif response =="2":
         create_report()
-    if response == "3":
+    elif response == "3":
         print("Good-bye")
         SystemExit(0)
-
+    else:
+        print("Invalid entry")
+        menu()
 
 
 #thank you function gets a donors name and amount of donation. then prints out a thank you email
