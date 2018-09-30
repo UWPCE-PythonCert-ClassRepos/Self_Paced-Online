@@ -4,6 +4,7 @@ class Element(object):
     tag = "html"
     indent = "    "
     def __init__(self,content=None, **kwargs):
+        self.attrs = kwargs
         if content is None:
             self.content = []
         else:
@@ -14,7 +15,10 @@ class Element(object):
     
     def render(self,file_out,cur_ind=""):
         # opening tag
-        file_out.write('{}<{}>\n'.format(cur_ind,self.tag))
+        file_out.write('{}<{}'.format(cur_ind,self.tag))
+        for key, value in self.attrs.items():
+            file_out.write(" {}=\"{}\"".format(key, value))
+        file_out.write('>\n')
         # content
         for item in self.content:
             # Checks if a sub element is here. If so, performs recursive render.
