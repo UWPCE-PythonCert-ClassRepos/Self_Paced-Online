@@ -13,16 +13,16 @@ class Element(object):
         self.content.append(new_content)
     
     def render(self,file_out,cur_ind=""):
-        #opening tag
+        # opening tag
         file_out.write('{}<{}>\n'.format(cur_ind,self.tag))
-        #content
+        # content
         for item in self.content:
-            print(item)
+            # Checks if a sub element is here. If so, performs recursive render.
             if isinstance(item, Element):
-                item.render(file_out)
+                item.render(file_out, cur_ind="    ")
             else:
-                file_out.write("{}\n".format(item))
-        #closing tag
+                file_out.write("{}\n".format("    " + item))
+        # closing tag
         file_out.write('{}</{}>\n'.format(cur_ind,self.tag))
 
 
@@ -37,9 +37,24 @@ class Body(Element):
 class P(Element):
     tag = "p"
 
+# Subclasses for part 3
 
-""" test_element = Element()
-test_element.append("This is content.")
-test_element.append("This is more content.")
-test_element.render(test_element,"test_html_output1.html") """
+class Head(Element):
+    tag = "head"
 
+class OneLineTag(Element):
+    def render(self,file_out,cur_ind=""):
+        # opening tag
+        file_out.write('{}<{}>'.format(cur_ind,self.tag))
+        # content
+        for item in self.content:
+            # Checks if a sub element is here. If so, performs recursive render.
+            if isinstance(item, Element):
+                item.render(file_out, cur_ind="    ")
+            else:
+                file_out.write("{}".format("    " + item))
+        # closing tag
+        file_out.write('{}</{}>\n'.format(cur_ind,self.tag))
+
+class Title(OneLineTag):
+    tag = "title"
