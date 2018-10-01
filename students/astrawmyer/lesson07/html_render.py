@@ -23,9 +23,9 @@ class Element(object):
         for item in self.content:
             # Checks if a sub element is here. If so, performs recursive render.
             if isinstance(item, Element):
-                item.render(file_out, cur_ind="    ")
+                item.render(file_out, cur_ind + self.indent)
             else:
-                file_out.write("{}\n".format("    " + item))
+                file_out.write("{}\n".format(cur_ind + self.indent + item))
         # closing tag
         file_out.write('{}</{}>\n'.format(cur_ind, self.tag))
 

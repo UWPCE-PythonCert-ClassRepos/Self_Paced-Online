@@ -204,7 +204,7 @@ page.append(head)
 
 body = hr.Body()
 
-body.append( hr.H(2, "PythonClass - Example") )
+body.append( hr.H(2, "PythonClass - Class 6 example") )
 
 body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
                  "but this is enough  to show that we can do some text",
