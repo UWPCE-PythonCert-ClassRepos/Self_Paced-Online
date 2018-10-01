@@ -31,7 +31,6 @@ def sum_series(n, num0 = 0, num1 = 1):
         return 0
     if (n == 1 or n == 2):
         return num0
-#    num0 = num0 + num1
     for x in range(2, n - 1):
         if (x % 2 == 0):
             num0 = num0 + num1
