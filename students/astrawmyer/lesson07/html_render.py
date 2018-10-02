@@ -1,5 +1,6 @@
-#!/usr/bin/env python3
 
+#!/usr/bin/env python3
+from io import StringIO
 class Element(object):
     tag = "html"
     indent = "    "
@@ -99,3 +100,13 @@ class H(OneLineTag):
 
 class Meta(SelfClosingTag):
     tag = 'meta'
+
+
+def test_render():
+    f = StringIO()
+    test_render = Body()
+    test_render.render(f)
+    page = f.getvalue()
+    print(page)
+
+test_render()

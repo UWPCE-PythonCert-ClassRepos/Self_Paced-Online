@@ -52,3 +52,82 @@ def test_head_element():
 
 def test_onelinetag_element():
     f = StringIO()
+    test_one = h.OneLineTag()
+    test_one.render(f)
+    page = f.getvalue()
+    expected_page = '<html></html>\n'
+    assert page == expected_page
+
+#add tags with attributes
+
+def test_title_element():
+    f = StringIO()
+    test_title = h.Title()
+    test_title.render(f)
+    page = f.getvalue()
+    expected_page = '<title></title>\n'
+    assert page == expected_page
+
+def test_selfclosing_element():
+    f = StringIO()
+    test_close = h.SelfClosingTag()
+    test_close.render(f)
+    page = f.getvalue()
+    expected_page = '<html />\n'
+    assert page == expected_page
+
+def test_hr_element():
+    f = StringIO()
+    test_hr = h.Hr()
+    test_hr.render(f)
+    page = f.getvalue()
+    expected_page = '<hr />\n'
+    assert page == expected_page
+
+def test_br_element():
+    f = StringIO()
+    test_br = h.Br()
+    test_br.render(f)
+    page = f.getvalue()
+    expected_page = '<br />\n'
+    assert page == expected_page
+
+def test_a_element():
+    f = StringIO()
+    test_a = h.A("http://www.google.com", "Google")
+    test_a.render(f)
+    page = f.getvalue()
+    expected_page = '<a href="http://www.google.com">Google</a>\n'
+    assert page == expected_page
+
+def test_ul_element():
+    f = StringIO()
+    test_ul = h.Ul()
+    test_ul.render(f)
+    page = f.getvalue()
+    expected_page = '<ul>\n</ul>\n'
+    assert page == expected_page
+
+def test_li_element():
+    f = StringIO()
+    test_li = h.Li()
+    test_li.render(f)
+    page = f.getvalue()
+    expected_page = '<li>\n</li>\n'
+    assert page == expected_page
+
+def test_h_element():
+    f = StringIO()
+    test_a = h.H(8, "Google")
+    test_a.render(f)
+    page = f.getvalue()
+    expected_page = '<h8>Google</h8>\n'
+    assert page == expected_page
+
+def test_meta_element():
+    f = StringIO()
+    test_meta = h.Meta()
+    test_meta.render(f)
+    page = f.getvalue()
+    expected_page = '<meta />\n'
+    assert page == expected_page
