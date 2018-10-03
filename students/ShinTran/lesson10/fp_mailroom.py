@@ -1,13 +1,15 @@
 '''
 Shin Tran
 Python 210
-Lesson 9 Assignment
+Lesson 10 Assignment
 '''
 
 #!/usr/bin/env python3
 # Implementing the mailroom program using object oriented programming
 
+import copy
 import sys
+from functools import reduce
 
 class Donor:
 
@@ -39,7 +41,10 @@ class Donor:
 
     @property
     def get_avg_donation(self):
-        return round(sum(self._donations) / len(self._donations), 2)
+        if len(self._donations) == 0:
+            return 0
+        else:
+            return round(sum(self._donations) / len(self._donations), 2)
 
     def add_donation(self, value):
         self._donations.append(value)
@@ -52,6 +57,13 @@ class Donor:
             Sincerely,\n\
             Your Local Charity".format(*current_donation)
 
+    def get_letter_text(self):
+        """Returns a message of the donor name and donation total"""
+        message = "Dear {:s},\n\
+        Thank you for donating ${:,.2f}.\n\
+        Sincerely,\n\
+        Your Local Charity"
+        return message.format(self.full_name, self.get_donation_total)
 
 class DonorCollection:
 
@@ -89,15 +101,10 @@ class DonorCollection:
     def send_letters(self):
         """Goes through all the previous donators, gets their total donated,
         sends a thank you letter that is output on a .txt file"""
-        letter_list = []
-        message = "Dear {:s},\n\
-        Thank you for donating ${:,.2f}.\n\
-        Sincerely,\n\
-        Your Local Charity"
         for name, vals in self.donor_dict.items():
+            message = vals.get_letter_text()
             with open(name + ".txt",'w') as output:
-                output.write(message.format(name, vals.get_donation_total))
-                letter_list.append(message.format(name, vals.get_donation_total))
+                output.write(message)
         print("Letters have been generated.")
 
     def generate_report(self):
@@ -119,6 +126,29 @@ class DonorCollection:
         """Prints a report of all the previous donators references generate_report"""
         print(self.generate_report())
 
+    def challenge(self):
+        """Prompts the user whether they want to get an estimate or match,
+        enter a number to multiply all the donations by an amount,
+        enter a min and max threshold on the donation amount to filter"""
+        projection = get_projection()
+        factor = get_multip_factor()
+        lower = get_min_donation()
+        upper = get_max_donation()
+        temp_sum = 0
+        for donor, val in self.donor_dict.items():
+            filtered_list = list(filter(lambda x: lower <= x <= upper, val._donations))
+            challenge_list = list(map(lambda x: x * factor, filtered_list))
+            if projection == '1': # Get estimate
+                if challenge_list:
+                    temp_sum += reduce(lambda x, y: x + y, challenge_list)
+            else: # Get match
+                self.donor_dict[donor]._donations = challenge_list
+        if projection == '1':
+            print("Estimated match contribution is ${:.2f}.".format(temp_sum))
+        else: # projection == '2'
+            print("Donations have been multiplied by a factor of {}.".format(factor))
+        return self.donor_dict
+
 
 # Outside the donor collection class
 
@@ -126,12 +156,13 @@ class DonorCollection:
 def main_prompt():
     """Prompts the user to enter an option"""
     response = input("\n\
-        Choose from one of 4 actions:\n\
+        Choose from one of 5 actions:\n\
         1) Send a Thank You\n\
         2) Create a Report\n\
         3) Send letters to everyone\n\
-        4) Quit\n\
-        Please type 1, 2, 3, or 4: ")
+        4) Multiply donations by a factor\n\
+        5) Quit\n\
+        Please type 1, 2, 3, 4, or 5: ")
     return response
 
 def action(switch_dict):
@@ -153,18 +184,40 @@ def get_new_donor_amount():
     """Prompts the user for a donation amount"""
     return input("Enter a donation amount: ")
 
+def get_multip_factor():
+    """Prompts the user to enter a number to multiply the donations by a factor"""
+    return float(input("Enter a factor to multiply the donations by: "))
+
+def get_min_donation():
+    """Prompts the user to enter a number that's the lower donation
+    threshold for the filter"""
+    return float(input("Enter a lower donation limit: "))
+
+def get_max_donation():
+    """Prompts the user to enter a number that's the upper donation
+    threshold for the filter"""
+    return float(input("Enter a upper donation limit: "))
+
+def get_projection():
+    """Prompts the user whether they want an estimate or an actual match"""
+    the_input = input("Type (1) if you want an estimate or type (2) if you want a match: ")
+    while the_input not in ['1','2']:
+        the_input = input("Type (1) if you want an estimate or type (2) if you want a match: ")
+    return the_input
+
 # Python program to use main for function call
 if __name__ == "__main__":
-    d1 = Donor("James", "Smith", [33558.77, 30929.47, 27173.01])
-    d2 = Donor("John", "Williams", [41113.42])
-    d3 = Donor("Robert", "Jones", [21067.11, 30160.42])
-    donor_dict = {"James Smith": d1, "John Williams": d2, "Robert Jones": d3}
+    d1 = Donor("Bom", "Trady", [500.00, 750.00, 1000.00, 1250.00, 1500.00])
+    d2 = Donor("Raron", "Aodgers", [1500.00, 2000.00])
+    d3 = Donor("Brew", "Drees", [2000.00, 3500.00, 5000.00])
+    donor_dict = {"Bom Trady": d1, "Raron Aodgers": d2, "Brew Drees": d3}
     dc = DonorCollection(donor_dict)
     switch_dict = {
         'list': dc.print_names,
         '1': dc.send_thanks,
         '2': dc.print_report,
         '3': dc.send_letters,
-        '4': sys.exit
+        '4': dc.challenge,
+        '5': sys.exit
     }
     action(switch_dict)
