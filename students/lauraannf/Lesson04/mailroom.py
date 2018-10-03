@@ -28,14 +28,12 @@ def create_email():
             print(donor_list.keys())
         elif name not in donor_list:
             donor_list[name] = []
-            donation = input("Donation Amount?>")
-            donation = float(donation)
+            donation = float(input("Donation Amount?>"))
             donor_list[name] = [donation]
             write_email(name, donation)
             break
         else:
-            donation = input("Donation Amount?>")
-            donation = float(donation)
+            donation = float(input("Donation Amount?>"))
             donor_list[name].append(donation)
             write_email(name, donation)
             break
@@ -47,12 +45,12 @@ def create_report():
                                             '# of donations',
                                             'Average donation'))
     print('-----------------   '*4)
-    for it in range(0, len(donor_list), 2):
-        print('{:<20}${:<20.2f}{:<20d}${:<20.2f}'.format(donor_list[it],
-                                                         sum(donor_list[it+1]),
-                                                         len(donor_list[it+1]),
-                                                         sum(donor_list[it+1])
-                                                         / len(donor_list[it+1]
+    for key in donor_list.keys():
+        print('{:<20}${:<20.2f}{:<20d}${:<20.2f}'.format(key,
+                                                         sum(donor_list[key]),
+                                                         len(donor_list[key]),
+                                                         sum(donor_list[key])
+                                                         / len(donor_list[key]
                                                                )))
 
 
