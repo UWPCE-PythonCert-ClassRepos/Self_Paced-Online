@@ -2,6 +2,8 @@
 
 global donors
 donors = [["baby huey", 1123.00, 456.00, 1789.00], ["mighty mouse", 99.99], ["fred flintstone", 5550.00, 5555.00], ["road runner", 199999.00], ["papa smurf", 1001.00, 1002.00, 1003.00]]
+global donors_list
+donors_list = []
 
 def menu_selection(prompt, dispatch_dict):
     try:
@@ -29,7 +31,7 @@ def send_thank_you():
     create_thank_you(donation, person)
 
 def create_thank_you(donation, person):
-    ''' Create\Print the thank you if match is found, otherwise call new_donor(). '''
+    ''' Create Print the thank you if match is found, otherwise call new_donor(). '''
     for i in donors:
         if i[0] == person:
             i.append(donation)
@@ -46,28 +48,30 @@ def create_thank_you(donation, person):
             print("Sincerely:\n\nLeadership Team at Charity X.\n\n")
             menu_selection(main_prompt, main_dispatch)
     else:
-        add_new_donor(person, donation)
+        is_new_donor(person, donation)
 
-def add_new_donor(person,donation):
+def is_new_donor(person,donation):
     ''' Provide the option to add a new donor, or go back to the main menu. '''
     new = (input("That looks like a new donor. Would you like to add a new donor? (Y)es or (N)o? ").lower())
     if new == "yes" or new == "y":
-        donors.append([person])
-        donors[-1].append(donation)
-        d = dict()
-        d['name'] = person
-        d['amount'] = donation
-        print_thank_you(d)
+       add_new_donor(person, donation)
     else:
-        menu_selection(main_prompt, main_dispatch)
+        print("Ok, I won't add the new donor.")
 
-def print_thank_you(d):
-        print("\n{name}\n".format(**d))
-        print("\tThank you very much for your generouse donation. Your")
-        print("${amount:.2f} donation will allow us to continue our efforts.".format(**d))
-        print("Our charity would not exist without your support.\n")
-        print("Sincerely:\n\nLeadership Team at Charity X.\n\n")
-        menu_selection(main_prompt, main_dispatch)
+def add_new_donor(person, donation):
+    donors.append([person])
+    donors[-1].append(donation)
+    print_thank_you(person, donation)
+
+def print_thank_you(person, donation):
+    d = dict()
+    d['name'] = person
+    d['amount'] = donation
+    print("\n{name}\n".format(**d))
+    print("\tThank you very much for your generouse donation. Your")
+    print("${amount:.2f} donation will allow us to continue our efforts.".format(**d))
+    print("Our charity would not exist without your support.\n")
+    print("Sincerely:\n\nLeadership Team at Charity X.\n\n")
 
 def create_report(): 
     ''' Create the list of donors for the report, then call display_report. '''
@@ -90,7 +94,6 @@ def display_report(donors_list):
     for i in donors_list:
         print("{:<22}".format(i[0]).title(), "  $", "{:11.2f}".format(i[1]), "\t\t{:<2}".format(i[2]-1), "{:2}".format("$"), "{:10.2f}".format(i[3]))
     print("\n")
-    menu_selection(main_prompt, main_dispatch)
 
 def make_donors_list(): #Letters
     ''' Make list of all the donors then call create_letters() '''
@@ -116,7 +119,6 @@ def create_letters(donors_list):
             f.write("Our charity would not exist without your support.\\n")
             f.write("Sincerely:\n\nLeadership Team at Charity X.\n\n")
     print("Letters Complete!\n")
-    menu_selection(main_prompt, main_dispatch)
 
 def quit():
     return "exit_menu"
