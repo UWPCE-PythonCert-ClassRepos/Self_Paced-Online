@@ -17,13 +17,12 @@ def show_donor_list():
         donor_names.append(i[0])
     print(donor_names)
 
-def check_list(x):
-    """takes users input name as arg. checks donor list to see if name is there. Returns true if it is. False if the name is not on the list"""
+
+def find_donor(x):
     for i in donor_list_with_donations:
-        if x == i[0]: 
-            return True
-        else:
-            return False
+        if x == i:
+            return i
+
  
 def get_amount():
     """Gets donation amount from user"""
@@ -31,17 +30,17 @@ def get_amount():
     amount = float(amount)
     return amount
 
-def add_to_existing_donor(d, a):
+def add_to_existing_donor(i, a):
     """adds donation amount to donor in list. d is donor name. a is amount of donation"""
-    for i in donor_list_with_donations:
-                if i[0] == d:
-                    i.append(a)
+    
+    i.append(a)
     
 
-def create_new_donor(d):
+def create_new_donor(d, a):
     """Creates a new donor list. adds new list to current donor list"""
     new_donor_list=[]
     new_donor_list.append(d)
+    new_donor_list.append(a)
     donor_list_with_donations.append(new_donor_list)
 
    
@@ -56,10 +55,10 @@ def tail(x):
 
 def print_row():
     
-    for i in copy_donors:
+    for i in donor_list_with_donations:
         name = i[0]
         rest = tail(i)
-        num_gifts =len(i)
+        num_gifts =len(i) - 1
         total = sum(rest)
         average = total / num_gifts
         average = round(average,2)
@@ -88,21 +87,22 @@ def menu():
 
 #thank you function gets a donors name and amount of donation. then prints out a thank you email
 def thankyou():
-    donorName = get_name()
-    while donorName == "list":
+    donor_name = get_name()
+    while donor_name == "list":
         show_donor_list()
-        donorName =get_name()
+        donor_name =get_name()
 
-    if check_list(donorName)==True: 
+    if find_donor(donor_name)== donor_name: 
         donation_amount = get_amount()
-        add_to_existing_donor(donorName, donation_amount)
-        print_email(donorName, donation_amount)
+        add_to_existing_donor(i, donation_amount)
+        print_email(donor_name, donation_amount)
 
-    elif check_list(donorName) == False:
-        create_new_donor(donorName)
+    else:
+        
         donation_amount = get_amount()
-        add_to_existing_donor(donorName, donation_amount)
-        print_email(donorName, donation_amount)
+        create_new_donor(donor_name, donation_amount)
+        
+        print_email(donor_name, donation_amount)
         menu()
             
 
@@ -112,6 +112,7 @@ def create_report():
     print(heading)
     print("-" * len(heading))
     print_row()
+    menu()
  
 
 if __name__ == '__main__':
