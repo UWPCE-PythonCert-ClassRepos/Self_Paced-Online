@@ -4,7 +4,6 @@ class Element:
     """
     An element represents one level of html tag, which can contain more nested elements
     """
-    
     tag = ""
     indent = 4
     

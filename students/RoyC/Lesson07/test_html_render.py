@@ -37,42 +37,49 @@ def test_nested():
     assert(f.getvalue() == "<!DOCTYPE html>\n<html>\n    <body>\n        <p>\n            test1\n        </p>\n    </body>\n</html>")
     
 def test_head():
+    """ test Head element """
     h = hr.Head("test1", **{"arg1" : "arg2"})
     f = StringIO()
     h.render(f)
     assert(f.getvalue() == "<head arg1=\"arg2\">\n    test1\n</head>")
     
 def test_ul():
+    """ test Ul element """
     u = hr.Ul("test1", **{"arg1" : "arg2"})
     f = StringIO()
     u.render(f)
     assert(f.getvalue() == "<ul arg1=\"arg2\">\n    test1\n</ul>")
 
 def test_li():
+    """ test Li element """
     l = hr.Li("test1", **{"arg1" : "arg2"})
     f = StringIO()
     l.render(f)
     assert(f.getvalue() == "<li arg1=\"arg2\">\n    test1\n</li>")
 
 def test_h():
+    """ test H element """
     h = hr.H(1, "test1")
     f = StringIO()
     h.render(f)
     assert(f.getvalue() == "<h1>test1</h1>")
     
 def test_hr():
+    """ test Hr element """
     h = hr.Hr("test1", **{"arg1" : "arg2"})
     f = StringIO()
     h.render(f)
     assert(f.getvalue() == "<hr arg1=\"arg2\" />")
         
 def test_br():
+    """ test Br element """
     b = hr.Br("test1", **{"arg1" : "arg2"})
     f = StringIO()
     b.render(f)
     assert(f.getvalue() == "<br arg1=\"arg2\" />")
     
 def test_meta():
+    """ test Meta element """
     m = hr.Meta(**{"arg1" : "arg2"})
     f = StringIO()
     m.render(f)
