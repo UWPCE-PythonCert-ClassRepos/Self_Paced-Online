@@ -2,8 +2,6 @@
 
 global donors
 donors = [["baby huey", 1123.00, 456.00, 1789.00], ["mighty mouse", 99.99], ["fred flintstone", 5550.00, 5555.00], ["road runner", 199999.00], ["papa smurf", 1001.00, 1002.00, 1003.00]]
-global donors_list
-donors_list = []
 
 def menu_selection(prompt, dispatch_dict):
     try:
@@ -46,7 +44,6 @@ def create_thank_you(donation, person):
             print ("You have donated {donations} times totalling ${total:.2f}; AWESOME!!!".format(**d))
             print("Our charity would not exist without your support.\n")
             print("Sincerely:\n\nLeadership Team at Charity X.\n\n")
-            menu_selection(main_prompt, main_dispatch)
     else:
         is_new_donor(person, donation)
 
