@@ -4,6 +4,10 @@ Created on Mon Sep 24 13:06:38 2018
 
 @author: Laura.Fiorentino
 """
+import datetime
+from pathlib import Path
+my_path = 'C:\\Users\\Laura.Fiorentino\\Documents\\MyPython\\\
+Self_Paced-Online\\students\\lauraannf\\Lesson04\\'
 donor_list = {
     'Frank Reynolds': [10, 20, 50],
     'Dee Reynolds': [25, 100],
@@ -54,15 +58,30 @@ def create_report():
                                                                )))
 
 
+def all_letters():
+    print('Now writing all emails...')
+    now = datetime.datetime.now()
+    new_path = my_path + 'letters_' + now.strftime('%d%m%Y')
+    Path(new_path).mkdir(exist_ok=True)
+    for key in donor_list.keys():
+        file = open(new_path + '\\' + key + '_' + now.strftime('%d%m%Y') +
+                    '.txt', 'w')
+        file.write('Dear {}, \n'
+                   'Thank you so much for your generous donation of ${:.2f} \n'
+                   'Sincerely, \n'
+                   'Laura F'.format(key, sum(donor_list[key])))
+        file.close()
+
+
 def main():
     print('----------Mailroom------------')
     while True:
         task = input("Choose an action: [1] Send a Thank You; [2] Create a \
-Report; [3] Quit>")
-        arg_dict = {'1': create_email, '2': create_report}
+Report; [3] Send a Thank You to Everyone; [4] Quit>")
+        arg_dict = {'1': create_email, '2': create_report, '3': all_letters}
         if task in arg_dict.keys():
             arg_dict.get(task)()
-        elif task == '3':
+        elif task == '4':
             break
         else:
             continue
