@@ -65,6 +65,7 @@ def two_arg_grid(rc, size):
 def askargs():
     args = ""
     while args != "exit":
+        print()
         args = input("How many arguments (1 or 2) would you like for your grid? (type exit to exit): ")
         if args == "1":
             num = input("Please choose the size of your grid: ")
