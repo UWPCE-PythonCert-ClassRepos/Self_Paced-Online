@@ -2,28 +2,20 @@
 
 class Group:
 
-    def __init__(self):
+    def __init__(self, *args):
 
-        self._donor_raw = {}
-
-    def get_donors(self):
-        return self._donor_raw
-
-    donors = property(get_donors)
+        self._donor_raw = {d.name: d for d in args}
 
     def search(self, donor):
-        if self._donor_raw.get(donor) is None:
-            return
-        else:
-            return donor
+        return self._donor_raw.get(donor)
 
     def add(self, donor, donation):
-        if self.search(donor) is None:
-            self._donor_raw[donor] = [donation]
+        if self._donor_raw.get(donor):
+            self._donor_raw[donor].add_donation(donation)
         else:
-            self._donor_raw[donor].append(donation)
+            self._donor_raw[donor] = Individual(donor, [donation])
 
-    def create_list(self):
+    def print_donors(self):
         # This prints the list of donors
         for x in self._donor_raw:
             print(x)
@@ -32,9 +24,11 @@ class Group:
         """Create a new dictionary with Total, number of donations,
         and average donation amount"""
 
-        donors_f = {some_name: [sum(donations), int(len(donations)),
-                                sum(donations) / int(len(donations))]
-                    for some_name, donations in self._donor_raw.items()}
+        donors_f = {some_name: [sum(donor_obj.donations),
+                                int(len(donor_obj.donations)),
+                                sum(donor_obj.donations) /
+                                int(len(donor_obj.donations))]
+                    for some_name, donor_obj in self._donor_raw.items()}
         return donors_f
 
     @staticmethod
@@ -78,10 +72,12 @@ class Group:
 
     @staticmethod
     def sort_list(donor_summary):
-        list_sorted = sorted(donor_summary, key=donor_summary.__getitem__, reverse=True)
+        list_sorted = sorted(donor_summary,
+                             key=donor_summary.__getitem__, reverse=True)
         return list_sorted
 
-    def make_report(self):
+    @property
+    def report(self):
         """Return a report on all the donors"""
         donor_summary = self.summary()
         name_wi = Group.column_name_width(donor_summary)
@@ -104,15 +100,13 @@ class Group:
 
         return '\n'.join(rows)
 
-    report = property(make_report)
-
     def letters(self):
         donors_f = self.summary()
 
-        for donor, donation in self._donor_raw.items():
+        for donor, donor_obj in self._donor_raw.items():
             donation_summary = donors_f[donor]
             letter = f'Dear {donor}, thank you so much for your ' \
-                     f'last contribution of ${donation[-1]:.2f}! ' \
+                     f'last contribution of ${donor_obj.donations[-1]:.2f}! ' \
                      f'You have contributed a total of $' \
                      f'{donation_summary[0]:.2f}, ' \
                      f'and we appreciate your support!'
@@ -122,19 +116,15 @@ class Group:
 
 
 class Individual:
-    def __init__(self):
-        pass
+    def __init__(self, name, donations):
+        self.name = name
+        self.donations = donations
 
-    @staticmethod
-    def thank_you(donor, donation):
+    def add_donation(self, donation):
+        self.donations.append(donation)
+
+    @property
+    def thank_you(self):
         """Add a donation to a donors records and print a report."""
         return ('Thank you so much for the generous gift of ${0:.2f}, {1}!'
-              .format(float(donation), donor))
-
-
-# Method to add a new donor
-
-# Method to search for a given donor
-
-
-# Generate reports about multiple donors
+                .format(self.donations[-1], self.name))
