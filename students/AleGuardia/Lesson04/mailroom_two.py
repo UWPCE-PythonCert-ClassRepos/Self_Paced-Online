@@ -3,11 +3,11 @@
 
 # Lesson 3 Mailroom Assignment by Alejandro Guardia
 
-donations = [[['William Gates, III'], [1000000, 585000, 5750000]],
-             [['Mark Zuckerberg'], [15000, 5000]],
-             [['Jeff Bezos'], [3000000]],
-             [['Paul Allen'], [25000,1000]],
-             [['Elon Musk'], [30000,3499]]]
+donations = {'William Gates, III': [1000000, 585000, 5750000],
+             'Mark Zuckerberg': [15000, 5000],
+             'Jeff Bezos': [3000000],
+             'Paul Allen': [25000,1000],
+             'Elon Musk': [30000,3499]}
 
 
 main_responses = {1:"1 - Send a Thank You\n", 2:"2 - Create a Report\n", 3:"3 - quit\n"}
@@ -101,7 +101,10 @@ def menu_selection(prompt, dispatch_dict, key_def=None):
             if dispatch_dict[response]() == "quit":
                 break
         except KeyError:
-            key_def()
+            if not callable(key_def):
+                pass
+            else:
+                key_def()
 
 
 def print_report():
