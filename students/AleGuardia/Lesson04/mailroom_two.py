@@ -32,23 +32,16 @@ def return_report(data):
     """Creates and prints a report of donors and donations"""
     report = f"{return_label()}\n"
     for item in data:
-        row = "{:18} $ {:>12.2f}  {:>9d}  $ {:>12.2f}\n".format(item[0][0],sum(item[1]),len(item[1]),return_average(item[1]))
+        row = "{:18} $ {:>12.2f}  {:>9d}  $ {:>12.2f}\n".format(item,sum(data[item]),len(data[item]),return_average(data[item]))
         report += row
     return report
-
-
-def initial_prompt():
-    """Returns the main menu prompt"""
-    resp = input(f"Please choose one of the following: "
-                 f"{responses[0]}{responses[1]}{responses[2]}")
-    return resp
 
 
 def return_donors():
     """Returns the names of all donors"""
     donors = ""
     for item in donations:
-        donors += item[0][0] + "\n"
+        donors += item + "\n"
     return donors
 
 
@@ -69,21 +62,14 @@ def prompt_donors():
 
 def add_donor(name):
     """Adds a donor name"""
-    donations.append([[name],[]])
+    donations[name] = []
     return donations
-
-
-def return_pos(name):
-    """Returns the position of a donor on a list"""
-    for i, donor in enumerate(donations):
-        if name == donor[0][0]:
-            return i
 
 
 def add_donation(name):
     """Takes the name of a donor and adds a donation on his behalf"""
     amount = float(input("Please enter a donation amount for {}:".format(name)))
-    donations[return_pos(name)][1].append(float(amount))
+    donations[name].append(float(amount))
     return amount
 
 
