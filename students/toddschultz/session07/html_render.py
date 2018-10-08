@@ -1,33 +1,30 @@
 class Element:
     tag = 'html'
-    indent = "    "
-    verbiage = []
+    indent = ""
 
-    def __init__(self, verbiage=None):
-        if verbiage is True:
-            self.verbiage = [verbiage]
-        else:
-            self.verbiage = []
+    def __init__(self, content=None):
+        self.content = [content] if content else []
  
-    def append(self, text):
-        ''' Appends lines to the list of verbiage '''
-        self.verbiage.append(text)
+    def append(self, item):
+        """ Appends lines to the list of verbiage"""
+        self.content.append(item)
         
 
     def render(self, file_out, cur_ind = ""):
-        ''' Writes verbiage and appropriate tags to the file '''
-        file_out.write(f"{cur_ind}<{self.tag}>\n")
+        """Writes verbiage and appropriate tags to the file"""
+        file_out.write(f"{cur_ind}{self.indent}<{self.tag}>\n")
 
-        for item in range(len(self.verbiage)):
-            if isinstance(self.verbiage, Element):
-                self.verbiage.render(file_out, cur_ind + self.indent)
+        for item in self.content:
+            if hasattr(item, 'render'):
+                item.render(file_out, cur_ind=cur_ind)
             else:
-                file_out.write(f"{cur_ind}{self.indent}{self.verbiage[item]}\n")
-        file_out.write(f"{cur_ind}</{self.tag}>\n")
+                file_out.write(f"{cur_ind}{self.indent}{item}\n")
+        file_out.write(f"{cur_ind}{self.indent}</{self.tag}>\n")
 
 class P(Element):
     ''' create the p tag '''
     tag = 'p'
+    indent = "        "
 
 class Html(Element):
     ''' html tag '''
@@ -40,3 +37,4 @@ class Head(Element):
 class Body(Element):
     ''' create the body tag '''
     tag = 'body'
+    indent = "    "
