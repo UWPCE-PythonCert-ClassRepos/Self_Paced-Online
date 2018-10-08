@@ -30,6 +30,7 @@ class Circle:
         if diameter <= 0:
             raise ValueError
         self = cls(diameter / 2)
+        self = self
         self.diameter = diameter
         return self
 
@@ -53,3 +54,21 @@ class Circle:
         if isinstance(other, Circle):
             return Circle(self.radius * other.radius)
         return Circle(self.radius * other)
+
+    def __eq__(self, other):
+        return self.radius == other.radius
+
+    def __lt__(self, other):
+        return self.radius < other.radius
+
+    def __gt__(self, other):
+        return self.radius > other.radius
+
+    def __le__(self, other):
+        return self.radius <= other.radius
+
+    def __ge__(self, other):
+        return self.radius >= other.radius
+
+    def __ne__(self, other):
+        return self.radius != other.radius
