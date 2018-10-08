@@ -1,69 +1,35 @@
 def exchange_first_last(seq):
-    	s = list(seq)
-	first = seq[0]
-	last = seq[-1]
-	s[0] = last
-	s[-1] = first
-	
-	return convert_format(seq, s)
+    first = seq[0:1]
+    last = seq[-1:]
+    return last + seq[1:len(seq)-1] + first
 
 def remove_every_other_item(seq):
-	s = list(seq)
-        l = []
-	i = 0
-	while (i < len(s)):
-		if i%2 != 0:
-			l.append(s[i])
-		i = i + 1
-	
-	return convert_format(seq, l)
+    return seq[0:-1:2]
+
+def remove_first4_last4(seq):
+    return seq[4:-4]
 
 def remove_first4_last4_every_other_item(seq):
-	s = list(seq)
-	del s[0:4]
-	del s[len(s)-4:len(s)]
-	
-	return convert_format(seq, s)
-	
+    return remove_every_other_item(remove_first4_last4(seq))
+
 def reverse_element(seq):
-	s = list(seq)
-	r = s[::-1]
-	
-	return convert_format(r)
-	
+	  return seq[::-1]
+
 # with the middle third, then last third, then the first third in the new order.
 def mid_last_first(seq):
-	s = list(seq)
-	length = len(s)
-	third = length/3
-	
-	middle = s[third:length-third]
-	last = s[length-third:length]
-	first = s[0:third]
-	
-	l = middle + last + first
-	
-	return convert_format(seq, l)
-
-def convert_format(seq, value):
-	if type(seq) is str:
-		newString = "".join(value)
-		return newString
-		
-	if type(seq) is tuple:	
-		return tuple(value)
-	return value
+  return seq[len(seq)//3 : len(seq)*2//3] + seq[len(seq)*2//3:] + seq[0:len(seq)//3]
 
 a_string  = "this is a string"
 a_tuple = (2, 54, 13, 12, 5, 32)
 
-print (exchange_first_last(a_string))
-print (exchange_first_last(a_tuple))
+print(exchange_first_last(a_string))
+print(exchange_first_last(a_tuple))
 
-print (remove_every_other_item(a_string))
-print (remove_every_other_item(a_tuple))
+print(remove_every_other_item(a_string))
+print(remove_every_other_item(a_tuple))
 
-print(remove_first4_last4_every_other_item(a_tuple))
+print(remove_first4_last4_every_other_item(a_string))
+print(reverse_element(a_string))
 
-print mid_last_first(a_string)
-print mid_last_first(a_tuple)
+print(mid_last_first(a_string))
+print(mid_last_first(a_tuple))

@@ -3,7 +3,6 @@ def print_plus_sign():
 	
 def print_dash(value):
 	print '-' * value,
-	
 
 def print_vertical_bar(value):
 	for i in range (value):
@@ -67,5 +66,4 @@ def print_part3():
 print_part1()
 print_part2()
 print_part3()
-	
 	
