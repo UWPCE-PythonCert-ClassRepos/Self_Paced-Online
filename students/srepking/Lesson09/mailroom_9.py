@@ -1,7 +1,7 @@
 import os
 import donors as d
 
-mail = d.Group()
+mail = d.Group(d.Individual('Shane', [200]))
 
 
 def more_choices():
@@ -13,7 +13,7 @@ def more_choices():
         if name == 'e':
             return
         if name == 'list':
-            mail.create_list()
+            mail.print_donors()
         else:
             print('\n''Ok, you want to write a letter for {}, '
                   'lets see what we can do.'.format(name))
@@ -36,12 +36,13 @@ def more_choices():
                 print('\nYou entered an invalid amount!!\n')
                 return ValueError
             else:
-                print(d.Individual.thank_you(name, amount))
                 mail.add(name, float(amount))
+                donor_obj = mail._donor_raw[name]
+                print(donor_obj.thank_you)
 
 
 def print_report():
-    print(mail.report)
+    print(mail.report())
 
 
 def letters_for_all():
