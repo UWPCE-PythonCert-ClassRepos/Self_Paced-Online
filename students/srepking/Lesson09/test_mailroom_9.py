@@ -17,7 +17,7 @@ class TestMailbox(unittest.TestCase):
     def test_Group_search2(self):
         """Returns 'name' when name does exist"""
         new_group = d.Group(d.Individual('Joe', [3, 3, 3]))
-        self.assertEqual(new_group.search('Joe'), 'Joe')
+        self.assertEqual(new_group.search('Joe').name, 'Joe')
 
     def test_Group_Add(self):
         """Test that the new donors are being appended to the donor list."""
@@ -104,9 +104,9 @@ class TestMailbox(unittest.TestCase):
         new_group.add('Joe', 3)
         new_group.add('Jack', 4)
         new_group.add('Jack', 5)
-        assert "Joe        $" in new_group.report
-        assert "9.00     3         " in new_group.report
-        assert '$        3.00' in new_group.report
+        assert "Joe        $" in new_group.report()
+        assert "9.00     3         " in new_group.report()
+        assert '$        3.00' in new_group.report()
 
     def test_letters_for_all(self):
         new_group = d.Group(d.Individual('Shane', [3]))
@@ -127,6 +127,27 @@ class TestMailbox(unittest.TestCase):
                         'a total of $9.00, and we appreciate your ' \
                         'support!'
         self.assertEqual(expected_text, text)
+
+    def test_number_donations(self):
+        new_group = d.Group(d.Individual('Shane', [3]))
+        new_group.add('Joe', 1)
+        new_group.add('Joe', 4)
+        new_group.add('Joe', 5)
+        self.assertEqual(new_group._donor_raw['Joe'].number_donations(), 3)
+
+    def test_sum_donations(self):
+        new_group = d.Group(d.Individual('Shane', [3]))
+        new_group.add('Joe', 3)
+        new_group.add('Joe', 3)
+        new_group.add('Joe', 3)
+        self.assertEqual(new_group._donor_raw['Joe'].sum_donations(), 9)
+
+    def test_avg_donations(self):
+        new_group = d.Group(d.Individual('Shane', [3]))
+        new_group.add('Joe', 10)
+        new_group.add('Joe', 5)
+        new_group.add('Joe', 6)
+        self.assertEqual(new_group._donor_raw['Joe'].avg_donations(), 7)
 
 
 if __name__ == '__main__':
