@@ -32,7 +32,18 @@ def sum_series(n: int, index0: int=0, index1: int=1):
         index1: number in second index of series
     returns:
         value at nth position in summing series"""
-    pass
+    
+    if n == 0:
+        return index0
+    elif n == 1:
+        return index1
+    else:
+        counter = 2
+        while counter <= n:
+            next = index0 + index1
+            index0, index1 = index1, next
+            counter += 1
+        return next
 
 
 if __name__ == "__main__":
