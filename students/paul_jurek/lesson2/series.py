@@ -54,3 +54,5 @@ if __name__ == "__main__":
     assert lucas(0) == 2
     assert lucas(1) == 1
     assert lucas(7) == 29
+
+    assert fibonacci(7) == sum_series(7)
