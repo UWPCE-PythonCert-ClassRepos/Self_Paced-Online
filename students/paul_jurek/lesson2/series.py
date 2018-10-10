@@ -47,12 +47,18 @@ def sum_series(n: int, index0: int=0, index1: int=1):
 
 
 if __name__ == "__main__":
+
+    # tests correct fibonacci outputs for index 0 and 1
     assert fibonacci(0) == 0
     assert fibonacci(1) == 1
+    # tests fibonacci output for number further out in series
     assert fibonacci(7) == 13
 
+    # tests lucas series output for first two indexs
     assert lucas(0) == 2
     assert lucas(1) == 1
+    # tests lucas series output for further out in series
     assert lucas(7) == 29
 
+    # tests fibonacci equals sum_series with only required inputs
     assert fibonacci(7) == sum_series(7)
