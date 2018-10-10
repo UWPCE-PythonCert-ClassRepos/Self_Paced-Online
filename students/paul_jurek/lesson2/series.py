@@ -9,7 +9,7 @@ def fibonacci(n: int):
     returns:
         fib number at nth position
     """
-    return sum_series(n=n,index0=0,index1=1)
+    return sum_series(n=n, index0=0, index1=1)
 
 
 def lucas(n: int):
@@ -20,16 +20,26 @@ def lucas(n: int):
     returns:
         lucas number at nth position
     """
-    return sum_series(n=n,index0=2,index1=1)
+    return sum_series(n=n, index0=2, index1=1)
 
 
-def sum_series(n:int, index0:int=0, index1:int=1):
+def sum_series(n: int, index0: int=0, index1: int=1):
     """return nth index (starting at 0) of summing series.
     starting values defined by index0 and index1
     args:
         n: non-negative integer for indicating sequence number to return
         index0: number in first index of sereies
-        index1: number in second index of series 
+        index1: number in second index of series
     returns:
         value at nth position in summing series"""
-    
+    pass
+
+
+if __name__ == "__main__":
+    assert fibonacci(0) == 0
+    assert fibonacci(1) == 1
+    assert fibonacci(7) == 13
+
+    assert lucas(0) == 2
+    assert lucas(1) == 1
+    assert lucas(7) == 29
