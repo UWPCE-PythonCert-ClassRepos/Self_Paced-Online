@@ -59,3 +59,15 @@ def lucas(n: int):
             previous, current = current, next
             counter += 1
         return next
+
+
+def sum_series(n:int, index0:int=0, index1:int=1):
+    """return nth index (starting at 0) of summing series.
+    starting values defined by index0 and index1
+    args:
+        n: non-negative integer for indicating sequence number to return
+        index0: number in first index of sereies
+        index1: number in second index of series 
+    returns:
+        value at nth position in summing series"""
+    pass
