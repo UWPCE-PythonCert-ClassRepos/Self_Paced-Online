@@ -10,10 +10,13 @@ donations = {'William Gates, III': [1000000, 585000, 5750000],
              'Elon Musk': [30000,3499]}
 
 
-main_responses = {1:"1 - Send a Thank You\n", 2:"2 - Create a Report\n", 3:"3 - quit\n"}
+main_responses = {1:"1 - Send a Thank You\n", 2:"2 - Create a Report\n",
+                  3: "3 - Send letters to everyone\n",4:"4 - quit\n"}
 main_prompt = f"Please choose one of the following:\n" \
-              f"{main_responses[1]}{main_responses[2]}{main_responses[3]}"
-thank_you_note = "Dear {}:\nWe want to thank you for your generous donation of ${:.2f}"
+              f"{main_responses[1]}{main_responses[2]}{main_responses[3]}{main_responses[4]}"
+thank_you_note = "Dear {}:\n\nWe want to thank you for your generous donation of ${:.2f}.\n\n" \
+                 "It will be put to very good use.\n\n" \
+                 "\tSincerely,\n\t\tThe Team"
 
 
 def return_average(seq):
@@ -102,7 +105,25 @@ def quit_sys():
     return "quit"
 
 
-main_dispatch = {"1": prompt_donors, "2": print_report, "3": quit_sys}
+def send_letters():
+    create_letters(donations,thank_you_note)
+
+
+def create_letters(don_list, note_format):
+    for item in don_list:
+        write_letter(item,don_list[item][-1],note_format)
+
+
+def write_letter(donor, donation,note):
+    outfile = open(file_name(donor),'w')
+    outfile.write(note.format(donor,donation))
+
+
+def file_name(donor):
+    return donor.replace(" ","_")+".txt"
+
+
+main_dispatch = {"1": prompt_donors, "2": print_report, "3": send_letters, "4": quit_sys}
 
 
 if __name__ == '__main__':
