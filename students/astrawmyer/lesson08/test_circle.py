@@ -19,3 +19,8 @@ def test_input_diameter():
 def test_area():
     c = circle.Circle(5)
     assert c.area == math.pi*25
+
+
+def test_construct_diameter():
+    c = circle.Circle.from_diameter(50)
+    assert c.radius == 25
