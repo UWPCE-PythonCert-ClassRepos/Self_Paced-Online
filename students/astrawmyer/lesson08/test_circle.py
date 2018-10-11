@@ -53,3 +53,30 @@ def test_mult():
     c3 = c1 * 3
     assert c2.radius == 6
     assert c3.radius == 6
+
+
+def test_lt():
+    c1 = circle.Circle(2)
+    c2 = circle.Circle(4)
+    compare = c1 < c2
+    assert compare == True
+
+
+def test_gt():
+    c1 = circle.Circle(2)
+    c2 = circle.Circle(4)
+    compare = c2 > c1
+    assert compare == True
+
+
+def test_eq():
+    c1 = circle.Circle(2)
+    c2 = circle.Circle(2)
+    compare = (c1 == c2)
+    assert compare == True
+
+
+def test_sort():
+    circles = [circle.Circle(8), circle.Circle(2), circle.Circle(10)]
+    circles.sort()
+    assert circles == [circle.Circle(2), circle.Circle(8), circle.Circle(10)]

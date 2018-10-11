@@ -48,9 +48,18 @@ class Circle:
         return Circle(new_circle)
 
 
-c = Circle(5)
+    def __lt__(self, other):
+        return self.radius < other.radius
+    
 
-c1 = Circle(2)
-c2 = Circle(4)
-c3 = c1+c2
-print(c3)
+    def __gt__(self, other):
+        return self.radius > other.radius
+
+
+    def __eq__(self, other):
+        return self.radius == other.radius
+
+
+circles = [Circle(6), Circle(7), Circle(8), Circle(4), Circle(0), Circle(2), Circle(3), Circle(5), Circle(9), Circle(1)]
+circles.sort()
+print(circles)
