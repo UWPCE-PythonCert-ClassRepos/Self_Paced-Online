@@ -1,4 +1,4 @@
-# Error Handling function
+# Error Handling function for sending_thank function
 def check_error(f_name, s):
     while True:
         amount = input(s.format(f_name))
