@@ -42,7 +42,7 @@ def more_choices():
 
 
 def print_report():
-    print(mail.report)
+    print(mail.report())
 
 
 def letters_for_all():
