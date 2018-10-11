@@ -38,3 +38,18 @@ def test_str():
 def test_repr():
     c = circle.Circle(8)
     assert repr(c) == "Circle(8)"
+
+
+def test_add():
+    c1 = circle.Circle(2)
+    c2 = circle.Circle(4)
+    c3 = c1 + c2
+    assert c3.radius == 6
+
+
+def test_mult():
+    c1 = circle.Circle(2)
+    c2 = 3 * c1
+    c3 = c1 * 3
+    assert c2.radius == 6
+    assert c3.radius == 6
