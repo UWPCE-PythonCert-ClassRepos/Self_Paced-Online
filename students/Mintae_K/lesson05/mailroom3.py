@@ -40,10 +40,10 @@ def create_report():
 
 
 def send_letters():
-    for key in donors:
-        s = "{}.txt".format(key)
+    for name in donors:
+        s = "{}.txt".format(name)
         with open(s, "w+") as f:
-            f.write("Dear {},".format(key))
+            f.write("Dear {},".format(name))
             f.write("\n\n     Thank you for your very kind donation of ${:<10.2f}".format(sum(donors[key])))
             f.write('\n\n     It will be put to very good use.')
             f.write('\n\n             Sincerely,')
