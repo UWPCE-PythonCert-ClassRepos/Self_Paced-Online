@@ -4,12 +4,14 @@
 # Date:  October 11, 2018
 # ChangeLog: (Who, When, What)
 #   Laura Denney, 10/11/18, Created File
+#   Laura Denney, 10/12/18, Modified File
 #-------------------------------------------------#
 
 tabl = [["john doe", 100, 200], ["laura denney", 5],
         ["bill gates", 4000], ["samuel jackson", 1, 2, 3],
         ["mr. bean", 500, 100]]
 
+#Main menu to prompt user
 def prompt_user():
     response = ""
     while response != "3":
@@ -17,7 +19,7 @@ def prompt_user():
 What would you like to do today?
 1) Send a Thank You
 2) Create a Report
-3) quit
+3) Quit
 Please choose the number of your choice >> ''')
         if response == "1":
             send_thank_you()
@@ -55,7 +57,7 @@ def check_list(name):
         if name in x:
             print("\n{} is a current donor.".format(name.title()))
             num = input("How much money did they donate? (type 100 for $100) >> ")
-            try: #validating donation amount entered is a number
+            try: #validate donation amount entered is a number
                 num = float(num)
                 x.append(num)
                 return name.title(), num
@@ -63,10 +65,10 @@ def check_list(name):
                 print("Invalid amount entered, marking donation as $0.")
                 x.append(0)
                 return name.title(), 0
-    else:
+    else: #not a current donor
         print("\n{} is not a current donor, we will add them to our list.".format(name.title()))
         num = input("How much did they donate? (type 100 for $100) >> ")
-        try:
+        try: #validate donation is number
             num = float(num)
             tabl.append([name, num])
             return name.title(), num
