@@ -95,12 +95,13 @@ def send_note(name,donation,note):
 if __name__ == '__main__':
     response = initial_prompt()
     while response != responses[-1]:
+        response = initial_prompt()
         if response == responses[0]:
             prompt_donors()
         elif response == responses[1]:
             print()
             print(return_report(donations))
-        response = initial_prompt()
+
 
 
 
