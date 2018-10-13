@@ -240,5 +240,6 @@ switch_func_dict = {
     '4': quit_program
 }
 
+
 if __name__ == '__main__':
     select_action_dictionary(print_menu(), switch_func_dict)
