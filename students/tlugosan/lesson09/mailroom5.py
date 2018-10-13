@@ -74,6 +74,10 @@ class DonorList:
         else:
             self._donors = donors
 
+    @property
+    def donors(self):
+        return self._donors
+
     def __str__(self):
         d_list = ''
         for d in self._donors:
@@ -106,47 +110,8 @@ class DonorList:
             print("{:<20}: {}".format(d.name, d.donation))
         pass
 
-    def __iter__(self):
-        return iter(self._donors)
-
-    def sending_thank_you(self):
-        """Lists all the donors or prompts for a name and donation amount to compile the thank you email."""
-        while True:
-            send_to_name = input(
-                "First: Who do you want to send the email to? Type 'list' for a list of all the donors. ")
-            if send_to_name == 'list':
-                self.display_donor_list()
-                # send_to_name = input("Second: Who do you want to send the email to? Type 'list' for a list of all the donors. ")
-            else:
-                break
-        names_list = self.names_only_list()
-        if send_to_name not in names_list:
-            self.add_donor_list(Donor(send_to_name, []))
-        # donation_amount = input("What donation amount do you want to thank them for? ")
-        while True:
-            try:
-                donation_amount = float(input('What donation amount do you want to thank them for? '))
-                if donation_amount > 0:
-                    break
-                else:
-                    print("Number has to be positive.")
-            except ValueError:
-                print("Input must be a number.")
-        d = self.find_donor_history(send_to_name)
-        d.add_donation(donation_amount)
-        print("Dear {}, Thank you for your generous contribution of ${:.2f} to our program.".format(send_to_name,
-                                                                                                    donation_amount))
-
-    def print_report(self):
-        """Prints the donor table in equally amount of column width with each donor, total amount, number of gifts and average donation."""
-        table_header = ['Donor Name', 'Total Given', 'Num Gifts', 'Average Gifts']
-        len_header = len(table_header)
-        print("|".join(["{:<20}"] * len_header).format(*table_header))
-        print("-" * (20 * len_header + (len_header - 1)))
-        sorted_new_list = self.stat_donor_list()
-        for row in sorted_new_list:
-            print("{0:<20} ${1:>19.2f} {2:>20} ${3:>19.2f}".format(*row))
-        return sorted_new_list
+    """def __iter__(self):
+        return iter(self._donors)"""
 
     def stat_donor_list(self):
         new_list = []
@@ -158,38 +123,81 @@ class DonorList:
         sorted_new_list = sorted(new_list, key=itemgetter(1), reverse=True)
         return sorted_new_list
 
-    def send_everyone_letters(self, target_directory=os.getcwd()):
-        """Sends a letter to everyone in the table for their first donation in the list."""
-        file_name_extension = '.txt'
-        today_date_short = calculate_date()
-        # names_only_list = self.names_only_list()
-        for file_name in self._donors:
-            target_file_path = os.path.join(target_directory,
-                                            str(file_name.name).replace(' ',
-                                                                        '_') + today_date_short + file_name_extension)
-            try:
-                with open(str(target_file_path), 'w') as tf:
-                    letter_content = ("Dear {},\n"
-                                      "\tThank you for your kind donation of $ {:.2f}.\n"
-                                      "\tIt will be put to very good use.\n"
-                                      "\t\tSincerely,\n"
-                                      "\t\t\t-The Team").format(file_name.name, file_name.total_donation_amount)
-                    tf.write(letter_content)
-            except FileNotFoundError as err:
-                print("File path is not correct.")
-                print(err)
-        print("Done")
 
-
-table_dictionary1 = [
+table_dictionary = DonorList([
     Donor('Toni Orlando', [150.00, 200.00, 100.00]),
     Donor('Amanda Clark', [1800.00]),
     Donor('Robin Hood', [1234.56, 4500.34, 765.28]),
     Donor('Gina Travis', [523.10, 75.00]),
     Donor('Mark Johnson', [850.00, 20.14])
-]
+])
 
 actions_dictionary = {'1': 'Send a Thank You', '2': 'Create a Report', '3': 'Send letters to everyone', '4': 'Quit'}
+
+
+def sending_thank_you():
+    """Lists all the donors or prompts for a name and donation amount to compile the thank you email."""
+    while True:
+        send_to_name = input(
+            "First: Who do you want to send the email to? Type 'list' for a list of all the donors. ")
+        if send_to_name == 'list':
+            table_dictionary.display_donor_list()
+            # send_to_name = input("Second: Who do you want to send the email to? Type 'list' for a list of all the donors. ")
+        else:
+            break
+    names_list = table_dictionary.names_only_list()
+    if send_to_name not in names_list:
+        table_dictionary.add_donor_list(Donor(send_to_name, []))
+    # donation_amount = input("What donation amount do you want to thank them for? ")
+    while True:
+        try:
+            donation_amount = float(input('What donation amount do you want to thank them for? '))
+            if donation_amount > 0:
+                break
+            else:
+                print("Number has to be positive.")
+        except ValueError:
+            print("Input must be a number.")
+    d = table_dictionary.find_donor_history(send_to_name)
+    d.add_donation(donation_amount)
+    print("Dear {}, Thank you for your generous contribution of ${:.2f} to our program.".format(send_to_name,
+                                                                                                donation_amount))
+
+
+def print_report():
+    """Prints the donor table in equally amount of column width with each donor, total amount, number of gifts and average donation."""
+    table_header = ['Donor Name', 'Total Given', 'Num Gifts', 'Average Gifts']
+    len_header = len(table_header)
+    print("|".join(["{:<20}"] * len_header).format(*table_header))
+    print("-" * (20 * len_header + (len_header - 1)))
+    sorted_new_list = table_dictionary.stat_donor_list()
+    for row in sorted_new_list:
+        print("{0:<20} ${1:>19.2f} {2:>20} ${3:>19.2f}".format(*row))
+    return sorted_new_list
+
+
+def send_everyone_letters(target_directory=os.getcwd()):
+    """Sends a letter to everyone in the table for their first donation in the list."""
+    file_name_extension = '.txt'
+    today_date_short = calculate_date()
+    # names_only_list = table_dictionary.names_only_list()
+    print(table_dictionary.donors)
+    for file_name in table_dictionary.donors:
+        target_file_path = os.path.join(target_directory,
+                                        str(file_name.name).replace(' ',
+                                                                    '_') + today_date_short + file_name_extension)
+        try:
+            with open(str(target_file_path), 'w') as tf:
+                letter_content = ("Dear {},\n"
+                                  "\tThank you for your kind donation of $ {:.2f}.\n"
+                                  "\tIt will be put to very good use.\n"
+                                  "\t\tSincerely,\n"
+                                  "\t\t\t-The Team").format(file_name.name, file_name.total_donation_amount())
+                tf.write(letter_content)
+        except FileNotFoundError as err:
+            print("File path is not correct.")
+            print(err)
+    print("Done")
 
 
 def select_action_dictionary(prompt, switch_func_dict):
@@ -226,9 +234,9 @@ def quit_program():
 
 
 switch_func_dict = {
-    '1': DonorList(table_dictionary1).sending_thank_you,
-    '2': DonorList(table_dictionary1).print_report,
-    '3': DonorList(table_dictionary1).send_everyone_letters,
+    '1': sending_thank_you,
+    '2': print_report,
+    '3': send_everyone_letters,
     '4': quit_program
 }
 

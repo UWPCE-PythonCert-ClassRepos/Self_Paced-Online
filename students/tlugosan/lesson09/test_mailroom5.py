@@ -12,28 +12,34 @@ def test_Donor_init():
     assert d.name == "Angela"
     assert d.donation == [245]
 
+
 def test_Donor_init_int():
     d = mailroom.Donor("Angela", 33)
     assert d.donation == [33]
 
+
 def test_donor_init_donation_null():
     d = mailroom.Donor('', [44])
     assert d.name == 'Anonymous'
+
 
 def test_donation_addition():
     d = mailroom.Donor("Angela", [245])
     d.add_donation(77)
     assert d.donation == [245, 77]
 
+
 def test_donation_addition_int():
     d = mailroom.Donor("Angela", 55)
     d.add_donation(77)
     assert d.donation == [55, 77]
 
+
 def test_donation_addition_negative():
     d = mailroom.Donor("Angela", 55)
     with pytest.raises(ValueError):
         d.add_donation(-77)
+
 
 def test_set_name():
     d = mailroom.Donor("Angela", 55)
@@ -42,21 +48,42 @@ def test_set_name():
     d.name = 34
     assert d.name == "34"
 
+
 def test_donation_stats():
     donation_list = [75, 22, 34]
     d = mailroom.Donor("Angela", donation_list)
-    assert d.total_donation_amount() == 75+22+34
+    assert d.total_donation_amount() == 75 + 22 + 34
     assert d.donation_occurrences() == 3
-    assert d.average_total_donor_amount() == (75+22+34)/3
-    assert d.stats() == [75+22+34, 3, (75+22+34)/3]
+    assert d.average_total_donor_amount() == (75 + 22 + 34) / 3
+    assert d.stats() == [75 + 22 + 34, 3, (75 + 22 + 34) / 3]
 
-def test_donor_list_int():
+
+def test_donor_list_add_donor():
     d = mailroom.Donor("Angela", [245])
     c = mailroom.Donor("Bob", [34, 22])
-    ab = mailroom.DonorList([d,c])
+    ab = mailroom.DonorList([d, c])
     e = mailroom.Donor("Adam", [34, 22])
     ab.add_donor_list(e)
-    assert 'Adam' in ab.display_donor_list()
+    assert ab.donors == [d, c, e]
+
+
+def test_names_only_list():
+    d = mailroom.Donor("Angela", [245])
+    c = mailroom.Donor("Bob", [34, 22])
+    e = mailroom.Donor("Adam", [34, 22])
+    ab = mailroom.DonorList([d, c, e])
+    names_only_list = ab.names_only_list()
+    assert names_only_list == ['Angela', 'Bob', 'Adam']
+
+
+def test_find_donor():
+    d = mailroom.Donor("Angela", [245])
+    c = mailroom.Donor("Bob", [34, 22])
+    e = mailroom.Donor("Adam", [34, 22])
+    ab = mailroom.DonorList([d, c, e])
+    b = ab.find_donor_history("Bob")
+    assert b.name == c.name
+    assert b.donation == c.donation
 
 
 """def test_select_action_dictionary_exit(capsys):
