@@ -36,7 +36,12 @@ fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
 print(fruits)
 
 #Ask the user for another fruit and add it to the end of the list.
+response = input("Please add fruit to list: ")
+fruits.append(response)
+
 #Display the list.
+print(fruits)
+
 #Ask the user for a number and display the number back to the user and the fruit corresponding to that number (on a 1-is-first basis). Remember that Python uses zero-based indexing, so you will need to correct.
 #Add another fruit to the beginning of the list using “+” and display the list.
 # Add another fruit to the beginning of the list using insert() and display the list.
