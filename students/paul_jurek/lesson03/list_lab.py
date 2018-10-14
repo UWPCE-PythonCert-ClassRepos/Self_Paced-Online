@@ -63,15 +63,25 @@ while fruit_to_delete not in fruits2:
 for _ in range(fruits2.count(fruit_to_delete)):
     fruits2.remove(fruit_to_delete)
 
-
 # Series 3
 # Again, using the list from series 1:
+fruits3 = fruits.copy()
+
 # Ask the user for input displaying a line like “Do you like apples?”
 #     for each fruit in the list (making the fruit all lowercase).
-# For each “no”, delete that fruit from the list.
-# For any answer that is not “yes” or “no”, prompt the user to answer
-#     with one of those two values (a while loop is good here)
+for fruit in fruits3[:]:
+    like_fruit = ''
+
+    # For each “no”, delete that fruit from the list.
+    # For any answer that is not “yes” or “no”, prompt the user to answer
+    #     with one of those two values (a while loop is good here)
+    while like_fruit.lower() not in ['yes', 'no']:
+        like_fruit = input(f"Do you like {fruit.lower()}? (yes or no)")
+    if like_fruit.lower() == 'no':
+        fruits3.remove(fruit)
 # Display the list.
+    print(fruits3)
+
 # Series 4
 # Once more, using the list from series 1:
 # Make a copy of the list and reverse the letters in each fruit in the copy.
