@@ -60,8 +60,16 @@ def reverse_elements(seq):
     return seq[::-1]
 
 
-def mid_last_first(a_string):
-    pass
+def mid_last_first(seq):
+    """return new sequences with the middle third, then last third,
+        then the first third in the new order.
+    args:
+        seq: sequence to be modified
+    returns:
+        new sequence object reordered"""
+
+    front_portion = len(seq)//3
+    return seq[front_portion:] + seq[:front_portion]
 
 
 if __name__ == '__main__':
@@ -92,7 +100,5 @@ if __name__ == '__main__':
     assert reverse_elements(a_string) == "gnirts a si siht"
     assert reverse_elements(a_tuple) == (32, 5, 12, 13, 54, 2)
 
-    """
     assert mid_last_first(a_string) == "is a stringthis "
     assert mid_last_first(a_tuple) == (13, 12, 5, 32, 2, 54)
-    """
