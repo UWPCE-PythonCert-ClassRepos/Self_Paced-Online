@@ -48,6 +48,7 @@ if __name__ == '__main__':
     a_simple_list = [1]
     a_string = "this is a string"
     a_tuple = (2, 54, 13, 12, 5, 32)
+    a_longer_tuple = (2, 54, 13, 12, 5, 32, 2, 54, 13, 12, 5, 32)
 
     assert exchange_first_last(a_string) == "ghis is a strint"
     assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
@@ -58,6 +59,12 @@ if __name__ == '__main__':
     assert remove_every_other(a_simple_list) == a_simple_list
     assert remove_every_other(a_string) == "ti sasrn"
     assert remove_every_other(a_tuple) == (2, 13, 5)
+
+    assert mid_every_other(a_empty_list) == a_empty_list
+    assert mid_every_other(a_simple_list) == []
+    assert mid_every_other(a_string) == " sas"
+    assert mid_every_other(a_tuple) == ()
+    assert mid_every_other(a_longer_tuple) == (5, 2)
 
     """
     assert mid_last_first(a_string) == "is a stringthis "
