@@ -35,6 +35,10 @@ fruits.insert(0, 'Dragonfruit')
 print(fruits)
 
 # Display all the fruits that begin with “P”, using a for loop.
+for fruit in fruits:
+    if fruit.lower().startswith('p'):
+        print(fruit)
+
 # Series 2
 # Using the list created in series 1 above:
 # Display the list.
