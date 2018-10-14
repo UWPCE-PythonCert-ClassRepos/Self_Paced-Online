@@ -34,17 +34,33 @@ def response1(donors_list):
         
 #function if user wants a report of donors and donations
 def response2(donors_list):
-    print(donors_list)
     y = '|'
     print(f'Donor Name{y:>14} Total Given {y} Num Gifts {y} Average Gift')
     print('-' * 63)
-#    print(donors_list)
     while True:
-        x = 0
         temp = []
         for i in donors_list:
-            print(sum(i[1:]))
-            temp[x].append(sum(i[1:]))
+            total = sum(i[1:])
+            temp += [total]
+#            print(total)
+        x = temp[:]
+        for i in x:
+#            print(i)
+            a = max(temp)
+#            print(max(temp))
+            temp.remove(max(temp))
+            for item in donors_list:                
+                if a == sum(item[1:]):
+                    gift = len(item[1:])
+                    average = (a / gift)
+                    print(f'{item[0]:<23} ${a:>11.2f} {gift:>11}  ${average:>11.2f}')
+
+#                    print(item[0])
+                    break
+ #           if a == 
+ #           temp.remove(max(temp))
+            
+            
         break
 #            total = sum(i[1:])
 #            gift = len(i[1:])
@@ -53,7 +69,7 @@ def response2(donors_list):
     
 #main function
 if __name__ == "__main__":
-    donors_list = (['Ralph Anders', 5, 10], ['Andrei Hoff', 101, 151, 75], ['Stalk Holmes', 40], ['Traci Johnston', 20], ['James Hendrick', 60], ['Angelica Kisel', 45, 25, 55.60])
+    donors_list = (['Ralph Anders', 5, 10], ['Andrei Wasinski', 101, 151, 75], ['Stalk Holmes', 40], ['Traci Johnston', 20], ['James Hendrick', 60], ['Angelica Kisel', 45, 25, 55.60])
     while True:
         response = input('1: Send a Thank You \n2: Create a Report \n3: Quit \nChoose an Option: ')
         if response == '1':
