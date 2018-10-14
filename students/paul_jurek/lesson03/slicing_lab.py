@@ -40,6 +40,17 @@ def remove_every_other(seq):
     
     return seq[::2]
 
+def mid_every_other(seq):
+    """return sequence with first 4 and last 4 items removed then every other of what remains.
+        In cases of sequences less than 8 characters, empty sequence of input type is returned.
+    args:
+        seq: sequence to be modified
+    returns:
+        copy of sequence with front and end removed then every other item removed"""
+    
+    return seq[4:-4:2]
+    
+
 def mid_last_first(a_string):
     pass
 
