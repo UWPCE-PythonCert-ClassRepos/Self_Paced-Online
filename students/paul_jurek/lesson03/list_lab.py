@@ -85,4 +85,9 @@ for fruit in fruits3[:]:
 # Series 4
 # Once more, using the list from series 1:
 # Make a copy of the list and reverse the letters in each fruit in the copy.
+fruits4 = fruits.copy()
+fruits4.reverse()
 # Delete the last item of the original list. Display the original list and the copy.
+fruits.pop()
+print(f'Original List: {fruits}')
+print(f'Copied List: {fruits4}')
