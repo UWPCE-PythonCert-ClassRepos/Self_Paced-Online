@@ -23,11 +23,17 @@ print(fruits)
 # ensuring user puts in index for valid fruits
 fruit_index_selection = -1
 while not int(fruit_index_selection) in range(1,len(fruits)+1):
-    fruit_index_selection = input(f"Please select index of fruit which is between 1 and {len(fruits)}: ")
+    fruit_index_selection = int(input(f"Please select index of fruit which is between 1 and {len(fruits)}: "))
 print(fruits[int(fruit_index_selection)-1])
 
 # Add another fruit to the beginning of the list using “+” and display the list.
+fruits = ['Mango'] + fruits
+print(fruits)
+
 # Add another fruit to the beginning of the list using insert() and display the list.
+fruits.insert(0, 'Dragonfruit')
+print(fruits)
+
 # Display all the fruits that begin with “P”, using a for loop.
 # Series 2
 # Using the list created in series 1 above:
