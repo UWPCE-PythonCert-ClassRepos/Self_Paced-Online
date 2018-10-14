@@ -37,6 +37,8 @@ def remove_every_other(seq):
         copy of sequence with every other item removed"""
     if len(seq) < 2:
         return seq
+    
+    return seq[::2]
 
 def mid_last_first(a_string):
     pass
@@ -53,6 +55,9 @@ if __name__ == '__main__':
     assert exchange_first_last(a_simple_list) == a_simple_list
 
     assert remove_every_other(a_empty_list) == a_empty_list
+    assert remove_every_other(a_simple_list) == a_simple_list
+    assert remove_every_other(a_string) == "ti sasrn"
+    assert remove_every_other(a_tuple) == (2, 13, 5)
 
     """
     assert mid_last_first(a_string) == "is a stringthis "
