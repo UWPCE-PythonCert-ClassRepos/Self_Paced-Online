@@ -2,16 +2,19 @@
 ## Goal
 Get the basics of sequence slicing down.
 ## Tasks
-* Write some functions that take a sequence as an argument, and return a copy of that sequence:
+* Write some functions that take a sequence as an argument, and return a copy
+    of that sequence:
 ** with the first and last items exchanged.
 ** with every other item removed.
-** with the first 4 and the last 4 items removed, and then every other item in between.
+** with the first 4 and the last 4 items removed, and then every other item
+    in between.
 ** with the elements reversed (just with slicing).
 ** with the middle third, then last third, then the first third in the new order.
 NOTE: These should work with ANY sequence – but you can use strings to test, if you like.
 Your functions should look like:
 def exchange_first_last(seq):
     return a_new_sequence"""
+
 
 def exchange_first_last(seq):
     """return sequence with first and last items switched"
@@ -29,16 +32,17 @@ def exchange_first_last(seq):
 
     return end + mid + start
 
+
 def remove_every_other(seq):
-    """return sequence with every other item removed.  First item in sequence remains
+    """return sequence with every other item removed.
+        First item in sequence remains
     args:
         seq: sequence to be modified
     returns:
         copy of sequence with every other item removed"""
-    if len(seq) < 2:
-        return seq
-    
+
     return seq[::2]
+
 
 def mid_every_other(seq):
     """return sequence with first 4 and last 4 items removed then every other of what remains.
@@ -47,12 +51,13 @@ def mid_every_other(seq):
         seq: sequence to be modified
     returns:
         copy of sequence with front and end removed then every other item removed"""
-    
+
     return seq[4:-4:2]
-    
+
 
 def mid_last_first(a_string):
     pass
+
 
 if __name__ == '__main__':
     a_empty_list = []
