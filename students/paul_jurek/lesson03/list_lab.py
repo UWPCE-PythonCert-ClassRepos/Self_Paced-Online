@@ -22,7 +22,7 @@ print(fruits)
 #     that Python uses zero-based indexing, so you will need to correct.
 # ensuring user puts in index for valid fruits
 fruit_index_selection = -1
-while not int(fruit_index_selection) in range(1,len(fruits)+1):
+while int(fruit_index_selection) not in range(1, len(fruits)+1):
     fruit_index_selection = int(input(f"Please select index of fruit which is between 1 and {len(fruits)}: "))
 print(fruits[int(fruit_index_selection)-1])
 
@@ -42,7 +42,7 @@ for fruit in fruits:
 # Series 2
 # Using the list created in series 1 above:
 # Display the list.
-## creating copy of list as we will need original list for part 3
+# creating copy of list as we will need original list for part 3
 fruits2 = fruits.copy()
 print(fruits2)
 
@@ -55,6 +55,14 @@ print(fruits2)
 # Ask the user for a fruit to delete, find it and delete it.
 # (Bonus: Multiply the list times two. Keep asking until a
 #     match is found. Once found, delete all occurrences.)
+fruits2 *= 2
+# hoping user hasn't inserted -1 as fruit
+fruit_to_delete = -1
+while fruit_to_delete not in fruits2:
+    fruit_to_delete = input(f"Select fruit to delete: ")
+for _ in range(fruits2.count(fruit_to_delete)):
+    fruits2.remove(fruit_to_delete)
+
 
 # Series 3
 # Again, using the list from series 1:
