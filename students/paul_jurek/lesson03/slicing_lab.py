@@ -19,10 +19,14 @@ def exchange_first_last(seq):
         seq: sequence to be modified
     returns:
         modifited sequence"""
+    # adding catch for 0 or 1 length to return original seq
+    if len(seq) < 2:
+        return seq
+        
     start = seq[:1]
     mid = seq[1:-1]
     end = seq[-1:]
-    
+
     return end + mid + start
 
 def remove_every_other(seq):
@@ -37,11 +41,15 @@ def mid_last_first(a_string):
     pass
 
 if __name__ == '__main__':
+    a_empyt_list = []
+    a_simple_list = [1]
     a_string = "this is a string"
     a_tuple = (2, 54, 13, 12, 5, 32)
 
     assert exchange_first_last(a_string) == "ghis is a strint"
     assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
+    assert exchange_first_last(a_empyt_list) == a_empyt_list
+    assert exchange_first_last(a_simple_list) == a_simple_list
 
     """
     assert mid_last_first(a_string) == "is a stringthis "
