@@ -42,11 +42,20 @@ for fruit in fruits:
 # Series 2
 # Using the list created in series 1 above:
 # Display the list.
+## creating copy of list as we will need original list for part 3
+fruits2 = fruits.copy()
+print(fruits2)
+
 # Remove the last fruit from the list.
+fruits2.pop()
+
 # Display the list.
+print(fruits2)
+
 # Ask the user for a fruit to delete, find it and delete it.
 # (Bonus: Multiply the list times two. Keep asking until a
 #     match is found. Once found, delete all occurrences.)
+
 # Series 3
 # Again, using the list from series 1:
 # Ask the user for input displaying a line like “Do you like apples?”
