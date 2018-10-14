@@ -19,7 +19,11 @@ def exchange_first_last(seq):
         seq: sequence to be modified
     returns:
         modifited sequence"""
-    pass
+    start = seq[:1]
+    mid = seq[1:-1]
+    end = seq[-1:]
+    
+    return end + mid + start
 
 def remove_every_other(seq):
     """return sequence with every other item removed.  First item in sequence remains
@@ -38,5 +42,8 @@ if __name__ == '__main__':
 
     assert exchange_first_last(a_string) == "ghis is a strint"
     assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
+
+    """
     assert mid_last_first(a_string) == "is a stringthis "
     assert mid_last_first(a_tuple) == (13, 12, 5, 32, 2, 54)
+    """
