@@ -55,6 +55,11 @@ def mid_every_other(seq):
     return seq[4:-4:2]
 
 
+def reverse_elements(seq):
+    """reverse elements in string with slicing"""
+    return seq[::-1]
+
+
 def mid_last_first(a_string):
     pass
 
@@ -81,6 +86,11 @@ if __name__ == '__main__':
     assert mid_every_other(a_string) == " sas"
     assert mid_every_other(a_tuple) == ()
     assert mid_every_other(a_longer_tuple) == (5, 2)
+
+    assert reverse_elements(a_empty_list) == a_empty_list
+    assert reverse_elements(a_simple_list) == a_simple_list
+    assert reverse_elements(a_string) == "gnirts a si siht"
+    assert reverse_elements(a_tuple) == (32, 5, 12, 13, 54, 2)
 
     """
     assert mid_last_first(a_string) == "is a stringthis "
