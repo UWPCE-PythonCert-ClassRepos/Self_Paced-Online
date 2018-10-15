@@ -1,4 +1,6 @@
 """module to solve string formatting lab for lesson 3"""
+import pytest
+
 
 # Task 1
 """Write a format string that will take the following four element tuple:
@@ -35,5 +37,11 @@ def formatter(tup_input):
     return(template_str.format(n, *tup_input))
 
 
-def test_formatter():
-    assert formatter((1, 2, 3)) == 'the 3 numbers are: 1, 2, 3'
+@pytest.mark.parametrize("test_input,expected", [
+    ((1, 2, 3), 'the 3 numbers are: 1, 2, 3'),
+    ((1, 2, 3, 4), 'the 4 numbers are: 1, 2, 3, 4'),
+    ((1,), 'the 1 numbers are: 1'),
+    ((), 'the 0 numbers are: ')
+])
+def test_formatter(test_input, expected):
+    assert formatter(test_input) == expected
