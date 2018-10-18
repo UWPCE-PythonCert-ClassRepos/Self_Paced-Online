@@ -1,10 +1,11 @@
+donors_list = (['Ralph Anders', 5, 10], ['Andrei Wasinski', 101, 151, 75], ['Stalk Holmes', 40], ['Traci Johnston', 20], ['James Hendrick', 60], ['Angelica Kisel', 45, 25, 55.60])
 #email sent out to donor
 def email(donor, donation):
     print('')
     print(f'Hello, {donor}! Thank you very much for your generous donation of ${donation}! Your contribution is essential and will be well utilized.')
 
 #function if user chooses to send a thank you email
-def response1(donors_list):
+def send_thank_you(donors_list):
     while True:
         x = 0
         print('')
@@ -34,41 +35,61 @@ def response1(donors_list):
                     donors_list[count].append(float(don_amt))
                     email(response, don_amt)
                 return(donors_list)
+                
+#def send_thank_you():
+#    while True:
+#        resp = input("Please type 'list', 'quit' or name of the donor")
+#        if resp == "list":
+#            list_donors()
+#        elif resp == "quit":
+#            return
+#        else:
+#            new_donation = input("Please enter amount")
+#            new_donor = False
+#            for donor_name, donations in donors_list:
+#                if donor_name == resp:
+#                    donations.append(new_donation)
+#                    break
+#            else:
+#                new_donor = True
+#                donors_list.append((resp, [new_donation]))
+#            
+#            print_email(new_donor)  # passed bool for custom message
+#            return
+
         
 #function if user wants a report of donors and donations
-def response2(donors_list):
+def create_report(donors_list):
     print('')
     y = '|'
     print(f'Donor Name{y:>14} Total Given {y} Num Gifts {y} Average Gift')
     print('-' * 63)
-    while True:
-        temp = []
-        for i in donors_list:
-            total = sum(i[1:])
-            temp += [total]
-        x = temp[:]
-        for i in x:
-            a = max(temp)
-#            print(max(temp))
-            temp.remove(max(temp))
-            for item in donors_list:                
-                if a == sum(item[1:]):
-                    gift = len(item[1:])
-                    average = (a / gift)
-                    print(f'{item[0]:<23} ${a:>11.2f} {gift:>11}  ${average:>11.2f}')
-                    break
-        break
+    temp = []
+    for i in donors_list:
+        total = sum(i[1:])
+        temp += [total]
+    x = temp[:]
+    for i in x:
+        a = max(temp)
+        temp.remove(max(temp))
+        for item in donors_list:                
+            if a == sum(item[1:]):
+                gift = len(item[1:])
+                average = (a / gift)
+                print(f'{item[0]:<23} ${a:>11.2f} {gift:>11}  ${average:>11.2f}')
+                break
    
 #main function
 if __name__ == "__main__":
-    donors_list = (['Ralph Anders', 5, 10], ['Andrei Wasinski', 101, 151, 75], ['Stalk Holmes', 40], ['Traci Johnston', 20], ['James Hendrick', 60], ['Angelica Kisel', 45, 25, 55.60])
     while True:
         print('')
         response = input('1: Send a Thank You \n2: Create a Report \n3: Quit \nChoose an Option: ')
         if response == '1':
-            donors_list = response1(donors_list)
-        if response == '2':
-            response2(donors_list)
-        if response == '3' or response == 'quit':
+            donors_list = send_thank_you(donors_list)
+        elif response == '2':
+            create_report(donors_list)
+        elif response == '3' or response == 'quit':
             break
+        else:
+            continue
     
