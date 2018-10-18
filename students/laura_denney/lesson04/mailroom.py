@@ -5,7 +5,8 @@
 # ChangeLog: (Who, When, What)
 #   Laura Denney, 10/11/18, Created File
 #   Laura Denney, 10/12/18, Modified File
-#   Laura Denney, 10/12/18, Starte Part 2
+#   Laura Denney, 10/12/18, Started Part 2
+#   Laura Denney, 10/12/18, Finished Part 2
 #-------------------------------------------------#
 
 donor_list = {"john doe":[100, 200],
@@ -14,17 +15,16 @@ donor_list = {"john doe":[100, 200],
         "samuel jackson":[1, 2, 3],
         "mr. bean": [500, 100]}
 
-
 main_prompt = '''
 What would you like to do today?
 1) Send a Thank You
 2) Create a Report
-3) Send letterss to everyone
+3) Send letters to everyone
 4) Quit
 Please choose the number of your choice >> '''
 
 thank_you_prompt = '''
-\nYou have chosen to Send a Thank You.
+You have chosen to Send a Thank You.
 1) See List of Current Donors
 2) I'm Ready to Thank a Donor
 3) Quit this submenu
@@ -35,8 +35,29 @@ def quit():
     return 'quit'
 
 def send_letters():
-    pass
+    print("\nYou have chosen to send letters to everyone.")
+    total_donor = sort_by_amount()
+    for each_donor in total_donor:
+        amount = each_donor[0]
+        donor = each_donor[1].title()
+        #Name formatting for one word names like 'Cher' vs normal full names
+        if " " in donor:
+            first_last = donor.split(" ")
+        else: first_last = [donor]
+        if len(first_last) == 1:
+            first = first_last[0]
+            last = ""
+        else:
+            first = first_last[0]
+            last = first_last[1]
+        send_email(donor, amount, "{}_{}.txt".format(first, last))
+    print("\nLetters have been successfully sent to every donor.")
+    print("A copy of that letter is now saved in your current directory.")
 
+#creates a table of donors sorted by total amount donated
+def sort_by_amount():
+    sorted_tuple = sorted([(sum(value),key) for (key,value) in donor_list.items()], reverse = True)
+    return sorted_tuple
 
 def send_thank_you():
     while True:
@@ -47,18 +68,6 @@ def send_thank_you():
             print("\nYou have chosen to leave this submenu.")
             break
 
-    # print("\nYou have chosen to Send a Thank You.")
-    # name = "list"
-    # while name.lower() == 'list':
-    #     print("Please enter the full name of the donor you would like to thank.")
-    #     name = input("OR type 'list' to see current donors. >> ")
-    #     if name.lower() == "list":
-    #         print_list()
-    #     else:
-    #         donor, amount = check_list(name.lower())
-    #         send_email(donor, amount)
-    #print("You have successfully sent a Thank You.")
-
 def print_list():
     names = []
     for name in donor_list.keys():
@@ -67,14 +76,13 @@ def print_list():
     print(strformat.format(len(names), *names))
 
 def check_list():
-    #Taking in lower case donor name
     name = input("\nPlease enter the full name of the donor you would like to thank: ").lower()
     donation = input("How much money did they donate? (type 100 for $100) >> ")
     #validate donation amount
     try:
         num = float(donation)
     except:
-        print("Invalid amount entered, marking donation as $0.")
+        print("\nERROR: Invalid donation amount entered, marking donation as $0.")
         num = 0.0
     if name in donor_list:
         print("\n{} is a current donor, we will update their donations.".format(name.title()))
@@ -84,32 +92,8 @@ def check_list():
         donor_list[name] = [num]
     send_email(name.title(), num)
 
-    # for donor in donor_list:
-    #     if name == donor["name"]:
-    #         print("\n{} is a current donor.".format(name.title()))
-    #         num = input("How much money did they donate? (type 100 for $100) >> ")
-    #         try: #validate donation amount entered is a number
-    #             num = float(num)
-    #             x.append(num)
-    #             return name.title(), num
-    #         except:
-    #             print("Invalid amount entered, marking donation as $0.")
-    #             x.append(0)
-    #             return name.title(), 0
-    # else: #not a current donor
-    #     print("\n{} is not a current donor, we will add them to our list.".format(name.title()))
-    #     num = input("How much did they donate? (type 100 for $100) >> ")
-    #     try: #validate donation is number
-    #         num = float(num)
-    #         tabl.append([name, num])
-    #         return name.title(), num
-    #     except:
-    #         print("\nInvalid amount entered, marking donation as $0.")
-    #         tabl.append([name, 0])
-    #         return name.title(), 0
-
-def send_email(donor, amount):
-    print("\nThe email you are sending is as follows:")
+#modified to either print to screen or disk
+def send_email(donor, amount, dest = 0):
     fstring =f'''
     Dear {donor},
 
@@ -119,21 +103,27 @@ def send_email(donor, amount):
     Thank you!
     <3 The MailRoom
     '''
-    print(fstring)
-    print("You have successfully sent a Thank You to {}.".format(donor))
+    if dest == 0:
+        print("The email you are sending is as follows:")
+        print(fstring)
+        print("You have successfully sent a Thank You to {}.".format(donor))
+    else:
+        with open(dest, 'w') as outfile:
+            outfile.write(fstring)
 
 def create_report():
+    report_list = sort_by_amount()
     print("\nYou have chosen to Create a Report.")
     header = '''
 Donor Name                | Total Given | Num Gifts | Average Gift
 ------------------------------------------------------------------'''
     print(header)
     strformat = '{:<26}${:>13}{:^12}${:>13}'
-    for row in tabl:
-        sumamount = sum(row[1:])
-        numberdonations = len(row[1:])
-        average = sumamount/numberdonations
-        print(strformat.format(row[0].title(),round(sumamount,2), numberdonations, round(average,2 )))
+    for donor in report_list:
+        total_donations = float(donor[0])
+        number_donations = len(donor_list[donor[1]])
+        average = total_donations/number_donations
+        print(strformat.format(donor[1].title(),round(total_donations,2), number_donations, round(average,2 )))
 
 
 #Main Menu options for user
@@ -161,5 +151,5 @@ def prompt_user():
             print("\nYou have chosen to quit. Have a good day!")
             break
 
-#if __name__ == "__main__":
-#    prompt_user()
+if __name__ == "__main__":
+    prompt_user()
