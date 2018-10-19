@@ -73,3 +73,22 @@ def test_inside_out():
         Hint: use index numbers to specify positions."""
     input = ( 4, 30, 2017, 2, 27)
     assert inside_out(input) == '02 27 2017 04 30'
+
+def format_fruit_list(fruits):
+    """as part of task 5, this formats fruit lists
+    ars:
+        fruits: list of fruits which should be divisable by 2.  
+            first entry is fruit name and second is weight in some unit
+            eg. ['oranges', 1.3, 'lemons', 1.1]
+    returns
+        string telling fruit name and weight
+            eg. The weight of an orange is 1.3 and the weight of a lemon is 1.1
+    """
+    pass
+
+def test_format_fruit_list():
+    """Here’s a task for you: Given the following four element list:
+        ['oranges', 1.3, 'lemons', 1.1]
+        Write an f-string that will display:
+        The weight of an orange is 1.3 and the weight of a lemon is 1.1"""
+    pass
