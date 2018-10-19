@@ -61,7 +61,9 @@ def inside_out(tuple5):
         str with output of 'tuple[3] tuple[4] tuple[2] tuple[0] tuple[1]' with formatting (see test)
         prints results to console"""
     
-    output = f'{tuple5[3]} {tuple5[4]} {tuple5[2]} {tuple5[0]} {tuple5[1]}'
+    output = f'{tuple5[3]:02} {tuple5[4]:02} {tuple5[2]:04} {tuple5[0]:02} {tuple5[1]:02}'
+    print(output)
+    return output
 
 def test_inside_out():
     """Given a 5 element tuple:
