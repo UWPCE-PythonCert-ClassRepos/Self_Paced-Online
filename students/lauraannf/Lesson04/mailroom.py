@@ -5,6 +5,7 @@ Created on Mon Sep 24 13:06:38 2018
 @author: Laura.Fiorentino
 """
 import datetime
+import sys
 from pathlib import Path
 my_path = 'C:\\Users\\Laura.Fiorentino\\Documents\\MyPython\\\
 Self_Paced-Online\\students\\lauraannf\\Lesson04\\'
@@ -73,18 +74,18 @@ def all_letters():
         file.close()
 
 
+def quit_program():
+    sys.exit()
+
+
 def main():
     print('----------Mailroom------------')
+    arg_dict = {'1': create_email, '2': create_report, '3': all_letters,
+                '4': quit_program}
     while True:
         task = input("Choose an action: [1] Send a Thank You; [2] Create a \
 Report; [3] Send a Thank You to Everyone; [4] Quit>")
-        arg_dict = {'1': create_email, '2': create_report, '3': all_letters}
-        if task in arg_dict.keys():
-            arg_dict.get(task)()
-        elif task == '4':
-            break
-        else:
-            continue
+        arg_dict[task]()
 
 
 if __name__ == '__main__':
