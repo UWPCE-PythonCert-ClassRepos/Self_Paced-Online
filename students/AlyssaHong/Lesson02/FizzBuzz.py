@@ -1,6 +1,6 @@
 """
 Author: Alyssa Hong
-Date: 10/10/2018
+Date: 10/15/2018
 Lesson2 Assignments > The Classic Fizz Buzz Problem
 """
 
@@ -9,12 +9,9 @@ Lesson2 Assignments > The Classic Fizz Buzz Problem
 #        For the multiples of five print “Buzz” instead of the number.
 #        For numbers which are multiples of both three and five print “FizzBuzz” instead.
 
+#changed function: while --> for in range()
 
-
-i = 0
-
-while i < 100:
-    i = i + 1
+for i in range(1,100):
     if i % 3 == 0 and i % 5 ==0:
         print("FizzBuzz")
     elif i % 3 == 0:
