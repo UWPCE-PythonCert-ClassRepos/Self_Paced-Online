@@ -45,3 +45,29 @@ def formatter(tup_input):
 ])
 def test_formatter(test_input, expected):
     assert formatter(test_input) == expected
+
+# task 4
+"""Given a 5 element tuple:
+( 4, 30, 2017, 2, 27)
+use string formating to print:
+'02 27 2017 04 30'
+Hint: use index numbers to specify positions."""
+def inside_out(tuple5):
+    """funtion to re-order and print input
+    args:
+        tuple of length 5 containing strings.  Assume all strings and no input checking
+
+    returns:
+        str with output of 'tuple[3] tuple[4] tuple[2] tuple[0] tuple[1]' with formatting (see test)
+        prints results to console"""
+    
+    output = f'{tuple5[3]} {tuple5[4]} {tuple5[2]} {tuple5[0]} {tuple5[1]}'
+
+def test_inside_out():
+    """Given a 5 element tuple:
+        ( 4, 30, 2017, 2, 27)
+        use string formating to print:
+        '02 27 2017 04 30'
+        Hint: use index numbers to specify positions."""
+    input = ( 4, 30, 2017, 2, 27)
+    assert inside_out(input) == '02 27 2017 04 30'
