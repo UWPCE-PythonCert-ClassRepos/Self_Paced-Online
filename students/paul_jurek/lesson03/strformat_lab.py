@@ -91,4 +91,4 @@ def test_format_fruit_list():
         ['oranges', 1.3, 'lemons', 1.1]
         Write an f-string that will display:
         The weight of an orange is 1.3 and the weight of a lemon is 1.1"""
-    pass
+    assert test_format_fruit_list(['oranges', 1.3, 'lemons', 1.1]) == 'The weight of an orange is 1.3 and the weight of a lemon is 1.1'
