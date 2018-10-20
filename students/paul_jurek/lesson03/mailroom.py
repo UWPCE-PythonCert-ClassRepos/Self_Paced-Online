@@ -27,8 +27,11 @@ def thank_you():
         if thank_you_input == 'list':
             display_donors()
         else:
-            donation_amount = input("Select donation amount: ")
+            if thank_you_input not in donors:
+                create_donor(thank_you_input)
+            donation_amount = float(input("Select donation amount: "))
             create_donation(fullname=thank_you_input, amount=donation_amount)
+            send_thank_you(fullname=thank_you_input)
             exit_ind = True
 
 def display_donors():
@@ -37,8 +40,15 @@ def display_donors():
 
 def create_donation(fullname, amount):
     """adds a donation to the donors dict from user input"""
-    
     donors[fullname].append(amount)
+
+def create_donor(fullname):
+    """adds new donor to donors"""
+    donors[fullname] = []
+
+def send_thank_you(fullname):
+    """prints thank you message to terminal for donation"""
+    print(f'Thank you {fullname} for your generous donation!')
 
 
 if __name__ == '__main__':
