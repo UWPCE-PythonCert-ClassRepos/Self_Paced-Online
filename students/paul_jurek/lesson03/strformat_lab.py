@@ -74,7 +74,7 @@ def test_inside_out():
     input = ( 4, 30, 2017, 2, 27)
     assert inside_out(input) == '02 27 2017 04 30'
 
-def format_fruit_list(fruits):
+def format_fruit_list(fruits, uppercase=False, fat_fruit=False):
     """as part of task 5, this formats fruit lists
     ars:
         fruits: list of fruits which should be divisable by 2.  
@@ -87,7 +87,11 @@ def format_fruit_list(fruits):
     for index, fruit in enumerate(fruits):
         if index % 2 == 0:
             name = fruits[index][:-1]
+            name = name.upper() if uppercase else name
+
             weight = fruits[index+1]
+            weight = weight * 1.2 if fat_fruit else weight
+
             if name[0].lower() in ['a', 'e', 'i', 'o', 'u']:
                 leader = 'an'
             else:
@@ -98,6 +102,13 @@ def format_fruit_list(fruits):
                 output += f' and the weight of {leader} {name} is {weight}'
     return output
 
+
+@pytest.mark.parametrize("test_input,expected", [
+    ((1, 2, 3), 'the 3 numbers are: 1, 2, 3'),
+    ((1, 2, 3, 4), 'the 4 numbers are: 1, 2, 3, 4'),
+    ((1,), 'the 1 numbers are: 1'),
+    ((), 'the 0 numbers are: ')
+])
 def test_format_fruit_list():
     """Here’s a task for you: Given the following four element list:
         ['oranges', 1.3, 'lemons', 1.1]
