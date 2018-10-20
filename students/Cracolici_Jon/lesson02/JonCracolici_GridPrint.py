@@ -1,10 +1,8 @@
-#Jon Cracolici for UW Python Cert
+#Jon Cracolici
+#Lesson 2 Gridprint Problem
+#UW Python Cert
 #
-
-
-
-
-
+#
 def gridprint0():
 #This is the super basic function with no arguments. It just builds the grid seen at the beginning of the problem.
     cellnum0 = 2  #number of cells in a row or column. Assumed square.
@@ -42,7 +40,7 @@ def gridprint1(L):
             print(r2)
 
 gridprint1(3)
-gridprint(15)
+gridprint1(15)
 
 #NOTE: The problem statements shift the definitions of what the input lengths mean between part 2 and 3. Parts 1 and 2 the input length is the total length between
 #the terminal vertices. In Part 3 it is the lenght of the dashed section between the vertices in each box.
@@ -68,4 +66,3 @@ def gridprint2(N,E):
     
 gridprint2(3,4)
 gridprint2(5,3)
-
