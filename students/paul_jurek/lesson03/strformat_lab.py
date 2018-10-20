@@ -129,4 +129,11 @@ def task6_table():
     to make decimal points line up in cost column"""
     data = (('Paul', 33, '$10000.00'), ('Cole', 5, '$200.00'), ('Dylan', 2, '$1.00'))
     for entry in data:
-        print(f'{entry[0]:15} {entry[1]:3} {entry[2]:>}')
+        print(f'{entry[0]:15} {entry[1]:>3} {entry[2]:>15}')
+
+def task_6_extra_credit(tuple10, string_choice='f'):
+    """And for an extra task, given a tuple with 10 consecutive 
+    numbers, can you work how to quickly print the tuple in 
+    columns that are 5 charaters wide? It’s easily done 
+    on one short line!"""
+    [print(f'{i:5}', end=" ") for i in tuple10]
