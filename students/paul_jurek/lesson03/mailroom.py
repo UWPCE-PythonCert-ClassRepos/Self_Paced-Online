@@ -81,9 +81,10 @@ def report():
     Jeff Bezos                 $     877.33           1  $      877.33
     Paul Allen                 $     708.42           3  $      236.14
     """
-
-    pass
-
+    print(f"{'Donor Name':<26}|{'Total Given':^13}|{'Num Gifts':^11}|{'Average Gift':^13}")
+    print('-'*66)
+    # TODO: create helper function to summarize donations
+    # TDOD: create helper function to build table below headers
 
 if __name__ == '__main__':
     # initial placeholder for input
