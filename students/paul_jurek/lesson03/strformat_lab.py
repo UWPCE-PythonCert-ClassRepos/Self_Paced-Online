@@ -117,3 +117,16 @@ def test_format_fruit_list(test_input, input_upper, input_big_fruit, expected):
         Write an f-string that will display:
         The weight of an orange is 1.3 and the weight of a lemon is 1.1"""
     assert format_fruit_list(test_input, uppercase=input_upper, fat_fruit=input_big_fruit) == expected
+
+
+def task6_table():
+    """Write some Python code to print a table of several rows, 
+    each with a name, an age and a cost. Make sure some of the 
+    costs are in the hundreds and thousands to test your 
+    alignment specifiers.
+
+    It is not clear in instructions but I am assuming task is 
+    to make decimal points line up in cost column"""
+    data = (('Paul', 33, '$10000.00'), ('Cole', 5, '$200.00'), ('Dylan', 2, '$1.00'))
+    for entry in data:
+        print(f'{entry[0]:15} {entry[1]:3} {entry[2]:>}')
