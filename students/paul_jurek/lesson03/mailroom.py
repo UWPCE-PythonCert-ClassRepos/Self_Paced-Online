@@ -24,8 +24,10 @@ def thank_you():
     while not exit_ind:
         thank_you_input = input('Please select name: ')
 
-        if thank_you_input == 'list':
+        if thank_you_input.lower().strip() == 'list':
             display_donors()
+        elif thank_you_input.lower().strip() == 'quit':
+            exit_ind = True
         else:
             if thank_you_input not in donors:
                 create_donor(thank_you_input)
@@ -55,6 +57,34 @@ def send_thank_you(fullname):
     print(f'Thank you {fullname} for your generous donation!')
 
 
+def report():
+    """handles process for main screens report selection
+
+    If the user (you) selected “Create a Report”, print a list of your donors,
+    sorted by total historical donation amount.
+    Include Donor Name, total donated, number of donations and average
+    donation amount as values in each row. You do not need to print out all
+    their donations, just the summary info.
+    Using string formatting, format the output rows as nicely as possible.
+    The end result should be tabular (values in each column should align
+    with those above and below)
+    After printing this report, return to the original prompt.
+    At any point, the user should be able to quit their current task and
+    return to the original prompt.
+    From the original prompt, the user should be able to quit the script
+    cleanly.
+    Your report should look something like this:
+    Donor Name                | Total Given | Num Gifts | Average Gift
+    ------------------------------------------------------------------
+    William Gates, III         $  653784.49           2  $   326892.24
+    Mark Zuckerberg            $   16396.10           3  $     5465.37
+    Jeff Bezos                 $     877.33           1  $      877.33
+    Paul Allen                 $     708.42           3  $      236.14
+    """
+
+    pass
+
+
 if __name__ == '__main__':
     # initial placeholder for input
     user_input = None
@@ -72,5 +102,5 @@ if __name__ == '__main__':
 
         if user_input == 'send a thank you':
             thank_you()
-
-    # TODO: add functions for each option in top to be called
+        elif user_input == 'create a report':
+            report()
