@@ -87,6 +87,8 @@ class DonorCollection:
         return value < float(threshold)
 
     def challenge(self, donors, factor, threshold, direction):
+        ''' The challenge multiplys all the donations in a given direction (above or below) a certain threshold amount
+            by a factor entered by the user. '''  
         print("\nHere are the current donations", direction, "$", threshold, ":")
         total_a = 0
         for d in self.donors:
@@ -138,7 +140,7 @@ def its_go_time():
             donors.send_letters()
         elif selection == '4':
             factor = input("By what factor would you like to multiply the donations? ")
-            threshold = input("What threshold would you like to use? ")
+            threshold = input("What threshold would you like see above or below? ")
             direction = input("Would you like to multiply donations above or below that threshold? ")
             donors.challenge(donors, factor, threshold, direction)
         elif selection == '5':
