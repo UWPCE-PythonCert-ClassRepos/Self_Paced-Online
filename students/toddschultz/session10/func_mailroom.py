@@ -29,6 +29,8 @@ class Donor:
         print("Your gift of $" + current_donation, "will help our efforts greatly.\n")
         print("Sincerely - ACME Charity")
 
+
+
 class DonorCollection: 
     ''' Information on the entire group of donors '''
     def __init__(self, donors=None):
@@ -74,16 +76,47 @@ class DonorCollection:
         self.donors.append(new_donor)
         new_donor.send_thanks(current_donation)
 
+    def threshold_direction(self, num):
+        return num >= 1100
+
+
+    def above(self, value, threshold):
+        return value > float(threshold)
+
+    def below(self, value, threshold):
+        return value < float(threshold)
+
+    def challenge(self, donors, factor, threshold, direction):
+        print("\nHere are the current donations", direction, "$", threshold, ":")
+        total_a = 0
+        for d in self.donors:
+            gifts = filter(lambda x : self.above(x, threshold) if direction == 'above' else self.below(x, threshold), d.donations)
+            for i in gifts:
+                total_a = total_a + i
+                print("%.2f" % i)
+        print("For a total of: $", total_a)
+        print("\nHere are all the donations", direction, "$", threshold, "multiplied by",factor ,":")
+        total_b = 0
+        for d in self.donors:
+            gifts = map(lambda x : x * float(factor), \
+                filter(lambda x : \
+                    self.above(x, threshold) if direction == 'above' else self.below(x, threshold), d.donations))
+            for i in gifts:
+                total_b = total_b + i
+                print("%.2f" % i)
+        print("For a new total of: $", ("%.2f" % total_b))
+        print("\nThis challenge would make you: $", ("%.2f" % (total_b - total_a)), "more monies!")
+
 def quit_program():
     exit()
 
 def its_go_time():
     ''' Keep user interactions out of the classes '''
     d1 = Donor("baby huey", [1123.00, 456.00, 1789.00])
-    d2 = Donor("mighty mouse", [99.99])
-    d3 = Donor("fred flintstone", [5550.00, 5555.00])
-    d4 = Donor("road runner", [199999.00])
-    d5 = Donor("papa smurf", [1001.00, 1002.00, 1003.00])
+    d2 = Donor("mighty mouse", [99.99, 9000.00])
+    d3 = Donor("fred flintstone", [555.00, 5555.00])
+    d4 = Donor("road runner", [199999.00, 10.00, 8.00])
+    d5 = Donor("papa smurf", [1001.00, 1002.00, 1003.00, 1200.00, 12.00])
     donors = DonorCollection([d1, d2, d3, d4, d5]) 
 
     while True:
@@ -92,7 +125,8 @@ def its_go_time():
                 "1 - Send a Thank You\n"
                 "2 - Create a report\n"
                 "3 - Send letters\n"
-                "4 - Exit\n"
+                "4 - Challenge\n"
+                "5 - Exit\n"
                 ">>> ")
         if selection == '1':
             current_donor = input("Who would you like to send a Thank You too? ")
@@ -103,6 +137,11 @@ def its_go_time():
         elif selection == '3':
             donors.send_letters()
         elif selection == '4':
+            factor = input("By what factor would you like to multiply the donations? ")
+            threshold = input("What threshold would you like to use? ")
+            direction = input("Would you like to multiply donations above or below that threshold? ")
+            donors.challenge(donors, factor, threshold, direction)
+        elif selection == '5':
             quit_program()
         else:
             print("Please enter 1, 2, 3, 4 or exit")
