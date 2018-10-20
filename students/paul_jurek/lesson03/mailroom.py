@@ -23,16 +23,22 @@ def thank_you():
     exit_ind = False
     while exit_ind == False:
         thank_you_input = input('Please select name: ')
-        thank_you_input = thank_you_input.lower().strip()
         
         if thank_you_input == 'list':
             display_donors()
         else:
+            donation_amount = input("Select donation amount: ")
+            create_donation(fullname=thank_you_input, amount=donation_amount)
             exit_ind = True
 
 def display_donors():
     """diplays donors"""
     [print(donor) for donor in donors.keys()]
+
+def create_donation(fullname, amount):
+    """adds a donation to the donors dict from user input"""
+    
+    donors[fullname].append(amount)
 
 
 if __name__ == '__main__':
