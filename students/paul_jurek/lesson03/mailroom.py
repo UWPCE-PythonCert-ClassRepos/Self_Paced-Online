@@ -83,9 +83,13 @@ def report():
     """
     print(f"{'Donor Name':<26}|{'Total Given':^15}|{'Num Gifts':^11}|{'Average Gift':^15}")
     print('-'*70)
+    donor_stats = []
     for donor in donors.keys():
-        donor_stats = summarize_donor(donor)
-        print(f"{donor_stats[0]:<26} ${donor_stats[1]:>13.2f}  {donor_stats[2]:>10}  ${donor_stats[3]:>14.2f}")
+        donor_stats.append(summarize_donor(donor))
+        donor_stats.sort(key=lambda tup: tup[1], reverse=True)
+    
+    for summary in donor_stats:
+        print(f"{summary[0]:<26} ${summary[1]:>13.2f}  {summary[2]:>10}  ${summary[3]:>14.2f}")
 
 
 def summarize_donor(donor_name):
