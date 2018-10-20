@@ -1,9 +1,9 @@
 """runs the command line app for the mailroom as part of lesson 3"""
 
 # setup initial donor list
-donors = {'Bill Gates': [100000, 5, 3000000],
-          'Paul Allen': [10, 1000000],
-          'Warren Buffet': [300000000],
+donors = {'Bill Gates': [100000.00, 5.00, 3000000.00],
+          'Paul Allen': [10.00, 1000000.00],
+          'Warren Buffet': [300000000.00],
           }
 
 
@@ -81,10 +81,25 @@ def report():
     Jeff Bezos                 $     877.33           1  $      877.33
     Paul Allen                 $     708.42           3  $      236.14
     """
-    print(f"{'Donor Name':<26}|{'Total Given':^13}|{'Num Gifts':^11}|{'Average Gift':^13}")
-    print('-'*66)
-    # TODO: create helper function to summarize donations
-    # TDOD: create helper function to build table below headers
+    print(f"{'Donor Name':<26}|{'Total Given':^15}|{'Num Gifts':^11}|{'Average Gift':^15}")
+    print('-'*70)
+    for donor in donors.keys():
+        donor_stats = summarize_donor(donor)
+        print(f"{donor_stats[0]:<26} ${donor_stats[1]:>13.2f}  {donor_stats[2]:>10}  ${donor_stats[3]:>14.2f}")
+
+
+def summarize_donor(donor_name):
+    """generates donor summary
+    args:
+        donor_name: donor name matching key from donors
+    returns
+        tuple with fields (donor name, total given, num gifts, average gift)"""
+    total_given = sum(donors[donor_name])
+    num_gifts = len(donors[donor_name])
+    average_gift = total_given/num_gifts
+    
+    return(donor_name, total_given, num_gifts, average_gift)
+
 
 if __name__ == '__main__':
     # initial placeholder for input
