@@ -7,4 +7,8 @@ donors = {'Bill Gates': [100000, 5, 3000000],
           }
 
 if __name__ == '__main__':
-    pass
+    user_input = input("Options:\n"
+        '\tSend a Thank You\n'
+        '\tCreate a Report\n'
+        '\tquit\n'
+        'Please input option: ')
