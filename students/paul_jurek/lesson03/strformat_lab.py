@@ -84,11 +84,19 @@ def format_fruit_list(fruits):
         string telling fruit name and weight
             eg. The weight of an orange is 1.3 and the weight of a lemon is 1.1
     """
-    pass
+    for index, fruit in enumerate(fruits):
+        if index % 2 == 0:
+            name = fruits[index][:-1]
+            weight = fruits[index+1]    
+            if index == 0:
+                output = f'The weight of an {name} is {weight}'
+            else:
+                output += f' and the weight of an {name} is {weight}'
+    return output
 
 def test_format_fruit_list():
     """Here’s a task for you: Given the following four element list:
         ['oranges', 1.3, 'lemons', 1.1]
         Write an f-string that will display:
         The weight of an orange is 1.3 and the weight of a lemon is 1.1"""
-    assert test_format_fruit_list(['oranges', 1.3, 'lemons', 1.1]) == 'The weight of an orange is 1.3 and the weight of a lemon is 1.1'
+    assert format_fruit_list(['oranges', 1.3, 'lemons', 1.1]) == 'The weight of an orange is 1.3 and the weight of a lemon is 1.1'
