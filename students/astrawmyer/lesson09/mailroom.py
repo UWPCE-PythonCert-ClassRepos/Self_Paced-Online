@@ -16,25 +16,33 @@
 """
 
 class Donor:
-    def __init__(self, name, *donations):
+    def __init__(self, name, *donation):
         self.name = name
-        self.donations = donations
-        if donations is None:
-            self.donations = ()
-        else:
-            self.donations = donations
-    
+        self.donations = donation[0]
+        #Need to add code for creating without existing donation?
+
     @property
     def sum_donations(self):
-        self.donations
+        return sum(self.donations)
+
+
+    @property
+    def avg_donations(self):
+        return sum(self.donations)/len(self.donations)
+
     
-    def add_donation(self,new):
-        
+    def new_donation(self,new):
+        return self.donations.append(new)
 
 
-""" class Donor_Actions(Donor):
-    def __init__(self):
-        if Donor """
+
+
+class Donors:
+    data = []
+    
+
+    def new_donor(self,name,donations):
+        return self.data.append(Donor(name,donations))
 
 
 
@@ -44,6 +52,13 @@ ddonors = {"Manny Machado": [12.2,2.51,3.20],
             "Adam Jones": [1024.14,22.21,323.45],
             "Chris Davis": [3.2,5.55,4.20]}
 
-a = Donor('Adam', 12.2,2.51,3.20)
-print(a.name)
+a = Donor('Adam', [1])
+a.new_donation(8)
 print(a.donations)
+
+
+
+b = Donors
+print(b.data)
+b.new_donor(b,'Adam',[1,2,3])
+print(b.data[0].name)
