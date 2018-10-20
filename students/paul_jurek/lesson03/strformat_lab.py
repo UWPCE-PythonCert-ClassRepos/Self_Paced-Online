@@ -105,11 +105,12 @@ def format_fruit_list(fruits, uppercase=False, fat_fruit=False):
 
 @pytest.mark.parametrize(['test_input', 'input_upper', 'input_big_fruit', 'expected'], [
     (['oranges', 1.3, 'lemons', 1.1], False, False, 'The weight of an orange is 1.3 and the weight of a lemon is 1.1'),
-    (['oranges', 1.3, 'lemons', 1.1], False, False,  'The weight of an orange is 1.3 and the weight of a lemon is 1.1'),
-    (['oranges', 1.3, 'lemons', 1.1], False, False,  'The weight of an orange is 1.3 and the weight of a lemon is 1.1'),
-    (['oranges', 1.3, 'lemons', 1.1], False, False,  'The weight of an orange is 1.3 and the weight of a lemon is 1.1')
+    (['oranges', 1.3, 'lemons', 1.1], True, False,  'The weight of an ORANGE is 1.3 and the weight of a LEMON is 1.1'),
+    (['oranges', 1.3, 'lemons', 1.1], False, True,  'The weight of an orange is 1.56 and the weight of a lemon is 1.32'),
+    (['oranges', 1.3], False, False,  'The weight of an orange is 1.3'),
+    (['oranges', 1.3, 'dragonfruits', 3, 'mangos', 2.5], False, False,  'The weight of an orange is 1.3 and the weight of a dragonfruit is 3 and the weight of a mango is 2.5'),
     ])
-    
+
 def test_format_fruit_list(test_input, input_upper, input_big_fruit, expected):
     """Here’s a task for you: Given the following four element list:
         ['oranges', 1.3, 'lemons', 1.1]
