@@ -6,6 +6,35 @@ donors = {'Bill Gates': [100000, 5, 3000000],
           'Warren Buffet': [300000000],
           }
 
+
+def thank_you():
+    """If the user (you) selects ‘Send a Thank You’, prompt for a Full Name.
+    If the user types ‘list’, show them a list of the donor names and
+    re-prompt.  If the user types a name not in the list, add that name
+    to the data structure and use it.  If the user types a name in the
+    list, use it.  Once a name has been selected, prompt for a donation
+    amount.  Turn the amount into a number – it is OK at this point for
+    the program to crash if someone types a bogus amount.
+    Once an amount has been given, add that amount to the donation history
+    of the selected user.  Finally, use string formatting to compose an
+    email thanking the donor for their generous donation. Print the email
+    to the terminal and return to the original prompt.
+    It is fine (for now) to forget new donors once the script quits running."""
+    exit_ind = False
+    while exit_ind == False:
+        thank_you_input = input('Please select name: ')
+        thank_you_input = thank_you_input.lower().strip()
+        
+        if thank_you_input == 'list':
+            display_donors()
+        else:
+            exit_ind = True
+
+def display_donors():
+    """diplays donors"""
+    [print(donor) for donor in donors.keys()]
+
+
 if __name__ == '__main__':
     # initial placeholder for input
     user_input = None
@@ -20,3 +49,8 @@ if __name__ == '__main__':
 
         # cleans up user input to make more robust.
         user_input = user_input.lower().strip()
+
+        if user_input == 'send a thank you':
+            thank_you()
+
+    # TODO: add functions for each option in top to be called
