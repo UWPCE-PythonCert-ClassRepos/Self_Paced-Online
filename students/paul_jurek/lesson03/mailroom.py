@@ -21,9 +21,9 @@ def thank_you():
     to the terminal and return to the original prompt.
     It is fine (for now) to forget new donors once the script quits running."""
     exit_ind = False
-    while exit_ind == False:
+    while not exit_ind:
         thank_you_input = input('Please select name: ')
-        
+
         if thank_you_input == 'list':
             display_donors()
         else:
@@ -34,17 +34,21 @@ def thank_you():
             send_thank_you(fullname=thank_you_input)
             exit_ind = True
 
+
 def display_donors():
     """diplays donors"""
     [print(donor) for donor in donors.keys()]
+
 
 def create_donation(fullname, amount):
     """adds a donation to the donors dict from user input"""
     donors[fullname].append(amount)
 
+
 def create_donor(fullname):
     """adds new donor to donors"""
     donors[fullname] = []
+
 
 def send_thank_you(fullname):
     """prints thank you message to terminal for donation"""
