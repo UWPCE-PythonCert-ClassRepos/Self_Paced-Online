@@ -37,7 +37,7 @@ def formatter(tup_input):
     return(template_str.format(n, *tup_input))
 
 
-@pytest.mark.parametrize("test_input,expected", [
+@pytest.mark.parametrize(['test_input', 'expected'], [
     ((1, 2, 3), 'the 3 numbers are: 1, 2, 3'),
     ((1, 2, 3, 4), 'the 4 numbers are: 1, 2, 3, 4'),
     ((1,), 'the 1 numbers are: 1'),
@@ -103,15 +103,16 @@ def format_fruit_list(fruits, uppercase=False, fat_fruit=False):
     return output
 
 
-@pytest.mark.parametrize("test_input,expected", [
-    ((1, 2, 3), 'the 3 numbers are: 1, 2, 3'),
-    ((1, 2, 3, 4), 'the 4 numbers are: 1, 2, 3, 4'),
-    ((1,), 'the 1 numbers are: 1'),
-    ((), 'the 0 numbers are: ')
-])
-def test_format_fruit_list():
+@pytest.mark.parametrize(['test_input', 'input_upper', 'input_big_fruit', 'expected'], [
+    (['oranges', 1.3, 'lemons', 1.1], False, False, 'The weight of an orange is 1.3 and the weight of a lemon is 1.1'),
+    (['oranges', 1.3, 'lemons', 1.1], False, False,  'The weight of an orange is 1.3 and the weight of a lemon is 1.1'),
+    (['oranges', 1.3, 'lemons', 1.1], False, False,  'The weight of an orange is 1.3 and the weight of a lemon is 1.1'),
+    (['oranges', 1.3, 'lemons', 1.1], False, False,  'The weight of an orange is 1.3 and the weight of a lemon is 1.1')
+    ])
+    
+def test_format_fruit_list(test_input, input_upper, input_big_fruit, expected):
     """Here’s a task for you: Given the following four element list:
         ['oranges', 1.3, 'lemons', 1.1]
         Write an f-string that will display:
         The weight of an orange is 1.3 and the weight of a lemon is 1.1"""
-    assert format_fruit_list(['oranges', 1.3, 'lemons', 1.1]) == 'The weight of an orange is 1.3 and the weight of a lemon is 1.1'
+    assert format_fruit_list(test_input, uppercase=input_upper, fat_fruit=input_big_fruit) == expected
