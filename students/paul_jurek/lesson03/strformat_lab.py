@@ -46,12 +46,15 @@ def formatter(tup_input):
 def test_formatter(test_input, expected):
     assert formatter(test_input) == expected
 
+
 # task 4
 """Given a 5 element tuple:
 ( 4, 30, 2017, 2, 27)
 use string formating to print:
 '02 27 2017 04 30'
 Hint: use index numbers to specify positions."""
+
+
 def inside_out(tuple5):
     """funtion to re-order and print input
     args:
@@ -60,10 +63,11 @@ def inside_out(tuple5):
     returns:
         str with output of 'tuple[3] tuple[4] tuple[2] tuple[0] tuple[1]' with formatting (see test)
         prints results to console"""
-    
+
     output = f'{tuple5[3]:02} {tuple5[4]:02} {tuple5[2]:04} {tuple5[0]:02} {tuple5[1]:02}'
     print(output)
     return output
+
 
 def test_inside_out():
     """Given a 5 element tuple:
@@ -71,13 +75,14 @@ def test_inside_out():
         use string formating to print:
         '02 27 2017 04 30'
         Hint: use index numbers to specify positions."""
-    input = ( 4, 30, 2017, 2, 27)
+    input = (4, 30, 2017, 2, 27)
     assert inside_out(input) == '02 27 2017 04 30'
+
 
 def format_fruit_list(fruits, uppercase=False, fat_fruit=False):
     """as part of task 5, this formats fruit lists
     ars:
-        fruits: list of fruits which should be divisable by 2.  
+        fruits: list of fruits which should be divisable by 2.
             first entry is fruit name and second is weight in some unit
             eg. ['oranges', 1.3, 'lemons', 1.1]
     returns
@@ -95,7 +100,7 @@ def format_fruit_list(fruits, uppercase=False, fat_fruit=False):
             if name[0].lower() in ['a', 'e', 'i', 'o', 'u']:
                 leader = 'an'
             else:
-                leader = 'a'  
+                leader = 'a'
             if index == 0:
                 output = f'The weight of {leader} {name} is {weight}'
             else:
@@ -110,7 +115,6 @@ def format_fruit_list(fruits, uppercase=False, fat_fruit=False):
     (['oranges', 1.3], False, False,  'The weight of an orange is 1.3'),
     (['oranges', 1.3, 'dragonfruits', 3, 'mangos', 2.5], False, False,  'The weight of an orange is 1.3 and the weight of a dragonfruit is 3 and the weight of a mango is 2.5'),
     ])
-
 def test_format_fruit_list(test_input, input_upper, input_big_fruit, expected):
     """Here’s a task for you: Given the following four element list:
         ['oranges', 1.3, 'lemons', 1.1]
@@ -120,20 +124,21 @@ def test_format_fruit_list(test_input, input_upper, input_big_fruit, expected):
 
 
 def task6_table():
-    """Write some Python code to print a table of several rows, 
-    each with a name, an age and a cost. Make sure some of the 
-    costs are in the hundreds and thousands to test your 
+    """Write some Python code to print a table of several rows,
+    each with a name, an age and a cost. Make sure some of the
+    costs are in the hundreds and thousands to test your
     alignment specifiers.
 
-    It is not clear in instructions but I am assuming task is 
+    It is not clear in instructions but I am assuming task is
     to make decimal points line up in cost column"""
     data = (('Paul', 33, '$10000.00'), ('Cole', 5, '$200.00'), ('Dylan', 2, '$1.00'))
     for entry in data:
         print(f'{entry[0]:15} {entry[1]:>3} {entry[2]:>15}')
 
+
 def task_6_extra_credit(tuple10, string_choice='f'):
-    """And for an extra task, given a tuple with 10 consecutive 
-    numbers, can you work how to quickly print the tuple in 
-    columns that are 5 charaters wide? It’s easily done 
+    """And for an extra task, given a tuple with 10 consecutive
+    numbers, can you work how to quickly print the tuple in
+    columns that are 5 charaters wide? It’s easily done
     on one short line!"""
     [print(f'{i:5}', end=" ") for i in tuple10]
