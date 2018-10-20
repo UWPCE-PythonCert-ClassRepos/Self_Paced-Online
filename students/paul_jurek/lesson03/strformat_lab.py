@@ -87,11 +87,15 @@ def format_fruit_list(fruits):
     for index, fruit in enumerate(fruits):
         if index % 2 == 0:
             name = fruits[index][:-1]
-            weight = fruits[index+1]    
-            if index == 0:
-                output = f'The weight of an {name} is {weight}'
+            weight = fruits[index+1]
+            if name[0].lower() in ['a', 'e', 'i', 'o', 'u']:
+                leader = 'an'
             else:
-                output += f' and the weight of an {name} is {weight}'
+                leader = 'a'  
+            if index == 0:
+                output = f'The weight of {leader} {name} is {weight}'
+            else:
+                output += f' and the weight of {leader} {name} is {weight}'
     return output
 
 def test_format_fruit_list():
