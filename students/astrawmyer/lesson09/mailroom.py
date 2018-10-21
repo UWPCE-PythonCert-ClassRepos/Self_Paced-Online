@@ -38,11 +38,15 @@ class Donor:
 
 
 class Donors:
-    data = []
+    def __init__(self):
+        self.data = {}
+
     
 
-    def new_donor(self,name,donations):
-        return self.data.append(Donor(name,donations))
+    def new_donor(self,donor):
+        #currently allows to add one individual donor with list of donations
+        self.data[donor.name] = donor.donations
+        print(self.data)
 
 
 
@@ -53,12 +57,10 @@ ddonors = {"Manny Machado": [12.2,2.51,3.20],
             "Chris Davis": [3.2,5.55,4.20]}
 
 a = Donor('Adam', [1])
+b = Donor("Yasiel", [3])
 a.new_donation(8)
 print(a.donations)
 
-
-
-b = Donors
-print(b.data)
-b.new_donor(b,'Adam',[1,2,3])
-print(b.data[0].name)
+don = Donors()
+don.new_donor(a)
+don.new_donor(b)
