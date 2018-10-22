@@ -49,6 +49,32 @@ class Donors:
         print(self.data)
 
 
+    def display_list(self):
+        for name in self.data.keys():
+            print(name)
+
+    
+    def add_donation(self,name,amount):
+        #add doination to existing donor within Donors
+        self.data[name].append(amount)
+        print(self.data)
+
+
+    def write_letter(self,name,amount):
+        line_one = 'Dear {},'.format(name)
+        line_two = "Thank you for donating ${:.2f} to the Human Fund. Your money will be used appropriately.".format(amount)
+        letter = line_one + "\n" + line_two
+        return letter
+    
+
+    def write_report(self,data): #need to add the rest of the code to prepare the data
+        print('Donor Name                | Total Given | Num Gifts | Average Gift')
+        print('-'*67)
+        for i in donors:
+            print('{1:27}${0:11.2f}{2:12}  ${3:12.2f}'.format(*i))
+
+
+
 
 
 
@@ -64,3 +90,6 @@ print(a.donations)
 don = Donors()
 don.new_donor(a)
 don.new_donor(b)
+don.display_list()
+don.add_donation("Adam",55)
+print(don.write_letter("Adam",54))
