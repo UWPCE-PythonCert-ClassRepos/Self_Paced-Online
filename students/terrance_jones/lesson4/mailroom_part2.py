@@ -6,7 +6,8 @@ d3={'full_name':'Paul Jackson', 'donations': [5.00, 10.00, 15.00]}
 d4={'full_name': 'Karl Black', 'donations': [100.00, 200.00, 300.00]}
 d5={'full_name':'Charles Exx', 'donations': [15.00, 30.00, 45.00]}
 
-donor_list = [d1,d2,d3,d4,d5]
+donor_list = {'Carlos Santos':[25,50,100], 'Esperanza Gomez': [10,20,30], 'Paul Jackson':[5,10,15], 'Karl Black':[100,200,300], 'Charles Exx': [15,30,45]}
+
 
 """
 FUNCTIONS NEEDED FOR SCRIPT TO RUN
@@ -18,43 +19,34 @@ def get_name():
 
 def show_donor_list():
     """Create list of donor names only. Display list of all donors"""
-    donor_names = []
-    for item in donor_list:
-        print(item['full_name'] )
-        
-
+    for key in donor_list.keys():
+        print(key)
+    
 
 def find_donor(x):
-    for i in donor_list:
-        if i['full_name'] == x:
+    for key in donor_list.keys():
+        if key == x:
             return True
         
 
- 
 def get_amount():
     """Gets donation amount from user"""
     amount = input("Enter the donation amount:")
     amount = float(amount)
     return amount
 
-def add_to_existing_donor(i, a):
+def add_to_existing_donor(d, a):
     """adds donation amount to donor in list. d is donor name. a is amount of donation"""
-    
-    i.append(a)
-    
+    donor_list[d].append(a)
 
 def create_new_donor(d, a):
-    """Creates a new donor list. adds new list to current donor list"""
-    new_donor_dict = {}
-    new_donor_dict['full_name'] = d
-    new_donor_dict['donations'] = [a]
-    donor_list.append(new_donor_dict)
+    donor_list[d] = [a]
 
-def print_row():
-    for item in donor_list:
-        name = item['full_name']
-        num_gifts = len(item['donations'])
-        total = sum(item['donations'])
+def print_rows():
+    for c in donor_list:
+        name = c
+        num_gifts = len(donor_list[c])
+        total = sum(donor_list[c])
         average = total / num_gifts
         average = round(average,2)
         
@@ -62,8 +54,10 @@ def print_row():
 
 
 def letter(donor):
-    output = {'name': donor['full_name'], 'total': sum(donor['donations'])}
-    all_donations = donor['donations']
+    output = {'name': donor}
+    all_donations = donor_list[donor]
+    output = {'name': donor, 'total': sum(donor_list[donor])}
+   
     output['last_donation']= all_donations[len(all_donations)-1]
     letter = '''Dear {name},\n
     \tThank you for your most recent donation of ${last_donation:,.2f}
@@ -83,21 +77,18 @@ def thankyou():
         donor_name =get_name()
 
     if find_donor(donor_name) is True: 
+        donation_amount = get_amount()
+        add_to_existing_donor(donor_name, donation_amount)
         
-        for item in donor_list:
-            if donor_name == item['full_name']:
-                donation_amount = get_amount()
-                item['donations'].append(donation_amount)    
-        
-                dic = {'name': donor_name , 'amount_donated': donation_amount}
-                print("Dear {name}, \n Thank you for your {amount_donated:,.2f}0 donation. \nSincerely, Mailroom.".format(**dic))
-                menu_selection(sub_prompt, sub_dispatch)
+        dic = {'name': donor_name , 'amount_donated': donation_amount}
+        print("Dear {name}, \n Thank you for your {amount_donated:,.2f} donation. \nSincerely, Mailroom.".format(**dic))
+        menu_selection(sub_prompt, sub_dispatch)
     else:
         
         donation_amount = get_amount()
         create_new_donor(donor_name, donation_amount)
         dic = {'name': donor_name , 'amount_donated': donation_amount}
-        print("Dear {name}, \n Thank you for your {amount_donated:,.2f}0 donation. \nSincerely, Mailroom.".format(**dic))
+        print("Dear {name}, \n Thank you for your {amount_donated:,.2f} donation. \nSincerely, Mailroom.".format(**dic))
         menu_selection(sub_prompt, sub_dispatch)
             
 
@@ -107,16 +98,17 @@ def create_report():
     heading = "{:<25s} | {:^20s} | {:^10s} | {:^20s} ".format("Donor Name", "Total Given", "Num Gifts", "Average Gift")
     print(heading)
     print("-" * len(heading))
-    print_row()
+    print_rows()
     menu_selection(sub_prompt, sub_dispatch)
 
 def letters_everyone():
-    for item in donor_list:
-        filename = "{}.txt".format(item['full_name'])
+    for key in donor_list.keys():
+        filename = "{}.txt".format(key)
         with open(filename, 'w') as f:
-            donor_letter = letter(item)
+            donor_letter = letter(key)
             f.write(donor_letter)
- 
+    print("Letters have been created for each donor")
+    menu_selection(sub_prompt, sub_dispatch)
 
 def menu_selection(prompt, dispatch_dict):
     response = input(prompt)
@@ -134,7 +126,7 @@ def quit():
 main_prompt = ("What do you want to do?\n"
                 "(1) Thank you letter\n"
                 "(2) Create Report\n"
-                "(3) Leeters to all donors\n"
+                "(3) Letters to all donors\n"
                 "(q) Quit\n " 
                 )
 main_dispatch = {"1": thankyou,
@@ -146,7 +138,7 @@ main_dispatch = {"1": thankyou,
 sub_prompt =  ("What do you want to do?\n"
                 "(1) Thank you letter\n"
                 "(2) Create Report\n"
-                "(3) Leeters to all donors\n"
+                "(3) Letters to all donors\n"
                 "(q) Quit\n " 
                 )
 
