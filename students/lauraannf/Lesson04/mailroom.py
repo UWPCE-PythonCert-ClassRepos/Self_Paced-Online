@@ -86,6 +86,7 @@ def main():
         task = input("Choose an action: [1] Send a Thank You; [2] Create a \
 Report; [3] Send a Thank You to Everyone; [4] Quit>")
         arg_dict[task]()
+# updated w/ switch dict
 
 
 if __name__ == '__main__':
