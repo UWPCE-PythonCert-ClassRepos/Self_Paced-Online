@@ -67,10 +67,20 @@ class Donors:
         return letter
     
 
-    def write_report(self,data): #need to add the rest of the code to prepare the data
+    def write_report(self): #need to add the rest of the code to prepare the data
+        donors_report = []
+        for name, amount in self.data.items():
+            sum_donation = 0
+            avg_donation = 0
+            for i in amount:
+                sum_donation = sum_donation + i
+                num_donation = len(amount)
+            avg_donation = sum_donation/num_donation
+            donors_report.append([sum_donation, name, num_donation, avg_donation])
+        donors_report.sort(reverse=True)
         print('Donor Name                | Total Given | Num Gifts | Average Gift')
         print('-'*67)
-        for i in donors:
+        for i in donors_report:
             print('{1:27}${0:11.2f}{2:12}  ${3:12.2f}'.format(*i))
 
 
@@ -93,3 +103,4 @@ don.new_donor(b)
 don.display_list()
 don.add_donation("Adam",55)
 print(don.write_letter("Adam",54))
+don.write_report()
