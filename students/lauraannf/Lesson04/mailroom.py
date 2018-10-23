@@ -65,13 +65,14 @@ def all_letters():
     new_path = my_path + 'letters_' + now.strftime('%d%m%Y')
     Path(new_path).mkdir(exist_ok=True)
     for key in donor_list.keys():
-        file = open(new_path + '\\' + key + '_' + now.strftime('%d%m%Y') +
-                    '.txt', 'w')
-        file.write('Dear {}, \n'
-                   'Thank you so much for your generous donation of ${:.2f} \n'
-                   'Sincerely, \n'
-                   'Laura F'.format(key, sum(donor_list[key])))
-        file.close()
+        with open(new_path + '\\' + key + '_' + now.strftime('%d%m%Y') +
+                    '.txt', 'w') as letter_file:
+        # Changed file to letter file b/c file is a built in name
+        # Added with open so file always closes
+            letter_file.write('Dear {}, \n'
+                       'Thank you so much for your generous donation of ${:.2f} \n'
+                       'Sincerely, \n'
+                       'Laura F'.format(key, sum(donor_list[key])))
 
 
 def quit_program():
