@@ -48,6 +48,8 @@ def print_rows():
         total = sum(donor_list[c])
         average = total / num_gifts
         average = round(average,2)
+
+        
         
         print("{:<25} ${:^20}  {:^15} ${:>20}".format(name,total,num_gifts,average))
 
