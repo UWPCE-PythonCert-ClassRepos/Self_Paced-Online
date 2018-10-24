@@ -12,10 +12,6 @@ for f in pth.iterdir():
 
 # Write a program which copies a file from a source, to a destination (without using shutil, or the OS copy command). 
 # we will copy lesson 3 file to lesson 4 for this
-original_file = pathlib.Path('../lesson03/list_lab.py')
-new_file = pathlib.Path('list_lab_copy.py')
-original_file.rename(new_file)
-
 # Advanced: make it work for any size file: i.e. don’t read the entire contents of the file into memory at once.
 def copy_file(old_file, new_file):
     """does content copy of files from old file to new"""
