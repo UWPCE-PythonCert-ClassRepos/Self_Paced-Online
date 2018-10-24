@@ -61,3 +61,16 @@ print (f's3 subset of s2: {s3 <= s2}')
 
 # and if s4 is a subset of s2 (True).
 print(f's3 subset of s2: {s4 <= s2}')
+
+# Sets 2
+# Create a set with the letters in ‘Python’ and add ‘i’ to the set.
+letters = set('Python')
+letters.update('i')
+print(letters)
+
+# Create a frozenset with the letters in ‘marathon’.
+frozen_letters = frozenset('marathon')
+
+# display the union and intersection of the two sets.
+print(f'union: {letters.union(frozen_letters)}')
+print(f'intersection: {letters & frozen_letters}')
