@@ -38,9 +38,9 @@ fruits.insert(0, 'Blueberries')
 print(fruits)
 
 # Display all the fruits that begin with “P”
-for x in fruits:
-    if x.startswith('P') or x.startswith('p'):
-         print("the fruit that begin with “P” is ", x)
+for fruit in fruits:
+    if fruit.startswith('P') or fruit.startswith('p'):
+         print("the fruit that begin with “P” is ", fruit)
 
 
 
