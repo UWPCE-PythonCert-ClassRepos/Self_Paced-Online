@@ -16,11 +16,9 @@ def show_donor_list():
         print(key)
     
 
-def find_donor(x):
-    for key in donor_list.keys():
-        if key == x:
-            return True
-        
+def donor_exists(x):
+    if x in donor_list.keys():
+        return True
 
 def get_amount():
     """Gets donation amount from user."""
@@ -54,6 +52,17 @@ def print_rows():
         print("{:<25} ${:^20}  {:^15} ${:>20}".format(name,total,num_gifts,average))
 
 
+def add_or_update_donor(donor_name, donation_amount):
+    if donor_exists(donor_name) is True:
+        add_to_existing_donor(donor_name, donation_amount)
+    else:
+        create_new_donor(donor_name, donation_amount)
+
+    dic = {'name': donor_name , 'amount_donated': donation_amount}
+    print("Dear {name}, \n Thank you for your {amount_donated:,.2f} donation. \nSincerely, Mailroom.".format(**dic))
+        
+
+
 def letter(donor):
     output = {'name': donor}
     all_donations = donor_list[donor]
@@ -73,24 +82,13 @@ def letter(donor):
 #thank you function gets a donors name and amount of donation. then prints out a thank you email
 def thankyou():
     donor_name = get_name()
+    donation_amount = get_amount()
+
     if donor_name == "list":
         show_donor_list
         donor_name =get_name()
 
-    if find_donor(donor_name) is True: 
-        donation_amount = get_amount()
-        add_to_existing_donor(donor_name, donation_amount)
-        
-        dic = {'name': donor_name , 'amount_donated': donation_amount}
-        print("Dear {name}, \n Thank you for your {amount_donated:,.2f} donation. \nSincerely, Mailroom.".format(**dic))
-        
-    else:
-        
-        donation_amount = get_amount()
-        create_new_donor(donor_name, donation_amount)
-        dic = {'name': donor_name , 'amount_donated': donation_amount}
-        print("Dear {name}, \n Thank you for your {amount_donated:,.2f} donation. \nSincerely, Mailroom.".format(**dic))
-       
+    add_or_update_donor(donor_name, donation_amount)
             
 
 
@@ -114,8 +112,8 @@ def letters_everyone():
 def menu_selection(prompt, dispatch_dict):
     """displays the menu. asks for user to select option. if option is not available will throw KeyError and ask the user for new input"""
     while True:
+        response = input(prompt)
         try:
-            response = input(prompt)
             if dispatch_dict[response]() == "exit menu":
                 return
         except KeyError:
