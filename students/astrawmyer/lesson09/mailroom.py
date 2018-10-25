@@ -2,6 +2,7 @@
 
 import mailroom_classes as mc
 
+
 def thank_you():
     """Function to send a thank you letter."""
     while True:
@@ -35,8 +36,6 @@ def thank_you():
             print(donor_set.write_letter(input_name,donation))
             #print(ddonors)
             break
-
-
 
  
 if __name__ == "__main__":
