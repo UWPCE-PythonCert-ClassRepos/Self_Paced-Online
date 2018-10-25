@@ -1,11 +1,4 @@
-
-#VARIABLES
-d1={'full_name':'Carlos Santos', 'donations': [25.00, 50.00, 100.00]}
-d2={'full_name':'Esperanza Gomez', 'donations': [10.00, 20.00, 30.00]}
-d3={'full_name':'Paul Jackson', 'donations': [5.00, 10.00, 15.00]}
-d4={'full_name': 'Karl Black', 'donations': [100.00, 200.00, 300.00]}
-d5={'full_name':'Charles Exx', 'donations': [15.00, 30.00, 45.00]}
-
+#list of donors
 donor_list = {'Carlos Santos':[25,50,100], 'Esperanza Gomez': [10,20,30], 'Paul Jackson':[5,10,15], 'Karl Black':[100,200,300], 'Charles Exx': [15,30,45]}
 
 
@@ -30,10 +23,16 @@ def find_donor(x):
         
 
 def get_amount():
-    """Gets donation amount from user"""
-    amount = input("Enter the donation amount:")
-    amount = float(amount)
-    return amount
+    """Gets donation amount from user."""
+    while True:
+        try:
+            amount = input("Enter the donation amount:")
+            amount = float(amount)
+        except ValueError:
+            print("Donation amount must be a numeric value")
+        
+        else:
+            return amount
 
 def add_to_existing_donor(d, a):
     """adds donation amount to donor in list. d is donor name. a is amount of donation"""
@@ -49,6 +48,8 @@ def print_rows():
         total = sum(donor_list[c])
         average = total / num_gifts
         average = round(average,2)
+
+        
         
         print("{:<25} ${:^20}  {:^15} ${:>20}".format(name,total,num_gifts,average))
 
@@ -111,10 +112,14 @@ def letters_everyone():
    
 
 def menu_selection(prompt, dispatch_dict):
+    """displays the menu. asks for user to select option. if option is not available will throw KeyError and ask the user for new input"""
     while True:
-        response = input(prompt)
-        if dispatch_dict[response]() == "exit menu":
-            return
+        try:
+            response = input(prompt)
+            if dispatch_dict[response]() == "exit menu":
+                return
+        except KeyError:
+            print("Please select an option from the menu")
 
   
 def sub_menu():
@@ -152,7 +157,8 @@ sub_dispatch = {"1": thankyou,
 
 
 if __name__ == '__main__':
-    menu_selection(main_prompt, main_dispatch)
+ 
+        menu_selection(main_prompt, main_dispatch)
 
   
                 
