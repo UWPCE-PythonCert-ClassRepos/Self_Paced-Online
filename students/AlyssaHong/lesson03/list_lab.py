@@ -29,7 +29,6 @@ else:
     print("Out of the list. Please input the number 1~5")
     response = input("What number of fruit would you like to see(the number is 1~5 and you can choose just one)? ")
 
-
 # Add another fruit -- using "+"
 print(["Mangos"] + fruits)
 
