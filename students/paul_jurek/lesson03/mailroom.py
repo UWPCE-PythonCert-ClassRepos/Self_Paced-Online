@@ -128,8 +128,11 @@ def send_letters_to_everyone():
     # iterate through donors
     for donor in donors:
         # sum up donations
-    # build template
-    # write file
+        # build template
+        # write file
+        file_name = ".".join([donor.replace(" ", "_").lower(),'txt'])
+        with open(file_name, 'w') as f:
+            f.write(letter_template)
         pass
 
 
