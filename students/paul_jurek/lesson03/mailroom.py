@@ -39,7 +39,7 @@ def thank_you():
 
 def display_donors():
     """diplays donors"""
-    print(donors.keys())
+    print("\n".join(list(donors)))
 
 
 def create_donation(fullname, amount):
