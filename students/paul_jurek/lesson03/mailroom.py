@@ -6,7 +6,6 @@ donors = {'Bill Gates': [100000.00, 5.00, 3000000.00],
           'Warren Buffet': [300000000.00],
           }
 
-
 def thank_you():
     """If the user (you) selects ‘Send a Thank You’, prompt for a Full Name.
     If the user types ‘list’, show them a list of the donor names and
@@ -41,6 +40,10 @@ def display_donors():
     """diplays donors"""
     print("\n".join(list(donors)))
 
+
+def passing_function():
+    """placeholder to catch all bad inputs and do nothing"""
+    pass
 
 def create_donation(fullname, amount):
     """adds a donation to the donors dict from user input"""
@@ -106,6 +109,10 @@ def summarize_donor(donor_name):
 
 
 if __name__ == '__main__':
+
+    MAIN_MENU_OPTIONS = {'1': thank_you,
+                         '2': report}
+    
     # run until user specifies to get out
     while True:
         user_input = input('Options:\n'
@@ -114,12 +121,7 @@ if __name__ == '__main__':
                            '\t3: Quit\n'
                            'Please input number for option: ')
 
-        # cleans up user input to make more robust.
-        user_input = user_input
-
-        if user_input == '1':
-            thank_you()
-        elif user_input == '2':
-            report()
-        elif (user_input == '3') or (user_input.lower().strip() == 'quit'):
+        if (user_input == '3') or (user_input.lower().strip() == 'quit'):
             break
+        else:
+            MAIN_MENU_OPTIONS.get(user_input, passing_function)()
