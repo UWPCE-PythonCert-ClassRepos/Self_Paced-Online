@@ -20,21 +20,21 @@ def thank_you():
     email thanking the donor for their generous donation. Print the email
     to the terminal and return to the original prompt.
     It is fine (for now) to forget new donors once the script quits running."""
-
-    while True:
+    exit_ind = False
+    while not exit_ind:
         thank_you_input = input('Please select name: ')
 
         if thank_you_input.lower().strip() == 'list':
             display_donors()
         elif thank_you_input.lower().strip() == 'quit':
-            break
+            exit_ind = True
         else:
             if thank_you_input not in donors:
                 create_donor(thank_you_input)
             donation_amount = float(input("Select donation amount: "))
             create_donation(fullname=thank_you_input, amount=donation_amount)
             send_thank_you(fullname=thank_you_input)
-            break
+            exit_ind = True
 
 
 def display_donors():

@@ -13,12 +13,15 @@ for f in pth.iterdir():
 # Write a program which copies a file from a source, to a destination (without using shutil, or the OS copy command). 
 # we will copy lesson 3 file to lesson 4 for this
 # Advanced: make it work for any size file: i.e. don’t read the entire contents of the file into memory at once.
+# This should work for any kind of file, so you need to open the files in binary mode: open(filename, 'rb') (or 'wb' for writing). Note that for binary files, you can’t use readline() – lines don’t have any meaning for binary files.
+# Test it with both text and binary files (maybe jpeg or something of your chosing).
+
 def copy_file(old_file, new_file):
     """does content copy of files from old file to new"""
     
     with open(old_file, 'rb') as infile, open(new_file, 'wb') as outfile:
         while True:
-            line = infile.readline()
+            line = infile.read(1000)
             if not line:
                 break
             outfile.write(line)
@@ -28,5 +31,7 @@ original_file = '../lesson03/slicing_lab.py'
 new_file = 'slicing_lab_copy2.py'
 copy_file(old_file=original_file, new_file=new_file)
 
-# This should work for any kind of file, so you need to open the files in binary mode: open(filename, 'rb') (or 'wb' for writing). Note that for binary files, you can’t use readline() – lines don’t have any meaning for binary files.
-# Test it with both text and binary files (maybe jpeg or something of your chosing).
+# testing this script with picture
+original_file = 'example_picture.png'
+new_file = 'copied_picture.png'
+copy_file(old_file=original_file, new_file=new_file)
