@@ -33,7 +33,7 @@ def thank_you():
                 create_donor(thank_you_input)
             donation_amount = float(input("Select donation amount: "))
             create_donation(fullname=thank_you_input, amount=donation_amount)
-            send_thank_you(fullname=thank_you_input)
+            create_thank_you(fullname=thank_you_input)
             break
 
 
@@ -58,10 +58,6 @@ def create_donor(fullname):
     """adds new donor to donors"""
     donors[fullname] = []
 
-
-def send_thank_you(fullname):
-    """prints thank you message to terminal for donation"""
-    print(f'Thank you {fullname} for your generous donation!')
 
 
 def report():
@@ -113,7 +109,7 @@ def summarize_donor(donor_name):
 
 
 def send_letters_to_everyone():
-    """process to evaluate all donors and create letter to send to 
+    """process to evaluate all donors and create letter to send to
     donors."""
     # TODO: move letter templates to seperate files
     letter_template = """Dear {full_name},
@@ -131,7 +127,16 @@ def send_letters_to_everyone():
         donor_info = summarize_donor(donor)
         with open(file_name, 'w') as f:
             f.write(letter_template.format(full_name = donor_info[0], donation_amount=donor_info[1]))
-        
+
+
+def mail_thank_you(thank_you, directory):
+    """creates text file with thank you text"""
+    pass
+
+
+def create_thank_you(fullname):
+    """prints thank you message to terminal for donation"""
+    print(f'Thank you {fullname} for your generous donation!')
 
 
 def menu_selection(prompt, dispatch_dict):
@@ -148,8 +153,6 @@ def menu_selection(prompt, dispatch_dict):
             break
 
         dispatch_dict.get(response, passing_function)()
-
-
 
 
 if __name__ == '__main__':
