@@ -106,21 +106,20 @@ def summarize_donor(donor_name):
 
 
 if __name__ == '__main__':
-    # initial placeholder for input
-    user_input = None
-
     # run until user specifies to get out
-    while user_input != 'quit':
+    while True:
         user_input = input('Options:\n'
-                           '\tSend a Thank You\n'
-                           '\tCreate a Report\n'
-                           '\tquit\n'
-                           'Please input option: ')
+                           '\t1: Send a Thank You\n'
+                           '\t2: Create a Report\n'
+                           '\t3: Quit\n'
+                           'Please input number for option: ')
 
         # cleans up user input to make more robust.
-        user_input = user_input.lower().strip()
+        user_input = user_input
 
-        if user_input == 'send a thank you':
+        if user_input == '1':
             thank_you()
-        elif user_input == 'create a report':
+        elif user_input == '2':
             report()
+        elif (user_input == '3') or (user_input.lower().strip() == 'quit'):
+            break
