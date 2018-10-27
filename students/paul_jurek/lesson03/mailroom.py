@@ -115,6 +115,20 @@ def summarize_donor(donor_name):
 def send_letters_to_everyone():
     """process to evaluate all donors and create letter to send to 
     donors."""
+    # TODO: move letter templates to seperate files
+    letter_template = """Dear {full_name},
+
+        Thank you for your very kind donation of ${donation_amount}.
+
+        It will be put to very good use.
+
+                       Sincerely,
+                          -The Team"""
+
+    # iterate through donors
+    # sum up donations
+    # build template
+    # write file
     pass
 
 
@@ -132,6 +146,8 @@ def menu_selection(prompt, dispatch_dict):
             break
 
         dispatch_dict.get(response, passing_function)()
+
+
 
 
 if __name__ == '__main__':
