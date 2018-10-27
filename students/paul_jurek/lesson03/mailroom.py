@@ -33,7 +33,7 @@ def thank_you():
                 create_donor(thank_you_input)
             donation_amount = float(input("Select donation amount: "))
             create_donation(fullname=thank_you_input, amount=donation_amount)
-            create_thank_you(fullname=thank_you_input)
+            create_thank_you(fullname=thank_you_input, amount=donation_amount)
             break
 
 
@@ -134,9 +134,9 @@ def mail_thank_you(thank_you, directory):
     pass
 
 
-def create_thank_you(fullname):
+def create_thank_you(fullname, amount):
     """prints thank you message to terminal for donation"""
-    print(f'Thank you {fullname} for your generous donation!')
+    print(f'Thank you {fullname} for your generous donation of ${amount:.2f}!')
 
 
 def menu_selection(prompt, dispatch_dict):
@@ -162,7 +162,7 @@ if __name__ == '__main__':
                          '3': send_letters_to_everyone,}
 
     user_input = ('Options:\n'
-                  '\t1: Send a Thank You\n'
+                  '\t1: Create Donation\n'
                   '\t2: Create a Report\n'
                   '\t3: Send letters to everyone\n'
                   '\t0: Quit\n'
