@@ -118,7 +118,7 @@ def send_letters_to_everyone():
     # TODO: move letter templates to seperate files
     letter_template = """Dear {full_name},
 
-        Thank you for your very kind donation of ${donation_amount}.
+        Thank you for your very kind donation of ${donation_amount:.2f}.
 
         It will be put to very good use.
 
@@ -127,13 +127,11 @@ def send_letters_to_everyone():
 
     # iterate through donors
     for donor in donors:
-        # sum up donations
-        # build template
-        # write file
-        file_name = ".".join([donor.replace(" ", "_").lower(),'txt'])
+        file_name = "".join(['mailroom_thankyou_letters/', donor.replace(" ", "_").lower(),'.txt'])
+        donor_info = summarize_donor(donor)
         with open(file_name, 'w') as f:
-            f.write(letter_template)
-        pass
+            f.write(letter_template.format(full_name = donor_info[0], donation_amount=donor_info[1]))
+        
 
 
 def menu_selection(prompt, dispatch_dict):
