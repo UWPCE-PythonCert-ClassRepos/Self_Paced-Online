@@ -6,6 +6,7 @@ donors = {'Bill Gates': [100000.00, 5.00, 3000000.00],
           'Warren Buffet': [300000000.00],
           }
 
+
 def thank_you():
     """If the user (you) selects ‘Send a Thank You’, prompt for a Full Name.
     If the user types ‘list’, show them a list of the donor names and
@@ -43,9 +44,10 @@ def display_donors():
 
 def passing_function():
     """placeholder to catch all bad inputs and do nothing
-    Needed as we want to call function to process but 
+    Needed as we want to call function to process but
     none errors if called"""
     pass
+
 
 def create_donation(fullname, amount):
     """adds a donation to the donors dict from user input"""
@@ -110,9 +112,15 @@ def summarize_donor(donor_name):
     return(donor_name, total_given, num_gifts, average_gift)
 
 
+def send_letters_to_everyone():
+    """process to evaluate all donors and create letter to send to 
+    donors."""
+    pass
+
+
 def menu_selection(prompt, dispatch_dict):
     """generic function to create command line menu and route response
-    Will continue to ask user for response until valie response is given or 
+    Will continue to ask user for response until valie response is given or
     user quits by entering 0 or quit.
     args:
         prompt: str to be displayed to user
@@ -125,14 +133,18 @@ def menu_selection(prompt, dispatch_dict):
 
         dispatch_dict.get(response, passing_function)()
 
+
 if __name__ == '__main__':
 
     MAIN_MENU_OPTIONS = {'1': thank_you,
-                         '2': report}
-    
+                         '2': report,
+                         '3': send_letters_to_everyone,}
+
     user_input = ('Options:\n'
                   '\t1: Send a Thank You\n'
                   '\t2: Create a Report\n'
+                  '\t3: Send letters to everyone\n'
                   '\t0: Quit\n'
                   'Please input number for option: ')
+
     menu_selection(user_input, MAIN_MENU_OPTIONS)
