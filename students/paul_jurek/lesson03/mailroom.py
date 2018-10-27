@@ -42,7 +42,9 @@ def display_donors():
 
 
 def passing_function():
-    """placeholder to catch all bad inputs and do nothing"""
+    """placeholder to catch all bad inputs and do nothing
+    Needed as we want to call function to process but 
+    none errors if called"""
     pass
 
 def create_donation(fullname, amount):
@@ -108,20 +110,29 @@ def summarize_donor(donor_name):
     return(donor_name, total_given, num_gifts, average_gift)
 
 
+def menu_selection(prompt, dispatch_dict):
+    """generic function to create command line menu and route response
+    Will continue to ask user for response until valie response is given or 
+    user quits by entering 0 or quit.
+    args:
+        prompt: str to be displayed to user
+        dispatch_dict: dict which routes user inputs
+    """
+    while True:
+        response = input(prompt)
+        if (response == '0') or (response.lower().strip() == 'quit'):
+            break
+
+        dispatch_dict.get(response, passing_function)()
+
 if __name__ == '__main__':
 
     MAIN_MENU_OPTIONS = {'1': thank_you,
                          '2': report}
     
-    # run until user specifies to get out
-    while True:
-        user_input = input('Options:\n'
-                           '\t1: Send a Thank You\n'
-                           '\t2: Create a Report\n'
-                           '\t3: Quit\n'
-                           'Please input number for option: ')
-
-        if (user_input == '3') or (user_input.lower().strip() == 'quit'):
-            break
-        else:
-            MAIN_MENU_OPTIONS.get(user_input, passing_function)()
+    user_input = ('Options:\n'
+                  '\t1: Send a Thank You\n'
+                  '\t2: Create a Report\n'
+                  '\t0: Quit\n'
+                  'Please input number for option: ')
+    menu_selection(user_input, MAIN_MENU_OPTIONS)
