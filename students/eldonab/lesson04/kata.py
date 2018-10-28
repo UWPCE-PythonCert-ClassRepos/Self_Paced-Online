@@ -10,7 +10,6 @@ def word_list(file_name):
         return my_list
 
 
-
 def trigrams(my_list): 
     """break down words into dictionary of trigrams"""
     d ={}
@@ -57,15 +56,10 @@ def make_kata(my_dict):
     return new_ls
 
 
-
-
 def kata_to_text(my_dict):
     """Convert our list of words from make_kata func into text"""
     text = " ".join(make_kata(my_dict)) + "."
     return text.capitalize() 
-
-
-
 
 
 def write_to_disk(text, filename):
