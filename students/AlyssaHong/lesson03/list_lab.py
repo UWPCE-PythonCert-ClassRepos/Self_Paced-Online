@@ -29,7 +29,6 @@ else:
     print("Out of the list. Please input the number 1~5")
     response = input("What number of fruit would you like to see(the number is 1~5 and you can choose just one)? ")
 
-
 # Add another fruit -- using "+"
 print(["Mangos"] + fruits)
 
@@ -38,9 +37,9 @@ fruits.insert(0, 'Blueberries')
 print(fruits)
 
 # Display all the fruits that begin with “P”
-for x in fruits:
-    if x.startswith('P') or x.startswith('p'):
-         print("the fruit that begin with “P” is ", x)
+for fruit in fruits:
+    if fruit.startswith('P') or fruit.startswith('p'):
+         print("the fruit that begin with “P” is ", fruit)
 
 
 
