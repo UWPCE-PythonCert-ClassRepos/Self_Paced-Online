@@ -38,8 +38,10 @@ print(fruits)
 
 # Display all the fruits that begin with “P”
 for fruit in fruits:
-    if fruit.startswith('P') or fruit.startswith('p'):
+    l_fruit = fruit.lower()
+    if l_fruit.startswith('p'):
          print("the fruit that begin with “P” is ", fruit)
+
 
 
 
