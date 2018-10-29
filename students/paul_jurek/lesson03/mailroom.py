@@ -33,7 +33,7 @@ def thank_you():
                 create_donor(thank_you_input)
             donation_amount = float(input("Select donation amount: "))
             create_donation(fullname=thank_you_input, amount=donation_amount)
-            create_thank_you(fullname=thank_you_input, amount=donation_amount)
+            print_thank_you(fullname=thank_you_input, amount=donation_amount)
             break
 
 
@@ -57,7 +57,6 @@ def create_donation(fullname, amount):
 def create_donor(fullname):
     """adds new donor to donors"""
     donors[fullname] = []
-
 
 
 def report():
@@ -111,32 +110,41 @@ def summarize_donor(donor_name):
 def send_letters_to_everyone():
     """process to evaluate all donors and create letter to send to
     donors."""
-    # TODO: move letter templates to seperate files
-    letter_template = """Dear {full_name},
-
-        Thank you for your very kind donation of ${donation_amount:.2f}.
-
-        It will be put to very good use.
-
-                       Sincerely,
-                          -The Team"""
-
-    # iterate through donors
+    # iterate through donors and donations to send thank yous
     for donor in donors:
+        for donation in donor:
+
         file_name = "".join(['mailroom_thankyou_letters/', donor.replace(" ", "_").lower(),'.txt'])
         donor_info = summarize_donor(donor)
         with open(file_name, 'w') as f:
             f.write(letter_template.format(full_name = donor_info[0], donation_amount=donor_info[1]))
 
 
-def mail_thank_you(thank_you, directory):
-    """creates text file with thank you text"""
-    pass
-
-
-def create_thank_you(fullname, amount):
+def create_donation_thank_you(fullname, amount):
     """prints thank you message to terminal for donation"""
-    print(f'Thank you {fullname} for your generous donation of ${amount:.2f}!')
+    return f"""Dear {fullname},
+
+        Thank you for your very kind donation of ${amount:.2f}.
+
+        It will be put to very good use.
+
+                       Sincerely,
+                          -The Team"""
+
+
+def print_thank_you(fullname, amount):
+    """prints thank you to console with thank you text"""
+    thank_you_text = create_donation_thank_you(fullname, amount)
+    print(thank_you_text)
+
+
+def mail_thank_you(fullname, amount, directory='mailroom_thankyou_letters/'):
+    """creates text file with thank you text"""
+    thank_you_text = create_donation_thank_you(fullname=fullname, amount=amount)
+    file_name = "".join([directory, fullname.replace(" ", "_").lower(),'.txt'])
+    
+    with open(file_name, 'w') as f:
+        f.write(thank_you_text)
 
 
 def menu_selection(prompt, dispatch_dict):
