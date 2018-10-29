@@ -26,78 +26,12 @@ def run_mailroom_part2(file):
     """
 
     finished = False
+    mrl = MailroomPart2(file)
     while not finished:
-        mrl = MailroomPart2(file)
-        select = mrl.act
+        select = mrl.action()
         if select == "Quit":
             finished = True
 
-
-
-class ValidDigit:
-    # is a number, int or float, with or without $ sign
-    def __init__(self, answer, valid):
-        self.answer = answer
-        self.valid = valid
-
-    def validate_digit(self):
-        # menu choice 1, 2, 3, etc
-        # amount, always includes $ and maybe decimals
-
-        temp_answer = str(self.answer)
-        temp_dec = temp_answer.replace("$", "")
-        temp = temp_dec.replace(".", "")
-        temp_count_dot = temp_answer.count('.')
-        temp_count_currency = temp_answer.count('$')
-
-        if temp.isdigit() and temp_count_dot < 2 and temp_count_currency < 2:
-            if float(temp_dec) <= 0:
-                return False
-            else:
-                if temp_count_currency == 1:
-                    # amount
-                    return True
-                else:
-                    # menu choice, 1, 2, 3, etc
-                    valid_answer = int(self.answer) in self.valid
-                    if valid_answer:
-                        return True
-                    else:
-                        return False
-        else:
-            return False
-
-
-class ValidAlpha:
-
-    def __init__(self, answer, valid):
-        self.answer = answer
-        self.valid = valid
-
-    def validate_alpha(self):
-    # valid: list of accepted  strings, "list", "quit" or a name,
-    # name is also checked to be of alpha numeric and white space
-    # any name will return True as will "list" or "quit"
-    # return value(s) in list form so check for name in list can be identified
-
-        # consecutive digits discualifies the entry as a valid name
-        for i in range(len(self.answer)):
-            if self.answer[i].isdigit():
-                if self.answer[i + 1].isdigit():
-                    return False
-
-        if all(x.isalpha() or x.isspace() or x.isdigit() or x  == "." for x in self.answer):
-            temp = self.answer.lower()
-            # see if answer is in the valid list
-            for string in self.valid:
-                if temp == string.lower():
-                    return True
-            # otherwise assume it's a new name
-                else:
-                    return True
-        # answer does not make sense
-        else:
-            return False
 
 
 class MailroomPart2:
@@ -105,7 +39,6 @@ class MailroomPart2:
 
     def __init__(self, tryfile):
         self.file = tryfile
-        self.act = self.action()
 
     def action(self):
 
@@ -120,8 +53,6 @@ class MailroomPart2:
 
         if v == "Quit":
             return v
-
-
 
     def __choice(self, menu_dict):
         """
@@ -154,7 +85,6 @@ class MailroomPart2:
         for choice in sorted(menu):
             print("{} - {}".format(str(choice), menu[choice]))
         return menu
-
 
     def create_a_list(self):
         # expects an existing path
@@ -194,13 +124,16 @@ class MailroomPart2:
                 amount_len = len(str(report_dict[key][0])) + 3
 
         temp_str = "Name", "Total Given", "Num Gifts", "Average Gift"
-        temp_form = "\n{:<{nl}}|{:>{al}}|{:>{al}}|{:>{al}}"
+        temp_form = "\n{:<{nl}}|{:>{al}}|{:^{al}}|{:>{al}}"
         header = temp_form.format(*temp_str, nl = name_len, al = amount_len)
         print(header)
-        print("-" * (name_len + 3 * amount_len + 3))
+
+        a_l = "+" + "-" * amount_len
+        h_divider = "-" * name_len + a_l * 3
+        print(h_divider)
 
         for key in report_dict.keys():
-            temp_form = "{:<{nl}} ${:>{al}.2f}  {:>{al}} ${:>{al}.2f}"
+            temp_form = "{:<{nl}}|${:>{al}.2f}| {:^{al}}|${:>{al}.2f}"
             d0 = key
             d1 = float(report_dict[key][0])
             d2 = int(report_dict[key][1])
@@ -211,6 +144,7 @@ class MailroomPart2:
             line = temp_form.format(d0, d1, d2, d3, nl = name_len, al = amount_len - 1)
             print(line)
 
+        print(h_divider + "\nend\n")
 
     def send_a_thank_you(self):
 
@@ -229,13 +163,12 @@ class MailroomPart2:
         valid_choice = choice.validate_alpha()
         if valid_choice:
             if selection.lower() == valid[0]:
-                act_menu2[1][selection]()
+                act_menu2[1][selection.capitalize()]()
                 self.send_a_thank_you()
             elif selection.lower() == valid[1]:
-                act_menu2[1][selection]
+                act_menu2[1][selection.capitalize()]()
             else:
                 # update will have the name, total amount, number of times
-
                 name = selection
                 amount = input("\nEnter amount donated: ")
                 update = ReadWriteFile(self.file, name, amount)
@@ -245,7 +178,6 @@ class MailroomPart2:
         else:
             print("Choice not valid.")
             self.__choice()
-
 
     def send_letters_to_everyone(self):
         """
@@ -269,7 +201,6 @@ class MailroomPart2:
             fp = ReadWriteFile(self.file)
             fpath = fp.create_path(letter_file, False)
             fp.writenewfile(letter, fpath)
-
 
     def __send_thank_you(self, name, amount):
 
@@ -318,10 +249,8 @@ class MailroomPart2:
         elif ltr == "2":
             return letter2
 
-
     def __quit_(self):
             return "Quit"
-
 
 
 class ReadWriteFile:
@@ -354,7 +283,6 @@ class ReadWriteFile:
         except: # catch all - not good but the best I can come up with for the moment.
             e = sys.exc_info()
             print("<p>Error: {}</p>".format(e)[0])
-
 
     def writefile(self):
         """
@@ -424,7 +352,6 @@ class ReadWriteFile:
 
         return existing_name
 
-
     def read_line(self):  #(fle, nme=None):
         """
         if name is None, a report is being produced
@@ -468,3 +395,69 @@ class ReadWriteFile:
                         file_dict[line[0]] = [line[1], line[2]]
                         # print("4.  line: {}".format(line))
         return file_dict
+
+
+class ValidDigit:
+    # is a number, int or float, with or without $ sign
+    def __init__(self, answer, valid):
+        self.answer = answer
+        self.valid = valid
+
+    def validate_digit(self):
+        # menu choice 1, 2, 3, etc
+        # amount, always includes $ and maybe decimals
+
+        temp_answer = str(self.answer)
+        temp_dec = temp_answer.replace("$", "")
+        temp = temp_dec.replace(".", "")
+        temp_count_dot = temp_answer.count('.')
+        temp_count_currency = temp_answer.count('$')
+
+        if temp.isdigit() and temp_count_dot < 2 and temp_count_currency < 2:
+            if float(temp_dec) <= 0:
+                return False
+            else:
+                if temp_count_currency == 1:
+                    # amount
+                    return True
+                else:
+                    # menu choice, 1, 2, 3, etc
+                    valid_answer = int(self.answer) in self.valid
+                    if valid_answer:
+                        return True
+                    else:
+                        return False
+        else:
+            return False
+
+
+class ValidAlpha:
+
+    def __init__(self, answer, valid):
+        self.answer = answer
+        self.valid = valid
+
+    def validate_alpha(self):
+    # valid: list of accepted  strings, "list", "quit" or a name,
+    # name is also checked to be of alpha numeric and white space
+    # any name will return True as will "list" or "quit"
+    # return value(s) in list form so check for name in list can be identified
+
+        # consecutive digits discualifies the entry as a valid name
+        for i in range(len(self.answer)):
+            if self.answer[i].isdigit():
+                if self.answer[i + 1].isdigit():
+                    return False
+
+        if all(x.isalpha() or x.isspace() or x.isdigit() or x  == "." for x in self.answer):
+            temp = self.answer.lower()
+            # see if answer is in the valid list
+            for string in self.valid:
+                if temp == string.lower():
+                    return True
+            # otherwise assume it's a new name
+                else:
+                    return True
+        # answer does not make sense
+        else:
+            return False
