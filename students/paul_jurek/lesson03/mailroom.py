@@ -112,12 +112,11 @@ def send_letters_to_everyone():
     donors."""
     # iterate through donors and donations to send thank yous
     for donor in donors:
-        for donation in donor:
-
         file_name = "".join(['mailroom_thankyou_letters/', donor.replace(" ", "_").lower(),'.txt'])
         donor_info = summarize_donor(donor)
+        thank_you_text = create_donation_thank_you(fullname=donor, amount=donor_info[1])
         with open(file_name, 'w') as f:
-            f.write(letter_template.format(full_name = donor_info[0], donation_amount=donor_info[1]))
+            f.write(thank_you_text)
 
 
 def create_donation_thank_you(fullname, amount):
