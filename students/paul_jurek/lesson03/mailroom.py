@@ -83,7 +83,8 @@ def report():
     Jeff Bezos                 $     877.33           1  $      877.33
     Paul Allen                 $     708.42           3  $      236.14
     """
-    print(f"{'Donor Name':<26}|{'Total Given':^15}|{'Num Gifts':^11}|{'Average Gift':^15}")
+    print(f"{'Donor Name':<26}|{'Total Given':^15}|"
+          f"{'Num Gifts':^11}|{'Average Gift':^15}")
     print('-'*70)
     donor_stats = []
     for donor in donors.keys():
@@ -91,7 +92,8 @@ def report():
 
     donor_stats.sort(key=lambda tup: tup[1], reverse=True)
     for summary in donor_stats:
-        print(f"{summary[0]:<26} ${summary[1]:>13.2f}  {summary[2]:>10}  ${summary[3]:>14.2f}")
+        print(f"{summary[0]:<26} ${summary[1]:>13.2f}  "
+              f"{summary[2]:>10}  ${summary[3]:>14.2f}")
 
 
 def summarize_donor(donor_name):
@@ -112,9 +114,11 @@ def send_letters_to_everyone():
     donors."""
     # iterate through donors and donations to send thank yous
     for donor in donors:
-        file_name = "".join(['mailroom_thankyou_letters/', donor.replace(" ", "_").lower(),'.txt'])
+        file_name = "".join(['mailroom_thankyou_letters/',
+                             donor.replace(" ", "_").lower(), '.txt'])
         donor_info = summarize_donor(donor)
-        thank_you_text = create_donation_thank_you(fullname=donor, amount=donor_info[1])
+        thank_you_text = create_donation_thank_you(fullname=donor,
+                                                   amount=donor_info[1])
         with open(file_name, 'w') as f:
             f.write(thank_you_text)
 
@@ -139,9 +143,12 @@ def print_thank_you(fullname, amount):
 
 def mail_thank_you(fullname, amount, directory='mailroom_thankyou_letters/'):
     """creates text file with thank you text"""
-    thank_you_text = create_donation_thank_you(fullname=fullname, amount=amount)
-    file_name = "".join([directory, fullname.replace(" ", "_").lower(),'.txt'])
-    
+    thank_you_text = create_donation_thank_you(fullname=fullname,
+                                               amount=amount)
+    file_name = "".join([directory,
+                         fullname.replace(" ", "_").lower(),
+                         '.txt'])
+
     with open(file_name, 'w') as f:
         f.write(thank_you_text)
 
