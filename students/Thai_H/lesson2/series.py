@@ -69,10 +69,8 @@ def sum_series(n_index, zero_index=0, one_index=1):
 
     #-----------------------
 
-
-#print (fibonacci(6))
-#print (lucas(6))
-print (sum_series(6, zero_index=3, one_index=1))
+assert (fibonacci(7)) == 13
+assert (lucas(7)) == 29
+assert (sum_series(7)) == 13  #asserting that when 2nd/3rd arg are not specified, it's fib series
+assert (sum_series(2, zero_index=100, one_index=350)) == 450 # 100 + 350 = 450
 print (sum_series.__doc__)
-
-
