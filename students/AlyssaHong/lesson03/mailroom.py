@@ -36,7 +36,8 @@ def send_thanks():
             print('{:<20}   ${:>10,.2f}   {:>10}   ${:>10,.2f}'.format\
             (list_donor_name[i],list_total_given[i],list_num_gifts[i],list_avg_gift[i]))
 
-def creat_report():
+
+def create_report():
     print('{:<20} | {:^10} | {:^10} | {:^10}'.format(*list_col))
     print('{}'.format("-"*63))
     for i in range(len(list_donor_name)):
@@ -44,20 +45,22 @@ def creat_report():
              (list_donor_name[i],list_total_given[i],list_num_gifts[i],list_avg_gift[i]))
     print('{}'.format("-"*63))
 
+
 def quit():
     print("Quit current task!")
 
 
 def main():
-    print("Choose the number(1,2,3) from a menu:(1)Send a Thank you (2)Creat a Report (3)quit")
-    choice_action = int(input())
-    if choice_action == 1:
-        send_thanks()
-    elif choice_action == 2:
-        creat_report()
-    elif choice_action == 3:
-        quit()
-
+    while True:
+        print("Choose the number(1,2,3) from a menu:(1)Send a Thank you (2)Create a Report (3)quit")
+        choice_action = int(input())
+        if choice_action == 1:
+            send_thanks()
+        elif choice_action == 2:
+            create_report()
+        elif choice_action == 3:
+            quit()
+            break
 
 if __name__ == '__main__':
     main()
