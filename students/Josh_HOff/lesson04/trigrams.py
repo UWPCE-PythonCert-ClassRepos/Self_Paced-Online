@@ -44,12 +44,15 @@ if __name__ == "__main__":
                 break
             elif len(newdict[b]) > 1:
                 number = random.choice(range(len(newdict[b])))
+                a += f' {newdict[b][number]}'
+                del newdict[b][number]
             else:
                 number = 0
-            if b not in newdict:
-                break
-            else:
                 a += f' {newdict[b][number]}'
+#            if b not in newdict:
+#                break
+#            else:
+#                a += f' {newdict[b][number]}'
     count = 0
     #writes the new text into it's own file
     end_list = a.split(' ')
