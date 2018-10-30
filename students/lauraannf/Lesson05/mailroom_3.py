@@ -61,9 +61,7 @@ def create_report():
 def all_letters():
     print('writing all thank you letters...')
     for key in donor_list.keys():
-        name = key
-        donation = sum(donor_list[key])
-        write_email(name, donation)
+        write_email(key, sum(donor_list[key]))
 
 
 def write_email(name, donation):
