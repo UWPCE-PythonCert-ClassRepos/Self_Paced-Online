@@ -1,13 +1,30 @@
 # Error Handling function for sending_thank function
-def check_error(f_name, s):
-    while True:
-        amount = input(s.format(f_name))
-        try:
-            checked_amount = float(amount)
-            break
-        except ValueError:
-            print('\nValue entered is not a number. Only number allowed.\n')
-    return checked_amount
+def check_error(amount):
+    try:
+        checked_amount = float(amount)
+        return 1
+    except ValueError:
+        print('\nValue entered is not a number. Only number allowed.\n')
+        return 0
+
+
+# Adding donation to existing person or creating new donation data
+def check_name_exist(f_name, donors):
+    if donors.get(f_name):
+        s = 'Existing donor, please type the donation amount from {}> '
+        return 1, s
+    else:
+        s = 'New donor, please type the donation amount from {}> '
+        return 0, s
+
+
+def append_donation(f_name, amount, yes_exist, donors):
+    #global donors
+    if yes_exist == 1:
+        donors[f_name].append(float(amount))
+    else:
+        donors[f_name] = [float(amount)]
+    return donors
 
 
 # Sending a Thank you
@@ -19,12 +36,12 @@ def sending_thank():
             print(x)
         print(' ')
         f_name = input('Please type the Full Name or list> ')
-    if donors.get(f_name):
-        s = 'Existing donor, please type the donation amount from {}> '
-        donors[f_name].append(check_error(f_name, s))
-    else:
-        s = 'New donor, please type the donation amount from {}> '
-        donors[f_name] = [check_error(f_name, s)]
+    (yes_exist, s) = check_name_exist(f_name, donors)
+    myexit = 0
+    while not myexit == 1:
+        amount = input(s.format(f_name))
+        myexit = check_error(amount)
+    append_donation(f_name, amount, yes_exist, donors)
     print('\n', "Thank you {} for the generous donation!".format(f_name), '\n')
 
 
@@ -73,8 +90,9 @@ def main():
             switch_func_dict.get(response)()
         except TypeError:
             print('\n Please type a number from 1 to 4.\n')
+    return response
 
 
 if __name__ == "__main__":
-    donors={'William Gates, III':[54842.49,48965.25],'Mark Zuckerberg':[7852.25,48652.0,3548.0],'Jeff Bezos':[5486.0,58794.02,7412.1],'Paul Allen':[46872.02]}
+    donors = {'William Gates, III':[54842.49,48965.25],'Mark Zuckerberg':[7852.25,48652.0,3548.0],'Jeff Bezos':[5486.0,58794.02,7412.1],'Paul Allen':[46872.02]}
     main()
