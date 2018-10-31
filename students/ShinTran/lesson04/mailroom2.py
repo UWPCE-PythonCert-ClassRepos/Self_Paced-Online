@@ -4,27 +4,12 @@ Python 210
 Lesson 4 Assignment
 '''
 
-master_list = [] # For all donations made
-name_list = [] # For list of unique names
-
-
-# Creates the master_list where it has 12 donations pre-populated
-def initialize():
-    global master_list
-    master_list = [
-        ["Jennifer Miller", 91561.25],
-        ["Mary Johnson", 5811.05],
-        ["William Rodriguez", 41113.42],
-        ["Patricia Brown", 19184.81],
-        ["William Rodriguez", 51227.53],
-        ["Jennifer Miller", 53514.94],
-        ["Michael David", 31051.46],
-        ["Mary Johnson", 71646.16],
-        ["William Rodriguez", 69244.21],
-        ["Mary Johnson", 12689.07],
-        ["Michael David", 57145.50],
-        ["Patricia Brown", 81679.15],
-    ]
+master_dict = {"Jennifer Miller": [145076.19,2],
+    "Mary Johnson": [90146.28,3],
+    "William Rodriguez": [161585.16,3],
+    "Patricia Brown": [100863.96,2],
+    "Michael David": [88196.96,2]
+} # For all donations made
 
 # Prompts the user to enter an option
 def main_prompt():
@@ -40,7 +25,6 @@ def main_prompt():
 # prints list, exit, prompts again if the input is bad
 # If the user types exit it'll go back to the main prompt
 def action(user_input):
-    create_name_list()
     switch_dict = {
         'list': list_func,
         '1': send_thanks,
@@ -48,15 +32,14 @@ def action(user_input):
         '3': send_letters,
         '4': quit
     }
-    if user_input in (switch_dict):
-        func = switch_dict.get(user_input)()
-    else:
+    while True:
+        if user_input in switch_dict:
+            switch_dict.get(user_input)()
         action(main_prompt())
-    action(main_prompt())
 
 # Creates a list of all the distinct donors
 def list_func():
-    for name in name_list:
+    for name in master_dict:
         print(name)
 
 # Prompts the user to type a name of a donor, enter a donation amount,
@@ -70,16 +53,13 @@ def send_thanks():
         donation_amt = input("Enter a donation amount: ")
         if (donation_amt != 'exit'):
             temp_list.append(float(donation_amt))
-            master_list.append(temp_list)
+            #master_dict.append(temp_list)
+            if donor_name in master_dict:
+                temp_list2 = master_dict.pop(donor_name)
+                master_dict[donor_name] = [temp_list[1]+temp_list2[0],temp_list2[1]+1]
+            else:
+                master_dict[donor_name] = [temp_list[1],1]
             print_email(temp_list)
-
-# Creates a list of names of distinct donors
-def create_name_list():
-    global master_list
-    global name_list
-    for name in master_list:
-        name_list.append(name[0])
-    name_list = list(set(name_list))
 
 # Prints a thank you email to a donator
 # Donor name and amount is passed in as a parameter
@@ -92,38 +72,22 @@ def print_email(currentDonation):
 # Goes through all the previous donators, gets their total donated,
 # sends a thank you letter that is output on a .txt file
 def send_letters():
-    global master_list
-    global name_list
-    donation_sum = 0
     message = "Dear {:s},\n\
     Thank you for the your generous total donation of ${:,.2f}.\n\
     Sincerely,\n\
     Your Local Charity"
-    for name in name_list:
-        output = open(name + ".txt",'w')
-        for name2 in master_list:
-            if name2[0] == name:
-                donation_sum += name2[1]
-        output.write(message.format(name, donation_sum))
-        donation_sum = 0
-    output.close()
+    for name, vals in master_dict.items():
+        with open(name + ".txt",'w') as output:
+            output.write(message.format(name, vals[0]))
 
 
 # Prints a report of all the previous donators
 # Report includes name, total donated, count of donations, average gift
 # Report is also formatted with a certain spacing
 def print_report():
-    global master_list
-    global name_list
     donation_total = []
-    for name in name_list:
-        donation_sum = 0
-        counter = 0
-        for name2 in master_list:
-            if name2[0] == name:
-                donation_sum += name2[1]
-                counter += 1
-        donation_total.append([name, round(donation_sum,2), counter, round(donation_sum/counter,2)])
+    for name, vals in master_dict.items():
+        donation_total.append([name, round(vals[0],2), vals[1], round(vals[0]/vals[1],2)])
     donation_total.sort(key=lambda l: l[1], reverse = True)
     print("Donor Name          |   Total Given  |  Num Gifts |  Average Gift")
     print("-----------------------------------------------------------------")
@@ -133,5 +97,4 @@ def print_report():
 
 # Python program to use main for function call
 if __name__ == "__main__":
-    initialize()
     action(main_prompt())

@@ -47,13 +47,11 @@ print(
 print()
 
 # TASK 6; display lists in columns
-table = []
-rows1 = ['name', 'Toni L', 'age', 43, 'cost', '$23,02']
-table.append(rows1)
-rows2 = ['name', 'Andrea B', 'age', 28, 'cost', '$13323,56']
-table.append(rows2)
-rows3 = ['name', 'Nancy T', 'age', 60, 'cost', '$455,99']
-table.append(rows3)
+table = [
+    ['name', 'Toni L', 'age', 43, 'cost', '$23,02'],
+    ['name', 'Andrea B', 'age', 28, 'cost', '$13323,56'],
+    ['name', 'Nancy T', 'age', 60, 'cost', '$455,99']
+    ]
 
 for row in table:
     print("{0:<10}{1:<20}{2:<5}{3:<5d}{4:<10}{5:>20}".format(*row))

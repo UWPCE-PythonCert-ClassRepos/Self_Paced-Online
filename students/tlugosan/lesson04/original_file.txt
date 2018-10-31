@@ -1,0 +1,6 @@
+GIT
+---------------------
+git checkout master
+git pull
+git checkout -b create_branch_name
+git branch

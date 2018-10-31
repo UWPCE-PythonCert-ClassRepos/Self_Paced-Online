@@ -83,51 +83,6 @@ class DonorsCollection():
         self._donors = {}
         self.donors = val
         self.rep = ""
-        self.wrong_option = "{:<20}".format(" - Wrong option !!!")
-        self.main_prompt = """
-        {:-^30}
-
-        1 - Send a Thank You
-        2 - Create a Report
-        3 - Send letters to everyone
-        q - Quit
-    """.format(' Main Menu ')
-        self.sub_prompt = """
-        {:-^30}
-
-        1 - Add new donor, donation
-        2 - List donors
-        q - Go to Main Menu
-
-    """.format(' Add/List donors ')
-        self.main_dispatch = {
-            '1': self.sub_menu,
-            '2': self.print_report,
-            '3': self.write_letters,
-            'q': self.quit_menu, }
-        self.sub_dispatch = {
-            '1': self.add_donor,
-            '2': self.display,
-            'q': self.quit_menu, }
-
-    def menu_selection(self, prompt, dispatch_dict):
-        while True:
-            response = input(prompt)
-            try:
-                if dispatch_dict[response]() == "exit menu":
-                    break
-            except KeyError:
-                print(response, self.wrong_option)
-
-    def main_menu(self):
-        self.menu_selection(self.main_prompt, self.main_dispatch)
-
-    def sub_menu(self):
-        self.menu_selection(self.sub_prompt, self.sub_dispatch)
-
-    def quit_menu(self):
-        print("Goodbye...\n")
-        return "exit menu"
 
     @property
     def donors(self):
@@ -140,6 +95,7 @@ class DonorsCollection():
                 self._donors[val.name] = val
             else:
                 raise ValueError("Must be instance od Donor class")
+                return
 
     def add_donor(self):
         name = input("Type donor first and last name: ")
@@ -149,7 +105,15 @@ class DonorsCollection():
                 input(" Donation in USD: "))
         else:
             d = Donor(name)
-            d.donations = float(input("Donation in USD: "))
+            try:
+                d.donations = float(input("Donation in USD: "))
+            except ValueError:
+                print("""
+                      Donation must be in USD...
+                      Donor not added
+                      """)
+                del(d)
+                return
             self.donors = d
         self.donors[donor_name].print_greetings
 
@@ -158,7 +122,7 @@ class DonorsCollection():
 
     def display(self):
         for donor in sorted(self.donors, key=self.display_key):
-            print("{} {},".format(donor[0], donor[1]))
+            print("".join(["{} "]*len(donor)).format(*donor))
 
     def custom_key(self, a):
         return(a[1].total)  # 2nd arg => dict value => Donor instance
@@ -166,20 +130,22 @@ class DonorsCollection():
     @property
     def report(self):
         self.rep = ""
-        self.rep += "{:<30}| {:<18}| {:<8}| {:<18}\n".format('Donor Name',
+        self.rep += "{:<40}| {:<18}| {:<8}| {:<18}\n".format('Donor Name',
                                                              'Total Given',
                                                              'Num Gifts',
                                                              'Average Gift')
+        self.rep += "{:-<90}\n".format('')
         for k, v in sorted(self.donors.items(),
                            key=self.custom_key, reverse=True):
-            self.rep += "{:<30}{}{:>18.2f} \
-                        {:>11}{}{:>17.2f}\n".format(k[0]+' '
-                                                    + k[1],
-                                                    ' $',
-                                                    v.total,
-                                                    v.number,
-                                                    ' $',
-                                                    v.average)
+
+            name = " ".join(["{} "]*len(k)).format(*k)
+            self.rep += "{:<40}{}{:>18.2f}{:>11}{}{:>17.2f}\n".format(name,
+                                                        ' $',
+                                                        v.total,
+                                                        v.number,
+                                                        ' $',
+                                                        v.average)
+
         return(self.rep)
 
     def print_report(self):
@@ -191,7 +157,82 @@ class DonorsCollection():
             d.write_letter()
 
 
+# Donors DB initialization
+dd = DonorsCollection()
+
+
+class Main:
+    @staticmethod
+    def report():
+        dd.print_report()
+
+    @staticmethod
+    def letters():
+        dd.write_letters()
+
+    @staticmethod
+    def donor():
+        dd.add_donor()
+
+    @staticmethod
+    def show():
+        dd.display()
+
+
 if __name__ == "__main__":
+
+    def menu_selection(prompt, dispatcher):
+            while True:
+                response = input(prompt)
+                try:
+                    if dispatcher[response]() == "exit menu":
+                        break
+                except KeyError:
+                    print(response, "Wrong response !")
+
+    def quit(msg):
+        print("{}".format(msg))
+        return "exit menu"
+
+    def main_quit():
+        return quit("Goodbye...")
+
+    def sub_quit():
+        return quit("Back to Main menu...")
+
+    def sub_menu():
+        menu_selection(submenu, subfeatures)
+
+    menu = """
+        {:-^30}
+
+        1 - Send a Thank You
+        2 - Create a Report
+        3 - Send letters to everyone
+        q - Quit
+    """.format(' Main Menu ')
+
+    submenu = """
+        {:-^30}
+
+        1 - Add new donor, donation
+        2 - List donors
+        q - Go to Main Menu
+
+    """.format(' Add/List donors ')
+
+    features = {
+            '1': sub_menu,
+            '2': Main.report,
+            '3': Main.letters,
+            'q': main_quit,
+            }
+
+    subfeatures = {
+            '1': Main.donor,
+            '2': Main.show,
+            'q': sub_quit,
+            }
 
     d1 = Donor("Stephan LeClerc")
     d2 = Donor("Chris Ping")
@@ -199,9 +240,9 @@ if __name__ == "__main__":
     for i in range(4):
         d1.donations, d2.donations, d3.donations = (10*i)+10, \
                                                    (10*i+2)+10, (10*i+3)+10
-    dd = DonorsCollection()
     dd.donors = d1
     dd.donors = d2
     dd.donors = d3
-    # start menu
-    dd.main_menu()
+    # start program menu
+    menu_selection(menu, features)
+
