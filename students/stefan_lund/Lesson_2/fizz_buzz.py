@@ -97,8 +97,7 @@ def fizz_buzz_3(n):
         return("Buzz")
     else:
         return(n)
-# ---------------------------  START fizz_buzz_3(n)  ---------------------------
-
+# ---------------------------  END fizz_buzz_3(n)  ---------------------------
 
 def fizz_buzz():
     """
