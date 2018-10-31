@@ -43,18 +43,20 @@ def thank_you_note():
         add_or_update_donor(name)
 
         
+
 def stat_donors():
     """Print donation statistics for each donor"""
+    donor_dict = {}
     for donor in donors:
         a_donor = donor
         total_don = sum(donors[donor])
         number_of_don = len(donors[donor])
         average_don = total_don//number_of_don
-        print("{:<20} ${:>12,.2f}{:^12} ${:>12,.2f}".format(a_donor, total_don, number_of_don, average_don))
-
-#where is the sorting code?
-
-
+        donor_dict.update({a_donor :[total_don, number_of_don, average_don]})
+    sorted_d = sorted(donor_dict.items(), key = lambda x: x[1], reverse = True)
+    for adonor in sorted_d:
+        print("{:<20} ${:>12,.2f}{:^12} ${:>12,.2f}".format(adonor[0], adonor[1][0], adonor[1][1], adonor[1][2]))
+       
          
 def create_report():
     """Print a list of donors sorted by name, total donated amount, number of donation, and average donation amount"""
