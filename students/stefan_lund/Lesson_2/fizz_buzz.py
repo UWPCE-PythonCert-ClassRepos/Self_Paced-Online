@@ -15,13 +15,12 @@ def fizz_buzz_1(n):
     """
 
     if n % 3 == 0 and n % 5 == 0:
-        return("FizzBuzz")
-    elif n % 3 == 0:
-        return("Fizz")
-    elif n % 5 == 0:
-        return("Buzz")
-    else:
-        return(n)
+        return "FizzBuzz"
+    if n % 3 == 0:
+        return "Fizz"
+    if n % 5 == 0:
+        return "Buzz"
+    return n
 # ---------------------------  END fizz_buzz_1(n)  ---------------------------
 
 
@@ -34,10 +33,8 @@ def fizz_buzz_2_helper(i):
     if i % 3 == 0:
         if i % 5 == 0:
             return "FizzBuzz"
-        else:
-            return "Fizz"
-    else:
-        return "Buzz"
+        return "Fizz"
+    return "Buzz"
 
 
 def fizz_buzz_2(n):
@@ -50,9 +47,8 @@ def fizz_buzz_2(n):
     """
 
     if n % 3 == 0 or n % 5 == 0:
-        return(fizz_buzz_2_helper(n))
-    else:
-        return(n)
+        return fizz_buzz_2_helper(n)
+    return n
 # ---------------------------  END fizz_buzz_2(n)  ---------------------------
 
 
@@ -90,14 +86,13 @@ def fizz_buzz_3(n):
     """
 
     if divisible_by_3(n) and divisible_by_5(n):
-        return("FizzBuzz")
-    elif divisible_by_3(n):
-        return("Fizz")
-    elif divisible_by_5(n):
-        return("Buzz")
-    else:
-        return(n)
-# ---------------------------  START fizz_buzz_3(n)  ---------------------------
+        return "FizzBuzz"
+    if divisible_by_3(n):
+        return "Fizz"
+    if divisible_by_5(n):
+        return "Buzz"
+    return n
+# ---------------------------  END fizz_buzz_3(n)  ---------------------------
 
 
 def fizz_buzz():
@@ -115,7 +110,7 @@ def fizz_buzz():
     h_fill = ' ' * column_w
     print("\n+{0}+{0}+{0}+".format(h_div))
     print("|{:^{column_w}}|{:^{column_w}}|{:^{column_w}}|".
-    format('fizz_buzz_1:', 'fizz_buzz_2:', 'fizz_buzz_3:', column_w = column_w))
+          format('fizz_buzz_1:', 'fizz_buzz_2:', 'fizz_buzz_3:', column_w=column_w))
     print("+{0}+{0}+{0}+".format(h_div))
     print("|{0}|{0}|{0}|".format(h_fill))
     print("+{0}+{0}+{0}+".format(h_div))
@@ -129,7 +124,7 @@ def fizz_buzz():
         assert (f_b1 == f_b3), "If you read this, there is a bug in fizz_buzz_3!"
 
         print("|{:^{column_w}}|{:^{column_w}}|{:^{column_w}}|".
-        format(f_b1, f_b2, f_b3, column_w = column_w))
+              format(f_b1, f_b2, f_b3, column_w=column_w))
         if i % 10 == 0:
             print("+{0}+{0}+{0}+".format(h_div))
     print("+{0}+{0}+{0}+\n".format(h_div))
