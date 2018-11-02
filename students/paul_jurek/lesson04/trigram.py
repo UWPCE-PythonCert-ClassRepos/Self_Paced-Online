@@ -1,4 +1,10 @@
-"""implementin trigram problem in python"""
+"""implementin trigram problem in python
+
+reference:
+* https://startlearning.uw.edu/courses/course-v1:UW+PYTHON210+2018_Winter/courseware/f87a053c2b074100ab3d3812d247ec2c/f97813fb973f4813a16049ec8e06af36/
+* http://codekata.com/kata/kata14-tom-swift-under-the-milkwood/
+"""
+import random
 
 
 def split_text(raw_text: str):
@@ -33,6 +39,15 @@ def build_trigram_dict(split_text: list, output: dict={}):
         else:
             output[new_key] = set([split_text[2]])
         return build_trigram_dict(split_text[1:], output)
+
+
+def build_kata(trigrams, starting_key=None):
+    """builds kata out of trigrams"""
+
+    # if no input key select random starting key
+    if not starting_key:
+        starting_key = random.choice(list(trigrams.keys()))
+    pass
 
 
 def test_building_dict():
