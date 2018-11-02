@@ -1,5 +1,10 @@
 """implementin trigram problem in python
 
+The kata is built in a 3 step process.  The user must first use
+split_text() to break a sting into words.  Then they must utilize
+build_trigram_dict() to built refernce dictionary.  Finally,
+build_kata() must be called to build the kata from the dict.
+
 reference:
 * https://startlearning.uw.edu/courses/course-v1:UW+PYTHON210+2018_Winter/courseware/f87a053c2b074100ab3d3812d247ec2c/f97813fb973f4813a16049ec8e06af36/
 * http://codekata.com/kata/kata14-tom-swift-under-the-milkwood/
@@ -53,7 +58,8 @@ def build_kata(trigrams, starting_key=None, entry_limit=10):
     value2 = starting_key.split()[1]
     value3 = random.choice(list(trigrams[starting_key]))
 
-    kata = " ".join([value1, value2, value3])
+    kata = " ".join([value1.capitalize()
+, value2, value3])
 
     while counter <= entry_limit:
         choices = trigrams.get(" ".join([value2, value3]))
@@ -67,9 +73,8 @@ def build_kata(trigrams, starting_key=None, entry_limit=10):
 
         value1, value2, value3 = value2, value3, random_choice
         counter += 1
-    
-    return kata
 
+    return kata
 
 
 def test_building_dict():
