@@ -98,15 +98,14 @@ def filter_donations(**kwargs):
         above: Use to get donations above parameter.
         below: Use to get donations below parameter.
     """
-
     donors_2 = {}
     if 'above' in kwargs:
         for k,v in ddonors.items():
-            donors_2[k] = list(filter(lambda x: x>kwargs.get('above'),v))
+            donors_2[k] = list(filter(lambda x: x > kwargs.get('above'),v))
     
     if 'below' in kwargs:
         for k,v in ddonors.items():
-            donors_2[k] = list(filter(lambda x: x<kwargs.get('below'),v))
+            donors_2[k] = list(filter(lambda x: x < kwargs.get('below'),v))
     return donors_2
 
 
