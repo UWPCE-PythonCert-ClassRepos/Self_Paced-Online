@@ -14,18 +14,21 @@ donors = {
 
 def add_or_update_donor(name):
     """Add or update donors and donation amount"""
-    amount = int(input("How much is the new donation amount? "))
-    if name in donors:
-        donors[name].append(amount)# use .append() here
-    else:
-        donors.update({name: [amount]})# assign list to new key
-    letter(name, amount)
+    try:
+        amount = int(input("How much is the new donation amount? "))    
+        if name in donors:
+            donors[name].append(amount)
+        else:
+            donors.update({name: [amount]})
+        letter(name, amount)
+    except ValueError:
+        print("Please enter a number as a donation amount")
 
 
+# Changed the previous version of this function using dict comprehensions:
 def show_list():
     """Show existing list of donor names"""
-    for donor in donors:
-        print(donor)
+    {print(donor) for donor in donors}
 
  
 def letter(donor_name, donor_amount):
@@ -35,28 +38,26 @@ def letter(donor_name, donor_amount):
 
 def thank_you_note():
     """Send a thank you note and update the list of donors"""
-    name = input("Please, type the full name of a sponsor: ")
-    while name == "list":
-        show_list()
+    try:
         name = input("Please, type the full name of a sponsor: ")
-    else:
-        add_or_update_donor(name)
+        while name == "list":
+            show_list()
+            name = input("Please, type the full name of a sponsor: ")
+        else:
+            add_or_update_donor(name)
+    except ValueError:
+        print("Your answer should be a string")
 
         
-
+# stat_donors() function written with dict comprehensions:
 def stat_donors():
     """Print donation statistics for each donor"""
     donor_dict = {}
-    for donor in donors:
-        a_donor = donor
-        total_don = sum(donors[donor])
-        number_of_don = len(donors[donor])
-        average_don = total_don//number_of_don
-        donor_dict.update({a_donor :[total_don, number_of_don, average_don]})
+    donor_dict = {k:[sum(v),len(v), sum(v)/len(v)] for k,v in donors.items()}
     sorted_d = sorted(donor_dict.items(), key = lambda x: x[1], reverse = True)
     for adonor in sorted_d:
         print("{:<20} ${:>12,.2f}{:^12} ${:>12,.2f}".format(adonor[0], adonor[1][0], adonor[1][1], adonor[1][2]))
-       
+
          
 def create_report():
     """Print a list of donors sorted by name, total donated amount, number of donation, and average donation amount"""
@@ -73,11 +74,15 @@ def quit():
 def letter_to_all():
     """Write a thank you note to each donor and save it to a disk"""
     for donor, donation in donors.items():
-        directory = str(input("Please specify the directory name for this file: "))
-        filepath = Path("c:/",directory)
-        total_don = sum(donation)
-        with open(f"{filepath}\\{donor}.txt", "w") as f:
-            f.write("Dear {0},\n\n\tThank you for your very kind donation of ${1}.\n\n\t\t It will be put to very good use.\n\n\t\t\t Sincerely,\n\t\t\t -The Team".format(donor, total_don)) 
+        try:
+            directory = str(input("Please specify the directory name for this file: "))
+            filepath = Path("c:/",directory)
+            total_don = sum(donation)
+            with open(f"{filepath}\\{donor}.txt", "w") as f:
+                f.write("Dear {0},\n\n\tThank you for your very kind donation of ${1}.\n\n\t\t It will be put to very good use.\n\n\t\t\t Sincerely,\n\t\t\t -The Team".format(donor, total_don)) 
+        except FileNotFoundError:
+            print("Please, enter a valid directory name for this file.")
+
 
 
 #creating a dictionary to store user's selections:
@@ -95,7 +100,12 @@ dict_select = {
 
 if __name__ == '__main__':
     while True:
-        action = int(input(("Please tell us what you would like to do: 'send a thank you: type 0', 'create a report: type 1', 'send a letter to all donors: type 2' 'quit: type 3' ")))
-        dict_select[action]()
+        try:
+            action = int(input(("Please tell us what you would like to do: 'send a thank you: type 0', 'create a report: type 1', 'send a letter to all donors: type 2' 'quit: type 3' ")))
+            dict_select[action]()
+        except ValueError:
+            print("Please type '0', '1', '2' or '3'")
+        except KeyError:
+            print("Please type '0', '1', '2', or '3'")
 
     
