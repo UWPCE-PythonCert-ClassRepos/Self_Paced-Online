@@ -13,13 +13,15 @@ def initialize_database():
     dB = [d1, d2, d3, d4]
     return dB
 #	
-def new_donor(name, dB):
+
+def newdonor(name, dB):
     """Creates a new donor in the database and requests donation amount."""
-    donation = float(input("How much did {} donate? ".format(name)))
+    donation = float(input("How much did {} donate?".format(name)))
     newdonor = [name, donation, 1, donation]
     dB.append(newdonor)
     return name, donation
 #
+
 def update_donor(name, dB):
     """Updates an existing donor in the database with a new donation."""
     for item in dB:
@@ -50,6 +52,7 @@ def note_gen(n):
     donation = n[1]
     print("Dear {},".format(name)+"\nThank you for your generous donation of ${:.02f}. Please rest assured that we will use at least \n95% of your contribution to feed the homeless to wolves. We could not do this work without you. \nSincerely, \nThe Billionaires' Club".format(donation))
 #
+
 def create_report(dB):
     """This creates a sorted summary report of all donors."""
     dB.sort(key=lambda x: x[1], reverse=True)
