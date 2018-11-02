@@ -11,26 +11,19 @@ def display_list():
     for name in ddonors.keys():
         print(name)
 
+
 def write_letter(name,amount):
     line_one = 'Dear {},'.format(name)
     line_two = "Thank you for donating ${:.2f} to the Human Fund. Your money will be used appropriately.".format(amount)
     letter = line_one + "\n" + line_two
     return letter
 
+
 def write_report(donors):
     print('Donor Name                | Total Given | Num Gifts | Average Gift')
     print('-'*67)
     for i in donors:
         print('{1:27}${0:11.2f}{2:12}  ${3:12.2f}'.format(*i))
-
-#def ty_new_donation(name, donation):
-#    ddonors[name].append(donation)
-
-
-#def add_donor():
-
-
-
 
 
 def thank_you():
@@ -88,6 +81,33 @@ def all_letters():
         with open('{}.txt'.format(name), 'w') as f:
             f.write(write_letter(name, donation))
     print("Letter files created.")
+
+
+def challenge(factor):
+    """Function to multiply the donations by all donors by a factor"""
+    donors_2 = {}
+    for k,v in ddonors.items():
+        donors_2[k] = list(map(lambda x:x*factor,v))
+    return donors_2
+
+def filter_donations(**kwargs):
+    """
+    Function creates a donor dict of only sonations above or below a specified value.
+
+    Args:
+        above: Use to get donations above parameter.
+        below: Use to get donations below parameter.
+    """
+
+    donors_2 = {}
+    if 'above' in kwargs:
+        for k,v in ddonors.items():
+            donors_2[k] = list(filter(lambda x: x>kwargs.get('above'),v))
+    
+    if 'below' in kwargs:
+        for k,v in ddonors.items():
+            donors_2[k] = list(filter(lambda x: x<kwargs.get('below'),v))
+    return donors_2
 
 
 if __name__ == "__main__":
