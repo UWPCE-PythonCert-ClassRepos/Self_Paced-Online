@@ -41,13 +41,35 @@ def build_trigram_dict(split_text: list, output: dict={}):
         return build_trigram_dict(split_text[1:], output)
 
 
-def build_kata(trigrams, starting_key=None):
+def build_kata(trigrams, starting_key=None, entry_limit=10):
     """builds kata out of trigrams"""
 
     # if no input key select random starting key
     if not starting_key:
         starting_key = random.choice(list(trigrams.keys()))
-    pass
+
+    counter = 0
+    value1 = starting_key.split()[0]
+    value2 = starting_key.split()[1]
+    value3 = random.choice(list(trigrams[starting_key]))
+
+    kata = " ".join([value1, value2, value3])
+
+    while counter <= entry_limit:
+        choices = trigrams.get(" ".join([value2, value3]))
+
+        # verify a match is found
+        if not choices:
+            break
+
+        random_choice = random.choice(list(choices))
+        kata += " " + random_choice
+
+        value1, value2, value3 = value2, value3, random_choice
+        counter += 1
+    
+    return kata
+
 
 
 def test_building_dict():
