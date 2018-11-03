@@ -88,10 +88,10 @@ def letter_to_all():
     """Write a thank you note to each donor and save it to a disk"""
     for donor, donation in donors.items():
         directory = str(input("Please specify the direcotry name for this file: "))
-        filepath = os.path.join(os.sep, "c:/", directory)
+        filepath = os.path.join(os.sep, directory)
         total_don = sum(donation)
         with open(f"{filepath}\\{donor}.txt", "w") as f:
-                    f.write("Dear {0},\n\n\tThank you for your very kind donation of ${1}.\n\n\t\t It will be put to very good use.\n\n\t\t\t Sincerely,\n\t\t\t -The Team".format(donor, total_don)) 
+            f.write("Dear {0},\n\n\tThank you for your very kind donation of ${1}.\n\n\t\t It will be put to very good use.\n\n\t\t\t Sincerely,\n\t\t\t -The Team".format(donor, total_don)) 
 
 
 #creating a dictionary to store user's selections:
