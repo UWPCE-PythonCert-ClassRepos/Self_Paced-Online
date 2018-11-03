@@ -21,12 +21,12 @@ def fibonacci(n):
 def lucas(n):
     return sum_series(n,2,1)
     
-print(sum_series(6,2,1))
+print(sum_series(4,2,1))
 print(fibonacci(6))
 print(lucas(5))
 
 if __name__ == "__main__":
-    
+    """Tests for validating sum series functions are working properly"""
     print('Running tests')
     #test n=0 and n=1 for fibonacci series
     assert fibonacci(0) == 0
@@ -40,4 +40,4 @@ if __name__ == "__main__":
     #tests for generic series
     assert sum_series(6,2,1) == 18
     assert sum_series(4,5,2) == 16
-    print('Test passed')
+    print('Tests passed')
