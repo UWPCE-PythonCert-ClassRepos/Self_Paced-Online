@@ -2,7 +2,7 @@
 """
 Created on Tue Oct 30 20:17:59 2018
 
-@author: denni
+@author: dennis
 """
 
 plus = '+'
@@ -37,31 +37,27 @@ def print_grid(a):
         print(ver_edge)
     print(hor_edge)
 
-
-def hor_edge(a,b):
-    c = plus
+#function to return each row of grid
+def grid_row(a,b,edge,middle):
+    c = edge
     for i in range(a):
-        c += minus * b + plus
+        c += middle * b + edge
     return c
-    print(c)
-
-def ver_edge(a,b):
-    c = pipe
-    for i in range(a):
-        c += space * b + pipe
-    return c
-    print(c)
 
 #function to create grid for part 3
 def print_grid2(a,b):
     
-    print(hor_edge(a,b))
+    print(grid_row(a,b,plus,minus))
     for i in range(a):
         for j in range(b):
-            print(ver_edge(a,b))
-        print(hor_edge(a,b)) 
+            print(grid_row(a,b,pipe,space))
+        print(grid_row(a,b,plus,minus)) 
 
+print('Grid for Part 1')
+grid_part1()
 
+print('Grid for Part 2')
+print_grid(7)    
+
+print('Grid for Part 3')
 print_grid2(5,3)
-#print_grid(7)    
-#grid_part1()
