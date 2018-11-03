@@ -5,29 +5,39 @@ Created on Wed Oct 31 21:48:41 2018
 @author: dennis
 """
 
+"""Returns the value of the nth position in a summing series"""
+def sum_series(n,pos0=0,pos1=1):
+    series = [pos0,pos1]
+    for i in range(n+1):
+        if i>1:
+            series.append(series[i-2] + series[i-1])
+    return series[n]
+
+"""Returns the value of the nth position in a fibonacci series"""
 def fibonacci(n):
-    series = [0,1]
-    for i in range(n):
-        if i>1:
-            series.append(series[i-2] + series[i-1])
-    print(series[n-1])
+    return sum_series(n)
     
-fibonacci(7)
-    
+"""Returns the value of the nth position in a lucas series"""
 def lucas(n):
-    series = [2,1]
-    for i in range(n):
-        if i>1:
-            series.append(series[i-2] + series[i-1])
-    print(series[n-1])
+    return sum_series(n,2,1)
     
-lucas(8)
+print(sum_series(6,2,1))
+print(fibonacci(6))
+print(lucas(5))
+
+if __name__ == "__main__":
     
-def sum_series(n,pos1=0,pos2=1):
-    series = [pos1,pos2]
-    for i in range(n):
-        if i>1:
-            series.append(series[i-2] + series[i-1])
-    print(series[n-1])
-    
-sum_series(8,2,1)
+    print('Running tests')
+    #test n=0 and n=1 for fibonacci series
+    assert fibonacci(0) == 0
+    assert fibonacci(1) == 1
+    #test for another fibonacci series
+    assert fibonacci(6) == 8
+    #tests for lucas series
+    assert lucas(5) == 11
+    assert lucas(1) == 1
+    assert lucas(0) == 2
+    #tests for generic series
+    assert sum_series(6,2,1) == 18
+    assert sum_series(4,5,2) == 16
+    print('Test passed')
