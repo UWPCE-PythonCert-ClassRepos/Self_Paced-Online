@@ -92,10 +92,10 @@ def letter_to_all():
     try:
         for donor, donation in donors.items():
             directory = str(input("Please specify the directory name for this file: "))
-            filepath = os.path.join(os.sep, "c:/", directory)
+            filepath = os.path.join(os.sep, directory)
             total_don = sum(donation)
             with open(f"{filepath}\\{donor}.txt", "w") as f:
-                        f.write("Dear {0},\n\n\tThank you for your very kind donation of ${1}.\n\n\t\t It will be put to very good use.\n\n\t\t\t Sincerely,\n\t\t\t -The Team".format(donor, total_don)) 
+                f.write("Dear {0},\n\n\tThank you for your very kind donation of ${1}.\n\n\t\t It will be put to very good use.\n\n\t\t\t Sincerely,\n\t\t\t -The Team".format(donor, total_don)) 
     except FileNotFoundError:
         print("Please, enter a valid directory name for this file.")
 
@@ -119,10 +119,9 @@ if __name__ == '__main__':
             dict_select[action]()
         except ValueError:
             print("Please type '0', '1', '2' or '3'")
-            exit()
         except KeyError:
             print("Please type '0', '1', '2', or '3'")
-            exit()
+            
 
     
 # Recommend adding an option to quit if user raises error. Otherwise, this is a never ending loop.
