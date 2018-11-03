@@ -4,7 +4,7 @@ Created on Wed Oct 31 21:28:33 2018
 
 @author: dennis
 """
-
+"""FizzBuzz assignment for Lesson 2"""
 for i in range(100):
     if i % 5 + i % 3 == 0:
         print('FizzBuzz')
