@@ -113,20 +113,21 @@ def filter_donations(**kwargs):
 
 def projection_calc(fact, **kwargs):
     """
-    Function creates a donor dict of only donations above or below a specified value.
+    Function returns a total donation about for the rich guy.
 
     Args:
         fact: factor to multiply donations by.
         above: Use to get donations above parameter. ~OR~
         below: Use to get donations below parameter.
     """  
-    #calculates the total amount of multiplied donations
+    # Calculates the total amount of multiplied donations.
     donors_after = {}
     donors_after = challenge(filter_donations(**kwargs),fact)
     total_a = 0
     for k,v in donors_after.items():
         total_a = sum(v,total_a)
 
+    # Calculates the sum of the donations that are being matched.
     donors_filtered = {}
     donors_filtered = filter_donations(**kwargs)
     total_f = 0
