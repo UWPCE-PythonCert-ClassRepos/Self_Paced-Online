@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import mailroom as m
+import mailroom_fp as m
 import pytest
 import os
 
