@@ -137,14 +137,14 @@ def projection_calc(fact, **kwargs):
 
 def projection():
     factor = input("How much to you want to multiply donations by? ")
-    up_down = input("Do you want to match donations 'above' or 'below' a value? ")
+    up_down = int(input("Do you want to match donations 1: above or 2: below a value? (Enter 1 or 2) "))
     threshold = input("At what value do you want to match donations {}? ".format(up_down))
     
-    if up_down == "above":
+    if up_down == 1:
         total = projection_calc(float(factor),above=float(threshold))
-    if up_down == "below":
+    if up_down == 2:
         total = projection_calc(float(factor),below=float(threshold))
-    print("You will donate ${:.2} under this plan.".format(total))
+    print("You will donate ${:.2f} under this plan.".format(total))
 
 
 
