@@ -41,4 +41,8 @@ def test_create_report(capsys):
                             "John Clark           $   70,000.00     2       $   35,000.00\n") 
 
 
-
+def test_dict_select():
+    assert dict_select[0] == thank_you_note
+    assert dict_select[1] == create_report
+    assert dict_select[2] == letter_to_all
+    assert dict_select[3] == quit
