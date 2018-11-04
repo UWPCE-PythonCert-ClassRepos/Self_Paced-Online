@@ -65,3 +65,21 @@ def test_all_letters():
     assert os.path.isfile('Manny Machado.txt')
     assert os.path.isfile('Chris Davis.txt')
     assert os.path.isfile('Adam Jones.txt')
+
+def test_challenge():
+    assert m.challenge(m.ddonors,2) == {"Manny Machado": [24.4,5.02,6.4,4262],
+                                        "Adam Jones": [2048.28,44.42,646.9], 
+                                        "Chris Davis": [6.4,11.1,8.4],
+                                        "Robert Wickens": [18000.2]}
+
+def test_filter_above():
+    assert m.filter_donations(above=100) == {"Manny Machado": [2131],
+                                            "Adam Jones": [1024.14,323.45], 
+                                            "Chris Davis": [],
+                                            "Robert Wickens": [9000.1]}
+
+def test_filter_below():
+    assert m.filter_donations(below=100) == {"Manny Machado": [12.2,2.51,3.20],
+                                        "Adam Jones": [22.21], 
+                                        "Chris Davis": [3.2,5.55,4.20],
+                                        "Robert Wickens": []}
