@@ -83,37 +83,76 @@ def all_letters():
     print("Letter files created.")
 
 
-def challenge(factor):
+def challenge(donor_dict,factor):
     """Function to multiply the donations by all donors by a factor"""
     donors_2 = {}
-    for k,v in ddonors.items():
+    for k,v in donor_dict.items():
         donors_2[k] = list(map(lambda x:x*factor,v))
     return donors_2
 
+
 def filter_donations(**kwargs):
     """
-    Function creates a donor dict of only sonations above or below a specified value.
+    Function creates a donor dict of only donations above or below a specified value.
 
     Args:
         above: Use to get donations above parameter.
         below: Use to get donations below parameter.
     """
+
     donors_2 = {}
     if 'above' in kwargs:
         for k,v in ddonors.items():
-            donors_2[k] = list(filter(lambda x: x > kwargs.get('above'),v))
+            donors_2[k] = list(filter(lambda x: x>kwargs.get('above'),v))
     
     if 'below' in kwargs:
         for k,v in ddonors.items():
-            donors_2[k] = list(filter(lambda x: x < kwargs.get('below'),v))
+            donors_2[k] = list(filter(lambda x: x<kwargs.get('below'),v))
     return donors_2
 
 
+def projection_calc(fact, **kwargs):
+    """
+    Function creates a donor dict of only donations above or below a specified value.
+
+    Args:
+        fact: factor to multiply donations by.
+        above: Use to get donations above parameter. ~OR~
+        below: Use to get donations below parameter.
+    """  
+    #calculates the total amount of multiplied donations
+    donors_after = {}
+    donors_after = challenge(filter_donations(**kwargs),fact)
+    total_a = 0
+    for k,v in donors_after.items():
+        total_a = sum(v,total_a)
+
+    donors_filtered = {}
+    donors_filtered = filter_donations(**kwargs)
+    total_f = 0
+    for k,v in donors_filtered.items():
+        total_f = sum(v,total_f)
+    return total_a - total_f
+
+
+def projection():
+    factor = input("How much to you want to multiply donations by? ")
+    up_down = input("Do you want to match donations 'above' or 'below' a value? ")
+    threshold = input("At what value do you want to match donations {}? ".format(up_down))
+    
+    if up_down == "above":
+        total = projection_calc(float(factor),above=float(threshold))
+    if up_down == "below":
+        total = projection_calc(float(factor),below=float(threshold))
+    print("You will donate ${:.2} under this plan.".format(total))
+
+
+
 if __name__ == "__main__":
-    main_switch_function = {"1": thank_you, "2": create_report, "3": all_letters, "4": exit}
+    main_switch_function = {"1": thank_you, "2": create_report, "3": all_letters, "4": projection, "5": exit}
     while True:
         print("What do you want to do?")
-        response = input("1. Send a Thank You, 2. Create a Report, 3. Send all letters, 4. Quit: ")
+        response = input("1. Send a Thank You, 2. Create a Report, 3. Send all letters, 4. Projection, 5. Quit: ")
         try:
             main_switch_function.get(response)()
         except TypeError:
