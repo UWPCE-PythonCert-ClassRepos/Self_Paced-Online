@@ -59,7 +59,7 @@ def create_report():
 
 def create_folder():
     now = datetime.datetime.now()
-    new_path = os.getcwd() + '\\' + 'letters_' + now.strftime('%d%m%Y')
+    new_path = os.path.join(os.getcwd(), 'letters_' + now.strftime('%d%m%Y'))
     if not os.path.exists(new_path):
         os.mkdir(new_path)
     return new_path, now
@@ -73,8 +73,8 @@ def all_letters():
 
 def write_email(name, donation):
     new_path, now = create_folder()
-    with open(new_path + '\\' + name + '_' + now.strftime('%d%m%Y') +
-              '.txt', 'w') as letter_file:
+    with open(os.path.join(new_path, name + '_' + now.strftime('%d%m%Y') +
+              '.txt'), 'w') as letter_file:
             letter_file.write('Dear {}, \n'
                               'Thank you so much for your generous '
                               'donation of ${:.2f} \n'
