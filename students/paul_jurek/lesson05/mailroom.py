@@ -31,11 +31,14 @@ def thank_you():
         else:
             if thank_you_input not in donors:
                 create_donor(thank_you_input)
-            # TODO: create exception for float which resets calls
-            donation_amount = float(input("Select donation amount: "))
-            create_donation(fullname=thank_you_input, amount=donation_amount)
-            print_thank_you(fullname=thank_you_input, amount=donation_amount)
-            break
+            try:
+                donation_amount = float(input("Select donation amount: "))
+                create_donation(fullname=thank_you_input, amount=donation_amount)
+                print_thank_you(fullname=thank_you_input, amount=donation_amount)
+            except ValueError:
+                print('Please input number for donation amount')
+            else:
+                break
 
 
 def display_donors():
@@ -161,7 +164,6 @@ def menu_selection(prompt, dispatch_dict):
         response = input(prompt)
         if (response == '0') or (response.lower().strip() == 'quit'):
             break
-        # TODO: replace get passing_function with try_except
         try:
             dispatch_dict.get(response)()
         except TypeError:
