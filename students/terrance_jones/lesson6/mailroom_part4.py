@@ -32,17 +32,20 @@ def get_amount():
         else:
             return amount
 
-def print_rows():
+def get_report(donor_list):
+    """Returns a list of rows """
+    report = []
+
     for c in donor_list:
         name = c
         num_gifts = len(donor_list[c])
         total = sum(donor_list[c])
-        average = total / num_gifts
-        average = round(average,2)
+        average = float(round(total / num_gifts, 2))
+        dic = {'name':name, 'total':total, 'num_gifts':num_gifts, 'average':average }
+        new_row = "{name:<25} ${total:^10} {num_gifts:^10} ${average:^10}".format(**dic)
+        report.append(new_row)
 
-        
-        
-        print("{:<25} ${:^20}  {:^15} ${:>20}".format(name,total,num_gifts,average))
+    return (report)
 
 
 def add_or_update_donor(donor_name, donation_amount):
@@ -65,7 +68,7 @@ def letter(donor):
    
     output['last_donation']= all_donations[len(all_donations)-1]
     letter = '''Dear {name},\n
-    \tThank you for your most recent donation of ${last_donation:,.2f}
+    \tThank you for your most recent donation of ${last_donation:,.2f}.
     \tYour total support of ${total:,.2f} has been used to assist many people.\n
     Thank you,\n
     -The Mailroom'''.format(**output)
@@ -90,12 +93,15 @@ def thankyou():
             
 
 
-def create_report():
+def display_report():
     
-    heading = "{:<25s} | {:^20s} | {:^10s} | {:^20s} ".format("Donor Name", "Total Given", "Num Gifts", "Average Gift")
+    heading = "{:<20s} | {:^10s} | {:^10s} | {:^10s} ".format("Donor Name", "Total Given", "Num Gifts", "Average")
+    heading_underline = "-"
     print(heading)
-    print("-" * len(heading))
-    print_rows()
+    print(heading_underline * len(heading))
+    
+    for row in get_report(donor_list):
+        print(row)
    
 
 def letters_everyone():
@@ -133,7 +139,7 @@ main_prompt = ("What do you want to do?\n"
                 "(q) Quit\n " 
                 )
 main_dispatch = {"1": thankyou,
-                 "2": create_report,
+                 "2": display_report,
                  "3": letters_everyone,
                  "q": quit,
                  }
@@ -146,7 +152,7 @@ sub_prompt =  ("What do you want to do?\n"
                 )
 
 sub_dispatch = {"1": thankyou,
-                 "2": create_report,
+                 "2": display_report,
                  "3": letters_everyone,
                  "q": quit,
                  }
