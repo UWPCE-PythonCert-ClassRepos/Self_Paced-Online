@@ -110,15 +110,20 @@ def send_letters_to_everyone():
     """process to evaluate all donors and create letter to send to
     donors."""
     # iterate through donors and donations to send thank yous
+    THANK_YOU_DIRECTORY = '/mailroom_thankyou_letters/'
     for donor in donors:
-        file_name = "".join(['mailroom_thankyou_letters/',
+        file_name = "".join([THANK_YOU_DIRECTORY,
                              donor.replace(" ", "_").lower(), '.txt'])
         donor_info = summarize_donor(donor)
-        # TODO: catch this if directory does not exist
         thank_you_text = create_donation_thank_you(fullname=donor,
                                                    amount=donor_info[1])
-        with open(file_name, 'w') as f:
-            f.write(thank_you_text)
+        try:
+            with open(file_name, 'w') as f:
+                f.write(thank_you_text)
+        except FileNotFoundError:
+            print('Mailroom thank you directory not found.  Please create this directory first.')
+            break
+    print(f'Thank you letters create in "{THANK_YOU_DIRECTORY}"')
 
 
 def create_donation_thank_you(fullname, amount):
@@ -169,11 +174,12 @@ def menu_selection(prompt, dispatch_dict):
         except TypeError:
             print('Please enter valid option from list')
 
+
 if __name__ == '__main__':
 
     MAIN_MENU_OPTIONS = {'1': thank_you,
                          '2': report,
-                         '3': send_letters_to_everyone,}
+                         '3': send_letters_to_everyone, }
 
     user_input = ('Options:\n'
                   '\t1: Create Donation\n'
