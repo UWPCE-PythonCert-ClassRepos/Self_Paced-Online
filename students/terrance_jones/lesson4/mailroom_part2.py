@@ -21,13 +21,13 @@ def show_donor_list():
     """Create list of donor names only. Display list of all donors"""
     for key in donor_list.keys():
         print(key)
-    
+
 
 def find_donor(x):
     for key in donor_list.keys():
         if key == x:
             return True
-        
+
 
 def get_amount():
     """Gets donation amount from user"""
@@ -49,7 +49,6 @@ def print_rows():
         total = sum(donor_list[c])
         average = total / num_gifts
         average = round(average,2)
-        
         print("{:<25} ${:^20}  {:^15} ${:>20}".format(name,total,num_gifts,average))
 
 
@@ -57,7 +56,7 @@ def letter(donor):
     output = {'name': donor}
     all_donations = donor_list[donor]
     output = {'name': donor, 'total': sum(donor_list[donor])}
-   
+
     output['last_donation']= all_donations[len(all_donations)-1]
     letter = '''Dear {name},\n
     \tThank you for your most recent donation of ${last_donation:,.2f}
@@ -73,33 +72,30 @@ def letter(donor):
 def thankyou():
     donor_name = get_name()
     if donor_name == "list":
-        show_donor_list()
+        show_donor_list
         donor_name =get_name()
 
-    if find_donor(donor_name) is True: 
+    if find_donor(donor_name) is True:
         donation_amount = get_amount()
         add_to_existing_donor(donor_name, donation_amount)
-        
         dic = {'name': donor_name , 'amount_donated': donation_amount}
         print("Dear {name}, \n Thank you for your {amount_donated:,.2f} donation. \nSincerely, Mailroom.".format(**dic))
-        menu_selection(sub_prompt, sub_dispatch)
     else:
-        
         donation_amount = get_amount()
         create_new_donor(donor_name, donation_amount)
         dic = {'name': donor_name , 'amount_donated': donation_amount}
         print("Dear {name}, \n Thank you for your {amount_donated:,.2f} donation. \nSincerely, Mailroom.".format(**dic))
-        menu_selection(sub_prompt, sub_dispatch)
-            
+
+
 
 
 def create_report():
-    
+
     heading = "{:<25s} | {:^20s} | {:^10s} | {:^20s} ".format("Donor Name", "Total Given", "Num Gifts", "Average Gift")
     print(heading)
     print("-" * len(heading))
     print_rows()
-    menu_selection(sub_prompt, sub_dispatch)
+
 
 def letters_everyone():
     for key in donor_list.keys():
@@ -108,16 +104,18 @@ def letters_everyone():
             donor_letter = letter(key)
             f.write(donor_letter)
     print("Letters have been created for each donor")
-    menu_selection(sub_prompt, sub_dispatch)
+
 
 def menu_selection(prompt, dispatch_dict):
-    response = input(prompt)
-    if dispatch_dict[response]() == "exit menu":
-        return
+    while True:
+        response = input(prompt)
+        if dispatch_dict[response]() == "exit menu":
+            return
 
-  
+
 def sub_menu():
-    menu_selection(sub_prompt, sub_dispatch)
+    while True:
+        menu_selection(sub_prompt, sub_dispatch)
 
 def quit():
     print("Quitting this menu now")
@@ -127,7 +125,7 @@ main_prompt = ("What do you want to do?\n"
                 "(1) Thank you letter\n"
                 "(2) Create Report\n"
                 "(3) Letters to all donors\n"
-                "(q) Quit\n " 
+                "(q) Quit\n "
                 )
 main_dispatch = {"1": thankyou,
                  "2": create_report,
@@ -139,7 +137,7 @@ sub_prompt =  ("What do you want to do?\n"
                 "(1) Thank you letter\n"
                 "(2) Create Report\n"
                 "(3) Letters to all donors\n"
-                "(q) Quit\n " 
+                "(q) Quit\n "
                 )
 
 sub_dispatch = {"1": thankyou,
@@ -151,11 +149,3 @@ sub_dispatch = {"1": thankyou,
 
 if __name__ == '__main__':
     menu_selection(main_prompt, main_dispatch)
-
-  
-                
-
-
-
-
-        

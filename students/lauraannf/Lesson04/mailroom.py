@@ -5,6 +5,7 @@ Created on Mon Sep 24 13:06:38 2018
 @author: Laura.Fiorentino
 """
 import datetime
+import sys
 from pathlib import Path
 my_path = 'C:\\Users\\Laura.Fiorentino\\Documents\\MyPython\\\
 Self_Paced-Online\\students\\lauraannf\\Lesson04\\'
@@ -64,27 +65,29 @@ def all_letters():
     new_path = my_path + 'letters_' + now.strftime('%d%m%Y')
     Path(new_path).mkdir(exist_ok=True)
     for key in donor_list.keys():
-        file = open(new_path + '\\' + key + '_' + now.strftime('%d%m%Y') +
-                    '.txt', 'w')
-        file.write('Dear {}, \n'
-                   'Thank you so much for your generous donation of ${:.2f} \n'
-                   'Sincerely, \n'
-                   'Laura F'.format(key, sum(donor_list[key])))
-        file.close()
+        with open(new_path + '\\' + key + '_' + now.strftime('%d%m%Y') +
+                    '.txt', 'w') as letter_file:
+        # Changed file to letter file b/c file is a built in name
+        # Added with open so file always closes
+            letter_file.write('Dear {}, \n'
+                       'Thank you so much for your generous donation of ${:.2f} \n'
+                       'Sincerely, \n'
+                       'Laura F'.format(key, sum(donor_list[key])))
+
+
+def quit_program():
+    sys.exit()
 
 
 def main():
     print('----------Mailroom------------')
+    arg_dict = {'1': create_email, '2': create_report, '3': all_letters,
+                '4': quit_program}
     while True:
         task = input("Choose an action: [1] Send a Thank You; [2] Create a \
 Report; [3] Send a Thank You to Everyone; [4] Quit>")
-        arg_dict = {'1': create_email, '2': create_report, '3': all_letters}
-        if task in arg_dict.keys():
-            arg_dict.get(task)()
-        elif task == '4':
-            break
-        else:
-            continue
+        arg_dict[task]()
+# updated w/ switch dict
 
 
 if __name__ == '__main__':
