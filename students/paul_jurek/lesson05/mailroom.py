@@ -43,13 +43,6 @@ def display_donors():
     print("\n".join(list(donors)))
 
 
-def passing_function():
-    """placeholder to catch all bad inputs and do nothing
-    Needed as we want to call function to process but
-    none errors if called"""
-    pass
-
-
 def create_donation(fullname, amount):
     """adds a donation to the donors dict from user input"""
     donors[fullname].append(amount)
@@ -169,8 +162,10 @@ def menu_selection(prompt, dispatch_dict):
         if (response == '0') or (response.lower().strip() == 'quit'):
             break
         # TODO: replace get passing_function with try_except
-        dispatch_dict.get(response, passing_function)()
-
+        try:
+            dispatch_dict.get(response)()
+        except TypeError:
+            print('Please enter valid option from list')
 
 if __name__ == '__main__':
 
