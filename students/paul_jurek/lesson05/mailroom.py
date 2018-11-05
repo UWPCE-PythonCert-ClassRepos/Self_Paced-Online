@@ -31,6 +31,7 @@ def thank_you():
         else:
             if thank_you_input not in donors:
                 create_donor(thank_you_input)
+            # TODO: create exception for float which resets calls
             donation_amount = float(input("Select donation amount: "))
             create_donation(fullname=thank_you_input, amount=donation_amount)
             print_thank_you(fullname=thank_you_input, amount=donation_amount)
@@ -117,6 +118,7 @@ def send_letters_to_everyone():
         file_name = "".join(['mailroom_thankyou_letters/',
                              donor.replace(" ", "_").lower(), '.txt'])
         donor_info = summarize_donor(donor)
+        # TODO: catch this if directory does not exist
         thank_you_text = create_donation_thank_you(fullname=donor,
                                                    amount=donor_info[1])
         with open(file_name, 'w') as f:
@@ -148,7 +150,8 @@ def mail_thank_you(fullname, amount, directory='mailroom_thankyou_letters/'):
     file_name = "".join([directory,
                          fullname.replace(" ", "_").lower(),
                          '.txt'])
-
+    # TODO: create try/except here in case directory does not exist
+    # TODO: create try/except here in case fullname bad
     with open(file_name, 'w') as f:
         f.write(thank_you_text)
 
@@ -165,7 +168,7 @@ def menu_selection(prompt, dispatch_dict):
         response = input(prompt)
         if (response == '0') or (response.lower().strip() == 'quit'):
             break
-
+        # TODO: replace get passing_function with try_except
         dispatch_dict.get(response, passing_function)()
 
 
