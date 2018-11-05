@@ -144,19 +144,6 @@ def print_thank_you(fullname, amount):
     print(thank_you_text)
 
 
-def mail_thank_you(fullname, amount, directory='mailroom_thankyou_letters/'):
-    """creates text file with thank you text"""
-    thank_you_text = create_donation_thank_you(fullname=fullname,
-                                               amount=amount)
-    file_name = "".join([directory,
-                         fullname.replace(" ", "_").lower(),
-                         '.txt'])
-    # TODO: create try/except here in case directory does not exist
-    # TODO: create try/except here in case fullname bad
-    with open(file_name, 'w') as f:
-        f.write(thank_you_text)
-
-
 def menu_selection(prompt, dispatch_dict):
     """generic function to create command line menu and route response
     Will continue to ask user for response until valie response is given or
