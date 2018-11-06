@@ -24,10 +24,9 @@ class Group:
         """Create a new dictionary with Total, number of donations,
         and average donation amount"""
 
-        donors_f = {some_name: [sum(donor_obj.donations),
-                                int(len(donor_obj.donations)),
-                                sum(donor_obj.donations) /
-                                int(len(donor_obj.donations))]
+        donors_f = {some_name: [donor_obj.sum_donations(),
+                                donor_obj.number_donations(),
+                                donor_obj.avg_donations()]
                     for some_name, donor_obj in self._donor_raw.items()}
         return donors_f
 
@@ -76,7 +75,6 @@ class Group:
                              key=donor_summary.__getitem__, reverse=True)
         return list_sorted
 
-    @property
     def report(self):
         """Return a report on all the donors"""
         donor_summary = self.summary()
@@ -101,14 +99,11 @@ class Group:
         return '\n'.join(rows)
 
     def letters(self):
-        donors_f = self.summary()
-
         for donor, donor_obj in self._donor_raw.items():
-            donation_summary = donors_f[donor]
             letter = f'Dear {donor}, thank you so much for your ' \
-                     f'last contribution of ${donor_obj.donations[-1]:.2f}! ' \
+                     f'last contribution of ${donor_obj.last_donation():.2f}! ' \
                      f'You have contributed a total of $' \
-                     f'{donation_summary[0]:.2f}, ' \
+                     f'{donor_obj.sum_donations():.2f}, ' \
                      f'and we appreciate your support!'
             # Write the letter to a destination
             with open(donor + '.txt', 'w') as to_file:
@@ -122,6 +117,19 @@ class Individual:
 
     def add_donation(self, donation):
         self.donations.append(donation)
+
+    def number_donations(self):
+        return int(len(self.donations))
+
+    def sum_donations(self):
+        return sum(self.donations)
+
+    def avg_donations(self):
+        return self.sum_donations() / \
+               self.number_donations()
+
+    def last_donation(self):
+        return self.donations[-1]
 
     @property
     def thank_you(self):

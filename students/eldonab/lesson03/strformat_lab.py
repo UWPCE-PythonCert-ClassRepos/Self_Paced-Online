@@ -17,7 +17,7 @@ print(formatted_two)
 def formatter(t):
     l = len(t)
     listed = " ,".join(["{}"] * l)
-    my_str = "The numbers are: " + listed
+    my_str = f"The {l} numbers are: " + listed #this is a minor changed. Used an f string to include the count of numbers. 
     return (my_str).format(*t)
 
 
