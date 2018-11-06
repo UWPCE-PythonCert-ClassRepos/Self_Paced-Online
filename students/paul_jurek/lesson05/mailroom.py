@@ -29,15 +29,15 @@ def thank_you():
         elif thank_you_input.lower().strip() == 'quit':
             break
         else:
-            if thank_you_input not in donors:
-                create_donor(thank_you_input)
             try:
                 donation_amount = float(input("Select donation amount: "))
+            except ValueError:
+                print('Donation Canceled. Please retry and input number for donation amount.')
+            else:
+                if thank_you_input not in donors:
+                    create_donor(thank_you_input)
                 create_donation(fullname=thank_you_input, amount=donation_amount)
                 print_thank_you(fullname=thank_you_input, amount=donation_amount)
-            except ValueError:
-                print('Please input number for donation amount')
-            else:
                 break
 
 
@@ -83,9 +83,7 @@ def report():
     print(f"{'Donor Name':<26}|{'Total Given':^15}|"
           f"{'Num Gifts':^11}|{'Average Gift':^15}")
     print('-'*70)
-    donor_stats = []
-    for donor in donors.keys():
-        donor_stats.append(summarize_donor(donor))
+    donor_stats = [summarize_donor(donor) for donor in donors.keys()]
 
     donor_stats.sort(key=lambda tup: tup[1], reverse=True)
     for summary in donor_stats:
@@ -123,7 +121,8 @@ def send_letters_to_everyone():
         except FileNotFoundError:
             print('Mailroom thank you directory not found.  Please create this directory first.')
             break
-    print(f'Thank you letters create in "{THANK_YOU_DIRECTORY}"')
+        else:
+            print(f'Thank you letter for {donor} created in "{THANK_YOU_DIRECTORY}"')
 
 
 def create_donation_thank_you(fullname, amount):
