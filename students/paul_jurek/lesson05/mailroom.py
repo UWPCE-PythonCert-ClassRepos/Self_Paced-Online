@@ -29,15 +29,15 @@ def thank_you():
         elif thank_you_input.lower().strip() == 'quit':
             break
         else:
-            if thank_you_input not in donors:
-                create_donor(thank_you_input)
             try:
                 donation_amount = float(input("Select donation amount: "))
+            except ValueError:
+                print('Donation Canceled. Please retry and input number for donation amount.')
+            else:
+                if thank_you_input not in donors:
+                    create_donor(thank_you_input)
                 create_donation(fullname=thank_you_input, amount=donation_amount)
                 print_thank_you(fullname=thank_you_input, amount=donation_amount)
-            except ValueError:
-                print('Please input number for donation amount')
-            else:
                 break
 
 
