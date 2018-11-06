@@ -36,7 +36,16 @@ for fruit in fruits:
         print(fruit)
 
 #Series 2:
-        
+#Display the list from Series 1
+print(fruits)
+#Remove the last fruit from the list and display. 
+del fruits[-1] 
+print(fruits)  
+
+#Ask the user for a fruit to delete, find it and delete it.
+response = input("Enter a fruit to delete > ") 
+fruits.remove(response)
+print(fruits)
         
         
         
