@@ -123,7 +123,8 @@ def send_letters_to_everyone():
         except FileNotFoundError:
             print('Mailroom thank you directory not found.  Please create this directory first.')
             break
-    print(f'Thank you letters create in "{THANK_YOU_DIRECTORY}"')
+        else:
+            print(f'Thank you letter for {donor} created in "{THANK_YOU_DIRECTORY}"')
 
 
 def create_donation_thank_you(fullname, amount):
