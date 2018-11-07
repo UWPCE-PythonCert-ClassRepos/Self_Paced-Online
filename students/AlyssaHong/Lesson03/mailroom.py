@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 list_col = ['Donor Name','Total Given','Num Gifts','Average Gift']
 list_donor_name = ['Fred','Alex','Henry','Alyssa','Leo']
 list_total_given = [7000, 30000, 5000, 120000, 107000]
@@ -32,17 +34,25 @@ def send_thanks():
         #return to the original prompt
         print('{:<20} | {:^10} | {:^10} | {:^10}'.format(*list_col))
         print('{}'.format("-"*63))
-        for i in range(len(list_donor_name)):
-            print('{:<20}   ${:>10,.2f}   {:>10}   ${:>10,.2f}'.format\
-            (list_donor_name[i],list_total_given[i],list_num_gifts[i],list_avg_gift[i]))
 
+        list_total_given.sort(reverse=True)
+        for i in range(len(list_donor_name)):
+            result = '{:<20}   ${:>10,.2f}   {:>10}   ${:>10,.2f}'.format(list_donor_name[i],\
+                      list_total_given[i],list_num_gifts[i],list_avg_gift[i])
+            # list_total_given.sort(reverse=True)
+            print(result)
 
 def create_report():
     print('{:<20} | {:^10} | {:^10} | {:^10}'.format(*list_col))
     print('{}'.format("-"*63))
+
+    list_total_given.sort(reverse=True)
     for i in range(len(list_donor_name)):
-        print('{:<20}   ${:>10,.2f}   {:>10}   ${:>10,.2f}'.format\
-             (list_donor_name[i],list_total_given[i],list_num_gifts[i],list_avg_gift[i]))
+        result = '{:<20}   ${:>10,.2f}   {:>10}   ${:>10,.2f}'.format(list_donor_name[i],\
+                  list_total_given[i],list_num_gifts[i],list_avg_gift[i])
+        list_total_given.sort(reverse=True)
+        print(result)
+
     print('{}'.format("-"*63))
 
 
