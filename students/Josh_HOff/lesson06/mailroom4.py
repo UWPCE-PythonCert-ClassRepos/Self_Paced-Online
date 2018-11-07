@@ -5,7 +5,7 @@ donors_list = {'Ralph Anders': [5, 10], 'Andrei Wasinski': [101, 151, 75], 'Stal
 donor = ''
 donation = 0
 tab = '    '
-sorted_donors = []
+sorted_donors = ()
 rows = ''
 top = ''
 #this function gets a donor's name and donation amount and adds them both to the donor list.
@@ -59,6 +59,7 @@ def create_report():
     y = '|'
     global rows
     global top
+    global sorted_donors
     top = f'Donor Name{y:>14} Total Given {y} Num Gifts {y} Average Gift\n'
     reportvariable = top
     top += ('-' * 63)
@@ -78,12 +79,11 @@ def quitting():
 #this function creates files for all donors in the donor list.
 def letters_to_everyone():
     for i, val in donors_list.items():
-        outfile = open(f'{i}.txt', 'w')
-        donation = sum(val)
-        outfile.write(f'Dear {i}, \n\n{tab}Thank you very much for your most recent donation \
+        with open(f'{i}.txt', 'w') as outfile:
+            donation = sum(val)
+            outfile.write(f'Dear {i}, \n\n{tab}Thank you very much for your most recent donation \
 of ${val[-1]:.2f}! \n\n{tab}You have now donated a total of ${donation:.2f}. \n\n{tab}Your support \
 is essential to our success and will be well utilized. \n\n{tab*2}Sincerely, \n{tab*3}-The Company')
-        outfile.close()
 
 #this function will continue the previous while loop and prevents errors if a user enters an unexpected input.
 def continue_func():
