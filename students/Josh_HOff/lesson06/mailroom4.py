@@ -6,9 +6,8 @@ donor = ''
 donation = 0
 tab = '    '
 sorted_donors = []
-#rows = ''
-#top = ''
-
+rows = ''
+top = ''
 #this function gets a donor's name and donation amount and adds them both to the donor list.
 def send_thank_you():
     while True:
@@ -58,6 +57,8 @@ def print_list():
 def create_report():
     print('')
     y = '|'
+    global rows
+    global top
     top = f'Donor Name{y:>14} Total Given {y} Num Gifts {y} Average Gift\n'
     reportvariable = top
     top += ('-' * 63)
@@ -69,9 +70,7 @@ def create_report():
         rows += f'\n{donor_name:<23} $ {sum(donations):>11.2f} {gift:>11} {average:>11.2f}'
     reportvariable += rows
     print(f'\n{reportvariable}\n')
-    return
-    
-
+    return reportvariable
 #this function quits the previous menu.    
 def quitting():
     sys.exit()
