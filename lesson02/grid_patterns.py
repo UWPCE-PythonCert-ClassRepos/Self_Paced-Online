@@ -1,6 +1,8 @@
-"""Author is Antonio V. Alvillar
-   Self-Paced-Online Python 210 UWPCE
-   November 06 2018 """
+"""
+	Author is Antonio V. Alvillar
+    Self-Paced-Online Python 210 UWPCE
+    November 06 2018 
+"""
 
 #print("name is: ", __name__) < - testing
 #Static Grid ( 4 boxes with dash/line between + for joints)

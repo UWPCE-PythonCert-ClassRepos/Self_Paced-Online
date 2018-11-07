@@ -1,6 +1,8 @@
-"""Author is Antonio. V. Alvillar
-   Self-Paced-Online Python 210 UWPCE
-   """
+"""
+	Author is Antonio. V. Alvillar
+	Self-Paced-Online Python 210 UWPCE
+	November 6th 2018
+"""
 #Fizz Buzz problem
 def fizzBuzz():
     for i in range(1,101): # 1-100 inclusive
