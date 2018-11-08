@@ -1,7 +1,7 @@
 #Execute script using `python list_lab.py`
 
 ### Series 1 ###
-print("\-----------Beginning Series 1-----------")
+print("\n-----------Beginning Series 1-----------")
 
 fruit_list = ["Apples","Pears","Oranges","Peaches"]
 print(fruit_list)
@@ -35,7 +35,7 @@ print("Fruits that start with a 'P': " + ",".join(p_fruits))
 
 
 ### Series 2 ####
-print("\-----------Beginning Series 2-----------")
+print("\n-----------Beginning Series 2-----------")
 
 # Delete the last fruit in the list
 print(fruit_list)
@@ -59,7 +59,7 @@ print("After delete:\n",fruit_list)
 
 
 ### Series 3 ###
-print("\-----------Beginning Series 3-----------")
+print("\n-----------Beginning Series 3-----------")
 for fruit in fruit_list[:]:
     
     like_fruit = input("Do you like {}?: ".format(fruit))
@@ -74,7 +74,7 @@ print(fruit_list)
 
 
 ### Series 4 ###
-print("\-----------Beginning Series 4-----------")
+print("\n-----------Beginning Series 4-----------")
 fruit_copy = fruit_list[:]
 for k in range(len(fruit_copy)):
     string_k = fruit_copy[k]
