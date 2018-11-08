@@ -3,9 +3,10 @@
 # list_lab.py
 # ['Pineapple', 'Plum', 'Apples', 'Pears', 'Oranges', 'Peaches', 'Banana']
 
+
 def user_input(q):
     """
-
+        generates a request for user input
     """
     prompt = q + " : "
     response = input(prompt)
@@ -17,13 +18,13 @@ def series_1():
 
     """
 
-    fruit_list = [ "Apples", "Pears", "Oranges", "Peaches"]
+    fruit_list = ["Apples", "Pears", "Oranges", "Peaches"]
     questions_str = "{0}/{1}/{0}/{0}".\
-    format("Enter another fruit", "Enter a number, 1 to 4")
+        format("Enter another fruit", "Enter a number, 1 to 4")
     questions = questions_str.split("/")
     io = ''
     print()
-    for question in  questions:
+    for question in questions:
         if io.isdigit():
             print("{}   {}\n".format(int(io), fruit_list[int(io) - 1]))
         else:
@@ -88,12 +89,12 @@ def series_3(fruit_list):
         reply = input(question)
         reply = reply.lower()
 
-        yes_or_no = reply == "yes" or reply == "no"
+        yes_or_no = reply in ("yes", "no")
 
         while not yes_or_no:
             reply = input("You have to answer with YES or NO! ")
             reply = reply.lower()
-            yes_or_no = reply == "yes" or reply == "no"
+            yes_or_no = reply in ("yes", "no")
 
         if reply == "yes":
             f_l[f_l.index(fruit)] = fruit.lower()
