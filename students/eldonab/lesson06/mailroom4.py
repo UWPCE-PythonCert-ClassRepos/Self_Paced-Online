@@ -4,7 +4,6 @@ import os
 import os.path
 
 #create a list of at least 5 donors.
-#updated donors_list from part one using a dictionary
 donors = {
 "Bill Gates": [50000, 600000],
 "Jeff Bezos": [100000, 400, 7000],
@@ -22,21 +21,25 @@ def add_or_update_donor(name):
             donors[name].append(amount)
         else:
             donors.update({name: [amount]})
-        letter(name, amount)
+        letter_print(name, amount)
     except ValueError:
         print("Please enter a number as a donation amount")
 
 
-# Changed the previous version of this function using dict comprehensions:
 def show_list():
     """Show existing list of donor names"""
     {print(donor) for donor in donors}
+      
 
- 
 def letter(donor_name, donor_amount):
-    """Print a thank you letter"""
-    print("Dear {0}, thank you for your generous donation in the amount of ${1}!".format(donor_name, donor_amount))
+    """Return a thank you letter."""
+    return "Dear {0}, thank you for your generous donation in the amount of ${1}!".format(donor_name, donor_amount)
 
+
+def letter_print(donor_name, donor_amount):
+    """Print a thank you letter"""
+    print(letter(donor_name, donor_amount))
+   
 
 def thank_you_note():
     """Send a thank you note and update the list of donors"""
@@ -45,13 +48,14 @@ def thank_you_note():
         while name == "list":
             show_list()
             name = input("Please, type the full name of a sponsor: ")
+        while name.isnumeric():
+            name = input("Please, type the full name of a sponsor. Your input should be a string: ")
         else:
             add_or_update_donor(name)
     except ValueError:
         print("Your answer should be a string")
 
         
-# stat_donors() function written with dict comprehensions:
 def stat_donors():
     """Print donation statistics for each donor"""
     donor_dict = {}
@@ -59,12 +63,12 @@ def stat_donors():
     sorted_d = sorted(donor_dict.items(), key = lambda x: x[1], reverse = True)
     for adonor in sorted_d:
         print("{:<20} ${:>12,.2f}{:^12} ${:>12,.2f}".format(adonor[0], adonor[1][0], adonor[1][1], adonor[1][2]))
-
-         
+    
+       
 def create_report():
     """Print a list of donors sorted by name, total donated amount, number of donation, and average donation amount"""
     print("{0:<20}{1:>12}{2:>12}{3:>15}".format("Donor Name", "Total Given", "Num Gifts", "Average Gift"))
-    print("--------------------------------------------------------------------------------------------")
+    print("--------------------------------------------------------------")
     stat_donors()
 
 
@@ -73,20 +77,6 @@ def quit():
     exit()
 
 
-# def letter_to_all():
-#     """Write a thank you note to each donor and save it to a disk"""
-#     for donor, donation in donors.items():
-#         try:
-#             directory = str(input("Please specify the directory name for this file: "))
-#             filepath = Path("c:/",directory)
-#             total_don = sum(donation)
-#             with open(f"{filepath}\\{donor}.txt", "w") as f:
-#                 f.write("Dear {0},\n\n\tThank you for your very kind donation of ${1}.\n\n\t\t It will be put to very good use.\n\n\t\t\t Sincerely,\n\t\t\t -The Team".format(donor, total_don)) 
-#         except FileNotFoundError:
-#             print("Please, enter a valid directory name for this file.")
-
-
-# This is going to be a challenge running this on a Mac. Might need to have a catch here using the os module or the like.
 def letter_to_all():
     """Write a thank you note to each donor and save it to a disk"""
     try:
@@ -100,6 +90,7 @@ def letter_to_all():
         print("Please, enter a valid directory name for this file.")
 
 #creating a dictionary to store user's selections:
+
 dict_select = {
 0: thank_you_note,
 1: create_report,
@@ -110,8 +101,6 @@ dict_select = {
 
 
 #Running the main interaction in if __name__ == '__main__':
-
-
 if __name__ == '__main__':
     while True:
         try:
@@ -124,4 +113,3 @@ if __name__ == '__main__':
             
 
     
-# Recommend adding an option to quit if user raises error. Otherwise, this is a never ending loop.

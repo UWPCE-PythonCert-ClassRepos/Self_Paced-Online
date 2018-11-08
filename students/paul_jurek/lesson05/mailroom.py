@@ -29,24 +29,21 @@ def thank_you():
         elif thank_you_input.lower().strip() == 'quit':
             break
         else:
-            if thank_you_input not in donors:
-                create_donor(thank_you_input)
-            donation_amount = float(input("Select donation amount: "))
-            create_donation(fullname=thank_you_input, amount=donation_amount)
-            print_thank_you(fullname=thank_you_input, amount=donation_amount)
-            break
+            try:
+                donation_amount = float(input("Select donation amount: "))
+            except ValueError:
+                print('Donation Canceled. Please retry and input number for donation amount.')
+            else:
+                if thank_you_input not in donors:
+                    create_donor(thank_you_input)
+                create_donation(fullname=thank_you_input, amount=donation_amount)
+                print_thank_you(fullname=thank_you_input, amount=donation_amount)
+                break
 
 
 def display_donors():
     """diplays donors"""
     print("\n".join(list(donors)))
-
-
-def passing_function():
-    """placeholder to catch all bad inputs and do nothing
-    Needed as we want to call function to process but
-    none errors if called"""
-    pass
 
 
 def create_donation(fullname, amount):
@@ -86,9 +83,7 @@ def report():
     print(f"{'Donor Name':<26}|{'Total Given':^15}|"
           f"{'Num Gifts':^11}|{'Average Gift':^15}")
     print('-'*70)
-    donor_stats = []
-    for donor in donors.keys():
-        donor_stats.append(summarize_donor(donor))
+    donor_stats = [summarize_donor(donor) for donor in donors.keys()]
 
     donor_stats.sort(key=lambda tup: tup[1], reverse=True)
     for summary in donor_stats:
@@ -113,14 +108,21 @@ def send_letters_to_everyone():
     """process to evaluate all donors and create letter to send to
     donors."""
     # iterate through donors and donations to send thank yous
+    THANK_YOU_DIRECTORY = '/mailroom_thankyou_letters/'
     for donor in donors:
-        file_name = "".join(['mailroom_thankyou_letters/',
+        file_name = "".join([THANK_YOU_DIRECTORY,
                              donor.replace(" ", "_").lower(), '.txt'])
         donor_info = summarize_donor(donor)
         thank_you_text = create_donation_thank_you(fullname=donor,
                                                    amount=donor_info[1])
-        with open(file_name, 'w') as f:
-            f.write(thank_you_text)
+        try:
+            with open(file_name, 'w') as f:
+                f.write(thank_you_text)
+        except FileNotFoundError:
+            print('Mailroom thank you directory not found.  Please create this directory first.')
+            break
+        else:
+            print(f'Thank you letter for {donor} created in "{THANK_YOU_DIRECTORY}"')
 
 
 def create_donation_thank_you(fullname, amount):
@@ -141,18 +143,6 @@ def print_thank_you(fullname, amount):
     print(thank_you_text)
 
 
-def mail_thank_you(fullname, amount, directory='mailroom_thankyou_letters/'):
-    """creates text file with thank you text"""
-    thank_you_text = create_donation_thank_you(fullname=fullname,
-                                               amount=amount)
-    file_name = "".join([directory,
-                         fullname.replace(" ", "_").lower(),
-                         '.txt'])
-
-    with open(file_name, 'w') as f:
-        f.write(thank_you_text)
-
-
 def menu_selection(prompt, dispatch_dict):
     """generic function to create command line menu and route response
     Will continue to ask user for response until valie response is given or
@@ -165,15 +155,17 @@ def menu_selection(prompt, dispatch_dict):
         response = input(prompt)
         if (response == '0') or (response.lower().strip() == 'quit'):
             break
-
-        dispatch_dict.get(response, passing_function)()
+        try:
+            dispatch_dict.get(response)()
+        except TypeError:
+            print('Please enter valid option from list')
 
 
 if __name__ == '__main__':
 
     MAIN_MENU_OPTIONS = {'1': thank_you,
                          '2': report,
-                         '3': send_letters_to_everyone,}
+                         '3': send_letters_to_everyone, }
 
     user_input = ('Options:\n'
                   '\t1: Create Donation\n'
