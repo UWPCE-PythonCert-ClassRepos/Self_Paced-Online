@@ -6,6 +6,7 @@
 
 #  --------------------  Part 1  --------------------
 
+
 def draw_grid_11():
     """
     no options
@@ -45,11 +46,11 @@ def draw_grid_12():
     rows = 10
     plus = '+'
     divider = ' - - - - '
-    open    = '         '
+    open_ = '         '
     bar = "|"
 
     horizontal_divider = plus + divider + plus + divider + plus
-    vertical_divider = bar + open + bar + open + bar
+    vertical_divider = bar + open_ + bar + open_ + bar
 
     for row in range(rows + 1):
         if row == 0 or row % 5 == 0:
@@ -63,13 +64,18 @@ def draw_grid_12():
 
 def draw_grid_2(m):
     """
+    Although a nice grid is printed, it's not user friendly.
     one options
-    m: cell size, m x m
+    m: cell size, m x m, m must be > 4, not same units as for the others
     grid is 2 x 2
     """
-    if m % 2 == 1 and m > 4:
+    if m < 4:
+        print("Variable m, cell size must be 5 or greater.")
+        return
+
+    if m % 2 == 1 and m > 2:
         n = m - 1
-    elif m % 2 == 0 and m > 4:
+    elif m % 2 == 0 and m > 2:
         n = m - 2
     rows = n
     columns = 2 * n
@@ -129,10 +135,29 @@ class Grid:
         """
         return self.__grid()
 
+
 def draw_grid_3(m, n):
-        """
-        m: print a grid of size m, a square m x m grid,
-        n: each cell in the grid is of size n, n x n cell
-        """
-        gr = Grid(m, n)
-        print(gr)
+    """
+    m: print a grid of size m, a square m x m grid,
+    n: each cell in the grid is of size n, n x n cell
+    """
+    gr = Grid(m, n)
+    print(gr)
+
+#  --------------------------------------------------------------
+
+
+if __name__ == '__main__':
+    m = 6  # cell size used in draw_grid_2
+    n = 5  # grid size used in draw_grid_3
+    p = 3  # cell size used in draw_grid_3
+    print("draw_grid_11():  2 x 2 grid, 4 x 4 cell size")
+    draw_grid_11()
+    print("\n\n\n{}:  2 x 2 grid, 4 x 4 cell size".format("draw_grid_12()"))
+    draw_grid_12()
+    print("\n\n\n{}:  2 x 2 grid, {} x {} cell 'unit' size - different scale".
+          format("draw_grid_2()", m, m))
+    draw_grid_2(m)
+    print("\n\n\n{}:  {n} x n grid, {p} x {p} cell size".
+          format("draw_grid_3(n, p)", n=n, p=p))
+    draw_grid_3(n, p)
