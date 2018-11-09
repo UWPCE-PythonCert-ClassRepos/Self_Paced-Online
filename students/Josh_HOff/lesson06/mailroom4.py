@@ -8,6 +8,7 @@ tab = '    '
 sorted_donors = ()
 rows = ''
 top = ''
+
 #this function gets a donor's name and donation amount and adds them both to the donor list.
 def send_thank_you():
     while True:
@@ -28,12 +29,16 @@ def send_thank_you():
                 elif truthcheck == True:
                     continue
                 return
+                
+                
 def check_input(donor):
     if donor == 'quit':
         return False
     elif donor == 'list':
         switch_func_dict.get(donor, continue_func)()
         return True
+        
+        
 def check_donation(donor, donation):
     if donation == 'quit':
         return False
@@ -47,7 +52,8 @@ def check_donation(donor, donation):
     else:
         donors_list[donor] = [donation]
     print(f'\nHello, {donor}! Thank you very much for your generous donation of ${donation:.2f}! Your contribution is essential and will be well utilized.\n')
-    #this function prints out a list of the donors in the donor list.            
+    #this function prints out a list of the donors in the donor list.      
+    
 def print_list():
     print('')
     names = [i for i in donors_list]
@@ -72,6 +78,7 @@ def create_report():
     reportvariable += rows
     print(f'\n{reportvariable}\n')
     return reportvariable
+    
 #this function quits the previous menu.    
 def quitting():
     sys.exit()
@@ -88,7 +95,10 @@ is essential to our success and will be well utilized. \n\n{tab*2}Sincerely, \n{
 #this function will continue the previous while loop and prevents errors if a user enters an unexpected input.
 def continue_func():
     return
+    
+    
 switch_func_dict = {'1':send_thank_you, '2':create_report, '3':letters_to_everyone, '4':quitting, 'quit':quitting, 'list':print_list}
+
 #main function
 if __name__ == "__main__":
     while True:

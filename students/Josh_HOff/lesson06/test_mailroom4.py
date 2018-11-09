@@ -9,27 +9,37 @@ class MyTests(unittest.TestCase):
 
     def setUp(self):
         pass
-    def test_1(self):
+        
+    def test_check_input_is_quit(self):
         self.assertFalse(check_input('quit'))
-    def test_2(self):
+        
+    def test_check_input_is_list(self):
         self.assertTrue(check_input('list'))
-    def test_3(self):
+        
+    def test_check_input_is_new_donor(self):
         self.assertIsNone(check_input('New Donor'))
-    def test_4(self):
+        
+    def test_check_donation_is_quit(self):
         self.assertFalse(check_donation('New Donor', 'quit'))
-    def test_5(self):
+        
+    def test_check_donation_is_non_number(self):
         self.assertTrue(check_donation('New Donor', 'Non-number'))
-    def test_6(self):
+        
+    def test_check_donation_existing_donor(self):
         self.assertIsNone(check_donation('Ralph Anders', 300))
         self.assertIn(300, mailroom4.donors_list['Ralph Anders'])
-    def test_7(self):
+        
+    def test_check_donation_new_donor(self):
         self.assertIsNone(check_donation('New Donor', 400.56))
         self.assertIn(400.56, mailroom4.donors_list['New Donor'])
-    def test_8(self):        
-        self.assertEqual(create_report(), (mailroom4.top + mailroom4.rows))
-    def test_9(self):
+        
+    def test_create_report(self):        
+        self.assertEqual(create_report(), mailroom4.reportvariable)
+        
+    def test_create_report_sorting(self):
         self.assertEqual(mailroom4.sorted_donors, (sorted(mailroom4.donors_list.items(), key=lambda k: sum(k[1]), reverse=True)))
-    def test_10(self):
+    
+    def test_letters_to_everyone_files(self):
         letters_to_everyone()
         for i, val in mailroom4.donors_list.items():
             with open(f'{i}.txt', 'r') as outfile:
