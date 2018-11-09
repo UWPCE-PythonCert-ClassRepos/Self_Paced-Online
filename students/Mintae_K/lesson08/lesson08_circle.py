@@ -1,5 +1,6 @@
 from math import pi
 
+
 class Circle:
 
     def __init__(self, the_radius):
@@ -13,7 +14,7 @@ class Circle:
     @diameter.setter
     def diameter(self, myval):
         self._diameter = myval
-        self.radius = myval/2
+        self.radius = myval / 2
 
     @property
     def area(self):
@@ -24,7 +25,7 @@ class Circle:
     def from_diameter(cls, myval):
         self = cls(myval)
         self._diameter = myval
-        self.radius = myval/2
+        self.radius = myval / 2
         return self
 
     def __str__(self):
