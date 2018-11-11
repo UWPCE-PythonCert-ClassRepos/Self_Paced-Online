@@ -1,4 +1,4 @@
-#Execute script using `python list_lab.py`
+#!/usr/bin/env python3
 
 ### Series 1 ###
 print("\n-----------Beginning Series 1-----------")

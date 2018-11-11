@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 donors = [["Conrad Anker", 550, 1200, 0.02], 
           ["Tommy Caldwell", 600.50, 80], 
           ["Margo Hayes", 200, 550.50], 

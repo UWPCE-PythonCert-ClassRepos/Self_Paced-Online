@@ -1,4 +1,4 @@
-# execute with comand `python strformat_lab.py`
+#!/usr/bin/env python3
 
 print("\n--------- Task One ---------")
 my_tuple = (2, 123.4567, 10000, 12345.67)

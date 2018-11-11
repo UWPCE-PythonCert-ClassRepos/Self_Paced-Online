@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from math import ceil
 
 def swap_first_and_last(seq):
