@@ -1,14 +1,16 @@
 """test suite for mailroom exercise"""
-import pytest 
+import pytest
 
 from mailroom import *
+
 
 @pytest.fixture
 def donors():
     return {'Doug F': [100.00, 5.00],
-          'Patty P': [1.00, 1000.00],
-          'Warren B': [3000.00],
-          }
+            'Patty P': [1.00, 1000.00],
+            'Warren B': [3000.00],
+           }
+
 
 def test_create_donation(donors):
     """tests that value added to specific donor
