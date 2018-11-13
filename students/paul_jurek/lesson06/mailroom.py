@@ -6,7 +6,7 @@ donors = {'Bill Gates': [100000.00, 5.00, 3000000.00],
           'Warren Buffet': [300000000.00],
           }
 
-
+# TODO: refactor to split up process to test
 def thank_you():
     """If the user (you) selects ‘Send a Thank You’, prompt for a Full Name.
     If the user types ‘list’, show them a list of the donor names and
@@ -45,12 +45,12 @@ def display_donors():
     """diplays donors"""
     print("\n".join(list(donors)))
 
-
+# TODO: test amount is appended
 def create_donation(fullname, amount):
     """adds a donation to the donors dict from user input"""
     donors[fullname].append(amount)
 
-
+# TODO: test donor is created
 def create_donor(fullname):
     """adds new donor to donors"""
     donors[fullname] = []
@@ -90,7 +90,8 @@ def report():
         print(f"{summary[0]:<26} ${summary[1]:>13.2f}  "
               f"{summary[2]:>10}  ${summary[3]:>14.2f}")
 
-
+# TODO: test correct summarization
+# TODO: mock some donor dict for this
 def summarize_donor(donor_name):
     """generates donor summary
     args:
@@ -103,7 +104,8 @@ def summarize_donor(donor_name):
 
     return(donor_name, total_given, num_gifts, average_gift)
 
-
+# TODO: test letters show up in mock directory
+# TODO: refractor to allow directory input
 def send_letters_to_everyone():
     """process to evaluate all donors and create letter to send to
     donors."""
@@ -124,7 +126,7 @@ def send_letters_to_everyone():
         else:
             print(f'Thank you letter for {donor} created in "{THANK_YOU_DIRECTORY}"')
 
-
+# TODO: test correct formatting of amount
 def create_donation_thank_you(fullname, amount):
     """prints thank you message to terminal for donation"""
     return f"""Dear {fullname},
