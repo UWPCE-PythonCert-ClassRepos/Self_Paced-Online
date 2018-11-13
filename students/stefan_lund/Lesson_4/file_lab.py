@@ -62,7 +62,7 @@ def copy_file_from(source, to_destination=None):
 def copy_txt_file_from(source):
     """
     copies .txt file from source, can be in any directory, reads it as 'r'
-        encodes to biary, writes it as 'wb' to 'bin_text.bin' in cwd
+        encodes to binary, writes it as 'wb' to 'bin_text.bin' in cwd
 
     windows ==> path entered with prefix r, raw string, alt. duplicate all \
                 works as long as the path doesn't end with \.
