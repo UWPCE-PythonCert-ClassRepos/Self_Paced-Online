@@ -1,13 +1,13 @@
 #-------------------------------------------------#
 # Title: Mail Room Part 3
 # Dev:   LDenney
-# Date:  October 11, 2018
+# Date:  October 31, 2018
 # ChangeLog: (Who, When, What)
 #   Laura Denney, 10/11/18, Created File
 #   Laura Denney, 10/12/18, Modified File
 #   Laura Denney, 10/12/18, Started Part 2
 #   Laura Denney, 10/12/18, Finished Part 2
-#   Laura Denney, 10/12/18, Started MailRoom Part 3
+#   Laura Denney, 10/31/18, Started MailRoom Part 3
 #-------------------------------------------------#
 
 donor_list = {"john doe":[100, 200],
