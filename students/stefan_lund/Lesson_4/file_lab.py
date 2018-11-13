@@ -15,24 +15,34 @@
 # contents of the file into memory at once.
 # This should work for any kind of file, so you need to open the files in
 # binary mode: open(filename, 'rb') (or 'wb' for writing). Note that for binary
-# files, you can’t use readline() – lines don’t have any meaning for binary files.
-# Test it with both text and binary files (maybe jpeg or something of your chosing).
+# binary files, you can’t use readline() – lines don’t have any meaning.
+# Test with both text and binary files, maybe jpeg, something of your chosing.
+
+
+import os
 
 
 def full_file_path():
 
-    import os
     # directories in pwd:
     directories = os.listdir()
     # print("\n", directories, "\n")
 
     # print full path for each directory in the current directory:
     for directory in directories:
-        print("\n", os.path.abspath(directory))
+        absp = os.path.abspath(directory)
+        print("\n", absp)
+        # basen = os.path.basename(absp)
+        # print("basen: ", basen)
+        # dirn = os.path.dirname(absp)
+        # print("dirn: ", dirn)
+        folder_path, file = os.path.split(absp)
+        print("folder_path: {},   file: {}".format(folder_path, file))
+    cwdir = os.getcwd()
+    print("cwdir: ", cwdir)
 
-# full_file_path()
 
-def copy_file_from(source, to_destination):
+def copy_file_from(source, to_destination=None):
     """
     windows ==> path entered with prefix r, raw string, alt. duplicate all \
                 works as long as the path doesn't end with \.
@@ -40,11 +50,55 @@ def copy_file_from(source, to_destination):
     to_destination: abspath
     # file: name of file to be copied
     """
-    # source_file = source + "\" + file
+    if to_destination is None:
+        to_destination = os.path.join(os.getcwd(), "bin_text_2.bin")
 
-    # with open(source, 'rb') as infile, open(dest, 'wb') as outfile:
-    #     outfile.write(infile.read())
     with open(source, 'rb') as infile, open(to_destination, 'wb') as outfile:
+        outfile.write(infile.read())
+
+    print("bin_data stored at: ", to_destination)
+
+
+def copy_txt_file_from(source):
+    """
+    copies .txt file from source, can be in any directory, reads it as 'r'
+        encodes to biary, writes it as 'wb' to 'bin_text.bin' in cwd
+
+    windows ==> path entered with prefix r, raw string, alt. duplicate all \
+                works as long as the path doesn't end with \.
+    source:         abspath, any directory
+    to_destination: abspath in cwd
+    """
+
+    to_destination = os.path.join(os.getcwd(), "bin_text.bin")
+    with open(source, 'r') as infile, open(to_destination, 'wb') as outfile:
+        # outfile.write(infile.read())  # open(source, 'rb')
         for line in infile:
-            # outfile.write(infile.read())
-            outfile.write(line)
+            # print(line, '\n in line: ', '\n' in line)
+            line = line.replace("\n", "/")
+            bin_line = line.encode('utf-8')
+            # bin_line = bytearray()
+            # bin_line.extend(map(ord, line))
+            outfile.write(bin_line)
+    print("data stored at: ", to_destination)
+    return to_destination
+
+
+if __name__ == '__main__':
+
+    # if text_file.txt not in cwd, set fpath to the abspath
+    # where text_file.txt is located
+    fpath = os.getcwd()
+    # text_file.txt file in cwd, with name, total amount and number of times
+    # donating, '/' delimited, not binary
+    infile = "text_file.txt"
+    source = fpath + "\\" + infile
+
+    full_file_path()
+    print("\n"*3)
+
+    # creates new file in cwd, 'bin_text.bin', stores text in binary format
+    new_source = copy_txt_file_from(source)
+
+    # copy new binary file from source to_destination in cwd
+    copy_file_from(new_source)
