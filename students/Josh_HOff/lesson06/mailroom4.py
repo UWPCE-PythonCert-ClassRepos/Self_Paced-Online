@@ -28,8 +28,21 @@ def send_thank_you():
                     return
                 elif truthcheck == True:
                     continue
+                else:
+                    add_donation_to_list(donor, donation)
                 return
                 
+def add_donation_to_list(donor, donation):
+    global donors_list
+    donation = float(donation)
+    if donor in donors_list:
+        donors_list[donor] += [donation]
+    else:
+        donors_list[donor] = [donation]
+    print(f'\nHello, {donor}! Thank you very much for your generous \
+donation of ${donation:.2f}! Your contribution is essential and \
+will be well utilized.\n')
+
                 
 def check_input(donor):
     if donor == 'quit':
@@ -47,13 +60,9 @@ def check_donation(donor, donation):
     except ValueError:
         print("Please give a number instead.")
         return True
-    if donor in donors_list:
-        donors_list[donor] += [donation]
-    else:
-        donors_list[donor] = [donation]
-    print(f'\nHello, {donor}! Thank you very much for your generous donation of ${donation:.2f}! Your contribution is essential and will be well utilized.\n')
-    #this function prints out a list of the donors in the donor list.      
-    
+    return
+
+    #this function prints out a list of the donors in the donor list.         
 def print_list():
     print('')
     names = [i for i in donors_list]
@@ -61,15 +70,15 @@ def print_list():
 
 #this function prints out a report on the prompt screen.    
 def create_report():
+    print(donors_list)
     print('')
     y = '|'
-    global rows
-    global top
+    rows = ''
     global sorted_donors
-    top = f'Donor Name{y:>14} Total Given {y} Num Gifts {y} Average Gift\n'
-    reportvariable = top
-    top += ('-' * 63)
+    reportvariable = f'Donor Name{y:>14} Total Given {y} Num Gifts {y} Average Gift\n'
+#    reportvariable = top
     reportvariable += ('-' * 63)
+#    reportvariable += top
     sorted_donors = sorted(donors_list.items(), key=lambda k: sum(k[1]), reverse=True)
     for donor_name, donations in sorted_donors:
         gift = len(donations)
