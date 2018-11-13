@@ -46,7 +46,7 @@ def display_donors():
     print("\n".join(list(donors)))
 
 # TODO: test amount is appended
-def create_donation(fullname, amount):
+def create_donation(fullname, amount, donors=donors):
     """adds a donation to the donors dict from user input"""
     donors[fullname].append(amount)
 
