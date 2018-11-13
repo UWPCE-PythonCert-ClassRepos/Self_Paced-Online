@@ -57,7 +57,10 @@ def create_donation(fullname, amount, donors=donors):
 
 def create_donor(fullname, donors=donors):
     """adds new donor to donors"""
-    donors[fullname] = []
+    if fullname in donors:
+        raise KeyError(f'Name: {fullname} already exists.')
+    else:
+        donors[fullname] = []
 
 
 def report():
