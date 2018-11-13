@@ -37,8 +37,8 @@ def thank_you():
             else:
                 if thank_you_input not in donors:
                     create_donor(thank_you_input)
-                create_donation(fullname=thank_you_input, amount=donation_amount)
-                print_thank_you(fullname=thank_you_input, amount=donation_amount)
+                create_donation(fullname=thank_you_input, amount=donation_amount, donors=donors)
+                print_thank_you(fullname=thank_you_input, amount=donation_amount, donors=donors)
                 break
 
 
@@ -49,11 +49,13 @@ def display_donors():
 
 def create_donation(fullname, amount, donors=donors):
     """adds a donation to the donors dict from user input"""
-    donors[fullname].append(amount)
+    try:
+        donors[fullname].append(amount)
+    except KeyError:
+        raise KeyError(f'fullname not in donors repository')
 
 
-# TODO: test donor is created
-def create_donor(fullname):
+def create_donor(fullname, donors=donors):
     """adds new donor to donors"""
     donors[fullname] = []
 
