@@ -73,7 +73,7 @@ def letter(donor):
 def thankyou():
     donor_name = get_name()
     if donor_name == "list":
-        show_donor_list()
+        show_donor_list
         donor_name =get_name()
 
     if find_donor(donor_name) is True: 
@@ -82,14 +82,14 @@ def thankyou():
         
         dic = {'name': donor_name , 'amount_donated': donation_amount}
         print("Dear {name}, \n Thank you for your {amount_donated:,.2f} donation. \nSincerely, Mailroom.".format(**dic))
-        menu_selection(sub_prompt, sub_dispatch)
+        
     else:
         
         donation_amount = get_amount()
         create_new_donor(donor_name, donation_amount)
         dic = {'name': donor_name , 'amount_donated': donation_amount}
         print("Dear {name}, \n Thank you for your {amount_donated:,.2f} donation. \nSincerely, Mailroom.".format(**dic))
-        menu_selection(sub_prompt, sub_dispatch)
+       
             
 
 
@@ -99,7 +99,7 @@ def create_report():
     print(heading)
     print("-" * len(heading))
     print_rows()
-    menu_selection(sub_prompt, sub_dispatch)
+   
 
 def letters_everyone():
     for key in donor_list.keys():
@@ -108,16 +108,18 @@ def letters_everyone():
             donor_letter = letter(key)
             f.write(donor_letter)
     print("Letters have been created for each donor")
-    menu_selection(sub_prompt, sub_dispatch)
+   
 
 def menu_selection(prompt, dispatch_dict):
-    response = input(prompt)
-    if dispatch_dict[response]() == "exit menu":
-        return
+    while True:
+        response = input(prompt)
+        if dispatch_dict[response]() == "exit menu":
+            return
 
   
 def sub_menu():
-    menu_selection(sub_prompt, sub_dispatch)
+    while True:
+        menu_selection(sub_prompt, sub_dispatch)
 
 def quit():
     print("Quitting this menu now")
