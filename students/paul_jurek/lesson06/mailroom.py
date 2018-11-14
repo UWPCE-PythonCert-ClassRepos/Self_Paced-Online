@@ -6,6 +6,7 @@ donors = {'Bill Gates': [100000.00, 5.00, 3000000.00],
           'Warren Buffet': [300000000.00],
           }
 
+THANK_YOU_DIRECTORY = '/mailroom_thankyou_letters/'
 
 # TODO: refactor to split up process to test
 def thank_you():
@@ -113,13 +114,12 @@ def summarize_donor(donor_name, donors):
 
 # TODO: test letters show up in mock directory
 # TODO: refractor to allow directory input
-def send_letters_to_everyone():
+def send_letters_to_everyone(thank_you_directory='/mailroom_thankyou_letters/'):
     """process to evaluate all donors and create letter to send to
     donors."""
     # iterate through donors and donations to send thank yous
-    THANK_YOU_DIRECTORY = '/mailroom_thankyou_letters/'
     for donor in donors:
-        file_name = "".join([THANK_YOU_DIRECTORY,
+        file_name = "".join([thank_you_directory,
                              donor.replace(" ", "_").lower(), '.txt'])
         donor_info = summarize_donor(donor, donors)
         thank_you_text = create_donation_thank_you(fullname=donor,
@@ -131,7 +131,7 @@ def send_letters_to_everyone():
             print('Mailroom thank you directory not found.  Please create this directory first.')
             break
         else:
-            print(f'Thank you letter for {donor} created in "{THANK_YOU_DIRECTORY}"')
+            print(f'Thank you letter for {donor} created in "{thank_you_directory}"')
 
 
 # TODO: test correct formatting of amount
