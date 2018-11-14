@@ -44,18 +44,40 @@ def send_thankyou():
         #Create prompt menu
         full_name = input('Please input your Full Name\n'
                           '\t or list if you would like to see a list of donors >> ')
+        #Create list of donor names
+        donor_names = []
+        for donor in donors:
+            donor_names.append(donor[0])
+            
+        #Check user input and perform appropriate action    
         if full_name.lower() == 'list':
             [print(f'{donor[0]}') for donor in donors]
-        elif donors[0].count(full_name) > 0:
-            print('In donors')
+
+        elif donor_names.count(full_name) > 0:
+            print('In list')
+            position = donor_names.index(full_name)
+            get_donation(full_name, position) 
             break
+        
         else:
-            print('New donor')
+            print('Not in list')
+            donors.append([full_name,[]])
+            position = len(donors)-1
+            get_donation(full_name, position) 
             break
+
+#Prompt for donation amount and append donation to user    
+def get_donation(full_name, position):
+    donation_amount = input('Please enter a donation amount $')
+    donors[position][1].append(int(donation_amount))
+    create_email(full_name, donation_amount)
     
-
-
-
+#Create email to donor thanking them for their generous donation
+def create_email(full_name, donation_amount):
+    print()
+    print(f'Dear {full_name},\n\nThank you so much for generous donation of ${donation_amount}.\n\n'
+          '\t\t\tSincerely,\n'
+          '\t\t\tPython Donation Team')
 
 #Creating a Report
 #If the user (you) selected “Create a Report”, print a list of your donors, sorted by total historical donation amount. 
@@ -72,10 +94,11 @@ def send_thankyou():
 # Jeff Bezos                 $     877.33           1  $      877.33
 # Paul Allen                 $     708.42           3  $      236.14
 def create_report():
+    print()
     print('Donor Name                | Total Given | Num Gifts | Average Gift')
     print('-'*66)
     for donor in donors:
-        print(f'{donor[0]: <26}|${sum(donor[1]): <12}|{len(donor[1]): <11}|${sum(donor[1])/len(donor[1]): <13}')
+        print(f'{donor[0]: <27}${sum(donor[1]): >12.2f}{len(donor[1]): >12}  ${round(sum(donor[1])/len(donor[1]),2): >11.2f}')
 
 if __name__ == '__main__':
 
