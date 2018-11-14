@@ -10,6 +10,7 @@ def donors():
     return {'Doug F': [100.00, 5.00],
             'Patty P': [1.00, 1000.00],
             'Warren B': [3000.00],
+            'Black S.': []
            }
 
 def test_create_new_donor(donors):
@@ -27,7 +28,6 @@ def test_create_new_donor_creates_error_if_exists(donors):
 
     with pytest.raises(KeyError) as e:
         create_donor(new_donor, donors)
-    
 
 def test_create_valid_donation(donors):
     """tests that value added to specific donor
@@ -44,3 +44,6 @@ def test_error_on_missing_donor(donors):
     assert 'The Bears' not in donors
     with pytest.raises(KeyError) as e:
         create_donation('The Bears', 10, donors)
+
+def test_summarize_donor(donors):
+        assert summarize_donor('Doug F', donors) == ('Doug F', 105.00, 2, 52.50)

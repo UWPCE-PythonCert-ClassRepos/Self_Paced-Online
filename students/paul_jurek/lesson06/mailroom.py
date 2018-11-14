@@ -90,7 +90,7 @@ def report():
     print(f"{'Donor Name':<26}|{'Total Given':^15}|"
           f"{'Num Gifts':^11}|{'Average Gift':^15}")
     print('-'*70)
-    donor_stats = [summarize_donor(donor) for donor in donors.keys()]
+    donor_stats = [summarize_donor(donor, donors) for donor in donors.keys()]
 
     donor_stats.sort(key=lambda tup: tup[1], reverse=True)
     for summary in donor_stats:
@@ -98,9 +98,7 @@ def report():
               f"{summary[2]:>10}  ${summary[3]:>14.2f}")
 
 
-# TODO: test correct summarization
-# TODO: mock some donor dict for this
-def summarize_donor(donor_name):
+def summarize_donor(donor_name, donors):
     """generates donor summary
     args:
         donor_name: donor name matching key from donors
@@ -123,7 +121,7 @@ def send_letters_to_everyone():
     for donor in donors:
         file_name = "".join([THANK_YOU_DIRECTORY,
                              donor.replace(" ", "_").lower(), '.txt'])
-        donor_info = summarize_donor(donor)
+        donor_info = summarize_donor(donor, donors)
         thank_you_text = create_donation_thank_you(fullname=donor,
                                                    amount=donor_info[1])
         try:
