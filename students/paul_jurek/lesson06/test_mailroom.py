@@ -1,4 +1,6 @@
 """test suite for mailroom exercise"""
+import os
+
 import mock
 import pytest
 
@@ -10,7 +12,6 @@ def donors():
     return {'Doug F': [100.00, 5.00],
             'Patty P': [1.00, 1000.00],
             'Warren B': [3000.00],
-            'Black S.': []
            }
 
 def test_create_new_donor(donors):
@@ -47,3 +48,8 @@ def test_error_on_missing_donor(donors):
 
 def test_summarize_donor(donors):
         assert summarize_donor('Doug F', donors) == ('Doug F', 105.00, 2, 52.50)
+
+def test_send_letters(donors, tmpdir):
+        assert len(tmpdir.listdir())==0
+        send_letters_to_everyone(donors=donors, thank_you_directory=tmpdir)
+        assert len(tmpdir.listdir()) > 0

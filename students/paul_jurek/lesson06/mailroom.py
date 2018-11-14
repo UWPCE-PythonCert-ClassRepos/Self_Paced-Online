@@ -1,4 +1,5 @@
 """runs the command line app for the mailroom as part of lesson 3"""
+from pathlib import Path
 
 # setup initial donor list
 donors = {'Bill Gates': [100000.00, 5.00, 3000000.00],
@@ -113,19 +114,19 @@ def summarize_donor(donor_name, donors):
 
 
 # TODO: test letters show up in mock directory
-# TODO: refractor to allow directory input
-def send_letters_to_everyone(thank_you_directory='/mailroom_thankyou_letters/'):
+def send_letters_to_everyone(donors=donors, thank_you_directory=Path('/mailroom_thankyou_letters')):
     """process to evaluate all donors and create letter to send to
     donors."""
     # iterate through donors and donations to send thank yous
     for donor in donors:
-        file_name = "".join([thank_you_directory,
-                             donor.replace(" ", "_").lower(), '.txt'])
+        file_name = "".join([donor.replace(" ", "_").lower(), '.txt'])
+        full_path = thank_you_directory / file_name
+        print(file_name)
         donor_info = summarize_donor(donor, donors)
         thank_you_text = create_donation_thank_you(fullname=donor,
                                                    amount=donor_info[1])
         try:
-            with open(file_name, 'w') as f:
+            with open(full_path, 'w') as f:
                 f.write(thank_you_text)
         except FileNotFoundError:
             print('Mailroom thank you directory not found.  Please create this directory first.')
