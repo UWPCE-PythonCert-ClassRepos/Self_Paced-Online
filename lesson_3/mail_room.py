@@ -23,19 +23,19 @@ def send_thankyou():
     if name not in donors:
         donors.append(name)
         new_donation = input("Enter a Donation Amount: ")
-        new_donation = int(new_donation)
+        new_donation = float(new_donation)
 
         #append new_donation to donations
         donations.append([new_donation])
     
     elif name in donors:
         new_donation = input("Enter a Donation Amount: ")
-        new_donation = int(new_donation)
+        new_donation = float(new_donation)
 
         #append new_donation to donations
         donations[donors.index(name)].insert(0, new_donation)
 
-    thankyou = f"""\nDear {name.split()[0]}, \n\nThank you for your generous donation of ${new_donation}. Thanks to you we will finally be able to begin construction 
+    thankyou = f"""\nDear {name.split()[0]}, \n\nThank you for your generous donation of ${new_donation:,.2f}. Thanks to you we will finally be able to begin construction 
 on the {name.split()[1]} Memorial Children's wing at Dark Place Hospital\n\nYours Truly,\nJared Mulholland"""
 
     print(thankyou)
