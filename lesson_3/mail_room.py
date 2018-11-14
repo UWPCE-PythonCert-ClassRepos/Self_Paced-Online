@@ -69,10 +69,6 @@ def create_report():
 
 
 
-# random list
-random = [(2, 2), (3, 4), (4, 1), (1, 3)]
-
-
 """
 PROGRAM OVERVIEW
 Write a small command-line script called mailroom.py. This script should be executable. The script should accomplish the following goals:\
