@@ -281,14 +281,14 @@ def test_ul():
     file_contents = render_result(ul)
     print(file_contents)
     assert file_contents.startswith('<ul>')
-    assert file_contents.endswith('</ul>')
+    assert file_contents.strip().endswith('</ul>')
 
 def test_li():
     li = Li("some text")
     file_contents = render_result(li)
     print(file_contents)
     assert file_contents.startswith('<li>')
-    assert file_contents.endswith('</li>')
+    assert file_contents.strip().endswith('</li>')
    
 
 def test_header():
@@ -369,9 +369,9 @@ def test_indent():
 
     print(file_contents)
     lines = file_contents.split("\n")
-    assert lines[0].startswith("   <")
+    assert lines[0].startswith("<")
     print(repr(lines[-1]))
-    assert lines[-1].startswith("   <")
+    assert lines[-1].startswith("<")
 
 def test_indent_contents():
     """
