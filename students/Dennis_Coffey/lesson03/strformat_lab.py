@@ -35,6 +35,7 @@ def formatter(in_tuple):
     form_string = "The {} numbers are : " + "{:d},"*nums
     return form_string[:-1].format(nums,*in_tuple)
 print('Task Three output:')
+print(formatter((5,3,88)))
 print(formatter((1,3,4,5,6,7)))
 print()
 
