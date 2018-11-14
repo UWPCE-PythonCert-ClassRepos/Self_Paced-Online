@@ -53,3 +53,20 @@ def test_send_letters(donors, tmpdir):
         assert len(tmpdir.listdir())==0
         send_letters_to_everyone(donors=donors, thank_you_directory=tmpdir)
         assert len(tmpdir.listdir()) > 0
+
+test_data = [(100, 100.00),
+             (100.123123, 100.12),
+             (1, 1.00),
+             (0.5, 0.50)]
+@pytest.mark.parametrize("input, expected", test_data)
+def test_formatting_of_thankyou(input, expected):
+        fullname = 'Paul Jurek'
+        expected_string = f"""Dear {fullname},
+
+        Thank you for your very kind donation of ${expected:.2f}.
+
+        It will be put to very good use.
+
+                       Sincerely,
+                          -The Team"""
+        assert create_donation_thank_you(fullname=fullname, amount=input) == expected_string

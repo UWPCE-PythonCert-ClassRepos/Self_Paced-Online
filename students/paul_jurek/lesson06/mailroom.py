@@ -113,7 +113,6 @@ def summarize_donor(donor_name, donors):
     return(donor_name, total_given, num_gifts, average_gift)
 
 
-# TODO: test letters show up in mock directory
 def send_letters_to_everyone(donors=donors, thank_you_directory=Path('/mailroom_thankyou_letters')):
     """process to evaluate all donors and create letter to send to
     donors."""
@@ -135,7 +134,6 @@ def send_letters_to_everyone(donors=donors, thank_you_directory=Path('/mailroom_
             print(f'Thank you letter for {donor} created in "{thank_you_directory}"')
 
 
-# TODO: test correct formatting of amount
 def create_donation_thank_you(fullname, amount):
     """prints thank you message to terminal for donation"""
     return f"""Dear {fullname},
