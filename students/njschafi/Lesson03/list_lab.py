@@ -1,52 +1,47 @@
 #!/usr/bin/env python3
-
-##SERIES 1
-fruit =['Apples', 'Pears', 'Oranges', 'Peaches']
+# NEIMA SCHAFI, LESSON 3 Assignment - list_lab
+#SERIES 1
+fruit = ['Apples', 'Pears', 'Oranges', 'Peaches']
 print(fruit)
 response = input("Please enter another fruit: ")
-fruit.append(response)
+fruit.append(response.title())
 print(fruit)
-response2 = int(input("Please enter a number above 0: "))
+response2 = int(input("Please enter a number above zero: "))
 print(fruit[response2-1])
 fruit = ['Lemon'] + fruit
 print(fruit)
-fruit.insert(0,'banana')
+fruit.insert(0, 'Banana')
 print(fruit)
 for item in fruit:
-	if item[0] == 'P': ##or try item[0:1] or use CONTAINS
-		print(item[0])
-		
+    if item[0][0] == 'P':
+        print(item)
 
-
-##SERIES 2		
+#SERIES 2
 print(fruit)
 fruit = fruit[:-1]
 print(fruit)
 response3 = input("Please enter a fruit to delete: ")
 if response3.title() in fruit:
-	fruit.remove(response3.title())
+    fruit.remove(response3.title())
 print(fruit)
-##Bonus Round
-while m in fruit:
-	if m == fruit[p]:
-		fruit.remove(fruit[p])
-	else:
-		p += 1
 
-##SERIES 3
-fruit =['Apples', 'Pears', 'Oranges', 'Peaches']
-response4 = input("Do you like apples?") ##make dynamic in a for loop
+#SERIES 3
+fruit = ['Apples', 'Pears', 'Oranges', 'Peaches']
+fruit2 = ['Apples', 'Pears', 'Oranges', 'Peaches']
+for n in fruit:
+    response4 = input("Do you like {}? ".format(n.lower()))
+    while not response4.lower() in ['yes', 'no']:
+        response4 = input('Please enter yes or no:\n')
+    if response4.lower() == 'no':
+        fruit2.remove(n)
+fruit = fruit2
+print(fruit)
 
-
-###SERIES 4
-fruit =['Apples', 'Pears', 'Oranges', 'Peaches']
-fruit2 =[]
+#SERIES 4
+fruit = ['Apples', 'Pears', 'Oranges', 'Peaches']
+fruit2 = []
 for item in fruit:
-	fruit2.append(item[::-1])
+    fruit2.append(item[::-1])
 fruit = fruit[:-1]
 print(fruit)
 print(fruit2)
-
-			
-	
-	
