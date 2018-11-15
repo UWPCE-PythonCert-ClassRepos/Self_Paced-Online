@@ -37,6 +37,11 @@ class Element(object):
 class Html(Element):
     tag = 'html'
 
+    def render(self, out_file):
+        out_file.write("<!DOCTYPE html>\n")
+        Element.render(self, out_file)
+
+
 class Body(Element):
     tag = 'body'
 
@@ -84,13 +89,33 @@ class Br(SelfClosingTag):
     tag = "br"
 
 
-
-
 class A(OneLineTag):
 
     tag = 'a'
 
-    def __init__(self, link, content=None, **kwargs):
-        kwargs['href'] = link
-        super().__init__(content, **kwargs)
+    def __init__(self, link, content=None):
+        self.link = link
+        self.content = content
+
+    def render(self, out_file):
+        open_tag = ['<{} href='.format(self.tag)]
+        open_tag.append('"{}"'.format(self.link))
+        open_tag.append('>{}</{}>\n'.format(self.content, self.tag))
+        out_file.write("".join(open_tag))
+
+
+class Ul(Element):
+    tag = "ul"
+
+class Li(Element):
+    tag = "li"
+
+class H(OneLineTag):
+
+    def __init__(self, lvl, content=None):
+        self.tag = "h{}".format(lvl)
+        self.contents = [content]
+
+class Meta(SelfClosingTag):
+    tag = "meta"
 

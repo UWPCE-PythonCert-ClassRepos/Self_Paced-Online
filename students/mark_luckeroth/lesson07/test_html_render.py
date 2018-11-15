@@ -200,7 +200,7 @@ def test_onelinetag():
     assert file_contents.endswith("</html>")
 
 
-def test_sub_element():
+def test_sub_element2():
     """
     tests that you can add another element and still render properly
     """
@@ -215,7 +215,8 @@ def test_sub_element():
     file_contents = render_result(page)
     print(file_contents) # so we can see it if the test fails
 
-    expected = ['<html>', '<head>', '<title>PythonClass = Revision 1087:</title>',
+    expected = ['<!DOCTYPE html>', '<html>', '<head>',
+                '<title>PythonClass = Revision 1087:</title>',
                 '</head>', '<body>', '<p>', "Here is a paragraph of text",
                 '</p>', '<p>', 'And here is another piece of text', '</p>',
                 '</body>', '</html>']
