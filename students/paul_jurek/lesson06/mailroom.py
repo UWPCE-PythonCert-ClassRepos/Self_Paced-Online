@@ -10,7 +10,7 @@ donors = {'Bill Gates': [100000.00, 5.00, 3000000.00],
 THANK_YOU_DIRECTORY = '/mailroom_thankyou_letters/'
 
 # TODO: refactor to split up process to test
-def thank_you():
+def thank_you(donors=donors):
     """If the user (you) selects ‘Send a Thank You’, prompt for a Full Name.
     If the user types ‘list’, show them a list of the donor names and
     re-prompt.  If the user types a name not in the list, add that name

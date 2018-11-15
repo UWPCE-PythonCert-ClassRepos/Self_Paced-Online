@@ -69,4 +69,9 @@ def test_formatting_of_thankyou(input, expected):
 
                        Sincerely,
                           -The Team"""
-        assert create_donation_thank_you(fullname=fullname, amount=input) == expected_string
+        assert create_donation_thank_you(fullname=fullname, amount=input) ==
+
+def test_thank_you_creates_donor():
+        """given user selects thank you and enters valid donor and amount
+        the donors object is updated to have new input"""
+        pass
