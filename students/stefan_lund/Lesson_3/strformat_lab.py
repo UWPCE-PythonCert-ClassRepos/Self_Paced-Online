@@ -1,6 +1,7 @@
 # python3
 
 # strformat_lab.py
+import operator
 
 
 def task_one(my_tuple):
@@ -9,7 +10,7 @@ def task_one(my_tuple):
     """
 
     # first item
-    file = "{:{padding}>{str_len}}".format(my_tuple[0], padding = 0, str_len = 3)
+    file = "{:{padding}>{str_len}}".format(my_tuple[0], padding=0, str_len=3)
 
     # second item
     two_dec = "{:.2f}".format(my_tuple[1])
@@ -21,7 +22,7 @@ def task_one(my_tuple):
     dec_to_scientific = "{:.2e}".format(my_tuple[3])
 
     r_string = "file_" + file + " :  " + two_dec + ", "\
-                + int_to_scientific + ", " + dec_to_scientific
+        + int_to_scientific + ", " + dec_to_scientific
 
     return r_string
 
@@ -34,25 +35,25 @@ def task_two(my_tuple):
     # first item
     align = ">"
     file = "{:{padding}{align}{str_len}}".\
-    format(my_tuple[0], align = align, padding = 0, str_len = 3)
+        format(my_tuple[0], align=align, padding=0, str_len=3)
 
     # second item
     dec = "2"
-    type = "f"  #  fixed point
-    two_dec = "{:.{dec}{type}}".format(my_tuple[1], dec=dec, type=type)
+    type_f = "f"  # fixed point
+    two_dec = "{:.{dec}{type_f}}".format(my_tuple[1], dec=dec, type_f=type_f)
 
     # third item
     dec3 = "2"
     type3 = "e"
-    int_to_scientific = "{:.{dec}{type}}".format(my_tuple[2], dec=dec3, type=type3)
+    int_to_scientific = "{:.{dec}{type_f}}".format(my_tuple[2], dec=dec3, type_f=type3)
 
     # fourth item
     dec4 = "2"
     type4 = "e"
-    dec_to_scientific = "{:.{dec}{type}}".format(my_tuple[3], dec=dec4, type=type4)
+    dec_to_scientific = "{:.{dec}{type_f}}".format(my_tuple[3], dec=dec4, type_f=type4)
 
     r_string = "file_" + file + " :  " + two_dec + ", "\
-                + int_to_scientific + ", " + dec_to_scientific
+        + int_to_scientific + ", " + dec_to_scientific
 
     return r_string
 
@@ -68,7 +69,6 @@ def formatter(my_tuple):
     return form_string.format(n, *my_tuple)
 
 
-
 def task_four(my_tuple):
     """
     my_tuple: tuple
@@ -82,7 +82,7 @@ def task_four(my_tuple):
         if i < n - 1:
             format_string += ", "
 
-    return format_string.format(*my_tuple, padding = 0, str_len = 2)
+    return format_string.format(*my_tuple, padding=0, str_len=2)
 
 
 def task_five(my_list):
@@ -92,10 +92,11 @@ def task_five(my_list):
     Prints: The weight of an orange is 1.3 and the weight of a lemon is 1.1
     Prints: The weight of an ORANGE is 1.56 and the weight of a LEMON is 1.32
     """
-    print(f"The weight of an {my_list[0]}, is {my_list[1]} and the weight of a {my_list[2]} is {my_list[3]}")
+    print(f"The weight of an {my_list[0]}, is {my_list[1]} and the weight of "
+          + f"a {my_list[2]} is {my_list[3]}")
 
-    print(f"The weight of an {my_list[0].upper()}, is {my_list[1] * 1.2} and the weight of a {my_list[2].upper()} is {my_list[3] * 1.2}")
-
+    print(f"The weight of an {my_list[0].upper()}, is {my_list[1] * 1.2} "
+          + f"and the weight of a {my_list[2].upper()} is {my_list[3] * 1.2}")
 
 
 def task_six():
@@ -107,10 +108,10 @@ def task_six():
     list_length = random.randint(10, 25)
     rows = []
 
-    for i in range(list_length):
+    for _ in range(list_length):
         name_len = random.randint(4, 15)
         name = ""
-        for i in range(name_len):
+        for _ in range(name_len):
             name += chr(random.randint(97, 122))
 
         age = random.randint(1, 1000000)
@@ -138,14 +139,37 @@ def task_six():
         age_f = "    Age: {:>{str_len_age}}"
         cost_f = "    Cost: {:>{str_len_cost}}"
         form = name_f + age_f + cost_f
-        print(form.format(*row, str_len_name = str_len_name, str_len_age = str_len_age, str_len_cost = str_len_cost))
+        print(form.format(*row, str_len_name=str_len_name,
+                          str_len_age=str_len_age, str_len_cost=str_len_cost))
 
 
 if __name__ == '__main__':
-    tup = ( 2, 123.4567, 10000, 12345.67)
+    tup = (2, 123.4567, 10000, 12345.67)
+    my_tup = (4, 30, 2017, 2, 27)
+    my_lst = ['orange', 1.3, 'lemon', 1.1]
+    t = "task "
     a = task_one(tup)
     b = task_two(tup)
     field = 15
-    c = ["task_one", a, "task_two", b, field]
-    print("\n{:<{field}}: {}\n{:<{field}}: {}".\
-    format("task_one", a, "task_two", b, field = field))
+    o = operator.add
+    c = o(t, "one"), a, o(t, "two"), b
+    s = f"\n{c[0]:<{field}}: {c[1]}\n{c[2]:<{field}}: {c[3]}\n"
+    print(s)
+
+    c = o(t, "three:"), formatter(my_tup)
+    s = f"{c[0]:<{field}}: {c[1]}\n"
+    print(s)
+
+    c = o(t, "four:"), task_four(my_tup)
+    s = f"{c[0]:<{field}}: {c[1]}\n"
+    print(s)
+
+    c = o(t, "five:")
+    s = f"{c:<{field}}:"
+    print(s)
+    task_five(my_lst)
+
+    c = o(t, "six:")
+    s = f"\n{c:<{field}}:"
+    print(s)
+    task_six()
