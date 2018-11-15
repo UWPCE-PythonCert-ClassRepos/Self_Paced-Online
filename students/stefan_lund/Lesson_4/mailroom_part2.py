@@ -1,463 +1,372 @@
 # python3
 
-# Lesson 4
-#
-# run_mailroom_part2(file)
-# script needs the abspath where the information:
-#
-# William Gates, III/653784.49/2\n
-# Mark Zuckerberg/16396.10/3\n
-# Jeff Bezos/877.33/1\n
-# Paul Allen/708.42/3\n
-# ""
-#
-# is stored
+# The Mailroom Automation
+# mailroom.py
+import os
+import datetime
 
+def send_a_thank_you(menu, data):
 
-import os, sys, datetime
-
-def run_mailroom_part2(file):
-
-    """
-        d_actions: dictionary form, key - action, value - functions to perform
-        d_lables: lables for info stored or that will be stored in info_file
-        info_file: path and filename to text file where info is or will be stored.
-            info is '/' separated
-    """
-
+    option = "thank you"
     finished = False
-    mrl = MailroomPart2(file)
     while not finished:
-        select = mrl.action()
-        if select == "Quit":
-            finished = True
+        finished = ask_questions(menu, option, data)
 
+    return finished
 
+def enter_name(menu, file_name):
+    """
+        updates file_name file with the donation from a new or a present donor
+    """
+    name_list = get_names_from(file_name)
+    name = input("\nEnter name, 'First Last': ")
+    amount = input("\nEnter amount donated: ")
 
-class MailroomPart2:
+    # entered name is not case sensitive
+    name_list_lower = []
+    [name_list_lower.append(name.lower()) for name in name_list]
+    if name.lower() in name_list_lower:
+        data = get_data_from(file_name)
+        name = name.title()
+        amount = '%.2f' % (float(data[name][0]) + float(amount))
+        # amount = str(float(data[name][0]) + float(amount))
+        times = str(int(data[name][1]) + 1)
+        data[name] = (amount, times)
+        # data[name][0] = str(float(data[name][0]) + float(amount))
+        # data[name][1] = str(int(data[name][1]) + 1)
+        store_data_to(file_name, data)
+    else:
+        name = name.title()
+        amount = '%.2f' % float(amount)
+        times = str(1)
+        data = {name:(amount, times)}
+        store_data_to(file_name, data, add=True)
 
+    # send a letter
+    letter_template = letter_templates("1")
+    today = todays_date()
 
-    def __init__(self, tryfile):
-        self.file = tryfile
+    temp_date = today[1] + "/" + today[2] + "/" + today[0]
+    letter = letter_template.format(name=name,
+                                    amount=amount,
+                                    date=temp_date)
+    print("\n", letter)
 
-    def action(self):
+    donor = "_".join(name.lower().split())
+    letter_file = donor + "__" + today[0] + "_" + today[1] + "_" + today[2] + "_a"
 
-        act_menu1 = {"Send a Thank You": self.send_a_thank_you,
-                    "Create a Report": self.create_a_report,
-                    "Send Letter to Everyone": self.send_letters_to_everyone,
-                    "Quit": self.__quit_}
+    # store letter to file
+    store_data_to(letter_file, letter)
 
-        selection = self.__choice(act_menu1)
-        select = act_menu1[selection]
-        v = select()
+    return False
 
-        if v == "Quit":
-            return v
+def send_letters_to_everyone(menu, file_name):
+    """
+        data: {'name': ['total amount donated',
+                           'number of times donating']}
 
-    def __choice(self, menu_dict):
-        """
-        returns the 'Send a Thank You' etc from menu,
-        """
-        local_menu = self.__menu(menu_dict)
-        max_opt = str(len(local_menu))
-        choice_str = "\nEnter the number of your choice, 1 - " + max_opt + ": "
-        selection = input(choice_str)
+    """
+    data = get_data_from(file_name)
+    letter_template = letter_templates("2")
+    today = todays_date()
 
-        answer = selection
-        valid = local_menu.keys()
-        choice = ValidDigit(answer, valid)
-        valid_choice = choice.validate_digit()
-        if valid_choice:
-            return local_menu[int(selection)]
-        else:
-            print("Choice not valid.")
-            self.action()
+    temp_date = today[1] + "/" + today[2] + "/" + today[0]
+    for key in data.keys():
+        letter = letter_template.format(name=key,
+                                        amount=data[key][0],
+                                        date=temp_date)
+        print("\n", letter)
 
-    def __menudict(self, menu_dict):
-        m_dict = {}
-        for n, choice in enumerate(menu_dict.keys()):
-            m_dict[n + 1] = choice
-        return m_dict
-
-    def __menu(self, menu_dict):
-        print("\nMain Menu\n")
-        menu = self.__menudict(menu_dict)
-        for choice in sorted(menu):
-            print("{} - {}".format(str(choice), menu[choice]))
-        return menu
-
-    def create_a_list(self):
-        # expects an existing path
-        # file name may exist or not but has to be a txt file
-        info = ReadWriteFile(self.file)
-        report_dict = info.read_line()
-
-        name_len = 0
-        for key in report_dict.keys():
-            if len(key) > name_len:
-                name_len = len(key) + 3
-
-        temp_str = "Name"
-        temp_form = "\n{:<{nl}}|"
-        header = temp_form.format(temp_str, nl = name_len)
-        print(header)
-        print("-" * (name_len + 3 ))
-
-        for key in report_dict.keys():
-            temp_form = "{:<{nl}}"
-            d0 = key
-            line = temp_form.format(d0, nl = name_len)
-            print(line)
-
-    def create_a_report(self):
-        # expects an existing path
-        # file name may exist or not but has to be a txt file
-        info = ReadWriteFile(self.file)
-        report_dict = info.read_line()
-
-        name_len = 0
-        amount_len = 0
-        for key in report_dict.keys():
-            if len(key) > name_len:
-                name_len = len(key) + 3
-            if len(str(report_dict[key][0])) > amount_len:
-                amount_len = len(str(report_dict[key][0])) + 3
-
-        temp_str = "Name", "Total Given", "Num Gifts", "Average Gift"
-        temp_form = "\n{:<{nl}}|{:>{al}}|{:^{al}}|{:>{al}}"
-        header = temp_form.format(*temp_str, nl = name_len, al = amount_len)
-        print(header)
-
-        a_l = "+" + "-" * amount_len
-        h_divider = "-" * name_len + a_l * 3
-        print(h_divider)
-
-        for key in report_dict.keys():
-            temp_form = "{:<{nl}}|${:>{al}.2f}| {:^{al}}|${:>{al}.2f}"
-            d0 = key
-            d1 = float(report_dict[key][0])
-            d2 = int(report_dict[key][1])
-            if d2 == 0:
-                d3 = 0
-            else:
-                d3 = d1 / d2
-            line = temp_form.format(d0, d1, d2, d3, nl = name_len, al = amount_len - 1)
-            print(line)
-
-        print(h_divider + "\nend\n")
-
-    def send_a_thank_you(self):
-
-        act_menu2 = ["Options are to enter a \nName or \nCreate List of Names or \nMain Menu",
-                    {"Name": "",
-                     "List": self.create_a_list,
-                     "Main": self.action}]
-
-        print("\n" * 2 + act_menu2[0])
-        choice_str = "\nEnter a Name, List or Main: "
-        selection = input(choice_str)
-
-        answer = selection
-        valid = ["list", "main"]
-        choice = ValidAlpha(answer, valid)
-        valid_choice = choice.validate_alpha()
-        if valid_choice:
-            if selection.lower() == valid[0]:
-                act_menu2[1][selection.capitalize()]()
-                self.send_a_thank_you()
-            elif selection.lower() == valid[1]:
-                act_menu2[1][selection.capitalize()]()
-            else:
-                # update will have the name, total amount, number of times
-                name = selection
-                amount = input("\nEnter amount donated: ")
-                update = ReadWriteFile(self.file, name, amount)
-                existing_name = update.writefile()
-                self.__send_thank_you(existing_name, amount)
-
-        else:
-            print("Choice not valid.")
-            self.__choice()
-
-    def send_letters_to_everyone(self):
-        """
-        report_dict: {'name': ['total amount donated', 'number of times donating']}
-        """
-
-        info = ReadWriteFile(self.file)
-        report_dict = info.read_line()
-        today = self.__date()
-        letter_template = self.__letter("2")
-
-        for key in report_dict.keys():
-            letter = letter_template.format(name=key,
-                                            amount=report_dict[key][0],
-                                            date = today[1] + "/" + today[2] + "/" + today[0])
-            print("\n", letter)
-
-            donor = "_".join(key.split())
-            letter_file = donor + "__" + today[0] + "_" + today[1] + "_" + today[2]
-
-            fp = ReadWriteFile(self.file)
-            fpath = fp.create_path(letter_file, False)
-            fp.writenewfile(letter, fpath)
-
-    def __send_thank_you(self, name, amount):
-
-        letter1 = self.__letter("1")
-        letter11 = letter1.format(name=name, amount=amount)
-        print("\n", letter11)
-
-        today = self.__date()
-        donor = "_".join(name.split())
+        donor = "_".join(key.split())
         letter_file = donor + "__" + today[0] + "_" + today[1] + "_" + today[2]
 
-        fp = ReadWriteFile(self.file)
-        fpath = fp.create_path(letter_file, False)
-        fp.writenewfile(letter11, fpath)
+        store_data_to(letter_file, letter)
 
-    def __date(self):
-        today = datetime.date.today()
-        year, month, day = str(today.year), str(today.month), str(today.day)
-        return [year, month, day]
+    return False
 
-    def __letter(self, ltr):
-
-        n = "\n"
-        t = "\t"
-        s = " "
-
-        # letter 1
-        l1 = "Dear {name}," + n * 2
-        l2 = (t + s) * 1 + "Thank you for your very kind donation of ${amount}." + n * 2
-        l3 = (t + s) * 1 + "It will be put to very good use." + n * 2
-        l4 = (t + s) * 5 + "Sincerely," + n * 2
-        l5 = (t + s) * 6 + "-The Team"
-        letter1 = l1 + l2 +l3 +l4 + l5
-
-        # letter 2
-        day = (t + s) * 8 + "{date}" + n * 6
-        l1 = "Dear {name}," + n * 2
-        l2 = (t + s) * 1 + "Your very generous donation of ${amount} this year is very much appreciated." + n * 2
-        l3 = (t + s) * 1 + "It will be put to very good use." + n * 2
-        l4 = (t + s) * 5 + "Sincerely," + n * 2
-        l5 = (t + s) * 6 + "-The Team"
-        letter2 = day + l1 + l2 +l3 +l4 + l5
-
-        if ltr == "1":
-            return letter1
-        elif ltr == "2":
-            return letter2
-
-    def __quit_(self):
-            return "Quit"
+def letter_templates(version):
 
 
-class ReadWriteFile:
+
+    n = "\n"
+    t = "\t"
+    s = " "
+
+    # letter 1, date: todays date, name, amount: amount of donation registered today
+    l1 = "Seattle, WA {date}" + n * 3 + t + "Dear {name}," + n * 2
+    l2 = ((t + s) * 1 + "Thank you for your very "
+         "kind donation of ${amount}." + n * 2)
+    l3 = (t + s) * 1 + "It will be put to very good use." + n * 2
+    l4 = (t + s) * 5 + "Sincerely," + n * 2
+    l5 = (t + s) * 6 + "-The Team"
+    letter1 = l1 + l2 + l3 + l4 + l5
+
+
+    # letter 2, date: todays date, name, amount: total amount donated
+    day = (t + s) * 8 + "{date}" + n * 6
+    l1 = "Dear {name}," + n * 2
+    l2 = (t + s) * 1 + "Your very generous donation of ${amount} \
+         this year is very much appreciated." + n * 2
+    l3 = (t + s) * 1 + "It will be put to very good use." + n * 2
+    l4 = (t + s) * 5 + "Sincerely," + n * 2
+    l5 = (t + s) * 6 + "-The Team"
+    letter2 = day + l1 + l2 + l3 + l4 + l5
+
+    version_dict = {"1":letter1, "2":letter1, "3":"under construction"}
+
+    return version_dict[version]
+
+def todays_date():
     """
-    file_path: raw string of full file path including file name
-        expects lines
-    file line is '/' delimited, lines are '\n' delimited
+        returns a list containing year, month, day in str format
+    """
+    today = datetime.date.today()
+    year, month, day = str(today.year), str(today.month), str(today.day)
+    return [year, month, day]
+
+def get_names_from(in_file):
+    """
+        in_file: file name for file in cwd where data is stored
+        returns: list of recorded names
+    """
+    data = get_data_from(in_file)
+    name_list = []
+    for name in data:
+        name_list.append(name)
+
+    return name_list
+
+def list_of_names(menu, file_name):
+    """
+        file_name: file name for file in cwd where data is stored
+    """
+    name_list = get_names_from(file_name)
+
+    name_len = 0
+    for name in name_list:
+        if len(name) > (name_len - 3):
+            name_len = len(name) + 3
+
+    temp_str = "Donor Name"
+    temp_form = "\n{:<{nl}}|"
+    header = temp_form.format(temp_str, nl=name_len)
+    print(header)
+    print("-" * name_len + "+")
+
+    for name in name_list:
+        temp_form = "{:<{nl}}|"
+        line = temp_form.format(name, nl=name_len)
+        print(line)
+
+    return False
+
+def quit(menu, file_name):
+    return True
+
+def read_in_pieces(file_object, piece_size=32):
+    """
+        Function (generator) to read a file piece by piece.
+        Default piece_size: 32 bytes to read a small file in several pieces
+    """
+    while True:
+        data = file_object.read(piece_size)
+        if not data:
+            break
+        # print("data: ", data, "size: ", sys.getsizeof(data))
+        yield data
+
+def is_alpha_or_space(string):
+    return all(c.isalpha() or c.isspace() for c in string)
+
+def is_digit_or_period(string):
+    chars = set('0123456789.')
+    return all((c in chars) for c in string)
+
+def get_data_from(file_name):
     """
 
-    def __init__(self, file_path, name=None, amount=None):
-        self.file = file_path
-        self.name = name
-        self.amount = amount
+    file_name: file name where the data of the donors etc. can be found.
+        must be in the cwd,
+        info is '/' delimited, bytes
+            info containing name, total amount, number of donations
+    data_dict = {name:(amount, times donating), etc}
+    """
 
-    def create_path(self, f_name, add=True):
-        source = self.file
-        folder, file = os.path.split(self.file)
-        filename, ext = file.split(".")
-        if add:
-            new_destination = folder + "\\" + filename + f_name + "." + ext
+    data_dict = {}
+    source = os.path.join(os.getcwd(), file_name)
+    try:
+        with open(source, 'rb') as infile:
+            str_data = []
+            previous_str_data = tuple()
+            for bin_data_piece in read_in_pieces(infile):
+                new_str_data = bin_data_piece.decode('utf-8').split('/')
+
+                #  remove trailing white space when delimiter present in the last position
+                if new_str_data[-1:][0] == "":
+                    new_str_data = new_str_data[:-1]
+
+                if len(previous_str_data) > 0 and len(new_str_data) > 0:
+
+                    a = is_alpha_or_space(previous_str_data[-1]) and is_alpha_or_space(new_str_data[0])
+                    b = is_digit_or_period(previous_str_data[-1]) and is_digit_or_period(new_str_data[0])
+
+                    if a or b:
+                        previous_temp = list(previous_str_data)
+                        if "." in previous_temp[-1] and len(previous_temp[-1].split(".")[1]) == 2:
+                            patch = previous_temp[-1]
+                            previous_new = previous_temp[:-1]
+                            previous_new.append(patch)
+                            previous_new.extend(new_str_data[:])
+                        else:
+                            patch = previous_temp[-1] + new_str_data[0]
+                            previous_new = previous_temp[:-1]
+                            previous_new.append(patch)
+                            previous_new.extend(new_str_data[1:])
+                    else:
+                        previous_new = list(previous_str_data).extend(new_str_data)
+
+                    new_str_data = previous_new
+
+                add_info = new_str_data[:3 * (len(new_str_data) // 3)]
+
+                previous_str_data = tuple(new_str_data[3 * (len(new_str_data) // 3):])
+                str_data.extend(add_info)
+                # print(str_data)
+        data_dict = {key:values for key, values in
+        zip(str_data[::3], zip(str_data[1::3], str_data[2::3]))}
+        # print("data_dict: ", data_dict)
+        return data_dict
+    except:
+        print("something went wrong, read")
+
+def write_to(file_path, data, mode='wb'):
+    """
+        writes data to file_path
+        file_path:  abspath + file-name
+        data:       string
+        stores data in binary format
+    """
+    try:
+        with open(file_path, mode) as otf:
+            bin_data = data.encode("utf-8")
+            otf.write(bin_data)
+        print("\nstored data in: ", file_path)
+    except:
+        print("\nsomething went wrong, write")
+
+def store_data_to(file_name, data, add=False):
+    """
+        file_name: file name of file where the data will be stored.
+            path to file is the cwd,
+            info is '/' delimited, bytes
+                info containing name, total amount, number of donations
+        data: dictionary, {name:(amount, times donating), etc}
+    """
+    destination = os.path.join(os.getcwd(), file_name)
+    str_data = data
+
+    if isinstance(data, dict):
+        str_data = ""
+        for key, value in data.items():
+            str_data += key + "/" + value[0] + "/" + value[1] + "/"
+
+    mode = 'wb'
+    if add:
+        str_data = "/" + str_data
+        mode = 'ab'
+
+    write_to(destination, str_data, mode)
+
+def create_a_report(menu, file_name):
+    data = get_data_from(file_name)
+    name_len = 0
+    amount_len = 0
+    for name, numbers in data.items():
+        if len(name) > (name_len - 3):
+            name_len = len(name) + 3
+        if len(numbers[0]) > (amount_len - 3):
+            amount_len = len(numbers[0]) + 3
+
+    temp_str = "Donor Name", "Total Given", "Num Gifts", "Average Gift"
+    temp_form = "\n{:<{nl}}|{:>{al}}|{:>{al}}|{:>{al}}"
+    header = temp_form.format(*temp_str, nl=name_len, al=amount_len)
+    print(header)
+    p = "+"
+    s = "-"
+    lne = s * (name_len)
+    e = p + (s * (amount_len))
+    lne += 3 * e
+    print(lne)
+    for name, numbers in data.items():
+        d0 = name
+        d1 = float(numbers[0])
+        d2 = int(numbers[1])
+        if d2 == 0:
+            d3 = 0
         else:
-            new_destination = folder + "\\" + f_name + "." + ext
-        return new_destination
+            d3 = d1 / d2
 
-    def writenewfile(self, letter, new_file_path):
-        try:
-            # copy entire file to a temp file
-            with open(new_file_path, 'w') as outfile:
-                outfile.write(letter)
-        except: # catch all - not good but the best I can come up with for the moment.
-            e = sys.exc_info()
-            print("<p>Error: {}</p>".format(e)[0])
+        temp_form = "{:<{nl}} ${:>{al}.2f}  {:>{al}} ${:>{al}.2f}"
+        line = temp_form.format(d0, d1, d2, d3, nl=name_len, al=amount_len - 1)
+        print(line)
 
-    def writefile(self):
-        """
-        windows ==> path entered with prefix r, raw string, alt. duplicate all \
-                    works as long as the path doesn't end with \.
-        source: abspath
-        to_destination: abspath
-        # file: name of file to be copied
-        """
-        source = self.file
-        folder, file = os.path.split(self.file)
-        filename, ext = file.split(".")
-        temp_destination = self.create_path("_temp")
+    return False
 
-        line_form = "{name}/{amount}/{times}\n"#{}.format(name = self.name, amount = updated_amount, times = updated_times)
+def ask_questions(menu, option, file_name):
+    """
 
-        try:
-            # copy entire file to a temp file
-            with open(source, 'r') as infile, open(temp_destination, 'w') as outfile:
-                for line in infile:
-                    outfile.write(line)
-        except: # catch all - not good but the best I can come up with for the moment.
-            e = sys.exc_info()[0]
-            print("<p>Error: {}</p>".format(e))
+    """
+    good_answer = False
+    while not good_answer:
+        print("\nYour options are:\n")
 
-        source = temp_destination
-        destination = self.file
-        found_name = False
-        end_of_file = False
+        for key, value in menu[option].items():
+            # s = f"{key}.)  {value.__name__}"
+            s = f"{key}.)  {value}"
+            print(s)
+        answer = input("\nEnter letter according to your choice: ")
+        good_answer = menu[option].get(answer, False)
 
-        try:
-            with open(source, 'r') as infile, open(destination, 'w') as outfile:
-                while not end_of_file:
-                    line = infile.readline()
-                    end_of_file = True == line.count("")
-                    if not found_name:
+    func_answer = good_answer.lower().split()
+    func = "_".join(func_answer)
+    print(func)                                                                #
 
-                        if not end_of_file:
-                            if self.name in line:
-                                line = line.replace("\n", "")
-                                line  = line.split('/')
+    method = eval(func)
+    return method(menu, file_name)
 
-                                existing_name, current_amount, times = line[0], line[1], line[2]
-                                updated_amount = str(float(current_amount) + float(self.amount))
-                                updated_times = str(int(times) + 1)
-                                new_line = line_form.format(name = existing_name,
-                                                            amount = updated_amount,
-                                                            times = updated_times)
-                                outfile.write(new_line)
-                                found_name = True
-                            else:
-                                outfile.write(line)
+def main_menu(menu, file):
+    option = "start"
+    finished = False
+    while not finished:
+        finished = ask_questions(menu, option, file)
 
-                    else:
-                        outfile.write(line)
+    print("\nLeaving the Mailroom 1.", "finished: ", finished)
+    return finished
 
-        except: # catch all - not good but the best I can come up with for the moment.
-            e = sys.exc_info()
-            print("<p>Error: {}</p>".format(e[0]))
-            print(e[1], "\n", e[2])
+def run_mailroom(file):
+    """
+    data: list with name, total of donations - dddd.cc, number of gift occations
+    """
 
-        try:
-            os.remove(temp_destination)
-        except OSError as e: # this would be "except OSError, e:" before Python 2.6
-            if e.errno != errno.ENOENT: # errno.ENOENT = no such file or directory
-                raise # re-raise exception if a different error occurred
+    menu = {"start":     {"a": 'Send a Thank You',
+                          "b": 'Create a Report',
+                          "c": 'Send Letters to Everyone',
+                          "d": 'Quit'},
 
-        return existing_name
+            "thank you": {"a": 'Main Menu',
+                          "b": 'List of Names',
+                          "c": 'Enter Name',
+                          "d": 'Quit'}}
 
-    def read_line(self):  #(fle, nme=None):
-        """
-        if name is None, a report is being produced
-        if name is a name, check if name is in the file or not
-        line is a list, ['name', 'total amount donated', 'number of times donating']
-        """
+    main_menu(menu, file)
+    # not sure how well this ends, does it gets stuck here holding a
+        # boolean return value or does the script really terminate?
 
-        file_dict = {}
-        with open(self.file, "r") as f:
-            repeat = True
-            while repeat:
-                line  = f.readline()
-                end_of_file = True == line.count("")
+data = ["William Gates, III", 653784.49, 2, "Mark Zuckerberg",
+        16396.10, 3, "Jeff Bezos", 877.33, 1, "Paul Allen", 708.42, 3]
 
-                if not end_of_file:
-                    line = line.replace("\n", "")
-                    line  = line.split('/')
-                    # print("1.  line: {}".format(line))
-                    # print("line: {}, position: {}, temp: {}, nme in line[0]: {}".format(line, position, temp, nme in line[0]))
-                    # print(nme is not None, nme in line[0], repeat)
-                    # if nme is not None, checking to see if the name is in the file or not
-                if self.name is not None:
-                    if nme in line[0]:
-                        # position = temp
-                        file_dict[line[0]] = [line[1], line[2]]
-                        # print("{} is in the file, {}".format(self.name, line[0]))
-                        # print("2.  line: {}".format(line))
-                        repeat = False
-                    else:
-                        # print("3.  line: {}".format(line))
-                        if end_of_file:
-                            file_dict[self.name] = [0, 0]
-                            # print("{} is not in the file".format(self.name))
-                            repeat = False
-
-                # nme is None and all info from the file is returned
-                else:
-                    if end_of_file:
-                        repeat = False
-                    else:
-                        file_dict[line[0]] = [line[1], line[2]]
-                        # print("4.  line: {}".format(line))
-        return file_dict
-
-
-class ValidDigit:
-    # is a number, int or float, with or without $ sign
-    def __init__(self, answer, valid):
-        self.answer = answer
-        self.valid = valid
-
-    def validate_digit(self):
-        # menu choice 1, 2, 3, etc
-        # amount, always includes $ and maybe decimals
-
-        temp_answer = str(self.answer)
-        temp_dec = temp_answer.replace("$", "")
-        temp = temp_dec.replace(".", "")
-        temp_count_dot = temp_answer.count('.')
-        temp_count_currency = temp_answer.count('$')
-
-        if temp.isdigit() and temp_count_dot < 2 and temp_count_currency < 2:
-            if float(temp_dec) <= 0:
-                return False
-            else:
-                if temp_count_currency == 1:
-                    # amount
-                    return True
-                else:
-                    # menu choice, 1, 2, 3, etc
-                    valid_answer = int(self.answer) in self.valid
-                    if valid_answer:
-                        return True
-                    else:
-                        return False
-        else:
-            return False
-
-
-class ValidAlpha:
-
-    def __init__(self, answer, valid):
-        self.answer = answer
-        self.valid = valid
-
-    def validate_alpha(self):
-    # valid: list of accepted  strings, "list", "quit" or a name,
-    # name is also checked to be of alpha numeric and white space
-    # any name will return True as will "list" or "quit"
-    # return value(s) in list form so check for name in list can be identified
-
-        # consecutive digits discualifies the entry as a valid name
-        for i in range(len(self.answer)):
-            if self.answer[i].isdigit():
-                if self.answer[i + 1].isdigit():
-                    return False
-
-        if all(x.isalpha() or x.isspace() or x.isdigit() or x  == "." for x in self.answer):
-            temp = self.answer.lower()
-            # see if answer is in the valid list
-            for string in self.valid:
-                if temp == string.lower():
-                    return True
-            # otherwise assume it's a new name
-                else:
-                    return True
-        # answer does not make sense
-        else:
-            return False
+if __name__ == '__main__':
+    # bin_text: file in cwd containing name, total amount, number of times donating
+        # file is binary and "/" delimited, (no "\n").
+    file = "bin_text.bin"
+    run_mailroom(file)
