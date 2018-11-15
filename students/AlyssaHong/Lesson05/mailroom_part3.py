@@ -1,8 +1,8 @@
 """
 Author: Alyssa Hong
-Date: 11/04/2018
+Date: 11/14/2018
 Update:
-Lesson4 Assignments > Mailroom, Part 2
+Lesson4 Assignments > Mailroom, Part 3
 """
 
 #!/usr/bin/env python3
