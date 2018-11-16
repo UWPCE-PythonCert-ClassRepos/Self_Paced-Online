@@ -1,3 +1,14 @@
 [
-  "test_html_render.py::test_append"
+  "test_html_render.py::test_init",
+  "test_html_render.py::test_append",
+  "test_html_render.py::test_render_element",
+  "test_html_render.py::test_render_element2",
+  "test_html_render.py::test_html",
+  "test_html_render.py::test_body",
+  "test_html_render.py::test_p",
+  "test_html_render.py::test_sub_element",
+  "test_html_render.py::test_head",
+  "test_html_render.py::test_title",
+  "test_html_render.py::test_one_line",
+  "test_html_render.py::test_attributes"
 ]

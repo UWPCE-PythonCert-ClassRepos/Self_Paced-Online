@@ -7,9 +7,11 @@ Created on Sat Nov 10 17:01:24 2018
 
 
 class Element():
-    def __init__(self, tag='html', indentation='     ', content=None):
-        self.tag = tag
-        self.indentation = indentation
+    tag = 'html'
+    indentation = '     '
+
+    def __init__(self, content=None, **kwargs):
+        self.__dict__.update(kwargs)
         if content is None:
             self.content = []
         else:
@@ -21,5 +23,40 @@ class Element():
     def render(self, file_out, cur_ind=''):
         file_out.write('{}<{}>\n'.format(cur_ind, self.tag))
         for item in self.content:
-            file_out.write(item)
-        file_out.write('\n{}</{}>'.format(cur_ind, self.tag))
+            # file_out.write(item)
+            try:
+                item.render(file_out)
+            except AttributeError:
+                file_out.write(item)
+            file_out.write('\n')
+        file_out.write('{}</{}>'.format(cur_ind, self.tag))
+
+
+class Html(Element):
+    tag = 'html'
+
+
+class Body(Element):
+    tag = 'body'
+
+
+class P(Element):
+    tag = 'p'
+
+
+class Head(Element):
+    tag = 'head'
+
+
+class OneLineTag(Element):
+    def render(self, file_out, cur_ind=''):
+        file_out.write('{}<{}>'.format(cur_ind, self.tag))
+        file_out.write(self.content[0])
+        file_out.write('{}</{}>'.format(cur_ind, self.tag))
+
+    def append(self, content):
+        raise NotImplementedError
+
+
+class Title(OneLineTag):
+    tag = 'title'
