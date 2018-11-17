@@ -27,7 +27,10 @@ class Donor:
     @property
     def average_don(self):
         """average of donations"""
-        return (self.total / self.num_donations)
+        try:
+            return (self.total / self.num_donations)
+        except (ValueError, ZeroDivisionError) as e:
+            return 0
 
     def sending_thank(self):
         return f"\n Thank you {self.name}, for the generous donation! \n"
@@ -44,13 +47,11 @@ class DonorCollection:
         """Collecting invidual donor donation data into one obj"""
         self.donors = {d.name: d for d in args}
 
-
     def add_donation(self, name, donation):
         if self.donors.get(name):
             self.donors[name].add_donation(donation)
         else:
             self.donors[name] = Donor(name, donation)
-
 
     def create_report(self):
         s = '\n {:<20}| {:<10} | {:<10}| {:<20}'
@@ -66,7 +67,6 @@ class DonorCollection:
             print(s.format(rep_list[i][2], rep_list[i][0], rep_list[i][1],
                            rep_list[i][3]))
         print(' ')
-
 
     def send_letters(self):
         for d in self.donors.values():
@@ -110,24 +110,70 @@ def handling_send_thank_user_input():
     print(dc.donors[f_name].sending_thank())
 
 
+def challenge(m_factor, min_don=0, max_don=9999999):
+    new_factored_list = []
+    s = 0
+    for d in dc.donors.values():
+        new_donations = list(map(lambda x: x * m_factor,
+                                 list(filter(lambda x: x < max_don,
+                                             list(filter(lambda x: x > min_don,
+                                                         d.donations))))))
+        new_factored_list.append(Donor(d.name, new_donations))
+        s += sum(new_donations)
+    newdc = DonorCollection(*new_factored_list)
+    return s, newdc
+
+
+def handle_UI_for_challenge():
+    dc.create_report()
+    m_factor = input('Please input a multiply factor (number only)> ')
+    min_don = input('Please input a minimum donation value (number only)> ')
+    max_don = input('Please input a maximum donation value (number only)> ')
+    c_total, newdc = challenge(float(m_factor), float(min_don), float(max_don))
+    newdc.create_report()
+    print('\nTotal after Match: ${:>15,.2f} \n'.format(c_total))
+    return (float(m_factor), float(min_don), float(max_don), c_total)
+
+
+def projection():
+    keep_run = 'y'
+    store_data = []
+    while keep_run == 'y':
+        print("\nNew scenario:\n")
+        scenario1 = handle_UI_for_challenge()
+        s = '\n {:<20}| {:<10} | {:<10}| {:<10}| {:<20}'
+        print(s.format('Scenario', 'Multiplier', "Minimum", "Maximum",
+                       "Total Match"))
+        print('-' * 70)
+        store_data.append(scenario1)
+        s = '{:<20.0f}  {:<10.2f}  $ {:<10.2f} $ {:<10.2f}  $ {:<20.2f}'
+        for n in range(len(store_data)):
+            print(s.format(n + 1, *store_data[n]))
+        keep_run = input('\nDo you want to run another scenario (y/n)> ')
+
+
 def main():
     response = '0'
     # menu_prompt
     switch_func_dict = {'1': handling_send_thank_user_input,
                         '2': dc.create_report,
                         '3': dc.send_letters,
-                        '4': just_quit}
-    while not response == '4':
+                        '4': handle_UI_for_challenge,
+                        '5': projection,
+                        '6': just_quit}
+    while not response == '6':
         print('Menu')
         print('1. Send a Thank You')
         print('2. Create a Report')
         print('3. Send letters to everyone')
-        print('4. Quit')
+        print('4. Challenge')
+        print('5. Project Scenarios')
+        print('6. Quit')
         response = input("Please type number from menu > ")
         try:
             switch_func_dict.get(response)()
         except TypeError:
-            print('\n Please type a number from 1 to 4.\n')
+            print('\n Please type a number from 1 to 6.\n')
     return response
 
 
