@@ -52,3 +52,49 @@ d = {'name': 'Chris'.lower().count('t'), 'city': 'Seattle'.lower().count('t'), '
 print(d.items())
 
 
+print("\nSets 1\n")
+
+print("\nCreate sets s2, s3 and s4 that contain numbers from zero through twenty, divisible by 2, 3 and 4\nDisplay the sets\n")
+
+num_list = list(range(0,21))
+
+def make_set(num_list, div):
+    set_int = set()
+    for num in num_list:
+        if num % div == 0:
+            set_int.add(num)
+    return(set_int)
+
+
+print("s2:", make_set(num_list, 2), "\n")
+print("s3:", make_set(num_list, 3), "\n")
+print("s4:", make_set(num_list, 4), "\n")
+
+print("Display if s3 is a subset of s2 (False) and if s4 is a subset of s2 (True)\n")
+
+s2 = make_set(num_list, 2)
+s3 = make_set(num_list, 3)
+s4 = make_set(num_list, 4)
+
+print("s3 in s2: ", s3.issubset(s2) , "\n")
+print("s4 in s2: ", s4.issubset(s2)  , "\n")
+
+print("\nSets 2\n")
+
+
+print("Create a set with the letters in \'Python\' and add \'i\' to the set.\n")
+
+p = {'p','y','t','h','o','n'}
+print(p)
+
+p.add('i')
+print(p)
+
+print("\nCreate a frozenset with the letters in \'marathon\'.\n")
+
+m = frozenset(('m','a','r','a','t','h','o','n'))
+print(m)
+
+print("\ndisplay the union and intersection of the two sets.\n")
+
+print(p.intersection(m))
