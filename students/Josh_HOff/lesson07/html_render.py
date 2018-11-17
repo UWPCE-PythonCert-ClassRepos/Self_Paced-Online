@@ -9,9 +9,11 @@ A class-based system for rendering html.
 # This is the framework for the base class
 class Element(object):
     
+    indent = ''
     tag = 'html'
 
-    def __init__(self, content=None, **kwargs):    
+    def __init__(self, content=None, **kwargs):
+#        print(f'{Element.indent}hi')
         self.test_dict = copy.deepcopy(kwargs)
         if content is None:
             self.contents = []
@@ -21,19 +23,27 @@ class Element(object):
     def append(self, new_content):
         self.contents.append(new_content)
 
-    def render(self, out_file):
-        open_tag = [f'<{self.tag}']
+    def _opentag(self, out_file):
+        pass        
+        
+    def render(self, out_file, cur_ind=''):
+        if self.tag == 'html':
+            out_file.write(f'<!DOCTYPE html>\n')
+        open_tag = [f'{Element.indent}<{self.tag}']
         for key, value in self.test_dict.items():
             open_tag.append(f' {key}="{value}"')
         open_tag.append('>\n')
         out_file.write(''.join(open_tag))
+        Element.indent += '    '
         for content in self.contents:
             try:
                 content.render(out_file)
             except AttributeError:
-                out_file.write(content)
+                out_file.write(f'{Element.indent}{content}')
                 out_file.write('\n')
-        out_file.write(f'</{self.tag}>\n')
+        Element.indent = (len(Element.indent) - 4) * ' '
+        out_file.write(f'{Element.indent}</{self.tag}>\n')
+
         
                 
         
@@ -45,7 +55,6 @@ class Body(Element):
 class Html(Element):
 
     tag = 'html'
-    
     
 class P(Element):
 
@@ -59,11 +68,10 @@ class Head(Element):
     
 class OneLineTag(Element):
 
-    def render(self, out_file):
-        out_file.write(f'<{self.tag}>')        
+    def render(self, out_file, cur_ind=''):
+        out_file.write(f'{Element.indent}<{self.tag}>')        
         out_file.write(self.contents[0])
         out_file.write(f'</{self.tag}>\n')
-    
     def append(self, content):
         raise NotImplementedError
     
@@ -75,13 +83,15 @@ class Title(OneLineTag):
 
 class SelfClosingTag(Element):
     def __init__(self, content=None, **kwargs):
+        if self.tag == 'meta charset="UTF-8"':
+            kwargs = {}
         self.test_dict = copy.deepcopy(kwargs)
         if content is not None:
             raise TypeError('SelfClosingTag can not contain any content')
         super().__init__(content=content, **kwargs)
     
-    def render(self, out_file):
-        open_tag = [f'<{self.tag}']
+    def render(self, out_file, cur_ind=''):
+        open_tag = [f'{Element.indent}<{self.tag}']
         for key, value in self.test_dict.items():
             open_tag.append(f' {key}="{value}"')
         out_file.write(''.join(open_tag))
@@ -116,7 +126,8 @@ class A(OneLineTag):
         kwargs['href'] = link
         super().__init__(content, **kwargs)
 
-    def render(self, out_file):
+    def render(self, out_file, cur_ind=''):
+        Element.indent += '    '
         open_tag = [f'<{self.tag}']
         for key, value in self.test_dict.items():
             open_tag.append(f' {key}="{value}">')
@@ -126,15 +137,16 @@ class A(OneLineTag):
                 content.render(out_file)
             except AttributeError:
                 out_file.write(content)
-        out_file.write(f'<{self.tag}> ')
+        Element.indent = (len(Element.indent) - 4) * ' '
+        out_file.write(f'</{self.tag}> ')
         
         
 class Ul(Element):
 
     tag = 'ul'
     
-    def render(self, out_file):
-        open_tag = [f'<{self.tag}']
+    def render(self, out_file, cur_ind=''):
+        open_tag = [f'{Element.indent}<{self.tag}']
         for key, value in self.test_dict.items():
             open_tag.append(f' {key}="{value}"')
         open_tag.append('>\n')
@@ -145,14 +157,16 @@ class Ul(Element):
             except AttributeError:
                 out_file.write(content)
                 out_file.write('\n')
-        out_file.write(f'</{self.tag}>\n')
+        out_file.write(f'{Element.indent}</{self.tag}>\n')
+
     
     
 class Li(Element):
 
     tag = 'li'
-    def render(self, out_file):
-        open_tag = [f'<{self.tag}']
+    def render(self, out_file, cur_ind=''):
+        Element.indent += '    '
+        open_tag = [f'{Element.indent}<{self.tag}']
         for key, value in self.test_dict.items():
             open_tag.append(f' {key}="{value}"')
         open_tag.append('>')
@@ -162,23 +176,9 @@ class Li(Element):
                 content.render(out_file)
             except AttributeError:
                 out_file.write(content)
+        Element.indent = (len(Element.indent) - 4) * ' '
         out_file.write(f'</{self.tag}>\n')
-        
-    '''def render(self, out_file):
-        print('hello')
-        open_tag = [f'<{self.tag}>']
-        for key, value in self.test_dict.items():
-            open_tag.append(f'{key}="{value}"')
-        open_tag.append('>\n')
-        out_file.write(''.join(open_tag))
-        for content in self.contents:
-            try:
-                content.render(out_file)
-            except AttributeError:
-                out_file.write(content)
-                out_file.write('\n')
-        out_file.write(f'</{self.tag}>\n')'''
-    
+            
     
 class H(OneLineTag):
     
@@ -186,9 +186,12 @@ class H(OneLineTag):
         self.tag = f'h{level}'
         super().__init__(content, **kwargs)
         
-    def render(self, out_file):
-        out_file.write(f'<{self.tag}>')        
+    def render(self, out_file, cur_ind=''):
+        out_file.write(f'{Element.indent}<{self.tag}>')        
         out_file.write(self.contents[0])
         out_file.write(f'</{self.tag}>\n')
 
-        
+
+class Meta(SelfClosingTag):
+
+    tag = 'meta charset="UTF-8"'
