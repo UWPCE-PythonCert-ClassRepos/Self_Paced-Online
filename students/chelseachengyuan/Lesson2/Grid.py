@@ -27,3 +27,5 @@ def grid(x,y):
     print('+' + (a*' -' + ' +')*c)
     print((('|' + (a* '  ' + ' |')*c +'\n')*a+('+' + (a*' -' + ' +')*c+'\n'))*c)
 grid(3,4)
+
+###test what going on
