@@ -54,3 +54,4 @@ print('{:<20} {:<10} {:<10}'.format(*headings))
 
 for product in products:
     print('{:<20} {:<10} ${:<10}'.format(*product))
+

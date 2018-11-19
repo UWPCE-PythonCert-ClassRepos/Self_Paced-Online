@@ -34,12 +34,12 @@ def send_thanks():
     else:
         print("Please type 'list' or quit")
 
-    return_menu()
+    # return_menu()
 
 
 def create_report():
     show_list_donation(list_donation)
-    return_menu()
+    # return_menu()
 
 
 def send_letters():
@@ -54,7 +54,8 @@ def send_letters():
         with open(writepath, mode) as f:
             f.write(letter_content(i, j))
 
-    return_menu()
+
+    # return_menu()
 
 def letter_content(donor_name, donation):
    #  \n : line change
