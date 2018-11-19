@@ -1,1 +1,12 @@
-{}
+{
+  "test_html_render.py::test_attributes": true,
+  "test_html_render.py::test_body": true,
+  "test_html_render.py::test_head": true,
+  "test_html_render.py::test_hr": true,
+  "test_html_render.py::test_hr_attr": true,
+  "test_html_render.py::test_html": true,
+  "test_html_render.py::test_p": true,
+  "test_html_render.py::test_render_element": true,
+  "test_html_render.py::test_render_element2": true,
+  "test_html_render.py::test_sub_element": true
+}

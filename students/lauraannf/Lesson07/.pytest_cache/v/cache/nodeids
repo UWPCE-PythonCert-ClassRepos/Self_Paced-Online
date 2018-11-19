@@ -10,5 +10,7 @@
   "test_html_render.py::test_head",
   "test_html_render.py::test_title",
   "test_html_render.py::test_one_line",
-  "test_html_render.py::test_attributes"
+  "test_html_render.py::test_attributes",
+  "test_html_render.py::test_hr",
+  "test_html_render.py::test_hr_attr"
 ]
