@@ -13,5 +13,6 @@ class Element():
         self.content.append(content)
 
     def render(self, file_out, cur_ind = ""):
-        file_out.writelines(self.content)
-        
+        for entry in self.content:
+            file_out.write(entry + '\n')
+        #file_out.writelines(self.content)
