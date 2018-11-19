@@ -2,7 +2,9 @@
 
 class Element():
     """creates HTML element and context"""
-    tag = 'html'
+    tag = ''
+    _start_tag = f'<{tag}>'
+    _end_tag = f'</{tag}>'
 
     def __init__(self, content=None):
         self.content = []
@@ -16,3 +18,16 @@ class Element():
         for entry in self.content:
             file_out.write(entry + '\n')
         #file_out.writelines(self.content)
+
+class Html(Element):
+    """html element tag"""
+    tag = 'html'
+
+
+class Body(Element):
+    """html element tag"""
+    tag = 'body'
+
+class P(Element):
+    """html element tag"""
+    tag = 'p'

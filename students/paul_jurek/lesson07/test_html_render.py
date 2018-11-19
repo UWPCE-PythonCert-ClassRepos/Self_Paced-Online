@@ -1,5 +1,7 @@
 """test suite for html render exercise"""
 
+import pytest
+
 import html_render as hr
 
 def test_Element_run_error_free():
@@ -19,3 +21,28 @@ def test_Element_render():
     page = hr.Element()
     page.render(file_out='test_file.html')
     assert 1 == 1
+
+def test_Element_start_tag():
+    """tests start tag formatted correct"""
+    page = hr.Element()
+    assert page._start_tag == '<>'
+
+def test_Element_end_tag():
+    """tests start tag formatted correct"""
+    page = hr.Element()
+    assert page._end_tag == '</>'
+
+def test_html_element_has_html_tag():
+    """tests when html element is called the tage is returned at html"""
+    element = hr.Html()
+    assert element.tag == 'html'
+
+def test_body_element_has_body_tag():
+    """tests when html element is called the tage is returned at html"""
+    element = hr.Body()
+    assert element.tag == 'body'
+
+def test_p_element_has_p_tag():
+    """tests when html element is called the tage is returned at html"""
+    element = hr.P()
+    assert element.tag == 'p'
