@@ -4,7 +4,8 @@ from io import StringIO
 import pytest
 
 import html_render as hr
-import run_html_render as run_hr
+
+from run_html_render import render_page
 
 def test_Element_run_error_free():
     """tests Element call runs without error"""
@@ -24,7 +25,7 @@ def test_Element_render():
     f = StringIO()
     page.render(file_out=f)
     assert 1 == 1
-
+    
 def test_Element_start_tag():
     """tests start tag formatted correct"""
     page = hr.Element()
@@ -56,6 +57,20 @@ def test_p_element_has_p_tag():
     assert element._start_tag == '<p>'
     assert element._end_tag == '</p>'
 
+def test_head_element_has_head_tag():
+    """tests when html element is called the tage is returned at html"""
+    element = hr.Head()
+    assert element.tag == 'head'
+    assert element._start_tag == '<head>'
+    assert element._end_tag == '</head>'
+
+def test_title_element_has_title_tag():
+    """tests when html element is called the tage is returned at html"""
+    element = hr.Title()
+    assert element.tag == 'title'
+    assert element._start_tag == '<title>'
+    assert element._end_tag == '</title>'
+
 
 @pytest.fixture
 def step2_sample_output():
@@ -74,10 +89,41 @@ def test_step2_output(step2_sample_output):
     body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
     page.append(body)
 
-    run_hr.render_page(page, "test_html_output2.html")
+    render_page(page, "test_html_output2.html")
 
     with open('test_html_output2.html') as f:
         generated_file = f.read()
-    
+
     assert generated_file == step2_sample_output
 
+
+@pytest.fixture
+def step3_sample_output():
+    with open(r'sample_outputs/test_html_output3.html') as f:
+        s = f.read()
+    return s
+
+def test_step3_output(step3_sample_output):
+    """copied and pasted from run_html_render.py, step3.
+    Expect this gives same result as test html"""
+    page = hr.Html()
+
+    head = hr.Head()
+    head.append(hr.Title("PythonClass = Revision 1087:"))
+
+    page.append(head)
+
+    body = hr.Body()
+
+    body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                    "but this is enough  to show that we can do some text"))
+    body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
+
+    page.append(body)
+
+    render_page(page, "test_html_output3.html")
+
+    with open('test_html_output3.html') as f:
+        generated_file = f.read()
+
+    assert generated_file == step3_sample_output
