@@ -16,16 +16,17 @@ class Element():
 
     def render(self, file_out, cur_ind = ""):
         """initiaties the processing of element tree"""
-        Element.process_content(self.content, file_out=file_out, cur_ind=cur_ind)
+        Element.process_content(self.content, file_out=file_out, tag=self.tag, cur_ind=cur_ind)
 
 
     @staticmethod
-    def process_content(content, file_out, cur_ind=""):
+    def process_content(content, file_out, tag, cur_ind=""):
         """helper function for render() which allows us to do
         recursive function on content list"""
+        content = [f'<{tag}>'] + content + [f'</{tag}>']
         for entry in content:
             if issubclass(type(entry), Element):
-                Element.process_content(entry.content, file_out=file_out)
+                Element.process_content(entry.content, file_out=file_out, tag=entry.tag)
             else:
                 file_out.write(entry + '\n')
 

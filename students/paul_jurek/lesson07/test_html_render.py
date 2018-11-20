@@ -1,4 +1,5 @@
 """test suite for html render exercise"""
+from io import StringIO
 
 import pytest
 
@@ -20,7 +21,8 @@ def test_Element_append():
 def test_Element_render():
     """tests element has render function"""
     page = hr.Element()
-    page.render(file_out='test_file.html')
+    f = StringIO()
+    page.render(file_out=f)
     assert 1 == 1
 
 def test_Element_start_tag():
@@ -61,6 +63,8 @@ def step2_sample_output():
         s = f.read()
     return s
 
+
+
 def test_step2_output(step2_sample_output):
     page = hr.Html()
     body = hr.Body()
@@ -69,6 +73,7 @@ def test_step2_output(step2_sample_output):
 
     body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
     page.append(body)
+
     run_hr.render_page(page, "test_html_output2.html")
 
     with open('test_html_output2.html') as f:
