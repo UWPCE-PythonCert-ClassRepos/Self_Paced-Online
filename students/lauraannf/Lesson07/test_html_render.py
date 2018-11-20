@@ -235,7 +235,7 @@ def test_attributes():
     assert file_contents[:file_contents.index(">")].count(" ") == 3
 
 ########
-# Step 4
+# Step 5
 ########
 
 
@@ -255,6 +255,52 @@ def test_hr_attr():
     assert file_contents == '<hr width="400" />\n'
 
 
+def test_br():
+    br = Br()
+    file_contents = render_result(br)
+    print(file_contents)
+    assert file_contents == "<br />\n"
+
+
+def test_content_in_br():
+    with pytest.raises(TypeError):
+        br = Br("some content")
+
+
+def test_append_content_in_br():
+    with pytest.raises(TypeError):
+        br = Br()
+        br.append("some content")
+
+
+########
+# Step 6
+########
+
+
+def test_anchor():
+    a = A("http://google.com", "link to google")
+    file_contents = render_result(a)
+    print(file_contents)
+    assert file_contents == '<a href="http://google.com">link to google</a>'
+
+########
+# Step 7
+########
+
+
+def test_anchor():
+    a = Ul(id='TheList', style='line-height:200%')
+    file_contents = render_result(a)
+    print(file_contents)
+    assert file_contents == '<ul id="TheList" style="line-height:200%">\n</ul>\n'
+
+
+def test_header():
+    a = H(2, "PythonClass - Class 6 example")
+    file_contents = render_result(a)
+    print(file_contents)
+    assert file_contents == '<h2>PythonClass - Class 6 example</h2>'
 
 
 # Add your tests here!
