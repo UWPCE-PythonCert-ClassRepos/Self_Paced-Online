@@ -11,31 +11,35 @@ class Element():
     indentation = '     '
 
     def __init__(self, content=None, **kwargs):
-#        self.__dict__.update(kwargs)
         self.attributes = kwargs
         if content is None:
             self.content = []
         else:
             self.content = [content]
-    def _open_tag(self, cur_ind=''):
+
+#    def _open_tag(self, cur_ind=''):
+#        open_tag = ['{}<{}'.format(cur_ind, self.tag)]
+#        for key, value in self.attributes.items():
+#            open_tag.append(' ')
+#            open_tag.append('{}="{}"'.format(key, value))
+#        open_tag.append('>\n')
+#        open_tag = "".join(self._open_tag)
+#        return open_tag
+
+#    def _close_tag(self, cur_ind=''):
+#        pass
+
+    def append(self, new_content):
+        self.content.append(new_content)
+
+    def render(self, file_out, cur_ind=''):
         open_tag = ['{}<{}'.format(cur_ind, self.tag)]
         for key, value in self.attributes.items():
             open_tag.append(' ')
             open_tag.append('{}="{}"'.format(key, value))
         open_tag.append('>\n')
-        open_tag = "".join(self._open_tag)
-        return open_tag
-    
-    def _close_tag(self, cur_ind=''):
-        pass
-    
-    def append(self, new_content):
-        self.content.append(new_content)
-
-    def render(self, file_out, cur_ind=''):
-        file_out.write(self._open_tag())
+        file_out.write("".join(open_tag))
         for item in self.content:
-            # file_out.write(item)
             try:
                 item.render(file_out)
             except AttributeError:
