@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Nov 10 17:01:24 2018
+Created on Wed Nov 21 12:23:00 2018
 
 @author: Laura.Fiorentino
 """
 
 
-class Element():
+class Element(object):
     tag = 'html'
-    indentation = '     '
+    indent = '  '
 
     def __init__(self, content=None, **kwargs):
         self.attributes = kwargs
@@ -17,33 +17,32 @@ class Element():
         else:
             self.content = [content]
 
+    def append(self, new_content):
+        self.content.append(new_content)
+
     def _open_tag(self, cur_ind=''):
         open_tag = ['{}<{}'.format(cur_ind, self.tag)]
         for key, value in self.attributes.items():
-            open_tag.append(' ')
-            open_tag.append('{}="{}"'.format(key, value))
+            open_tag.append(' {}="{}"'.format(key, value))
         open_tag.append('>')
         open_tag = "".join(open_tag)
         return open_tag
 
     def _close_tag(self, cur_ind=''):
-        close_tag = '{}</{}>'.format(cur_ind, self.tag)
+        close_tag = '{}</{}>'.format(cur_ind[:-2], self.tag)
         return close_tag
 
-    def append(self, new_content):
-        self.content.append(new_content)
-
     def render(self, file_out, cur_ind=''):
-        file_out.write(self._open_tag())
+        file_out.write(self._open_tag(cur_ind))
         file_out.write('\n')
+        new_ind = cur_ind + Element.indent
         for item in self.content:
             try:
-                item.render(file_out)
+                item.render(file_out, new_ind)
             except AttributeError:
-                file_out.write(item)
+                file_out.write(new_ind + item)
             file_out.write('\n')
-        file_out.write(self._close_tag())
-        file_out.write('\n')
+        file_out.write(self._close_tag(cur_ind=new_ind))
 
 
 class Html(Element):
@@ -51,7 +50,7 @@ class Html(Element):
 
     def render(self, file_out, cur_ind=''):
         file_out.write("<!DOCTYPE html>\n")
-        Element.render(self, file_out, cur_ind='')
+        Element.render(self, file_out, cur_ind)
 
 
 class Body(Element):
@@ -68,9 +67,13 @@ class Head(Element):
 
 class OneLineTag(Element):
     def render(self, file_out, cur_ind=''):
-        file_out.write(self._open_tag())
-        file_out.write(self.content[0])
-        file_out.write(self._close_tag())
+        new_ind = cur_ind + Element.indent
+        file_out.write('{} {}{}'.format(self._open_tag(cur_ind=new_ind[:-2]),
+                       self.content[0], self._close_tag(cur_ind=new_ind)))
+#        file_out.write(self._open_tag(cur_ind=new_ind[:-2]))
+#        file_out.write(' ')
+#        file_out.write(self.content[0])
+#        file_out.write(self._close_tag(cur_ind=new_ind))
 
     def append(self, content):
         raise NotImplementedError
@@ -82,8 +85,9 @@ class Title(OneLineTag):
 
 class SelfClosingTag(Element):
     def render(self, file_out, cur_ind=''):
-        file_out.write(self._open_tag()[:-1])
-        file_out.write(' />\n')
+        new_ind = cur_ind + Element.indent
+        file_out.write(self._open_tag(cur_ind=new_ind[:-2])[:-1])
+        file_out.write(' />')
 
     def append(self, *args):
         raise TypeError("You can not add content to a SelfClosingTag")
