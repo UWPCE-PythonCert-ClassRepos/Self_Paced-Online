@@ -28,7 +28,6 @@ def send_all():
         x2 = x.split(' ', 2)
         amount = donors[x][-1]
         write_email(x, x2, amount)
-    menu(prompt, pick)
 
 
 def write_email(normal, split, amount):
@@ -42,7 +41,6 @@ def write_email(normal, split, amount):
     else:
             with open('{}_{}.txt'.format(split[0], split[1]), 'w') as f:
                 f.write(s)
-                f.close()
 
 
 def thank_you():
@@ -89,7 +87,6 @@ def email(name, donation):
     """Writes thank you email to donor for given amount"""
     print('\nDear {}, \n\tThank you for your generous ${:.2f} donation.'
             '\n\tYou are an amazing person. Good job!'.format(name.title(), donation))
-    menu(prompt, pick)
 
 
 def report():
@@ -104,7 +101,6 @@ def report():
             print('{:25} | ${:>14.2f} | {:9} | ${:14.2f}'
                     .format(d_total[amount], amount, len(donors[d_total[amount]]),
                     (amount/len(donors[d_total[amount]]))))
-    menu(prompt, pick)
 
 
 def quit():
