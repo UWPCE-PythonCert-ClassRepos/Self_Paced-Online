@@ -2,20 +2,22 @@ import sys
 import copy
 import math
 import pathlib
+from functools import total_ordering
 
+circles = []
+@total_ordering
 class Circle(object):
 
     def __init__(self, value):
+        global circles
+        global templist
         self._radius = value
         self._diameter = value * 2
         self._area = (math.pi) * (value ** 2)
-        
-    @classmethod
-    def from_diameter(cls, value):
-        cls.radius = value / 2
-        cls.diameter = value
-        cls.area = (.25 * math.pi) * (value ** 2)
-        return cls
+    
+    @staticmethod
+    def from_diameter(value):
+        return Circle(value/2)
         
     @property
     def radius(self):
@@ -53,20 +55,45 @@ class Circle(object):
         return Circle( self._radius + other_circle._radius)
         
     def __mul__(self, other_circle):
-        print(self._radius)
-        print(other_circle)
         return Circle(other_circle * self._radius)
+                        
+    def __ne__(self, other_circle):
+        global circles
+        circles += [Circle(self._radius)]
+        circles += [Circle(other_circle._radius)]
+        return self._radius != other_circle._radius
+        
+    def __le__(self, other_circle):
+        global circles
+        circles += [Circle(self._radius)]
+        circles += [Circle(other_circle._radius)]
+        return self._radius <= other_circle._radius
+        
+    def __ge__(self, other_circle):
+        global circles
+        circles += [Circle(self._radius)]
+        circles += [Circle(other_circle._radius)]
+        return self._radius >= other_circle._radius
         
     def __lt__(self, other_circle):
+        global circles
+        circles += [Circle(self._radius)]
+        circles += [Circle(other_circle._radius)]
         return self._radius < other_circle._radius
         
     def __gt__(self, other_circle):
+        global circles
+        circles += [Circle(self._radius)]
+        circles += [Circle(other_circle._radius)]
         return self._radius > other_circle._radius
         
     def __eq__(self, other_circle):
+        global circles
+        circles += [Circle(self._radius)]
+        circles += [Circle(other_circle._radius)]
         return self._radius == other_circle._radius
     
-    def __str__(self):
+    def __str__(self):        
         return f'Circle with radius: {self.radius}'
         
     def __repr__(self):
