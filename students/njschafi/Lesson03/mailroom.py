@@ -27,6 +27,7 @@ def menu():
             elif int(selection) == 3:
                 SystemExit(0)
 
+
 def thank_you():
     """Function which tests if name inputted is in a list or not,adds the name if not on the list then calls donation function"""
     name = input('Please enter a full name or enter "list" for'
@@ -45,11 +46,13 @@ def thank_you():
     elif name.title() in donorNames:
         donate(name.title(), 1) #If the user types a name in the list, use it.
 
+
 def name_list():
     """Prints the names in the donors list"""
     for names in donor_names:
         print(names)
     thank_you()
+
 
 def donate(n, t):
     """Adds donated amount to donors running amount then calls email function to print thank you"""
@@ -70,11 +73,13 @@ def donate(n, t):
         donors.append([n,donation])
         email(n,donation)
 
+
 def email(name, donation):
     """Writes thank you email to donor for given amount"""
     print('\nDear {}, \n\tThank you for your generous ${:.2f} donation.'
             '\n\tYou are an amazing person. Good job!'.format(name.title(), donation))
     menu()
+
 
 def report():
     """Prints table of donors"""
@@ -91,6 +96,7 @@ def report():
             print('{:25} | ${:>14.2f} | {:9} | ${:14.2f}'.format(names[0],
                     names[1], names[2], names[3]))
     menu()
+
 
 if __name__ == '__main__':
     menu()
