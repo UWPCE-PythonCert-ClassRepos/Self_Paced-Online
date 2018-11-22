@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import string
+import string, random
 
 
 def strip_punctuation(text):
@@ -23,4 +23,24 @@ def creates_keys(words):
             key_value_list.update({current_key: []})
         key_value_list[current_key].append(words[i+2])
     return key_value_list
+
+
+def return_key(word_dict):
+    """Takes a dictionary and returns a random key"""
+    word_list = list(word_dict.keys())
+    return random.choice(word_list)
+
+def build_word(word_dict):
+    """Takes a dict and returns random words"""
+    text = ""
+    word=return_key(word_dict)
+    text += word
+    while True:
+        try:
+            word = word_dict[word].pop()
+            text += "" + word
+
+        except (IndexError,KeyError) as e:
+            return text
+
 
