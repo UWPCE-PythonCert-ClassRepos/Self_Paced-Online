@@ -1,0 +1,6 @@
+Dear {firstname} {lastname},
+
+Thank you for your recent donation of ${amount}. Your total donations of ${total} will be put to good use!
+
+Highest regards,
+The Charity
