@@ -5,7 +5,7 @@ import string, random
 
 def strip_punctuation(text):
     """Takes a string and returns the string without punctuation"""
-    translator = str.maketrans('','',string.punctuation)
+    translator = str.maketrans('', '', string.punctuation)
     return text.translate(translator)
 
 
@@ -47,7 +47,7 @@ def build_word(word_dict):
 
 def upload_book(filename):
     with open(filename) as f:
-        book= f.read()
+        book = f.read()
         return book
 
 
