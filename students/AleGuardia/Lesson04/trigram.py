@@ -30,17 +30,40 @@ def return_key(word_dict):
     word_list = list(word_dict.keys())
     return random.choice(word_list)
 
+
 def build_word(word_dict):
     """Takes a dict and returns random words"""
     text = ""
-    word=return_key(word_dict)
-    text += word
+    word_pair=return_key(word_dict)
+    text += word_pair
     while True:
         try:
-            word = word_dict[word].pop()
-            text += "" + word
-
+            word = word_dict[word_pair].pop()
+            text += " " + word
+            word_pair = word_pair.split()[-1] + " " + word
         except (IndexError,KeyError) as e:
             return text
+
+
+def upload_book(filename):
+    with open(filename) as f:
+        book= f.read()
+        return book
+
+
+def write_new_book(book):
+    f = open('trigram.txt', 'w')
+    f.write(book)
+    return None
+
+
+def run_trigram():
+    filename = input("Please enter the book's filename:")
+    book = upload_book(filename)
+    key_dict = creates_keys(strip_words(strip_punctuation(book)))
+    new_book = build_word(key_dict)
+    write_new_book(new_book)
+    print('The new version of the book is on a file named trigram.txt')
+    return None
 
 
