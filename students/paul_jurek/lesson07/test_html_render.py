@@ -164,8 +164,13 @@ def test_step5_output(step5_sample_output):
 
     render_page(page, "test_html_output5.html")
 
-    with open('test_html_output4.html') as f:
+    with open('test_html_output5.html') as f:
         generated_file = f.read()
 
-    assert generated_file == step4_sample_output
+    assert generated_file == step5_sample_output
 
+def test_self_closing_errors_with_content():
+    """when user initiates self closing tag with content
+    then value error is raised"""
+    with pytest.raises(ValueError):
+        hr.Hr(content='test')

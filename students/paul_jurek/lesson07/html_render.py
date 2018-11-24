@@ -9,7 +9,6 @@ class Element():
         self.content = []
         if content:
             self.content.append(content)
-        print(kwargs)
         self._build_head_tag(**kwargs)
         self._build_closing_tag()
 
@@ -23,7 +22,6 @@ class Element():
         for attribute, value in kwargs.items():
             self.head_tag += f' {attribute}="{value}"'
         self.head_tag += '>' + self.end_character
-        print(self.head_tag)
 
     def _build_closing_tag(self):
         """builds closing tag"""
@@ -75,3 +73,28 @@ class Title(OneLineTag):
     """html tag for title"""
     tag = 'title'
 
+class SelfClosingTag(Element):
+    """html slef closing tag"""
+    tag = 'title'
+    end_character = ""
+
+    def __init__(self, content=None, **kwargs):
+        if content:
+            raise ValueError('Content input not allowed for SelfClosingElements')
+        Element.__init__(self)
+
+    def _build_head_tag(self):
+        """builds head  tag. dynamically builds
+        head based on arguments passed in"""
+        self.head_tag = f'<{self.tag} />'
+
+    def _build_closing_tag(self):
+        """builds closing tag
+        for self closing, we don't need closing so we just do new line"""
+        self.closing_tag = '\n'
+
+class Hr(SelfClosingTag):
+    tag = 'hr'
+
+class Br(SelfClosingTag):
+    tag = 'br'
