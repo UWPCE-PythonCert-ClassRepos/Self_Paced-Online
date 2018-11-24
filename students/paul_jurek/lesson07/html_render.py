@@ -21,7 +21,7 @@ class Element():
         head based on arguments passed in"""
         self.head_tag = f'<{self.tag}'
         for attribute, value in kwargs.items():
-            self.head_tag += f' {attribute}: "{value}"'
+            self.head_tag += f' {attribute}="{value}"'
         self.head_tag += '>' + self.end_character
         print(self.head_tag)
 
