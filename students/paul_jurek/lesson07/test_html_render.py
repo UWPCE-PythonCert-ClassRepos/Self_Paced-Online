@@ -174,3 +174,40 @@ def test_self_closing_errors_with_content():
     then value error is raised"""
     with pytest.raises(ValueError):
         hr.Hr(content='test')
+
+@pytest.fixture
+def step6_sample_output():
+    with open(r'sample_outputs/test_html_output6.html') as f:
+        s = f.read()
+    return s
+
+def test_step6_output(step6_sample_output):
+    """copied and pasted from run_html_render.py, step6.
+    Expect this gives same result as test html"""
+    page = hr.Html()
+
+    head = hr.Head()
+    head.append(hr.Title("PythonClass = Revision 1087:"))
+
+    page.append(head)
+
+    body = hr.Body()
+
+    body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                    "but this is enough  to show that we can do some text",
+                style="text-align: center; font-style: oblique;"))
+
+    body.append(hr.Hr())
+
+    body.append("And this is a ")
+    body.append( hr.A("http://google.com", "link") )
+    body.append("to google")
+
+    page.append(body)
+
+    render_page(page, "test_html_output6.html")
+
+    with open('test_html_output6.html') as f:
+        generated_file = f.read()
+
+    assert generated_file == step6_sample_output
