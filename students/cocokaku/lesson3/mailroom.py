@@ -6,13 +6,16 @@ donor_db = [("William Gates, III", [653772.32, 12.17]),
             ]
 
 def send_thank_you():
-    while(True):
-        name = input("\nDonor Full Name (type 'list' for donor list or 'q' to quit): ")
-        if name=='q': return
-        if name!='list': break
+    while True:
+        name=input("\nDonor Full Name (type 'list' for donor list or 'q' to quit): ")
+        if name=='q':
+            return
+        if name!='list':
+            break
         list_donors()
     amount = input("Donation amount: ")
-    if amount=='q': return
+    if amount=='q':
+        return
     if name.title() not in donor_names():
         donor_db.append((name,[]))
     for donor_name,amounts in donor_db:
@@ -32,7 +35,7 @@ def thank_you_letter(name,amount):
     return f"Dear Mr(s) {name},\n" \
            f"Thank you very much for your generous donation of ${amount:,.2f}.\n" \
            f"Sincerely,\n" \
-           f"Python 210 Classs of 2018"
+           f"Python 210 Class of 2018"
 
 def create_a_report():
     summary_list = [(name,sum(amounts),len(amounts),sum(amounts)/len(amounts)) for (name,amounts) in donor_db]
@@ -45,7 +48,7 @@ def get_second(elem):
     return elem[1]
 
 def main():
-    while(True):
+    while True:
         print("\nMAIN MENU")
         print("   1 = Send a Thank You")
         print("   2 = Create a Report")

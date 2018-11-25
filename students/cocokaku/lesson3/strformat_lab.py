@@ -17,7 +17,6 @@ def formatter(in_tuple):
         form_string += ", {:d}"
     return form_string.format(*in_tuple)
 print(formatter((1,2,3)))
-#print(formatter((1,2,3,4,5)))
 
 print("\n----- TASK 4 -----")
 d_tuple = (4,30,2017,2,27)
