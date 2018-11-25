@@ -9,8 +9,6 @@ circles = []
 class Circle(object):
 
     def __init__(self, value):
-        global circles
-        global templist
         self._radius = value
         self._diameter = value * 2
         self._area = (math.pi) * (value ** 2)
