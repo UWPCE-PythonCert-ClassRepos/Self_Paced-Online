@@ -1,45 +1,39 @@
 # print simple grid - part 3. Accept two parameters
+# print_grid(3,4) = three rows, three columns and each grid cell four "units" in size
 
-# function - print grid accepting one parameter
-def func_print_grid(z, x):
-	y = x // 2
-	# print top line, one grid at a time, loop through variable z
-	count = 0
-	while count < z:
-		print('+', ' - '*y, end = ' ')
-		count += 1
-	print('+')
-	# print pre mid lines, loop through variable y and z
-	count = 0
-	count1 = 0
-	while count < x:
-		print("loop through rows")
-		while count1 < x:
-			print('|', ' - '*y, end = ' ')
-			count1 += 1
-			print('|')
-		count += 1
-		count1 = 0
+# function - print grid accepting two parameters  x == row and columns , y == units per grid
+def func_print_grid(x, y):
+	# loop through number of grids == x
+	gridcount = 0
+	while gridcount < x:
+	
+		# print grid line, one grid at a time, loop through variable y
+		count = 0
+		while count < x:
+			print('+', ' - '*y, end = ' ')
+			count += 1
+		print('+')
 		
-	#print('| - end')
-	# print mid line, one grid at a time, loop through variable z
+		# print mid grid lines, one grid at a time, loop through variable y
+		count = 0
+		count1 = 0
+		while count1 < y:
+			while count < x:
+				while count < x:
+					print('|', ' - '*y, end = ' ')
+					count += 1
+				print('|')
+			count1 += 1
+			count = 0
+		gridcount += 1
+		
+	# print final grid line, one grid at a time, loop through variable y
 	count = 0
-	while count < z:
-		print('+', ' - '*y, end = ' ')
-		count += 1
-	print('+')
-	# print pre end lines
-	count = 0
-	while count < y:
-		print('|', ' - '*y, '|', ' - '*y, '+')
-		count += 1
-	# print bottom line, one grid at a time, loop through variable z
-	count = 0
-	while count < z:
+	while count < x:
 		print('+', ' - '*y, end = ' ')
 		count += 1
 	print('+')
 	
-func_print_grid(3,4)
+func_print_grid(5,4)
 
 
