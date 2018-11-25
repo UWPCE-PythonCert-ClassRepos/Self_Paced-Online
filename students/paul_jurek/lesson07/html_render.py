@@ -4,6 +4,7 @@ class Element():
     """creates HTML element and context"""
     tag = ''
     end_character = '\n'
+    indention = ' ' * 4
 
     def __init__(self, content=None, **kwargs):
         self.content = []
@@ -29,19 +30,13 @@ class Element():
 
     def render(self, file_out, cur_ind = ""):
         """initiaties the processing of element tree"""
-        Element.process_content(content=self.content, file_out=file_out, head_tag=self.head_tag, closing_tag=self.closing_tag, cur_ind=cur_ind, end_character=self.end_character)
-
-    @staticmethod
-    def process_content(content, file_out, head_tag, closing_tag, cur_ind="", end_character="\n"):
-        """helper function for render() which allows us to do
-        recursive function on content list"""
-        file_out.write(head_tag)
-        for entry in content:
+        file_out.write(self.head_tag)
+        for entry in self.content:
             if issubclass(type(entry), Element):
-                Element.process_content(entry.content, file_out=file_out, head_tag=entry.head_tag, closing_tag=entry.closing_tag, end_character=entry.end_character)
+                Element.render(entry, file_out=file_out)
             else:
-                file_out.write(entry + end_character)
-        file_out.write(closing_tag)
+                file_out.write(entry + self.end_character)
+        file_out.write(self.closing_tag)
 
 
 class Html(Element):
