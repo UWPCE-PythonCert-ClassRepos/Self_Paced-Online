@@ -65,4 +65,51 @@ def not_string(str):
     return "not " + str
 
 
+def string_times(str, n):
+    return str * n
 
+
+def front_times(str, n):
+    a = str[:3]
+    return a * n
+
+
+def string_bits(str):
+    foo = ""
+    for i in range(len(str)):
+      if i % 2 == 0:
+        foo = foo + str[i]
+    return foo
+
+
+def string_splosion(str):
+    foo = ""
+    for i in range(len(str)):
+        foo = foo + str[:i + 1]
+    return foo
+
+
+def array_count9(nums):
+    n = 0
+    for c in nums:
+        if c == 9:
+            n = n + 1
+    return n
+
+
+def array_front9(nums):
+    test = nums[:4]
+    for i in test:
+        if i == 9:
+            return True
+            break
+
+    return False
+
+
+def array123(nums):
+    for i in range(len(nums) - 2):
+        if nums[i] == 1 and nums[i + 1] == 2 and nums[i + 2] == 3:
+            return True
+
+    return False
