@@ -48,6 +48,14 @@ class Html(Element):
     """html element tag"""
     tag = 'html'
 
+    def _build_head_tag(self, **kwargs):
+        """builds head  tag. dynamically builds
+        head based on arguments passed in"""
+        self.head_tag = f'<!DOCTYPE html>\n<{self.tag}'
+        for attribute, value in kwargs.items():
+            self.head_tag += f' {attribute}="{value}"'
+        self.head_tag += '>' + self.end_character
+
 
 class Body(Element):
     """html element tag"""
@@ -81,12 +89,15 @@ class SelfClosingTag(Element):
     def __init__(self, content=None, **kwargs):
         if content:
             raise ValueError('Content input not allowed for SelfClosingElements')
-        Element.__init__(self)
+        Element.__init__(self, **kwargs)
 
-    def _build_head_tag(self):
+    def _build_head_tag(self, **kwargs):
         """builds head  tag. dynamically builds
         head based on arguments passed in"""
-        self.head_tag = f'<{self.tag} />'
+        self.head_tag = f'<{self.tag}'
+        for attribute, value in kwargs.items():
+            self.head_tag += f' {attribute}="{value}"'
+        self.head_tag += ' />'
 
     def _build_closing_tag(self):
         """builds closing tag
@@ -121,3 +132,7 @@ class H(OneLineTag):
         except ValueError:
             raise ValueError('positive integer should be input for level')
         OneLineTag.__init__(self, content=content)
+
+class Meta(SelfClosingTag):
+    """header html tag class"""
+    tag = 'meta'
