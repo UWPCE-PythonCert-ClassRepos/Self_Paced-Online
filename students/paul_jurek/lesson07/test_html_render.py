@@ -260,3 +260,54 @@ def test_step7_output(step7_sample_output):
         generated_file = f.read()
 
     assert generated_file == step7_sample_output
+
+@pytest.fixture
+def step8_sample_output():
+    with open(r'sample_outputs/test_html_output8.html') as f:
+        s = f.read()
+    return s
+
+def test_step8_output(step8_sample_output):
+    """copied and pasted from run_html_render.py, step7.
+    Expect this gives same result as test html"""
+    page = hr.Html()
+
+
+    head = hr.Head()
+    head.append( hr.Meta(charset="UTF-8") )
+    head.append(hr.Title("PythonClass = Revision 1087:"))
+
+    page.append(head)
+
+    body = hr.Body()
+
+    body.append( hr.H(2, "PythonClass - Example") )
+
+    body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                    "but this is enough  to show that we can do some text",
+                    style="text-align: center; font-style: oblique;"))
+
+    body.append(hr.Hr())
+
+    list = hr.Ul(id="TheList", style="line-height:200%")
+
+    list.append( hr.Li("The first item in a list") )
+    list.append( hr.Li("This is the second item", style="color: red") )
+
+    item = hr.Li()
+    item.append("And this is a ")
+    item.append( hr.A("http://google.com", "link") )
+    item.append("to google")
+
+    list.append(item)
+
+    body.append(list)
+
+    page.append(body)
+
+    render_page(page, "test_html_output8.html")
+
+    with open('test_html_output8.html') as f:
+        generated_file = f.read()
+
+    assert generated_file == step8_sample_output
