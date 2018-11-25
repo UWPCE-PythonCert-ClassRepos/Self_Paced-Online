@@ -106,3 +106,18 @@ def A(link, content):
 class A_Adapter(OneLineTag):
     """adapter to enable hyperlinks to use OneLineTag"""
     tag = 'a'
+
+class Ul(Element):
+    tag = 'ul'
+
+class Li(Element):
+    tag = 'li'
+
+class H(OneLineTag):
+    """header html tag class"""
+    def __init__(self, level, content):
+        try:
+            self.tag = f'h{level}'
+        except ValueError:
+            raise ValueError('positive integer should be input for level')
+        OneLineTag.__init__(self, content=content)
