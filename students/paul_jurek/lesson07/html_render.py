@@ -1,5 +1,6 @@
 """advanced html rendering api as part of Lesson07 assingment"""
 
+
 class Element():
     """creates HTML element and context"""
     tag = ''
@@ -28,15 +29,15 @@ class Element():
         """builds closing tag"""
         self.closing_tag = f'</{self.tag}>\n'
 
-    def render(self, file_out, cur_ind = ""):
+    def render(self, file_out, indent=0):
         """initiaties the processing of element tree"""
-        file_out.write(self.head_tag)
+        file_out.write(self.indention*indent + self.head_tag)
         for entry in self.content:
             if issubclass(type(entry), Element):
-                Element.render(entry, file_out=file_out)
+                Element.render(entry, file_out=file_out, indent=indent+1)
             else:
-                file_out.write(entry + self.end_character)
-        file_out.write(self.closing_tag)
+                file_out.write(self.indention*(indent+1) +entry + self.end_character)
+        file_out.write(self.indention*indent + self.closing_tag)
 
 
 class Html(Element):
@@ -72,9 +73,11 @@ class OneLineTag(Element):
     tag = 'head'
     end_character = ""
 
+
 class Title(OneLineTag):
     """html tag for title"""
     tag = 'title'
+
 
 class SelfClosingTag(Element):
     """html slef closing tag"""
@@ -99,25 +102,32 @@ class SelfClosingTag(Element):
         for self closing, we don't need closing so we just do new line"""
         self.closing_tag = '\n'
 
+
 class Hr(SelfClosingTag):
     tag = 'hr'
 
+
 class Br(SelfClosingTag):
     tag = 'br'
+
 
 def A(link, content):
     """adapter to call links"""
     return A_Adapter(content=content, href=link)
 
+
 class A_Adapter(OneLineTag):
     """adapter to enable hyperlinks to use OneLineTag"""
     tag = 'a'
 
+
 class Ul(Element):
     tag = 'ul'
 
+
 class Li(Element):
     tag = 'li'
+
 
 class H(OneLineTag):
     """header html tag class"""
@@ -127,6 +137,7 @@ class H(OneLineTag):
         except ValueError:
             raise ValueError('positive integer should be input for level')
         OneLineTag.__init__(self, content=content)
+
 
 class Meta(SelfClosingTag):
     """header html tag class"""
