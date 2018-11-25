@@ -3,7 +3,8 @@
 # iterate from 1 - 100
 for x in range(1, 21):
 	# test if value is divisible by 3 and 5
-	
+	if x == "3" OR x == "5":
+		print("fizz")
 	# else if value is divisible by 3
 	
 	# else if value is divisible by 5
