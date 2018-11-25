@@ -98,3 +98,11 @@ class Hr(SelfClosingTag):
 
 class Br(SelfClosingTag):
     tag = 'br'
+
+def A(link, content):
+    """adapter to call links"""
+    return A_Adapter(content=content, href=link)
+
+class A_Adapter(OneLineTag):
+    """adapter to enable hyperlinks to use OneLineTag"""
+    tag = 'a'
