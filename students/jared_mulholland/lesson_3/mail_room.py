@@ -78,8 +78,14 @@ Write a small command-line script called mailroom.py. This script should be exec
 -The script should prompt the user (you) to choose from a menu of 3 actions: “Send a Thank You”, “Create a Report” or “quit”)
 """
 
-donors = ['Bill Gates','Mark Zuckerberg','Jeff Bezos','Paul Allen','Mookie Betts']
-donations = [[10000,12000],[20000,150000],[800],[100,500,200],[1000000,1500000,1750000]]
+#donors = ['Bill Gates','Mark Zuckerberg','Jeff Bezos','Paul Allen','Mookie Betts']
+#donations = [[10000,12000],[20000,150000],[800],[100,500,200],[1000000,1500000,1750000]]
+
+donors = {'Bill Gates': [10000,12000],
+                'Mark Zuckerberg':[80000],
+                'Jeff Bezos':[30000,75000,35000],
+                'Paul Allen': [100000,130000],
+                'Mookie Betts': [150000,124000]}
 
 response = input("What would you like to do (enter 'Send a Thank You', 'Create a Report' or 'Quit'): ")
 
