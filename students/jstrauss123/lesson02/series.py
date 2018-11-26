@@ -55,7 +55,7 @@ sum_series(5, 5, 10)
 # assert tests
 if __name__ == "__main__":
 	# this runs only if run as a script
-	print("Running the tests")
+	print("Running validation tests")
 	# validate fibonacci function returning appropriate value
 	assert fibonacci(5) == 3
 	# validate lucas function returning appropriate value
@@ -63,7 +63,7 @@ if __name__ == "__main__":
 	# validate sum_series function returning appropriate value for default
 	assert sum_series(5) == 3
 	
-	print("the tests passed")
+	print("validation tests passed")
 	
 	
 
