@@ -8,6 +8,8 @@ def fibonacci(n):
 	fibvaln2 = f1
 	nextval = fibvaln1 + fibvaln2
 	while count < 50:
+		if count == n:
+			print("this is the nth iteration, number is: ", n)
 		print("fibvaln1 = ", fibvaln1, "fibvaln2 = ", fibvaln2, "nextval = ", nextval)
 		# add fibn1 and fibn2 for next number in series 
 		fibvaln2 = fibvaln1
@@ -25,4 +27,4 @@ def fibonacci(n):
 
 
 
-fibonacci(1)
+fibonacci(11)
