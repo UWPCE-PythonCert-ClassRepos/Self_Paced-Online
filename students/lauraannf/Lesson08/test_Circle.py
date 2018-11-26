@@ -73,3 +73,10 @@ def test_sort():
     circles = [Circle(1), Circle(10), Circle(5), Circle(4)]
     circles.sort()
     assert circles == [Circle(1), Circle(4), Circle(5), Circle(10)]
+
+
+def test_div():
+    c1 = Circle(5)
+    c2 = Circle(10)
+    assert repr(c1 / c2) == 'Circle(0.5)'
+    assert repr(c2 / c1) == 'Circle(2.0)'

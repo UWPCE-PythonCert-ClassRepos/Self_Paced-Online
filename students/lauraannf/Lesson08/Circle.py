@@ -62,3 +62,6 @@ class Circle():
 
     def __ne__(self, other):
         return self.radius != other.radius
+
+    def __truediv__(self, other):
+        return Circle(self.radius / other.radius)
