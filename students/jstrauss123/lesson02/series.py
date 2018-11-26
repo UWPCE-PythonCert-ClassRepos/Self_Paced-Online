@@ -9,8 +9,9 @@ def fibonacci(n):
 	nextval = fibvaln1 + fibvaln2
 	while count < 50:
 		if count == n:
-			print("this is the nth iteration, number is: ", n)
-		print("fibvaln1 = ", fibvaln1, "fibvaln2 = ", fibvaln2, "nextval = ", nextval)
+			#print("this is the nth iteration, number is: ", n)
+			#print("fibvaln1 = ", fibvaln1, "fibvaln2 = ", fibvaln2, "nextval = ", nextval)
+			print("The ", n," fibonacci series value is: ", nextval)
 		# add fibn1 and fibn2 for next number in series 
 		fibvaln2 = fibvaln1
 		fibvaln1 = nextval
