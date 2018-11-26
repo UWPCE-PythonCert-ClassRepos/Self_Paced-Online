@@ -7,8 +7,13 @@ def fibonacci(n):
 	fibvaln1 = f0 + f1
 	fibvaln2 = f1
 	nextval = fibvaln1 + fibvaln2
-	print("fibvaln1 = ", fibvaln1, "fibvaln2 = ", fibvaln2, "nextval = ", nextval)
-	#while count < 1000:
+	while count < 50:
+		print("fibvaln1 = ", fibvaln1, "fibvaln2 = ", fibvaln2, "nextval = ", nextval)
+		# add fibn1 and fibn2 for next number in series 
+		fibvaln2 = fibvaln1
+		fibvaln1 = nextval
+		nextval = fibvaln1 + fibvaln2
+		count += 1
 	#	fibval = f0 + f1
 	#	nextval = fibval +
 	#	print(fibval)
