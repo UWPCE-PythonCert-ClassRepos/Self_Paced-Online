@@ -8,7 +8,7 @@ def fibonacci(n):
 	# loop through series stopping at input + 1
 	while count < n + 1:
 		if count == n:
-			print("The ", n," fibonacci series value is: ", nextval)
+			return nextval
 		#print("fibvaln1 = ", fibvaln1, "fibvaln2 = ", fibvaln2, "nextval = ", nextval)
 		# add fibvaln1 and fibvaln2 for next number in series 
 		fibvaln2 = fibvaln1
@@ -24,7 +24,7 @@ def lucas(n):
 	# loop through series stopping at input + 1
 	while count < n + 1:
 		if count == n:
-			print("The ", n," lucas series value is: ", nextval)
+			return nextval
 		# add lucvaln1 and lucvaln2 for next number in series 
 		lucvaln2 = lucvaln1
 		lucvaln1 = nextval
@@ -39,17 +39,31 @@ def sum_series(n, y=0, z=1):
 	# loop through series stopping at input + 1
 	while count < n + 1:
 		if count == n:
-			print("The ", n," series value is: ", nextval)
+			return nextval
 		# add valn1 and valn2 for next number in series 
 		valn2 = valn1
 		valn1 = nextval
 		nextval = valn1 + valn2
 		count += 1
-	# add assert tests.. ?
+
 
 fibonacci(5)
 lucas(5)
 sum_series(5)
 sum_series(5, 5, 10)
 
+# assert tests
+if __name__ == "__main__":
+	# this runs only if run as a script
+	print("Running the tests")
+	# validate fibonacci function returning appropriate value
+	assert fibonacci(5) == 3
+	# validate lucas function returning appropriate value
+	assert lucas(5) == 7
+	# validate sum_series function returning appropriate value for default
+	assert sum_series(5) == 3
+	
+	print("the tests passed")
+	
+	
 
