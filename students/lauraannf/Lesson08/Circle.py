@@ -12,7 +12,6 @@ from math import pi
 class Circle():
     def __init__(self, radius):
         self.radius = radius
-#        self.diameter = self.radius * 2
 
     @property
     def diameter(self):
