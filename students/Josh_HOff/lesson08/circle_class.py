@@ -42,9 +42,10 @@ class Circle(object):
     def area(self):
         return self._area
         
-    @area.setter
-    def area(self, value):
-        raise AttributeError
+#Removing this block of code will raise AttributeError if someone tries to set the area. Leaving it here for future reference.        
+#    @area.setter
+#    def area(self, value):
+#        raise AttributeError
         
     @area.deleter
     def area(self):
