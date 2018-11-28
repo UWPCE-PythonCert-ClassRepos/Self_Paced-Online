@@ -153,7 +153,6 @@ class Functions(object):
         modified_donors = copy.deepcopy(donors)
         lower_donors = copy.deepcopy(donors)
         higher_donors = copy.deepcopy(donors)
-        final_donors = {}
 
         for name in donors:
             modified_donors[name] = list(filter(lambda x : x > min_donation, modified_donors[name]))
@@ -169,14 +168,27 @@ class Functions(object):
             modified_donors[name] += lower_donors[name]
             modified_donors[name] += higher_donors[name]
             
-        print(modified_donors)
+#        print(modified_donors)
         return modified_donors
         
     @staticmethod
     def projections():
+        global donors
         d = Functions()
-        print(d.challenge(2, 0, 100))
-        print(d.challenge(3, 50))
+        a = d.challenge(2, 0, 100)
+        b = d.challenge(3, 50)
+        message = ('-' * 43)
+        message += f'\nCurrent donations:\n'
+        for name in donors:
+            message += f'{name}: ${sum(donors[name])}\n'
+        message += f'\nIf you double contributions under $100:\n'
+        for name in donors:
+            message += f'{name}: ${sum(a[name])}\n'
+        message += f'\nIf you triple contributions over $50:\n'
+        for name in donors:
+            message += f'{name}: ${sum(b[name])}\n'
+        message += ('-' * 43)
+        print(message)
         
         
 switch_func_dict = {'1':Input().thank_you, '2':DonorCollection().report, '3':DonorCollection().letters, '4':Functions().projections, '5':Input().quitting, 'quit':Input().quitting, 'list':DonorCollection().show_list}
