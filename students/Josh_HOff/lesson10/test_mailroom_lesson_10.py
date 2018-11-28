@@ -1,7 +1,7 @@
 import io
 import pytest
 
-from mailroom_lesson_09 import *
+from mailroom_lesson_10 import *
 
 def test_show_list(capsys):
     c = DonorCollection()
@@ -79,3 +79,12 @@ def test_most_recent_gift():
 def test_first_gift():
     c = Donor('Josh Hoff')
     assert c.first_gift == 25
+    
+def test_multiply_method():
+    c = Functions()
+    assert c.challenge(3) == {'Josh Hoff': [75, 225, 750], 'Tatsiana Kisel': [105, 316.65], 'Andrew': [900]}
+
+def test_min_max_multiply_method():
+    c = Functions()
+    c.challenge(10)
+    assert False

@@ -142,11 +142,47 @@ is essential to our success and will be well utilized. \n\n{tab*2}Sincerely, \n{
         return sorted(donors.items(), key=lambda k: sum(k[1]), reverse=True)
 
     
+class Functions(object):
+
+    def __init__(self):
+        pass
+    
+    @staticmethod
+    def challenge(factor, min_donation=0, max_donation=9999999999999999999):
+        global donors
+        modified_donors = copy.deepcopy(donors)
+        lower_donors = copy.deepcopy(donors)
+        higher_donors = copy.deepcopy(donors)
+        final_donors = {}
+
+        for name in donors:
+            modified_donors[name] = list(filter(lambda x : x > min_donation, modified_donors[name]))
+            modified_donors[name] = list(filter(lambda x : x < max_donation, modified_donors[name]))
+            
+            lower_donors[name] = list(filter(lambda x : x < min_donation, lower_donors[name]))            
+            higher_donors[name] = list(filter(lambda x : x > max_donation, higher_donors[name]))
+            
+        for name in donors:
+            modified_donors[name] = list(map(lambda x : x*factor, modified_donors[name]))
+            
+        for name in donors:
+            modified_donors[name] += lower_donors[name]
+            modified_donors[name] += higher_donors[name]
+            
+        print(modified_donors)
+        return modified_donors
         
-switch_func_dict = {'1':Input().thank_you, '2':DonorCollection().report, '3':DonorCollection().letters, '4':Input().quitting, 'quit':Input().quitting, 'list':DonorCollection().show_list}
+    @staticmethod
+    def projections():
+        d = Functions()
+        print(d.challenge(2, 0, 100))
+        print(d.challenge(3, 50))
+        
+        
+switch_func_dict = {'1':Input().thank_you, '2':DonorCollection().report, '3':DonorCollection().letters, '4':Functions().projections, '5':Input().quitting, 'quit':Input().quitting, 'list':DonorCollection().show_list}
 
 #main function: adjusted to use classes
 if __name__ == '__main__':
     while True:
-        choice = input('\n1: Send a Thank You \n2: Create a Report \n3: Send Letters to Everyone \n4: Quit \nChoose an Option: ')
+        choice = input('\n1: Send a Thank You \n2: Create a Report \n3: Send Letters to Everyone \n4: Run Projections \n5: Quit \n\nChoose an Option: ')
         c = switch_func_dict.get(choice, Input().continuing)()
