@@ -11,8 +11,8 @@ class Circle(object):
 
     def __init__(self, value):
         self._radius = value
-        self._diameter = value * 2
-        self._area = (math.pi) * (value ** 2)
+        self._diameter = self._radius * 2
+        self._area = (math.pi) * (self._radius ** 2)
     
     @classmethod
     def from_diameter(self, value):
@@ -25,18 +25,15 @@ class Circle(object):
     @radius.setter
     def radius(self, value):
         self._radius = value
-        self._diameter = value * 2
-        self._area = (math.pi) * (value ** 2)
-        
+        self._area = (math.pi) * (self._radius ** 2)
     @property
     def diameter(self):
-        return self._diameter
+        return self._radius * 2.0
         
     @diameter.setter
     def diameter(self, value):
-        self._diameter = value
-        self._radius = value / 2
-        self._area = (.25 * math.pi) * (value ** 2)
+        self._radius = value / 2.0
+        self._area = (math.pi) * (self._radius ** 2)
         
     @property
     def area(self):
