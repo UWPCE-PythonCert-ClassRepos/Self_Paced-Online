@@ -45,8 +45,8 @@ def full_file_path():
 
 def copy_file_from(source, to_destination=None):
     """
-    windows ==> path entered with prefix r, raw string, alt. duplicate all \
-                works as long as the path doesn't end with \.
+    windows ==> path entered with prefix r, raw string, alt. duplicate all '\'
+                works as long as the path doesn't end with '\'.
     source: abspath
     to_destination: abspath
     # file: name of file to be copied
@@ -65,8 +65,8 @@ def copy_txt_file_from(source):
     copies .txt file from source, can be in any directory, reads it as 'r'
         encodes to binary, writes it as 'wb' to 'bin_text.bin' in cwd
 
-    windows ==> path entered with prefix r, raw string, alt. duplicate all \
-                works as long as the path doesn't end with \.
+    windows ==> path entered with prefix r, raw string, alt. duplicate all '\'
+                works as long as the path doesn't end with '\'.
     source:         abspath, any directory
     to_destination: abspath in cwd
     """
@@ -82,7 +82,7 @@ def copy_txt_file_from(source):
             # bin_line.extend(map(ord, line))
             outfile.write(bin_line)
     print("copy_txt_file_from(source),\nsource: {}\ndata stored at: {}".
-    format(source, to_destination))
+          format(source, to_destination))
     return to_destination
 
 
@@ -107,27 +107,10 @@ def copy_txt_mke_dict_store(source):
             print("temp_lst: ", temp_lst)
             member_dict[temp_lst[0]] = temp_lst[1:]
             print("member_dict: ", member_dict)
-            # bin_line = line.encode('utf-8')
-            # bin_line = bytearray()
-            # bin_line.extend(map(ord, line))
-            # outfile.write(bin_line)
         pickle.dump(member_dict, outfile, protocol=pickle.HIGHEST_PROTOCOL)
     print("\ncopy_txt_mke_dict_store(source),\nsource: {}\ndata stored at: {}".
-    format(source, to_destination))
+          format(source, to_destination))
     return to_destination
-
-
-
-# a = {'hello': 'world'}
-#
-# with open('filename.pickle', 'wb') as handle:
-#     pickle.dump(a, handle, protocol=pickle.HIGHEST_PROTOCOL)
-#
-# with open('filename.pickle', 'rb') as handle:
-#     b = pickle.load(handle)
-#
-# print(a == b)
-
 
 
 if __name__ == '__main__':
