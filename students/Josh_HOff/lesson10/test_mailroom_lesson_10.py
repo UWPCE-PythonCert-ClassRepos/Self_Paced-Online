@@ -1,7 +1,7 @@
 import io
 import pytest
 
-from mailroom_lesson_09 import *
+from mailroom_lesson_10 import *
 
 def test_show_list(capsys):
     c = DonorCollection()
@@ -79,3 +79,36 @@ def test_most_recent_gift():
 def test_first_gift():
     c = Donor('Josh Hoff')
     assert c.first_gift == 25
+    
+def test_multiply_method():
+    c = Functions()
+    assert c.challenge(3) == {'Josh Hoff': [75, 225, 750], 'Tatsiana Kisel': [105, 316.65], 'Andrew': [900]}
+
+def test_min_max_multiply_method():
+    c = Functions()
+    assert c.challenge(1) == {'Josh Hoff': [25, 75, 250], 'Tatsiana Kisel': [35, 105.55], 'Andrew': [300]}
+    assert c.challenge(10) == {'Josh Hoff': [250, 750, 2500], 'Tatsiana Kisel': [350, 1055.5], 'Andrew': [3000]}
+    assert c.challenge(3, 50) == {'Josh Hoff': [225, 750, 25], 'Tatsiana Kisel': [316.65, 35], 'Andrew': [900]}
+    assert c.challenge(3, 50, 200) == {'Josh Hoff': [225, 25, 250], 'Tatsiana Kisel': [316.65, 35], 'Andrew': [300]}
+
+def test_projections(capsys):
+    c = Functions()
+    c.projections()
+    captured = capsys.readouterr()
+    expected = '-------------------------------------------\n\
+Current donations:\n\
+Josh Hoff: $350\n\
+Tatsiana Kisel: $140.55\n\
+Andrew: $300\n\
+\n\
+If you double contributions under $100:\n\
+Josh Hoff: $450\n\
+Tatsiana Kisel: $175.55\n\
+Andrew: $300\n\
+\n\
+If you triple contributions over $50:\n\
+Josh Hoff: $1000\n\
+Tatsiana Kisel: $351.65\n\
+Andrew: $900\n\
+-------------------------------------------\n'
+    assert captured.out == expected

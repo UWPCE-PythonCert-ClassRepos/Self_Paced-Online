@@ -40,8 +40,10 @@ def test_area():
 def test_editing_area():
     c = Circle(50)
     c.radius = 40
+    print(round(c.area, 4))
     assert round(c.area, 4) == 5026.5482
     c.diameter = 150
+    print(round(c.area, 4))
     assert round(c.area, 4) == 17671.4587
     with pytest.raises(AttributeError):
         c.area = 50
