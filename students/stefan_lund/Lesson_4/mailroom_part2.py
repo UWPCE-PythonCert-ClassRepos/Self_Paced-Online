@@ -2,285 +2,34 @@
 
 # The Mailroom Automation
 # mailroom.py
+
 import os
+import pickle
 import datetime
+import sys
 
-def send_a_thank_you(menu, data):
+# functions available to the user, only from the "menu"
+# "start" menu functions
 
+
+def send_a_thank_you():
+    """
+    sole function is to switch to the "thank you" menue
+    """
     option = "thank you"
-    finished = False
-    while not finished:
-        finished = ask_questions(menu, option, data)
+    return option
 
-    return finished
 
-def enter_name(menu, file_name):
+def create_a_report():
     """
-        updates file_name file with the donation from a new or a present donor
+        function prints out a report of current names in the data dictionary,
+            displaying "Donor Name", "Total Given", "Num Gifts", "Average Gift"
     """
-    name_list = get_names_from(file_name)
-    name = input("\nEnter name, 'First Last': ")
-    amount = input("\nEnter amount donated: ")
+    global data
 
-    # entered name is not case sensitive
-    name_list_lower = []
-    [name_list_lower.append(name.lower()) for name in name_list]
-    if name.lower() in name_list_lower:
-        data = get_data_from(file_name)
-        name = name.title()
-        amount = '%.2f' % (float(data[name][0]) + float(amount))
-        # amount = str(float(data[name][0]) + float(amount))
-        times = str(int(data[name][1]) + 1)
-        data[name] = (amount, times)
-        # data[name][0] = str(float(data[name][0]) + float(amount))
-        # data[name][1] = str(int(data[name][1]) + 1)
-        store_data_to(file_name, data)
-    else:
-        name = name.title()
-        amount = '%.2f' % float(amount)
-        times = str(1)
-        data = {name:(amount, times)}
-        store_data_to(file_name, data, add=True)
-
-    # send a letter
-    letter_template = letter_templates("1")
-    today = todays_date()
-
-    temp_date = today[1] + "/" + today[2] + "/" + today[0]
-    letter = letter_template.format(name=name,
-                                    amount=amount,
-                                    date=temp_date)
-    print("\n", letter)
-
-    donor = "_".join(name.lower().split())
-    letter_file = donor + "__" + today[0] + "_" + today[1] + "_" + today[2] + "_a"
-
-    # store letter to file
-    store_data_to(letter_file, letter)
-
-    return False
-
-def send_letters_to_everyone(menu, file_name):
-    """
-        data: {'name': ['total amount donated',
-                           'number of times donating']}
-
-    """
-    data = get_data_from(file_name)
-    letter_template = letter_templates("2")
-    today = todays_date()
-
-    temp_date = today[1] + "/" + today[2] + "/" + today[0]
-    for key in data.keys():
-        letter = letter_template.format(name=key,
-                                        amount=data[key][0],
-                                        date=temp_date)
-        print("\n", letter)
-
-        donor = "_".join(key.split())
-        letter_file = donor + "__" + today[0] + "_" + today[1] + "_" + today[2]
-
-        store_data_to(letter_file, letter)
-
-    return False
-
-def letter_templates(version):
-
-
-
-    n = "\n"
-    t = "\t"
-    s = " "
-
-    # letter 1, date: todays date, name, amount: amount of donation registered today
-    l1 = "Seattle, WA {date}" + n * 3 + t + "Dear {name}," + n * 2
-    l2 = ((t + s) * 1 + "Thank you for your very "
-         "kind donation of ${amount}." + n * 2)
-    l3 = (t + s) * 1 + "It will be put to very good use." + n * 2
-    l4 = (t + s) * 5 + "Sincerely," + n * 2
-    l5 = (t + s) * 6 + "-The Team"
-    letter1 = l1 + l2 + l3 + l4 + l5
-
-
-    # letter 2, date: todays date, name, amount: total amount donated
-    day = (t + s) * 8 + "{date}" + n * 6
-    l1 = "Dear {name}," + n * 2
-    l2 = (t + s) * 1 + "Your very generous donation of ${amount} \
-         this year is very much appreciated." + n * 2
-    l3 = (t + s) * 1 + "It will be put to very good use." + n * 2
-    l4 = (t + s) * 5 + "Sincerely," + n * 2
-    l5 = (t + s) * 6 + "-The Team"
-    letter2 = day + l1 + l2 + l3 + l4 + l5
-
-    version_dict = {"1":letter1, "2":letter1, "3":"under construction"}
-
-    return version_dict[version]
-
-def todays_date():
-    """
-        returns a list containing year, month, day in str format
-    """
-    today = datetime.date.today()
-    year, month, day = str(today.year), str(today.month), str(today.day)
-    return [year, month, day]
-
-def get_names_from(in_file):
-    """
-        in_file: file name for file in cwd where data is stored
-        returns: list of recorded names
-    """
-    data = get_data_from(in_file)
-    name_list = []
-    for name in data:
-        name_list.append(name)
-
-    return name_list
-
-def list_of_names(menu, file_name):
-    """
-        file_name: file name for file in cwd where data is stored
-    """
-    name_list = get_names_from(file_name)
-
-    name_len = 0
-    for name in name_list:
-        if len(name) > (name_len - 3):
-            name_len = len(name) + 3
-
-    temp_str = "Donor Name"
-    temp_form = "\n{:<{nl}}|"
-    header = temp_form.format(temp_str, nl=name_len)
-    print(header)
-    print("-" * name_len + "+")
-
-    for name in name_list:
-        temp_form = "{:<{nl}}|"
-        line = temp_form.format(name, nl=name_len)
-        print(line)
-
-    return False
-
-def quit(menu, file_name):
-    return True
-
-def read_in_pieces(file_object, piece_size=32):
-    """
-        Function (generator) to read a file piece by piece.
-        Default piece_size: 32 bytes to read a small file in several pieces
-    """
-    while True:
-        data = file_object.read(piece_size)
-        if not data:
-            break
-        # print("data: ", data, "size: ", sys.getsizeof(data))
-        yield data
-
-def is_alpha_or_space(string):
-    return all(c.isalpha() or c.isspace() for c in string)
-
-def is_digit_or_period(string):
-    chars = set('0123456789.')
-    return all((c in chars) for c in string)
-
-def get_data_from(file_name):
-    """
-
-    file_name: file name where the data of the donors etc. can be found.
-        must be in the cwd,
-        info is '/' delimited, bytes
-            info containing name, total amount, number of donations
-    data_dict = {name:(amount, times donating), etc}
-    """
-
-    data_dict = {}
-    source = os.path.join(os.getcwd(), file_name)
-    try:
-        with open(source, 'rb') as infile:
-            str_data = []
-            previous_str_data = tuple()
-            for bin_data_piece in read_in_pieces(infile):
-                new_str_data = bin_data_piece.decode('utf-8').split('/')
-
-                #  remove trailing white space when delimiter present in the last position
-                if new_str_data[-1:][0] == "":
-                    new_str_data = new_str_data[:-1]
-
-                if len(previous_str_data) > 0 and len(new_str_data) > 0:
-
-                    a = is_alpha_or_space(previous_str_data[-1]) and is_alpha_or_space(new_str_data[0])
-                    b = is_digit_or_period(previous_str_data[-1]) and is_digit_or_period(new_str_data[0])
-
-                    if a or b:
-                        previous_temp = list(previous_str_data)
-                        if "." in previous_temp[-1] and len(previous_temp[-1].split(".")[1]) == 2:
-                            patch = previous_temp[-1]
-                            previous_new = previous_temp[:-1]
-                            previous_new.append(patch)
-                            previous_new.extend(new_str_data[:])
-                        else:
-                            patch = previous_temp[-1] + new_str_data[0]
-                            previous_new = previous_temp[:-1]
-                            previous_new.append(patch)
-                            previous_new.extend(new_str_data[1:])
-                    else:
-                        previous_new = list(previous_str_data).extend(new_str_data)
-
-                    new_str_data = previous_new
-
-                add_info = new_str_data[:3 * (len(new_str_data) // 3)]
-
-                previous_str_data = tuple(new_str_data[3 * (len(new_str_data) // 3):])
-                str_data.extend(add_info)
-                # print(str_data)
-        data_dict = {key:values for key, values in
-        zip(str_data[::3], zip(str_data[1::3], str_data[2::3]))}
-        # print("data_dict: ", data_dict)
-        return data_dict
-    except:
-        print("something went wrong, read")
-
-def write_to(file_path, data, mode='wb'):
-    """
-        writes data to file_path
-        file_path:  abspath + file-name
-        data:       string
-        stores data in binary format
-    """
-    try:
-        with open(file_path, mode) as otf:
-            bin_data = data.encode("utf-8")
-            otf.write(bin_data)
-        print("\nstored data in: ", file_path)
-    except:
-        print("\nsomething went wrong, write")
-
-def store_data_to(file_name, data, add=False):
-    """
-        file_name: file name of file where the data will be stored.
-            path to file is the cwd,
-            info is '/' delimited, bytes
-                info containing name, total amount, number of donations
-        data: dictionary, {name:(amount, times donating), etc}
-    """
-    destination = os.path.join(os.getcwd(), file_name)
-    str_data = data
-
-    if isinstance(data, dict):
-        str_data = ""
-        for key, value in data.items():
-            str_data += key + "/" + value[0] + "/" + value[1] + "/"
-
-    mode = 'wb'
-    if add:
-        str_data = "/" + str_data
-        mode = 'ab'
-
-    write_to(destination, str_data, mode)
-
-def create_a_report(menu, file_name):
-    data = get_data_from(file_name)
     name_len = 0
     amount_len = 0
+
     for name, numbers in data.items():
         if len(name) > (name_len - 3):
             name_len = len(name) + 3
@@ -297,76 +46,349 @@ def create_a_report(menu, file_name):
     e = p + (s * (amount_len))
     lne += 3 * e
     print(lne)
-    for name, numbers in data.items():
-        d0 = name
-        d1 = float(numbers[0])
-        d2 = int(numbers[1])
-        if d2 == 0:
-            d3 = 0
+
+    for name in sorted(data.keys()):
+        donations = data[name]
+        total, number_of = donations
+        # if name is entered but no donation has been made, avoid division by 0
+        if number_of == "0":
+            average = 0
         else:
-            d3 = d1 / d2
+            total = float(total)
+            number_of = int(number_of)
+            average = total / number_of
 
         temp_form = "{:<{nl}} ${:>{al}.2f}  {:>{al}} ${:>{al}.2f}"
-        line = temp_form.format(d0, d1, d2, d3, nl=name_len, al=amount_len - 1)
+        line = temp_form.format(name, total, number_of, average, nl=name_len, al=amount_len - 1)
         print(line)
 
-    return False
+    option = "start"
+    return option
 
-def ask_questions(menu, option, file_name):
+
+def send_letters_to_everyone():
     """
+        sends one type of letter chosen from a template of letters to
+            all names in the data dictionary
+        each letter is stored as a txt file in cwd folder "letter_to_everyone"
+    """
+    global data
 
+    letter_template = letter_templates("2")
+    today = todays_date()
+
+    temp_date = today[1] + "/" + today[2] + "/" + today[0]
+    for name in sorted(data.keys()):
+        donations = data[name]
+        total, _ = donations
+        letter = letter_template.format(name=name,
+                                        amount=total,
+                                        date=temp_date)
+        print("\n", letter)
+
+        # store letter
+        donor = "_".join(name.split())
+        letter_file = donor + "__" + today[0] + "_" + today[1] + "_" + today[2] + "_b"
+        pth = os.path.join(os.getcwd(), "letter_to_everyone")
+        if not os.path.exists(pth):
+            os.makedirs(pth)
+        destination = os.path.join(pth, letter_file)
+
+        try:
+            with open(destination, 'w') as outfile:
+                for line in letter:
+                    outfile.write(line)
+        except:
+            print("something went wrong, read")
+
+        print("stored letters in ", pth)
+
+    option = "start"
+    return option
+
+
+# "thank you" menu functions
+
+def main_menu():
+    """
+    displays the "start" or the "thank you" menu according to current option
+    default when script starts is "start" menu
+    when "Quit" is chosen, script terminates at the quit function
+    """
+    global menu
+    option = "start"
+    while True:
+        sub_menu = menu[option]
+        option = ask_questions(sub_menu)
+
+
+def list_of_names():
+    """
+        prints out a list of names currently in the "data" dictionary
+    """
+    global data
+
+    name_list = data.keys()
+    name_length = []
+    [name_length.append(len(name)) for name in name_list]
+    name_len = max(name_length) + 3
+
+    temp_str = "Donor Name"
+    temp_form = "\n| {:<{nl}}|"
+    header = temp_form.format(temp_str, nl=name_len)
+    frame = "\n+" + "-" * (name_len + 1) + "+"
+    # print("\n+" + "-" * (name_len + 1) + "+")
+    print(frame, header, frame)
+    # print("+" + "-" * (name_len + 1) + "+")
+
+    for name in sorted(name_list):
+        temp_form = "| {:<{nl}}|"
+        line = temp_form.format(name, nl=name_len)
+        print(line)
+
+    option = "thank you"
+    return option
+
+
+def enter_name():
+    """
+    updates data dictionary with the donation from a new or a present donor
+    and prints out a thank you letter
+    and stores the letter in cwd folder "thank_you_letter"
+    """
+    global data
+
+    # user enter name, check if input is alpha or space
+    name_of_letters = False
+    while not name_of_letters:
+        name = input("\nEnter name, 'First Last': ")
+        name_of_letters = is_alpha_or_space(name)
+
+    # user enter new_amount, check if new_amount is a number
+    digits_in_amount = False
+    while not digits_in_amount:
+        new_amount = input("\nEnter amount donated: ")
+        digits_in_amount = is_digit_or_period(new_amount)
+
+    # entered name is not case sensitive
+    name_list_lower = []
+    for nme in data.keys():
+        name_list_lower.append(nme.lower())
+
+    print(name, name in name_list_lower)
+
+    # see if name is an existing name or a new and unknown name
+    if name.lower() in name_list_lower:
+        name = name.title()
+        # add new donation to previous total
+        amount = '%.2f' % (float(data[name][0]) + float(new_amount))
+        # update times donating
+        times = str(int(data[name][1]) + 1)
+    else:
+        name = name.title()
+        amount = '%.2f' % float(new_amount)
+        times = str(1)
+
+    # update data
+    data[name] = (str(amount), times)
+
+    # send one of the existing letter from letter_templates
+    letter_template = letter_templates("1")
+    today = todays_date()
+
+    temp_date = today[1] + "/" + today[2] + "/" + today[0]
+    new_amount = '%.2f' % float(new_amount)
+    letter = letter_template.format(name=name,
+                                    amount=new_amount,
+                                    date=temp_date)
+    print("\n", letter)
+
+    # store letter to file
+    donor = "_".join(name.lower().split())
+    letter_file = donor + "__" + today[0] + "_" + today[1] + "_" + today[2] + "_a"
+    pth = os.path.join(os.getcwd(), "thank_you_letter")
+    if not os.path.exists(pth):
+        os.makedirs(pth)
+    destination = os.path.join(pth, letter_file)
+
+    try:
+        with open(destination, 'w') as outfile:
+            for line in letter:
+                outfile.write(line)
+    except:
+        print("something went wrong, enter_name")
+
+    print("stored letter in ", pth)
+
+    option = "thank you"
+    return option
+
+
+# "quit" function is available to both "start" and "thank you" menus
+def quit():
+    """
+        the only function changing the variable 'finished' to True
+    """
+    store_data()
+    print("leaving mailroom_part2")
+    sys.exit()
+
+
+# -----------------------------------------------------------------------------
+#  functions managing or helping the mailroom script but not called by the user
+
+
+def ask_questions(sub_menu):
+    """
+        called by "main_menu" function with with either "start" or "thank you"
+            menu
+        only the letters displyed in front of each option is an acceptable
+            answer
+        converts the choice to a function
+        returns the answer from the call to the function to main_menu
     """
     good_answer = False
     while not good_answer:
         print("\nYour options are:\n")
 
-        for key, value in menu[option].items():
-            # s = f"{key}.)  {value.__name__}"
-            s = f"{key}.)  {value}"
+        for key, value in sub_menu.items():
+            # print the options looking pretty
+            value = value.__name__
+            option_list = value.split("_")
+            option_string = " ".join(option_list)
+            option_string = option_string.title()
+            s = f"{key}.)  {option_string}"
             print(s)
+
         answer = input("\nEnter letter according to your choice: ")
-        good_answer = menu[option].get(answer, False)
 
-    func_answer = good_answer.lower().split()
-    func = "_".join(func_answer)
-    print(func)                                                                #
+        # check to see if the "answer" letter is one of the keys in the sub_menu dictionary
+        good_answer = sub_menu.get(answer, False)
 
-    method = eval(func)
-    return method(menu, file_name)
+    return sub_menu[answer]()
 
-def main_menu(menu, file):
-    option = "start"
-    finished = False
-    while not finished:
-        finished = ask_questions(menu, option, file)
 
-    print("\nLeaving the Mailroom 1.", "finished: ", finished)
-    return finished
-
-def run_mailroom(file):
+def is_digit_or_period(string):
     """
-    data: list with name, total of donations - dddd.cc, number of gift occations
+        checks if all chars in "string" are digits 0 to 9 or a decimal period
+        returns True of False
+    """
+    chars = set('0123456789.')
+    return all((c in chars) for c in string)
+
+
+def is_alpha_or_space(string):
+    """
+    checks if all chars in "string" are letters or a space
+    returns True or False
+    """
+    return all(c.isalpha() or c.isspace() for c in string)
+
+
+def todays_date():
+    """
+    returns a list containing year, month, day in str format of todays date
+    """
+    today = datetime.date.today()
+    year, month, day = str(today.year), str(today.month), str(today.day)
+    return [year, month, day]
+
+
+def letter_templates(version):
+    """
+        holds letter templates that can be changed or added new ones to
+    could also be read from a file
+    """
+    n = "\n"
+    t = "\t"
+    s = " "
+
+    # letter 1, date: todays date, name, amount: amount of donation registered today
+    l1 = "Seattle, WA {date}" + n * 3 + t + "Dear {name}," + n * 2
+    l2 = ((t + s) * 1 + "Thank you for your very "
+          "kind donation of ${amount}." + n * 2)
+    l3 = (t + s) * 1 + "It will be put to very good use." + n * 2
+    l4 = (t + s) * 5 + "Sincerely," + n * 2
+    l5 = (t + s) * 6 + "-The Team"
+    letter1 = l1 + l2 + l3 + l4 + l5
+
+    # letter 2, date: todays date, name, amount: total amount donated
+    day = (t + s) * 8 + "{date}" + n * 6
+    l1 = "Dear {name}," + n * 2
+    l2 = (t + s) * 1 + "Your very generous donation of ${amount} \
+    this year is very much appreciated." + n * 2
+    l3 = (t + s) * 1 + "It will be put to very good use." + n * 2
+    l4 = (t + s) * 5 + "Sincerely," + n * 2
+    l5 = (t + s) * 6 + "-The Team"
+    letter2 = day + l1 + l2 + l3 + l4 + l5
+
+    version_dict = {"1": letter1, "2": letter2, "3": "under construction"}
+
+    return version_dict[version]
+
+
+def get_data_from(file_name):
+    """
+    uses the pickle module to retrieve data from file as a dictionary
+    file_name: file name where the data of the donors etc. can be found.
+    must be in the cwd,
+    data_dict = {name:(amount, times donating), etc}
     """
 
-    menu = {"start":     {"a": 'Send a Thank You',
-                          "b": 'Create a Report',
-                          "c": 'Send Letters to Everyone',
-                          "d": 'Quit'},
+    global data, data_file
+    # data_dict = {}
+    source = os.path.join(os.getcwd(), file_name)
+    try:
+        with open(source, 'rb') as infile:
+            # data_dict = pickle.load(infile)
+            data = pickle.load(infile)
 
-            "thank you": {"a": 'Main Menu',
-                          "b": 'List of Names',
-                          "c": 'Enter Name',
-                          "d": 'Quit'}}
+            # set the global variable data_file
+            data_file = source
+    except:
+        print("something went wrong, read")
 
-    main_menu(menu, file)
-    # not sure how well this ends, does it gets stuck here holding a
-        # boolean return value or does the script really terminate?
 
-data = ["William Gates, III", 653784.49, 2, "Mark Zuckerberg",
-        16396.10, 3, "Jeff Bezos", 877.33, 1, "Paul Allen", 708.42, 3]
+def store_data():
+    """
+    writes data to data_file
+    file_path:  abspath including file-name
+    data:       dictionary
+    stores pickled data in binary format
+    """
+    global data, data_file
+
+    try:
+        with open(data_file, 'wb') as outfile:
+            pickle.dump(data, outfile, protocol=pickle.HIGHEST_PROTOCOL)
+            print("\nstored data in: ", data_file)
+    except:
+        print("\nsomething went wrong, store_data")
+
+
+# data and data_file is set by the 'get_data_from' function
+# data and data_file are global variables
+data_file = None
+data = None
+
 
 if __name__ == '__main__':
-    # bin_text: file in cwd containing name, total amount, number of times donating
-        # file is binary and "/" delimited, (no "\n").
-    file = "bin_text.bin"
-    run_mailroom(file)
+
+    menu = {"start":     {"a": send_a_thank_you,
+                          "b": create_a_report,
+                          "c": send_letters_to_everyone,
+                          "d": quit},
+
+            "thank you": {"a": main_menu,
+                          "b": list_of_names,
+                          "c": enter_name,
+                          "d": quit}}
+
+    file = "dictionary.pickle"
+
+    # read from file and make the dictionary available to the module
+    #   as the variable data
+    get_data_from(file)
+
+    # start the run_mailroom_part2
+    main_menu()
