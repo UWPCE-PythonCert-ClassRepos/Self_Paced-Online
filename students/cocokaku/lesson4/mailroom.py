@@ -5,34 +5,38 @@ donor_db = {
     "Jeff Bezos": [877.33],
     "Paul Allen": [663.23, 43.87, 1.32],
     "Mark Zuckerberg": [1663.23, 4300.87, 10432.0],
-    "Colleen Kaku": [1000000,1000000,1000000]
+    "Colleen Kaku": [50000, 1000000, 1000000]
     }
+
 
 def send_thank_you():
     """Add a donor/donation and print out a thank you letter"""
     while True:
-        name=input("\nDonor Full Name (type 'list' for donor list or 'q' to quit): ").title()
-        if name=='Q':
+        name = input("\nDonor Full Name (type 'list' for donor list or 'q' to quit): ")
+        if name in ('q', 'quit'):
             return
-        if name!='List':
-            break
-        list_donors()
-    add_donation(name)
-    print('\n'+thank_you_letter(name))
+        if name == 'list':
+            list_donors()
+            continue
+        add_donation(name.title())
+
 
 def list_donors():
-    """List donor names, subfunction for send_thank_you"""
+    """List donor names, sub-function for send_thank_you()"""
     for name in donor_db.keys():
         print('   '+name)
 
+
 def add_donation(name):
-    """Add donor name and donation to donor_db, subfunction for send_thank_you"""
+    """Add donor name and donation to donor_db, sub-function for send_thank_you()"""
     amount = input("Donation amount (type 'q' to quit): ")
-    if amount=='q':
+    if amount in ('q', 'quit'):
         return
     if name not in donor_db.keys():
-        donor_db[name]=[]
+        donor_db[name] = []
     donor_db[name].append(float(amount))
+    print('\n' + thank_you_letter(name))
+
 
 def thank_you_letter(name):
     """Return text of thank you letter"""
@@ -41,36 +45,41 @@ def thank_you_letter(name):
            f"Sincerely,\n" \
            f"PYTHON210 Class of 2018"
 
+
 def create_a_report():
     """Print a summary of donors and amounts donated to screen"""
-    summary_list = [(name,sum(amounts),len(amounts),sum(amounts)/len(amounts)) for (name,amounts) in donor_db.items()]
-    summary_list.sort(key=get_second,reverse=True)
+    summary_list = [(name, sum(amounts), len(amounts), sum(amounts)/len(amounts))
+                    for (name, amounts) in donor_db.items()]
+    summary_list.sort(key=get_second, reverse=True)
     print("\nDONOR NAME             TOTAL DONATED   NUM DONATIONS   AVG DONATION AMT")
-    for (name,total,num,avg) in summary_list:
+    for (name, total, num, avg) in summary_list:
         print(f"{name:20s}   ${total:12,.2f} {num:3d}               ${avg:12,.2f}")
+
 
 def get_second(elem):
     """Return second item in list, sort key for summary_list"""
     return elem[1]
 
+
 def send_all_letters():
     """Write thank you letters to all donors to text files, filename = <donor_name>.txt"""
-    dirname = input("Output directory ('.' for current dir): ")
-    if not os.path.isdir(dirname):
-        os.mkdir(dirname)
-    for name,amounts in donor_db.items():
-        fname = dirname+'/'+name.replace(',','').replace(' ','_')+'.txt'
-        with open(fname,'w') as FIL:
-            FIL.write(thank_you_letter(name))
+    dir_name = input("Output directory ('.' for current dir): ")
+    if not os.path.isdir(dir_name):
+        os.mkdir(dir_name)
+    for name, amounts in donor_db.items():
+        file_name = dir_name + '/' + name.replace(',', '').replace(' ', '_') + '.txt'
+        with open(file_name, 'w') as f:
+            f.write(thank_you_letter(name))
+
 
 def main():
     switch_menu_dict = {
         "1": send_thank_you,
         "2": create_a_report,
         "3": send_all_letters,
-        "q": exit
+        "q": exit,
+        "quit": exit
         }
-
     while True:
         print("\nMAIN MENU")
         print("   1 = Send a Thank You")
@@ -83,5 +92,6 @@ def main():
         except KeyError:
             print("Invalid choice, try again")
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     main()
