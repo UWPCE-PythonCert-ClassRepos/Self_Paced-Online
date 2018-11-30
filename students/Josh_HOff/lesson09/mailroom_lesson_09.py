@@ -2,106 +2,63 @@ import sys
 import copy
 import pathlib
 
-donors = {'Josh Hoff': [25, 75], 'Tatsiana Kisel': [35, 105.55]}
-
-#This class handles all input from the user
-class Input(object):
-
-#    donors = {'Josh Hoff': [25, 75], 'Tatsiana Kisel': [35, 105.55]}
-
-    def __init__(self=None):
-        pass
-    
-    def thank_you(self=None):
-        while True:
-            donor_name = input('\nWhat is the name of the donor?: ')
-            if donor_name == 'list':
-                DonorCollection().show_list()
-                continue
-            elif donor_name == 'quit':
-                break
-            while True:
-                try:
-                    donation = float(input('\nWhat is the donation amount?: '))
-                except ValueError:
-                    print('\nPlease give a number instead.')
-                    continue
-                break
-            DonorCollection().add_donor(donor_name, donation)
-            break
-            
-    def quitting(self):
-        sys.exit()
-        
-    def continuing(self):
-        print('Try Again.\n')
-
 #this class handles all donor management
-class Donor(object):
-    def __init__(self=None, name = ''):
-        global donors
-        self._donors = donors
-        self._gifts = len(self._donors.get(name))
-        self._total = sum(self._donors.get(name))
-        self._average = round((self._total / self._gifts), 2)
-        self._recent_gift = self._donors.get(name)[-1]
-        self._first_gift = self._donors.get(name)[0]
+class Donor:
+    def __init__(self, name = '', donations = None):
+        self._donations = donations
+        self._name = name
                 
     @property
     def gifts(self):
+        self._gifts = len(self._donations)
         return self._gifts
-        
-    @gifts.deleter
-    def gifts(self):
-        del self._gifts
-        
+                
     @property
     def total_donations(self):
+        self._total = sum(self._donations)
         return self._total
-        
-    @total_donations.deleter
-    def total_donations(self):
-        del self._total
-        
+                
     @property
     def average(self):
+        total = self.total_donations
+        gifts = self.gifts
+        self._average = round((total / gifts), 2)
         return self._average
-        
-    @average.deleter
-    def average(self):
-        del _average
-        
+                
     @property
     def recent_gift(self):
+        self._recent_gift = self._donations[-1]
         return self._recent_gift
-        
-    @recent_gift.deleter
-    def recent_gift(self):
-        del _recent_gift
-        
+                
     @property
     def first_gift(self):
+        self._first_gift = self._donations[0]
         return self._first_gift
         
-    @first_gift.deleter
-    def first_gift(self):
-        del self._first_gift
         
+class DonorCollection:
+    
+    def __init__(self):
+        self._donors = {'Josh Hoff': [25, 75], 'Tatsiana Kisel': [35, 105.55]}
         
-class DonorCollection(object):
-    def __init__(self=None):
-        pass
+    @property
+    def donors(self):
+        return self._donors
         
-    @staticmethod
-    def report():
-        global donors
+    @donors.setter
+    def donors(self, new_dict):
+        self._donors = copy.deepcopy(new_dict)
+        return self._donors
+
+        
+    def report(self):
         y = '|'
         rows = ''
         top = f'Donor Name{y:>14} Total Given {y} Num Gifts {y} Average Gift\n'
         top += ('-' * 63)
-        sorted_donors = DonorCollection().sorted_donators()
+        sorted_donors = sorted(self._donors.items(), key=lambda k: sum(k[1]), reverse=True)
         for name, donations in sorted_donors:
-            d = Donor(name)
+            d = Donor(name, donations)
             gift = d.gifts
             total_donations = d.total_donations
             average = d.average
@@ -109,44 +66,60 @@ class DonorCollection(object):
         top += rows
         print(f'\n{top}')
         
-    @staticmethod
-    def letters():
+    def letters(self):
         tab = '    '
-        global donors
-        for name, val in donors.items():
+        for name, val in self._donors.items():
             with open(f'{name}.txt', 'w') as outfile:
-                d = Donor(name)
+                d = Donor(name, val)
                 donation = d.total_donations
-                val = d.recent_gift
+                val = self._donors.get(name)[-1]
                 outfile.write(f'Dear {name}, \n\n{tab}Thank you very much for your most recent donation \
 of ${val:.2f}! \n\n{tab}You have now donated a total of ${donation:.2f}. \n\n{tab}Your support \
 is essential to our success and will be well utilized. \n\n{tab*2}Sincerely, \n{tab*3}-The Company')
-    @staticmethod
-    def show_list():
+    
+    def show_list(self):
         print('')
-        global donors
-        for i in donors:
+        for i in self._donors:
             print(i)
 
-    @staticmethod
-    def add_donor(donor_name='Jacob', donation=30):
-        global donors
-        if donor_name in donors:
-            donors[donor_name] += [donation]
+    def add_donor(self, donor_name='Jacob', donation=30):
+        if donor_name in self._donors:
+            self._donors[donor_name] += [donation]
         else:
-            donors[donor_name] = [donation]
-            
-    @staticmethod
-    def sorted_donators():
-        global donors
-        return sorted(donors.items(), key=lambda k: sum(k[1]), reverse=True)
-
-    
+            self._donors[donor_name] = [donation]
+        return self._donors
         
-switch_func_dict = {'1':Input().thank_you, '2':DonorCollection().report, '3':DonorCollection().letters, '4':Input().quitting, 'quit':Input().quitting, 'list':DonorCollection().show_list}
+        
+def thank_you():
+    while True:
+        donor_name = input('\nWhat is the name of the donor?: ')
+        if donor_name == 'list':
+            a.show_list()
+            continue
+        elif donor_name == 'quit':
+            return
+        while True:
+            try:
+                donation = float(input('\nWhat is the donation amount?: '))
+            except ValueError:
+                print('\nPlease give a number instead.')
+                continue
+            break
+        a.donors = a.add_donor(donor_name, donation)
+        return
+        
+def quitting():
+    sys.exit()
+    
+def continuing():
+    print('Try Again.\n')
+
+a = DonorCollection()
+    
+switch_func_dict = {'1':thank_you, '2':a.report, '3':a.letters, '4':quitting, 'quit':quitting, 'list':a.show_list}
 
 #main function: adjusted to use classes
 if __name__ == '__main__':
     while True:
         choice = input('\n1: Send a Thank You \n2: Create a Report \n3: Send Letters to Everyone \n4: Quit \nChoose an Option: ')
-        c = switch_func_dict.get(choice, Input().continuing)()
+        c = switch_func_dict.get(choice, continuing)()
