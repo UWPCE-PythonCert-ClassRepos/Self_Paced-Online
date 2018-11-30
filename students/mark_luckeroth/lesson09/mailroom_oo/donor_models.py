@@ -39,10 +39,17 @@ class DonorCollection():
             self.donorlist.append(Donor(first, last, amount))
 
     def load_donors(self, filename='donor_list.txt'):
-        pass
+        with open(filename, 'r') as f:
+            for line in f:
+                load = line.split(';')
+                amount = [float(_) for _ in load[2].split(',')]
+                self.add_donor(load[0],load[1],amount)
 
     def save_donors(self, filename='donor_list.txt'):
-        pass
+        with open(filename, 'w') as f:
+            for donor in self.donorlist:
+                f.write("{};{};{}\n".format(donor.first_name, donor.last_name,
+                                            ','.join(str(a) for a in donor.donations)))
 
     def find_donor(self, first=None, last=None):
         pass
