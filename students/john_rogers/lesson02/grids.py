@@ -4,14 +4,14 @@
 
 
 def main():
-    print('simple grid, no user input')
+    print('no user input')
     g()
     print()
-    print('simple grid, single input')
-    grid(15)
+    print('single input, size')
+    grid(3)
     print()
-    print('grid with two inputs, size and number of columns/rows')
-    multiple_grids(3, 6)
+    print('two inputs, size and number of columns/rows')
+    multiple_grids(3, 4)
 
 
 def g():
@@ -40,21 +40,16 @@ def multiple_grids(boxes, size):
     """Take in two values, number of boxes and size of each box"""
     plus = '+ '
     dash = '- '
-    wall = '|'
+    wall = '| '
+    vertical_size = size * 2
 
     horizontal = (plus + dash * size) * boxes + plus
-    vertical = (wall + ((' ' * size) + wall) * boxes)
+    vertical = (wall + " " * vertical_size) * boxes + wall
     print(horizontal)
-    for i in range(size):
+    for i in range(boxes):
         print((vertical + '\n') * size + horizontal)
 
 
 if __name__ == '__main__':
     main()
-
-
-
-
-
-
 
