@@ -6,30 +6,6 @@ Created on Thu Nov 29 11:50:47 2018
 """
 
 
-#class Donor():
-#    def __init__(self, name, donation):
-#        if type(donation) is list:
-#            self.donors = {name: donation}
-#        else:
-#            self.donors = {name: [donation]}
-#
-#    def new_donation(self, name, donation):
-#        if type(donation) is not list:
-#            donation = [donation]
-#        try:
-#            self.donors[name].append(donation)
-#        except KeyError:
-#            self.donors[name] = donation
-#
-#    def total_donation(self, name):
-#        return sum(self.donors[name])
-#
-#    def number_donations(self, name):
-#        return len(self.donors[name])
-#
-#    def avg_donation(self, name):
-#        return sum(self.donors[name]) / len(self.donors[name])
-
 class Donor():
     def __init__(self, name, donation):
         self.name = name
@@ -53,13 +29,42 @@ class Donor():
     def avg_donation(self):
         return sum(self.donations) / len(self.donations)
 
+    @property
+    def list_donations(self):
+        print(self.name + ' Donations: ' + ', '.join('${}'.format(d)
+                                                      for d in self.donations))
+
 
 class Donor_List():
     def __init__(self):
-        self.donor_list = {}
+        self.donors = {}
 
     def add_donation(self, name, donation):
-        if name in self.donor_list:
-            self.donor_list[name].add_donation(donation)
+        if name in self.donors:
+            self.donors[name].add_donation(donation)
         else:
-            self.donor_list[name] = Donor(name, donation)
+            self.donors[name] = Donor(name, donation)
+
+    def is_donor(self, name):
+        if name in self.donors:
+            return True
+        else:
+            return False
+
+
+def create_report(donor_list):
+    print('-------List of Donors-------')
+    print('{:<20}{:<20}{:<20}{:<20}'.format('Donor Name', 'Total Donated',
+                                            '# of donations',
+                                            'Average donation'))
+    print('-----------------   '*4)
+    for key in donor_list.donors.keys():
+        print('{:<20}${:<20.2f}{:<20d}$'
+              '{:<20.2f}'.format(key, donor_list.donors[key].total_donation,
+                                 donor_list.donors[key].number_donation,
+                                 donor_list.donors[key].avg_donation))
+
+
+def list_donors(donor_list):
+    for key in donor_list.donors:
+        print('{}'.format(key))
