@@ -1,3 +1,11 @@
+#!/usr/bin/python3
+"""
+mailroom part 3: adding exceptions and comprehensions
+1. change list_donors print to comprehension
+2. exception handling for non-numeric donation amount
+(3) was already using exception handling for invalid choice on main menu
+(4) was already using comprehension to create summary list for report
+"""
 import os
 
 donor_db = {
@@ -23,18 +31,24 @@ def send_thank_you():
 
 def list_donors():
     """List donor names, sub-function for send_thank_you()"""
-    for name in donor_db.keys():
-        print('   '+name)
+    print('\n'.join(['   '+name for name in donor_db]))
 
 
 def add_donation(name):
     """Add donor name and donation to donor_db, sub-function for send_thank_you()"""
-    amount = input("Donation amount (type 'q' to quit): ")
-    if amount in ('q', 'quit'):
-        return
-    if name not in donor_db.keys():
-        donor_db[name] = []
-    donor_db[name].append(float(amount))
+    while True:
+        amount = input("Donation amount (type 'q' to quit): ")
+        if amount in ('q', 'quit'):
+            return
+        try:
+            if name not in donor_db.keys():
+                donor_db[name] = [float(amount)]
+            else:
+                donor_db[name].append(float(amount))
+        except ValueError:
+            print('Invalid input, try again')
+        else:
+            break
     print('\n' + thank_you_letter(name))
 
 
@@ -66,13 +80,14 @@ def send_all_letters():
     dir_name = input("Output directory ('.' for current dir): ")
     if not os.path.isdir(dir_name):
         os.mkdir(dir_name)
-    for name, amounts in donor_db.items():
+    for name in donor_db:
         file_name = dir_name + '/' + name.replace(',', '').replace(' ', '_') + '.txt'
         with open(file_name, 'w') as f:
             f.write(thank_you_letter(name))
 
 
 def main():
+    """Main menu for mailroom program"""
     switch_menu_dict = {
         "1": send_thank_you,
         "2": create_a_report,
