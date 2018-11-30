@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# NEIMA SCHAFI, LESSON 5 Assignment - mailroom part 3
+# NEIMA SCHAFI, LESSON 6 Assignment - mailroom part 4 (refactored)
 donors = {
             'Leon Dechino': [200.43, 30.23, 1.50],
             'Rupert Everton': [23.99],
