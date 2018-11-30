@@ -11,16 +11,33 @@ Author: JohnR
 
 
 def main():
-    pass
+    """
+    Main script logic
+    :return: Call each function and print the results to screen
+    """
+    print(fibonacci(7))
 
 
 def fibonacci(n):
     """
-    Create a fibonacci series wtih a single function
-    :param n:
-    :return: return the nth value starting with zero
+    Create a fibonacci series starting at 0 and 1
+    :param n: any integer (presumably, not tested)
+    :return: return fibonacci value for input n
     """
-    pass
+    if n < 0:
+        print('invalid input')
+    elif n == 0 or n == 1:
+        return n
+    else:
+        return fibonacci(n - 1) + fibonacci(n - 2)
+
+
+def lucas(n):
+    """
+    Create a Lucas series that start at 2 and 1
+    :param n: any integer (presumably)
+    :return: return Lucas value for input n
+    """
 
 
 if __name__ == '__main__':
