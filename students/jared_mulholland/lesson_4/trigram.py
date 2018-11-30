@@ -21,12 +21,61 @@ import random
 
 tg_dict = {"I wish": ["I","I"],"wish I": ["may","might"],"may I": ["wish"], "I may": ["I"]}
 
-#set up initial 
-new_key = random.choice(list(tg_dict.keys()))
-trigram = new_key
+def trigram(dict):
+    new_key = random.choice(list(dict.keys()))
+    trigram = new_key
 
-while new_key in tg_dict:    
-    trigram = trigram + " " + tg_dict[new_key][random.randint(0,len(tg_dict[new_key])-1)]
-    new_key = " ".join(trigram.split()[-2:])
+    while new_key in dict:    
+        trigram = trigram + " " + dict[new_key][random.randint(0,len(dict[new_key])-1)]
+        new_key = " ".join(trigram.split()[-2:])
+
+    return trigram
+
+#import sherlock and turn it to dictionary
+
+import os
+import random
+import string
+
+file_path = 'C:\\Users\\Jared\\Documents\\IntroToPython\\Self_Paced-Online\\students\\jared_mulholland\\lesson_4'
+file_name = 'sherlock_short.txt'
+
+
+def list_create(file_path, file_name):
+    """takes text file and creates list, stripping punctuation and capitalization"""
+    os.chdir(file_path)
+    file_string = open(file_name)
+    file_string = file_string.read()
+    punct = str.maketrans("-().?!,",7*" ")
+    file_string = file_string.translate(punct)
+    file_string = file_string.lower().split()
     
+    for f_str in file_string: 
+        f_str.replace(" ","")
+    return(file_string)
+
+def dict_create(temp_list):
+    """creates dict from list for use in trigram"""
+    dict_temp = {}
+    i = 0
+    while i < len(temp_list)-3:
+        if temp_list[i]+" "+temp_list[i+1] in dict_temp:
+            dict_temp[temp_list[i]+" "+temp_list[i+1]].append(temp_list[i+2])            
+        else:            
+            dict_temp[temp_list[i]+" "+temp_list[i+1]] = [temp_list[i+2]]
+        i+=1
+    return(dict_temp)
+
+
+def trigram_new(dict):
+    """created trigram from dict starting form a random point within the dict"""
+    new_key = random.choice(list(dict.keys()))
+    trigram = str(new_key)
+
+    while new_key in dict:  
+        trigram = trigram + " " + dict[new_key][random.randint(0,len(dict[new_key])-1)]
+        new_key = " ".join(trigram.split()[-2:])
+
+    return trigram 
+
 
