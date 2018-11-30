@@ -16,7 +16,7 @@ def grid(x):
 
     print('+' + (a*' -' + ' +')*c)
     print((('|' + (a* '  ' + ' |')*c +'\n')*a+('+' + (a*' -' + ' +')*c+'\n'))*c)
-grid(3)
+grid(15)
 
 #part3
 def grid(x,y):
@@ -26,6 +26,6 @@ def grid(x,y):
 
     print('+' + (a*' -' + ' +')*c)
     print((('|' + (a* '  ' + ' |')*c +'\n')*a+('+' + (a*' -' + ' +')*c+'\n'))*c)
-grid(3,4)
+grid(5,3)
 
-###test what going on
+
