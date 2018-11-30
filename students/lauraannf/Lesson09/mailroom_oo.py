@@ -32,7 +32,11 @@ class Donor():
     @property
     def list_donations(self):
         print(self.name + ' Donations: ' + ', '.join('${}'.format(d)
-                                                      for d in self.donations))
+              for d in self.donations))
+
+    @property
+    def last_donation(self):
+        return self.donations[-1]
 
 
 class Donor_List():

@@ -5,16 +5,12 @@ Created on Thu Nov 29 11:51:56 2018
 @author: Laura.Fiorentino
 """
 
+
 from mailroom_oo import *
 import sys
+import datetime
+import os
 
-#donor_list = Donor('Frank Reynolds', [10, 20, 50])
-#donor_list.new_donation('Dee Reynolds', [25, 100])
-#donor_list.new_donation('Dennis Reynolds', [10, 50])
-#donor_list.new_donation('Mac McDonald', [25, 35, 20])
-#donor_list.new_donation('Charlie Kelly', 0.25)
-
-#donor = Donor('Frank Reynolds', [10, 20, 50])
 
 donor_list = Donor_List()
 donor_list.add_donation('Frank Reynolds', [10, 20, 50])
@@ -66,7 +62,54 @@ def donor_data(donor_list):
 
 
 def create_letters(donor_list):
-    pass
+    while True:
+        letter_choice = input('Who would you like to write a donation letter '
+                              'to? (type a for all, q to quit)>')
+        if letter_choice == 'a':
+            all_letters(donor_list)
+            quit_program(donor_list)
+        elif letter_choice == 'q':
+            quit_program(donor_list)
+        elif donor_list.is_donor(letter_choice) is False:
+            print('not a donor')
+        else:
+            donation_choice = input('What donation amount?  Choose [L] for '
+                                    'latest donation,[A] for sum of all, '
+                                    'or type the amount.')
+            print('writing letter to {}'.format(letter_choice))
+            if donation_choice == 'L':
+                donation = donor_list.donors[letter_choice].last_donation
+            elif donation_choice == 'A':
+                donation = donor_list.donors[letter_choice].total_donation
+            else:
+                donation = float(donation_choice)
+            write_letter(letter_choice, donation)
+
+
+def create_folder():
+    now = datetime.datetime.now()
+    new_path = os.path.join(os.getcwd(), 'letters_' + now.strftime('%d%m%Y'))
+    if not os.path.exists(new_path):
+        os.mkdir(new_path)
+    return new_path, now
+
+
+def all_letters(donor_list):
+    print('writing all thank you letters...')
+    for key in donor_list.donors.keys():
+        write_letter(key, donor_list.donors[key].total_donation)
+
+
+def write_letter(name, donation):
+    new_path, now = create_folder()
+    with open(os.path.join(new_path, name + '_' + now.strftime('%d%m%Y') +
+              '.txt'), 'w') as letter_file:
+            letter_file.write('Dear {}, \n'
+                              'Thank you so much for your generous '
+                              'donation of ${:.2f} \n'
+                              'Sincerely, \n'
+                              'Laura F'.format(name, donation))
+
 
 
 def quit_program(donor_list):
