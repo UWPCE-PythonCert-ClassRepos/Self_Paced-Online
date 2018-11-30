@@ -9,10 +9,16 @@ class Donor():
     def __init__(self, first, last, amount):
         self.first_name = first
         self.last_name = last
-        self.donations = [amount]
+        if type(amount) is list:
+            self.donations = amount
+        else:
+            self.donations = [amount]
 
     def add_donation(self, amount):
-        self.donations.append(amount)
+        if type(amount) is list:
+            self.donations.extend(amount)
+        else:
+            self.donations.append(amount)
 
     @property
     def total(self):
@@ -26,11 +32,29 @@ class Donor():
     def average(self):
         return self.total/self.count
 
+    def __lt__(self, other):
+        return self.total < other.total
+
+    def __le__(self, other):
+        return self.total <= other.total
+
+    def __eq__(self, other):
+        return self.total == other.total
+
+    def __ge__(self, other):
+        return self.total >= other.total
+
+    def __gt__(self, other):
+        return self.total > other.total
+
+    def __ne__(self, other):
+        return self.total != other.total
+
 
 class DonorCollection():
 
-    def __init__(self, donor_list=None):
-        self.donorlist = donor_list
+    def __init__(self, amount=None):
+        self.donorlist = amount
 
     def add_donor(self, first, last, amount):
         if self.donorlist == None:
@@ -51,7 +75,22 @@ class DonorCollection():
                 f.write("{};{};{}\n".format(donor.first_name, donor.last_name,
                                             ','.join(str(a) for a in donor.donations)))
 
-    def find_donor(self, first=None, last=None):
-        pass
+    @property
+    def names(self):
+        return [(_.last_name, _.first_name) for _ in self.donorlist]
+
+    def find(self, first, last):
+        if (last, first) in self.names:
+            return self.donorlist[self.names.index((last, first))]
+        else:
+            return False
+
+    def update(self, first, last, amount):
+        if (last, first) in self.names:
+            self.find(first, last).add_donation(amount)
+        else:
+            self.add_donor(first, last, amount)
+
+
 
 
