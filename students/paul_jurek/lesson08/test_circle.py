@@ -89,3 +89,17 @@ def test_circle_can_grow_with_added_number(example_circle):
     example_circle + old_radius
     assert example_circle.radius == old_radius * 2
     assert example_circle.diameter == example_circle.radius * 2
+
+def test_circle_multiplies_by_num(example_circle):
+    """give a circle
+    when multiplied by number
+    resulting radius increases by that amount"""
+    old_radius = example_circle.radius
+    example_circle * 2
+    assert example_circle.radius == old_radius * 2
+    assert example_circle.diameter == example_circle.radius * 2
+
+    2 * example_circle
+    assert example_circle.radius == old_radius * 4
+    assert example_circle.diameter == example_circle.radius * 2
+

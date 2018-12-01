@@ -52,3 +52,9 @@ class Circle:
             return Circle(self.radius + other.radius)
         else:
             self.radius += other
+
+    def __mul__(self, other):
+        self.radius *= other
+
+    def __rmul__(self, other):
+        self.radius *= other
