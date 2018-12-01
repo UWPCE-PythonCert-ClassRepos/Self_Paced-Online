@@ -48,3 +48,8 @@ def test_user_cannot_change_area_directly(example_circle):
         example_circle.area = 55
 
 
+def test_circle_can_be_created_from_diameter():
+    """when a user creates a circle from diameter
+    a circle object is returned with correct radius"""
+    c = Circle.from_diameter(8)
+    assert c.radius == 4
