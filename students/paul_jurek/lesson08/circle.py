@@ -7,6 +7,7 @@ reference: https://startlearning.uw.edu/courses/course-v1:UW+PYTHON210+2018_Wint
 import functools
 import math
 
+
 @functools.total_ordering
 class Circle:
     """circle geometry object"""
@@ -60,7 +61,15 @@ class Circle:
 
     def __rmul__(self, other):
         self.radius *= other
-    
+
+    def __truediv__(self, other):
+        if isinstance(other, Circle):
+            return Circle(self.radius / other.radius)
+        else:
+            if other <= 0:
+                raise ValueError('must divide by positive number')
+            return Circle(self.radius / other)
+
     def __eq__(self, other):
         return self.radius == other.radius
 

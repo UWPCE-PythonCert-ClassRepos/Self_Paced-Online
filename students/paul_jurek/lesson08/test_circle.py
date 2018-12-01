@@ -4,17 +4,21 @@ import math
 import pytest
 from circle import Circle
 
+
 @pytest.fixture
 def example_circle():
     return Circle(4)
+
 
 @pytest.fixture
 def small_circle():
     return Circle(2)
 
+
 @pytest.fixture
 def big_circle():
     return Circle(20)
+
 
 def test_cirle_creation(example_circle):
     """when user initiates a circle with no keyword
@@ -98,6 +102,7 @@ def test_circle_can_grow_with_added_number(example_circle):
     assert example_circle.radius == old_radius * 2
     assert example_circle.diameter == example_circle.radius * 2
 
+
 def test_circle_multiplies_by_num(example_circle):
     """give a circle
     when multiplied by number
@@ -130,6 +135,7 @@ def test_equal_circl_comparison(small_circle, big_circle):
     assert small_circle == small_circle
     assert big_circle == big_circle
 
+
 def test_circle_sorting(small_circle, big_circle, example_circle):
     circles = [big_circle, small_circle, example_circle]
     circles.sort()
@@ -141,3 +147,26 @@ def test_reflected_numerics(example_circle):
         if you multiply them relectivelly
         they return same thing"""
         assert example_circle * 3 == 3 * example_circle
+
+
+def test_regular_division(example_circle):
+        """given user divides with one operator
+        then new circle created with modified radius"""
+        new_circle = example_circle / 2
+        assert new_circle.radius == example_circle.radius / 2
+
+
+def test_error_raised_on_division_with_0_or_negative_inputs(example_circle):
+        """when user divides by 0 or negative number
+        an input error is raised"""
+        with pytest.raises(ValueError):
+                example_circle / -1
+                example_circle / 0
+
+
+def test_self_division(example_circle):
+    """when divided by with /=
+    the current object is modified"""
+    original_radius = example_circle.radius
+    example_circle /= 2
+    assert original_radius / 2 == example_circle.radius
