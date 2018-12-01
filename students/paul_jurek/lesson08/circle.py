@@ -4,8 +4,10 @@ This generates a circle and related methods to
 practice OOP and TDD
 reference: https://startlearning.uw.edu/courses/course-v1:UW+PYTHON210+2018_Winter/courseware/0e928204424a407eac492ebcd2f69adb/d57639f9f0a8498f8578550886710867/?child=first"""
 
+import functools
 import math
 
+@functools.total_ordering
 class Circle:
     """circle geometry object"""
 
@@ -58,3 +60,9 @@ class Circle:
 
     def __rmul__(self, other):
         self.radius *= other
+    
+    def __eq__(self, other):
+        return self.radius == other.radius
+
+    def __lt__(self, other):
+        return self.radius < other.radius

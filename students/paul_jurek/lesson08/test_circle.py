@@ -8,6 +8,14 @@ from circle import Circle
 def example_circle():
     return Circle(4)
 
+@pytest.fixture
+def small_circle():
+    return Circle(2)
+
+@pytest.fixture
+def big_circle():
+    return Circle(20)
+
 def test_cirle_creation(example_circle):
     """when user initiates a circle with no keyword
     and object is created with equivalent radius"""
@@ -103,3 +111,26 @@ def test_circle_multiplies_by_num(example_circle):
     assert example_circle.radius == old_radius * 4
     assert example_circle.diameter == example_circle.radius * 2
 
+
+def test_circle_greater_than_comparison(small_circle, big_circle):
+    assert ~(small_circle > big_circle)
+    assert small_circle < big_circle
+
+
+def test_circle_greater_than_equal_comparison(small_circle, big_circle):
+    assert ~(small_circle >= big_circle)
+    assert small_circle <= big_circle
+    assert small_circle >= small_circle
+    assert big_circle <= big_circle
+
+
+def test_equal_circl_comparison(small_circle, big_circle):
+    assert ~(small_circle == big_circle)
+    assert ~(big_circle == small_circle)
+    assert small_circle == small_circle
+    assert big_circle == big_circle
+
+def test_circle_sorting(small_circle, big_circle, example_circle):
+    circles = [big_circle, small_circle, example_circle]
+    circles.sort()
+    assert circles == [small_circle, example_circle, big_circle]
