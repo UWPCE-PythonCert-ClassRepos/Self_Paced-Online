@@ -54,7 +54,8 @@ class Circle:
         if isinstance(other, Circle):
             return Circle(self.radius + other.radius)
         else:
-            self.radius += other
+            return Circle(self.radius + other)
+        
 
     def __mul__(self, other):
         self.radius *= other

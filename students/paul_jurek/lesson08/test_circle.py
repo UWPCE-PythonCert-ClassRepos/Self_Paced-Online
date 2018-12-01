@@ -86,21 +86,14 @@ def test_circle_can_be_created_from_repr(example_circle):
     assert d.radius == example_circle.radius
 
 
-def test_circle_addition(example_circle):
+def test_circle_basic_addition(example_circle):
     """given two circles are added
     then the radius is added and a new circle is returned"""
     new_circle = example_circle + example_circle
     assert new_circle.radius == example_circle.radius * 2
 
-
-def test_circle_can_grow_with_added_number(example_circle):
-    """given a circle
-    when someone adds a number
-    the circle radius grows"""
-    old_radius = example_circle.radius
-    example_circle + old_radius
-    assert example_circle.radius == old_radius * 2
-    assert example_circle.diameter == example_circle.radius * 2
+    new_circle_num = example_circle + example_circle.radius
+    assert new_circle_num.radius == example_circle.radius * 2
 
 
 def test_circle_multiplies_by_num(example_circle):
@@ -170,3 +163,4 @@ def test_self_division(example_circle):
     original_radius = example_circle.radius
     example_circle /= 2
     assert original_radius / 2 == example_circle.radius
+
