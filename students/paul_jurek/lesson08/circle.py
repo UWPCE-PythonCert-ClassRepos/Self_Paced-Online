@@ -11,7 +11,15 @@ class Circle:
 
     def __init__(self, radius):
         self.radius = radius
-        self._diameter = radius*2
+
+    @property
+    def radius(self):
+        return self._radius
+
+    @radius.setter
+    def radius(self, value):
+        self._radius = value
+        self._diameter = value * 2
 
     @property
     def diameter(self):
@@ -20,7 +28,7 @@ class Circle:
     @diameter.setter
     def diameter(self, value):
         self._diameter = value
-        self.radius = value/2
+        self._radius = value/2
 
     @property
     def area(self):
@@ -35,3 +43,12 @@ class Circle:
 
     def __repr__(self):
         return f'Circle({self.radius})'
+
+    def __add__(self, other):
+        """when another circle is added, create new circle
+        with added radius
+        when number is added, modify existing circle"""
+        if isinstance(other, Circle):
+            return Circle(self.radius + other.radius)
+        else:
+            self.radius += other

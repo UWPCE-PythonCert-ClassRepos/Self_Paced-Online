@@ -66,8 +66,26 @@ def test_repr_gives_correct_output(example_circle):
     then it gives correct response"""
     assert repr(example_circle) == f'Circle({example_circle.radius})'
 
+
 def test_circle_can_be_created_from_repr(example_circle):
     """when a user initiates a circle from a repr
     it creates a circle"""
     d = eval(repr(example_circle))
     assert d.radius == example_circle.radius
+
+
+def test_circle_addition(example_circle):
+    """given two circles are added
+    then the radius is added and a new circle is returned"""
+    new_circle = example_circle + example_circle
+    assert new_circle.radius == example_circle.radius * 2
+
+
+def test_circle_can_grow_with_added_number(example_circle):
+    """given a circle
+    when someone adds a number
+    the circle radius grows"""
+    old_radius = example_circle.radius
+    example_circle + old_radius
+    assert example_circle.radius == old_radius * 2
+    assert example_circle.diameter == example_circle.radius * 2
