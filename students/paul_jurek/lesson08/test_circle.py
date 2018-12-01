@@ -1,5 +1,6 @@
 """test suite for circle class"""
 
+import math
 import pytest
 from circle import Circle
 
@@ -31,3 +32,19 @@ def test_user_can_change_diameter(example_circle):
     example_circle.diameter = new_diameter
     assert example_circle.diameter == new_diameter
     assert example_circle.radius == new_radius
+    assert example_circle.area == math.pi * new_radius ** 2
+
+
+def test_circle_has_correct_area(example_circle):
+    """when user initiates circle
+    then user can access area attribute"""
+    assert example_circle.area == math.pi * example_circle.radius ** 2
+
+
+def test_user_cannot_change_area_directly(example_circle):
+    """when user tries to change area
+    they get attribute error"""
+    with pytest.raises(AttributeError):
+        example_circle.area = 55
+
+
