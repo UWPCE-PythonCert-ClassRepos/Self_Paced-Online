@@ -134,3 +134,10 @@ def test_circle_sorting(small_circle, big_circle, example_circle):
     circles = [big_circle, small_circle, example_circle]
     circles.sort()
     assert circles == [small_circle, example_circle, big_circle]
+
+
+def test_reflected_numerics(example_circle):
+        """given a circle and object
+        if you multiply them relectivelly
+        they return same thing"""
+        assert example_circle * 3 == 3 * example_circle
