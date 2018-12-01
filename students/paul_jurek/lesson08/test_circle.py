@@ -53,3 +53,21 @@ def test_circle_can_be_created_from_diameter():
     a circle object is returned with correct radius"""
     c = Circle.from_diameter(8)
     assert c.radius == 4
+
+
+def test_str_gives_correct_output(example_circle):
+    """when user call str method
+    the correct output is called"""
+    assert example_circle.__str__() == 'Circle with radius: 4'
+
+
+def test_repr_gives_correct_output(example_circle):
+    """when user calls repr
+    then it gives correct response"""
+    assert repr(example_circle) == f'Circle({example_circle.radius})'
+
+def test_circle_can_be_created_from_repr(example_circle):
+    """when a user initiates a circle from a repr
+    it creates a circle"""
+    d = eval(repr(example_circle))
+    assert d.radius == example_circle.radius

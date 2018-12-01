@@ -29,3 +29,9 @@ class Circle:
     @classmethod
     def from_diameter(cls, diameter):
         return cls(diameter/2)
+
+    def __str__(self):
+        return f'Circle with radius: {self.radius}'
+
+    def __repr__(self):
+        return f'Circle({self.radius})'
