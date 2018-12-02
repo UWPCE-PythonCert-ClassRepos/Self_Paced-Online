@@ -14,6 +14,7 @@ def donors():
             'Warren B': [3000.00],
            }
 
+# TODO: this should be in donation_controller
 def test_create_new_donor(donors):
     """given donors dict
     when user creates new donor not in dict
@@ -23,6 +24,7 @@ def test_create_new_donor(donors):
     create_donor(new_donor, donors)
     assert new_donor in donors
 
+# TODO: donation_controller
 def test_create_new_donor_creates_error_if_exists(donors):
     new_donor = 'Warren B'
     assert new_donor in donors
@@ -30,6 +32,7 @@ def test_create_new_donor_creates_error_if_exists(donors):
     with pytest.raises(KeyError) as e:
         create_donor(new_donor, donors)
 
+# TODO: donor
 def test_create_valid_donation(donors):
     """tests that value added to specific donor
     when create donation called"""
@@ -38,6 +41,7 @@ def test_create_valid_donation(donors):
     create_donation('Warren B', 10, donors)
     assert donors['Warren B'] == [3000.00, 10]
 
+# TODO: donation_controller
 def test_error_on_missing_donor(donors):
     """give user tries to add donation for non-existanant donor
     when the amount is applied
@@ -46,9 +50,11 @@ def test_error_on_missing_donor(donors):
     with pytest.raises(KeyError) as e:
         create_donation('The Bears', 10, donors)
 
+# TODO: donor
 def test_summarize_donor(donors):
         assert summarize_donor('Doug F', donors) == ('Doug F', 105.00, 2, 52.50)
 
+# TODO: donation_controller
 def test_send_letters(donors, tmpdir):
         assert len(tmpdir.listdir())==0
         # verify we have donors otherwise last assert will fail
@@ -61,6 +67,7 @@ test_data = [(100, 100.00),
              (1, 1.00),
              (0.5, 0.50)]
 @pytest.mark.parametrize("input, expected", test_data)
+# TODO: donation_controller
 def test_formatting_of_thankyou(input, expected):
         fullname = 'Paul Jurek'
         expected_string = f"""Dear {fullname},
@@ -72,8 +79,3 @@ def test_formatting_of_thankyou(input, expected):
                        Sincerely,
                           -The Team"""
         assert create_donation_thank_you(fullname=fullname, amount=input) == expected_string
-
-def test_thank_you_creates_donor():
-        """given user selects thank you and enters valid donor and amount
-        the donors object is updated to have new input"""
-        pass
