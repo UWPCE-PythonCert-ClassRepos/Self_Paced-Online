@@ -14,7 +14,7 @@ def donors():
             'Warren B': [3000.00],
            }
 
-# TODO: this should be in donation_controller
+# TODO: donation_controller
 def test_create_new_donor(donors):
     """given donors dict
     when user creates new donor not in dict
@@ -32,15 +32,6 @@ def test_create_new_donor_creates_error_if_exists(donors):
     with pytest.raises(KeyError) as e:
         create_donor(new_donor, donors)
 
-# TODO: donor
-def test_create_valid_donation(donors):
-    """tests that value added to specific donor
-    when create donation called"""
-    assert donors['Warren B'] == [3000.00]
-
-    create_donation('Warren B', 10, donors)
-    assert donors['Warren B'] == [3000.00, 10]
-
 # TODO: donation_controller
 def test_error_on_missing_donor(donors):
     """give user tries to add donation for non-existanant donor
@@ -49,10 +40,6 @@ def test_error_on_missing_donor(donors):
     assert 'The Bears' not in donors
     with pytest.raises(KeyError) as e:
         create_donation('The Bears', 10, donors)
-
-# TODO: donor
-def test_summarize_donor(donors):
-        assert summarize_donor('Doug F', donors) == ('Doug F', 105.00, 2, 52.50)
 
 # TODO: donation_controller
 def test_send_letters(donors, tmpdir):
