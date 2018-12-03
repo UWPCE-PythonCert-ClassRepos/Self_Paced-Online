@@ -9,17 +9,21 @@ def exchange_first_last(seq):
     first = seq[0]
     last = seq[-1]
     print("first is: ", first, " last is: ", last)
+    # need to break a string apart
+    for i in a_string:
+        work_tuple = [",".join(seq)]
+        print(work_tuple)
     # use assignment to replace first with last and last with first
-    seq[0] = last
-    seq[-1] = first
-    print(seq)
+    #work_tuple[0] = last
+    #work_tuple[-1] = first
+    #print(work_tuple)
     
     
     
     
 
 exchange_first_last(a_string)
-exchange_first_last(a_tuple)
+#exchange_first_last(a_tuple)
 
 
 
