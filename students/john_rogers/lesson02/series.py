@@ -39,6 +39,7 @@ def main():
     print('*' * 25)
     print('the 7th element in the fibonacci series is ' + str(fibonacci(7)))
     print('the 5th element in the lucas series is ' + str(lucas(5)))
+    print(sum_series(5))
 
 
 def fibonacci(n):
@@ -77,11 +78,17 @@ def sum_series(n, n0=0, n1=1):
     """
     Let user decide which series to use based on input; default to fibonacci
     :param n: Only required parameter, which element to return from the series
-    :param n1: optional param, defaults to 0
-    :param n2: optional param, defaults to 1
+    :param n0: Optional parameter, defaults to 0.
+    :param n1: Optional parameter, defaults to 1.
     :return: Return the nth value from a given series (Fibonacci, Lucas, other)
     """
-    pass
+    if n < 0:
+        print('invalid input')
+    elif n == 0:
+        return n0
+    elif n == 1:
+        return n1
+    return sum_series(n - 1) + (n - 2)
 
 
 if __name__ == '__main__':
