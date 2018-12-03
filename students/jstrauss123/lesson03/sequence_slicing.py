@@ -6,28 +6,30 @@ a_tuple = (2, 54, 13, 12, 5, 32)
 
 # define function - accept a sequence and return a copy of sequence with first and last items exchanged
 def exchange_first_last(seq):
+    # assign first and last value
     first = seq[0]
     last = seq[-1]
-    print("first is: ", first, " last is: ", last)
-    # need to break a string apart
-    for i in a_string:
-        #work_list = list(",".join(seq))
-        work_list = list(seq)
-    print(work_list)
-    # use assignment to replace first with last and last with first
+    # create a working list
+    work_list = list(seq)
+    # assign first to last and last to first value
     work_list[0] = last
     work_list[-1] = first
-    # convert list to string
-    seq1 = str("".join(work_list))
-    #print(work_list)
-    print(seq1)
+    # test seq type if str convert back to str
+    if type(seq) == str:
+        # convert list back to string
+        outseq = str("".join(work_list))
+    else:
+        outseq = work_list
+    print(outseq)
+    
+    
     
     
     
     
 
 exchange_first_last(a_string)
-#exchange_first_last(a_tuple)
+exchange_first_last(a_tuple)
 
 
 
