@@ -1,9 +1,5 @@
 # Basics of sequence slicing
 
-# create string and tuple values
-a_string = "this is a string"
-a_tuple = (2, 54, 13, 12, 5, 32)
-
 # function - accept a sequence and return a copy of sequence with first and last items exchanged
 def exchange_first_last(seq):
     # assign first and last value
@@ -28,7 +24,6 @@ def exchange_first_last(seq):
 def  remove_every_other_item(seq):
     work_list = list(seq)
     work_list = work_list[0:-1:2]
-    #print(work_list)
     if type(seq) == str:
         # convert list back to string
         outseq = str("".join(work_list))
@@ -39,14 +34,33 @@ def  remove_every_other_item(seq):
     return(outseq)
     
     
+# function - accept a sequence and maniuplate first and last four, return what's left every other
+def  first_last_four(seq):    
+    work_list = list(seq)
+    # remove first four items from list
+    work_list = work_list[4:-4]
+    work_list = work_list[0:-1:2]
+    if type(seq) == str:
+        # convert list back to string
+        outseq = str("".join(work_list))
+    elif type(seq) == tuple:
+        outseq = tuple(work_list)
+    else:
+        outseq = work_list
+    return(outseq)
     
     
+# create string and tuple values
+a_string = "this is a string"
+a_tuple = (2, 54, 13, 12, 5, 32)    
     
 
 #exchange_first_last(a_string)
 #exchange_first_last(a_tuple)
-remove_every_other_item(a_string)
-remove_every_other_item(a_tuple)
+#remove_every_other_item(a_string)
+#remove_every_other_item(a_tuple)
+first_last_four(a_string)
+first_last_four(a_tuple)
 
 
 
@@ -61,5 +75,8 @@ if __name__ == "__main__":
    assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
    assert remove_every_other_item(a_string) == "ti sasrn"
    assert remove_every_other_item(a_tuple) == (2, 13, 5)
+   assert first_last_four(a_string) == " sas"
+   assert first_last_four(a_tuple) == ()
+   
 
    print("validation tests passed")
