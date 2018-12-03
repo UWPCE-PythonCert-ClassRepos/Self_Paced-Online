@@ -50,7 +50,6 @@ def  first_last_four(seq):
         outseq = work_list
     return(outseq)
 
-
 # function - accept sequence and return items in reverse    
 def reverse_items(seq):
     work_list = list(seq)
@@ -65,6 +64,28 @@ def reverse_items(seq):
         outseq = work_list
     return(outseq)
 
+
+# function - accept a sequence, return in new order: middle third/last third/first third
+def  return_in_thirds(seq):    
+    work_list = list(seq)
+    list_len = (len(work_list) // 3)
+    #list_len = list_len // 3
+    print(list_len)
+    work_list1 = work_list[0:list_len]
+    work_list = work_list[
+    work_list = work_list[list_len+
+    work_list2 = work_list[list_len:3+list_len]
+    work_list3 = work_list[x:-1]
+    if type(seq) == str:
+        # convert list back to string
+        outseq = str("".join(work_list))
+    elif type(seq) == tuple:
+        outseq = tuple(work_list)
+    else:
+        outseq = work_list
+    return(outseq)
+    print(outseq)
+    
 # create string and tuple values
 a_string = "this is a string"
 a_tuple = (2, 54, 13, 12, 5, 32)    
@@ -78,6 +99,8 @@ a_tuple = (2, 54, 13, 12, 5, 32)
 #first_last_four(a_tuple)
 #reverse_items(a_string)
 #reverse_items(a_tuple)
+return_in_thirds(a_string)
+return_in_thirds(a_tuple)
 
 
 
