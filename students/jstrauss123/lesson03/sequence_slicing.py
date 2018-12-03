@@ -18,9 +18,11 @@ def exchange_first_last(seq):
     if type(seq) == str:
         # convert list back to string
         outseq = str("".join(work_list))
+    elif type(seq) == tuple:
+        outseq = tuple(work_list)
     else:
         outseq = work_list
-    print(outseq)
+    return(outseq)
     
     
     
@@ -28,19 +30,19 @@ def exchange_first_last(seq):
     
     
 
-exchange_first_last(a_string)
-exchange_first_last(a_tuple)
+#exchange_first_last(a_string)
+#exchange_first_last(a_tuple)
 
 
 
 
 
-# assert tests
-#if __name__ == "__main__":
-#   # this runs only if run as a script
-#   print("Running validation tests")
-#   # validate exchange_first_last function returning appropriate value
-#   assert exchange_first_last(a_string) == "ghis is a strint"
-#   assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
-#
-#    print("validation tests passed")
+#assert tests
+if __name__ == "__main__":
+   # this runs only if run as a script
+   print("Running validation tests")
+   # validate exchange_first_last function returning appropriate value
+   assert exchange_first_last(a_string) == "ghis is a strint"
+   assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
+
+   print("validation tests passed")
