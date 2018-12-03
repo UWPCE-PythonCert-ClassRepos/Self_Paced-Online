@@ -68,14 +68,23 @@ def reverse_items(seq):
 # function - accept a sequence, return in new order: middle third/last third/first third
 def  return_in_thirds(seq):    
     work_list = list(seq)
+    print("orig list", work_list)
+    # determine length of list and divide by 3
     list_len = (len(work_list) // 3)
-    #list_len = list_len // 3
-    print(list_len)
+    # assign first third to list1 and remove from orig list
     work_list1 = work_list[0:list_len]
-    work_list = work_list[
-    work_list = work_list[list_len+
-    work_list2 = work_list[list_len:3+list_len]
-    work_list3 = work_list[x:-1]
+    work_list = work_list[list_len:]
+    print("list after first third", work_list)
+    # assign next third to list2 and remove from orig list
+    work_list2 = work_list[0:list_len]
+    work_list = work_list[list_len:]
+    print("list with last third", work_list)
+    # assign the remainder to list3
+    work_list3 = work_list
+    print(work_list)
+    # assign thirds by middle (2), last (3) and first (1)
+    outseq = work_list2 + work_list3 + work_list1
+    print(outseq)
     if type(seq) == str:
         # convert list back to string
         outseq = str("".join(work_list))
