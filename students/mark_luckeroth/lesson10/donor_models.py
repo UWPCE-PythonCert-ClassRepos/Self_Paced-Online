@@ -20,6 +20,9 @@ class Donor():
         else:
             self.donations.append(amount)
 
+    def challenge(self, factor):
+        self.donations = list(map(lambda x : x*factor, self.donations))
+
     @property
     def total(self):
         return sum(self.donations)
@@ -92,7 +95,11 @@ class DonorCollection():
             self.add_donor(first, last, amount)
 
     def challenge(self, factor):
-        new_data = DonorCollection(self.donorlist)
+        self.save_donors()
+        new_data = DonorCollection()
+        new_data.load_donors()
+        for donor in new_data.donorlist:
+            donor.challenge(factor)
         return new_data
 
 

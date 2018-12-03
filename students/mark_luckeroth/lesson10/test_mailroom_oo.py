@@ -91,3 +91,18 @@ def test_update():
     assert c.donorlist[5].last_name == 'Luckeroth'
     assert c.donorlist[5].donations == [1000.]
     assert c.donorlist[0].donations == [10., 10., 10., 10., 1000.]
+
+
+def test_new():
+    c = DonorCollection()
+    c.load_donors()
+    d = c.challenge(2)
+    assert 2*c.donorlist[0].donations[0] == d.donorlist[0].donations[0]
+    assert 2*c.donorlist[0].donations[1] == d.donorlist[0].donations[1]
+    assert 2*c.donorlist[0].donations[2] == d.donorlist[0].donations[2]
+    assert 2*c.donorlist[0].donations[3] == d.donorlist[0].donations[3]
+    assert 2*c.donorlist[1].donations[0] == d.donorlist[1].donations[0]
+    assert 2*c.donorlist[1].donations[1] == d.donorlist[1].donations[1]
+    assert 2*c.donorlist[1].donations[2] == d.donorlist[1].donations[2]
+    assert 2*c.donorlist[1].donations[3] == d.donorlist[1].donations[3]
+    assert d.donorlist is not c.donorlist
