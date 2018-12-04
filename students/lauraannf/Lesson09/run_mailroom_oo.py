@@ -6,13 +6,13 @@ Created on Thu Nov 29 11:51:56 2018
 """
 
 
-from mailroom_oo import *
+import mailroom_oo as moo
 import sys
 import datetime
 import os
 
 
-donor_list = Donor_List()
+donor_list = moo.Donor_List()
 donor_list.add_donation('Frank Reynolds', [10, 20, 50])
 donor_list.add_donation('Dee Reynolds', [25, 100])
 donor_list.add_donation('Dennis Reynolds', [10, 50])
@@ -50,11 +50,11 @@ def add_donor(donor_list):
 
 def donor_data(donor_list):
     while True:
-        arg_dict = {'1': list_donors, '2': view_donor, '3': add_donor, 
+        arg_dict = {'1': moo.list_donors, '2': view_donor, '3': add_donor,
                     '4': quit_program}
         task = input('Choose an action: [1] List Donors; '
                      '[2] View Donor Information; '
-                     '[3] Add Donor; [4] Quit>') 
+                     '[3] Add Donor; [4] Quit>')
         try:
             arg_dict[task](donor_list)
         except KeyError:
@@ -120,7 +120,7 @@ def main():
     print('----------Mailroom----------')
     print('WARNING: This is all CAPS senstive for now!!!!!!!!!!')
     arg_dict = {'1': donor_data, '2': create_letters,
-                '3': create_report, '4': quit_program}
+                '3': moo.create_report, '4': quit_program}
     task = input('Choose an action: [1] Donor Database; ' 
                  '[2] Create Thank You Letters; [3] Create a Full Report; ' 
                  '[4] Quit>')
