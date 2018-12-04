@@ -8,7 +8,7 @@ from collections import OrderedDict
 class Donor:
     """This is the donor class, which holds info for individual donors.
     """
-    def __init__(self, name, *args):
+    def __init__(self, *args, name=None,):
         self._name = name.title()
         self._donations = [x for x in args]
 
@@ -20,6 +20,12 @@ class Donor:
         return self._name
 
     @property
+    def f_name(self):
+        """File name."""
+        f_name = self.name.replace(' ', '_')
+        return f_name
+
+    @property
     def donations(self):
         return self._donations
 
@@ -27,7 +33,7 @@ class Donor:
         total_dons = sum(self._donations)
         return total_dons
 
-    def  num_dons(self):
+    def num_dons(self):
         num_dons = len(self._donations)
         return num_dons
 
@@ -39,57 +45,81 @@ class Donor:
         avg_don = sum(self._donations) / len(self._donations)
         return avg_don
 
+    def note_gen(self, dest='s'):
+        """Creates a thank you note. Includes a required positional argument of the intended recipient's info,
+        and a kwarg "dest" that defaults to printing to screen but may be set to generate a file."""
+        message = "Dear {}, \nThank you for your generous donation of ${:.02f}. Please rest assured" \
+                  " that we will use at least \n95% of your contribution to feed the homeless to wolves." \
+                  " We could not do this work without you. \nSincerely, \nThe Billionaires' Club".format(self._name,
+                                                                                                        self.last_don())
+        if dest == 's':
+            print(message)
+        elif dest == 'f':
+            return message
+
+
 class DataBase:
     """This is the database class that stores all the donor info together."""
 
     def __init__(self, db):
+        """Initialize the database."""
         self.data = db
 
     def add_donor(self, other):
+        """Adds a donor to the database"""
         self.data.append(other)
 
     def data_report(self):
+        """Prints a summary data report about past donors to screen."""
         for i in self.data:
             print('{i.name():26}${i.total_dons:>13.2f}{i.num_dons:>12} ${i.avg_don:>12.2f}'.format(**i))
 
     def mass_mail(self):
+        """Sends a thank you note to all past donors, prints them to file."""
+        for donor in self.data:
+            letter_name = donor.f_name + '.txt'
+            with open(letter_name, 'w') as out_file:
+                out_file.write(donor.note_gen(self, dest='f'))
+                out_file.close()
 
+    def update_donor(self, name=None, donation=None):
+        """Updates a donor currently in the database."""
+        for donor in self.data:
+            if donor.name == name:
+                donor.new_don(donation)
 
-# database set up
-def initialize_database():
-    """This function intializes the database when called."""
-    william_gates_iii = {'f_name': 'William_Gates_III', 'donor': 'William Gates, III', 'total_donated': 653784.49,
-                         'num_donations': 2, 'avg_donated': 326892.24, 'last_donation': 30000.00}
-    mark_zuckerberg = {'f_name': 'Mark_Zuckerberg', 'donor': 'Mark Zuckerberg', 'total_donated': 16396.10,
-                       'num_donations': 3, 'avg_donated': 5465.37, 'last_donation': 5000.25}
-    jeff_bezos = {'f_name': 'Jeff_Bezos', 'donor': 'Jeff Bezos', 'total_donated': 877.33, 'num_donations': 1,
-                  'avg_donated': 877.33, 'last_donation': 877.33}
-    paul_allen = {'f_name': 'Paul_Allen', 'donor': 'Paul Allen', 'total_donated': 708.42, 'num_donations': 3,
-                  'avg_donated': 236.14, 'last_donation': 100.95}
-
-    dB = {'william_gates_iii': william_gates_iii, 'mark_zuckerberg': mark_zuckerberg, 'jeff_bezos': jeff_bezos,
-          'paul_allen': paul_allen}
-    return dB
-
-
-# Functions relating to the start menu
-def start_control(dB):
-    """Creates the control flow for the start menu."""
-    start_menu_display()
-    response = start_user_input()
-    try:
-        return start_menu_logic[response](dB)
-    except KeyError:
-        print("You have input an invalid instruction. Please enter 1, 2, 3, or 4")
+    def current_donors(self, *args):
+        """Displays a list of current donors."""
+        names = [item.name for item in self.data]
+        last_name = names.pop(len(names) - 1)
+        l = len(names)
+        display = "The current donors are" + (l * " {},").format(*names) + " and {}.".format(last_name)
+        print(display)
         return
 
 
-def saty_control(dB):
+# Functions that I want to keep outside of the classes.
+
+def initialize_database():
+    """This function intializes the database when called."""
+    donor1 = Donor(20000,3000, name='William Gates, III')
+    donor2 = Donor(100, 776.21, name='Mark Zuckerberg')
+    donor3 = Donor(100, 253.43, name='Jeff Bezos')
+    donor4 = Donor(100.95, name='Paul Allen')
+
+    temp_db = [donor1, donor2, donor3, donor4]
+    db = DataBase(temp_db)
+    return db
+
+
+# Functions relating to the start menu
+
+def saty_control(db):
     """Creates the control flow for the send a thank you menu."""
     saty_menu_display()
-    response = saty_user_input()
+    response1 = saty_user_input()
     try:
-        return saty_menu_logic[response](dB)
+        return saty_menu_logic[response1](db)
     except KeyError:
         print("You have input an invalid instruction. Please enter 1, 2, 3, or 4")
         return
@@ -127,57 +157,7 @@ def saty_user_input():
     return task
 
 
-def new_donor(new_donor_dict, dB):
-    """Creates a new donor in the database and requests donation ammount."""
-    up_dict = {new_donor_dict['donor_name_key']: {'f_name': new_donor_dict['donor_name_key'].title(),
-                                                  'donor': new_donor_dict['donor'],
-                                                  'total_donated': new_donor_dict['donation'], 'num_donations': 1,
-                                                  'avg_donated': new_donor_dict['donation'],
-                                                  'last_donation': new_donor_dict['donation']}}
-    dB.update(up_dict)
-    return dB
-
-
-def update_donor(new_don_dict, dB):
-    """Updates an existing donor in the database with a new donation."""
-    dB[new_don_dict['donor_name_key']]['total_donated'] += new_don_dict['donation']
-    dB[new_don_dict['donor_name_key']]['num_donations'] += 1
-    dB[new_don_dict['donor_name_key']]['avg_donated'] = dB[new_don_dict['donor_name_key']]['total_donated'] / \
-                                                        dB[new_don_dict['donor_name_key']]['num_donations']
-    dB[new_don_dict['donor_name_key']]['last_donation'] = new_don_dict['donation']
-    return dB
-
-
-def show_current_names(dB):
-    """Displays the names of all previous donors."""
-    names = [item['donor'] for item in dB.values()]
-    # for item in dB.values():
-    #    names.append(item['donor'])
-    last_name = names.pop(len(names) - 1)
-    l = len(names)
-    display = "The current donors are" + (l * " {},").format(*names) + " and {}.".format(last_name)
-    print(display)
-    return  # Returns you to the send a thank you menu
-    # return display #, saty_control(dB)
-
-
-def create_report(dB):
-    """Creates a summary report for all current donors."""
-    dict_list = OrderedDict(sorted(dB.items(), key=lambda x: x[1]['total_donated'], reverse=True))
-    print('Donor Name                | Total Given | Num Gifts | Average Gift')
-    print('------------------------------------------------------------------')
-    for i in dict_list:
-        print('{donor:26}${total_donated:>13.2f}{num_donations:>12} ${avg_donated:>12.2f}'.format(**dB[i]))
-    return
-
-
-def mass_mail(dB):
-    for item in dB.values():
-        print_letters(item)
-    return start_control(dB)
-
-
-def ud_name_handle(a, dB, io='out'):
+def ud_name_handle(a, names, io='out'):
     """This function tests whether or not you selected the appropriate database operation by checking to see if
        the donor is already in the database. Whether or not that is a problem is handled by the io kwarg.
        args:
@@ -199,7 +179,10 @@ def ud_name_handle(a, dB, io='out'):
     if a == False:
         return False
     try:
-        x = [a.title() in dB[key].values() for key in dB.keys()].count(True)
+        if a in names:
+            x = 1
+        else:
+            x = 0
         if count == x:
             return a
         elif count != x:
@@ -249,28 +232,26 @@ def q_check(a):
         return False
 
 
-def nd_control(dB):
+def nd_control(db):
     """Function that calls functions to create and add a new donor to database, print letter to screen."""
-    name = ud_name_handle(q_check(name_input()),dB, io = 'out')
+    current_names = [item.name for item in db.data]
+    name = ud_name_handle(q_check(name_input()),current_names, io = 'out')
     if name == False:
         return False
     name = str(name)
     donation = ud_don_handle(q_check(don_input()))
     if donation == False:
         return False
-    donor_name_key = name.lower()
-    donor_name_key = donor_name_key.replace(' ', '_')
-    donor = name.title()
-    new_donor_dict = {'donor_name_key': donor_name_key, 'donor': donor, 'donation': donation}
-    #will add try except to check for donor actually being new in L5
-    new_donor(new_donor_dict, dB)
-    note_gen(dB[new_donor_dict['donor_name_key']])
-    return dB
+    new_don = Donor(name=name, donation=donation)
+    new_don.note_gen(dest='s')
+    db.add_donor(new_don)
+    return db
 
 
-def ud_control(dB):
+def ud_control(db):
     """Function that calls functions to update a donor in the database, print letter to screen."""
-    name = ud_name_handle(q_check(name_input()),dB, io = 'in')
+    current_names = [item.name for item in db.data]
+    name = ud_name_handle(q_check(name_input()),current_names, io = 'in')
     if name == False:
         return False
     name = str(name)
@@ -278,33 +259,11 @@ def ud_control(dB):
     if donation == False:
         return False
     #will add try except to check for donor actually being new in L5
-    donor_name_key = name.lower()
-    donor_name_key = donor_name_key.replace(' ', '_')
-    donor = name.title()
-    up_donor_dict = {'donor_name_key': donor_name_key, 'donor': donor, 'donation': donation}
-    update_donor(up_donor_dict, dB)
-    note_gen(dB[up_donor_dict['donor_name_key']])
-    return dB
-
-
-def print_letters(donor_dict):
-    """This function takes a string and makes a document with it."""
-    letter_name = donor_dict['f_name']+'.txt'
-    with open(letter_name, 'w') as out_file:
-        out_file.write(note_gen(donor_dict, dest='f'))
-        out_file.close()
-
-
-def note_gen(person_dict, dest = 's'):
-    """Creates a thank you note. Includes a required positional argument of the intended recipient's info,
-    and a kwarg "dest" that defaults to printing to screen but may be set to generate a file."""
-    message = "Dear {donor}, \nThank you for your generous donation of ${last_donation:.02f}. Please rest assured" \
-              " that we will use at least \n95% of your contribution to feed the homeless to wolves. We could not do " \
-              "this work without you. \nSincerely, \nThe Billionaires' Club".format(**person_dict)
-    if dest == 's':
-        print(message)
-    elif dest == 'f':
-        return message
+    db.update_donor(name=name, donation=donation)
+    for donor in db.data:
+        if donor.name == name:
+            donor.note_gen(dest='s')
+    return db
 
 
 def quit_program(db):
@@ -317,10 +276,34 @@ def quit_saty(db):
     print("Bye bye!")
     return False
 
+def main_2(db):
+    while True:
+        x = saty_control(db)
+        if x == False:
+            break
 
 # This is the beginning of the executed program.
 
 if __name__ == "__main__":
-    start_menu_logic = {'1': main_2, '2': create_report, '3': mass_mail, '4': quit_program}
-    saty_menu_logic = {'1': show_current_names, '2': ud_control, '3': nd_control, '4': quit_saty}
-    main()
+    """Actual program."""
+    # Initialize database
+    db = initialize_database()
+
+    # Set up the switch dicts
+    start_menu_logic = {'1': main_2, '2': db.data_report, '3': db.mass_mail, '4': quit_program}
+    saty_menu_logic = {'1': db.current_donors, '2': ud_control, '3': nd_control, '4': quit_saty}
+
+    # Initialize database
+    db = initialize_database()
+
+    # Enter control flow
+    while True:
+
+        start_menu_display()
+        response = start_user_input()
+        try:
+            start_menu_logic[response](db)
+        except KeyError:
+            print("You have input an invalid instruction. Please enter 1, 2, 3, or 4")
+
+
