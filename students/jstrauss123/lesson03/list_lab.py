@@ -10,6 +10,11 @@ fruit.append(response)
 print(fruit)
 fruit_count = len(fruit)
 print(fruit_count)
-#response = input("Select a number between 1 and", fruit_count, " > ")
-print("Select a number between 1 and", fruit_count, " > ")
+# prompt for number and display fruit by index
+response = input("Select a number > ")
+numval = int(response)
+#numval = numval -1
+print("index ", numval, "is ", fruit[numval-1])
+
+
 
