@@ -13,8 +13,19 @@ print(fruit_count)
 # prompt for number and display fruit by index
 response = input("Select a number > ")
 numval = int(response)
-#numval = numval -1
+# print fruit by index adjusting by "-1"
 print("index ", numval, "is ", fruit[numval-1])
+# prompt for another fruit and add to beginning of list using "+" method
+prompt = input("Chose another fruit > ")
+new_list = []
+new_list.append(prompt)
+fruit = new_list + fruit
+print(fruit)
+#new_list1 = list[prompt]
+#fruit = new_list + fruit
+#print(fruit)
+#print(new-list)
+#print(new_list1)
 
 
 
