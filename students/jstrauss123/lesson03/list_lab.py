@@ -4,8 +4,12 @@
 # create list of fruit
 fruit = ["Apples", "Pears", "Oranges", "Peaches"]
 print(fruit)
+# request response from user and append to list
 response = input("Choose a fruit > ")
-print(response)
 fruit.append(response)
 print(fruit)
+fruit_count = len(fruit)
+print(fruit_count)
+#response = input("Select a number between 1 and", fruit_count, " > ")
+print("Select a number between 1 and", fruit_count, " > ")
 
