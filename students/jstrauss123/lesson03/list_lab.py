@@ -16,16 +16,23 @@ numval = int(response)
 # print fruit by index adjusting by "-1"
 print("index ", numval, "is ", fruit[numval-1])
 # prompt for another fruit and add to beginning of list using "+" method
-prompt = input("Chose another fruit > ")
+prompt = input("Choose another fruit > ")
 new_list = []
 new_list.append(prompt)
+# concatenate lists
 fruit = new_list + fruit
 print(fruit)
-#new_list1 = list[prompt]
-#fruit = new_list + fruit
-#print(fruit)
-#print(new-list)
-#print(new_list1)
+# prompt for another fruit and add to beginning of list using insert
+prompt = input("Choose another fruit > ")
+# append new fruit idx 0
+fruit.insert(0, prompt)
+print(fruit)
+# print all fruit that starts with P using for loop.
+for i in fruit:
+    for elem in i:
+        if elem == "P":
+            print(i)
+            
 
 
 
