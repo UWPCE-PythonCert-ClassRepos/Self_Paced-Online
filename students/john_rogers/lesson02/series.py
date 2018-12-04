@@ -39,7 +39,7 @@ def main():
     print('*' * 25)
     print('the 7th element in the fibonacci series is ' + str(fibonacci(7)))
     print('the 5th element in the lucas series is ' + str(lucas(5)))
-    print(sum_series(5))
+    print(sum_series(7))
 
 
 def fibonacci(n):
@@ -70,8 +70,8 @@ def lucas(n):
         return 2
     elif n == 1:
         return 1
-
-    return lucas(n - 1) + lucas(n - 2)
+    else:
+        return lucas(n - 1) + lucas(n - 2)
 
 
 def sum_series(n, n0=0, n1=1):
@@ -88,7 +88,8 @@ def sum_series(n, n0=0, n1=1):
         return n0
     elif n == 1:
         return n1
-    return sum_series(n - 1) + (n - 2)
+    else:
+        return sum_series(n - 1, n0, n1) + sum_series(n - 2, n0, n1)
 
 
 if __name__ == '__main__':
