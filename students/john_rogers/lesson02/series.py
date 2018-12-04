@@ -34,12 +34,16 @@ def main():
     assert lucas(5) == 11
     assert lucas(6) == 18
     assert lucas(7) == 29
-    print('*' * 25)
+    assert sum_series(5) == 5
+    assert sum_series(5, n0=2, n1=1) == 11
+    assert sum_series(6, n0=2, n1=1) == 18
+    print('*' * 30)
     print('all assertion tests have passed')
-    print('*' * 25)
+    print('*' * 30)
     print('the 7th element in the fibonacci series is ' + str(fibonacci(7)))
     print('the 5th element in the lucas series is ' + str(lucas(5)))
-    print(sum_series(7))
+    print('sum_series with 7 and default values is ' + str(sum_series(7)))
+    print('sum_series with 7 and n0=2 and n1 =1 is ' + str(sum_series(7, n0=2, n1=1)))
 
 
 def fibonacci(n):
