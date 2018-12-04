@@ -31,7 +31,7 @@ def view_donor(donor_list):
                 donor_list.add_donation(name, new_donation)
                 donor_list.donors[name].list_donations
             else:
-                quit_program()
+                quit_program(donor_list)
         else:
             print('no such donor')
             break
@@ -41,7 +41,7 @@ def add_donor(donor_list):
     while True:
         name = input('Type Donor Name or q to quit?>')
         if name == 'q':
-            quit_program()
+            quit_program(donor_list)
         else:
             donation = input('Donation Amount?>')
             donor_list.add_donation(name, donation)
