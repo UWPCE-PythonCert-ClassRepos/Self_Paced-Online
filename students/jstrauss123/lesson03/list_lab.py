@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+
 # Series 1 - create a list, display and ask user for number input
 # create list of fruit
 fruit = ["Apples", "Pears", "Oranges", "Peaches"]
@@ -47,17 +47,16 @@ response = input("Choose a fruit to delete > ")
 fruit.remove(response)
 print(fruit)
 print(" ")
-"""
+
 # series 3
 # loop through fruit list and prompt user by fruit name if they like it or not. remove if answer is no
 response = input("Press enter to continue with series 3 > ")
 fruit = ["Apples", "Pears", "Oranges", "Peaches"]
 fruit1 = list(fruit)
 print(fruit)
-# loop through list and prompt user for yes, keep the item for no, delete it
+# loop through list and prompt user for yes, keep the item. for no, delete it
 for i in fruit1:
     response = input("Do you like {} (yes/no) ? ".format(i.lower()))
-    print(response)
     while True:
         if response == 'no':
             print("removing ", i)
@@ -68,19 +67,31 @@ for i in fruit1:
         else:
             print("Please enter yes or no")
             response = input("Do you like {} (yes/no) ? ".format(i.lower()))
-    #while response != 'yes' or response != 'no':
-     #   print("Please enter yes or no")
-      #  response = input("Do you like {} yes/no? ".format(i.lower()))
-       # print(response, i)
-    #if response == 'no':
-     #   print("you answered no")
-        #fruit.remove(i)
-    #else:
-     #   break
 print(fruit)
 print(" ")
 
-    
+
+# series 4
+# make copy of list, reverse letters in each fruit, delete last item in original list. display both lists
+response = input("Press enter to continue with series 4 > ")
+fruit = ["Apples", "Pears", "Oranges", "Peaches"]
+print(fruit)    
+# reverse letter in each fruit and add to list oopy
+str1 = ""
+fruit1 = list()
+# copy list reversing fruit letters
+for i in fruit:
+    str = ""
+    for elem in i:
+        str1 = elem + str1
+    fruit1.append(str1)
+    str1 = ""   
+# delete last fruit in original list
+fruit.pop()
+print(fruit)
+print(fruit1)
+
+
     
 
 
