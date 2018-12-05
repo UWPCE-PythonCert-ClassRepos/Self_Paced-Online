@@ -20,6 +20,13 @@ class Donor():
         else:
             self.donations.append(amount)
 
+    def challenge(self, factor, min_donation=None, max_donation=None):
+        if min_donation is not None:
+            self.donations = list(filter(lambda x : x > min_donation, self.donations))
+        if max_donation is not None:
+            self.donations = list(filter(lambda x : x < max_donation, self.donations))
+        self.donations = list(map(lambda x : x*factor, self.donations))
+
     @property
     def total(self):
         return sum(self.donations)
@@ -30,7 +37,10 @@ class Donor():
 
     @property
     def average(self):
-        return self.total/self.count
+        if self.count == 0:
+            return 0
+        else:
+            return self.total/self.count
 
     def __lt__(self, other):
         return self.total < other.total
@@ -77,13 +87,13 @@ class DonorCollection():
 
     @property
     def names(self):
-        return [(_.last_name, _.first_name) for _ in self.donorlist]
+        return [(donor.last_name, donor.first_name) for donor in self.donorlist]
 
     def find(self, first, last):
         if (last, first) in self.names:
             return self.donorlist[self.names.index((last, first))]
         else:
-            return False
+            return None
 
     def update(self, first, last, amount):
         if (last, first) in self.names:
@@ -91,8 +101,12 @@ class DonorCollection():
         else:
             self.add_donor(first, last, amount)
 
-    def challenge(self, factor):
-        new_data = DonorCollection(self.donorlist)
+    def challenge(self, factor, min_donation=None, max_donation=None):
+        self.save_donors()
+        new_data = DonorCollection()
+        new_data.load_donors()
+        for donor in new_data.donorlist:
+            donor.challenge(factor, min_donation, max_donation)
         return new_data
 
 
