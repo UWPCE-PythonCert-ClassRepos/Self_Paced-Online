@@ -33,6 +33,21 @@ for i in fruit:
         if elem == "P":
             print(i)
             
+# series 2
+response = input("Press enter to continue with series 2 > ")
+print(fruit)
+# delete last fruit from list
+fruit.pop()
+print(fruit)
+# ask user for a fruit to delete, delete fruit and show list again
+response = input("Choose a fruit to delete > ")
+fruit.remove(response)
+print(fruit)
+
+# series 3
+
+
+
 
 
 
