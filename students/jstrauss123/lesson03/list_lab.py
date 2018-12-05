@@ -32,9 +32,12 @@ for i in fruit:
     for elem in i:
         if elem == "P":
             print(i)
+print(" ")
             
 # series 2
+# display list of fruit, delete last fruit in list, prompt user to choose a fruit to delete
 response = input("Press enter to continue with series 2 > ")
+fruit = ["Apples", "Pears", "Oranges", "Peaches"]
 print(fruit)
 # delete last fruit from list
 fruit.pop()
@@ -43,8 +46,27 @@ print(fruit)
 response = input("Choose a fruit to delete > ")
 fruit.remove(response)
 print(fruit)
+print(" ")
 
 # series 3
+# loop through fruit list and prompt user by fruit name if they like it or not. remove if answer is no
+response = input("Press enter to continue with series 3 > ")
+fruit = ["Apples", "Pears", "Oranges", "Peaches"]
+print(fruit)
+# loop through list and prompt user for yes, keep the item for no, delete it
+for i in fruit:
+    response = input("Do you like {} (yes/no) ? ".format(i.lower()))
+    print(response)
+    while response != "yes" or response != "no":
+        print("Please enter yes or no")
+        response = input("Do you like {} (yes/no) ? ".format(i.lower()))
+        if response == "no":
+            fruit.remove(i)
+print(fruit)
+print(" ")
+
+    
+    
 
 
 
