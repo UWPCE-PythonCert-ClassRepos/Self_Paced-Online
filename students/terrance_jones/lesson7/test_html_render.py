@@ -225,21 +225,8 @@ def test_attributes():
     assert 'style="text-align: center"' in file_contents
     assert 'id="intro"' in file_contents
 
-def test_hr():
-    """a simple horizontal rule with no attributes"""
-    hr = Hr()
-    file_contents = render_result(hr)
-    print(file_contents)
-    assert file_contents == '<hr />\n'
 
 
-def test_hr_attr():
-    """a horizontal rule with an attribute"""
-    hr = Hr(width=400)
-    file_contents = render_result(hr)
-    print(file_contents)
-    assert file_contents == '<hr width="400" />\n'
-    
 # #####################
 # # indentation testing
 # #  Uncomment for Step 9 -- adding indentation
