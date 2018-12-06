@@ -1,11 +1,11 @@
 class Element:
-    html_open = "<html>"
-    html_close = "</html>"
+    tag = "html"
     indent = "   "
 
     def __init__(self, content=None):
         """
         initialize the Element instance
+        
         :param content: optional input, string to create single line of content
         """
         self.content = []
@@ -15,6 +15,7 @@ class Element:
     def append(self, content):
         """
         append another line to content
+        
         :param content: string to append
         :return: none
         """
@@ -24,12 +25,27 @@ class Element:
     def render(self, file_out, cur_ind=""):
         """
         render Element instance
+        
         :param file_out: object to write rendering to
         :param cur_ind: indentation level to apply to each line
         :return: none
         """
-        file_out.write(cur_ind+Element.html_open+'\n')
-        for line in self.content:
-            file_out.write(cur_ind+Element.indent+line+'\n')
-        file_out.write(cur_ind+Element.html_close+'\n')
+        file_out.write(cur_ind+"<"+self.tag+">"+'\n')
+        for item in self.content:
+            if issubclass(type(item),Element):
+                item.render(file_out, cur_ind+"   ")
+            else:
+                file_out.write(cur_ind+self.indent+item+'\n')
+        file_out.write(cur_ind+"</"+self.tag+">"+'\n')
 
+
+class Html(Element):
+    tag = "html"
+
+
+class Body(Element):
+    tag = "body"
+
+
+class P(Element):
+    tag = "p"
