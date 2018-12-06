@@ -70,7 +70,7 @@ def test_send_letters_to_all_donors(stw, donor1, donor2, tmpdir):
     stw.create_donation(donor=donor2, amount=5)
 
     # verify we have donors otherwise last assert will fail
-    stw.send_thank_you_letters()
+    stw.send_letters_to_everyone(thank_you_directory=tmpdir)
     assert len(tmpdir.listdir()) > 0
 
 def test_next_id_property(stw, donor1, donor2):

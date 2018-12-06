@@ -28,11 +28,11 @@ def main_menu():
     """calls main menu for program"""
     MAIN_MENU_OPTIONS = {'1': create_donation_menu,
                          '2': donor_report_menu,
-                         '3': CONTROLLER.send_thank_you_letters}
+                         '3': send_thank_you_letters}
     user_input = ('Options:\n'
                   '\t1: Create Donation\n'
-                  '\t2: Create a Report\n'
-                  '\t3: Send letters to everyone\n'
+                  '\t2: Create Donor Report\n'
+                  '\t3: Send donors Thank Yous\n'
                   '\t0: Quit\n'
                   'Please input number for option: ')
 
@@ -85,5 +85,10 @@ def donor_report_menu():
     """creates donor report for user"""
     CONTROLLER.donor_report()
 
+
+def send_thank_you_letters():
+    """sends thank you letters to all our donors"""
+    pass
+    
 if __name__ == '__main__':
     main_menu()

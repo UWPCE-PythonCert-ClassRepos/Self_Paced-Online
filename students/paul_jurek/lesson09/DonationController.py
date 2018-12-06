@@ -4,6 +4,7 @@ Expected to have one controller created for each non-profit organization.
 This controller contains information about organization and manages creation
 and management of donations"""
 
+from pathlib import Path
 from Donor import Donor
 
 
@@ -130,4 +131,32 @@ class DonationController:
             print(f"{summary[1]:<26} ${summary[2]:>13.2f}  "
                 f"{summary[3]:>10}  ${summary[4]:>14.2f}")
 
-        
+    
+    def send_letters_to_everyone(self, 
+                                 thank_you_directory=Path('/mailroom_thankyou_letters')):
+        """creates thank yous for all donors and sends out"""
+        # iterate through donors and donations to send thank yous
+        for id, donor in self.donors.items():
+            file_name = "".join([str(id), '.txt'])
+            full_path = thank_you_directory / file_name
+            donor_info = donor.summarize_donor()
+            thank_you_text = self.create_donation_thank_you(donor=donor, amount=donor_info[2])
+            try:
+                with open(full_path, 'w') as f:
+                    f.write(thank_you_text)
+            except FileNotFoundError:
+                print('Mailroom thank you directory not found.  Please create this directory first.')
+                break
+            else:
+                print(f'Thank you letter for {id} created in "{thank_you_directory}"')
+
+    def create_donation_thank_you(self, donor, amount):
+        """prints thank you message to terminal for donation"""
+        return f"""Dear {donor.fullname},
+
+            Thank you for your very kind donation of ${amount:.2f}.
+
+            It will be put to very good use.
+
+                        Sincerely,
+                            -The Team"""
