@@ -27,7 +27,7 @@ for donor, donations in DEFAULT_DONORS.items():
 def main_menu():
     """calls main menu for program"""
     MAIN_MENU_OPTIONS = {'1': create_donation_menu,
-                         '2': CONTROLLER.send_thank_you_letters,
+                         '2': donor_report_menu,
                          '3': CONTROLLER.send_thank_you_letters}
     user_input = ('Options:\n'
                   '\t1: Create Donation\n'
@@ -79,6 +79,11 @@ def create_donation_menu():
             CONTROLLER.create_donation(donor=donor_selection, amount=donation_amount)
         #CONTROLLER.print_thank_you(fullname=thank_you_input, amount=donation_amount, donors=donors)
             break
+
+
+def donor_report_menu():
+    """creates donor report for user"""
+    CONTROLLER.donor_report()
 
 if __name__ == '__main__':
     main_menu()

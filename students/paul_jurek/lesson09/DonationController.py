@@ -97,6 +97,37 @@ class DonationController:
         donor_list = [":".join([str(donor_id), donor.fullname]) for donor_id, donor in self.donors.items()]
         print("\n".join(donor_list))
 
-        
+    def donor_report(self):
+        """handles process for main screens report selection
+
+        If the user (you) selected “Create a Report”, print a list of your donors,
+        sorted by total historical donation amount.
+        Include Donor Name, total donated, number of donations and average
+        donation amount as values in each row. You do not need to print out all
+        their donations, just the summary info.
+        Using string formatting, format the output rows as nicely as possible.
+        The end result should be tabular (values in each column should align
+        with those above and below)
+        After printing this report, return to the original prompt.
+        At any point, the user should be able to quit their current task and
+        return to the original prompt.
+        From the original prompt, the user should be able to quit the script
+        cleanly.
+        Your report should look something like this:
+        Donor Name                | Total Given | Num Gifts | Average Gift
+        ------------------------------------------------------------------
+        William Gates, III         $  653784.49           2  $   326892.24
+        Mark Zuckerberg            $   16396.10           3  $     5465.37
+        Jeff Bezos                 $     877.33           1  $      877.33
+        Paul Allen                 $     708.42           3  $      236.14
+        """
+        print(f"{'Donor Name':<26}|{'Total Given':^15}|"
+            f"{'Num Gifts':^11}|{'Average Gift':^15}")
+        print('-'*70)
+        donor_stats = [donor.summarize_donor() for id, donor in self.donors.items()]
+        donor_stats.sort(key=lambda tup: tup[2], reverse=True)
+        for summary in donor_stats:
+            print(f"{summary[1]:<26} ${summary[2]:>13.2f}  "
+                f"{summary[3]:>10}  ${summary[4]:>14.2f}")
 
         
