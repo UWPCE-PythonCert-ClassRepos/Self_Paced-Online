@@ -1,38 +1,23 @@
 """entry point to mailroom application"""
 
-from DonationController import DonationController
+from pathlib import Path
+from DonationController import DonationController, save_donation_controller, load_donation_controller
 from Donor import Donor
 from helpers import menu_selection
 
-ORGANIZATION = 'Save The Whales'
-
-DEFAULT_DONORS = {('Bill', 'Gates'): [100000.00, 5.00, 3000000.00],
-          ('Paul', 'Allen'): [10.00, 1000000.00],
-          ('Warren', 'Buffet'): [300000000.00],
-          }
-
-# initial setup of donor controller.
-# TODO: initiate at runtime based off org choices in menu
-# setup donation controller
-CONTROLLER = DonationController(name=ORGANIZATION)
-
-DONOR_ID = 0
-for donor, donations in DEFAULT_DONORS.items():
-    CONTROLLER.create_donor(Donor(id=DONOR_ID, firstname=donor[0], lastname=donor[1]))
-    for donation in donations:
-        CONTROLLER.create_donation(donor=DONOR_ID, amount=donation)
-    DONOR_ID += 1
-
+CONTROLLER = load_donation_controller('stw.p')
 
 def main_menu():
     """calls main menu for program"""
     MAIN_MENU_OPTIONS = {'1': create_donation_menu,
                          '2': donor_report_menu,
-                         '3': send_thank_you_letters}
+                         '3': send_thank_you_letters,
+                         '4': save_database}
     user_input = ('Options:\n'
                   '\t1: Create Donation\n'
                   '\t2: Create Donor Report\n'
                   '\t3: Send donors Thank Yous\n'
+                  '\t4: Save Database\n'
                   '\t0: Quit\n'
                   'Please input number for option: ')
 
@@ -88,7 +73,13 @@ def donor_report_menu():
 
 def send_thank_you_letters():
     """sends thank you letters to all our donors"""
-    pass
-    
+    CONTROLLER.send_letters_to_everyone()
+
+
+def save_database():
+    """saves default database"""
+    save_donation_controller(CONTROLLER, Path('stw.p'))
+
+
 if __name__ == '__main__':
     main_menu()

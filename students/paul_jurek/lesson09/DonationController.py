@@ -5,6 +5,7 @@ This controller contains information about organization and manages creation
 and management of donations"""
 
 from pathlib import Path
+import pickle
 from Donor import Donor
 
 
@@ -43,7 +44,6 @@ class DonationController:
         """interface to build donor from just name and automatically assign id"""
         self.create_donor(Donor(id=self.next_id, firstname=firstname, lastname=lastname))
 
-
     def get_total_donations(self):
         """returns total donations in controller"""
         return sum([k.donation_total() for i, k in self.donors.items()])
@@ -54,27 +54,6 @@ class DonationController:
         if self.find_donor(donor) is None:
             raise IndexError('Donor does not exist')
         self.find_donor(donor).add_donation(amount)
-
-    def send_thank_you_letters(self):
-        """process to evaluate all donors and create letter to send to
-        donors."""
-        # TODO: need to fix this as this is jsut copy and paste from mailroom
-        # iterate through donors and donations to send thank yous
-        for donor in donors:
-            file_name = "".join([donor.replace(" ", "_").lower(), '.txt'])
-            full_path = thank_you_directory / file_name
-            print(file_name)
-            donor_info = summarize_donor(donor, donors)
-            thank_you_text = create_donation_thank_you(fullname=donor,
-                                                    amount=donor_info[1])
-            try:
-                with open(full_path, 'w') as f:
-                    f.write(thank_you_text)
-            except FileNotFoundError:
-                print('Mailroom thank you directory not found.  Please create this directory first.')
-                break
-            else:
-                print(f'Thank you letter for {donor} created in "{thank_you_directory}"')
 
     @property
     def next_id(self):
@@ -142,6 +121,7 @@ class DonationController:
             donor_info = donor.summarize_donor()
             thank_you_text = self.create_donation_thank_you(donor=donor, amount=donor_info[2])
             try:
+                print(full_path)
                 with open(full_path, 'w') as f:
                     f.write(thank_you_text)
             except FileNotFoundError:
@@ -160,3 +140,11 @@ class DonationController:
 
                         Sincerely,
                             -The Team"""
+
+def load_donation_controller(database):
+    """loads database controller"""
+    return pickle.load(open(database, "rb"))
+
+def save_donation_controller(controller, database):
+    """save database controller"""
+    pickle.dump(controller, open(database, 'wb'))
