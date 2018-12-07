@@ -6,17 +6,10 @@ with every other item removed.
 with the first 4 and the last 4 items removed, and then every other item in between.
 with the elements reversed (just with slicing).
 with the middle third, then last third, then the first third in the new order.
-"""
 
-"""
-TESTS (sample)
-a_string = "this is a string"
-a_tuple = (2, 54, 13, 12, 5, 32)
-
-assert exchange_first_last(a_string) == "ghis is a strint"
-assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
-assert mid_last_first(a_string) == "is a stringthis "
-assert mid_last_first(a_tuple) == (13, 12, 5, 32, 2, 54)
+Author: JohnR
+Version: 0.1
+Date: 12/6/2018
 """
 
 
@@ -25,7 +18,27 @@ def main():
     Basic script logic and assertion tests.
     :return: Output of assertion tests and call each function.
     """
-    pass
+    # assert exchange_first_last(a_string) == "ghis is a strint"
+    # assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
+    # assert mid_last_first(a_string) == "is a stringthis "
+    # assert mid_last_first(a_tuple) == (13, 12, 5, 32, 2, 54)
+#    print(exchange_first_last(a_string))
+#    print(exchange_first_last(a_tuple))
+#    print(every_other_removed(a_string))
+#    print(every_other_removed(a_tuple))
+    a_string = "this is a string"
+    a_tuple = (2, 54, 13, 12, 5, 32)
+
+    # TODO: exchange_first_last is currently broken
+    print(reversed_slicing(a_tuple))
+    print(exchange_first_last(a_string))
+
+    print(every_other_removed(a_string))
+    print(every_other_removed(a_tuple))
+    print(reversed_slicing(a_string))
+    print(reversed_slicing(a_tuple))
+    print(exchange_first_last(a_string))
+    print(exchange_first_last(a_tuple))
 
 
 def exchange_first_last(seq):
@@ -34,7 +47,12 @@ def exchange_first_last(seq):
     :param seq: String to manipulate.
     :return: String with first and last elements reversed.
     """
-    pass
+    result = []
+
+    result.append(seq[-1])
+    result.append(seq[1:-2])
+    result.append(seq[0])
+    return result
 
 
 def every_other_removed(seq):
@@ -43,7 +61,7 @@ def every_other_removed(seq):
     :param seq: String to manipulate.
     :return: String with every other element removed.
     """
-    pass
+    return seq[0::2]
 
 
 def first_four_last_four(seq):
@@ -62,7 +80,7 @@ def reversed_slicing(seq):
     :param seq: String to manipulate.
     :return: String with elements reversed.
     """
-    pass
+    return seq[::-1]
 
 
 def middle_last_first(seq):
