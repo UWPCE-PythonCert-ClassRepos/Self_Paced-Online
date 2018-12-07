@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 
-# task 1
+# task 1 - print formatted string line from tuple values
 tuple1 = (2, 123.4567, 10000, 12345.67)
-
-# first value
-#print("the number is {:0>3d}".format(tuple1[0]))
-
-# second value
-#print("the number is {:.2f}".format(tuple1[1]))
-
-# third value
-#print("the number is {:.2e}".format(tuple1[2]))
-
-# fourth value
-#print("the number is {:.3e}".format(tuple1[3]))
-
 print("{}{:0>3d}: {:.2f}, {:.2e}, {:.3e}".format("file_",tuple1[0],tuple1[1],tuple1[2], tuple1[3]))
+print("")
+# task 2 - repeat task 1 with different format codes
+print(f"file_{tuple1[0]:0>3d}: {tuple1[1]:.2f}, {tuple1[2]:.2e}, {tuple1[3]:.3e}")
+print("")
+# task 3 - 
+
+print("")
+# task 4 - 
+
+print("")
+# task 5 - f-string
+list5 = ['oranges', 1.3, 'lemons', 1.1]
+print(f"The weight of an orange is {list5[1]} and the weight of a lemon is {")
+print("")
+# task 6 - 
+
