@@ -64,16 +64,16 @@ def test_element_render_no_content():
     page = hr.Element()
     f = StringIO()
     page.render(f)
-    res_string = "<html>\n</html>\n"
-    assert f.getvalue() == res_string
+    expected = "<html>\n</html>\n"
+    assert f.getvalue() == expected
 
 
 def test_element_render_w_one_line():
     page = hr.Element("one")
     f = StringIO()
     page.render(f)
-    res_string = "<html>\n   one\n</html>\n"
-    assert f.getvalue() == res_string
+    expected = "<html>\n   one\n</html>\n"
+    assert f.getvalue() == expected
 
 
 def test_element_render_w_two_lines():
@@ -81,24 +81,24 @@ def test_element_render_w_two_lines():
     page.append("two")
     f = StringIO()
     page.render(f)
-    res_string = "<html>\n   one\n   two\n</html>\n"
-    assert f.getvalue() == res_string
+    expected = "<html>\n   one\n   two\n</html>\n"
+    assert f.getvalue() == expected
 
 
 def test_element_render_w_indent_no_content():
     page = hr.Element()
     f = StringIO()
     page.render(f, "   ")
-    res_string = "   <html>\n   </html>\n"
-    assert f.getvalue() == res_string
+    expected = "   <html>\n   </html>\n"
+    assert f.getvalue() == expected
 
 
 def test_element_render_w_indent_w_one_line():
     page = hr.Element("one")
     f = StringIO()
     page.render(f, "   ")
-    res_string = "   <html>\n      one\n   </html>\n"
-    assert f.getvalue() == res_string
+    expected = "   <html>\n      one\n   </html>\n"
+    assert f.getvalue() == expected
 
 
 def test_element_render_w_indent_w_two_lines():
@@ -106,19 +106,21 @@ def test_element_render_w_indent_w_two_lines():
     page.append("two")
     f = StringIO()
     page.render(f, "   ")
-    res_string = "   <html>\n      one\n      two\n   </html>\n"
-    assert f.getvalue() == res_string
+    expected = "   <html>\n      one\n      two\n   </html>\n"
+    assert f.getvalue() == expected
 """
 
+
 # STEP 2 TESTS
+"""
 # test html_element.render
 def test_html_element_render_w_indent_w_two_lines():
     page = hr.Html("one")
     page.append("two")
     f = StringIO()
     page.render(f, "   ")
-    res_string = "   <html>\n      one\n      two\n   </html>\n"
-    assert f.getvalue() == res_string
+    expected = "   <html>\n      one\n      two\n   </html>\n"
+    assert f.getvalue() == expected
 
 
 # test body_element.render
@@ -127,8 +129,8 @@ def test_body_element_render_w_indent_w_two_lines():
     page.append("two")
     f = StringIO()
     page.render(f, "   ")
-    res_string = "   <body>\n      one\n      two\n   </body>\n"
-    assert f.getvalue() == res_string
+    expected = "   <body>\n      one\n      two\n   </body>\n"
+    assert f.getvalue() == expected
 
 
 # test paragraph_element.render
@@ -137,8 +139,8 @@ def test_paragraph_element_render_w_indent_w_two_lines():
     page.append("two")
     f = StringIO()
     page.render(f, "   ")
-    res_string = "   <p>\n      one\n      two\n   </p>\n"
-    assert f.getvalue() == res_string
+    expected = "   <p>\n      one\n      two\n   </p>\n"
+    assert f.getvalue() == expected
 
 
 # test append and render of elements
@@ -150,13 +152,13 @@ def test_recursive_render():
     page.append(body)
     f = StringIO()
     page.render(f)
-    res_string = "<html>\n" \
-                 "   <body>\n" \
-                 "      <p>\n" \
-                 "      </p>\n" \
-                 "   </body>\n" \
-                 "</html>\n"
-    assert f.getvalue() == res_string
+    expected = "<html>\n" \
+               "   <body>\n" \
+               "      <p>\n" \
+               "      </p>\n" \
+               "   </body>\n" \
+               "</html>\n"
+    assert f.getvalue() == expected
 
 
 # test append and render of elements
@@ -171,15 +173,81 @@ def test_recursive_render_with_multiple_paragraphs():
     page.append(body)
     f = StringIO()
     page.render(f)
-    res_string = "<html>\n" \
-                 "   <body>\n" \
-                 "      <p>\n" \
-                 "         Here is a paragraph of text\n" \
-                 "      </p>\n" \
-                 "      <p>\n" \
-                 "         And here is another piece of text\n" \
-                 "      </p>\n" \
-                 "   </body>\n" \
-                 "</html>\n"
-    assert f.getvalue() == res_string
+    expected = "<html>\n" \
+               "   <body>\n" \
+               "      <p>\n" \
+               "         Here is a paragraph of text\n" \
+               "      </p>\n" \
+               "      <p>\n" \
+               "         And here is another piece of text\n" \
+               "      </p>\n" \
+               "   </body>\n" \
+               "</html>\n"
+    assert f.getvalue() == expected
+"""
+
+
+# STEP 3 TESTS
+# test title.render
+def test_title_render_empty_content():
+    page = hr.Title()
+    f = StringIO()
+    page.render(f)
+    expected = "<title></title>\n"
+    assert f.getvalue() == expected
+
+
+def test_title_render():
+    page = hr.Title("this is a title")
+    f = StringIO()
+    page.render(f)
+    expected = "<title>this is a title</title>\n"
+    assert f.getvalue() == expected
+
+
+def test_title_render_append_to_empty_content():
+    page = hr.Title()
+    page.append("this is a title")
+    f = StringIO()
+    page.render(f)
+    expected = "<title>this is a title</title>\n"
+    assert f.getvalue() == expected
+
+
+def test_title_render_append_to_nonempty_content():
+    page = hr.Title("this is a title")
+    page.append("this is a second title")
+    f = StringIO()
+    page.render(f)
+    expected = "<title>this is a title</title>\n"
+    assert f.getvalue() == expected
+
+
+def test_step_3_html_output():
+    page = hr.Html()
+    head = hr.Head()
+    head.append(hr.Title("PythonClass = Revision 1087:"))
+    page.append(head)
+    body = hr.Body()
+    body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                     "but this is enough  to show that we can do some text"))
+    body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
+    page.append(body)
+    f = StringIO()
+    page.render(f)
+    expected = "<html>\n" \
+               "   <head>\n" \
+               "      <title>PythonClass = Revision 1087:</title>\n" \
+               "   </head>\n" \
+               "   <body>\n" \
+               "      <p>\n"\
+               "         Here is a paragraph of text -- there could be more of them, but this is enough " \
+               " to show that we can do some text\n" \
+               "      </p>\n" \
+               "      <p>\n" \
+               "         And here is another piece of text -- you should be able to add any number\n" \
+               "      </p>\n" \
+               "   </body>\n" \
+               "</html>\n"
+    assert f.getvalue() == expected
 

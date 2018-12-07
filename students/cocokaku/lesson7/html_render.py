@@ -49,3 +49,42 @@ class Body(Element):
 
 class P(Element):
     tag = "p"
+
+
+class Head(Element):
+    tag = "head"
+
+
+class OneLineTag(Element):
+    def __init__(self, content=""):
+        """
+        initialize the OneLineTag instance
+        
+        :param content: 
+        """
+        self.content = content
+
+    def append(self, content):
+        """
+        append if content is currently blank, otherwise do nothing (do not update or add)
+        
+        :param content: 
+        :return: 
+        """
+        if not self.content:
+            self.content = content
+
+    def render(self, file_out, cur_ind=""):
+        """
+        render OneLineTag instance
+        
+        :param file_out: 
+        :param cur_ind: 
+        :return: 
+        """
+        file_out.write(cur_ind+"<"+self.tag+">"+self.content+"</"+self.tag+">"+'\n')
+
+
+
+class Title(OneLineTag):
+    tag = "title"
