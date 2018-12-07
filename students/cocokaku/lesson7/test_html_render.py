@@ -3,7 +3,6 @@ from io import StringIO
 
 
 # STEP 1 TESTS
-"""
 # test element.__init__
 def test_element_init_no_content():
     page = hr.Element()
@@ -108,11 +107,24 @@ def test_element_render_w_indent_w_two_lines():
     page.render(f, "   ")
     expected = "   <html>\n      one\n      two\n   </html>\n"
     assert f.getvalue() == expected
-"""
+
+
+def test_step_1_html_output():
+    page = hr.Element()
+    page.append("Here is a paragraph of text -- there could be more of them, "
+                "but this is enough  to show that we can do some text")
+    page.append("And here is another piece of text -- you should be able to add any number")
+    f = StringIO()
+    page.render(f)
+    expected = "<html>\n" \
+               "   Here is a paragraph of text -- there could be more of them, but this is enough " \
+               " to show that we can do some text\n" \
+               "   And here is another piece of text -- you should be able to add any number\n" \
+               "</html>\n"
+    assert f.getvalue() == expected
 
 
 # STEP 2 TESTS
-"""
 # test html_element.render
 def test_html_element_render_w_indent_w_two_lines():
     page = hr.Html("one")
@@ -184,7 +196,29 @@ def test_recursive_render_with_multiple_paragraphs():
                "   </body>\n" \
                "</html>\n"
     assert f.getvalue() == expected
-"""
+
+
+def test_step_2_html_output():
+    page = hr.Html()
+    body = hr.Body()
+    body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                     "but this is enough  to show that we can do some text"))
+    body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
+    page.append(body)
+    f = StringIO()
+    page.render(f)
+    expected = "<html>\n" \
+               "   <body>\n" \
+               "      <p>\n" \
+               "         Here is a paragraph of text -- there could be more of them, but this is enough " \
+               " to show that we can do some text\n" \
+               "      </p>\n" \
+               "      <p>\n" \
+               "         And here is another piece of text -- you should be able to add any number\n" \
+               "      </p>\n" \
+               "   </body>\n" \
+               "</html>\n"
+    assert f.getvalue() == expected
 
 
 # STEP 3 TESTS
@@ -251,3 +285,53 @@ def test_step_3_html_output():
                "</html>\n"
     assert f.getvalue() == expected
 
+
+# STEP 4 TESTS
+def test_element_init_w_attributes():
+    page = hr.Element("some text content", id="TheList", style="line=height:200%")
+    f = StringIO()
+    page.render(f)
+    expected = '<html id="TheList" style="line=height:200%">\n   some text content\n</html>\n'
+    assert f.getvalue() == expected
+
+
+def test_element_init_w_clas_attribute():
+    page = hr.P("some content", clas="intro")
+    f = StringIO()
+    page.render(f)
+    expected = '<p class="intro">\n   some content\n</p>\n'
+    assert f.getvalue() == expected
+
+
+# def test_element_init_w_class_attribute():
+#     page = hr.P("some content", class="intro")
+#     f = StringIO()
+#     page.render(f)
+#     expected = '<html id="TheList" style="line=height:200%">'
+#     assert f.getvalue() == expected
+
+
+def test_step_4_html_output():
+    page = hr.Html()
+    head = hr.Head()
+    head.append(hr.Title("PythonClass = Revision 1087:"))
+    page.append(head)
+    body = hr.Body()
+    body.append(hr.P("Here is a paragraph of text -- there could be more of them, but this is enough "
+                     " to show that we can do some text",
+                     style="text-align: center; font-style: oblique;"))
+    page.append(body)
+    f = StringIO()
+    page.render(f)
+    expected = "<html>\n" \
+               "   <head>\n" \
+               "      <title>PythonClass = Revision 1087:</title>\n" \
+               "   </head>\n" \
+               "   <body>\n" \
+               '      <p style="text-align: center; font-style: oblique;">\n' \
+               "         Here is a paragraph of text -- there could be more of them, but this is enough " \
+               " to show that we can do some text\n" \
+               "      </p>\n" \
+               "   </body>\n" \
+               "</html>\n"
+    assert f.getvalue() == expected

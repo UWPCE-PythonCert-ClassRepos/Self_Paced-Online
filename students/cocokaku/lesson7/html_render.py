@@ -2,15 +2,18 @@ class Element:
     tag = "html"
     indent = "   "
 
-    def __init__(self, content=None):
+    def __init__(self, content=None, **kwargs):
         """
         initialize the Element instance
         
         :param content: optional input, string to create single line of content
         """
         self.content = []
+        self.attrs = {}
         if content:
             self.content.append(content)
+        if kwargs:
+            self.attrs = kwargs
 
     def append(self, content):
         """
@@ -30,9 +33,14 @@ class Element:
         :param cur_ind: indentation level to apply to each line
         :return: none
         """
-        file_out.write(cur_ind+"<"+self.tag+">"+'\n')
+        file_out.write(cur_ind+"<"+self.tag)
+        for attr, value in self.attrs.items():
+            if attr == "clas":
+                attr = "class"
+            file_out.write(" "+attr+'="'+value+'"')
+        file_out.write(">"+'\n')
         for item in self.content:
-            if issubclass(type(item),Element):
+            if issubclass(type(item), Element):
                 item.render(file_out, cur_ind+"   ")
             else:
                 file_out.write(cur_ind+self.indent+item+'\n')
@@ -56,14 +64,6 @@ class Head(Element):
 
 
 class OneLineTag(Element):
-    def __init__(self, content=""):
-        """
-        initialize the OneLineTag instance
-        
-        :param content: 
-        """
-        self.content = content
-
     def append(self, content):
         """
         append if content is currently blank, otherwise do nothing (do not update or add)
@@ -72,7 +72,7 @@ class OneLineTag(Element):
         :return: 
         """
         if not self.content:
-            self.content = content
+            self.content.append(content)
 
     def render(self, file_out, cur_ind=""):
         """
@@ -82,8 +82,8 @@ class OneLineTag(Element):
         :param cur_ind: 
         :return: 
         """
-        file_out.write(cur_ind+"<"+self.tag+">"+self.content+"</"+self.tag+">"+'\n')
-
+        content = "" if not self.content else self.content[0]
+        file_out.write(cur_ind+"<"+self.tag+">"+content+"</"+self.tag+">"+'\n')
 
 
 class Title(OneLineTag):
