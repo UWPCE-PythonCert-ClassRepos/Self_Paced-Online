@@ -34,14 +34,14 @@ print("")
 arr6 = [['Joey', 30, 199.99], ['Jan', 36, 29999.97], ['Bob', 55, 999999.99]] 
 len6 = len(arr6)
 count1 = 0
-#count2 = 0
 print(len6)
 while count1 < len6:
     print("{:10} {:3} {:>20}".format(arr6[count1][0], arr6[count1][1], arr6[count1][2]))
- #   print(count1)
- #   while count2 < 3:
- #       print("{}, {}, {}".format(arr6[count1][count2]))
- #       count2 += 1
     count1 += 1
- #   count2 = 0
+print("")
+
+# task 6 XC - print 5 column tuple
+tup6 = (1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000)
+print("{:5},{:5},{:5},{:5},{:5},{:5},{:5},{:5},{:5},{:5}".format(*tup6))
+    
     
