@@ -8,10 +8,12 @@ print("")
 print(f"file_{tuple1[0]:0>3d}: {tuple1[1]:.2f}, {tuple1[2]:.2e}, {tuple1[3]:.3e}")
 print("")
 # task 3 - 
-tuple3 = (1,2,3)
-print("the 3 numbers are: {:d}, {:d}, {:d}".format(*tuple3))
-
-
+tuple3 = (1,2,3, 4, 5, 6, 7)
+#print("the 3 numbers are: {:d}, {:d}, {:d}".format(*tuple3))
+def func_task3(input3):
+    len1 = len(input3)
+    print(len1)
+func_task3(tuple3)
 print("")
 # task 4 - 
 
