@@ -34,11 +34,14 @@ print("")
 arr6 = [['Joey', 30, 199.99], ['Jan', 36, 29999.97], ['Bob', 55, 999999.99]] 
 len6 = len(arr6)
 count1 = 0
-count2 = 0
+#count2 = 0
+print(len6)
 while count1 < len6:
-    while count2 < 3:
-        print("{}, {}, {}".format(arr6[count1][count2]))
-        count2 += 1
+    print("{:10} {:3} {:>20}".format(arr6[count1][0], arr6[count1][1], arr6[count1][2]))
+ #   print(count1)
+ #   while count2 < 3:
+ #       print("{}, {}, {}".format(arr6[count1][count2]))
+ #       count2 += 1
     count1 += 1
-    count2 = 0
+ #   count2 = 0
     
