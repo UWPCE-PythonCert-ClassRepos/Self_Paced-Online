@@ -9,7 +9,7 @@ print("")
 print(f"file_{tuple1[0]:0>3d}: {tuple1[1]:.2f}, {tuple1[2]:.2e}, {tuple1[3]:.3e}")
 print("")
 
-# task 3 - 
+# task 3 - function with tuple input of variable amount. output is count of tuple items and formatted values
 tuple3 = (1, 2, 3, 4, 5, 6, 7)
 def func_task3(input3):
     len1 = len(input3)
@@ -19,7 +19,10 @@ def func_task3(input3):
 func_task3(tuple3)
 print("")
 
-# task 4 - 
+# task 4 - output tuple items in string format specific index order
+tuple5 = (4, 30, 2017, 2, 27)
+print(f"{tuple5[3]:0>2d} {tuple5[4]} {tuple5[2]} {tuple5[0]:0>2d} {tuple5[1]}")
+
 
 print("")
 
