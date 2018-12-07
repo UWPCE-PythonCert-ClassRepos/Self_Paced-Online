@@ -22,8 +22,6 @@ print("")
 # task 4 - output tuple items in string format specific index order
 tuple5 = (4, 30, 2017, 2, 27)
 print(f"{tuple5[3]:0>2d} {tuple5[4]} {tuple5[2]} {tuple5[0]:0>2d} {tuple5[1]}")
-
-
 print("")
 
 # task 5 - f-string
@@ -32,5 +30,15 @@ print(f"The weight of an {list5[0][:-1]} is {list5[1]} and the weight of a {list
 print(f"The weight of an {list5[0][:-1].upper()} is {list5[1] * 1.2} and the weight of a {list5[2][:-1].upper()} is {list5[3] * 1.2}")
 print("")
 
-# task 6 - 
-
+# task 6 - print aligned data columns
+arr6 = [['Joey', 30, 199.99], ['Jan', 36, 29999.97], ['Bob', 55, 999999.99]] 
+len6 = len(arr6)
+count1 = 0
+count2 = 0
+while count1 < len6:
+    while count2 < 3:
+        print("{}, {}, {}".format(arr6[count1][count2]))
+        count2 += 1
+    count1 += 1
+    count2 = 0
+    
