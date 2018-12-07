@@ -8,62 +8,78 @@ donations = [
 
 def createReport():
     """Print donation history"""
+    #Sort the donations
+    report_data = [[person[0], sum(person[1:]), len(person[1:]), sum(person[1:]) / len(person[1:])]
+                  for person in donations]
+    sorted_data = sorted(report_data, key=lambda x: x[1], reverse=True)
 
-    print('Donor name                        Total given       Number of gifts         Average gift')
-    print('=' *60)
+    #Print the header
+    print('{0:25}{1:15}{2:15}{3:15}'.format('Donor Name', '| Total Gifts', '| Num Gifts', '| Average Gift'))
+    print('=' * 50)
 
     for donor in donations:
         total_amount=sum(donor[1:])
         total_donation=len(donor)-1
         avg_donation=total_amount/total_donation
-        #print(total_amount)
-        #print(total_donation)
-        #print(avg_donation)
         print('{:<25s}  ${:>18,.2f}  {:>15d}  ${:>18,.2f}'.format( donor[0], total_amount, total_donation,
                                                                       avg_donation))
 
+def PrintEMail(name, amount):
+    ''' Print Email message'''
+    print("\nDear " + name +'\n')
+    print('We would like to thank you for continuing support for our organization!\n')
+    print('Your contribution of $' + str(amount) + ' is received and very much appreciated!')
+    print('\nThank you\nKennan Yilmaz')
+
 def send_ThankYou():
     ''' Send a Thank you note'''
-    response=input('Type a name or ''list'' to see all the names=')
+    donorname=input('Type donor name or ''list'' to see all the names=')
 
-    #if user types in 'list' print all donors
-    if response=='list':
+    if donorname=='list':
+        #List all donots if user enters 'list'
         for donor in donations:
             print(donor[0])
-    elif response=='quit':
-        print ('Quit') # exit
-    else: #For everything else
-        for donor in donations:
-            for donor in donations:
-                if response == donor[0]:
-                    donor.append([1])
-                    break
-            else:
-                #if name is new, add and prompt for donation
-                return
+    else: #It is assumed that name entered in this case
+        # Prompt for donation amount
+        amount = float(input('Please enter the donation amount='))
+        #Is it in the db?
+        # If in database, append value else create a new record
+        found=False
+        for loc in range(0,len(donations)):
+            if donorname == donations[loc][0]:
+                found=True
+                break
+
+        if found:
+            #Append at the end
+            donations[loc].append(amount)
+        else:
+            # Create new record since it does not exist
+            new_record = [donorname, amount]
+            donations.append(new_record)
+
+        #Print the email now
+        PrintEMail(donorname,amount)
 
 def showmenu ():
     """Displays the menu options"""
     select=True
     while select:
         print('\n')
+        print("====== Main Menu ======")
         print('1. Send a Thank You')
         print('2. Create a Report')
         print ('3. Quit')
         response=input("Please select and option (1,2 or 3)")
-        print(response)
         if str(response)=='1':
-            print('Thank you')
             send_ThankYou()
         elif str(response)=='2':
-            print('Create report')
             createReport()
         elif str(response)=='3':
             print('Finished ...')
             break
         else:
             select=True
-
 
 if __name__ == '__main__':
     showmenu()
