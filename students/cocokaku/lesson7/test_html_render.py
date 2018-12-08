@@ -303,6 +303,7 @@ def test_element_init_w_clas_attribute():
     assert f.getvalue() == expected
 
 
+# the following test should not compile, due to reserved word "class" being used as a kwarg
 # def test_element_init_w_class_attribute():
 #     page = hr.P("some content", class="intro")
 #     f = StringIO()
@@ -332,6 +333,82 @@ def test_step_4_html_output():
                "         Here is a paragraph of text -- there could be more of them, but this is enough " \
                " to show that we can do some text\n" \
                "      </p>\n" \
+               "   </body>\n" \
+               "</html>\n"
+    assert f.getvalue() == expected
+
+
+# STEP 5 TESTS
+def test_hr_element_init():
+    page = hr.Hr()
+    f = StringIO()
+    page.render(f)
+    expected = "<hr />\n"
+    assert f.getvalue() == expected
+
+
+def test_br_element_init():
+    page = hr.Br()
+    f = StringIO()
+    page.render(f)
+    expected = "<br />\n"
+    assert f.getvalue() == expected
+
+
+def test_self_closing_tag_init_w_content_raises_error():
+    message = ""
+    try:
+        _ = hr.Hr("this is content")
+    except TypeError as e:
+        message = e.args[0]
+    finally:
+        assert message == "'SelfClosingTag' object cannot have any content"
+
+
+def test_self_closing_tag_init_w_kwargs_raises_error():
+    message = ""
+    try:
+        _ = hr.Hr(id="one", clas="two")
+    except TypeError as e:
+        message = e.args[0]
+    finally:
+        assert message == "'SelfClosingTag' object cannot have any content"
+
+
+def test_self_closing_tag_append_raises_error():
+    page = hr.Hr()
+    message = ""
+    try:
+        page.append("this is content")
+    except TypeError as e:
+        message = e.args[0]
+    finally:
+        assert message == "'SelfClosingTag' object cannot have any content"
+
+
+def test_step_5_html_output():
+    page = hr.Html()
+    head = hr.Head()
+    head.append(hr.Title("PythonClass = Revision 1087:"))
+    page.append(head)
+    body = hr.Body()
+    body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                     "but this is enough  to show that we can do some text",
+                     style="text-align: center; font-style: oblique;"))
+    body.append(hr.Hr())
+    page.append(body)
+    f = StringIO()
+    page.render(f)
+    expected = "<html>\n" \
+               "   <head>\n" \
+               "      <title>PythonClass = Revision 1087:</title>\n" \
+               "   </head>\n" \
+               "   <body>\n" \
+               '      <p style="text-align: center; font-style: oblique;">\n' \
+               "         Here is a paragraph of text -- there could be more of them, but this is enough " \
+               " to show that we can do some text\n" \
+               "      </p>\n" \
+               "      <hr />\n" \
                "   </body>\n" \
                "</html>\n"
     assert f.getvalue() == expected
