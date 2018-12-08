@@ -114,7 +114,7 @@ def test_html_element_render_w_indent_w_two_lines():
     page.append("two")
     f = StringIO()
     page.render(f, "   ")
-    expected = "   <html>\n      one\n      two\n   </html>\n"
+    expected = "   <!DOCTYPE html>\n   <html>\n      one\n      two\n   </html>\n"
     assert f.getvalue() == expected
 
 def test_body_element_render_w_indent_w_two_lines():
@@ -141,7 +141,8 @@ def test_recursive_render():
     page.append(body)
     f = StringIO()
     page.render(f)
-    expected = "<html>\n" \
+    expected = "<!DOCTYPE html>\n" \
+               "<html>\n" \
                "   <body>\n" \
                "      <p>\n" \
                "      </p>\n" \
@@ -160,7 +161,8 @@ def test_recursive_render_with_multiple_paragraphs():
     page.append(body)
     f = StringIO()
     page.render(f)
-    expected = "<html>\n" \
+    expected = "<!DOCTYPE html>\n" \
+               "<html>\n" \
                "   <body>\n" \
                "      <p>\n" \
                "         Here is a paragraph of text\n" \
@@ -181,7 +183,8 @@ def test_step_2_html_output():
     page.append(body)
     f = StringIO()
     page.render(f)
-    expected = "<html>\n" \
+    expected = "<!DOCTYPE html>\n" \
+               "<html>\n" \
                "   <body>\n" \
                "      <p>\n" \
                "         Here is a paragraph of text -- there could be more of them, but this is enough " \
@@ -239,7 +242,8 @@ def test_step_3_html_output():
     page.append(body)
     f = StringIO()
     page.render(f)
-    expected = "<html>\n" \
+    expected = "<!DOCTYPE html>\n" \
+               "<html>\n" \
                "   <head>\n" \
                "      <title>PythonClass = Revision 1087:</title>\n" \
                "   </head>\n" \
@@ -284,7 +288,8 @@ def test_step_4_html_output():
     page.append(body)
     f = StringIO()
     page.render(f)
-    expected = "<html>\n" \
+    expected = "<!DOCTYPE html>\n" \
+               "<html>\n" \
                "   <head>\n" \
                "      <title>PythonClass = Revision 1087:</title>\n" \
                "   </head>\n" \
@@ -323,14 +328,12 @@ def test_self_closing_tag_init_w_content_raises_error():
     finally:
         assert message == "'SelfClosingTag' object cannot have any content"
 
-def test_self_closing_tag_init_w_kwargs_raises_error():
-    message = ""
-    try:
-        _ = hr.Hr(id="one", clas="two")
-    except TypeError as e:
-        message = e.args[0]
-    finally:
-        assert message == "'SelfClosingTag' object cannot have any content"
+def test_self_closing_tag_init_w_kwargs():
+    page = hr.Hr(id="one", clas="two")
+    f = StringIO()
+    page.render(f)
+    expected = '<hr id="one" class="two" />\n'
+    assert f.getvalue() == expected
 
 def test_self_closing_tag_append_raises_error():
     page = hr.Hr()
@@ -355,7 +358,8 @@ def test_step_5_html_output():
     page.append(body)
     f = StringIO()
     page.render(f)
-    expected = "<html>\n" \
+    expected = "<!DOCTYPE html>\n" \
+               "<html>\n" \
                "   <head>\n" \
                "      <title>PythonClass = Revision 1087:</title>\n" \
                "   </head>\n" \
@@ -395,7 +399,8 @@ def test_step_6_html_output():
     page.append(body)
     f = StringIO()
     page.render(f)
-    expected = "<html>\n" \
+    expected = "<!DOCTYPE html>\n" \
+               "<html>\n" \
                "   <head>\n" \
                "      <title>PythonClass = Revision 1087:</title>\n" \
                "   </head>\n" \
@@ -409,5 +414,209 @@ def test_step_6_html_output():
                '      <a href="http://google.com">link</a>\n' \
                "      to google\n" \
                "   </body>\n" \
+               "</html>\n"
+    assert f.getvalue() == expected
+
+# STEP 7 TESTS
+# Unordered List class, List Item class, Header class
+def test_list_building():
+    page = hr.Ul()
+    page.append(hr.Li("first item"))
+    page.append(hr.Li("second item w style", style="very trendy"))
+    f = StringIO()
+    page.render(f)
+    expected = "<ul>\n" \
+               "   <li>\n" \
+               "      first item\n" \
+               "   </li>\n" \
+               '   <li style="very trendy">\n' \
+               "      second item w style\n" \
+               "   </li>\n" \
+               "</ul>\n"
+    assert f.getvalue() == expected
+
+def test_header_class_init():
+    page = hr.H(2, "The text of the header")
+    f = StringIO()
+    page.render(f)
+    expected = '<h2>The text of the header</h2>\n'
+    assert f.getvalue() == expected
+
+def test_heading_building():
+    page = hr.Html()
+    page.append(hr.H(1, "this is heading 1"))
+    page.append(hr.H(2, "this is heading 2"))
+    page.append(hr.H(1, "this is a red heading 1", color="red"))
+    f = StringIO()
+    page.render(f)
+    expected = "<!DOCTYPE html>\n" \
+               "<html>\n" \
+               "   <h1>this is heading 1</h1>\n" \
+               "   <h2>this is heading 2</h2>\n" \
+               '   <h1 color="red">this is a red heading 1</h1>\n' \
+               "</html>\n"
+    assert f.getvalue() == expected
+
+def test_step7_html_output():
+    page = hr.Html()
+    head = hr.Head()
+    head.append(hr.Title("PythonClass = Revision 1087:"))
+    page.append(head)
+    body = hr.Body()
+    body.append(hr.H(2, "PythonClass - Class 6 example"))
+    body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                     "but this is enough  to show that we can do some text",
+                     style="text-align: center; font-style: oblique;"))
+    body.append(hr.Hr())
+    list = hr.Ul(id="TheList", style="line-height:200%")
+    list.append(hr.Li("The first item in a list"))
+    list.append(hr.Li("This is the second item", style="color: red"))
+    item = hr.Li()
+    item.append("And this is a ")
+    item.append(hr.A("http://google.com", "link"))
+    item.append("to google")
+    list.append(item)
+    body.append(list)
+    page.append(body)
+    f = StringIO()
+    page.render(f)
+    expected = "<!DOCTYPE html>\n" \
+               "<html>\n" \
+               "   <head>\n" \
+               "      <title>PythonClass = Revision 1087:</title>\n" \
+               "   </head>\n" \
+               "   <body>\n" \
+               "      <h2>PythonClass - Class 6 example</h2>\n" \
+               '      <p style="text-align: center; font-style: oblique;">\n' \
+               "         Here is a paragraph of text -- there could be more of them, but this is enough " \
+               " to show that we can do some text\n" \
+               "      </p>\n" \
+               "      <hr />\n" \
+               '      <ul id="TheList" style="line-height:200%">\n' \
+               "         <li>\n" \
+               "            The first item in a list\n" \
+               "         </li>\n" \
+               '         <li style="color: red">\n' \
+               "            This is the second item\n" \
+               "         </li>\n" \
+               "         <li>\n" \
+               "            And this is a \n" \
+               '            <a href="http://google.com">link</a>\n' \
+               "            to google\n" \
+               "         </li>\n" \
+               "      </ul>\n" \
+               "   </body>\n" \
+               "</html>\n"
+    assert f.getvalue() == expected
+
+# STEP 8 TESTS
+# DOCTYPE html tag, Meta class, default indent input
+
+def test_step8_html_output():
+    page = hr.Html()
+    head = hr.Head()
+    head.append(hr.Meta(charset="UTF-8"))
+    head.append(hr.Title("PythonClass = Revision 1087:"))
+    page.append(head)
+    body = hr.Body()
+    body.append(hr.H(2, "PythonClass - Example"))
+    body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                     "but this is enough  to show that we can do some text",
+                     style="text-align: center; font-style: oblique;"))
+    body.append(hr.Hr())
+    list = hr.Ul(id="TheList", style="line-height:200%")
+    list.append(hr.Li("The first item in a list"))
+    list.append(hr.Li("This is the second item", style="color: red"))
+    item = hr.Li()
+    item.append("And this is a ")
+    item.append(hr.A("http://google.com", "link"))
+    item.append("to google")
+    list.append(item)
+    body.append(list)
+    page.append(body)
+    f = StringIO()
+    page.render(f)
+    expected = "<!DOCTYPE html>\n" \
+               "<html>\n" \
+               "   <head>\n" \
+               '      <meta charset="UTF-8" />\n' \
+               "      <title>PythonClass = Revision 1087:</title>\n" \
+               "   </head>\n" \
+               "   <body>\n" \
+               "      <h2>PythonClass - Example</h2>\n" \
+               '      <p style="text-align: center; font-style: oblique;">\n' \
+               "         Here is a paragraph of text -- there could be more of them, but this is enough " \
+               " to show that we can do some text\n" \
+               "      </p>\n" \
+               "      <hr />\n" \
+               '      <ul id="TheList" style="line-height:200%">\n' \
+               "         <li>\n" \
+               "            The first item in a list\n" \
+               "         </li>\n" \
+               '         <li style="color: red">\n' \
+               "            This is the second item\n" \
+               "         </li>\n" \
+               "         <li>\n" \
+               "            And this is a \n" \
+               '            <a href="http://google.com">link</a>\n' \
+               "            to google\n" \
+               "         </li>\n" \
+               "      </ul>\n" \
+               "   </body>\n" \
+               "</html>\n"
+    assert f.getvalue() == expected
+
+
+def test_step8_html_output_using_ind_optional_input():
+    page = hr.Html(ind=0)
+    head = hr.Head()
+    head.append(hr.Meta(charset="UTF-8"))
+    head.append(hr.Title("PythonClass = Revision 1087:"))
+    page.append(head)
+    body = hr.Body()
+    body.append(hr.H(2, "PythonClass - Example"))
+    body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                     "but this is enough  to show that we can do some text",
+                     style="text-align: center; font-style: oblique;"))
+    body.append(hr.Hr())
+    list = hr.Ul(id="TheList", style="line-height:200%")
+    list.append(hr.Li("The first item in a list"))
+    list.append(hr.Li("This is the second item", style="color: red"))
+    item = hr.Li()
+    item.append("And this is a ")
+    item.append(hr.A("http://google.com", "link"))
+    item.append("to google")
+    list.append(item)
+    body.append(list)
+    page.append(body)
+    f = StringIO()
+    page.render(f)
+    expected = "<!DOCTYPE html>\n" \
+               "<html>\n" \
+               "<head>\n" \
+               '<meta charset="UTF-8" />\n' \
+               "<title>PythonClass = Revision 1087:</title>\n" \
+               "</head>\n" \
+               "<body>\n" \
+               "<h2>PythonClass - Example</h2>\n" \
+               '<p style="text-align: center; font-style: oblique;">\n' \
+               "Here is a paragraph of text -- there could be more of them, but this is enough " \
+               " to show that we can do some text\n" \
+               "</p>\n" \
+               "<hr />\n" \
+               '<ul id="TheList" style="line-height:200%">\n' \
+               "<li>\n" \
+               "The first item in a list\n" \
+               "</li>\n" \
+               '<li style="color: red">\n' \
+               "This is the second item\n" \
+               "</li>\n" \
+               "<li>\n" \
+               "And this is a \n" \
+               '<a href="http://google.com">link</a>\n' \
+               "to google\n" \
+               "</li>\n" \
+               "</ul>\n" \
+               "</body>\n" \
                "</html>\n"
     assert f.getvalue() == expected
