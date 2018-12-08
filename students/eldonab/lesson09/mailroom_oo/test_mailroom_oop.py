@@ -1,7 +1,6 @@
-#!/usr/bin/python
-
+ #!/usr/bin/python
 import pytest
-from mailroom_oop import *
+from donor_models import *
 
 def test_donor():
     Bill = Donor('Bill Gates', [300])
