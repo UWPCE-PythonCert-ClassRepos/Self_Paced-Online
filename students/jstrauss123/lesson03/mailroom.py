@@ -28,8 +28,8 @@ def fun_report():
 
 # main
 if __name__ == "__main__":
-    donor_list = [["Mickey Mouse", 100, 150, 100], ["Minnie Mouse", 50, 50], ["Ron Jones", 100],["Donald Duck", "25"], ["Busy Bear", "10", "10", "10"]]
-
+    #donor_list = [["Mickey Mouse", 100, 150, 100], ["Minnie Mouse", 50, 50], ["Ron Jones", 100],["Donald Duck", "25"], ["Busy Bear", "10", "10", "10"]]
+    donor_list = ["Mickey Mouse", "Minnie Mouse", "Ron Jones", "Donald Duck", "Busy Beaver"]
     response = ""
     while response != "q":
         response = input("Please select: 1 to Send a Thank you, 2 to Create a report or q to quit : ")
