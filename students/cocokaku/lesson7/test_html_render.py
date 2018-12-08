@@ -3,34 +3,28 @@ from io import StringIO
 
 
 # STEP 1 TESTS
-# test element.__init__
+# Element class
 def test_element_init_no_content():
     page = hr.Element()
     assert page.content == []
-
 
 def test_element_init_w_empty_content():
     page = hr.Element("")
     assert page.content == []
 
-
 def test_element_init_w_content():
     page = hr.Element("hello")
     assert page.content == ["hello"]
 
-
-# test element.append
 def test_element_append_to_empty_no_content():
     page = hr.Element()
     page.append("")
     assert page.content == []
 
-
 def test_element_append_to_empty_w_content():
     page = hr.Element()
     page.append("one")
     assert page.content == ["one"]
-
 
 def test_element_append_twice_to_empty_w_content():
     page = hr.Element()
@@ -38,18 +32,15 @@ def test_element_append_twice_to_empty_w_content():
     page.append("two")
     assert page.content == ["one", "two"]
 
-
 def test_element_append_to_nonempty_no_content():
     page = hr.Element("one")
     page.append("")
     assert page.content == ["one"]
 
-
 def test_element_append_to_nonempty_w_content():
     page = hr.Element("one")
     page.append("two")
     assert page.content == ["one", "two"]
-
 
 def test_element_append_twice_to_nonempty_w_content():
     page = hr.Element("one")
@@ -57,8 +48,6 @@ def test_element_append_twice_to_nonempty_w_content():
     page.append("three")
     assert page.content == ["one", "two", "three"]
 
-
-# test element.render
 def test_element_render_no_content():
     page = hr.Element()
     f = StringIO()
@@ -66,14 +55,12 @@ def test_element_render_no_content():
     expected = "<html>\n</html>\n"
     assert f.getvalue() == expected
 
-
 def test_element_render_w_one_line():
     page = hr.Element("one")
     f = StringIO()
     page.render(f)
     expected = "<html>\n   one\n</html>\n"
     assert f.getvalue() == expected
-
 
 def test_element_render_w_two_lines():
     page = hr.Element("one")
@@ -83,14 +70,12 @@ def test_element_render_w_two_lines():
     expected = "<html>\n   one\n   two\n</html>\n"
     assert f.getvalue() == expected
 
-
 def test_element_render_w_indent_no_content():
     page = hr.Element()
     f = StringIO()
     page.render(f, "   ")
     expected = "   <html>\n   </html>\n"
     assert f.getvalue() == expected
-
 
 def test_element_render_w_indent_w_one_line():
     page = hr.Element("one")
@@ -99,7 +84,6 @@ def test_element_render_w_indent_w_one_line():
     expected = "   <html>\n      one\n   </html>\n"
     assert f.getvalue() == expected
 
-
 def test_element_render_w_indent_w_two_lines():
     page = hr.Element("one")
     page.append("two")
@@ -107,7 +91,6 @@ def test_element_render_w_indent_w_two_lines():
     page.render(f, "   ")
     expected = "   <html>\n      one\n      two\n   </html>\n"
     assert f.getvalue() == expected
-
 
 def test_step_1_html_output():
     page = hr.Element()
@@ -125,7 +108,7 @@ def test_step_1_html_output():
 
 
 # STEP 2 TESTS
-# test html_element.render
+# Html class, Body class, Paragraph class
 def test_html_element_render_w_indent_w_two_lines():
     page = hr.Html("one")
     page.append("two")
@@ -134,8 +117,6 @@ def test_html_element_render_w_indent_w_two_lines():
     expected = "   <html>\n      one\n      two\n   </html>\n"
     assert f.getvalue() == expected
 
-
-# test body_element.render
 def test_body_element_render_w_indent_w_two_lines():
     page = hr.Body("one")
     page.append("two")
@@ -144,8 +125,6 @@ def test_body_element_render_w_indent_w_two_lines():
     expected = "   <body>\n      one\n      two\n   </body>\n"
     assert f.getvalue() == expected
 
-
-# test paragraph_element.render
 def test_paragraph_element_render_w_indent_w_two_lines():
     page = hr.P("one")
     page.append("two")
@@ -154,8 +133,6 @@ def test_paragraph_element_render_w_indent_w_two_lines():
     expected = "   <p>\n      one\n      two\n   </p>\n"
     assert f.getvalue() == expected
 
-
-# test append and render of elements
 def test_recursive_render():
     page = hr.Html()
     body = hr.Body()
@@ -172,8 +149,6 @@ def test_recursive_render():
                "</html>\n"
     assert f.getvalue() == expected
 
-
-# test append and render of elements
 def test_recursive_render_with_multiple_paragraphs():
     page = hr.Html()
     body = hr.Body()
@@ -196,7 +171,6 @@ def test_recursive_render_with_multiple_paragraphs():
                "   </body>\n" \
                "</html>\n"
     assert f.getvalue() == expected
-
 
 def test_step_2_html_output():
     page = hr.Html()
@@ -222,7 +196,7 @@ def test_step_2_html_output():
 
 
 # STEP 3 TESTS
-# test title.render
+# Head class, OneLineTag class, Title class
 def test_title_render_empty_content():
     page = hr.Title()
     f = StringIO()
@@ -230,14 +204,12 @@ def test_title_render_empty_content():
     expected = "<title></title>\n"
     assert f.getvalue() == expected
 
-
 def test_title_render():
     page = hr.Title("this is a title")
     f = StringIO()
     page.render(f)
     expected = "<title>this is a title</title>\n"
     assert f.getvalue() == expected
-
 
 def test_title_render_append_to_empty_content():
     page = hr.Title()
@@ -247,15 +219,13 @@ def test_title_render_append_to_empty_content():
     expected = "<title>this is a title</title>\n"
     assert f.getvalue() == expected
 
-
 def test_title_render_append_to_nonempty_content():
     page = hr.Title("this is a title")
     page.append("this is a second title")
     f = StringIO()
     page.render(f)
-    expected = "<title>this is a title</title>\n"
+    expected = "<title>this is a title this is a second title</title>\n"
     assert f.getvalue() == expected
-
 
 def test_step_3_html_output():
     page = hr.Html()
@@ -287,6 +257,7 @@ def test_step_3_html_output():
 
 
 # STEP 4 TESTS
+# Attributes keyword inputs
 def test_element_init_w_attributes():
     page = hr.Element("some text content", id="TheList", style="line=height:200%")
     f = StringIO()
@@ -294,23 +265,12 @@ def test_element_init_w_attributes():
     expected = '<html id="TheList" style="line=height:200%">\n   some text content\n</html>\n'
     assert f.getvalue() == expected
 
-
 def test_element_init_w_clas_attribute():
     page = hr.P("some content", clas="intro")
     f = StringIO()
     page.render(f)
     expected = '<p class="intro">\n   some content\n</p>\n'
     assert f.getvalue() == expected
-
-
-# the following test should not compile, due to reserved word "class" being used as a kwarg
-# def test_element_init_w_class_attribute():
-#     page = hr.P("some content", class="intro")
-#     f = StringIO()
-#     page.render(f)
-#     expected = '<html id="TheList" style="line=height:200%">'
-#     assert f.getvalue() == expected
-
 
 def test_step_4_html_output():
     page = hr.Html()
@@ -339,6 +299,7 @@ def test_step_4_html_output():
 
 
 # STEP 5 TESTS
+# SelfClosingTag class, Hr class, Br class
 def test_hr_element_init():
     page = hr.Hr()
     f = StringIO()
@@ -346,14 +307,12 @@ def test_hr_element_init():
     expected = "<hr />\n"
     assert f.getvalue() == expected
 
-
 def test_br_element_init():
     page = hr.Br()
     f = StringIO()
     page.render(f)
     expected = "<br />\n"
     assert f.getvalue() == expected
-
 
 def test_self_closing_tag_init_w_content_raises_error():
     message = ""
@@ -364,7 +323,6 @@ def test_self_closing_tag_init_w_content_raises_error():
     finally:
         assert message == "'SelfClosingTag' object cannot have any content"
 
-
 def test_self_closing_tag_init_w_kwargs_raises_error():
     message = ""
     try:
@@ -373,7 +331,6 @@ def test_self_closing_tag_init_w_kwargs_raises_error():
         message = e.args[0]
     finally:
         assert message == "'SelfClosingTag' object cannot have any content"
-
 
 def test_self_closing_tag_append_raises_error():
     page = hr.Hr()
@@ -384,7 +341,6 @@ def test_self_closing_tag_append_raises_error():
         message = e.args[0]
     finally:
         assert message == "'SelfClosingTag' object cannot have any content"
-
 
 def test_step_5_html_output():
     page = hr.Html()
@@ -409,6 +365,49 @@ def test_step_5_html_output():
                " to show that we can do some text\n" \
                "      </p>\n" \
                "      <hr />\n" \
+               "   </body>\n" \
+               "</html>\n"
+    assert f.getvalue() == expected
+
+
+# STEP 6 TESTS
+# Anchor class
+def test_anchor_element_init():
+    page = hr.A("http://google.com", "link to google")
+    f = StringIO()
+    page.render(f)
+    expected = '<a href="http://google.com">link to google</a>\n'
+    assert f.getvalue() == expected
+
+def test_step_6_html_output():
+    page = hr.Html()
+    head = hr.Head()
+    head.append(hr.Title("PythonClass = Revision 1087:"))
+    page.append(head)
+    body = hr.Body()
+    body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                     "but this is enough  to show that we can do some text",
+                     style="text-align: center; font-style: oblique;"))
+    body.append(hr.Hr())
+    body.append("And this is a ")
+    body.append(hr.A("http://google.com", "link"))
+    body.append("to google")
+    page.append(body)
+    f = StringIO()
+    page.render(f)
+    expected = "<html>\n" \
+               "   <head>\n" \
+               "      <title>PythonClass = Revision 1087:</title>\n" \
+               "   </head>\n" \
+               "   <body>\n" \
+               '      <p style="text-align: center; font-style: oblique;">\n' \
+               "         Here is a paragraph of text -- there could be more of them, but this is enough " \
+               " to show that we can do some text\n" \
+               "      </p>\n" \
+               "      <hr />\n" \
+               "      And this is a \n" \
+               '      <a href="http://google.com">link</a>\n' \
+               "      to google\n" \
                "   </body>\n" \
                "</html>\n"
     assert f.getvalue() == expected

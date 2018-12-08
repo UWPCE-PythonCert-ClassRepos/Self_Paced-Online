@@ -67,16 +67,6 @@ class Head(Element):
 
 
 class OneLineTag(Element):
-    def append(self, content):
-        """
-        append if content is currently blank, otherwise do nothing (do not update or add)
-        
-        :param content: 
-        :return: 
-        """
-        if not self.content:
-            self.content.append(content)
-
     def render(self, file_out, cur_ind=""):
         """
         render OneLineTag instance
@@ -85,7 +75,7 @@ class OneLineTag(Element):
         :param cur_ind: 
         :return: 
         """
-        content = "" if not self.content else self.content[0]
+        content = " ".join(self.content)
         file_out.write(f"{cur_ind}<{self.tag}{self.render_attributes()}>{content}</{self.tag}>\n")
 
 
@@ -131,3 +121,17 @@ class Hr(SelfClosingTag):
 
 class Br(SelfClosingTag):
     tag = "br"
+
+
+class A(OneLineTag):
+    tag = "a"
+
+    def __init__(self, link, content):
+        """
+        initialize the anchor element
+        
+        :param link: 
+        :param content: 
+        """
+        self.content = [content]
+        self.attributes = {"href": link}
