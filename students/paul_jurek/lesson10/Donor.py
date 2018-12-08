@@ -31,7 +31,11 @@ class Donor:
 
     def donation_total(self):
         """returns the total amount the donor has donated"""
-        return sum([i.amount for i in self._donations])
+        if self.donations:
+            print(self.donations)
+            return sum([i.amount for i in self.donations])
+        else:
+            return 0
 
     def add_donation(self, amount, date=datetime.datetime.utcnow()):
         """adds donation for user"""
@@ -55,3 +59,15 @@ class Donor:
     def summarize_donor(self):
         """provides summary tuple of donor"""
         return (self.id, self.fullname, self.donation_total(), self.donation_count(), self.donation_total()/self.donation_count())
+
+    def multiply_donations(self, factor):
+        """multiply users donations from nice donor
+        factor:
+            positive number modifying users donations
+        returns:
+            self with donatinos modified"""
+        self._donations = [Donation(amount=i.amount*factor, date=i.date, id=i.id) for i in self.donations]
+
+
+def increase_donation(donation, factor):
+    return Donation(amount=donation.amount*factor, date=donation.date, id=donation.id)

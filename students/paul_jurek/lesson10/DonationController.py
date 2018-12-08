@@ -4,9 +4,10 @@ Expected to have one controller created for each non-profit organization.
 This controller contains information about organization and manages creation
 and management of donations"""
 
+import copy
 from pathlib import Path
 import pickle
-from Donor import Donor
+from Donor import Donor, Donation
 
 
 class DonationController:
@@ -46,7 +47,7 @@ class DonationController:
 
     def get_total_donations(self):
         """returns total donations in controller"""
-        return sum([k.donation_total() for i, k in self.donors.items()])
+        return sum([k.donation_total() for i, k in self.donors.items() if k.donations])
 
     def create_donation(self, donor, amount):
         """creates donation in input donor"""
@@ -110,7 +111,6 @@ class DonationController:
             print(f"{summary[1]:<26} ${summary[2]:>13.2f}  "
                 f"{summary[3]:>10}  ${summary[4]:>14.2f}")
 
-    
     def send_letters_to_everyone(self, 
                                  thank_you_directory=Path('/mailroom_thankyou_letters')):
         """creates thank yous for all donors and sends out"""
@@ -141,6 +141,23 @@ class DonationController:
                         Sincerely,
                             -The Team"""
 
+    def challenge(self, factor):
+        """increases donations due to nice donor
+        returns copy of donation controller with multiplied input"""
+
+        if factor < 1:
+            raise ValueError('Donors are not allowed to take $ from our cause.  Please consider factor of 10 :)')
+        
+        new_db = copy.deepcopy(self)
+        new_db.modify_donors(factor)
+        return new_db
+
+    def modify_donors(self, factor):
+        """helper function to enable modification to donors in list"""
+        for i, donor in self.donors.items():
+            donor.multiply_donations(factor)
+
+
 def load_donation_controller(database):
     """loads database controller"""
     return pickle.load(open(database, "rb"))
@@ -148,3 +165,7 @@ def load_donation_controller(database):
 def save_donation_controller(controller, database):
     """save database controller"""
     pickle.dump(controller, open(database, 'wb'))
+
+def multiply_donation(original, factor):
+    """returns multiplied donation"""
+    return orginal * factor

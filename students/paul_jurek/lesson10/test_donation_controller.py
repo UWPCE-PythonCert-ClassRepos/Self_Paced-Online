@@ -89,3 +89,25 @@ def test_next_id_property(stw, donor1, donor2):
         stw.create_donor(donor1)
         assert stw.next_id == 3
 
+
+def test_controller_challege_errors_on_small_value(stw):
+        """given controller
+        when challenge raised with value less than 1
+        error raised"""
+
+        with pytest.raises(ValueError):
+                stw.challenge(0.1)
+
+def test_challenge_increase_donation_total(stw, donor1, donor2):
+        """given donation controller
+        when challenge applied
+        new controller has increased donation amount"""
+        FACTOR = 2
+        # create donors
+        stw.create_donor(donor1)
+        stw.create_donation(donor=donor1, amount=500)
+        stw.create_donor(donor2)
+        stw.create_donation(donor=donor2, amount=5)
+
+        trees = stw.challenge(FACTOR)
+        assert stw.get_total_donations() * FACTOR == trees.get_total_donations()
