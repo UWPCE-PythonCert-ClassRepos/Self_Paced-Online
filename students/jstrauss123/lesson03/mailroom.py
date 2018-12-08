@@ -1,21 +1,30 @@
 #!/usr/bin/env python3
 
+# function - send thank you
+def fun_sendty():
+    response_ty = input("Please provide full name of donor: ")
+    while response_ty == "list":
+        print(donor_list)
+        response_ty = input("Please provide full name of donor: ")
+    if response_ty in donor_list:
+        # send thank you email
+        print("donor in list, creating a ty email with last contrib amt")
+    # if user not in donor_list add new donor
+    else: 
+        print("new donor, adding to donor_list")
+        don_amt = input("Enter donation amount for new donor: ")
+        amt1 = float(don_amt)
+        print(amt1)
+        
+    #if response_ty == "list"
+    #    print(donor_list)
+    #if response_ty in donor_list:
+
 # function - create report
 def fun_report():
     yum = ''
-    response = input("Please provide full name of donor: ")
-    while response == "list":
-        print(donor_list)
+    
         
-    #if response == "list"
-    #    print(donor_list)
-    #if response in donor_list:
-        
-# function - send thank you
-def fun_sendty():
-    yum1 = ''
-
-
 
 # main
 if __name__ == "__main__":
@@ -25,13 +34,14 @@ if __name__ == "__main__":
     print(response)
     while response != "q":
         if response == "1":
-            print("running thank you")
+            fun_sendty()
             break
         elif response == "2":
             print("running report")
             break
         else:
-            print("exiting mailroom")
-            break
-    print("Good-bye")
+            response = input("Please select: 1 to Send a Thank you, 2 to Create a report or q to quit : ")
+            #print("exiting mailroom")
+            #break
+    print("Quit selected - Good-bye")
 
