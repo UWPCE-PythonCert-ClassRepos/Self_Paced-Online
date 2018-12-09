@@ -55,14 +55,3 @@ def test_summarize_donor(example_donor):
         example_donor.add_donation(4)
         example_donor.add_donation(6)
         assert example_donor.summarize_donor() == (1, 'Bob Dod', 12, 3, 4)
-
-def test_donor_challenge_applied(example_donor):
-        """given an empty example donor
-        when donation_multilpier applied
-        donations are increased"""
-        example_donor.add_donation(10)
-        example_donor.add_donation(20)
-        assert example_donor.donation_total() == 30
-
-        example_donor.multiply_donations(factor=2)
-        assert example_donor.donation_total() == 60
