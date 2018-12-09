@@ -2,12 +2,16 @@
 """
 Series 2 completed.
 Author: JohnR
-Version: 2.0
+Version: 2.4
 Date: 12/9/2018
-Notes: Series 2 completed, but need to add some testing around the inputs
-        to insure they're valid (e.g., number when expecting a number).
+Notes: Series_3 needs a lot of work. Should also do more int validation
+        in the series_2 function if time allows. 
 """
 
+
+# TODO: list of fruit continues to maintain state through each function
+# TODO: series_3 function is not calling each item
+# TODO: need to implement a while loop and validate user input in series3
 
 def main():
     """
@@ -15,7 +19,10 @@ def main():
     :return: Return each function.
     """
     fruit = series_1()
-    series_2(fruit)
+    s2_fruit = fruit[:]
+    s3_fruit = fruit[:]
+    series_2(s2_fruit)
+    series_3(s3_fruit)
 
 
 def series_1():
@@ -35,10 +42,8 @@ def series_1():
     fruit_list.append(new_fruit)
     print(fruit_list)
 
-    # TODO: Need to check if the number is an integer and within range
     number = int(input('Please enter a number between 1 and 5: '))
-    list_length = len(fruit_list) + 2 # this does not work
-    if number <= 0 or number >= list_length:
+    if number <= 0 or number > len(fruit_list):
         print('Number is out of range.')
     else:
         print(str(number) + ' is ' + fruit_list[number - 1])
@@ -94,6 +99,33 @@ def series_2(fruit):
             new_list.remove(delete_me)
 
     print(new_list)
+
+
+def series_3(fruit):
+    """
+    Get user input displaying line like 'do you like apples' for each fruit
+    in the list, making fruit all lowercase
+    For each no delete the fruit from the list
+    For any answer not yes or no prompt user to answer with correct value
+    Display remaining list
+    :param fruit:  Use fruit list from series_1
+    :return:
+    """
+    print('*' * 20)
+    print('Start of series 3:')
+    print('*' * 20)
+
+    for item in fruit:
+        item = item.lower()
+        answer = input('Do you like ' + item + ' ?')
+        answer = answer.lower()
+        if answer == 'no':
+            fruit.remove(item.capitalize())
+
+    print(fruit)
+
+
+
 
 
 if __name__ == '__main__':
