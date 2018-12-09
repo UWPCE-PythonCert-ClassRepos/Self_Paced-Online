@@ -2,21 +2,30 @@
 
 # function - send thank you
 def fun_sendty():
+    new_user = False
     full_name = input("Please provide full name of donor: ")
     while full_name == "list":
-        print(donor_list)
+        for donor in donor_list:
+            print(donor[0])
         full_name = input("Please provide full name of donor: ")
-    if full_name in donor_list:
+    for donor in donor_list:
+        # if user exists, email (print) thank you
+        if full_name == donor[0]:
+            print("Dear {}, Thank you so much for your generous contribution of ${}".format(donor[0], donor[-1]))
+        else:
+            new_user = False
+    #if full_name in donor_list:
         #print("full name entered is: ", full_name)
-        idx_num = donor_list.index(full_name)
+        #idx_num = donor_list.index(full_name)
         #print("index is: ", idx_num)
         #str1 = "donamt_" + str(idx_num)
         #print("str1 value is: ", str1)
         #print(" list value is equal to: ", str1[-1])
         # if donor in list send thank you email
-        print("Dear {}, Thank you so much for your generous contribution".format(donor_list[idx_num]))
-        print("Dear {}, Thank you so much for your generous contribution of ${}".format(donor_list[idx_num], str1[-1))
+        #print("Dear {}, Thank you so much for your generous contribution".format(donor_list[idx_num]))
+        #print("Dear {}, Thank you so much for your generous contribution of ${}".format(donor_list[idx_num], str1[-1))
     # if user not in donor_list add new donor and prompt for contribution amount
+    """
     else: 
         donor_list.append(full_name)
         idx_num = donor_list.index(full_name)
@@ -31,7 +40,8 @@ def fun_sendty():
     #if response_ty == "list"
     #    print(donor_list)
     #if response_ty in donor_list:
-
+    """
+    
 # function - create report
 def fun_report():
     #arr6 = [['Joey', 30, 199.99], ['Jan', 36, 29999.97], ['Bob', 55, 999999.99]] 
