@@ -6,11 +6,8 @@ def exchange_first_last(seq):
     work_list1 = work_list[-1::] 
     work_list2 = work_list[1:-1:]
     work_list3 = work_list[0:1:]
-    print(work_list1)
-    print(work_list2)
-    print(work_list3)
-    new_list = work_list1 + work_list2 + work_list3
-    print("new_list is: ", new_list)
+    outseq = work_list1 + work_list2 + work_list3
+    
 
     """
     # assign first and last value
@@ -33,7 +30,6 @@ def exchange_first_last(seq):
     #    outseq = tuple(work_list)
     #else:
     """
-    outseq = work_list
     print(outseq)
     return(outseq)
     
