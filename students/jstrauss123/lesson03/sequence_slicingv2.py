@@ -15,18 +15,14 @@ def  remove_every_other_item(seq):
 def  first_last_four(seq):    
     outseq = seq[4:-4]
     outseq = outseq[0:-1:2]
-    print(outseq)
-    #work_list = seq
-    #work_list = work_list[4:-4]
-    #work_list = work_list[0:-1:2]
-    #outseq = work_list
     return(outseq)
    
     
 # function - accept sequence and return items in reverse    
 def reverse_items(seq):
-
-
+    outseq = seq[::-1]
+    print(outseq)
+    """
     work_list = list(seq)
     # reverse list
     work_list = work_list[::-1]
@@ -37,6 +33,7 @@ def reverse_items(seq):
         outseq = tuple(work_list)
     else:
         outseq = work_list
+    """
     return(outseq)
     
 
