@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 """
-        Add fruit to beginning of list using +
-        Display list
-        Add another fruit using insert
-        Display list
-        Display all fruits that begin with P
-
+Series 1 completed.
 Author: JohnR
-Version: .1
-Date: 12/8/2018
-Notes: Core logic for part one
+Version: 1.0
+Date: 12/9/2018
+Notes: Completed series 1 of list lab. For series 2 will need to break
+        the below into a separate function and be able to pass the results
+        into a second function.
 """
 
 
