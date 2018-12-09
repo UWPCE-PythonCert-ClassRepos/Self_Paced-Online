@@ -7,30 +7,40 @@ def fun_sendty():
         print(donor_list)
         full_name = input("Please provide full name of donor: ")
     if full_name in donor_list:
-        print("full name entered is: ", full_name)
+        #print("full name entered is: ", full_name)
         idx_num = donor_list.index(full_name)
-        print("index is: ", idx_num)
-        str1 = "donamt_" + str(idx_num)
-        print(str1)
-        # send thank you email
-        print("donor in list, creating a ty email with last contrib amt")
-        print("Dear {}, Thank you so much for your contribution in the amount of ${}".format(donor_list[idx_num], str1[-1]))
-        #{list5[0][:-1]} is {list5[1]} and the weight of a {list5[2][:-1]} is {list5[3]}")
-    # if user not in donor_list add new donor
+        #print("index is: ", idx_num)
+        #str1 = "donamt_" + str(idx_num)
+        #print("str1 value is: ", str1)
+        #print(" list value is equal to: ", str1[-1])
+        # if donor in list send thank you email
+        print("Dear {}, Thank you so much for your generous contribution".format(donor_list[idx_num]))
+    # if user not in donor_list add new donor and prompt for contribution amount
     else: 
-        print("new donor, adding to donor_list")
-        don_amt = input("Enter donation amount for new donor: ")
-        amt1 = float(don_amt)
-        print("amt is: ", amt1)
-    print("response is: ", response)    
+        donor_list.append(full_name)
+        idx_num = donor_list.index(full_name)
+        new_donamt = input("Enter donation amount for new donor: ")
+        newamt = float(new_donamt)
+        print("Dear {}, Thank you so much for your generous contribution".format(donor_list[idx_num]))
+        # code here to create new contribution list for new donor
+        #donamt_<insert index here>.append(newamt)
+    #print("response is: ", response)    
     #if response_ty == "list"
     #    print(donor_list)
     #if response_ty in donor_list:
 
 # function - create report
 def fun_report():
-    yum = ''
-    
+    #arr6 = [['Joey', 30, 199.99], ['Jan', 36, 29999.97], ['Bob', 55, 999999.99]] 
+    donor_len = len(donor_list)
+    count1 = 0
+    print("")
+    print("{:15} |{:>15} |{:>2} |{:>15}".format("Donor Name","Total Given","Num Gifts","Average Gifts" ))
+    while count1 < donor_len:
+        
+        print("{:15} ${:>15} {:>2} ${:>15}".format(donor_list[count1], 25000, 2, 10000))
+        count1 += 1
+    print("")
         
 
 # main
@@ -50,7 +60,7 @@ if __name__ == "__main__":
             fun_sendty()
             #break
         elif response == "2":
-            print("running report")
+            fun_report()
             #break
         elif response == "q":
             print("q selected - Good-bye")
