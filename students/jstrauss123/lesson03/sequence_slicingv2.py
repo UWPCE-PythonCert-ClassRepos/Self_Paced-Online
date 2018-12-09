@@ -21,24 +21,19 @@ def  first_last_four(seq):
 # function - accept sequence and return items in reverse    
 def reverse_items(seq):
     outseq = seq[::-1]
-    print(outseq)
-    """
-    work_list = list(seq)
-    # reverse list
-    work_list = work_list[::-1]
-    if type(seq) == str:
-        # convert list back to string
-        outseq = str("".join(work_list))
-    elif type(seq) == tuple:
-        outseq = tuple(work_list)
-    else:
-        outseq = work_list
-    """
     return(outseq)
     
 
 # function - accept a sequence, return in new order: middle third/last third/first third
 def  return_in_thirds(seq):    
+    list_len = (len(seq) // 3)
+    work_list1 = seq[0:list_len:]
+    work_list2 = seq[list_len:list_len+list_len:]
+    work_list3 = seq[list_len+list_len::]
+    outseq = work_list2 + work_list3 + work_list1
+    print(outseq)
+    #work_list2 = seq[list_len:
+    """
     work_list = list(seq)
     # determine length of list and divide by 3
     list_len = (len(work_list) // 3)
@@ -61,6 +56,7 @@ def  return_in_thirds(seq):
         outseq = tuple(work_list)
     else:
         outseq = work_list
+    """
     return(outseq)
     
 # create string and tuple values
@@ -74,8 +70,8 @@ a_tuple = (2, 54, 13, 12, 5, 32)
 #remove_every_other_item(a_tuple)
 #first_last_four(a_string)
 #first_last_four(a_tuple)
-reverse_items(a_string)
-reverse_items(a_tuple)
+#reverse_items(a_string)
+#reverse_items(a_tuple)
 #return_in_thirds(a_string)
 #return_in_thirds(a_tuple)
 
