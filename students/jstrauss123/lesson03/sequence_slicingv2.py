@@ -27,15 +27,7 @@ def reverse_items(seq):
 # function - accept a sequence, return in new order: middle third/last third/first third
 def  return_in_thirds(seq):    
     list_len = (len(seq) // 3)
-    # try one-liner type.. will it work?
     outseq = seq[list_len:list_len+list_len:] + seq[list_len+list_len::] + seq[0:list_len:]
-    print(outseq)
-    
-    
-    #work_list1 = seq[0:list_len:]
-    #work_list2 = seq[list_len:list_len+list_len:]
-    #work_list3 = seq[list_len+list_len::]
-    #outseq = work_list2 + work_list3 + work_list1
     return(outseq)
     
 # create string and tuple values
@@ -72,5 +64,4 @@ if __name__ == "__main__":
    assert reverse_items(a_tuple) == (32, 5, 12, 13, 54, 2)
    assert return_in_thirds(a_string) == "is a stringthis "
    assert return_in_thirds(a_tuple) == (13, 12, 5, 32, 2, 54)
-
    print("validation tests passed\n")
