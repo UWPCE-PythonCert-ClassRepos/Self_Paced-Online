@@ -2,18 +2,32 @@
 
 # function - send thank you
 def fun_sendty():
+    #new_user = False
     new_user = False
     full_name = input("Please provide full name of donor: ")
     while full_name == "list":
-        for donor in donor_list:
+        local_donor_list = donor_list
+        for donor in local_donor_list:
             print(donor[0])
         full_name = input("Please provide full name of donor: ")
-    for donor in donor_list:
+    for donor in local_donor_list:
         # if user exists, email (print) thank you
+        
         if full_name == donor[0]:
             print("Dear {}, Thank you so much for your generous contribution of ${}".format(donor[0], donor[-1]))
-        else:
-            new_user = False
+        else:   # new user : add and prompt for contribution. create new list and add to donor list
+            contrib_amt = input("Enter donation amount for new donor: ")
+            #newamt = float(new_donamt)
+            new_list = [[full_name, contrib_amt]]
+            #print("new list contains: ", new_list)
+            local_donor_list = local_donor_list+new_list
+            print("updated donor list: ", local_donor_list)
+            #new_user = True
+                
+            
+            
+            
+    return local_donor_list
     #if full_name in donor_list:
         #print("full name entered is: ", full_name)
         #idx_num = donor_list.index(full_name)
@@ -71,6 +85,7 @@ if __name__ == "__main__":
         response = input("Please select: 1 to Send a Thank you, 2 to Create a report or q to quit : ")
         if response == "1":
             fun_sendty()
+            donor_list = local_donor_list
             #break
         elif response == "2":
             fun_report()
