@@ -146,16 +146,24 @@ class DonationController:
         returns copy of donation controller with multiplied input"""
 
         if factor < 1:
-            raise ValueError('Donors are not allowed to take $ from our cause.  Please consider factor of 10 :)')
-        
+            raise ValueError('Donors are not allowed to take $ from our cause.  Please consider factor of 10 ;)')
+        # copy generated to avoid messing with old database
         new_db = copy.deepcopy(self)
-        new_db.modify_donors(factor)
+        mod_func = modifying_fun_generator(factor)
+        # seperate list made to simplify code as we need to regenerate dict
+        donor_list = map(mod_func, new_db.donors.values())
+        new_db.donors = {i.id:i for i in donor_list}        
         return new_db
 
-    def modify_donors(self, factor):
-        """helper function to enable modification to donors in list"""
-        for i, donor in self.donors.items():
-            donor.multiply_donations(factor)
+def modify_donor_donations(factor, donor):
+    """returns a modified donor with their donations matched by nice donor"""
+    new_donations = [Donation(amount=i.amount*factor, date=i.date, id=i.id) for i in donor.donations]
+    donor._donations = new_donations
+    return donor
+
+def modifying_fun_generator(factor):
+    """returns function with factor applied.  This increases donation amount  by factor"""
+    return lambda x: modify_donor_donations(factor=factor, donor=x)
 
 
 def load_donation_controller(database):
