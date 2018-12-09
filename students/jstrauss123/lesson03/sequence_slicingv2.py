@@ -2,25 +2,17 @@
 
 # function - accept a sequence and return a copy of sequence with first and last items exchanged
 def exchange_first_last(seq):
-    # testing consolidated code ie: one liner using passed in seq, this wasn't working before thus the conversion to list
     outseq = seq[-1::] + seq[1:-1:] + seq[0:1:]
-    #print(work_list)
-    #outseq = work_list
-    """
-    work_list = seq
-    work_list1 = work_list[-1::] 
-    work_list2 = work_list[1:-1:]
-    work_list3 = work_list[0:1:]
-    outseq = work_list1 + work_list2 + work_list3
-    """
     return(outseq)
     
     
 # function - accept a sequence and return every other item in sequence
 def  remove_every_other_item(seq):
-    work_list = seq
-    work_list1 = work_list[0:-1:2]
-    outseq = work_list1
+    outseq = seq[0:-1:2]
+    #work_list = seq
+    #work_list1 = work_list[0:-1:2]
+    #outseq = work_list1
+    print(outseq)
     return(outseq)
     
 # function - accept a sequence and manipulate first and last four, return what's left every other
