@@ -8,45 +8,74 @@ with the elements reversed (just with slicing).
 with the middle third, then last third, then the first third in the new order.
 
 Author: JohnR
-Version: 0.1
-Date: 12/6/2018
+Version: 1.2
+Date: 12/7/2018
+Notes: Added third assertion test for each function.
 """
 
 
 def main():
     """
     Basic script logic and assertion tests.
-    :return: Output of assertion tests and call each function.
+    :return: Output of assertion tests and call/print each function.
     """
 
-    # TODO: Create and test assertions for each function
-    # assert exchange_first_last(a_string) == "ghis is a strint"
-    # assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
-    # assert mid_last_first(a_string) == "is a stringthis "
-    # assert mid_last_first(a_tuple) == (13, 12, 5, 32, 2, 54)
     a_string = "this is a string"
     a_tuple = (2, 54, 13, 12, 5, 32)
+    a_test = "1 2 3 4 5 6 7 8 9 0"
 
+    assert exchange_first_last(a_string) == "ghis is a strint"
+    assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
+    assert exchange_first_last(a_test) == "0 2 3 4 5 6 7 8 9 1"
+    assert every_other_removed(a_string) == "ti sasrn"
+    assert every_other_removed(a_tuple) == (2, 13, 5)
+    assert every_other_removed(a_test) == "1234567890"
+    assert first_four_last_four(a_string) == " sas"
+    assert first_four_last_four(a_tuple) == ()
+    assert first_four_last_four(a_test) == "345678"
+    assert reversed_slicing(a_string) == "gnirts a si siht"
+    assert reversed_slicing(a_tuple) == (32, 5, 12, 13, 54, 2)
+    assert reversed_slicing(a_test) == "0 9 8 7 6 5 4 3 2 1"
+    assert middle_last_first(a_string) == "is a stringthis "
+    assert middle_last_first(a_tuple) == (13, 12, 5, 32, 2, 54)
+    assert middle_last_first(a_test) == "4 5 6 7 8 9 01 2 3 "
+
+    print('*' * 40)
+    print('All assertion tests have passed.')
+    print('*' * 40)
+
+    print('Original string: ' + a_string)
+    print('Original tuple: ' + str(a_tuple))
+    print('Original test: ' + a_test)
+    print('*' * 40)
     print('Swap first and last elements:')
     print(exchange_first_last(a_string))
     print(exchange_first_last(a_tuple))
+    print(exchange_first_last(a_test))
+    print('*' * 40)
 
-    print()
     print('Every other element removed:')
     print(every_other_removed(a_string))
     print(every_other_removed(a_tuple))
+    print(every_other_removed(a_test))
+    print('*' * 40)
 
-    print()
     print('Removed first four, last four, and every other element:')
     print(first_four_last_four(a_string))
     print(first_four_last_four(a_tuple))
+    print(first_four_last_four(a_test))
+    print('*' * 40)
 
-    print()
     print('Elements reversed:')
     print(reversed_slicing(a_string))
     print(reversed_slicing(a_tuple))
+    print(reversed_slicing(a_test))
+    print('*' * 40)
 
-    print()
+    print('Middle third - last third - first third: ')
+    print(middle_last_first(a_string))
+    print(middle_last_first(a_tuple))
+    print(middle_last_first(a_test))
 
 
 def exchange_first_last(seq):
@@ -87,14 +116,14 @@ def reversed_slicing(seq):
     return seq[::-1]
 
 
-# TODO: Code and test middle/last/first function
 def middle_last_first(seq):
     """
     Slice into thirds and then return middle, last and first.
     :param seq: String to manipulate.
     :return: String in order of middle, last then first.
     """
-    pass
+    third = len(seq)//3
+    return seq[third:-third] + seq[-third:] + seq[:third]
 
 
 if __name__ == '__main__':
