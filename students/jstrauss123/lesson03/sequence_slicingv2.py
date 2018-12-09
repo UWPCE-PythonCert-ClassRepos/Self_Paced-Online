@@ -20,26 +20,14 @@ def  remove_every_other_item(seq):
 # function - accept a sequence and manipulate first and last four, return what's left every other
 def  first_last_four(seq):    
     work_list = seq
-    work_list1 = work_list[4:-4]
-    print(work_list1)
-    work_list = work_list1
-    work_list1 = work_list[0:-1:2]
-    print(work_list1)
-    """
-    work_list = list(seq)
-    # remove first and last four items from list
+    # try changing same sequence
     work_list = work_list[4:-4]
-    # remove every other from list
+    print(work_list)
+    #work_list1 = work_list[4:-4]
+    #work_list = work_list1
     work_list = work_list[0:-1:2]
-    if type(seq) == str:
-        # convert list back to string
-        outseq = str("".join(work_list))
-    elif type(seq) == tuple:
-        outseq = tuple(work_list)
-    else:
-    """
-    outseq = work_list1
-    print(outseq)
+    print(work_list)
+    outseq = work_list
     return(outseq)
    
     
