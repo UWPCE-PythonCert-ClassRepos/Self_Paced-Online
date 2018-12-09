@@ -1,5 +1,6 @@
 """testing the donation controller"""
 
+import datetime
 import pytest
 from Donor import Donor
 from DonationController import DonationController
@@ -139,3 +140,18 @@ def test_challenge_increase_small_donations(stw, donor1, donor2):
 
         trees = stw.challenge(FACTOR, max_donation=100)
         assert trees.get_total_donations() == 10
+
+def test_projecting_donation(stw, donor1, donor2):
+        """given donation controller with some donors
+        when projection created
+        total amount pressented to user for what they would need to contribute"""
+        FACTOR = 2
+        stw.create_donor(donor1)
+        for i in range(1, 13):
+                if i % 2:
+                        donation_amount = 50
+                else:
+                        donation_amount = 500
+                stw.create_donation(donor=donor1, amount=donation_amount, date=datetime.datetime(2018,i,1))
+
+        assert stw.project_donation(factor=FACTOR, min_donation=0, max_donation=5000)==3300*FACTOR

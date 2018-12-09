@@ -81,5 +81,8 @@ def save_database():
     save_donation_controller(CONTROLLER, Path('stw.p'))
 
 
+def create_sample_donor_database():
+    """creates a sample donor database to fill in donations
+    allows us to test scalability"""
 if __name__ == '__main__':
     main_menu()
