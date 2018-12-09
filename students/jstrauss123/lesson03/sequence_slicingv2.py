@@ -27,36 +27,15 @@ def reverse_items(seq):
 # function - accept a sequence, return in new order: middle third/last third/first third
 def  return_in_thirds(seq):    
     list_len = (len(seq) // 3)
-    work_list1 = seq[0:list_len:]
-    work_list2 = seq[list_len:list_len+list_len:]
-    work_list3 = seq[list_len+list_len::]
-    outseq = work_list2 + work_list3 + work_list1
+    # try one-liner type.. will it work?
+    outseq = seq[list_len:list_len+list_len:] + seq[list_len+list_len::] + seq[0:list_len:]
     print(outseq)
-    #work_list2 = seq[list_len:
-    """
-    work_list = list(seq)
-    # determine length of list and divide by 3
-    list_len = (len(work_list) // 3)
-    # assign first third to list1 and remove from orig list
-    work_list1 = work_list[0:list_len]
-    work_list = work_list[list_len:]
-    # assign next third to list2 and remove from orig list
-    work_list2 = work_list[0:list_len]
-    work_list = work_list[list_len:]
-    # assign the remainder to list3
-    work_list3 = work_list
-    # assign thirds by middle (2), last (3) and first (1)
-    work_list = work_list2 + work_list3 + work_list1
-    outseq = work_list
-    if type(seq) == str:
-        # convert list back to string
-        outseq = str("".join(work_list))
-    elif type(seq) == tuple:
-        # convert list back to tuple
-        outseq = tuple(work_list)
-    else:
-        outseq = work_list
-    """
+    
+    
+    #work_list1 = seq[0:list_len:]
+    #work_list2 = seq[list_len:list_len+list_len:]
+    #work_list3 = seq[list_len+list_len::]
+    #outseq = work_list2 + work_list3 + work_list1
     return(outseq)
     
 # create string and tuple values
