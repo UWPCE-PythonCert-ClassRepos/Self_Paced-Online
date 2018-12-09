@@ -80,7 +80,7 @@ def test_find():
     c.load_donors()
     assert c.find('Peter','Pan') is c.donorlist[0]
     assert c.find('Paul','Hollywood') is c.donorlist[1]
-    assert c.find('Mark','Luckeroth') == False
+    assert c.find('Mark','Luckeroth') == None
 
 def test_update():
     c = DonorCollection()
@@ -91,3 +91,30 @@ def test_update():
     assert c.donorlist[5].last_name == 'Luckeroth'
     assert c.donorlist[5].donations == [1000.]
     assert c.donorlist[0].donations == [10., 10., 10., 10., 1000.]
+
+
+def test_new():
+    c = DonorCollection()
+    c.load_donors()
+    d = c.challenge(2)
+    assert 2*c.donorlist[0].donations[0] == d.donorlist[0].donations[0]
+    assert 2*c.donorlist[0].donations[1] == d.donorlist[0].donations[1]
+    assert 2*c.donorlist[0].donations[2] == d.donorlist[0].donations[2]
+    assert 2*c.donorlist[0].donations[3] == d.donorlist[0].donations[3]
+    assert 2*c.donorlist[1].donations[0] == d.donorlist[1].donations[0]
+    assert 2*c.donorlist[1].donations[1] == d.donorlist[1].donations[1]
+    assert 2*c.donorlist[1].donations[2] == d.donorlist[1].donations[2]
+    assert 2*c.donorlist[1].donations[3] == d.donorlist[1].donations[3]
+    assert d.donorlist is not c.donorlist
+
+def test_filter():
+    c = DonorCollection()
+    c.load_donors()
+    d = c.challenge(2, 9., 500.)
+    assert d.donorlist[0].donations == [20., 20., 20., 20.]
+    assert d.donorlist[1].donations == []
+    assert d.donorlist[2].donations == [200.]
+    assert d.donorlist[3].donations == [246., 912.]
+    assert d.donorlist[4].donations == [120.]
+    assert d.donorlist is not c.donorlist
+

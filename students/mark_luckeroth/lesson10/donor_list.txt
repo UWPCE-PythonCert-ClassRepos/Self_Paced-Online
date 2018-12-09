@@ -1,0 +1,6 @@
+Raja;Koduri;60.0,60000.0,10000.0,10000.0
+Paul;Hollywood;5.0,5000.0,5.0,5.0
+Mark;Luckeroth;1000.0,1000.0
+Jake;Turtle;123.0,456.0,789.0
+Mary;Berry;100.0
+Peter;Pan;10.0,10.0,10.0,10.0
