@@ -2,11 +2,17 @@
 
 # function - accept a sequence and return a copy of sequence with first and last items exchanged
 def exchange_first_last(seq):
+    # testing consolidated code ie: one liner using passed in seq, this wasn't working before thus the conversion to list
+    work_list = seq[-1::] + seq[1:-1:] + seq[0:1:]
+    print(work_list)
+    outseq = work_list
+    """
     work_list = seq
     work_list1 = work_list[-1::] 
     work_list2 = work_list[1:-1:]
     work_list3 = work_list[0:1:]
     outseq = work_list1 + work_list2 + work_list3
+    """
     return(outseq)
     
     
@@ -28,6 +34,8 @@ def  first_last_four(seq):
     
 # function - accept sequence and return items in reverse    
 def reverse_items(seq):
+
+
     work_list = list(seq)
     # reverse list
     work_list = work_list[::-1]
@@ -76,10 +84,10 @@ a_tuple = (2, 54, 13, 12, 5, 32)
 #exchange_first_last(a_tuple)
 #remove_every_other_item(a_string)
 #remove_every_other_item(a_tuple)
-first_last_four(a_string)
-first_last_four(a_tuple)
-#reverse_items(a_string)
-#reverse_items(a_tuple)
+#first_last_four(a_string)
+#first_last_four(a_tuple)
+reverse_items(a_string)
+reverse_items(a_tuple)
 #return_in_thirds(a_string)
 #return_in_thirds(a_tuple)
 
