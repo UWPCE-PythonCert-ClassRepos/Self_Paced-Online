@@ -9,18 +9,17 @@ def exchange_first_last(seq):
 # function - accept a sequence and return every other item in sequence
 def  remove_every_other_item(seq):
     outseq = seq[0:-1:2]
-    #work_list = seq
-    #work_list1 = work_list[0:-1:2]
-    #outseq = work_list1
-    print(outseq)
     return(outseq)
     
 # function - accept a sequence and manipulate first and last four, return what's left every other
 def  first_last_four(seq):    
-    work_list = seq
-    work_list = work_list[4:-4]
-    work_list = work_list[0:-1:2]
-    outseq = work_list
+    outseq = seq[4:-4]
+    outseq = outseq[0:-1:2]
+    print(outseq)
+    #work_list = seq
+    #work_list = work_list[4:-4]
+    #work_list = work_list[0:-1:2]
+    #outseq = work_list
     return(outseq)
    
     
