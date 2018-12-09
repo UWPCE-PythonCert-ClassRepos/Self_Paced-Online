@@ -111,3 +111,31 @@ def test_challenge_increase_donation_total(stw, donor1, donor2):
 
         trees = stw.challenge(FACTOR)
         assert stw.get_total_donations() * FACTOR == trees.get_total_donations()
+
+def test_challenge_increase_large_donations(stw, donor1, donor2):
+        """given donation controller
+        when challenge applied
+        new controller has increased donation amount"""
+        FACTOR = 2
+        # create donors
+        stw.create_donor(donor1)
+        stw.create_donation(donor=donor1, amount=500)
+        stw.create_donor(donor2)
+        stw.create_donation(donor=donor2, amount=5)
+
+        trees = stw.challenge(FACTOR, min_donation = 100)
+        assert trees.get_total_donations() == 1000
+
+def test_challenge_increase_small_donations(stw, donor1, donor2):
+        """given donation controller
+        when challenge applied
+        new controller has increased donation amount"""
+        FACTOR = 2
+        # create donors
+        stw.create_donor(donor1)
+        stw.create_donation(donor=donor1, amount=500)
+        stw.create_donor(donor2)
+        stw.create_donation(donor=donor2, amount=5)
+
+        trees = stw.challenge(FACTOR, max_donation=100)
+        assert trees.get_total_donations() == 10

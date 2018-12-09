@@ -141,7 +141,7 @@ class DonationController:
                         Sincerely,
                             -The Team"""
 
-    def challenge(self, factor):
+    def challenge(self, factor, min_donation=0, max_donation=1e9):
         """increases donations due to nice donor
         returns copy of donation controller with multiplied input"""
 
@@ -150,8 +150,10 @@ class DonationController:
         # copy generated to avoid messing with old database
         new_db = copy.deepcopy(self)
         mod_func = modifying_fun_generator(factor)
+        mod_filter = filter_fun_generator(min_donation=min_donation, max_donation=max_donation)
         # seperate list made to simplify code as we need to regenerate dict
-        donor_list = map(mod_func, new_db.donors.values())
+        donor_list = map(mod_func, filter(mod_filter, new_db.donors.values()))
+        # rebuilds donors dict
         new_db.donors = {i.id:i for i in donor_list}        
         return new_db
 
@@ -164,6 +166,16 @@ def modify_donor_donations(factor, donor):
 def modifying_fun_generator(factor):
     """returns function with factor applied.  This increases donation amount  by factor"""
     return lambda x: modify_donor_donations(factor=factor, donor=x)
+
+def filter_donor_donations(donor, min_donation=0, max_donation = 1.0e9):
+    """filters donor donations to just those meeting criteria"""
+    filtered_donations = [Donation(amount=i.amount, date=i.date, id=i.id) for i in donor.donations if (i.amount>=min_donation and i.amount <= max_donation) ]
+    donor._donations = filtered_donations
+    return donor
+
+def filter_fun_generator(min_donation=0, max_donation=1.0e9):
+    """returns function with factor applied.  This increases donation amount  by factor"""
+    return lambda x: filter_donor_donations(min_donation=min_donation, max_donation=max_donation, donor=x)
 
 
 def load_donation_controller(database):
