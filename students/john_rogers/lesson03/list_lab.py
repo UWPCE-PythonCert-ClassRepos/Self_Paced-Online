@@ -35,9 +35,13 @@ def series_1():
     fruit_list.append(new_fruit)
     print(fruit_list)
 
-    number = input('Please enter a number between 1 and 5: ')
-    number = int(number)
-    print(str(number) + ' is ' + fruit_list[number - 1])
+    # TODO: Need to check if the number is an integer and within range
+    number = int(input('Please enter a number between 1 and 5: '))
+    list_length = len(fruit_list) + 2 # this does not work
+    if number <= 0 or number >= list_length:
+        print('Number is out of range.')
+    else:
+        print(str(number) + ' is ' + fruit_list[number - 1])
 
     second_fruit = input('Enter another fruit: ')
     second_fruit = second_fruit.capitalize()
