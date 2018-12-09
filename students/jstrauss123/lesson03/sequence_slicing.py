@@ -34,7 +34,7 @@ def  remove_every_other_item(seq):
     return(outseq)
     
     
-# function - accept a sequence and maniuplate first and last four, return what's left every other
+# function - accept a sequence and manipulate first and last four, return what's left every other
 def  first_last_four(seq):    
     work_list = list(seq)
     # remove first and last four items from list
