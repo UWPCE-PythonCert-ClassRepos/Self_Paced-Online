@@ -19,6 +19,13 @@ def  remove_every_other_item(seq):
     
 # function - accept a sequence and manipulate first and last four, return what's left every other
 def  first_last_four(seq):    
+    work_list = seq
+    work_list1 = work_list[4:-4]
+    print(work_list1)
+    work_list = work_list1
+    work_list1 = work_list[0:-1:2]
+    print(work_list1)
+    """
     work_list = list(seq)
     # remove first and last four items from list
     work_list = work_list[4:-4]
@@ -30,7 +37,9 @@ def  first_last_four(seq):
     elif type(seq) == tuple:
         outseq = tuple(work_list)
     else:
-        outseq = work_list
+    """
+    outseq = work_list1
+    print(outseq)
     return(outseq)
    
     
@@ -82,10 +91,10 @@ a_tuple = (2, 54, 13, 12, 5, 32)
 
 #exchange_first_last(a_string)
 #exchange_first_last(a_tuple)
-remove_every_other_item(a_string)
-remove_every_other_item(a_tuple)
-#first_last_four(a_string)
-#first_last_four(a_tuple)
+#remove_every_other_item(a_string)
+#remove_every_other_item(a_tuple)
+first_last_four(a_string)
+first_last_four(a_tuple)
 #reverse_items(a_string)
 #reverse_items(a_tuple)
 #return_in_thirds(a_string)
