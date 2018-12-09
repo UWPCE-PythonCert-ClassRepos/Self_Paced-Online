@@ -7,46 +7,15 @@ def exchange_first_last(seq):
     work_list2 = work_list[1:-1:]
     work_list3 = work_list[0:1:]
     outseq = work_list1 + work_list2 + work_list3
-    
-
-    """
-    # assign first and last value
-    t1 = type(seq)
-    print("seq is type: ", t1)
-    first = seq[0]
-    last = seq[-1]
-    # create a working list
-    work_list = list(seq)
-    t2 = type(work_list)
-    print("work_list is type: ", t2)
-    # assign first to last and last to first value
-    work_list[0] = last
-    work_list[-1] = first
-    # test seq type if str convert back to str
-    #if type(seq) == str:
-        # convert list back to string
-    #    outseq = str("".join(work_list))
-    #elif type(seq) == tuple:
-    #    outseq = tuple(work_list)
-    #else:
-    """
-    print(outseq)
     return(outseq)
     
     
 # function - accept a sequence and return every other item in sequence
 def  remove_every_other_item(seq):
-    work_list = list(seq)
-    work_list = work_list[0:-1:2]
-    if type(seq) == str:
-        # convert list back to string
-        outseq = str("".join(work_list))
-    elif type(seq) == tuple:
-        outseq = tuple(work_list)
-    else:
-        outseq = work_list
+    work_list = seq
+    work_list1 = work_list[0:-1:2]
+    outseq = work_list1
     return(outseq)
-    
     
 # function - accept a sequence and manipulate first and last four, return what's left every other
 def  first_last_four(seq):    
@@ -111,10 +80,10 @@ a_string = "this is a string"
 a_tuple = (2, 54, 13, 12, 5, 32)    
     
 
-exchange_first_last(a_string)
-exchange_first_last(a_tuple)
-#remove_every_other_item(a_string)
-#remove_every_other_item(a_tuple)
+#exchange_first_last(a_string)
+#exchange_first_last(a_tuple)
+remove_every_other_item(a_string)
+remove_every_other_item(a_tuple)
 #first_last_four(a_string)
 #first_last_four(a_tuple)
 #reverse_items(a_string)
@@ -128,10 +97,10 @@ exchange_first_last(a_tuple)
 #assert tests
 if __name__ == "__main__":
    # this runs only if run as a script
-   print("Running validation tests")
+   print("\nRunning validation tests")
    # validate exchange_first_last function returning appropriate value
-   #assert exchange_first_last(a_string) == "ghis is a strint"
-   #assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
+   assert exchange_first_last(a_string) == "ghis is a strint"
+   assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
    assert remove_every_other_item(a_string) == "ti sasrn"
    assert remove_every_other_item(a_tuple) == (2, 13, 5)
    assert first_last_four(a_string) == " sas"
@@ -141,4 +110,4 @@ if __name__ == "__main__":
    assert return_in_thirds(a_string) == "is a stringthis "
    assert return_in_thirds(a_tuple) == (13, 12, 5, 32, 2, 54)
 
-   print("validation tests passed")
+   print("validation tests passed\n")
