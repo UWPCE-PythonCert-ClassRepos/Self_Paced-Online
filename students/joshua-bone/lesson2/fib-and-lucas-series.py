@@ -10,10 +10,16 @@ def sumSeries(n, a=0, b=1):
   for i in range(3, n + 1): a, b = b, a + b
   return b
 
+def fib(n):
+  return sumSeries(n)
+
+def lucas(n):
+  return sumSeries(n, 2, 1)
+
 if __name__ == "__main__":
-  fib_out = [sumSeries(i+1) for i in range(8)]
+  fib_out = [fib(i+1) for i in range(8)]
   assert fib_out == FIB_TEST
   print("Passed the Fibonacci Series test: ", fib_out)
-  luc_out = [sumSeries(i+1, 2, 1) for i in range(8)]
+  luc_out = [lucas(i+1) for i in range(8)]
   assert luc_out == LUC_TEST
   print("Passed the Lucas Series test: ", luc_out)
