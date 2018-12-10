@@ -1,23 +1,27 @@
 #!/usr/bin/env python3
 """
-Series 3 of 4 completed.
+Create a list of fruits in function 1 and then pass copies of the
+list through the remaining functions for further manipulation.
 Author: JohnR
-Version: 2.6
+Version: 3.0
 Date: 12/9/2018
-Notes: Series_3 completed.
+Notes: Final working version.
 """
 
 
 def main():
     """
-    Core script logic.
+    Make some copies of the list from series_1 function, then call each
+    of the remaining functions with their own copy to manipulate.
     :return: Return each function.
     """
     fruit = series_1()
     s2_fruit = fruit[:]
     s3_fruit = fruit[:]
+    s4_fruit = fruit[:]
     series_2(s2_fruit)
     series_3(s3_fruit)
+    series_4(s4_fruit)
 
 
 def series_1():
@@ -51,6 +55,7 @@ def series_1():
     third_fruit = input('Enter a third fruit: ')
     third_fruit = third_fruit.capitalize()
     fruit_list.insert(0, third_fruit)
+    print('For future reference, this will be our original list: ')
     print(fruit_list)
 
     for fruit in fruit_list:
@@ -116,6 +121,30 @@ def series_3(fruit):
             fruit.remove(item)
 
     print(fruit)
+
+
+def series_4(fruit_copy):
+    """
+    Make a copy of the list and reverse the letters in each fruit in the copy.
+    Delete the last item of the original list. Display the original list and the copy.
+    :param fruit_copy: Input a copy of the series_1 list.
+    :return: None
+    """
+    print('*' * 20)
+    print('Series 4 starts here:')
+    print('*' * 20)
+
+    original = fruit_copy[:]
+
+    for i, item in enumerate(fruit_copy):
+        fruit_copy[i] = item[::-1]
+
+    print('Series 1 list with items spelled backwards:')
+    print(fruit_copy)
+
+    original.pop()
+    print('Original list with last item removed: ')
+    print(original)
 
 
 if __name__ == '__main__':
