@@ -2,15 +2,33 @@
 
 # function - send thank you
 def send_thankyou(donorl):
-    
+    # create donor_name_list
+    #donor_name_list = list()
+    #for i in donorl:
+    #    donor_name_list += i[0]
+    donor_name_list = [k for k,v in donorl]
+    print("donor name list is: ", donor_name_list)
+    # prompt for donor name
+    full_name = input("Please provide full name of donor: ")
     # loop through donor sequence with two iterables, what do I get?
     print("")
-    name = "Mickey Mouse"
+    #name = "Mickey Mouse"
     for i,j in donorl:
-        if i == name:
+        if i == full_name:
             print("name exists!")
             print(i)
-        #print(i)
+    # while input value is "list" continue to provide list of donors
+    # create simple list of names
+    #donor_name_list = [k for k,v in donorl]
+    print(donor_name_list)
+    while full_name == "list":
+        # print donor names
+        for i,j in donorl:
+            print(i)
+        # prompt for donor name
+        print("")
+        full_name = input("Please provide full name of donor: ")
+    #if full_name in donorl()
     """
     name_list = list()
     local_donor_list = donorl
@@ -72,6 +90,9 @@ def send_thankyou(donorl):
     #return local_donor_list
     print("")
     return donorl
+# create donor name list
+def donor_name():
+    retur
 # function - create report
 def create_report():
     sum = 0
