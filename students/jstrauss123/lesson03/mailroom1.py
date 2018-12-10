@@ -8,9 +8,7 @@ def send_thankyou(donorl):
     #print("donor name list is: ", donor_name_list)
     # prompt for donor name
     full_name = input("Please provide full name of donor: ")
-    # loop through donor sequence with two iterables, what do I get?
     print("")
-    
     while full_name == "list":
         # print donor names
         #print(donor_name_list)
@@ -22,72 +20,14 @@ def send_thankyou(donorl):
     if full_name not in donor_name_list:
         #name does not exist, add to sequence
         donorl.append((full_name, []))
-    # prompt for contribution amount
+    # prompt for contribution amount and add to sequence on matching name
     contrib_amt = input("Enter donation amount for donor: ")
     for i,j in donorl:
         if i == full_name:
-            donorl.append((full_name, [contrib_amt]))
+            j.append(contrib_amt)
             print(donorl)
-    
-    """
-    name_list = list()
-    local_donor_list = donorl
-    # create list of donor names
-    for donor in local_donor_list:
-            str1 = ""
-            for elem in donor[0]:
-                str1 = str1 + elem
-            name_list.append(str1)
-    # prompt for donor name
-    full_name = input("Please provide full name of donor: ")
-    # while input value is "list" continue to provide list of donors
-    while full_name == "list":
-        # create updated donor list of names after new add.
-        #name_list = list()
-        #for donor in local_donor_list:
-        #    str1 = ""
-        #    for elem in donor[0]:
-        #        str1 = str1 + elem
-        #    name_list.append(str1)
-        print(name_list)
-        full_name = input("Please provide full name of donor: ")
-    
-    # reworking this section to ask for contribution amount from existing donor. I missed this in home work requirements.
-    # also the code could be simpler so only one mail message statement exists.
-    # if donor does not exist add to donor list, ask for contribution, add to list, mail thank you, return to main menu
-    if full_name not in name_list:
-        # donor does not exist, add to donor_list
-        new_donor_list = [[full_name]]
-        print("new list contains: ", new_donor_list)
-        local_donor_list = local_donor_list + new_donor_list
-        print("updated local_donor_list: ", local_donor_list)
-    
-    # continue with prompt for contribution amount and add to list
-    contrib_amt = input("Enter donation amount for donor: ")
-    new_contrib_amt = [[contrib_amt]]
-    print("new list contains: ", new_donor_list)
-    local_donor_list = local_donor_list+new_donor_list
-    print("updated donor list: ", local_donor_list)
-    print("Dear {}, Thank you so much for your generous contribution".format(full_name))
-    print("")
-    """
-    
-    """    
-    if full_name in name_list:
-        # donor exists - send thank you email
-        print("Dear {}, Thank you so much for your generous contribution".format(full_name))
-        print("")
-    else:   # new user : add and prompt for contribution. create new list and add to donor list
-        contrib_amt = input("Enter donation amount for new donor: ")
-        new_donor_list = [[full_name, contrib_amt]]
-        print("new list contains: ", new_donor_list)
-        local_donor_list = local_donor_list+new_donor_list
-        print("updated donor list: ", local_donor_list)
-        print("Dear {}, Thank you so much for your generous contribution".format(full_name))
-        print("")
-    return local_donor_list
-    """    
-    #return local_donor_list
+    # send thank you email
+    print("Dear {}, Thank you so much for your generous contribution of ${}.".format(full_name, contrib_amt))
     print("")
     return donorl
 # create donor name list
