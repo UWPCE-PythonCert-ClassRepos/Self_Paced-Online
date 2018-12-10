@@ -2,6 +2,12 @@
 
 # function - send thank you
 def send_thankyou(donorl):
+    
+    # loop through donor sequence with two iterables, what do I get?
+    print("")
+    for i,j in donorl:
+        print(i)
+    """
     name_list = list()
     local_donor_list = donorl
     # create list of donor names
@@ -42,7 +48,7 @@ def send_thankyou(donorl):
     print("updated donor list: ", local_donor_list)
     print("Dear {}, Thank you so much for your generous contribution".format(full_name))
     print("")
-    
+    """
     
     """    
     if full_name in name_list:
@@ -59,7 +65,9 @@ def send_thankyou(donorl):
         print("")
     return local_donor_list
     """    
-    return local_donor_list
+    #return local_donor_list
+    print("")
+    return donorl
 # function - create report
 def create_report():
     sum = 0
@@ -87,10 +95,10 @@ def create_report():
 if __name__ == "__main__":
     #donor_list = [["Mickey Mouse", "100", "150", "100"], ["Minnie Mouse", "50", "50"], ["Ron Jones", "100"],["Donald Duck", "25"], ["Busy Bear", "10", "10", "10"]]
     # trying to use the structure described in mailroom tutorial
-    donor_list = [("Mickey Mouse", ["100", "150", "100"]), ("Minnie Mouse", ["50", "50"]), ("Ron Jones", ["100"]), ("Donald Duck", ["25"]), ("Busy Bear", ["10", "10", "10"])]
+    donor_list = [("Mickey Mouse", ["100.00", "150.00", "100.00"]), ("Minnie Mouse", ["50.00", "50.00"]), ("Ron Jones", ["100.00"]), ("Donald Duck", ["25.00"]), ("Busy Bear", ["10.00", "10.00", "10.00"])]
     response = ""
     while response != "q":
-        print(donor_list)
+        #print(donor_list)
         response = input("Please select:\n 1 to Send a Thank you \n 2 to Create a report \n or q to quit : ")
         if response == "1":
             donor_list = send_thankyou(donor_list)
