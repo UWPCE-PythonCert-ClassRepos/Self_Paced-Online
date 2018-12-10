@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-String formating exercises.
+String formatting exercises.
 
 Author: JohnR
 Version: .0
@@ -64,6 +64,10 @@ def task_5():
 
 
 def task_6():
+    """
+    tbd
+    :return: tbd
+    """
     pass
 
 
