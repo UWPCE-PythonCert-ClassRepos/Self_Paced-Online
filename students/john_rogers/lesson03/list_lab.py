@@ -1,17 +1,12 @@
 #!/usr/bin/env python3
 """
-Series 2 completed.
+Series 3 of 4 completed.
 Author: JohnR
-Version: 2.4
+Version: 2.6
 Date: 12/9/2018
-Notes: Series_3 needs a lot of work. Should also do more int validation
-        in the series_2 function if time allows. 
+Notes: Series_3 completed.
 """
 
-
-# TODO: list of fruit continues to maintain state through each function
-# TODO: series_3 function is not calling each item
-# TODO: need to implement a while loop and validate user input in series3
 
 def main():
     """
@@ -46,7 +41,7 @@ def series_1():
     if number <= 0 or number > len(fruit_list):
         print('Number is out of range.')
     else:
-        print(str(number) + ' is ' + fruit_list[number - 1])
+            print(str(number) + ' is ' + fruit_list[number - 1])
 
     second_fruit = input('Enter another fruit: ')
     second_fruit = second_fruit.capitalize()
@@ -72,8 +67,7 @@ def series_2(fruit):
     Multiply the list * 2. Keep asking until a match is found, once found
     delete all occurrences.
     :param fruit: The list of fruit to display and work with from series_1.
-    :return: No need to return values to main(), series_3 will use the same
-            list generated in series_1.
+    :return: None
     """
     print('*' * 20)
     print('Series 2 starts here:')
@@ -103,29 +97,25 @@ def series_2(fruit):
 
 def series_3(fruit):
     """
-    Get user input displaying line like 'do you like apples' for each fruit
-    in the list, making fruit all lowercase
-    For each no delete the fruit from the list
     For any answer not yes or no prompt user to answer with correct value
-    Display remaining list
+    Remove items when answer is 'no'
     :param fruit:  Use fruit list from series_1
-    :return:
+    :return: None
     """
     print('*' * 20)
     print('Start of series 3:')
     print('*' * 20)
 
-    for item in fruit:
-        item = item.lower()
-        answer = input('Do you like ' + item + ' ?')
-        answer = answer.lower()
-        if answer == 'no':
-            fruit.remove(item.capitalize())
+    for item in fruit[:]:
+        answer = ''
+        while answer not in ['yes', 'no']:
+            answer = input('Do you like {}?'.format(item.lower()))
+        if answer == 'yes':
+            print('Me too!')
+        else:
+            fruit.remove(item)
 
     print(fruit)
-
-
-
 
 
 if __name__ == '__main__':
