@@ -5,8 +5,12 @@ def send_thankyou(donorl):
     
     # loop through donor sequence with two iterables, what do I get?
     print("")
+    name = "Mickey Mouse"
     for i,j in donorl:
-        print(i)
+        if i == name:
+            print("name exists!")
+            print(i)
+        #print(i)
     """
     name_list = list()
     local_donor_list = donorl
