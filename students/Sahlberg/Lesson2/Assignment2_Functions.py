@@ -3,14 +3,11 @@ Assignment 2 - Grid functions
 Self paced
 December 10, 2018"""
 
-
-
 def func1():
     """This function prints out a simple box."""
     print("+ - - - - + - - - - +\n|         |         |\n|         |         |\n|         |         |\n|         |         |")
     print("+ - - - - + - - - - +\n|         |         |\n|         |         |\n|         |         |\n|         |         |")
     print("+ - - - - + - - - - +")
-
 
 def print_grid(n):
     """This function prints out a box of size(n)."""
@@ -26,8 +23,6 @@ def print_grid(n):
     print(layer1)
     print(num * (mid + '\n'), end="")
     print(layer1)
-
-
 
 def funct3(size,width):
     """This function prints out a box defined by number of columns (size)
@@ -46,4 +41,10 @@ def funct3(size,width):
         print(size * ('+' + dash) + '+')
 
 
+#Function calls
 
+func1()
+
+print_grid(4)
+
+funct3(5,13)
