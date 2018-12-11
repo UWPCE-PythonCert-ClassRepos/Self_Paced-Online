@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """
 String formatting exercises.
-
 Author: JohnR
-Version: .0
-Notes:
+Version: .2
+Notes: Tasks 1 and 2 complete. 
 """
 
 
@@ -53,9 +52,8 @@ def task_2(some_tuple):
     print('Original: ', end='')
     print(some_tuple)
     print('Modified: ', end='')
-    # TODO: Format remaining scientific notation items.
-    print('file_{:>03}: {:.5}, {}, {}'.format(file, float_2, sci_not_2,
-                                              sci_not_3))
+    print('file_{:>03}: {:.5}, {:.2e}, {:.2e}'.format(file, float_2,
+                                                      sci_not_2, sci_not_3))
 
 
 def task_3():
