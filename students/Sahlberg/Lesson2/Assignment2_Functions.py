@@ -48,3 +48,5 @@ func1()
 print_grid(4)
 
 funct3(5,13)
+
+funct3(13,5)
