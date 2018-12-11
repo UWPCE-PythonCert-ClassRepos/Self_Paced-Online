@@ -1,4 +1,7 @@
-
+"""Ian Sahlberg
+Assignment 2 - Grid functions
+Self paced
+December 10, 2018"""
 
 
 
