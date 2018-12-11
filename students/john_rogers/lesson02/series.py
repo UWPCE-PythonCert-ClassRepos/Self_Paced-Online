@@ -13,31 +13,60 @@ Author: JohnR
 def main():
     """
     Main script logic
-    :return: Call each function and print the results to screen
+     1) test some assertions against each function to insure validity
+     2) call and print results of each function at least once
+    :return: Call each function and print the results to screen (or
+                assertion error)
     """
-    print(fibonacci(9))
-    print(lucas(9))
+    assert fibonacci(0) == 0
+    assert fibonacci(1) == 1
+    assert fibonacci(2) == 1
+    assert fibonacci(3) == 2
+    assert fibonacci(4) == 3
+    assert fibonacci(5) == 5
+    assert fibonacci(6) == 8
+    assert fibonacci(7) == 13
+    assert lucas(0) == 2
+    assert lucas(1) == 1
+    assert lucas(2) == 3
+    assert lucas(3) == 4
+    assert lucas(4) == 7
+    assert lucas(5) == 11
+    assert lucas(6) == 18
+    assert lucas(7) == 29
+    assert sum_series(5) == 5
+    assert sum_series(5, n0=2, n1=1) == 11
+    assert sum_series(6, n0=2, n1=1) == 18
+    print('*' * 30)
+    print('all assertion tests have passed')
+    print('*' * 30)
+    print('the 7th element in the fibonacci series is ' + str(fibonacci(7)))
+    print('the 5th element in the lucas series is ' + str(lucas(5)))
+    print('sum_series with 7 and default values is ' + str(sum_series(7)))
+    print('sum_series with 7 and n0=2 and n1 =1 is ' + str(sum_series(7, n0=2, n1=1)))
 
 
 def fibonacci(n):
     """
-    Create a fibonacci series starting at 0 and 1
-    :param n: any positive integer
-    :return: return fibonacci value for input n
+    Take the input value and return that element in the Fibonacci series.
+    :param n: Any non-zero positive integer
+    :return: return nth value in fibonacci series
     """
     if n < 0:
         print('invalid input')
-    elif n == 0 or n == 1:
-        return n
-
-    return fibonacci(n - 1) + fibonacci(n - 2)
+    elif n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fibonacci(n - 1) + fibonacci(n - 2)
 
 
 def lucas(n):
     """
-    Create a Lucas series that start at 2 and 1
-    :param n: any positive integer
-    :return: return Lucas value for input n
+    Take input value and return that element in a lucas series
+    :param n: Any non-zero positive integer
+    :return: return nth value from the lucas series
     """
     if n < 0:
         print('invalid input')
@@ -45,8 +74,26 @@ def lucas(n):
         return 2
     elif n == 1:
         return 1
+    else:
+        return lucas(n - 1) + lucas(n - 2)
 
-    return lucas(n - 1) + lucas(n - 2)
+
+def sum_series(n, n0=0, n1=1):
+    """
+    Let user decide which series to use based on input; default to fibonacci
+    :param n: Only required parameter, which element to return from the series
+    :param n0: Optional parameter, defaults to 0.
+    :param n1: Optional parameter, defaults to 1.
+    :return: Return the nth value from a given series (Fibonacci, Lucas, other)
+    """
+    if n < 0:
+        print('invalid input')
+    elif n == 0:
+        return n0
+    elif n == 1:
+        return n1
+    else:
+        return sum_series(n - 1, n0, n1) + sum_series(n - 2, n0, n1)
 
 
 if __name__ == '__main__':
