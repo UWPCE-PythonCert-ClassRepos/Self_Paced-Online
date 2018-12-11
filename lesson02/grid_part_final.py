@@ -1,6 +1,6 @@
 # grid_part_final.py
 #
-# This is the assignment for Lesson2, each part of the exercise is included
+# This is the assignment for Lesson2, each part of the exercise is included.
 # As indicated in the exercise, "Do something reasonable", I attempted to meet
 # the objectives of the exercise utilizing the demonstrated elements for
 # string manipulation that were provided.  The end result is a grid that is
