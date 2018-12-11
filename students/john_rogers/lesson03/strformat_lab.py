@@ -13,24 +13,49 @@ def main():
     Core script logic.
     :return:
     """
-    pass
+    t1_results = task_1()
+    task_2(t1_results)
 
 
 def task_1():
     """
     Take tuple (2, 123.4567, 10000, 12345.67) and produce the below:
     'file_002 :   123.46, 1.00e+04, 1.23e+04'
-    :return: Return the results of the changed tuple.
+    :return: Return the original tuple.
     """
-    pass
+    my_tuple = (2, 123.4567, 10000, 12345.67)
+    file = my_tuple[0]
+    float_2 = my_tuple[1]
+    sci_not_2 = my_tuple[2]
+    sci_not_3 = my_tuple[3]
+    print('*' * 50)
+    print('Task 1 results using f strings: ')
+    print('Original: ', end='')
+    print(my_tuple)
+    print('Modified: ', end='')
+    print(f'file_{file:>03}: {float_2:.{5}}, {sci_not_2:.2e},'
+          f' {sci_not_3:.2e} ')
+
+    return my_tuple
 
 
-def task_2():
+def task_2(some_tuple):
     """
-    Take in results from task_1 but display using an alternate format method.
+    Use tuple from task_1 and display using an alternate format method.
     :return: None
     """
-    pass
+    file = some_tuple[0]
+    float_2 = some_tuple[1]
+    sci_not_2 = some_tuple[2]
+    sci_not_3 = some_tuple[3]
+    print('*' * 50)
+    print('Task 2 results using older format method: ')
+    print('Original: ', end='')
+    print(some_tuple)
+    print('Modified: ', end='')
+    # TODO: Format remaining scientific notation items.
+    print('file_{:>03}: {:.5}, {}, {}'.format(file, float_2, sci_not_2,
+                                              sci_not_3))
 
 
 def task_3():
