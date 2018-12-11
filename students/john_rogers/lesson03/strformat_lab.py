@@ -3,7 +3,7 @@
 String formatting exercises.
 Author: JohnR
 Version: .2
-Notes: Tasks 1 and 2 complete. 
+Notes: Tasks 1 and 2 complete.
 """
 
 
@@ -52,8 +52,8 @@ def task_2(some_tuple):
     print('Original: ', end='')
     print(some_tuple)
     print('Modified: ', end='')
-    print('file_{:>03}: {:.5}, {:.2e}, {:.2e}'.format(file, float_2,
-                                                      sci_not_2, sci_not_3))
+    print('file_{:>03}: {:.5}, {:.2e}, {:.2e}'
+          .format(file, float_2, sci_not_2, sci_not_3))
 
 
 def task_3():
