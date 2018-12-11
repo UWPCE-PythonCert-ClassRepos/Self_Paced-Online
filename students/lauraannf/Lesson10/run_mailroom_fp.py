@@ -20,7 +20,7 @@ donor_list.add_donation('Mac McDonald', [25, 35, 20])
 donor_list.add_donation('Charlie Kelly', 0.25)
 
 
-def view_donor(donor_list):
+def view_donor():
     name = input('Donor Name?>')
     while True:
         if donor_list.is_donor(name) is True:
@@ -31,45 +31,45 @@ def view_donor(donor_list):
                 donor_list.add_donation(name, new_donation)
                 donor_list.donors[name].list_donations
             else:
-                quit_program(donor_list)
+                quit_program()
         else:
             print('no such donor')
             break
 
 
-def add_donor(donor_list):
+def add_donor():
     while True:
         name = input('Type Donor Name or q to quit?>')
         if name == 'q':
-            quit_program(donor_list)
+            quit_program()
         else:
             donation = input('Donation Amount?>')
             donor_list.add_donation(name, donation)
             donor_list.donors[name].list_donations
 
 
-def donor_data(donor_list):
+def donor_data():
     while True:
-        arg_dict = {'1': mfp.list_donors, '2': view_donor, '3': add_donor,
+        arg_dict = {'1': list_donors, '2': view_donor, '3': add_donor,
                     '4': quit_program}
         task = input('Choose an action: [1] List Donors; '
                      '[2] View Donor Information; '
                      '[3] Add Donor; [4] Quit>')
         try:
-            arg_dict[task](donor_list)
+            arg_dict[task]()
         except KeyError:
             print('Error: Please choose 1-4')
 
 
-def create_letters(donor_list):
+def create_letters():
     while True:
         letter_choice = input('Who would you like to write a donation letter '
                               'to? (type a for all, q to quit)>')
         if letter_choice == 'a':
-            all_letters(donor_list)
-            quit_program(donor_list)
+            all_letters()
+            quit_program()
         elif letter_choice == 'q':
-            quit_program(donor_list)
+            quit_program()
         elif donor_list.is_donor(letter_choice) is False:
             print('not a donor')
         else:
@@ -94,7 +94,7 @@ def create_folder():
     return new_path, now
 
 
-def all_letters(donor_list):
+def all_letters():
     print('writing all thank you letters...')
     for key in donor_list.donors.keys():
         write_letter(key, donor_list.donors[key].total_donation)
@@ -111,34 +111,52 @@ def write_letter(name, donation):
                               'Laura F'.format(name, donation))
 
 
-def quit_program(donor_list):
+def quit_program():
     sys.exit()
 
 
-def philanthropist(donor_list):
-    global new_donor_list
+def philanthropist():
+#    global new_donor_list
+    new_donor_list = mfp.Donor_List()
     match_value = float(input('By how much would the philanthropist like '
                               'to match?>'))
-
-    def multiplier(x):
-            return x * match_value
-    new_donor_list = mfp.Donor_List()
+    min_donation = float(input('Minimum donation eligible?>'))
+    max_donation = float(input('Maximum donation eligible?>'))
     for key in donor_list.donors:
-        new_donor_list.add_donation(key, list(map(multiplier,
-                                                  donor_list.donors[key])))
+        donations = list(map(lambda x: x * match_value,
+                             donor_list.donors[key]))
+        new_donor_list.add_donation(key, donations)
+
+
+def create_report():
+    print('-------List of Donors-------')
+    print('{:<20}{:<20}{:<20}{:<20}'.format('Donor Name', 'Total Donated',
+                                            '# of donations',
+                                            'Average donation'))
+    print('-----------------   '*4)
+    for key in donor_list.donors.keys():
+        print('{:<20}${:<20.2f}{:<20d}$'
+              '{:<20.2f}'.format(key, donor_list.donors[key].total_donation,
+                                 donor_list.donors[key].number_donation,
+                                 donor_list.donors[key].avg_donation))
+
+
+def list_donors():
+    for key in donor_list.donors:
+        print('{}'.format(key))
 
 
 def main():
     print('----------Mailroom----------')
     print('WARNING: This is all CAPS senstive for now!!!!!!!!!!')
     arg_dict = {'1': donor_data, '2': create_letters,
-                '3': mfp.create_report, '4': philanthropist,
+                '3': create_report, '4': philanthropist,
                 '5': quit_program}
     task = input('Choose an action: [1] Donor Database; '
                  '[2] Create Thank You Letters; [3] Create a Full Report; '
                  '[4] Match Donations; [5] Quit>')
     try:
-        arg_dict[task](donor_list)
+        arg_dict[task]()
     except KeyError:
         print('Error: Please choose 1-4')
 

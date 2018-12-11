@@ -60,30 +60,3 @@ class Donor_List():
             return True
         else:
             return False
-
-#    def match_donations(self, match_value):
-#        def multiplier(x):
-#            return x * match_value
-#        new_donor_list = Donor_List()
-#        for key in self.donors:
-#            new_donor_list.add_donation(key, list(map(multiplier,
-#                                                      self.donors[key])))
-#        return new_donor_list
-
-
-def create_report(donor_list):
-    print('-------List of Donors-------')
-    print('{:<20}{:<20}{:<20}{:<20}'.format('Donor Name', 'Total Donated',
-                                            '# of donations',
-                                            'Average donation'))
-    print('-----------------   '*4)
-    for key in donor_list.donors.keys():
-        print('{:<20}${:<20.2f}{:<20d}$'
-              '{:<20.2f}'.format(key, donor_list.donors[key].total_donation,
-                                 donor_list.donors[key].number_donation,
-                                 donor_list.donors[key].avg_donation))
-
-
-def list_donors(donor_list):
-    for key in donor_list.donors:
-        print('{}'.format(key))
