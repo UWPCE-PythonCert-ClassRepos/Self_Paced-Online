@@ -16,7 +16,7 @@ def user_input():
 #This function prompts the user for the square size & grid dimensions.
   print ('This function returns the nth value in the fibonacci series.')
   n=int(input('Enter the value for n: '))
-  print('The',n,'th value is:')
+  print('The',n'th','value is:')
   fibonacci(n)
 
 user_input()
