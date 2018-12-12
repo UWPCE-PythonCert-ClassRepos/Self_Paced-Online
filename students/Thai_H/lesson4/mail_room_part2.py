@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import os
+from operator import itemgetter
 
 #--------------------------------------------------------------------------
 def send_thank_you_letter(donor_name, donation_amt):
@@ -10,38 +11,26 @@ def send_thank_you_letter(donor_name, donation_amt):
          '\nBill & Melinda Gates')
 
 
-#---------------------------------------------------------------------------
-def is_existing_donor(donor_name):
-    for each_donor in list_of_donors:
-        if each_donor['name'] == donor_name:
-            return True  # returns True if existing donor
-    #--- after finished looping all donors and hence have not returned, then NEW donor
-    return False #False if new donor
-
-
 #-----------------------------------------------------------------------------
 def send_thank_you_add_new_donation():
     donor_name =input('\n\nPlease enter name of donor:  ')
     donation_amt = input('\nEnter the amount > ')
-    if is_existing_donor(donor_name):
-        for each_donor in list_of_donors:
-            if donor_name == each_donor['name']:  #[0] is existing donor name
-                each_donor['donation'].append(float(donation_amt))
+    if donor_name in list_of_donors:
+        list_of_donors[donor_name].append(float(donation_amt))
 
     # New donor
     else:
-        new_donor_name_amt = {'name':donor_name,'donation':[float(donation_amt)]}
-        list_of_donors.append(new_donor_name_amt)
+        list_of_donors[donor_name] = []
+        list_of_donors[donor_name].append(float(donation_amt))
     # send thank you letter to the the donor name user just entered
     send_thank_you_letter(donor_name, donation_amt)
 
 
-
 #----------------------------------------------------------------------------
 def create_thank_you_files():
-    for each_donor in list_of_donors:
-        donor_name = each_donor['name']
-        total_donation = sum(each_donor['donation'])
+    for donor_name in list_of_donors.keys():
+        #donor_name = each_donor['name']
+        total_donation = sum(list_of_donors[donor_name]) #sum(each_donor['donation'])
         thks_letter = open('{name}.txt'.format(name = donor_name), 'w')
         thks_letter.write('Dear {name}, \n'
                           'Thank you for your generosity to our Foundation in the total amount of ${amt}'.format(name = donor_name,
@@ -56,7 +45,7 @@ def thank_you_menu_selection():
         F) Create Thank-you files\n\
         M) Back to MAIN MENU\n\
         Q) Quit the program\n\
-        Please type L, N, or B: ')
+        Please type L, T, F, M, or Q: ')
     return user_selection
 
 
@@ -74,25 +63,20 @@ def thank_you_letter():
         thank_you_selection = thank_you_menu_selection().upper()
         thank_you_menu_function.get(thank_you_selection, invalid_thank_you_menu)()
         #invalid_menu is to handle non-of-above choices
-                                                                #
+
 
 #--------------------------------------------------------------------------
 def sort_donor_list(unsorted_list):
     sorted_donation_list = []
     for d in unsorted_list:
-        total_donation =  float(sum(d['donation']))
-        number_of_donation = int(len(d['donation']))
+        total_donation =  sum(unsorted_list[d])
+        number_of_donation = len(unsorted_list[d])
         average = total_donation / number_of_donation
-        sorted_donation_list.append([d['name'], total_donation, number_of_donation, average])
+        sorted_donation_list.append([d, total_donation, number_of_donation, average])
     #
-    sorted_donation_list.sort(key = sort_by_total_donation, reverse = True)
+    sorted_donation_list = sorted(sorted_donation_list, key = itemgetter(1), reverse = True)
 
     return sorted_donation_list
-
-
-#--------------------------------------------------------------------------
-def sort_by_total_donation(sorted_donation_list):
-    return sorted_donation_list[1]
 
 
 #------------------------------------------------------------------------------
@@ -105,18 +89,20 @@ def create_report():
         print('{:<26}${:>15,.2f}{:>15}{:>25,.2f}'.format(donor[0], donor[1], donor[2], donor[1] / donor[2]))
     print('\n\n')
 
+def test_create_report():
+    for key, item in list_of_donors.items():
+        print("{:<20}: {}".format(key, item))
+
 
 #------------------------------------------------------------------------------
 def init_donor_list():
     # create initial list of donors and their donations
     global list_of_donors
-    list_of_donors = [
-                {'name': 'William Boeing', 'donation': [12.86, 2.00, 3.00, 4.00, 5.00]},
-                {'name': 'Steve Jobs', 'donation': [6.00, 7.00, 8.00]},
-                {'name': 'Paul Allen', 'donation': [9.00, 10.00, 11.00]},
-                {'name': 'Charles Flint', 'donation': [12.00, 13.00, 14.00]},
-                {'name': 'Thomas Edison', 'donation': [15.00, 16.00, 17.00]}
-            ]
+    list_of_donors = {'William Boeing': [12.86, 2.00, 3.00, 4.00, 5.00],
+                      'Steve Jobs':     [6.00, 7.00, 8.00],
+                      'Paul Allen':     [9.00, 10.00, 11.00],
+                      'Charles Flint':  [12.00, 13.00, 14.00],
+                      'Thomas Edison':  [15.00, 16.00, 17.00]  }
 
 
 #------------------------------------------------------------------------------
@@ -145,11 +131,6 @@ def invalid_menu():
 def invalid_thank_you_menu():
     print('\nNot a valid option!\n\n')
     thank_you_menu_selection()
-
-
-#------------------------------------------------------------------------------
-
-
 
 
 #------------------------------------------------------------------------------
