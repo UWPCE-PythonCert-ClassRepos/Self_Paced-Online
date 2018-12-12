@@ -126,10 +126,12 @@ def create_report():
     sum_donors.sort(key=lambda tup: tup[1], reverse=True)
     
     # Print summarized data
-    print('\nDonor Name                | Total Given | Num Gifts | Average Gift')
-    print('-'*66)
+    report = '\nDonor Name                | Total Given | Num Gifts | Average Gift\n'
+    report += '-'*66 + '\n'
     for donor in sum_donors:
-        print(f'{donor[0]: <27}${donor[1]: >12.2f}{donor[2]: >12}  ${round(donor[3],2): >11.2f}')
+        report +=  f'{donor[0]: <27}${donor[1]: >12.2f}{donor[2]: >12}  ${round(donor[3],2): >11.2f}\n'
+    print(report)
+    return report
 
 if __name__ == '__main__':
 
