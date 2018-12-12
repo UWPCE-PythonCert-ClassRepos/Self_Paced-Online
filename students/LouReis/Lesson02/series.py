@@ -24,6 +24,44 @@ def lucas(n):
     else:
         return (lucas(n-2) + lucas(n-1))
 
+def sum_series(x,y=0,z=1):
+    if x == 0:
+        return y
+    elif x == 1:
+        return z
+    else:
+        return (sum_series(x-2,y,z) + sum_series(x-1,y,z))
+
+def sum_series(x,y=0,z=1):
+    if y == 0 and z == 1:
+        if x <= 1:
+            return x
+        else:
+            return (sum_series(x-2) + sum_series(x-1))
+    elif y == 2 and z == 1:
+        if x == 0:
+            return 2
+        elif x == 1:
+            return 1
+        else:
+            return (sum_series(x-2) + sum_series(x-1))
+    else:
+        if x <= 1:
+            return y
+        elif x == 2:
+            return z
+        else:
+            return (sum_series(x-2) + sum_series(x-1))
+
+def sum_series (x,y=0,z=1):
+    if x <= 1:
+        return y
+    elif x == 2:
+        return z
+    else:
+        return (sum_series(x-2) + sum_series(x-1))
+
+
 def user_input():
 #This function prompts the user for the square size & grid dimensions.
     print ('This function returns the nth value in the Fibonacci series.')
