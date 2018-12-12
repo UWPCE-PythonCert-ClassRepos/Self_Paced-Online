@@ -2,93 +2,32 @@
 
 # function - accept a sequence and return a copy of sequence with first and last items exchanged
 def exchange_first_last(seq):
-    # assign first and last value
-    first = seq[0]
-    last = seq[-1]
-    # create a working list
-    work_list = list(seq)
-    # assign first to last and last to first value
-    work_list[0] = last
-    work_list[-1] = first
-    # test seq type if str convert back to str
-    if type(seq) == str:
-        # convert list back to string
-        outseq = str("".join(work_list))
-    elif type(seq) == tuple:
-        outseq = tuple(work_list)
-    else:
-        outseq = work_list
+    outseq = seq[-1::] + seq[1:-1:] + seq[0:1:]
     return(outseq)
+    
     
 # function - accept a sequence and return every other item in sequence
 def  remove_every_other_item(seq):
-    work_list = list(seq)
-    work_list = work_list[0:-1:2]
-    if type(seq) == str:
-        # convert list back to string
-        outseq = str("".join(work_list))
-    elif type(seq) == tuple:
-        outseq = tuple(work_list)
-    else:
-        outseq = work_list
+    outseq = seq[0:-1:2]
     return(outseq)
-    
     
 # function - accept a sequence and manipulate first and last four, return what's left every other
 def  first_last_four(seq):    
-    work_list = list(seq)
-    # remove first and last four items from list
-    work_list = work_list[4:-4]
-    # remove every other from list
-    work_list = work_list[0:-1:2]
-    if type(seq) == str:
-        # convert list back to string
-        outseq = str("".join(work_list))
-    elif type(seq) == tuple:
-        outseq = tuple(work_list)
-    else:
-        outseq = work_list
+    outseq = seq[4:-4]
+    outseq = outseq[0:-1:2]
     return(outseq)
-
+   
+    
 # function - accept sequence and return items in reverse    
 def reverse_items(seq):
-    work_list = list(seq)
-    # reverse list
-    work_list = work_list[::-1]
-    if type(seq) == str:
-        # convert list back to string
-        outseq = str("".join(work_list))
-    elif type(seq) == tuple:
-        outseq = tuple(work_list)
-    else:
-        outseq = work_list
+    outseq = seq[::-1]
     return(outseq)
-
+    
 
 # function - accept a sequence, return in new order: middle third/last third/first third
 def  return_in_thirds(seq):    
-    work_list = list(seq)
-    # determine length of list and divide by 3
-    list_len = (len(work_list) // 3)
-    # assign first third to list1 and remove from orig list
-    work_list1 = work_list[0:list_len]
-    work_list = work_list[list_len:]
-    # assign next third to list2 and remove from orig list
-    work_list2 = work_list[0:list_len]
-    work_list = work_list[list_len:]
-    # assign the remainder to list3
-    work_list3 = work_list
-    # assign thirds by middle (2), last (3) and first (1)
-    work_list = work_list2 + work_list3 + work_list1
-    outseq = work_list
-    if type(seq) == str:
-        # convert list back to string
-        outseq = str("".join(work_list))
-    elif type(seq) == tuple:
-        # convert list back to tuple
-        outseq = tuple(work_list)
-    else:
-        outseq = work_list
+    list_len = (len(seq) // 3)
+    outseq = seq[list_len:list_len+list_len:] + seq[list_len+list_len::] + seq[0:list_len:]
     return(outseq)
     
 # create string and tuple values
@@ -113,7 +52,7 @@ a_tuple = (2, 54, 13, 12, 5, 32)
 #assert tests
 if __name__ == "__main__":
    # this runs only if run as a script
-   print("Running validation tests")
+   print("\nRunning validation tests")
    # validate exchange_first_last function returning appropriate value
    assert exchange_first_last(a_string) == "ghis is a strint"
    assert exchange_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
@@ -125,5 +64,4 @@ if __name__ == "__main__":
    assert reverse_items(a_tuple) == (32, 5, 12, 13, 54, 2)
    assert return_in_thirds(a_string) == "is a stringthis "
    assert return_in_thirds(a_tuple) == (13, 12, 5, 32, 2, 54)
-
-   print("validation tests passed")
+   print("validation tests passed\n")
