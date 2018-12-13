@@ -31,7 +31,6 @@ def return_label():
     return label
 
 
-# Changed for loop to list Comprehension - PENDING
 def return_report(data):
     """Creates and prints a report of donors and donations"""
     report = f"{return_label()}\n"
@@ -41,13 +40,13 @@ def return_report(data):
     return report
 
 
-# Changed for loop to list Comprehension - PENDING
+# Changed for loop to list Comprehension - added list comprehension
 def return_donors():
     """Returns the names of all donors"""
-    donors = ""
-    for item in donations:
-        donors += item + "\n"
-    return donors
+    # donors = ""
+    # for item in donations:
+    #     donors += item + "\n"
+    return [x + "\n" for x in donations]
 
 
 def prompt_donors():
@@ -56,11 +55,11 @@ def prompt_donors():
     if name == 'quit':
         return None
     if name == 'list':
-        print(return_donors())
+        print(*return_donors())
         return prompt_donors()
-    if name in return_donors():
+    if name in donations:
         send_note(name,add_donation(name),thank_you_note)
-    if name not in return_donors():
+    if name not in donations:
         add_donor(name)
         send_note(name,add_donation(name),thank_you_note)
 
