@@ -1,72 +1,101 @@
 #!/usr/bin/env python3
 
 # function - send thank you
-def fun_sendty():
+def send_thankyou(donorl):
+    print("")
+    # create donor_name_list
+    donor_name_list = [k for k,v in donorl]
+    # prompt for donor name
     full_name = input("Please provide full name of donor: ")
+    print("")
     while full_name == "list":
-        print(donor_list)
+        # print donor names
+        #print(donor_name_list)
+        for i,j in donorl:
+            print(i)
+        #prompt for donor name
+        print("")
         full_name = input("Please provide full name of donor: ")
-    if full_name in donor_list:
-        #print("full name entered is: ", full_name)
-        idx_num = donor_list.index(full_name)
-        #print("index is: ", idx_num)
-        #str1 = "donamt_" + str(idx_num)
-        #print("str1 value is: ", str1)
-        #print(" list value is equal to: ", str1[-1])
-        # if donor in list send thank you email
-        print("Dear {}, Thank you so much for your generous contribution".format(donor_list[idx_num]))
-    # if user not in donor_list add new donor and prompt for contribution amount
-    else: 
-        donor_list.append(full_name)
-        idx_num = donor_list.index(full_name)
-        new_donamt = input("Enter donation amount for new donor: ")
-        newamt = float(new_donamt)
-        print("Dear {}, Thank you so much for your generous contribution".format(donor_list[idx_num]))
-        # code here to create new contribution list for new donor
-        #donamt_<insert index here>.append(newamt)
-    #print("response is: ", response)    
-    #if response_ty == "list"
-    #    print(donor_list)
-    #if response_ty in donor_list:
+    if full_name not in donor_name_list:
+        #name does not exist, add to sequence
+        donorl.append((full_name, []))
+    # prompt for contribution amount and add to sequence on matching name
+    contrib_amt = float(input("Enter donation amount for donor: "))
+    for i,j in donorl:
+        if i == full_name:
+            j.append(contrib_amt)
+            print(donorl)
+    # send thank you email
+    print("Dear {}, Thank you so much for your generous contribution of ${}.".format(full_name, contrib_amt))
+    print("")
+    return donorl
 
 # function - create report
-def fun_report():
-    #arr6 = [['Joey', 30, 199.99], ['Jan', 36, 29999.97], ['Bob', 55, 999999.99]] 
+def create_report():
+    print("")
+    sum = 0
     donor_len = len(donor_list)
-    count1 = 0
-    print("")
+    #print("donor_len = ", donor_len)
+    count = 0
+    while count < donor_len:
+        totamt = 0
+        contrib_amts = donor_list[count][1]
+        count += 1
+        donor_name = donor_list[count][0]
+        for amt in contrib_amts:
+            totamt = totamt + amt    
+        report_detail = report_detail +
+        # notes for tomorrow: try to append donor name, total amount, and number of donations to report_detail
+    #report_detail = (donor, totamt, num_of_donations)    
+    report_detail = (donor_name, totamt)    
+    print(report_detail)
+    
+    #while count < len_dnr:
+    #print("count is: ", count)
+    #value_dnr = dnr[count][1]
+    #print(type(value_dnr))
+    #print(value_dnr)
+    #count += 1
+    #for i in value_dnr:
+    #    print(type(i))
+    #    print(i)
+    #    sum = sum + i
+    #    print(sum)    
+    
+    """
+    # print header line
     print("{:15} |{:>15} |{:>2} |{:>15}".format("Donor Name","Total Given","Num Gifts","Average Gifts" ))
-    while count1 < donor_len:
-        
-        print("{:15} ${:>15} {:>2} ${:>15}".format(donor_list[count1], 25000, 2, 10000))
-        count1 += 1
+    # loop through donors and contributions and print detail line
+    for donor in donor_list:
+        sum = 0
+        num_of_donations = 0
+        #str1 = ""
+        num_of_donations = len(donor)-1
+        contrib_amts = donor[1:]
+        for elem in contrib_amts:
+            sum = sum + int(elem)
+        avg_contribution_amt = sum / num_of_donations
+        print("{:15} ${:>15.2f} {:>2} ${:>15.2f}".format(donor[0], sum, num_of_donations, avg_contribution_amt))
     print("")
-        
+    """    
 
 # main
 if __name__ == "__main__":
-    #donor_list = [["Mickey Mouse", 100, 150, 100], ["Minnie Mouse", 50, 50], ["Ron Jones", 100],["Donald Duck", "25"], ["Busy Bear", "10", "10", "10"]]
-    donor_list = ["Mickey Mouse", "Minnie Mouse", "Ron Jones", "Donald Duck", "Busy Beaver"]
-    donamt_0 = ["100", "100", "100"]
-    donamt_1 = ["50", "50", "100"]
-    donamt_2 = ["100", "100", "100"]
-    donamt_3 = ["10", "10", "10"]
-    donamt_4 = ["5", "5"]
-    
+    #donor_list = [["Mickey Mouse", "100", "150", "100"], ["Minnie Mouse", "50", "50"], ["Ron Jones", "100"],["Donald Duck", "25"], ["Busy Bear", "10", "10", "10"]]
+    # trying to use the structure described in mailroom tutorial
+    donor_list = [("Mickey Mouse", [100.00, 150.00, 100.00]), ("Minnie Mouse", [50.00, 50.00]), ("Ron Jones", [100.00]), ("Donald Duck", [25.00]), ("Busy Bear", [10.00, 10.00, 10.00])]
     response = ""
     while response != "q":
-        response = input("Please select: 1 to Send a Thank you, 2 to Create a report or q to quit : ")
+        #print(donor_list)
+        response = input("Please select:\n 1 to Send a Thank you \n 2 to Create a report \n or q to quit : ")
         if response == "1":
-            fun_sendty()
-            #break
+            donor_list = send_thankyou(donor_list)
+            #donor_list = updated_list
         elif response == "2":
-            fun_report()
-            #break
+            create_report()
         elif response == "q":
             print("q selected - Good-bye")
         else:
             response = input("Please select: 1 to Send a Thank you, 2 to Create a report or q to quit : ")
-            #print("exiting mailroom")
-            #break
-    #print("Quit selected - Good-bye")
+            
 
