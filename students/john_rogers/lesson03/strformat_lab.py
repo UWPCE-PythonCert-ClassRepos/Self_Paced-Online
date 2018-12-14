@@ -106,6 +106,7 @@ def task_5(some_list):
     print(f'The weight of an {some_list[0]} is {some_list[1]} and the '
           f'weight of a {some_list[2]} is {some_list[3]}.')
 
+    print('Task 5 extra credit: ', end='')
     print(f'The weight of an {some_list[0].upper()} is {some_list[1]} and the '
           f'weight of a {some_list[2].upper()} is {some_list[3]}.')
 
