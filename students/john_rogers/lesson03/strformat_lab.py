@@ -2,9 +2,9 @@
 """
 String formatting exercises.
 Author: JohnR
-Version: .6
-Date: 12/13/2018
-Notes: Tasks 1 - 4 complete.
+Version: .7
+Date: 12/14/2018
+Notes: Tasks 1 - 5 complete.
 """
 
 
@@ -17,7 +17,7 @@ def main():
     long_tuple = (1, 2, 3, 4, 5, 6)
     very_long_tuple = (0, 9, 8, 7, 6, 5, 4, 3, 2, 1)
     five_tuple = (4, 30, 2017, 2, 27)
-    some_list = ['oranges', 1.3, 'lemon', 1.1]
+    t5_list = ['orange', 1.3, 'lemon', 1.1]
 
     print('Task 1 results using f strings: ', end='')
     t1_results = task_1()
@@ -37,8 +37,8 @@ def main():
     print('Task 4 results for date/time format: ', end='')
     task_4(five_tuple)
 
-    print('Task 5 results, more f strings: ', end='')
-    task_5(some_list)
+    print('Task 5.0 results, more f strings: ', end='')
+    task_5(t5_list)
 
 
 def task_1():
@@ -94,21 +94,21 @@ def task_4(date_tuple):
     print('{:>02} {} {} {:>02} {}'.format(d[3], d[4], d[2], d[0], d[1]))
 
 
-def task_5(some_list):
+def task_5(t5_list):
     """
-    Use f-strings; Given the 4 element list ['oranges', 1.3, 'lemons', 1.1]
-    write an f-string that will display 'The weight of an orange is 1.3 and the
-    weight of a lemon is 1.1'.
+    Use f-strings; Given the 4 element list ['orange', 1.3, 'lemons', 1.1]
+    write an f-string that will display 'The weight of an orange is 1.3
+    and the weight of a lemon is 1.1.'
     Change the f-string so that is displays the names of the fruit in
-    uppercase and weight 20% higher.
+    uppercase and weight  += 20%.
     :return: None
     """
-    print(f'The weight of an {some_list[0]} is {some_list[1]} and the '
-          f'weight of a {some_list[2]} is {some_list[3]}.')
+    print(f'The weight of an {t5_list[0]} is {t5_list[1]} and the '
+          f'weight of a {t5_list[2]} is {t5_list[3]}.')
 
-    print('Task 5 extra credit: ', end='')
-    print(f'The weight of an {some_list[0].upper()} is {some_list[1]} and the '
-          f'weight of a {some_list[2].upper()} is {some_list[3]}.')
+    print('Task 5.1 extra credit: ', end='')
+    print(f'The weight of an {t5_list[0].upper()} is {t5_list[1] * 1.2}'
+          f' and the weight of a {t5_list[2].upper()} is {t5_list[3] * 1.2}.')
 
 
 def task_6():
