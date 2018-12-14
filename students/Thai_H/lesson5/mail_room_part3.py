@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 import sys
 import os
-# given list
-letters = ['a', 'b', 'c', 'd', 'e', 'f']
-# Loop through each letter in the existing list of letter while converting it to upper case
-capital_letters2 = [each_letter.upper() for each_letter in letters]
 
 
 #--------------------------------------------------------------------------
