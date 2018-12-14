@@ -7,9 +7,19 @@ def copy_sequence(seq):
     """Return a copy of the sequence entered"""
     return seq
 
+# Below is test code to convert input to a string for easier manipulation
+#def copy_first_last(seq):
+#    """Return the sequence with first and last items entered swapped"""
+#    seq = str(seq)
+#    seq = seq[-2]+seq[2:-2]+seq[1]
+#    return seq.join()
+
 def copy_first_last(seq):
-    """Return the first and last items of the sequence entered"""
-    return seq[0],seq[-1]
+    """Return the sequence with first and last items entered swapped"""
+    if type(seq) is tuple:
+        return (seq[-1],)+seq[1:-1]+(seq[0],)
+    elif type(seq) is str:
+        return (seq[-1]+seq[1:-1]+seq[0])
 
 def copy_every_other(seq):
     """Return every other item in the sequence entered"""
@@ -32,6 +42,16 @@ a_tuple = 2, 54, 13, 12, 5, 32
 
 print ("The ORIGINAL string is: ",copy_sequence(a_string))
 print ("The ORIGINAL tuple is: ",copy_sequence(a_tuple))
+assert copy_first_last(a_string) == "ghis is a strint"
+assert copy_first_last(a_tuple) == (32, 54, 13, 12, 5, 2)
+assert copy_every_other(a_string) == "ti sasrn"
+assert copy_every_other(a_tuple) == (2, 13, 5)
+assert copy_rem_first_4_last_4(a_string) == " sas"
+assert copy_rem_first_4_last_4(a_tuple) == ()
+assert copy_reversed(a_string) == "gnirts a si siht"
+assert copy_reversed(a_tuple) == (32, 5, 12, 13, 54, 2)
+assert copy_thirds(a_string) == "is a stringthis "
+assert copy_thirds(a_tuple) == (13, 12, 5, 32, 2, 54)
 print ("The first and last characters of the string are: ",copy_first_last(a_string))
 print ("The first and last elements of the tuple are: ",copy_first_last(a_tuple))
 print ("Every other character in the string is: ",copy_every_other(a_string))
