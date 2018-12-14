@@ -2,18 +2,43 @@
 """
 String formatting exercises.
 Author: JohnR
-Version: .2
-Notes: Tasks 1 and 2 complete.
+Version: .6
+Date: 12/13/2018
+Notes: Tasks 1 - 4 complete.
 """
 
 
 def main():
     """
-    Core script logic.
+    Establish some global variables and call each function.
     :return:
     """
+    short_tuple = (1, 2)
+    long_tuple = (1, 2, 3, 4, 5, 6)
+    very_long_tuple = (0, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+    five_tuple = (4, 30, 2017, 2, 27)
+    some_list = ['oranges', 1.3, 'lemon', 1.1]
+
+    print('Task 1 results using f strings: ', end='')
     t1_results = task_1()
+
+    print('Task 2 results using format method: ', end='')
     task_2(t1_results)
+
+    print('Task 3.0 results using tuple with two items: ', end='')
+    task_3(short_tuple)
+
+    print('Task 3.1 results using tuple with six items: ', end='')
+    task_3(long_tuple)
+
+    print('Task 3.2 results using tuple with ten items: ', end='')
+    task_3(very_long_tuple)
+
+    print('Task 4 results for date/time format: ', end='')
+    task_4(five_tuple)
+
+    print('Task 5 results, more f strings: ', end='')
+    task_5(some_list)
 
 
 def task_1():
@@ -27,11 +52,6 @@ def task_1():
     float_2 = my_tuple[1]
     sci_not_2 = my_tuple[2]
     sci_not_3 = my_tuple[3]
-    print('*' * 50)
-    print('Task 1 results using f strings: ')
-    print('Original: ', end='')
-    print(my_tuple)
-    print('Modified: ', end='')
     print(f'file_{file:>03}: {float_2:.{5}}, {sci_not_2:.2e},'
           f' {sci_not_3:.2e} ')
 
@@ -47,43 +67,47 @@ def task_2(some_tuple):
     float_2 = some_tuple[1]
     sci_not_2 = some_tuple[2]
     sci_not_3 = some_tuple[3]
-    print('*' * 50)
-    print('Task 2 results using older format method: ')
-    print('Original: ', end='')
-    print(some_tuple)
-    print('Modified: ', end='')
     print('file_{:>03}: {:.5}, {:.2e}, {:.2e}'
           .format(file, float_2, sci_not_2, sci_not_3))
 
 
-def task_3():
+def task_3(unknown_tuple):
     """
     Rewrite "the 3 numbers are: {:d}, {:d}, {:d}".format(1,2,3)" to take
     an arbitrary number of values.
     :return:
     """
-    pass
+    values = []
+    for i in unknown_tuple:
+        values.append(i)
+    l = len(values)
+    print(("The {} numbers are: " + ",".join(["{}"] * l)).format(l, *values))
 
 
-def task_4():
+def task_4(date_tuple):
     """
     Given a 5 element tuple (4, 30, 2017, 2, 27) use string formatting
-    to print '02 27 2017 04 40'
+    to print '02 27 2017 04 30'
     :return: None
     """
-    pass
+    d = date_tuple
+    print('{:>02} {} {} {:>02} {}'.format(d[3], d[4], d[2], d[0], d[1]))
 
 
-def task_5():
+def task_5(some_list):
     """
     Use f-strings; Given the 4 element list ['oranges', 1.3, 'lemons', 1.1]
-    write an f-string that will display 'The of an orange is 1.3 and the
+    write an f-string that will display 'The weight of an orange is 1.3 and the
     weight of a lemon is 1.1'.
     Change the f-string so that is displays the names of the fruit in
     uppercase and weight 20% higher.
     :return: None
     """
-    pass
+    print(f'The weight of an {some_list[0]} is {some_list[1]} and the '
+          f'weight of a {some_list[2]} is {some_list[3]}.')
+
+    print(f'The weight of an {some_list[0].upper()} is {some_list[1]} and the '
+          f'weight of a {some_list[2].upper()} is {some_list[3]}.')
 
 
 def task_6():
