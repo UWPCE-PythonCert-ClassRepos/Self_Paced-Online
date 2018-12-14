@@ -10,7 +10,7 @@ def test_circle_init():
 def test_circle_init_no_parameters_error():
     msg = ""
     try:
-        c = Circle()
+        Circle()
     except TypeError as e:
         msg = e.args[0]
     finally:
@@ -46,3 +46,77 @@ def test_circle_change_area_error():
     except AttributeError as e:
         msg = e.args[0]
     assert msg == "can't set attribute"
+
+
+# STEP 5 TESTS
+def test_circle_alternate_constructor():
+    c = Circle.from_diameter(8)
+    assert c.diameter == 8
+    assert c.radius == 4
+
+
+# STEP 6 TESTS
+def test_circle_str_method():
+    c = Circle(4)
+    assert str(c) == "Circle with radius: 4.000000"
+
+
+def test_circle_repr_method():
+    c = Circle(4)
+    assert repr(c) == "Circle(4)"
+
+
+def test_circle_repr_eval():
+    c = Circle(4)
+    d = eval(repr(c))
+    assert str(c) == str(d)
+
+
+# STEP 7 TESTS
+def test_circle_add():
+    c1 = Circle(2)
+    c2 = Circle(4)
+    assert repr(c1+c2) == "Circle(6)"
+
+
+def test_circle_multiply():
+    c = Circle(4)
+    assert repr(c*3) == "Circle(12)"
+
+
+def test_circle_multiply_reversed():
+    c = Circle(4)
+    assert repr(3*c) == "Circle(12)"
+
+
+# STEP 8 TESTS
+def test_circle_greater_than():
+    c1 = Circle(2)
+    c2 = Circle(4)
+    assert not c1 > c2
+
+
+def test_circle_less_than():
+    c1 = Circle(2)
+    c2 = Circle(4)
+    assert c1 < c2
+
+
+def test_circle_equal():
+    c1 = Circle(2)
+    c2 = Circle(4)
+    c3 = Circle(4)
+    assert c1 != c2
+    assert c2 == c3
+
+
+def test_circle_sort():
+    circles = [Circle(6), Circle(7), Circle(8), Circle(4), Circle(0),
+               Circle(2), Circle(3), Circle(5), Circle(9), Circle(1)]
+    circles.sort()
+    expected = [Circle(0), Circle(1), Circle(2), Circle(3), Circle(4),
+                Circle(5), Circle(6), Circle(7), Circle(8), Circle(9)]
+    assert circles == expected
+
+
+# STEP 8 OPTIONAL FEATURES TESTS
