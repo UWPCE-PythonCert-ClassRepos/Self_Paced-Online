@@ -21,7 +21,7 @@ except NameError:
     print("\nWhoops! there is no joke for: spam")
 else:
     # 'Spam, Spam, Spam, Spam, Beautiful Spam' will only print if ther's no except,
-    # but there is so joke = fun(first_try[1]) is never called
+    # but there is a NameError so joke = fun(first_try[1]) is never called
     joke = fun(first_try[1])
 
 # Here is a try/except block. Add an else that prints not_joke
