@@ -8,6 +8,7 @@ For Step 8 optional features, implemented:
 from math import pi
 from functools import total_ordering
 
+
 @total_ordering
 class Circle:
     _radius = None
@@ -29,7 +30,7 @@ class Circle:
         return Circle(self._radius + other.radius)
 
     def __sub__(self, other):
-        if self._radius<other.radius:
+        if self._radius < other.radius:
             raise ValueError("Radius cannot be less than zero")
         return Circle(self._radius - other.radius)
 
@@ -61,7 +62,7 @@ class Circle:
         return self / other
 
     @classmethod
-    def from_diameter(self, diameter):
+    def from_diameter(cls, diameter):
         return Circle(diameter/2)
 
     @property
@@ -81,5 +82,3 @@ class Circle:
         self._diameter = value
         self._radius = value/2
         self._area = pi*self._radius**2
-
-

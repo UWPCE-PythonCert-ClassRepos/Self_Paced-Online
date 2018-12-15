@@ -137,11 +137,13 @@ def test_circle_augmented_multiplication():
 
 
 def test_circle_subtraction():
-    assert (Circle(2) - Circle(1)).radius == 1
+    c = Circle(2) - Circle(1)
+    assert c.radius == 1
 
 
 def test_circle_division():
-    assert (Circle(2) / 5).radius == 0.4
+    c = Circle(2) / 5
+    assert c.radius == 0.4
 
 
 def test_circle_augmented_subtraction():
@@ -154,4 +156,3 @@ def test_circle_augmented_division():
     c = Circle(2)
     c /= 5
     assert c.radius == 0.4
-
