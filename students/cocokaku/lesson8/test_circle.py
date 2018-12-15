@@ -120,3 +120,38 @@ def test_circle_sort():
 
 
 # STEP 8 OPTIONAL FEATURES TESTS
+def test_circle_reflection():
+    assert Circle(4)*3 == 3*Circle(4)
+
+
+def test_circle_augmented_addition():
+    c1 = Circle(2)
+    c1 += Circle(2)
+    assert c1.radius == 4
+
+
+def test_circle_augmented_multiplication():
+    c1 = Circle(2)
+    c1 *= 3.1
+    assert c1.radius == 6.2
+
+
+def test_circle_subtraction():
+    assert (Circle(2) - Circle(1)).radius == 1
+
+
+def test_circle_division():
+    assert (Circle(2) / 5).radius == 0.4
+
+
+def test_circle_augmented_subtraction():
+    c = Circle(2)
+    c -= Circle(1)
+    assert c.radius == 1
+
+
+def test_circle_augmented_division():
+    c = Circle(2)
+    c /= 5
+    assert c.radius == 0.4
+

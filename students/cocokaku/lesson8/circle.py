@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+"""
+For Step 8 optional features, implemented:
+(1) reflected multiplication, no other operators make sense
+(2) implemented magic methods for subtraction and division
+(3) implemented augmented addition, subtraction, multiplication, and division
+"""
 from math import pi
 from functools import total_ordering
 
@@ -20,12 +26,18 @@ class Circle:
         return f"Circle({self._radius})"
 
     def __add__(self, other):
-        if type(other) != type(self):
-            raise TypeError("both objects must be Circle type")
         return Circle(self._radius + other.radius)
+
+    def __sub__(self, other):
+        if self._radius<other.radius:
+            raise ValueError("Radius cannot be less than zero")
+        return Circle(self._radius - other.radius)
 
     def __mul__(self, other):
         return Circle(self._radius * other)
+
+    def __truediv__(self, other):
+        return Circle(self._radius / other)
 
     def __rmul__(self, other):
         return Circle(self._radius * other)
@@ -35,6 +47,18 @@ class Circle:
 
     def __lt__(self, other):
         return self._radius < other.radius
+
+    def __iadd__(self, other):
+        return self + other
+
+    def __isub__(self, other):
+        return self - other
+
+    def __imul__(self, other):
+        return self * other
+
+    def __idiv__(self, other):
+        return self / other
 
     @classmethod
     def from_diameter(self, diameter):
