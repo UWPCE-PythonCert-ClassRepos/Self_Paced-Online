@@ -2,6 +2,7 @@ import mailroom4 as mr
 import sys
 import io
 import random
+import subprocess
 
 def donor_entry_help(name, amount):
     """Add the donor with the specified name and donation amount to the global
@@ -31,7 +32,7 @@ def test_donor_entry_1():
     
 def test_donor_entry_2():
     "Test adding a donation amount for a new donor."
-    pyt)
+    
     new_names = ("Patrick Carrier", "Jim Harbaugh", "Kelly Johnson")
     
     for name in new_names:
@@ -58,18 +59,6 @@ def test_donor_entry_3():
         # so the above function call should raise an EOFError since we only
         # provide the one value: 'money'
         pass
-        
-    
-def test_donor_entry_4():
-    "Test premature exit after donor name prompt"
-    #no chage to dict and nothing sent to stdout
-    pass
-
-
-def test_donor_entry_5():
-    "Test premature exit after donoation amount prompt"
-   #no change to dict and nothing send to stdout
-    pass
 
 
 def test_list_donors():
@@ -85,7 +74,8 @@ def test_list_donors():
     # change the position to the begginning of the stream:
     output.seek(0)  
     # Read all of the names output by the list_donors() function into a set
-    names_out = {name for name in output}
+    # don't include the newline character when reading in the names
+    names_out = {name[:-1] for name in output if len(name[:-1]) > 0}
 
     # Loop through the donors in the global dictionary and verify that all
     # names are in the names_out set
@@ -98,6 +88,15 @@ def test_letters():
     # check that a file exists for each donor (remove all *.txt files before)
     # check that the number of donations and total amount donated are correct
     # for each donor
+    
+    # Remove all text files
+    os.remove('./*.txt')
+    mr.send_letters()
+    
+    # Check that a file with the email contents exists for each donor
+    for donor in donors:
+        assert 
+        
     
 def test_report():
     "Test that the information in the printed table is correct"
