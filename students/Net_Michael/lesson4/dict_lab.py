@@ -175,27 +175,6 @@ print( s|m, s.union(m), m.union(s) )
 
 print(s&m, s.intersection(m), m.intersection(s))
 
-
-# In[23]:
-
-
 outfile = open('trial.txt', 'w')
-
-
-# In[24]:
-
-
 outfile
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 
