@@ -3,6 +3,8 @@ import sys
 import io
 import random
 import subprocess
+import glob
+import os
 
 def donor_entry_help(name, amount):
     """Add the donor with the specified name and donation amount to the global
@@ -51,9 +53,6 @@ def test_donor_entry_3():
     try:
         # Attempt to add the non-numerical donation amount 'money'
         donor_entry_help("Pablo Picasso", 'money')
-    except ValueError:
-        # mailroom.py should handle the ValueError if a bad (non-numerical) input is given
-        assert 0
     except EOFError:
         # mailroom.py should continue prompting the user for a numerical input
         # so the above function call should raise an EOFError since we only
@@ -84,20 +83,105 @@ def test_list_donors():
     
     
 def test_letters():
-    "Test of the send_letters function"
-    # check that a file exists for each donor (remove all *.txt files before)
-    # check that the number of donations and total amount donated are correct
-    # for each donor
+    """Test the send_letters() function to make sure a file containing an email
+    exists. Also make sure the name, number of donations, and sum of donation 
+    amounts is correct."""
     
     # Remove all text files
-    os.remove('./*.txt')
+    subprocess.run('del *.txt',shell=True)
     mr.send_letters()
     
-    # Check that a file with the email contents exists for each donor
-    for donor in donors:
-        assert 
+    for donor in mr.donors:
+        
+        # Check that a file with the email contents exists for each donor
+        fname = donor.replace(' ','_') + '.txt'
+        assert len(glob.glob(fname)) == 1
+        
+        # Read through the letter, and make sure the name, number of donations,
+        # and total sum of donations is correct
+        with open(fname,'r') as infile:
+            for line in infile:
+                # Check name
+                if line.startswith('Dear'):
+                    letter_name = line[len('Dear') : line.find(',')]
+                    letter_name = letter_name.replace(' ','')
+                    actual_name = donor.replace(' ','')
+                    assert letter_name == actual_name
+                    
+                if line.startswith('Your'):
+                    # Check number of donations    
+                    n_donations = line[len('Your') : line.find('donation')]
+                    n_donations = int(n_donations.replace(' ',''))
+                    assert n_donations == len(mr.donors[donor])
+                    
+                    # Check the sum of donation amounts
+                    d_sum = line[line.find('$') + 1 : line.find('help')]
+                    d_sum = float(d_sum.replace(' ',''))
+                    assert d_sum == round(sum(mr.donors[donor]),2)
+        
+    subprocess.run('del *.txt',shell=True)              
         
     
 def test_report():
     "Test that the information in the printed table is correct"
  
+    # Get the output from the write_report() function
+    output = io.StringIO()
+    sys.stdout = output
+    mr.write_report()
+    # Reset stdout
+    sys.stdout = sys.__stdout__
+    # Reset the position to the beginning of the stream
+    output.seek(0)
+    
+    # Remove blank lines
+    line = output.readline()
+    while line.isspace():
+        print(line)
+        line = output.readline()
+        
+    # Remove line of dashes
+    output.readline()
+    
+    # Verify the data printed in the table is consistent with the data in the
+    # global dictionary
+    for line in output:
+        first, last, _, sum_donation, n_donation, _, avg_donation = line.split()
+        name = f"{first} {last}"
+        actual_sum = sum(mr.donors[name])
+        actual_n =  len(mr.donors[name])
+        assert float(sum_donation) == round(actual_sum,2)
+        assert int(n_donation) == actual_n
+        assert float(avg_donation) == round(actual_sum/actual_n,2)
+        
+      
+def test_flow():
+    """Test the "flow" of the interactive section. 
+    
+    This test runs a sequence of "user inputs" that should result in the
+    interactive session being exited normally (through the 'quit' command). 
+    If the interactive session does not exit normally after a given sequence of user 
+    commands, an EOFError is raised since the interactive program will expect
+    more commands, and this test will fail."""
+    
+    # Each string is a sequence of commands that a user might enter
+    cmds = ["q", 
+            "c  s  q",
+            "t  l  q  q",
+            "t  e  q  q  q",
+            "t  e  Patrick Carrier  q  q  q"]
+    
+    for cmd in cmds:
+        cmd_i = cmd.replace("  ", "\n")
+        sys.stdin = io.StringIO(cmd_i)
+    
+        with open(os.devnull,'w') as output:
+            sys.stdout = output
+            # Run the mailroom program for the given sequence of commands
+            mr.menu(mr.main_prompt, mr.main_disp_dict)
+
+            
+        
+    sys.stdin = sys.__stdin__
+    sys.stdout = sys.__stdout__
+    

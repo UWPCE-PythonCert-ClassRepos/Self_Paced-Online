@@ -158,9 +158,7 @@ Sincerely,
         
         
 ###############  Program Block ###############
-if __name__ == "__main__":
-    
-    main_prompt = """\nMain Menu
+main_prompt = """\nMain Menu
 Enter:
 (t) to send a thank you letter
 (c) to create a report
@@ -168,7 +166,9 @@ Enter:
 (q) to quit
 >>> """
 
-    main_disp_dict = {'t':thankyou_menu, 'c':write_report,
+main_disp_dict = {'t':thankyou_menu, 'c':write_report,
                       's':send_letters, 'q': lambda : None}
+
+if __name__ == "__main__":
     menu(main_prompt, main_disp_dict)
     
