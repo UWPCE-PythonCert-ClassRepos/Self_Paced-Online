@@ -9,15 +9,16 @@ import os
 import pytest
 from mailroom import *
 
-#def test_create_report():
-#    assert create_report() == """Donor Name                | Total Given | Num Gifts | Average Gift
-#------------------------------------------------------------------
-#Paul Allen                 $    54000.00           2  $   27000.00
-#Dennis Coffey              $     4300.00           3  $    1433.33
-#Ethan Coffey               $     2050.00           3  $     683.33
-#Bill Gates                 $      770.00           2  $     385.00
-#Jeff Bezos                 $        3.00           1  $       3.00"""
-
+# Test create report
+def test_create_report():
+    assert create_report() == f'\nDonor Name                | Total Given | Num Gifts | Average Gift\n\
+------------------------------------------------------------------\n\
+Paul Allen                 $    54000.00           2  $   27000.00\n\
+Dennis Coffey              $     4300.00           3  $    1433.33\n\
+Ethan Coffey               $     2050.00           3  $     683.33\n\
+Bill Gates                 $      770.00           2  $     385.00\n\
+Jeff Bezos                 $        3.00           1  $       3.00\n'
+    
 # Test add_donation by adding donation to existing donor
 def test_add_donation_existing_donor(donor='Dennis Coffey', amount=5000.00):
     add_donation(donor, amount)

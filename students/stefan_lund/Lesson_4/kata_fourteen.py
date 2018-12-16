@@ -1,299 +1,413 @@
 # python 3
 # Stefan Lund
 # Lesson_4
+# kata_fourteen.py
 
-# import os
 import urllib.request
 import random
 
-def scrub(s):
+# read text from url
+def read_line_from(url_srce, starting, ending):
+    """
+        generator, returns a line from text when called
 
-    b = []
-    i = 0
-    # print("\ns: ", s)
-    while i < len(s):
-        word = s[i]
-        # print("i: ", i, "   word: ", word)
-        if word == "mr" and len(s) - i >2:
-            word = "mr."
-            print("i: ", i, "   word: ", word, "s[i + 2]: ", s[i + 2], "\ns: ", s)
-            c = word, s[i + 2]
-            c = " ".join(c)
-            c = c.title()
-            # print("i: ", i, "   c: ", c)
-            b.append(c)
-            i += 3
-        elif (word == "tom" or word == "tom's") and len(s) - i >1:
-            if s[i + 1] == "swift":
-                c = word, s[i + 1]
-                c = " ".join(c)
-                i += 1
-            else:
-                c = word
-            c = c.title()
-            b.append(c)
-            i += 1
-        elif word == "chapter" and len(s) - i >1:
-            if s[i + 1].count("i") == len(s[i + 1]):
-                i += 2
-            else:
-                c = word
-                b.append(c)
-                i += 1
-        elif word == "i":
-            b.append("I")
-            i += 1
-        elif word == "ned":
-            b.append("Ned")
-            i += 1
-        elif "." in word:
-            word1 = word.split(".")[0]
-            word2 = "."
-            b.append(word1)
-            b.append(word2)
-            i += 1
-        elif word.count("-") > 1:
-            words = word.split("-")
-            word1, word2 = words[0], words[-1]
-            b.append(word1)
-            b.append(word2)
-            i += 1
-        else:
-            b.append(word)
-            i += 1
-    return b
+        url_srce: web site where utf-8 encoded text is located
+        starting: start reading at this line
+        ending: stop reading at this line
 
-
-def splitstrip(s):
-    a = s.lower().split()
-    b = []
-    i = 0
-    # print("\ns: ", s)
-    while i < len(a):
-        word = a[i]
-        word = word.strip(";:?!-\"'")
-        # print("word: ", word)
-        if "," in word:
-            x, y = word.split(",")
-            if x and y:
-                b.append(x)
-                b.append(y)
-                i += 1
-            else:
-                b.append(word.strip(","))
-                i += 1
-        else:
-            b.append(word)
-            i += 1
-    # print("b: ", b)
-    return b
-
-def markov(s, dic):
-    for i in range(len(s) - 3):
-        # print("i: ", i, "  i+2: ", i+2, len(s), end="")
-        combo = s[i] + " " + s[i + 1]
-        next_word = s[i + 2]
-        # print("    combo: ", combo, end="")
-        # print("    next_word: ", next_word, end="")
-        if combo in dic:
-            if next_word in dic[combo]:
-                # print("   A")
-                dic[combo][next_word] += 1
-            else:
-                # print("   B")
-                dic[combo][next_word] = 1
-        else:
-            # print("   C")
-            dic[combo] = {}
-            dic[combo][next_word] = 1
-    return dic
-
-def read_from(url_srce):
-
-    # try:
-        # with open(to_destination, 'ab') as outfile:
-
-    r = urllib.request.urlopen(url_srce)
-    text = r.readline
-    line = text()
-    start = False
-    s = "CHAPTER I\r".encode("utf-8")
-    e = "End of the Project Gutenberg EBook".encode("utf-8")
-    old_line = []
-    old_trigram_dict = {}
-    while line != b"":
-        # skip the header part
-        while not start:
-            if line.startswith(s):
-                start = True
-            else:
-                line = text()
-        # stop reading when book ends, before the footer
-        if line.startswith(e):
-            line = "".encode("utf-8")
-        else:
-            if line != "\r\n".encode("utf-8"):
-                line = line.decode("utf-8")
-                s_line = splitstrip(line)
-                old_line.extend(s_line)
-                if len(old_line) > 3:
-                    old_line = scrub(old_line)
-                    new_trigram_dict = markov(old_line, old_trigram_dict)
-                    # print("old_line: ", old_line, len(new_trigram_dict))
-                    old_line = old_line[-3:]
-                    # print("old_line: ", old_line, len(new_trigram_dict))
-                    old_trigram_dict = new_trigram_dict
+        line: yields a string of utf-8 encoded text, line by line
+    """
+    try:
+        with urllib.request.urlopen(url_srce) as r:
+            text = r.readline
             line = text()
-    return old_trigram_dict
+            start = False
+            while line != b"":
+                # skip the header part
+                while not start:
+                    if line.startswith(starting):
+                        start = True
+                    else:
+                        line = text()
+                # stop reading when book ends, before the footer
+                if line.startswith(ending):
+                    line = "".encode("utf-8")
+                else:
+                    # skip empty lines
+                    if line != "\r\n".encode("utf-8"):
+                        line = line.decode("utf-8")
+                        line = line.rstrip("\n")
+                        yield line
+                    line = text()
 
-def dict_frequency_keys(word_frequency_dict):
-    # returns a dictionary with a number as key (frequency) and corresponing
-    # word as value
-    # print("dict_frequency_keys, word_frequency_dict: {}".format( word_frequency_dict))
-    current_sum = 0
-    frequency_word_dict = {}
-    for word in word_frequency_dict:
-        value = word_frequency_dict[word]
-        # print("frequency_keys, word: {:>15},  trigram_dict[word]: {}".format( word, trigram_dict[word]))
-        current_sum += value
-        frequency_word_dict[current_sum] = word
-
-    return frequency_word_dict
+    except:
+        print("something went wrong, read_line_from")
 
 
-def frequency_keys(trigram_dict):
-    # returns a dictionary with a number as key (frequency) and corresponing
-    # word as value
-    current_sum = 0
-    frequency_word_dict = {}
-    for word in trigram_dict:
-        temp = trigram_dict[word].values()
-        # print("frequency_keys, word: {:>15},  trigram_dict[word]: {}".format( word, trigram_dict[word]))
-        current_sum += sum(temp)
-        frequency_word_dict[current_sum] = word
+# following functions converts the text into a list of words, then
+    # "scrubs" selected words to make more sense in the following word count
+def make_list_of_words_from(string_line):
+    # make a list of words from string, all in lower case
+    list_of_words = string_line.lower().split()
+    return list_of_words
 
-    return frequency_word_dict
+def clean(characters, word):
+    # wanted_word is a string
+    wanted_word = word.strip(characters)
+    return wanted_word
 
-def max_frequency(frequency_dict):
+def clean_and_split(character_in_list, word):
+
+    clean_word = [word]
+    for char in character_in_list:
+        if char in list(word):
+            # print(char, word)
+            if char == "-" and word.count(char) > 1:
+                # split ==> [word1, '', '', ..., word2]
+                words = word.split("-")
+                clean_word = words[0], words[-1]
+            elif char == "-" and word.count(char) == 1:
+                clean_word = [word]
+            else:
+                # split ==> [clean_word, '']
+                clean_word = [word.split(char)[0]]
+                clean_word.append(char)
+    for w in clean_word:
+        if len(w) < 2 and w not in [".", "?", "!", ",", "i", "a"]:
+            clean_word = [""]
+    return clean_word
+
+def change_if(word_list, dictionary):
+
+    scrubbed_lst = []
+    for word in word_list:
+        if word in list(dictionary.keys()):
+            # print(word, dictionary[word])
+            word = dictionary[word]
+        scrubbed_lst.append(word)
+    return scrubbed_lst
+
+def fix_tom():
+    return ["Tom Swift", 2]
+
+def fix_bumper():
+    return ["professor Bumper", 2]
+
+def fix_psb():
+    return ["professor Swyington Bumper", 3]
+
+def fix_swy():
+    return ["Swyington Bumper", 2]
+
+def fix_ned():
+    return ["Ned Newton", 2]
+
+def fix_chapter():
+    return [None, 2]
+
+def fix_mr(third_word):
+    name = third_word.title()
+    return ["Mr. " + name, 3]
+
+def fix_mrs(third_word):
+    name = third_word.title()
+    return ["Mrs. " + name, 3]
+
+def word_check_fix(three_words):
     """
-        frequency_dict: {word1: count of appearance + cumulative count of appearance for word2,
-                         word2: count of appearance + cumulative count of appearance for word3,
-                         word3: count of appearance}
+        three_words: list of three strings
+        if any one of the words_to_word dictionary keys are encountered the
+            three_words list, starting from index 0, as a string
+            made from the first word as in 'chapter or
+            joined togeter by two or three words as in
+            'Ned newton' or 'professor swyington bumper'
+            the return string is modified by the fix_--- functions.
     """
-    # print("frequency_dict: ", frequency_dict)
-    d = {}
-    for key in frequency_dict:
-        # print("max_frequency\nfrequency_dict[key]: ", frequency_dict[key], "  key: ", key)
-        d[frequency_dict[key]] = key
-    # print(d)
-    # list of keys
-    ks = list(d.keys())
-    # highest number represents 100% of the counted words
-    mx = max(ks)
-    print("max_frequency,    mx: ", mx)
-    return mx
+    words_to_word = {"Tom swift"                    : fix_tom,
+                     "professor bumper"             : fix_bumper,
+                     "chapter"                      : fix_chapter,
+                     "mr ."                         : fix_mr,
+                     "mrs ."                        : fix_mrs,
+                     "Ned newton"                   : fix_ned,
+                     "professor swyington bumper"   : fix_psb,
+                     "swyington bumper"             : fix_swy}
 
-def choose_word(word_frequency):
+    compare_to = list(words_to_word.keys())
+
+    compare_one_word = three_words[0]
+    compare_two_words = " ".join([three_words[0], three_words[1]])
+    compare_three_words = " ".join([three_words[0], three_words[1], three_words[2]])
+
+    first_of_three_words = [compare_one_word, 1]
+    for key_word in compare_to:
+        if compare_one_word == key_word:
+            return words_to_word[compare_one_word]()
+
+        elif compare_two_words == key_word:
+            if compare_two_words == "mr .":
+                # special case, only function that requires an argument
+                return words_to_word[compare_two_words](three_words[2])
+            elif compare_two_words == "mrs .":
+                return words_to_word[compare_two_words](three_words[2])
+            return words_to_word[compare_two_words]()
+
+        elif compare_three_words == key_word:
+            return words_to_word[compare_three_words]()
+
+    # print("first_of_three_words: ", first_of_three_words)
+    return first_of_three_words
+
+# make_list_of_all_words function, manages the above functions
+def make_list_of_all_words(url_source, beginning, finish):
     """
-    word_frequency: dictionary{cumulative-frequency:word, etc}
+        url_source: web site where utf-8 encoded text is located
+        beginning: start reading at this line
+        finish: stop reading at this line
+
+        returns: scrubbed_word_list, list of words ready for analysis
     """
-    # get total of all the possible frequencies
-    # total_frequency = max_frequency(word_frequency)
-    total_frequency = max(word_frequency.keys())
-    # print("choose_word,  total_frequency: ", total_frequency)
-    assert(total_frequency > 0), "choose_word total_frequency is not a number"
-    # print("word_frequency: ", word_frequency)
-    # print("total_frequency: ", total_frequency)
-    # choose start from all the possibilities
-    r = random.randint(1, total_frequency)
-    # print("choose_word, r: ", r, type(r))
-    # find key corresponding key in word_frequency dictionary
-    key_random = min(k for k in word_frequency if k >= r)
-    # word randomly selected
-    word = word_frequency[key_random]
-    return word
+    unwanted_chars = '"\':;-'
+    wanted_chars = [".", "!", "?", ",", "-"]
+    special_chars_dict = {"ned": "Ned", "tom": "Tom", "tom's": "Tom's", "i": "I"}
+
+    scrubbed_word_list = []
+    three_word_list = []
+    # lines is a generator
+    lines = read_line_from(url_source, beginning, finish)
+    # line is a string
+    for line in lines:
+        # word_list is a list of words
+        word_list = make_list_of_words_from(line)
+        # word is a str
+        for word in word_list:
+            # if word == 'mr.':
+            #     print(word_list)
+            # scrub1 is a str
+            scrub1 = clean(unwanted_chars, word)
+            # scrub2 is a list
+            scrub2 = clean_and_split(wanted_chars, scrub1)
+
+            if len(scrub2[0]) < 2 and scrub2[0] == "d":
+                print("scrub2[0]: ", scrub2[0])
+
+            # scrub3 is a list
+            scrub3 = change_if(scrub2, special_chars_dict)
+
+            if len(scrub3[0]) != 0:
+                three_word_list.extend(scrub3)
+
+            # make a list of strings of length 3, scrub the list and add as many
+            # new words as necessary to mainatain the list as a queue with length 3
+            if len(three_word_list) > 2:
+                while len(three_word_list) > 2:
+                    value = word_check_fix(three_word_list)
+                    word, step = value[0], value[1]
+                    if word is not None:
+                        scrubbed_word_list.append(word)
+                    three_word_list = three_word_list[step:]
+    return scrubbed_word_list
 
 
-def next_word(combo, tri_dict):
-    # using the combo word as key, get dict with all words following this combo
+# make all two-words combinations in the story, find them and the following words
+# and count how many times each word appear after the two-word combination
+def make_combo_word_from(word_list):
 
-    if combo in tri_dict:
-        next_word_dict = tri_dict[combo]
+    # wanted_chars = [".", "!", "?", ","]
+    combo_word_list = []
+    # count = 0
+    # while count < len(word_list) - 1:
+    for i in range(len(word_list) - 1):
+        combo = word_list[i:i + 2]
+        # if combo[1] in wanted_chars:
+            # combo = "".join(combo)
+        #     count += 2
+        # else:
+        combo = " ".join(combo)
+            # count += 1
+        combo_word_list.append(combo)
+
+    return combo_word_list
+
+def make_and_populate_combo_dict(keys, word_list):
+
+    combo_dict = {}
+    keys = sorted(keys)
+
+    # create a dictionary for all keys(=combo_words) with an empty dictionary as value
+    for dict_key in keys:
+        combo_dict[dict_key] = {}
+
+    # for each key_combo_word add the words that follows and how many times this
+        # combination of words appears
+    for i in range(len(word_list) - 2):
+        combo = word_list[i:i + 2]
+        combo = " ".join(combo)
+        following_word = word_list[i + 2]
+        if following_word in combo_dict[combo]:
+            combo_dict[combo][following_word] += 1
+        else:
+            combo_dict[combo][following_word] = 1
+
+    combo_dict_s = {}
+    for key in combo_dict:
+        if combo_dict[key] != {}:
+            combo_dict_s[key] = combo_dict[key]
+    return combo_dict_s
+
+# make a dictionary with the cumulative total count for each two-word combination
+# as key, the difference from previous key to key represents a normalized
+# scale that can then be used to randomly pick a word combination where it's
+# probability to get picked is relative to how often it appeared in the story
+def make_reversed_combo_frequency_from(combo_dict):
+    """
+    combo_dict: {"combo_word:{"word1":appeared_times,
+                             "word2":appeared_times}"}
+    return {sum(all appeared_times): combo_word1, ... etc}
+        sum(all appeared_times) is a str(int)
+    """
+    freq_combo = {}
+    for combo_word in list(combo_dict.keys()):
+        sub_dict = combo_dict[combo_word]
+        frequency = str(sum(sub_dict.values()))
+        if frequency in freq_combo:
+            freq_combo[frequency].append(combo_word)
+        else:
+            freq_combo[frequency] = [combo_word]
+    return freq_combo
+
+# same as above but this function is used for the value of the two-word combination
+# dictionary, all words following the two-word combination in a dictionary with the
+# number of times each word appeared after the two-word combination
+def cumulative_frequency_as_key(frequency_word_dict):
+
+    frequencies = list(frequency_word_dict.keys())
+    cumulative_frequency = 0
+    cumulative_frequency_dict = {}
+    for frequency in frequencies:
+        cumulative_frequency += int(frequency)
+        cumulative_frequency_dict[cumulative_frequency] = frequency_word_dict[frequency]
+    return cumulative_frequency_dict
+
+# use the functions to read the text and create a new text based on the heuristics
+# collected
+def get_combo_word(cumulative_combo):
+
+    # lower_limit is 1
+    lower_limit = 1
+    # upper_limit is the largest of the cumulative frequencies
+    upper_limit = max(cumulative_combo.keys())
+    # pick a random number in the space lower_limit to upper_limit
+    r = random.randint(lower_limit, upper_limit)
+    # find corresponding key in cumulative_combo
+    random_key = min(k for k in cumulative_combo if k >= r)
+    # one or more combo_words could be associated with this key
+    combo_words = cumulative_combo[random_key]
+    if len(combo_words) > 1:
+        size = len(combo_words)
+        # pick the combo_word at random, all words here have equal frequency
+        # combo_words are of type list
+        size = len(combo_words) - 1
+        r = random.randint(0, size)
+        combo_word = [combo_words[r]]
     else:
-        # if combo was never used in the book, return False
-        return False
-    # create a revers dictionary with cumulative frequency for each word as key
-    word_frequency = dict_frequency_keys(next_word_dict)
-    # get the word
-    word = choose_word(word_frequency)
-    return word
+        combo_word = combo_words
+    return combo_word
 
-def make_word_count(total_count, from_source):
-    # create a combo word frequency dictionary from book at url_source
-    # combo_dict = {combo word: {word1:word-count, word2:word-count, etc}}
-    # combo-word count is the sum of word-count for word1, word2 etc
-    tri_dict = read_from(from_source)
+def get_next_word(word_key_frequency_value_dict):
 
-    frequency_combo = frequency_keys(tri_dict)
-    # frequency_combo-dict = {cumulative frequency:combo-word, etc}
+    # word_key_frequency_value_dict is a dictionary with one or more words as keys
+    next_word_keys = list(word_key_frequency_value_dict.keys())
+    if len(next_word_keys) > 1:
+        # need a cumulative frequency keys for word values
+        sum_frequency = 0
+        cumulative_freq_dictionary = {}
+        for word, frequency in word_key_frequency_value_dict.items():
+            sum_frequency += int(frequency)
+            cumulative_freq_dictionary[sum_frequency] = word
 
-    word_list = []
-    while len(word_list) < 2 and "." not in word_list:
-        start_combo = choose_word(frequency_combo)
-        word_list = start_combo.split()
+        lower_limit = 1
+        upper_limit = max(cumulative_freq_dictionary.keys())
+        r = random.randint(lower_limit, upper_limit)
+        random_key = min(k for k in cumulative_freq_dictionary if k >= r)
+        next_word = cumulative_freq_dictionary[random_key]
+    else:
+        next_word = next_word_keys[0]
 
-    count = 2
-    while count <= total_count:
-        previous = word_list[-2], word_list[-1]
-        previous_combo = " ".join(previous)
-        # print("make_word_count,  tri_dict[previous_combo]: ", tri_dict[previous_combo])
-        new_word = next_word(previous_combo, tri_dict)
-        if new_word:
-            word_list.append(new_word)
-            count += 1
+    return next_word
+
+
+source = "http://www.gutenberg.org/cache/epub/499/pg499.txt"
+start = "CHAPTER I\r".encode("utf-8")
+# end = '"A joke?"'.encode("utf-8")
+# end = '"Yes.  What you just read in that magazine'.encode("utf-8")
+# end = b"Mary Nestor, a girl of Shopton, might also be mentioned."
+end = b"End of the Project Gutenberg EBook"
+# book_word_list: a list of every word from text in order
+book_word_list = make_list_of_all_words(source, start, end)
+
+# create a new list made up of every two word sequence,
+#   a word can also be '.' or '?' or '!' or ','
+book_combo_word_list = make_combo_word_from(book_word_list)
+# make keys for a dictionary from this list
+combo_dict_keys = set(book_combo_word_list[:-1])
+
+# make a dictionary with keys being the combo_dict_keys and as
+    # value for each key is another dictionary with the words following the
+    # combo_dict_keys as key and valu is the number of times this combination
+    # appears, (frequency). dict = {combo_word1:{next_word1:appeared_times,
+                                             #   next_word2:appeared_times, etc}
+                                #   combo_word2:{next_word1:appeared_times,
+                                             #   next_word2:appeared_times, etc}etc}
+combo_dict = make_and_populate_combo_dict(combo_dict_keys, book_word_list)
+
+# dictionary with a str type number as key representing how many times the
+    # combo words showing as dictionary values have appeared
+frequency_combo_dict = make_reversed_combo_frequency_from(combo_dict)
+
+# pick the starting combo word using weighted random
+# to do this, modify the frequency_combo_dict, add the frequencies co the key
+# represents relative size of this key to the total when all keys have been
+# added up
+# cumulative_frequency_combo_dict contains only the combo words
+cumulative_frequency_combo_dict = cumulative_frequency_as_key(frequency_combo_dict)
+
+
+story_list = []
+# how many words to create in the gobbledygook story_list
+story_length = 200
+wanted_chars = [".", "!", "?", ","]
+
+while len(story_list) < story_length:
+    # len(story_list) evaluates first
+    if len(story_list) < 1:# or not combo_dict(story_list[-2:])
+        combo = get_combo_word(cumulative_frequency_combo_dict)
+        # don't start the stry with '?' or '.'
+        while any([char in combo[0] for char in wanted_chars]):
+            combo = get_combo_word(cumulative_frequency_combo_dict)
+
+        combo = combo[0]
+        combo = combo.split()
+        story_list.extend(combo)
+    else:
+        combo = " ".join(story_list[-2:])
+
+        if combo in combo_dict.keys():
+            next_word = get_next_word(combo_dict[combo])
+            story_list.append(next_word)
         else:
-            # if previous_combo was never use in book,
-            # create a new combo word and add them to
-            # the word_list
-            new_start_combo = choose_word(frequency_combo)
-            new_word_list = []
-            while len(new_word_list) < 2:
-                new_start_combo = choose_word(frequency_combo)
-                new_word_list = new_start_combo.split()
-                word_list.extend(new_word_list)
-                count += 2
-                # print("\n  make_word_count,  new_word_list: ", new_word_list)
-    return word_list
-
-def run_trigram():
-
-    url_source = "http://www.gutenberg.org/cache/epub/499/pg499.txt"
-    word_count = 200
-    new_writings = make_word_count(word_count, url_source)
-
-    i = 0
-    nw_lst = []
-    while i < len(new_writings):
-        word = new_writings[i]
-        if i == 0:
-            if word == ".":
-                word = new_writings[1]
-                i = 1
-            nw_lst.append(word.title())
-
-        elif word == ".":
-            sentence_end = nw_lst.pop() + "."
-            nw_lst.append(sentence_end)
-            if i + 1 < len(new_writings):
-                nw_lst.append(new_writings[i + 1].title())
-                i += 1
-        else:
-            nw_lst.append(word)
-        i += 1
-    #     # print(i, "    ", word)
-    nw_lst = " ".join(nw_lst)
-    print(nw_lst)
-
-
-if __name__ == '__main__':
-    run_trigram()
+            # this combo word was never in the book and is a dead end. make new combo
+            combo = get_combo_word(cumulative_frequency_combo_dict)
+            combo = combo[0]
+            combo = combo.split()
+            story_list.extend(combo)
+story = ""
+previous_word = "."
+for word in story_list:
+    if word in wanted_chars:
+        story += word
+    else:
+        if previous_word in [".", "!", "?"]:
+            word = word.title()
+        story += " " + word
+    previous_word = word
+print(story)
