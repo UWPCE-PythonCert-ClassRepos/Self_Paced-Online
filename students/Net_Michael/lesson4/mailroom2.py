@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
-
 import os
 import io
 import pathlib
 import shutil
 import re
 from collections import defaultdict
+
+# list of donors and history of the amounts they have donated
 
 def prompt(var):
     if var == 1:
@@ -24,7 +25,6 @@ def prompt(var):
     else:
         print("Exit")  
 
-# list of donors and history of the amounts they have donated
         
 def create_report(donors_dir_path, 
                   total_report = "no",
@@ -106,6 +106,8 @@ def create_report(donors_dir_path,
                                           -The Team'''.format(donor_name,total_donation))
           
     os.chdir(report_wd)
+  
+# In[6]:
 
 
 # var = 1 is for donors total summary donation Report
@@ -115,5 +117,16 @@ def create_report(donors_dir_path,
         
 donors_dir_path = '/Users/Netsanet/Desktop/UW_courses/UWpython/Self_Paced-Online/students/Net_Michael/session04/donors'
 if __name__ == "__main__":
-    prompt(var=5)
+    prompt(var = 1)
+    prompt(var = 2)
+    prompt(var = 3)
+    prompt(var = 4)
+    prompt(var = 5)
+    
+
+
+# In[ ]:
+
+
+
 
