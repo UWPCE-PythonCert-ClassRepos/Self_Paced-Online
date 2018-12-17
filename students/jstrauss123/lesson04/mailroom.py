@@ -25,7 +25,21 @@ def send_thankyou():
     print("Dear {}, Thank you so much for your generous contribution of ${}.".format(full_name, contrib_amt))
     print(donor_dict.items())
     print("")
-    
+
+# function - create thank_you_email - returns formatted message
+def thank_you_email(dname, donation):
+    print("thank_you_email function called")
+    #email_message = ("\nDear {},\n\n".format(dname)
+    #                 "Thank you for your very kind donation of {}.format(contrib_amt).\n\n"
+    #                 "It will be put to very good use.\n\n"
+    #                 "    Sincerely,\n"
+    #                 "        -The Team\n"
+    #                 )
+    printout = '\nDear {},'.format(dname) + '\n\n' + 'Thank you for your very kind donation of ${:.2f}.\n\n'.format(donation) + 'It will be put to very good use. \n\n' + '\tSincerely,\n' + '\t    -The Team \n'
+    return printout
+    print("email message is: ", email_message)
+    #return email_message
+    return printout    
 # function - create donor report
 def create_report():
     print("")
@@ -86,20 +100,5 @@ main_dispatch = {"1": send_thankyou,
 if __name__ == "__main__":
     donor_dict = {'Mickey Mouse': [100.00, 150.00, 100.00], 'Minnie Mouse': [50.00, 50.00], 'Ron Jones': [100.00], 'Donald Duck': [25.00], 'Busy Bear': [250.00, 10.00, 10.00]}
     menu_selection(main_prompt, main_dispatch)
-    
-    
-    #response = ""
-    #while response != "q":
-    #    #print(donor_list)
-    #    response = input("Please select:\n 1 to Send a Thank you \n 2 to Create a report \n or q to quit : ")
-    #    if response == "1":
-    #        #donor_list = send_thankyou(donor_list)
-    #        send_thankyou()
-    #        #donor_list = updated_list
-    #    elif response == "2":
-    #        create_report()
-    #    elif response == "q":
-    #        print("q selected - Good-bye")
-       
             
 
