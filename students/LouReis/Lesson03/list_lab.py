@@ -112,3 +112,23 @@ print(fruit_list)
 # remove_fruit_list = ['apples', 'peaches']
 # fruit_list = list(set(fruit_list).difference(set(remove_fruit_list)))
 # print(fruit_list)
+
+# Beginning of Series 4
+# Start with the original list from Series 1
+# Make a copy of the list and reverse the letters in each fruit in the copy.
+# Delete the last item of the original list. Display the original list and the copy.
+
+fruit_list = ['Apples', 'Pears', 'Oranges', 'Peaches']
+original_list = ['Apples', 'Pears', 'Oranges', 'Peaches']
+print(fruit_list)
+print("Reverse the characters in each item in the fruit list.")
+for x in range(0,len(fruit_list)):
+    fruit=str(fruit_list[x])
+    fruit=fruit[::-1]
+    fruit_list[x]=fruit
+print(fruit_list)
+print("Now delete the last item in the list")
+fruit_list.pop()
+print(fruit_list)
+print("The original list was:")
+print(original_list)
