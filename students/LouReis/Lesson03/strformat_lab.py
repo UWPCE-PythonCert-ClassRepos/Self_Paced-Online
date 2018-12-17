@@ -11,4 +11,10 @@
 "file_{:0>3d}:  {:.2f}, {:.2e}, {:.2e}".format(2,123.4567, 10000, 12345.67)
 
 # Task 2
-# Write a format string that will take the following four element tuple:
+# Using your results from Task One, repeat the exercise, but this time
+# using an alternate type of format string (hint: think about alternative
+# ways to use .format() (keywords anyone?), and also consider f-strings if
+# you’ve not used them already).
+
+sample = [2, 123.4567, 10000, 12345.67]
+f"file_{sample[0]:0>3d}:  {sample[1]:.2f}, {sample[2]:.2e}, {sample[3]:.2e}"
