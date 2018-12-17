@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 # function - send thank you
-#def send_thankyou(donorl):
 def send_thankyou():
     print("")
     # prompt for donor name
@@ -32,13 +31,6 @@ def send_thankyou():
 
 # function - create thank_you_email - returns formatted message
 def thank_you_email(dname, donation):
-    #print("thank_you_email function called")
-    #email_message = ("\nDear {},\n\n".format(dname)
-    #                 "Thank you for your very kind donation of {}.format(contrib_amt).\n\n"
-    #                 "It will be put to very good use.\n\n"
-    #                 "    Sincerely,\n"
-    #                 "        -The Team\n"
-    #                 )
     email_message = '\nDear {},'.format(dname) + '\n\n' + 'Thank you for your very kind donation of ${:.2f}.\n\n'.format(donation) + 'It will be put to very good use. \n\n' + '\tSincerely,\n' + '\t    -The Team \n'
     return email_message
    
@@ -48,7 +40,6 @@ def create_report():
     sum = 0
     report_detail = []
     count = 0
-    #print(dict1.get('cake'))
     for donor_name,contrib_amts in donor_dict.items():
         totamt = 0
         num_of_contributions = len(contrib_amts)
@@ -72,17 +63,14 @@ def create_report():
 
 def send_letters():
     # create letter to each donor and save to disk
-    #print("you selected send letters to all")
     # loop through donors and create mail message
     print("Creating mail message and saving to disk file for each donor")
     for donor_name,contributions in donor_dict.items():
         first_name = donor_name.lower().split()[0]
         last_name = donor_name.lower().split()[1]
         filenm = first_name+"_"+last_name+'.txt'
-        print(filenm)
-        print("Donor and file name are:  ", donor_name,":", filenm)
+        print("Donor: ", donor_name, " \tfile name: ", filenm)
         output_msg = thank_you_email(donor_name, contributions[-1])
-        #print(output_msg)
         # write file to disk using donor first last name as file name
         with open(filenm, 'w') as f:
             f.write(output_msg)
