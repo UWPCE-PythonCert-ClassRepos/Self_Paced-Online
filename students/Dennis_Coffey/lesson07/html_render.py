@@ -7,9 +7,10 @@ Created on Thu Nov 29 21:13:15 2018
 
 """HTML renderer for Lesson 07"""
 
+# Base element class
 class Element():
     tag = '' # Element type
-    indent = 0 # Indent of tag
+    indent_size = ' '* 4 # Indent of tag
     inline = False # Defines whether content is to be displayed on same line
     empty = False  # Defines whether tag is an empty tag
     def __init__(self, content=None, **kwargs):
@@ -18,12 +19,14 @@ class Element():
         if content:
             self.content_list.append(content)
         
+    # Append content
     def append(self, content):
         self.content_list.append(content)
         
-    def starttag(self, tag):
+    # Start tag for element
+    def starttag(self, tag, indent):
         if tag:
-            tag = ' ' * self.indent + '<' + tag
+            tag = self.indent_size * indent + '<' + tag
             if self.kwargs:
                 attribute = ''
                 for k in self.kwargs:
@@ -32,14 +35,18 @@ class Element():
             tag += '>'
         return tag
         
-    def endtag(self, tag):
-        if tag:
-            tag = ' ' * self.indent + '</' + tag + '>'
+    # End tag for element
+    def endtag(self, tag, indent):
+        if tag and not self.inline:
+            tag = self.indent_size * indent + '</' + tag + '>'
+        elif tag:
+            tag = '</' + tag + '>'
         return tag
         
+    # Generate start tag, content and closing tag
     def render(self, output_file, indent=0):
         # Render opening tag
-        output_file.write(self.starttag(self.tag))
+        output_file.write(self.starttag(self.tag, indent))
         if not self.inline and not self.empty:
             output_file.write('\n')
         
@@ -47,42 +54,45 @@ class Element():
         if self.content_list:
             for item in self.content_list:
                 if type(item) == str:
-                    output_file.write(item)
+                    if self.inline:
+                        output_file.write(item)
+                    else:
+                        output_file.write(self.indent_size * indent + item)
                 else:
-                    item.render(output_file, indent + 4)
+                    item.render(output_file, indent + 1)
                 if not self.inline:
                     output_file.write('\n')
                 
         # Render closing tag
         if not self.empty:
-            output_file.write(self.endtag(self.tag))
+            output_file.write(self.endtag(self.tag, indent))
         
+# html tag
 class Html(Element):
     tag = 'html'
-    indent = 0
     
-#    def render(self, output_file, indent=0):
-#        output_file.write('<!DOCTYPE html>\n')
-#        super().render(output_file, indent)        
+    def render(self, output_file, indent=0):
+        output_file.write('<!DOCTYPE html>\n')
+        super().render(output_file, indent)        
 
-    
+# body tag
 class Body(Element):
     tag = 'body'
-    indent = 0
     
+# paragraph tag
 class P(Element):
     tag = 'p'
-    indent = 0
     
+# head tag
 class Head(Element):
     tag = 'head'
-    indent = 0
     
+# title tag
 class Title(Element):
     tag = 'title'
-    indent = 0
     inline = True
     
+# tag with no content
 class SelfClosingTag(Element):
     
     def __init__(self, content=None, **kwargs):
@@ -92,7 +102,7 @@ class SelfClosingTag(Element):
 
     def render(self, output_file, indent=0):
         # Render opening tag
-        output_file.write('<' + self.tag)
+        output_file.write(self.indent_size * indent + '<' + self.tag)
         
         # Render attribute
         if self.kwargs:
@@ -104,22 +114,22 @@ class SelfClosingTag(Element):
         # Render closing tag
         output_file.write(' />')
     
+# horizontal ruler tag
 class Hr(SelfClosingTag):
     tag = 'hr'
-    indent = 0
     empty = True
     
+# br/ tag
 class Br(SelfClosingTag):
     tag = 'br'
-    indent = 0
     
+# meta tag
 class Meta(SelfClosingTag):
     tag = 'meta'
-    indent = 0
 
+# a tag
 class A(Element):
     tag = 'a'
-    indent = 0
     inline = True
     def __init__(self, link, content, **kwargs):
         self.content_list = []
@@ -128,9 +138,9 @@ class A(Element):
         if content:
             self.content_list.append(content)
 
+# header tag
 class H(Element):
     tag = 'h'
-    indent = 0
     inline = True
     def __init__(self, level, content, **kwargs):
         self.content_list = []
@@ -139,12 +149,11 @@ class H(Element):
         if content:
             self.content_list.append(content)
 
+# unordered list tag
 class Ul(Element):
     tag = 'ul'
-    indent = 0
     
+# list tag
 class Li(Element):
     tag = 'li'
-    indent = 0
-    
-    
+       
