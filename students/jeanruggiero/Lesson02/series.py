@@ -12,7 +12,6 @@ def fibonacci(n):
         return fibonacci(n-2) + fibonacci(n-1)
 
 
-
 def lucas(n):
     """This function returns the nth value in the lucas series (starting with zero index)."""
 
@@ -23,6 +22,7 @@ def lucas(n):
     else:
         # Call lucas function recursively to determine nth value
         return lucas(n-2) + lucas(n-1)
+
 
 def sum_series(n,x=0,y=1):
     """This function returns the nth value (starting with index zero) in of an
@@ -36,6 +36,7 @@ def sum_series(n,x=0,y=1):
         # Call sum_series function recursively to determine nth value
         return sum_series(n-2,x,y) + sum_series(n-1,x,y)
 
+# Assert statements to test functions
 assert fibonacci(10) == 55              # Tests fibonacci function against known value
 assert lucas(7) == 29                   # Tests lucas function against known value
 assert sum_series(20) == fibonacci(20)  # Tests sum_series against fibonacci
