@@ -5,7 +5,7 @@
 def send_thankyou():
     print("")
     # prompt for donor name
-    full_name = input("Please provide full name of donor or enter list to see all donors: ")
+    full_name = input("Please provide full name of donor or enter list to see all donors or q to return to main menu: ")
     print("")
     while full_name == "list":
         # print donor names
@@ -14,6 +14,9 @@ def send_thankyou():
         #prompt for donor name
         print("")
         full_name = input("Please provide full name of donor: ")
+    # if q is entered, exit function
+    if full_name == "q":
+        return
     #if full_name not in donor_name_list:
     if full_name not in donor_dict.keys():
         # add to dict
@@ -22,8 +25,9 @@ def send_thankyou():
     contrib_amt = float(input("Enter donation amount for donor: "))
     donor_dict[full_name].append(contrib_amt)
     # send thank you email
-    print("Dear {}, Thank you so much for your generous contribution of ${}.".format(full_name, contrib_amt))
-    print(donor_dict.items())
+    email_message_for_donor = thank_you_email(full_name, contrib_amt)
+    print("returned email message from function is: ", email_message_for_donor)
+    #print("Dear {}, Thank you so much for your generous contribution of ${}.".format(full_name, contrib_amt))
     print("")
 
 # function - create thank_you_email - returns formatted message
@@ -35,11 +39,9 @@ def thank_you_email(dname, donation):
     #                 "    Sincerely,\n"
     #                 "        -The Team\n"
     #                 )
-    printout = '\nDear {},'.format(dname) + '\n\n' + 'Thank you for your very kind donation of ${:.2f}.\n\n'.format(donation) + 'It will be put to very good use. \n\n' + '\tSincerely,\n' + '\t    -The Team \n'
-    return printout
-    print("email message is: ", email_message)
-    #return email_message
-    return printout    
+    email_message = '\nDear {},'.format(dname) + '\n\n' + 'Thank you for your very kind donation of ${:.2f}.\n\n'.format(donation) + 'It will be put to very good use. \n\n' + '\tSincerely,\n' + '\t    -The Team \n'
+    return email_message
+   
 # function - create donor report
 def create_report():
     print("")
@@ -69,8 +71,14 @@ def create_report():
     print("")
 
 def send_letters():
-        # create letter to each donor and save to disk
-        print("you selected send letters to all")
+    # create letter to each donor and save to disk
+    #print("you selected send letters to all")
+    # loop through donors and create mail message
+    for donor_name,contributions in donor_dict.items():
+        print("Creating mail message and saving to disk for donor: ", donor_name)
+        output_msg = thank_you_email(donor_name, contributions[-1])
+        print(output_msg)
+        
         
 def quit():
     print("Quitting this menu")
