@@ -32,7 +32,7 @@ def send_thankyou():
 
 # function - create thank_you_email - returns formatted message
 def thank_you_email(dname, donation):
-    print("thank_you_email function called")
+    #print("thank_you_email function called")
     #email_message = ("\nDear {},\n\n".format(dname)
     #                 "Thank you for your very kind donation of {}.format(contrib_amt).\n\n"
     #                 "It will be put to very good use.\n\n"
@@ -77,8 +77,15 @@ def send_letters():
     for donor_name,contributions in donor_dict.items():
         print("Creating mail message and saving to disk for donor: ", donor_name)
         output_msg = thank_you_email(donor_name, contributions[-1])
-        print(output_msg)
-        
+        #print(output_msg)
+        # add code here to write file to disk using donor as file name
+        #donor_name = "Johann Strauss"
+        #contributionamount = "100.00"
+        first_name = donor_name.lower().split()[0]
+        last_name = donor_name.lower().split()[1]
+        filenm = first_name+"_"+last_name+'.txt'
+        print(filenm)
+        #outfile = open('donor_name'.txt
         
 def quit():
     print("Quitting this menu")
