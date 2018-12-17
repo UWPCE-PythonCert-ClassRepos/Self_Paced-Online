@@ -63,7 +63,8 @@ print(fruit_list)
 # fruit_list.remove(response)
 # print(fruit_list)
 #
-# Ask the user for a fruit to remove
+# Seris 2 Bonus
+# Ask the user for a fruit to remove and remove all instances of the fruit.
 for x in range(0,len(fruit_list)):
     if x == 0:
         response = [input("Enter a fruit to remove:")]
@@ -71,3 +72,43 @@ for x in range(0,len(fruit_list)):
         print("match for index", x, "will remove from list")
         del fruit_list[x]
 print(fruit_list)
+
+# Beginning of Series 3
+# Ask the user if they like a fruit or not.
+# If they don't like the fruit, remove it.
+# If they do like the fruit, make it all lowercase.
+# Prompt the user for yes or no answers only, reprompt if necessary.
+# Start with the original fruit list.
+
+# Could use a function similar to below.
+# def yes_or_no(answer = ['']):
+#     while answer != [yes'] and answer != ['no']:
+#         answer = [input("Do you like them?")]
+#     return [answer]
+
+fruit_list = ['Apples', 'Pears', 'Oranges', 'Peaches']
+print(fruit_list)
+remove_fruit_list = []
+# The below loop prompts for proper input and modifies the list accordingly.
+for x in range(0,len(fruit_list)):
+    print("Please answer yes or no to whether you like", fruit_list[x])
+    response = ['']
+    while response != ['yes'] and response != ['no']:
+        response = [input("Do you like them?")]
+    print(response)
+    if response == ['no']:
+        remove_fruit_list = remove_fruit_list + [fruit_list[x]]
+    elif response == ['yes']:
+        fruit_list[x]=fruit_list[x].lower()
+    if x == (len(fruit_list) - 1):
+        fruit_list = list(set(fruit_list).difference(set(remove_fruit_list)))
+print()
+print("Your new list is now:")
+print(fruit_list)
+
+# Test Code commented out:
+# final_list = list(set(item_list).difference(set(list_to_remove)))
+# fruit_list = ['apples', 'pears', 'oranges', 'peaches']
+# remove_fruit_list = ['apples', 'peaches']
+# fruit_list = list(set(fruit_list).difference(set(remove_fruit_list)))
+# print(fruit_list)
