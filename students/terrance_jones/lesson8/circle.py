@@ -81,9 +81,6 @@ class Sphere(Circle):
 			raise NotImplementedError
 	
 
-a = Circle(10)
-print a.radius
-
 
 
 
