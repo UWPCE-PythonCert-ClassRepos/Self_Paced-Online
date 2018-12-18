@@ -89,3 +89,24 @@ print()
 print("Start of Task #6")
 
 # Task 6
+"""
+    Write some Python code to print a table of several rows, each with a name, an age and a cost.
+    Make sure some of the costs are in the hundreds and thousands to test your alignment specifiers.
+    And for an extra task, given a tuple with 10 consecutive numbers, can you work how to quickly
+    print the tuple in columns that are 5 charaters wide? It’s easily done on one short line!
+"""
+# Print a table of rows with aligned columns.
+
+furniture = ['Antique Name', 'Age', 'Price', 'Chair', 125, '$195.50', 'Table', 210, '$1,995.00', 'Desk', 95, '$85.00', 'Lamp', 65, '$9.25']
+items=len(furniture)
+items=int(items/3)
+print("There are", items, "rows.")
+print()
+print('{:20}{:>5}{:>20}'.format(furniture[0], furniture[1], furniture[2]))
+print('{:20}{:>5}{:>20}'.format(furniture[3], furniture[4], furniture[5]))
+print('{:20}{:>5}{:>20}'.format(furniture[6], furniture[7], furniture[8]))
+print('{:20}{:>5}{:>20}'.format(furniture[9], furniture[10], furniture[11]))
+print('{:20}{:>5}{:>20}'.format(furniture[12], furniture[13], furniture[14]))
+
+numbers=[1,2,3,4,5,6,7,8,9,10]
+print('{:5}{:5}{:5}'.format(*numbers))
