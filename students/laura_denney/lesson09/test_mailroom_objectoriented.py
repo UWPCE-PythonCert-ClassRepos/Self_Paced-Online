@@ -16,7 +16,7 @@ from mailroom_objectoriented import *
 
 def test_args():
     a = Donor("Laura Denney", 5, 6, 7)
-    assert repr(a) == "'Laura Denney, 18'"
+    assert repr(a) == "Donor('laura denney', 5, 6, 7)"
 
 
 def test_sort():
@@ -30,4 +30,4 @@ def test_sort():
 
     f = [a, c, e]
     f.sort(reverse = True)
-    assert repr(f) == "['Charles, 500', 'Lewis, 11', 'Bob, 11']"
+    assert repr(f) == "[Donor('charles', 500), Donor('lewis', 11), Donor('bob', 5, 6)]"

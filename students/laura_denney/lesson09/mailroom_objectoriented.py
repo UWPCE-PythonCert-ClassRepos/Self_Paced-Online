@@ -9,8 +9,15 @@
 #   Laura Denney, 10/12/18, Finished Part 2
 #   Laura Denney, 10/31/18, Started MailRoom Part 3
 #   Laura Denney, 11/7/18, Started MailRoom Part 4
-#   Laura Denney, 11/7/18, Started Object Oriented Mail Room
+#   Laura Denney, 12/7/18, Started Object Oriented Mail Room
+#   Laura Denney, 12/17/18, Added Saving / Loading Functionality
 #-------------------------------------------------#
+
+#adding date to txt file
+from datetime import date
+
+#file handling help
+import os
 
 #Donor Class contains name, donations
 class Donor(object):
@@ -103,19 +110,47 @@ Donor Name                | Total Given | Num Gifts | Average Gift
             self.add_new_donor(Donor(name, donation))
             return "\n{} is not a current donor, we will add them to our system.".format(name.title())
 
+    def send_letters_per_donor(self):
+        total_letters = 0
+        for each_donor in self.donor_list:
+            donor = each_donor.name.title()
+            #Name formatting for one word names like 'Cher' vs normal full names
+            first_last = donor.split(" ")
+            if len(first_last) == 1:
+                first = first_last[0]
+                last = ""
+            else:
+                first = first_last[0]
+                last = first_last[1]
+            total_letters += send_email(donor, each_donor.sum_donations, "{}_{}_{}.txt".format(first, last, date.today().isoformat()))
+        return total_letters
+
+    @classmethod
+    def load_list_donors(cls):
+        with open("donor_list.txt", "r") as infile:
+            infile_str = infile.read()
+        self = eval(infile_str)
+        return self
+
+
+    def save_list_donors(self):
+        with open("donor_list.txt", 'w') as outfile:
+            outfile.write(repr(self))
 ####################################################
-donors = Donors(Donor("john doe",100.50, 200.00),
-        Donor("laura denney",5.00),
-        Donor("bill gates",4000),
-        Donor("samuel jackson",1,2,3),
-        Donor("mr. bean", 500, 100))
+####################################################
+
+#Non-class variables and functions
+
+donors = None
 
 main_prompt = '''
 What would you like to do today?
 1) Send a Thank You
 2) Create a Report
 3) Send letters to everyone
-4) Quit
+4) Load previously saved list of donors from file
+5) Save current list of donors to file
+6) Quit
 Please choose the number of your choice >> '''
 
 thank_you_prompt = '''
@@ -128,7 +163,7 @@ Please choose the number of your choice >> '''
 def send_thank_you():
     while True:
         try:
-            response = input(thank_you_prompt).lower()
+            response = input(thank_you_prompt)
             if sub_choice_dict[response]() == 'quit':
                 print("\nYou have chosen to leave this submenu.")
                 break
@@ -140,7 +175,10 @@ def create_report():
     print(donors.create_string_report())
 
 def send_letters():
-    pass
+    print("\nYou have chosen to send letters to everyone.")
+    total_letters_sent = donors.send_letters_per_donor()
+    print(f"\nA total of {total_letters_sent} letters have been successfully sent to our donors.")
+    print("A copy of those letters are now saved in your current directory.")
 
 def quit():
     return 'quit'
@@ -183,34 +221,59 @@ def send_email(donor, amount, dest = 0):
             outfile.write(fstring)
         return 1
 
-# #Main Menu options for user
-# main_choice_dict = {
-#     "1": send_thank_you,
-#     "2": create_report,
-#     "3": send_letters,
-#     "4": quit
-# }
+def load_list():
+    global donors
+    donors = Donors.load_list_donors()
 
-# #Send Thank You Sub Menu options for user
-# sub_choice_dict = {
-#     "1": print_list,
-#     "2": thank_a_donor,
-#     "3": quit
-# }
+def save_list():
+    donors.save_list_donors()
+
+def first_run():
+    exists = os.path.isfile("donor_list.txt")
+    if not exists:
+        global donors
+        donors = Donors(Donor("john doe",100.50, 200.00),
+        Donor("laura denney",5.00),
+        Donor("bill gates",4000),
+        Donor("samuel jackson",1,2,3),
+        Donor("mr. bean", 500, 100))
+
+#Main Menu options for user
+main_choice_dict = {
+    "1": send_thank_you,
+    "2": create_report,
+    "3": send_letters,
+    "4": load_list,
+    "5": save_list,
+    "6": quit
+}
+
+#Send Thank You Sub Menu options for user
+sub_choice_dict = {
+    "1": print_list,
+    "2": thank_a_donor,
+    "3": quit
+}
 
 #Main menu to prompt user
 def prompt_user():
+    first_run()
     while True:
         try:
             response = input(main_prompt)
             if main_choice_dict[response]() == 'quit':
                 print("\nYou have chosen to quit. Have a good day!")
                 break
+        except AttributeError:
+            print("\nIt appears there are no donors on file, we recommend loading a saved list.")
         except KeyError:
-            print("\nThat is not a valid selection. Please choose 1, 2, 3 or 4.")
+            print("\nThat is not a valid selection. Please choose option 1 - 6.")
+        except FileNotFoundError:
+            print("\nNo saved list of donors found, please work with current list.")
 ##########################################################
+
 if __name__ == '__main__':
-    #prompt_user()
-    pass
+    prompt_user()
+
 
 
