@@ -7,9 +7,11 @@
 #        ( 2, 123.4567, 10000, 12345.67)
 #        and produce:
 #        'file_002 :   123.46, 1.00e+04, 1.23e+04'
-
+print("Start of Task #1")
 "file_{:0>3d}:  {:.2f}, {:.2e}, {:.2e}".format(2,123.4567, 10000, 12345.67)
-
+print("End of Task #1")
+print()
+print("Start of Task #2")
 # Task 2
 # Using your results from Task One, repeat the exercise, but this time
 # using an alternate type of format string (hint: think about alternative
@@ -19,6 +21,9 @@
 sample = [2, 123.4567, 10000, 12345.67]
 f"file_{sample[0]:0>3d}:  {sample[1]:.2f}, {sample[2]:.2e}, {sample[3]:.2e}"
 
+print("End of Task #2")
+print()
+print("Start of Task #3")
 # Task 3
 """
 Rewrite task 1 to take an arbitrary number of values.
@@ -44,4 +49,43 @@ def formatter(in_tuple):
     return form_string.format(*in_tuple)
 
 formatter(in_tuple)
+print()
 formatter([10,20,30,40,50,60,70,80,90,100])
+print("End of Task #3")
+print()
+print("Start of Task #4")
+
+# Task 4
+"""
+    Given a 5 element tuple:
+        ( 4, 30, 2017, 2, 27)
+        use string formating to print:
+        '02 27 2017 04 30'
+Hint: use index numbers to specify positions.
+"""
+
+nums = (4,30,2017,2,27)
+"{:0>2d} {} {} {:0>2d} {}".format(nums[3],nums[4],nums[2],nums[0],nums[1])
+
+print("End of Task 4")
+print()
+print("Start of Task 5")
+
+# Task 5
+"""
+    Given the following four element list:
+        ['oranges', 1.3, 'lemons', 1.1]
+    Write an f-string that will display:
+        The weight of an orange is 1.3 and the weight of a lemon is 1.1
+    Now see if you can change the f-string so that it displays the names of the
+    fruit in upper case, and the weight 20% higher (that is 1.2 times higher).
+"""
+fruity = ['oranges', 1.3, 'lemons', 1.1]
+f"The weight of an {fruity[0].rstrip('s')} is {fruity[1]} and the weight of a {fruity[2].rstrip('s')} is {fruity[3]}"
+f"The weight of an {fruity[0].upper()[0:-1]} is {fruity[1]*1.2} and the weight of a {fruity[2].upper()[0:-1]} is {fruity[3]*1.2}"
+
+print("End of Task #5")
+print()
+print("Start of Task #6")
+
+# Task 6
