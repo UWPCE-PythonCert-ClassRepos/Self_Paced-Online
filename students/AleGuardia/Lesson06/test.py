@@ -5,6 +5,8 @@ from mailroom_four import return_donors
 from mailroom_four import return_label
 from mailroom_four import return_report
 from mailroom_four import add_donor
+from mailroom_four import add_donation
+from mailroom_four import prompt_donors
 
 
 donations = {'William Gates, III': [1000000, 585000, 5750000],
@@ -37,6 +39,17 @@ def test_donor():
                                 'Paul Allen': [25000, 1000],
                                 'Elon Musk': [30000, 3499],
                                 'Ale': []}
+
+
+def test_donation(monkeypatch):
+    monkeypatch.setattr('builtins.input', lambda x: "20.25")
+    assert add_donation('Elon Musk') == 20.25
+
+
+def test_prompt_donors(monkeypatch):
+    monkeypatch.setattr('builtins.input', lambda x: 'quit')
+    assert prompt_donors() is None
+
 
 
 
