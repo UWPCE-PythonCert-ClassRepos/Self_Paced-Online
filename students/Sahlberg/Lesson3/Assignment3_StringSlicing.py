@@ -34,3 +34,40 @@ def exchange_first_last(seq):
 
         else:
             return seqlist.format(seq[-1],*seq[1:-1], seq[0])
+			
+
+
+#print(exchange_first_last("hello"))
+#print(exchange_first_last((1,2,3,4,5)))
+#print(exchange_first_last(('12345')))
+
+
+
+def everyOther(val):
+    build = ''
+    buildElse2 = []
+    buildElse = ()
+    if isinstance(val, str):
+        for item in range(0,len(val),2):
+            build += str(val[item])
+        return print(build)
+    elif isinstance(val,tuple):
+        for item in range(0, len(val), 2):
+            buildElse += val[item],
+        return print(buildElse)
+
+    else:
+        for item in range(0, len(val), 2):
+            buildElse2.append(val[item])
+        return print(buildElse2)
+
+
+def foursOut(val):
+    valRange = val[4:-4]
+    actualVal = []
+    for item in range(0,len(valRange),2):
+        actualVal.append(valRange[item])
+    return print(actualVal)
+
+foursOut([1,2,3,4,5,6,7,8,9,10,11,12])
+foursOut('12345678910111213')
