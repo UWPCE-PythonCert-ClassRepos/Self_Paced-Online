@@ -74,12 +74,12 @@ foursOut('12345678910111213')
 
 
 def reverseIt(val):
+    return print(val[::-1])
 
-    if isinstance(val,str):
-        return print(val[::-1])
-    #elif /can  slice tuples AND lists?
 
-reverseIt('1,2,3,4,5')
+#reverseIt('1,2,3,4,5')
+#reverseIt([1,2,3,4,5])
+#reverseIt((1,2,3,4,5))
 
 
 #with the middle third, then last third, then the first third in the new order.
@@ -89,6 +89,9 @@ def thirds(val):
     first = val[:thirds]
     mid = val[thirds:(-1*thirds)]
     last = val[-1*thirds:]
-    return print(mid,last,first)
+    return print(mid+last+first)
 
-thirds([1,2,3,4,5,6,7,8,9])
+#thirds([1,2,3,4,5,6,7,8,9])
+#thirds((1,2,3,4,5,6,7,8,9))
+#thirds('abcdefghijkl')
+#thirds('This is a string')
