@@ -11,6 +11,7 @@ Created on Thu Nov 29 21:13:15 2018
 class Element():
     tag = '' # Element type
     indent_size = ' '* 4 # Indent of tag
+#    indent_size = ''* 4 # Use this cause no indent for Steps 1-8
     inline = False # Defines whether content is to be displayed on same line
     empty = False  # Defines whether tag is an empty tag
     def __init__(self, content=None, **kwargs):
@@ -71,6 +72,9 @@ class Element():
 class Html(Element):
     tag = 'html'
     
+    # Overwrite Element render method to add <!DOCTYPE html> before html tag
+    # Comment out next 3 lines of code to not add <!DOCTYPE html> so that Steps 1-8
+    # assert statements will pass
     def render(self, output_file, indent=0):
         output_file.write('<!DOCTYPE html>\n')
         super().render(output_file, indent)        
