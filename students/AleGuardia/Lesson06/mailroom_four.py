@@ -87,7 +87,7 @@ def send_note(name,donation,note):
     print()
     print(note.format(name,donation))
     print()
-    return note.format(name,donation,note)
+    return note.format(name,donation)
 
 
 def menu_selection(prompt, dispatch_dict, key_def=None):
