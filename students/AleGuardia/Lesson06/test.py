@@ -114,3 +114,28 @@ def test_add_donation_new_donor(monkeypatch, capsys):
     print_report()
     out, err = capsys.readouterr()
     assert out == expected_output_report
+
+
+# Test adding donation for existing donor
+def test_add_donation_old_donor(monkeypatch, capsys):
+    thank_you_note = "\nDear {}:\n\nWe want to thank you for your generous donation of ${:.2f}.\n\n" \
+                     "It will be put to very good use.\n\n" \
+                     "\tSincerely,\n\t\tThe Team\n\n"
+
+    expected_output_report = '\nDonor Name         |  Total Given | Num Gifts | Average Gift\n' \
+                             '-------------------------------------------------------------\n' \
+                             'William Gates, III $   7335000.00          3  $   2445000.00\n' \
+                             'Mark Zuckerberg    $     20000.00          2  $     10000.00\n' \
+                             'Jeff Bezos         $   3000000.00          1  $   3000000.00\n' \
+                             'Paul Allen         $     26000.00          2  $     13000.00\n' \
+                             'Elon Musk          $     33499.00          2  $     16749.50\n' \
+                             'Ale                $        20.25          1  $        20.25\n' \
+                             'Pit                $       100.00          2  $        50.00\n\n'
+    expected_output_note = thank_you_note.format('Pit',50)
+    monkeypatch.setitem(__builtins__,'input',make_multi_input(['Pit',50]))
+    prompt_donors()
+    out, err = capsys.readouterr()
+    assert out == expected_output_note
+    print_report()
+    out, err = capsys.readouterr()
+    assert out == expected_output_report
