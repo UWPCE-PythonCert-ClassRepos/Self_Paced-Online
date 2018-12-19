@@ -6,7 +6,8 @@ Make lots of try/except blocks for fun and profit.
 
 Make sure to catch specifically the error you find, rather than all errors.
 """
-
+import sys
+sys.path.append("C:\\Users\\Jared\\Documents\\IntroToPython\\Self_Paced-Online\\students\\jared_mulholland\\lesson_5")
 from except_test import fun, more_fun, last_fun
 
 
@@ -54,4 +55,13 @@ else:
     more_joke = more_fun(langs[2])
 finally:
     last_fun()
+
+
+num_in = "Jared"
+try:
+    num_in = int(num_in)
+except ValueError:
+    print("Input must be an integer, try again.")
+    pass
+
    
