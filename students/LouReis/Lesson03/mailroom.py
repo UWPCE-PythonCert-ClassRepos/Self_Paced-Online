@@ -24,21 +24,58 @@ Mack Jack                  $     708.42           3  $      236.14
 # Data structure in global namespace to store all donations & donors.
 donations = ['Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Howie Long', 100000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000]
 donor_list = ['Robin Hood', 'Tycoon Reis', 'Howie Long', 'Joe Neighbor', 'Rick Retiree']
+donor='L'
 
-print("Mailroom Donation Tracking System - MDTS")
-print("Please choose from the following Menu Options:")
-print("1 - Create a Donation Report")
-print("2 - Generate a Thank You Note")
-print("3 - Quit Program")
-enter = input("Enter Menu Option: ")
-if enter == '1':
-    print("DONOR SUMMARY REPORT")
-elif enter == '2':
-    donor=input("Enter the full name of the Donor (Type 'L' for a donor list):")
-    if donor == 'L':
-        print(donor_list)
-else:
-    print("Thanks for using MDTS, Goodbye!")
+def menu():
+    print("Mailroom Donation Tracking System - MDTS")
+    print("Please choose from the following Menu Options:")
+    print("1 - Create a Donation Report")
+    print("2 - Generate a Thank You Note")
+    print("3 - Quit Program")
+    enter = input("Enter Menu Option: ")
+    if enter == '1':
+        print()
+        print()
+        print("DONOR SUMMARY REPORT")
+        menu()
+    elif enter == '2':
+        donor = 'L'
+        while donor == 'L':
+            donor=input("Enter the full name of the Donor (Type 'L' for a donor list):")
+            if donor == 'L':
+                print(donor_list)
+        if donor not in donor_list:
+            print("You have entered a new donor:", donor)
+            amount = input("Please enter a donation amount '0.00':")
+            amount = float(amount)
+            donor_list.append(donor)
+            donations.append(donor)
+            donations.append(amount)
+        elif donor in donor_list:
+            print("You have entered an existing donor:", donor)
+            amount = input("Please enter the donation amount:")
+            amount = float(amount)
+            donations.append(donor)
+            donations.append(amount)
+        print()
+        print()
+        print("Email to: ", donor, "@mail.com")
+        print("Subject: Donation")
+        print()
+        print("Dear", donor, ",")
+        print("Thank you for your generous donation, it is much appreciated.")
+        print()
+        print("Sincerely,")
+        print("MDTS Staff")
+        print()
+        print()
+        menu()
+    else:
+        print()
+        print("Thanks for using MDTS, Goodbye!")
+        print()
+
+menu()
 
 
 
