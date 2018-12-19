@@ -58,10 +58,10 @@ def prompt_donors():
         print(*return_donors())
         return prompt_donors()
     if name in donations:
-        send_note(name,add_donation(name),thank_you_note)
+        return send_note(name,add_donation(name),thank_you_note)
     if name not in donations:
         add_donor(name)
-        send_note(name,add_donation(name),thank_you_note)
+        return send_note(name,add_donation(name),thank_you_note)
 
 
 def add_donor(name):
@@ -87,6 +87,7 @@ def send_note(name,donation,note):
     print()
     print(note.format(name,donation))
     print()
+    return note.format(name,donation,note)
 
 
 def menu_selection(prompt, dispatch_dict, key_def=None):
@@ -104,7 +105,9 @@ def menu_selection(prompt, dispatch_dict, key_def=None):
 
 def print_report():
     print()
-    print(return_report(donations))
+    report = return_report(donations)
+    print(report)
+    return report
 
 
 def quit_sys():
