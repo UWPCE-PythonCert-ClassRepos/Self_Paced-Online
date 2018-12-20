@@ -45,7 +45,7 @@ assert rm_every_other_item('hi') == 'h'
 assert rm_every_other_item((2, 89, [8, 7, 6], 5, 'hi!', 0)) == (2, [8, 7, 6], 'hi!')
 assert rm_every_other_item([5, 7, 8, 9, 0]) == [5, 8, 0]
 
-# Test rm_4_every_other on all sequence types including empty sequences
+# Test rm_four_every_other on all sequence types including empty sequences
 assert rm_four_every_other('here is a string') == ' sas'
 assert rm_four_every_other('short') == ''
 assert rm_four_every_other((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)) == (5, 7, 9)
