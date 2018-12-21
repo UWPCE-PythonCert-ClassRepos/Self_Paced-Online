@@ -43,16 +43,20 @@ def read_file():
 def generate_story(dict1):
     # randomize words to create new story
     random_words = []
+    new_word = str()
     print("len of dict1 is: ", len(dict1))
     #print(dict1)
     counter1 = 0
     while counter1 < len(dict1):
         random_key = random.choice(list(dict1))
-        new_word = dict1[random_key]
-        print("random key is: ", random_key)
-        print("new word is: ", dict1[random_key])
+        new_word = dict1[random_key][0]
+        #print("random key is: ", random_key)
+        print("new word is: ", new_word)
+        print("new word type is: ", type(new_word))
         counter1 += 1
-        random_words = random_words + new_word
+        #random_words = random_words + new_word
+        random_words.append(new_word)
+    random_words = " ".join(random_words)
         
     return random_words
 
