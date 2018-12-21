@@ -29,7 +29,11 @@ test = ['Robin Hood', 50000, 'Robin Hood', 25000000]
 test2 = ['Robin Hood', 50000, 'Tycoon Reis', 25000000]
 
 # The following function takes lists as input then returns and sorts the output by max amount donated.
-def sort_max(donors, donor_amount, donor_count, donor_average):
+def sort_max(donor_name, donor_amount, donor_count, donor_average):
+    # temp_donors is a temporary data structure used & destroyed for sorting purposes.
+    temp_donors = []
+    for n, item in enumerate(donor_name):
+        temp_donors.append(donor_name[n])
     print('{:25} | {:^13} | {:^13} |   {:>13}'.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift'))
     print('---------------------------------------------------------------------------')
     print()
@@ -40,12 +44,13 @@ def sort_max(donors, donor_amount, donor_count, donor_average):
             if item_c > max:
                 max = item_c
                 max_index = z
-        print('{:25} ${:,>15.2f} {:>15} ${:,>15.2f}'.format(donors[max_index], donor_amount[max_index], donor_count[max_index], donor_average[max_index]))
-        del donors[max_index]
+        print('{:25} ${:>15,.2f} {:>15} ${:>15,.2f}'.format(temp_donors[max_index], donor_amount[max_index], donor_count[max_index], donor_average[max_index]))
+        del temp_donors[max_index]
         del donor_amount[max_index]
         del donor_count[max_index]
         del donor_average[max_index]
 
+# The following function takes the donation list and calculates & stores totals & averages
 def total(list, donors):
     donor_amount = []
     donor_count = []
@@ -66,10 +71,23 @@ def total(list, donors):
     print()
     sort_max(donors, donor_amount, donor_count, donor_average)
 
+# The following function prints out an email when the using enters a donation.
+def print_email(donor, amount):
+    print()
+    print()
+    print('Email to: {}@mail.com'.format(donor))
+    print("Subject: Donation")
+    print()
+    print('Dear {},'.format(donor))
+    print("Thank you for your generous donation, it is much appreciated.")
+    print('Your donation of ${:,.2f} will be used to help achieve our goals.'.format(amount))
+    print()
+    print("Sincerely,")
+    print("MDTS Staff")
+    print()
+    print()
 
-
-
-
+# The following function is the main menu script.
 def menu():
     print("Mailroom Donation Tracking System - MDTS")
     print("Please choose from the following Menu Options:")
@@ -81,8 +99,8 @@ def menu():
         print()
         print()
         print("DONOR SUMMARY REPORT")
-        print('{:20}{:>5}{:>20}'.format(donations[0], donations[1])
         print()
+        total(donations,donor_list)
         print()
         menu()
     elif enter == '2':
@@ -105,17 +123,7 @@ def menu():
             donations.append(donor)
             donations.append(amount)
         print()
-        print()
-        print('Email to: {}@mail.com'.format(donor))
-        print("Subject: Donation")
-        print()
-        print('Dear {},'.format(donor))
-        print("Thank you for your generous donation, it is much appreciated.")
-        print('Your donation of ${:,.2f} will be used to help achieve our goals.'.format(amount))
-        print()
-        print("Sincerely,")
-        print("MDTS Staff")
-        print()
+        print_email(donor, amount)
         print()
         menu()
     else:
@@ -123,32 +131,6 @@ def menu():
         print("Thanks for using MDTS, Goodbye!")
         print()
 
-menu()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Donor Name                | Total Given | Num Gifts | Average Gift
-------------------------------------------------------------------
-William Gates, III         $  653784.49           2  $   326892.24
-Mark Zuckerberg            $   16396.10           3  $     5465.37
-Jeff Bezos                 $     877.33           1  $      877.33
-Paul Allen                 $     708.42           3  $      236.14
+# Put your main interaction into an if __name__ == '__main__' block.
+if __name__ == '__main__':
+    menu()
