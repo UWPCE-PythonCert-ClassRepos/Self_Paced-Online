@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# coding: utf-8
+
 import os
 import io
 import pathlib
@@ -16,7 +19,6 @@ def thank_all_letter( donor_folder = "donor_list"):
     # formatted as "firstname_lastname_suffix.txt/firstname_lastname.txt"
     # and each file contans donations (sorted from early donation to the latest).
     # Example - Paul_Allen.txt contains 663.23, 434.87, 122.32
-
     donor_info = all_donors_info( donor_folder)
     donors = list( donor_info.keys())
     all_gifts = list( donor_info.values())
