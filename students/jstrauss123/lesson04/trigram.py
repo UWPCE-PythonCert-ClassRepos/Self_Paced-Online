@@ -33,8 +33,6 @@ def build_trigrams(words):
 # open file for reading
 def read_file():
     with open("sherlock_small.txt", 'r') as f:
-        #text1 = f.read().text.replace('\n', " ")
-        #text1 = f.read().replace('\n', "")
         text1 = f.read()
         f.close()
         text1 = text1.replace("\n", ' ')
@@ -44,19 +42,24 @@ def read_file():
 
 def generate_story(dict1):
     # randomize words to create new story
+    random_words = []
     print("len of dict1 is: ", len(dict1))
+    #print(dict1)
     counter1 = 0
     while counter1 < len(dict1):
-        random_word = random.choice(dict1)
-        print("random word is: ", random_word)
-        counter += 1
+        random_key = random.choice(list(dict1))
+        new_word = dict1[random_key]
+        print("random key is: ", random_key)
+        print("new word is: ", dict1[random_key])
+        counter1 += 1
+        random_words = random_words + new_word
         
-    return random1
+    return random_words
 
 if __name__ == "__main__":
     words = read_file()
     trigrams = build_trigrams(words)
-    print(trigrams)
+    #print(trigrams)
     new_story = generate_story(trigrams)
     #print(trigrams)
     print(new_story)
