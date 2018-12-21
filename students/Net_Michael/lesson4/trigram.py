@@ -3,6 +3,8 @@
 
 from collections import defaultdict
 import random
+import string
+import re
 
 def set_trigram(ent_letter, len_word, random_start):
     words = ent_letter.split()
@@ -28,13 +30,29 @@ def bld_trigram(ent_letter, len_word, random_start = "No"):
     pair_set2 = dict(pair_set2)
     return(pair_set2)
 
+# reads text file from the file path
+
+def read_text():
+    open_text = open("sherlock_small.txt")
+    read_text = open_text.read()
+    open_text.close()
+    return(read_text)
+
+def clean_text():
+    given_text = read_text()
+    translate_text = re.sub('[^A-Za-z]+', ' ', "{}".format(given_text)).lower()
+    return(translate_text)
+
+
 # apply the above two functions to get the output
 # assumption here is given sentenses contain words only
 
-letter1 = 'I wish I may I wish I might'
-
 if __name__ == "__main__":
-    trigrams1 = set_trigram(ent_letter = letter1, len_word = 8, random_start = "yes")
-    print(trigrams1)
-    trigrams2 = bld_trigram(ent_letter = letter1, len_word = 8, random_start = "yes")
-    print(trigrams2)
+    letter1 = clean_text()
+    print("\n", letter1, "\n")
+    trigrams = set_trigram(ent_letter = letter1, len_word = 10, random_start = "no")
+    print("\n", trigrams, "\n")
+    trigrams_fixed = bld_trigram(ent_letter = letter1, len_word = 10, random_start = "no")
+    print("\n", trigrams_fixed, "\n")
+    trigrams_random = bld_trigram(ent_letter = letter1, len_word = 10, random_start = "yes")
+    print("\n", trigrams_random, "\n")
