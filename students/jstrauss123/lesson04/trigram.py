@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import random
 # trigram based on sherlock short text file
 # trigram based on short string of words to begin with
 #words = "One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve Thirteen Fourteen Fifteen Sixteen Seventeen Eighteen Nineteen Twenty".split()
@@ -39,14 +39,27 @@ def read_file():
         f.close()
         text1 = text1.replace("\n", ' ')
         text1 = text1.replace("\r", ' ')
+        text1 = text1.split()
     return text1
 
-    
+def generate_story(dict1):
+    # randomize words to create new story
+    print("len of dict1 is: ", len(dict1))
+    counter1 = 0
+    while counter1 < len(dict1):
+        random_word = random.choice(dict1)
+        print("random word is: ", random_word)
+        counter += 1
+        
+    return random1
 
 if __name__ == "__main__":
     words = read_file()
     trigrams = build_trigrams(words)
     print(trigrams)
+    new_story = generate_story(trigrams)
+    #print(trigrams)
+    print(new_story)
 
 
 """    
