@@ -25,6 +25,50 @@ Mack Jack                  $     708.42           3  $      236.14
 donations = ['Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Howie Long', 100000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000]
 donor_list = ['Robin Hood', 'Tycoon Reis', 'Howie Long', 'Joe Neighbor', 'Rick Retiree']
 donor='L'
+test = ['Robin Hood', 50000, 'Robin Hood', 25000000]
+test2 = ['Robin Hood', 50000, 'Tycoon Reis', 25000000]
+
+# The following function takes lists as input then returns and sorts the output by max amount donated.
+def sort_max(donors, donor_amount, donor_count, donor_average):
+    print('{:25} | {:^13} | {:^13} | {:^13} '.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift'))
+    print('---------------------------------------------------------------------------')
+    print()
+    while len(donor_amount) != 0:
+        max = 0
+        max_index = 0
+        for z, item_c in enumerate(donor_amount):
+            if item_c > max:
+                max = item_c
+                max_index = z
+        print('{:25} ${:>15} {:>15} ${:>15}'.format(donors[max_index], donor_amount[max_index], donor_count[max_index], donor_average[max_index]))
+        del donors[max_index]
+        del donor_amount[max_index]
+        del donor_count[max_index]
+        del donor_average[max_index]
+
+def total(list, donors):
+    donor_amount = []
+    donor_count = []
+    donor_average = []
+    for x, item_a in enumerate(donors):
+        count = 0
+        amount = 0
+        for y, item_b in enumerate(list):
+            if item_b == donors[x]:
+                name = item_a
+                count = count + 1
+                amount = amount + list[y+1]
+        # The below print statement was for testing unsorted output.
+        # print('{:25} ${:>15} {:>15} ${:>15}'.format(name, amount, count, amount/count))
+        donor_amount.append(amount)
+        donor_count.append(count)
+        donor_average.append(amount/count)
+    print()
+    sort_max(donors, donor_amount, donor_count, donor_average)
+
+
+
+
 
 def menu():
     print("Mailroom Donation Tracking System - MDTS")
@@ -37,6 +81,9 @@ def menu():
         print()
         print()
         print("DONOR SUMMARY REPORT")
+        print('{:20}{:>5}{:>20}'.format(donations[0], donations[1])
+        print()
+        print()
         menu()
     elif enter == '2':
         donor = 'L'
@@ -59,11 +106,12 @@ def menu():
             donations.append(amount)
         print()
         print()
-        print("Email to: ", donor, "@mail.com")
+        print('Email to: {}@mail.com'.format(donor))
         print("Subject: Donation")
         print()
-        print("Dear", donor, ",")
+        print('Dear {},'.format(donor))
         print("Thank you for your generous donation, it is much appreciated.")
+        print('Your donation of ${:,.2f} will be used to help achieve our goals.'.format(amount))
         print()
         print("Sincerely,")
         print("MDTS Staff")
