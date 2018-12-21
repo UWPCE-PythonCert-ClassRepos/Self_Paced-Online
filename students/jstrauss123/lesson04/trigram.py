@@ -33,8 +33,12 @@ def build_trigrams(words):
 # open file for reading
 def read_file():
     with open("sherlock_small.txt", 'r') as f:
-                text1 = f.read().text.replace("\n", " ")
-                f.close()
+        #text1 = f.read().text.replace('\n', " ")
+        #text1 = f.read().replace('\n', "")
+        text1 = f.read()
+        f.close()
+        text1 = text1.replace("\n", ' ')
+        text1 = text1.replace("\r", ' ')
     return text1
 
     
