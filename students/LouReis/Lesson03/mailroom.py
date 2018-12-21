@@ -30,7 +30,7 @@ test2 = ['Robin Hood', 50000, 'Tycoon Reis', 25000000]
 
 # The following function takes lists as input then returns and sorts the output by max amount donated.
 def sort_max(donors, donor_amount, donor_count, donor_average):
-    print('{:25} | {:^13} | {:^13} | {:^13} '.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift'))
+    print('{:25} | {:^13} | {:^13} |   {:>13}'.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift'))
     print('---------------------------------------------------------------------------')
     print()
     while len(donor_amount) != 0:
@@ -40,7 +40,7 @@ def sort_max(donors, donor_amount, donor_count, donor_average):
             if item_c > max:
                 max = item_c
                 max_index = z
-        print('{:25} ${:>15} {:>15} ${:>15}'.format(donors[max_index], donor_amount[max_index], donor_count[max_index], donor_average[max_index]))
+        print('{:25} ${:,>15.2f} {:>15} ${:,>15.2f}'.format(donors[max_index], donor_amount[max_index], donor_count[max_index], donor_average[max_index]))
         del donors[max_index]
         del donor_amount[max_index]
         del donor_count[max_index]
