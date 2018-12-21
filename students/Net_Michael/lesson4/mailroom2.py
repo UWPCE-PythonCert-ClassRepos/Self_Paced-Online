@@ -12,6 +12,11 @@ from collections import defaultdict
 # send thank you all
 def thank_all_letter( donor_folder = "donor_list"):
     # donor_folder: name of the folder in the directory holding donor files
+    # the donor_list folder contains donor's gifts in a text file
+    # formatted as "firstname_lastname_suffix.txt/firstname_lastname.txt"
+    # and each file contans donations (sorted from early donation to the latest).
+    # Example - Paul_Allen.txt contains 663.23, 434.87, 122.32
+
     donor_info = all_donors_info( donor_folder)
     donors = list( donor_info.keys())
     all_gifts = list( donor_info.values())
@@ -122,7 +127,9 @@ def output_entry_value():
              For report select - 1,
              Send thank you letter to all donors - 2,
              Send thank you letter to selected donor - 3,
-             Quit - 4''')
+             Quit - 4
+
+             ''')
     sel_num = input("Enter one of the four numbers: ")
     sel_num = eval(sel_num)
     return(sel_num)
