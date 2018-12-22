@@ -76,7 +76,7 @@ def test_render_element():
     assert file_contents.index("this is") < file_contents.index("and this")
 
     # making sure the opening and closing tags are right.
-    assert file_contents.startswith("<html>")
+    assert file_contents.startswith("<!DOCTYPE html>")
     assert file_contents.endswith("</html>")
 
     # making sure there are no multiple html tags
@@ -109,7 +109,7 @@ def test_render_element2():
     assert file_contents.index("this is") < file_contents.index("and this")
 
     # making sure the opening and closing tags are right.
-    assert file_contents.startswith("<html>")
+    assert file_contents.startswith("<!DOCTYPE html>")
     assert file_contents.endswith("</html>")
 
 
@@ -229,6 +229,7 @@ def test_attributes():
     assert file_contents[:file_contents.index(">")].count(" ") == 3
     assert file_contents[:-1].index(">") > file_contents.index('id="intro"')
 
+
 def test_hr():
     """a simple horizontal rule with no attributes"""
     hr = Hr()
@@ -268,6 +269,42 @@ def test_anchor():
     file_contents = render_result(a)
     print(file_contents)
     assert file_contents == '<a href="http://google.com">link to google</a>'
+
+
+def test_ul_attr():
+    ul = Ul(id="TheList",style="line-height:200%")
+    file_contents = render_result(ul)
+    print(file_contents)
+    # assert file_contents == '<ul id="TheList" style="line-height:200%"></ul>\n'
+    assert '<ul id="TheList" style="line-height:200%">' in file_contents
+
+
+def test_append_content_ul():
+    ul = Ul(id="TheList", style="line-height:200%")
+    ul.append("primero")
+    file_contents = render_result(ul)
+    print(file_contents)
+
+
+def test_content_li():
+    li = Li("Primero")
+    file_contents = render_result(li)
+    print(file_contents)
+
+
+def test_li_attr():
+    li = Li(style="color: red")
+    file_contents = render_result(li)
+    print(file_contents)
+    assert '<li style="color: red">' in file_contents
+
+
+def test_h2():
+    h2 = H(2,"Some content")
+    file_contents = render_result(h2)
+    print(file_contents)
+    assert file_contents.startswith("<h2>")
+    assert file_contents.endswith("</h2>")
 
 
 # #####################

@@ -31,7 +31,10 @@ class Element(object):
         return close_tag
 
     def render(self, out_file):
+        if self.tag == "html":
+            out_file.write("<!DOCTYPE html>\n")
         out_file.write(self._open_tag())
+        out_file.write("\n")
         for content in self.contents:
             try:
                 content.render(out_file)
@@ -102,4 +105,19 @@ class A(OneLineTag):
 
     def __init__(self, link, content=None, **kwargs):
         kwargs['href'] = link
-        super().__init__(content, **kwargs)
+        super().__init__(content=content, **kwargs)
+
+
+class Ul(Element):
+    tag = "ul"
+
+
+class Li(Element):
+    tag = "li"
+
+
+class H(OneLineTag):
+    def __init__(self, level, content=None, **kwargs):
+        self.tag = "h{}".format(level)
+        super().__init__(content=content, **kwargs)
+
