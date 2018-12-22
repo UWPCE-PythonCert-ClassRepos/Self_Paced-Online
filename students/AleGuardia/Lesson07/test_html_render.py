@@ -322,7 +322,7 @@ def test_indent():
 
     print(file_contents)
     lines = file_contents.split("\n")
-    assert lines[0].startswith("   <")
+    assert lines[1].startswith("   <")
     print(repr(lines[-1]))
     assert lines[-1].startswith("   <")
 
@@ -337,7 +337,7 @@ def test_indent_contents():
 
     print(file_contents)
     lines = file_contents.split("\n")
-    assert lines[1].startswith(Element.indent)
+    assert lines[2].startswith(Element.indent)
 
 
 def test_multiple_indent():
@@ -387,3 +387,13 @@ def test_element_indent1():
     assert lines[2].startswith(Element.indent + "thi")
     assert lines[3] == "</html>"
     assert file_contents.endswith("</html>")
+
+
+def test_meta():
+    e = Meta(charset="UTF-8")
+
+    file_contents = render_result(e).strip()
+
+    assert '<meta charset="UTF-8" />' in file_contents
+    assert "\n" not in file_contents
+
