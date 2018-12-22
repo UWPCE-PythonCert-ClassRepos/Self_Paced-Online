@@ -136,20 +136,21 @@ def menu():
 def main_menu(main_prompt,menu_options_dict):
     while True:
         response = input(main_prompt)
-        if menu_options_dict[response]() == 2:
+        if menu_options_dict[response]() == "Quit":
             break
 
 def option_one():
-    print('You Chose Option #1\n\n')
+    print('\nYou Chose Option 1\n\n')
     print('DONATION SUMMARY REPORT\n\n')
 
 def option_two():
-    print('You Chose Option #2\n\n')
+    print('\nYou Chose Option 2\n\n')
     print('Create a Thank You Note\n\n')
 
 def option_three():
-    print('You Chose Option #3\n\n')
+    print('\nYou Chose Option 3\n\n')
     print('Thanks for using MDTS, Goodbye!\n')
+    return "Quit"
 
 menu_options_dict = {
     "1": option_one,
@@ -166,7 +167,7 @@ def sub_menu():
 # menu_options_dict.get(2)()
 
 main_prompt = ("\nMailroom Donation Tracking System - MDTS\n\nMAIN MENU\n\n""Please choose from the following Menu Options:\n\n"
-"1 - Generate A Donation Report\n\n""2 - Create a Thank You Note\n\n""3 - Quit Program\n\n""Enter Menu Option:")
+"1 - Generate A Donation Report\n\n""2 - Create a Thank You Note\n\n""3 - Quit Program\n\n""Enter Menu Option: ")
 
 sub_menu_prompt = ("\nSub-menu Options\n")
 
