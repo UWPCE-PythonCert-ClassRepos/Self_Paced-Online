@@ -192,7 +192,6 @@ def test_head():
 
     assert("this is some text") in file_contents
     assert("and this is some more text") in file_contents
-
     assert file_contents.startswith("<head>")
     assert file_contents.endswith("</head>")
 
@@ -202,8 +201,7 @@ def test_title():
 
     file_contents = render_result(e).strip()
 
-    assert("PythonClass - title example") in file_contents
-
+    assert "PythonClass - title example" in file_contents
     assert file_contents.startswith("<title>")
     assert file_contents.endswith("</title>")
     assert "\n" not in file_contents
@@ -215,7 +213,6 @@ def test_one_line_tag_append():
         e.append("some more content")
 
     file_contents = render_result(e).strip()
-    print(file_contents)
 
 
 def test_attributes():
@@ -232,6 +229,38 @@ def test_attributes():
     assert file_contents[:file_contents.index(">")].count(" ") == 3
     assert file_contents[:-1].index(">") > file_contents.index('id="intro"')
 
+def test_hr():
+    """a simple horizontal rule with no attributes"""
+    hr = Hr()
+    file_contents = render_result(hr)
+    print(file_contents)
+    assert file_contents == '<hr />\n'
+
+
+def test_hr_attr():
+    """a horizontal rule with an attribute"""
+    hr = Hr(width=400)
+    file_contents = render_result(hr)
+    print(file_contents)
+    assert file_contents == '<hr width="400" />\n'
+
+
+def test_br():
+    br = Br()
+    file_contents = render_result(br)
+    print(file_contents)
+    assert file_contents == "<br />\n"
+
+
+def test_content_in_br():
+    with pytest.raises(TypeError):
+        br = Br("some content")
+
+
+def test_append_content_in_br():
+    with pytest.raises(TypeError):
+        br = Br()
+        br.append("some content")
 
 
 # #####################
