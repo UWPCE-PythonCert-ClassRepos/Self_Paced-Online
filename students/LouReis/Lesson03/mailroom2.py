@@ -24,9 +24,6 @@ Mack Jack                  $     708.42           3  $      236.14
 # Data structure in global namespace to store all donations & donors.
 donations = ['Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Howie Long', 100000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000]
 donor_list = ['Robin Hood', 'Tycoon Reis', 'Howie Long', 'Joe Neighbor', 'Rick Retiree']
-donor='L'
-test = ['Robin Hood', 50000, 'Robin Hood', 25000000]
-test2 = ['Robin Hood', 50000, 'Tycoon Reis', 25000000]
 
 # The following function takes lists as input then returns and sorts the output by max amount donated.
 def sort_max(donor_name, donor_amount, donor_count, donor_average):
@@ -71,111 +68,78 @@ def total(list, donors):
     print()
     sort_max(donors, donor_amount, donor_count, donor_average)
 
-# The following function prints out an email when the using enters a donation.
-def print_email(donor, amount):
-    print()
-    print()
-    print('Email to: {}@mail.com'.format(donor))
-    print("Subject: Donation")
-    print()
-    print('Dear {},'.format(donor))
-    print("Thank you for your generous donation, it is much appreciated.")
-    print('Your donation of ${:,.2f} will be used to help achieve our goals.'.format(amount))
-    print()
-    print("Sincerely,")
-    print("MDTS Staff")
-    print()
-    print()
-
-# The following function is the main menu script.
-def menu():
-    print("Mailroom Donation Tracking System - MDTS")
-    print("Please choose from the following Menu Options:")
-    print("1 - Create a Donation Report")
-    print("2 - Generate a Thank You Note")
-    print("3 - Quit Program")
-    enter = input("Enter Menu Option: ")
-    if enter == '1':
-        print()
-        print()
-        print("DONOR SUMMARY REPORT")
-        print()
-        total(donations,donor_list)
-        print()
-        menu()
-    elif enter == '2':
-        donor = 'L'
-        while donor == 'L':
-            donor=input("Enter the full name of the Donor (Type 'L' for a donor list):")
-            if donor == 'L':
-                print(donor_list)
-        if donor not in donor_list:
-            print("You have entered a new donor:", donor)
-            amount = input("Please enter a donation amount '0.00':")
-            amount = float(amount)
-            donor_list.append(donor)
-            donations.append(donor)
-            donations.append(amount)
-        elif donor in donor_list:
-            print("You have entered an existing donor:", donor)
-            amount = input("Please enter the donation amount:")
-            amount = float(amount)
-            donations.append(donor)
-            donations.append(amount)
-        print()
-        print_email(donor, amount)
-        print()
-        menu()
-    else:
-        print()
-        print("Thanks for using MDTS, Goodbye!")
-        print()
-
-
-# Implement using dictionary.
+# Below is the main menu function that continues prompting until quit.
 def main_menu(main_prompt,menu_options_dict):
     while True:
         response = input(main_prompt)
         if menu_options_dict[response]() == "Quit":
             break
 
+# Below are the 4 menu options that are declared in the dict.
 def option_one():
     print('\nYou Chose Option 1\n\n')
     print('DONATION SUMMARY REPORT\n\n')
+    total(donations,donor_list)
 
 def option_two():
     print('\nYou Chose Option 2\n\n')
-    print('Create a Thank You Note\n\n')
+    print('Create a Thank You Letter\n\n')
+    donor = 'L'
+    while donor == 'L':
+        donor=input("Enter the full name of the Donor (Type 'L' for a donor list):")
+        if donor == 'L':
+            print(donor_list)
+    if donor not in donor_list:
+        print("You have entered a new donor:", donor)
+        amount = input("Please enter a donation amount '0.00':")
+        amount = float(amount)
+        donor_list.append(donor)
+        donations.append(donor)
+        donations.append(amount)
+    elif donor in donor_list:
+        print("You have entered an existing donor:", donor)
+        amount = input("Please enter the donation amount:")
+        amount = float(amount)
+        donations.append(donor)
+        donations.append(amount)
+    print_letter(donor,amount)
 
 def option_three():
     print('\nYou Chose Option 3\n\n')
+    print('Send a Thank You Letter to Everyone.\n')
+
+def option_four():
+    print('\nYou Chose Option 4\n\n')
     print('Thanks for using MDTS, Goodbye!\n')
     return "Quit"
 
+# Below is the dict defining the menu options.
 menu_options_dict = {
     "1": option_one,
     "2": option_two,
     "3": option_three,
+    "4": option_four,
 }
 
-def print_donors():
-    print(donors)
-
-def sub_menu():
-    main_menu(sub_menu_prompt, sub_menu_dispatch)
-
-# menu_options_dict.get(2)()
+# The following function prints out an email when the user enters a donation.
+def print_letter(donor, amount):
+    message = "We will welcome any future donations and appreciate your support."
+    letter_dict = {'donor_name': donor, 'amount_donated': amount}
+    print('\n\nSubject: Donation\n\nDear {donor_name},\n\nThank you for your ${amount_donated:,.2f} donation, it will be used to help meet our goals.'.format(**letter_dict))
+    print(message,'\n\nSincerely,\n\nMDTS Staff\n\n\n')
 
 main_prompt = ("\nMailroom Donation Tracking System - MDTS\n\nMAIN MENU\n\n""Please choose from the following Menu Options:\n\n"
-"1 - Generate A Donation Report\n\n""2 - Create a Thank You Note\n\n""3 - Quit Program\n\n""Enter Menu Option: ")
+"1 - Generate A Donation Report\n\n""2 - Create a Thank You Note\n\n""3 - Send a Thank You Letter to Everyone\n\n""4 - Quit Program\n\n""Enter Menu Option: ")
 
-sub_menu_prompt = ("\nSub-menu Options\n")
-
-sub_menu_dispatch = {"L": print_donors}
+# The following function & dict could be used if it was desired to have an additonal sub menu off of the main menu.
+# The main program does not implement a sub menu.
+#
+# def sub_menu():
+#     main_menu(sub_menu_prompt, sub_menu_dispatch)sub_menu_prompt = ("\nSub-menu Options\n")
+# sub_menu_dispatch = {"L": print_donors}
 
 main_menu(main_prompt,menu_options_dict)
 
-
 # Put your main interaction into an if __name__ == '__main__' block.
 if __name__ == '__main__':
-    menu()
+    main_menu(main_prompt,menu_options_dict)
