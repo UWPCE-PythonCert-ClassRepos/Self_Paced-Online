@@ -10,6 +10,8 @@ class Element(object):
 
     tag = "html"
 
+    indent = "    "
+
     def __init__(self, content=None, **kwargs):
         self.contents = []
         self.attributes = kwargs
@@ -30,7 +32,7 @@ class Element(object):
         close_tag = "</{}>".format(self.tag)
         return close_tag
 
-    def render(self, out_file):
+    def render(self, out_file, cur_ind=""):
         if self.tag == "html":
             out_file.write("<!DOCTYPE html>\n")
         out_file.write(self._open_tag())
@@ -63,7 +65,7 @@ class Head(Element):
 
 class OneLineTag(Element):
 
-    def render(self, out_file):
+    def render(self, out_file, cur_ind=""):
         out_file.write(self._open_tag())
         out_file.write(self.contents[0])
         out_file.write(self._close_tag())
@@ -84,7 +86,7 @@ class SelfClosingTag(Element):
             raise TypeError("SelfClosingTag can not contain any content")
         super().__init__(content=content, **kwargs)
 
-    def render(self, out_file):
+    def render(self, out_file, cur_ind=""):
         tag = self._open_tag()[:-1] + " />\n"
         out_file.write(tag)
 
@@ -121,3 +123,5 @@ class H(OneLineTag):
         self.tag = "h{}".format(level)
         super().__init__(content=content, **kwargs)
 
+class Meta(SelfClosingTag)
+    tag ="meta"

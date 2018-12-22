@@ -381,9 +381,9 @@ def test_element_indent1():
     # break into lines to check indentation
     lines = file_contents.split('\n')
     # making sure the opening and closing tags are right.
-    assert lines[0] == "<html>"
+    assert lines[1] == "<html>"
     # this line should be indented by the amount specified
     # by the class attribute: "indent"
-    assert lines[1].startswith(Element.indent + "thi")
-    assert lines[2] == "</html>"
+    assert lines[2].startswith(Element.indent + "thi")
+    assert lines[3] == "</html>"
     assert file_contents.endswith("</html>")
