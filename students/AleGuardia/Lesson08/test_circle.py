@@ -61,6 +61,7 @@ def test_mult():
     c1 = Circle(2)
     assert c1*3 == Circle(6)
     assert 3*c1 == Circle(6)
+    assert c1*3 == 3 * c1
 
 
 def test_compare():
@@ -78,6 +79,15 @@ def test_sort_circles():
     circles = [Circle(6), Circle(7), Circle(8), Circle(4), Circle(0), Circle(2), Circle(3), Circle(5), Circle(9), Circle(1)]
     circles.sort()
     assert circles == [Circle(0), Circle(1), Circle(2), Circle(3), Circle(4), Circle(5), Circle(6), Circle(7), Circle(8), Circle(9)]
+
+
+def test_augmented_oper():
+    c1 = Circle(2)
+    c2 = Circle(4)
+    c1 += c2
+    c2 *= 2
+    assert c1 == Circle(6)
+    assert c2 == Circle(8)
 
 
 
