@@ -57,6 +57,12 @@ def test_add():
     assert c3.radius == 6
 
 
+def test_mult():
+    c1 = Circle(2)
+    assert c1*3 == Circle(6)
+    assert 3*c1 == Circle(6)
+
+
 def test_compare():
     c1 = Circle(2)
     c2 = Circle(4)
@@ -64,8 +70,17 @@ def test_compare():
     assert c1 < c2
     assert c2 > c1
     assert c1 == c3
-    assert c1 >- c3
+    assert c1 >= c3
     assert c3 <= c1
+
+
+def test_sort_circles():
+    circles = [Circle(6), Circle(7), Circle(8), Circle(4), Circle(0), Circle(2), Circle(3), Circle(5), Circle(9), Circle(1)]
+    circles.sort()
+    assert circles == [Circle(0), Circle(1), Circle(2), Circle(3), Circle(4), Circle(5), Circle(6), Circle(7), Circle(8), Circle(9)]
+
+
+
 
 
 

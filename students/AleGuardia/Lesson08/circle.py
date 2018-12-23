@@ -32,6 +32,25 @@ class Circle():
     def __add__(self, other):
         return Circle(self.radius + other.radius)
 
+    def __mul__(self, other):
+        return Circle(self.radius * other)
+
+    def __rmul__(self, other):
+        return Circle(self.radius * other)
+
+    def __eq__(self, other):
+        return self.radius == other.radius
+
+    def __ne__(self, other):
+        return self.radius != other.radius
+
+    def __lt__(self, other):
+        return self.radius < other.radius
+
+    def __ge__(self, other):
+        return self.radius >= other.radius
+
+
 
 
 
