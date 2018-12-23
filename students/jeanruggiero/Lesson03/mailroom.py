@@ -9,7 +9,8 @@ donors = (\
 ('Han Solo', [3468.34, 457, 34.2]),\
 ('Luke Skywalker', [5286286.3, 567, 23.5678]),\
 ('Chewbacca', [432, 679.4553]),\
-('Princess Leia', [5.3434]))
+('Princess Leia', [5.3434]),\
+('Bobba Fett, Bounty Hunter', [67]))
 
 # Define functions
 def print_names():
@@ -40,7 +41,7 @@ def size_report():
     # Convert numbers to strings to determine their length in characters
     # Convert the dollar amounts to an integer to remove decimal places (since
         # there are an unknown number of them), then add 3 to the length to
-        # accomodate for a period, dollar sign, space, and 2 decimal places
+        # accomodate for a period and 2 decimal places
     # Ensure column size is at least as wide as header text
 
     name_width = max(len(donor[0]) for donor in donors)
@@ -84,11 +85,12 @@ def create_report():
 # User interaction
 if __name__ == '__main__':
     while True:
+        # Main menu - prompt user for an action
         print(); print('Select an action to perform...')
-        print("Type 'quit' at any time to exit.")
+        print('Type "return" at any time to return to main menu.')
         action = input('1: Send a Thank You | 2: Create a Report | 3: Quit\n')
 
-        if action == '3' or action.lower() == 'quit':
+        if action == '3':
             # If the user selects 3, quit the program
             break
         elif action == '1':
@@ -97,7 +99,8 @@ if __name__ == '__main__':
             while True:
                 name = input("Enter the donor's Full Name, or 'list': ")
 
-                if name.lower() == 'quit':
+                if name.lower() == 'return':
+                    # If the user enters 'return', return to main menu
                     break
                 elif name == 'list':
                     # If the user enters list, display a list of donor names
@@ -109,20 +112,35 @@ if __name__ == '__main__':
                         donors = (*donors, (name, []))
                     break
 
+            if name.lower() == 'return':
+                # If the user enters 'return', return to main menu
+                continue
+
             while True:
                 amount = input('Enter the donation amount: ')
 
+                if amount.lower() == 'return':
+                    # If the user enters 'return', return to main menu
+                    break
+
                 try:
                     # Try to add donation amount to donors data structure
-                    amount = float(amount)
-                    add_donation(name, amount)
+                    add_donation(name, float(amount))
                     break
                 except ValueError:
                     # If value is not a number, ask the user to enter a number
-                    amount = input('Please enter a number value for donation amount: ')
+                    print('Please enter a number value for donation amount.')
+
+            if amount.lower() == 'return':
+                # If the user enters 'return', return to main menu
+                continue
+            else:
+                # Else, convert amount to a float
+                amount = float(amount)
 
             # Compose a thank you email and print to command line
             compose_email(name, amount)
 
         elif action == '2':
+            # Print a report of donors and their summary info to the user
             create_report()
