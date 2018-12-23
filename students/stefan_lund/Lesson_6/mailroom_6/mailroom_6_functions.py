@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 
-
 def create_a_report(data):
     """
         function prints out a report of current names in the data dictionary,
@@ -18,11 +17,7 @@ def create_a_report(data):
     name_len = rprt_header[5]
 
     for name, donations in data.items():
-        number_of_donations = str(len(donations["total"]))
-        total = "%.2f" % (sum(donations["total"]))
-        average = 0
-        if float(total) > 0:
-            average = "%.2f" % (float(total) / int(number_of_donations))
+        total, number_of_donations, average = detail_from(donations)
 
         line = temp_form.format(name,
                                 total,
@@ -56,13 +51,13 @@ def list_of_names(data):
 
     return "thank_you"
 
+
 def name_length(data):
     """
     data: {"Name1": [list of donations], ....}
     Name1 etc are the dict keys
     name_length: integer
     """
-
 
     # determine width of name field to print
     name_list = data.keys()
@@ -72,6 +67,7 @@ def name_length(data):
     name_lenth = max(name_len) + 4
 
     return name_lenth
+
 
 def amount_length(data):
     """
@@ -89,12 +85,29 @@ def amount_length(data):
     return amount_lenth
 
 
+def detail_from(donations):
+    """ donations: list, contains float numbers, possibly empty list
+        total: str type number of int type number
+        number_of _donations: str type number with two decimals
+        average: str type number with two decimals
+        return: tuple, total, number_of _donations, average
+    """
+
+    number_of_donations = len(donations["total"])
+    total = sum(donations["total"])
+    average = 0
+    if number_of_donations > 0:
+        average = total / number_of_donations
+
+    return ("%.2f" % (total),
+            str(int(number_of_donations)),
+            "%.2f" % (average))
+
+
 def list_header(data):
 
     name_len = name_length(data)
-
     donor_str = ["Donor Name"]
-
     donor_form = "|{:<{nl}}|"
 
     p = "+"
@@ -123,10 +136,6 @@ def report_header(data):
     report_lne = 3 * ((s * (amount_len)) + p)
 
     donor_lne, _, _, donor_form, name_len = list_header(data)
-    # donor_header = [[donor_lne + p,
-    #                  donor_form.format(*donor_str, nl=name_len),
-    #                  donor_lne + p],
-    #                 name_len]
 
     reprt_header = [donor_lne + report_lne,
                     (donor_form + report_form).format(*report_str,
@@ -140,12 +149,9 @@ def report_header(data):
     return reprt_header
 
 
-
 names = {
     "William Gates, III"  : {"total": [300000.00, 353784.49]},
     "Mark Zuckerberg"     : {"total": [5000.00, 5000.00, 6396.10]},
     "Jeff Bezos"          : {"total": [877.33]},
     "Paul Allen"          : {"total": [200, 200, 308.42]}
     }
-
-create_a_report(names)
