@@ -1,8 +1,8 @@
 """
 Author: Alyssa Hong
-Date: 11/14/2018
+Date: 11/21/2018
 Update:
-Lesson4 Assignments > Mailroom, Part 3
+Lesson4 Assignments > Mailroom, Part 4
 """
 
 #!/usr/bin/env python3
@@ -85,10 +85,6 @@ def create_report(list_donation):
 
     print('{}'.format("-"*63))
 
-
-# def return_menu():
-#     print('\n''Choose the menu again or Quit!')
-#     main()
 
 
 def main():
