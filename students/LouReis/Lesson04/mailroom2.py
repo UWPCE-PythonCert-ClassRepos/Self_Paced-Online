@@ -104,6 +104,7 @@ def option_two():
         donations.append(amount)
     print_letter(donor,amount)
 
+# This Option generates a letter saved in a text file for each donor.
 def option_three():
     print('\nYou Chose Option 3\n\n')
     print('Send a Thank You Letter to Everyone.\n')
@@ -147,7 +148,7 @@ main_prompt = ("\nMailroom Donation Tracking System - MDTS\n\nMAIN MENU\n\n""Ple
 #     main_menu(sub_menu_prompt, sub_menu_dispatch)sub_menu_prompt = ("\nSub-menu Options\n")
 # sub_menu_dispatch = {"L": print_donors}
 
-main_menu(main_prompt,menu_options_dict)
+# main_menu(main_prompt,menu_options_dict)
 
 # Put your main interaction into an if __name__ == '__main__' block.
 if __name__ == '__main__':
