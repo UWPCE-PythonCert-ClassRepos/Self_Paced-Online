@@ -85,23 +85,37 @@ def list_of_names():
 
     return "thank_you"
 
-def table_size(data):
+def name_length(data):
     """
     data: {"Name1": [list of donations], ....}
-    returns headers for list_of_names, create_a_report and the width of the
-        name field and the amount field which is used for all the other fields
-        return = [[header1], field_widht1], [[header2], field_widht2]
+    Name1 etc are the dict keys
+    name_length: integer
+    """
+
+
+    # determine width of name field to print
+    name_list = data.keys()
+    name_len = []
+    # list comprehension
+    [name_len.append(len(name)) for name in name_list]
+    name_length = max(name_len) + 4
+
+    return name_length
+
+def amount_length(data):
+    """
+    data: {"Name1": [list of donations], ....}
+    amount_len: len of str value for the sum of each list of donations
+        associated with each name, list content is float numbers
+    amount_length: integer
     """
 
     len_lst = []
-    [len_lst.append((len(name),
-                     len("%.2f" % (sum(val["total"]))))) for name, val in names.items()]
+    [len_lst.append(len("%.2f" % (sum(val["total"])))) for val in names.values()]
 
-    name_len = max([sublist[0] for sublist in len_lst]) + 4
-    amount_len = max(max([sublist[1] for sublist in len_lst]),
-                     len("Average Gift")) + 3
+    amount_length = max(max(len_lst), len("Average Gift")) + 3
 
-    return name_len, amount_len
+    return amount_length
 
 
 def table_header(data):
