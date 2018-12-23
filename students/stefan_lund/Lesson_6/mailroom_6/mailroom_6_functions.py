@@ -2,84 +2,55 @@
 
 
 
-def create_a_report():
+def create_a_report(data):
     """
         function prints out a report of current names in the data dictionary,
             displaying "Donor Name", "Total Given", "Num Gifts", "Average Gift"
     """
-    data = mailroom_5_read_write_data.data
 
-    # name_len = 0
-    # amount_len = 0
-    #
-    # for name, donations in data.items():
-    #     if len(name) > (name_len - 3):
-    #         name_len = len(name) + 3
-    #     for date in donations:
-    #         amount = str(donations[date])
-    #         if len(amount) > (amount_len - 3):
-    #             amount_len = len(amount) + 3
-    #
-    # temp_str = "Donor Name", "Total Given", "Num Gifts", "Average Gift"
-    # temp_form = "\n{:<{nl}}|{:>{al}}|{:>{al}}|{:>{al}}"
-    # header = temp_form.format(*temp_str, nl=name_len, al=amount_len)
-    # print(header)
-    #
-    # # separation line used to make presentation look nice
-    # p = "+"
-    # s = "-"
-    # lne = s * (name_len)
-    # e = p + (s * (amount_len))
-    # lne += 3 * e
-    # print(lne)
+    rprt_header = report_header(data)
+
+    for line in rprt_header[:3]:
+        print(line)
+
+    temp_form = rprt_header[3]
+    amount_len = rprt_header[4]
+    name_len = rprt_header[5]
 
     for name, donations in data.items():
-        number_of = 0
-        donation = 0
-        for date in donations:
-            donation += donations[date]
-            number_of += 1
+        number_of_donations = str(len(donations["total"]))
+        total = "%.2f" % (sum(donations["total"]))
+        average = 0
+        if float(total) > 0:
+            average = "%.2f" % (float(total) / int(number_of_donations))
 
-            total = float(donation)
-            number_of = int(number_of)
-            average = total / number_of
-
-        temp_form = "{:<{nl}} ${:>{al}.2f}  {:>{al}} ${:>{al}.2f}"
         line = temp_form.format(name,
                                 total,
-                                number_of,
+                                number_of_donations,
                                 average,
                                 nl=name_len,
-                                al=amount_len - 1)
+                                al=amount_len)
         print(line)
 
     return "start"
 
 
-
-def list_of_names():
+def list_of_names(data):
     """
         prints out a list of names currently in the "data" dictionary
     """
-    data = mailroom_5_read_write_data.data
+    name_list = data.keys()
 
-    # # determine width of fields to print in
-    # name_length = []
-    # name_list = data.keys()
-    # # list comprehension
-    # [name_length.append(len(name)) for name in name_list]
-    # name_len = max(name_length) + 3
-    #
-    # # print table header
-    # temp_str = "Donor Name"
-    # temp_form = "\n| {:<{nl}}|"
-    # header = temp_form.format(temp_str, nl=name_len)
-    # frame = "\n+" + "-" * (name_len + 1) + "+"
-    print(frame, header, frame)
+    lst_header = list_header(data)
+    # print header
+    for line in lst_header[:3]:
+        print(line)
 
+    temp_form = lst_header[3]
+    name_len = lst_header[4]
     # print each name in alphabetical order
     for name in sorted(name_list):
-        temp_form = "| {:<{nl}}|"
+        # temp_form = "| {:<{nl}}|"
         line = temp_form.format(name, nl=name_len)
         print(line)
 
@@ -98,9 +69,9 @@ def name_length(data):
     name_len = []
     # list comprehension
     [name_len.append(len(name)) for name in name_list]
-    name_length = max(name_len) + 4
+    name_lenth = max(name_len) + 4
 
-    return name_length
+    return name_lenth
 
 def amount_length(data):
     """
@@ -111,41 +82,62 @@ def amount_length(data):
     """
 
     len_lst = []
-    [len_lst.append(len("%.2f" % (sum(val["total"])))) for val in names.values()]
+    [len_lst.append(len("%.2f" % (sum(val["total"])))) for val in data.values()]
 
-    amount_length = max(max(len_lst), len("Average Gift")) + 3
+    amount_lenth = max(max(len_lst), len("Average Gift")) + 3
 
-    return amount_length
+    return amount_lenth
 
 
-def table_header(data):
+def list_header(data):
 
-    name_len, amount_len = table_size(names)
+    name_len = name_length(data)
 
     donor_str = ["Donor Name"]
-    report_str = ["Donor Name", "Total Given", "Num Gifts", "Average Gift"]
-
 
     donor_form = "|{:<{nl}}|"
-    report_form = "{:>{al}}|{:>{al}}|{:>{al}}|"
 
     p = "+"
     s = "-"
     donor_lne = p + s * (name_len)
-    report_lne = 3 * (p + (s * (amount_len))) + p
-    lne = donor_lne, report_lne
 
-    donor_header = [[donor_lne + p,
-                     donor_form.format(*donor_str, nl=name_len),
-                     donor_lne + p],
+    donor_header = [donor_lne + p,
+                    donor_form.format(*donor_str, nl=name_len),
+                    donor_lne + p,
+                    donor_form,
                     name_len]
 
-    report_header = [[donor_lne + report_lne,
-                      (donor_form + report_form).format(*report_str, nl=name_len, al=amount_len),
-                      donor_lne + report_lne],
-                     amount_len]
+    return donor_header
 
-    return donor_header, report_header
+
+def report_header(data):
+
+    amount_len = amount_length(data)
+
+    report_str = ["Donor Name", "Total Given", "Num Gifts", "Average Gift"]
+
+    report_form = "{:>{al}}|{:>{al}}|{:>{al}}|"
+
+    p = "+"
+    s = "-"
+    report_lne = 3 * ((s * (amount_len)) + p)
+
+    donor_lne, _, _, donor_form, name_len = list_header(data)
+    # donor_header = [[donor_lne + p,
+    #                  donor_form.format(*donor_str, nl=name_len),
+    #                  donor_lne + p],
+    #                 name_len]
+
+    reprt_header = [donor_lne + report_lne,
+                    (donor_form + report_form).format(*report_str,
+                                                      nl=name_len,
+                                                      al=amount_len),
+                    donor_lne + report_lne,
+                    donor_form + report_form,
+                    amount_len,
+                    name_len]
+
+    return reprt_header
 
 
 
@@ -155,3 +147,5 @@ names = {
     "Jeff Bezos"          : {"total": [877.33]},
     "Paul Allen"          : {"total": [200, 200, 308.42]}
     }
+
+create_a_report(names)
