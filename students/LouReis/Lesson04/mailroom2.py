@@ -107,6 +107,15 @@ def option_two():
 def option_three():
     print('\nYou Chose Option 3\n\n')
     print('Send a Thank You Letter to Everyone.\n')
+    for item in (donor_list):
+        filename = item.replace(" ","") + '.txt'
+        outfile = open(filename, 'w')
+        outfile.write(f"\n\nSubject: Donation\n\nDear {item},\n\nThank you for your donation, it will be used to help meet our goals.")
+        outfile.write("\nWe will welcome any future donations and appreciate your support.")
+        outfile.write("\n\n\nSincerely,\n\nMDTS Staff\n\n\n")
+        outfile.close()
+    print("\n\nA Letter has been created for each donor and stored in a text file.\n\n")
+    return "Menu"
 
 def option_four():
     print('\nYou Chose Option 4\n\n')
