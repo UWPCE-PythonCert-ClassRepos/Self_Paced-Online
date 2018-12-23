@@ -84,3 +84,11 @@ def list_of_names():
         print(line)
 
     return "thank_you"
+
+
+names = {
+    "William Gates, III"  : {"total": [300000.00, 353784.49]},
+    "Mark Zuckerberg"     : {"total": [5000.00, 5000.00, 6396.10]},
+    "Jeff Bezos"          : {"total": [877.33]},
+    "Paul Allen"          : {"total": [200, 200, 308.42]}
+    }
