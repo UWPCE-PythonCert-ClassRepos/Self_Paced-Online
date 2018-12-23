@@ -13,7 +13,7 @@ import mailroom_part4
 from mailroom_part4 import list_donation, send_thanks, send_letters, letter_content, create_report
 
 
-class test_mailroom(unittest.TestCase):
+class TestMailroom(unittest.TestCase):
     def test_donors_name(self):
         self.assertEqual(['Fred', 'Alex', 'Henry', 'Alyssa', 'Leo'], list(list_donation))
 
@@ -39,7 +39,7 @@ class test_mailroom(unittest.TestCase):
         mailroom_part4.create_report(expected)
         test_list_donation = mailroom_part4.list_donation
         self.assertEqual(expected, test_list_donation)
-        
+
 
 if __name__ == '__main__':
     unittest.main()
