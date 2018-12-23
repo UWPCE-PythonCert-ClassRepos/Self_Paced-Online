@@ -50,6 +50,24 @@ def test_repr():
     assert repr(e) == "Circle(4)"
 
 
+def test_add():
+    c1 = Circle(2)
+    c2 = Circle(4)
+    c3 = c1 + c2
+    assert c3.radius == 6
+
+
+def test_compare():
+    c1 = Circle(2)
+    c2 = Circle(4)
+    c3 = Circle(2)
+    assert c1 < c2
+    assert c2 > c1
+    assert c1 == c3
+    assert c1 >- c3
+    assert c3 <= c1
+
+
 
 
 
