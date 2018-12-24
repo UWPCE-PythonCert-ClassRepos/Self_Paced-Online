@@ -7,14 +7,7 @@ def create_a_report(data):
             displaying "Donor Name", "Total Given", "Num Gifts", "Average Gift"
     """
 
-    rprt_header = report_header(data)
-
-    rprt_dict = {"frame"      : rprt_header[0],
-                 "line"       : rprt_header[1],
-                 "temp_form"  : rprt_header[2],
-                 "al"         : rprt_header[3],
-                 "nl"         : rprt_header[4],
-                 "name"       : None}
+    rprt_dict = report_header(data)
 
     print_header(rprt_dict)
 
@@ -34,13 +27,7 @@ def list_of_names(data):
         prints out a list of names currently in the "data" dictionary
     """
     name_list = data.keys()
-
-    lst_header = list_header(data)
-    list_dict = {"frame"      : lst_header[0],
-                 "line"       : lst_header[1],
-                 "temp_form"  : lst_header[2],
-                 "nl"         : lst_header[3],
-                 "name"       : None}
+    list_dict = list_header(data)
 
     print_header(list_dict)
 
@@ -64,7 +51,7 @@ def name_length(data):
     name_length: integer
     """
 
-    # determine width of name field to print
+    # width of name field to print
     name_list = data.keys()
     name_len = []
     # list comprehension
@@ -111,6 +98,20 @@ def detail_from(donations):
     return temp_dict
 
 
+def make_frame(field_length_dict):
+    """ returns a frame built of '+' and '-' to correspond to the appropriate
+        width for each field where 'nl' key is for the name field and
+        'al' is for the amount fields.
+    """
+
+    [(key, length)] = field_length_dict.items()
+    assert (key in ["al", "nl"]), "Strange key in field_length_dict!"
+
+    if key == "nl":
+        return "+" + "-" * (length)
+    return 3 * (("-" * (length)) + "+")
+
+
 def list_header(data):
 
     name_len = name_length(data)
@@ -118,15 +119,12 @@ def list_header(data):
                   "nl"      : name_len}
 
     donor_form = "|{name:<{nl}}|"
+    donor_lne = make_frame({"nl": name_len})
 
-    p = "+"
-    s = "-"
-    donor_lne = p + s * (name_len)
-
-    donor_header = [donor_lne + p,
-                    donor_form.format(**donor_dict),
-                    donor_form,
-                    name_len]
+    donor_header = {"frame"      : donor_lne + "+",
+                    "line"       : donor_form.format(**donor_dict),
+                    "temp_form"  : donor_form,
+                    "nl"         : name_len}
 
     return donor_header
 
@@ -134,31 +132,25 @@ def list_header(data):
 def report_header(data):
 
     amount_len = amount_length(data)
-    donor_lne, _, donor_form, name_len = list_header(data)
+    lst_dict = list_header(data)
 
     report_dict = {"name"    : "Donor Name",
                    "total"   : "Total Given",
                    "num"     : "Num Gifts",
                    "average" : "Average Gift",
                    "al"      : amount_len,
-                   "nl"      : name_len}
-    # report_str = ["Donor Name", "Total Given", "Num Gifts", "Average Gift"]
+                   "nl"      : lst_dict["nl"]}
 
     report_form = "{total:>{al}}|{num:>{al}}|{average:>{al}}|"
 
-    p = "+"
-    s = "-"
-    report_lne = 3 * ((s * (amount_len)) + p)
+    report_lne = make_frame({"al": amount_len})
+    reprt_dict = {"frame"      : lst_dict["frame"] + report_lne,
+                  "line"       : (lst_dict["temp_form"] + report_form).format(**report_dict),
+                  "temp_form"  : lst_dict["temp_form"] + report_form,
+                  "al"         : amount_len,
+                  "nl"         : lst_dict["nl"]}
 
-
-    reprt_header = [donor_lne + report_lne,
-                    (donor_form + report_form).format(**report_dict),
-                    donor_form + report_form,
-                    amount_len,
-                    name_len]
-
-    return reprt_header
-
+    return reprt_dict
 
 names = {
     "William Gates, III"  : {"total": [300000.00, 353784.49]},
