@@ -22,113 +22,124 @@ Mack Jack                  $     708.42           3  $      236.14
 
 # donations = ['Robin Hood', 1500000, 3, 500000, 'Tycoon Reis', 75000000, 3, 25000000, 'Howie Long', 100000, 1, 100000, 'Joe Neighbor', 50, 2, 25, 'Rick Retiree', 1.00, 2, 0.50]
 # Data structure in global namespace to store all donations & donors.
-donations = ['Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Howie Long', 100000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000]
+# donations = ['Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Howie Long', 100000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000]
 donor_list = ['Robin Hood', 'Tycoon Reis', 'Howie Long', 'Joe Neighbor', 'Rick Retiree']
+donations = {"Robin Hood": [50000, 50000, 50000], "Tycoon Reis": [25000000, 25000000, 25000000], "Howie Long": [100000], "Joe Neighbor": [25, 25], "Rick Retiree": [0.50, 0.50]}
 
-# The following function takes lists as input then returns and sorts the output by max amount donated.
-def sort_max(donor_name, donor_amount, donor_count, donor_average):
-    # temp_donors is a temporary data structure used & destroyed for sorting purposes.
-    temp_donors = []
-    for n, item in enumerate(donor_name):
-        temp_donors.append(donor_name[n])
+# Tested & modified the below code that works for printed an unsorted report.
+# def calculate_sort(donations):
+#     for x, name in enumerate(donations):
+#         amounts = []
+#         total = 0
+#         count = 0
+#         amounts = donations.get(name)
+#         count = len(amounts)
+#         for item in amounts:
+#             total = total + item
+#         print ('{:25} ${:>15,.2f} {:>15} ${:>15,.2f}'.format(name, total, count, total/count))
+
+# Tested & modified the below code to develop the complex sorted output.
+# for key,value in sorted(donations.items(),key=lambda i:sum(i[1]),reverse=True):
+#     print (key,value)
+#     print (donations[key])
+#     total = 0
+#     total = sum(donations[key])
+#     print(total)
+
+# The following function takes the 'donations' dictionary and creates a sorted report.
+# Using a complex 'sorted' for loop.
+def calculate_sort(donations):
     print('{:25} | {:^13} | {:^13} |   {:>13}'.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift'))
     print('---------------------------------------------------------------------------')
     print()
-    while len(donor_amount) != 0:
-        max = 0
-        max_index = 0
-        for z, item_c in enumerate(donor_amount):
-            if item_c > max:
-                max = item_c
-                max_index = z
-        print('{:25} ${:>15,.2f} {:>15} ${:>15,.2f}'.format(temp_donors[max_index], donor_amount[max_index], donor_count[max_index], donor_average[max_index]))
-        del temp_donors[max_index]
-        del donor_amount[max_index]
-        del donor_count[max_index]
-        del donor_average[max_index]
-
-# The following function takes the donation list and calculates & stores totals & averages
-def total(list, donors):
-    donor_amount = []
-    donor_count = []
-    donor_average = []
-    for x, item_a in enumerate(donors):
+    for key,value in sorted(donations.items(),key=lambda i:sum(i[1]),reverse=True):
+        total = 0
+        total = sum(donations[key])
         count = 0
-        amount = 0
-        for y, item_b in enumerate(list):
-            if item_b == donors[x]:
-                name = item_a
-                count = count + 1
-                amount = amount + list[y+1]
-        # The below print statement was for testing unsorted output.
-        # print('{:25} ${:>15} {:>15} ${:>15}'.format(name, amount, count, amount/count))
-        donor_amount.append(amount)
-        donor_count.append(count)
-        donor_average.append(amount/count)
-    print()
-    sort_max(donors, donor_amount, donor_count, donor_average)
+        count = len(donations[key])
+        print ('{:25} ${:>15,.2f} {:>15} ${:>15,.2f}'.format(key, total, count, total/count))
 
 # Below is the main menu function that continues prompting until quit.
 def main_menu(main_prompt,menu_options_dict):
+    import sys
     while True:
         response = input(main_prompt)
         if menu_options_dict[response]() == "Quit":
-            break
+            sys.exit()
 
 # Below are the 4 menu options that are declared in the dict.
-def option_one():
+def donation_report():
     print('\nYou Chose Option 1\n\n')
     print('DONATION SUMMARY REPORT\n\n')
-    total(donations,donor_list)
+    calculate_sort(donations)
 
-def option_two():
+# This Option generates a thank you letter for a new donation and prints to the screen.
+def thanks_letter():
     print('\nYou Chose Option 2\n\n')
     print('Create a Thank You Letter\n\n')
     donor = 'L'
     while donor == 'L':
         donor=input("Enter the full name of the Donor (Type 'L' for a donor list):")
         if donor == 'L':
-            print(donor_list)
-    if donor not in donor_list:
+            print("\n")
+            for key in sorted(donations):
+                print(key)
+            print("\n")
+    if donor not in donations:
         print("You have entered a new donor:", donor)
-        amount = input("Please enter a donation amount '0.00':")
-        amount = float(amount)
-        donor_list.append(donor)
-        donations.append(donor)
-        donations.append(amount)
-    elif donor in donor_list:
+        amount = []
+        donation = input("Please enter a donation amount '0.00':")
+        donation = float(donation)
+        amount.append(donation)
+        donations[donor] = amount
+        # donations.update({donor:amount})
+    else:
         print("You have entered an existing donor:", donor)
-        amount = input("Please enter the donation amount:")
-        amount = float(amount)
-        donations.append(donor)
-        donations.append(amount)
-    print_letter(donor,amount)
+        amount = []
+        donation = input("Please enter the donation amount:")
+        donation = float(donation)
+        amount.append(donation)
+        donations[donor] = donations[donor] + amount
+    print_letter(donor,donation)
+"""
+
+outfile = open('output.txt', 'w')
+for i in range(10):
+    outfile.write("this is line: %i\n"%i)
+outfile.close()
+
+with open('output.txt', 'w') as f:
+    for i in range(10):
+       f.write("this is line: %i\n"%i)
+"""
 
 # This Option generates a letter saved in a text file for each donor.
-def option_three():
+def thanks_letter_all():
     print('\nYou Chose Option 3\n\n')
     print('Send a Thank You Letter to Everyone.\n')
-    for item in (donor_list):
+    for item in (donations):
+        filename = ""
         filename = item.replace(" ","") + '.txt'
-        outfile = open(filename, 'w')
-        outfile.write(f"\n\nSubject: Donation\n\nDear {item},\n\nThank you for your donation, it will be used to help meet our goals.")
-        outfile.write("\nWe will welcome any future donations and appreciate your support.")
-        outfile.write("\n\n\nSincerely,\n\nMDTS Staff\n\n\n")
-        outfile.close()
+        print(filename)
+        with open(filename, 'w') as f:
+            for i in range(1):
+                f.write(f"\n\nSubject: Donation\n\nDear {item},\n\nThank you for your donation, it will be used to help meet our goals.")
+                f.write("\nWe will welcome any future donations and appreciate your support.")
+                f.write("\n\n\nSincerely,\n\nMDTS Staff\n\n\n")
     print("\n\nA Letter has been created for each donor and stored in a text file.\n\n")
     return "Menu"
 
-def option_four():
+def quit():
     print('\nYou Chose Option 4\n\n')
     print('Thanks for using MDTS, Goodbye!\n')
     return "Quit"
 
 # Below is the dict defining the menu options.
 menu_options_dict = {
-    "1": option_one,
-    "2": option_two,
-    "3": option_three,
-    "4": option_four,
+    "1": donation_report,
+    "2": thanks_letter,
+    "3": thanks_letter_all,
+    "4": quit,
 }
 
 # The following function prints out an email when the user enters a donation.
