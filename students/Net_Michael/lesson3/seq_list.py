@@ -20,9 +20,8 @@ def mid_last_first(seq):
 
 a_tuple = (2, 54, 13, 12, 5, 32)
 a_string = "this is a string"
- 
+
 exchange_first_last(a_tuple)
 mid_last_first(a_tuple)
 exchange_first_last(a_string)
 mid_last_first(a_string)
-
