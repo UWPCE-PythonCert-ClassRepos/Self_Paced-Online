@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+
 import os
 import io
 import pathlib
@@ -7,126 +8,140 @@ import shutil
 import re
 from collections import defaultdict
 
-# list of donors and history of the amounts they have donated
+#####################################################
+# creates modules that output options in switch_fun_dict
+#####################################################
 
-def prompt(var):
-    if var == 1:
-        print("Donors Report")
-        report = create_report(donors_dir_path, total_report="yes")
-    elif var == 2:
-        print("List of individual donations")
-        report = create_report(donors_dir_path, indiv_report="yes")
-    elif var == 3:
-        print("Send a Thank You to a single donor.")
-        report = create_report(donors_dir_path, thank_one = "yes")
-    elif var == 4:
-        print("Send Thank you letters to all donors")
-        report = create_report(donors_dir_path, thank_all = "yes")
+# send thank you all
+def thank_all_letter( donor_folder = "donor_list"):
+    # donor_folder: name of the folder in the directory holding donor files
+    # the donor_list folder contains donor's gifts in a text file
+    # formatted as "firstname_lastname_suffix.txt/firstname_lastname.txt"
+    # and each file contans donations (sorted from early donation to the latest).
+    # Example - Paul_Allen.txt contains 663.23, 434.87, 122.32
+    donor_info = all_donors_info( donor_folder)
+    donors = list( donor_info.keys())
+    all_gifts = list( donor_info.values())
+    for ll in range( len(donor_info)):
+        letter_format( donor = donors[ll], gift = sum(all_gifts[ll]))
+
+# creates summry table to report total (and average) donation from each donor
+
+def create_report( donor_folder = "donor_list"):
+    print("Name\t\t\tTotal Donation\t\tNum Gifts\tAverage Gift")
+    donor_info = all_donors_info( donor_folder)
+    donors = list( donor_info.keys())
+    all_gifts = list( donor_info.values())
+    for ll in range( len( donor_info)):
+        total_gift = sum( all_gifts[ll])
+        num_gifts = len( all_gifts[ll])
+        avg_gift = total_gift/num_gifts
+        print ('{:23}'.format( donors[ll]),
+               '${:^6,.2f}'.format( total_gift),
+               '{:20}'.format( num_gifts),
+               '{:14}'.format(""),
+               '${:^6,.2f}'.format( avg_gift))
+
+# given the full name (firs, last and suffix), it generates the corresponding
+# thank you letter
+def thank_one_letter( donor_folder = "donor_list"):
+    first_name = input( "Donor's first name - ").title()
+    last_name = input( "Donor's last name - ").title()
+    suffix = input( "Donor's suffix (if available) - ")
+    if suffix is not "":
+        full_name = "_".join( [first_name,last_name, suffix])
     else:
-        print("Exit")  
+        full_name = "_".join( [first_name,last_name])
+    file_name = ".".join( [full_name, "txt"])
+    if file_name in os.listdir( donor_folder):
+        donor_info = one_donor_info( donor_folder = donor_folder,
+                                     file_name = file_name)
+        donor = " ".join( donor_info["donor"])
+        all_gifts = donor_info["gifts"]
+        last_gift = all_gifts[len(all_gifts)-1]
+        letter_format( donor = donor, gift = last_gift)
+    else:
+        print(full_name, " is not in the donor's list")
 
-        
-def create_report(donors_dir_path, 
-                  total_report = "no",
-                  indiv_report = "no",
-                  thank_all = "no",
-                  thank_one = "no"):
-    report_wd = os.getcwd()
-    os.chdir(donors_dir_path)
-    donors = defaultdict(list)
-    
-    with open("donationlist.txt") as donor_list:
-        for line in donor_list:
-            donor_sel = line.strip()
-            Donation = dict([tuple(str(donor_sel).split(" : "))])
-            for k, v in Donation.items():
-                donors[k].append(v)
-    
-    donor_names = list(donors.keys())[1:]
-    all_donations = list(donors.values())[1:]
-    
-    ll = len(all_donations)
-    donation_list = [[]] * ll
-    
-    if(indiv_report.lower() == "yes"):
-        donor_list1 = dict(zip(donor_names, all_donations))
-        print(donor_list1)
-    
-    elif(total_report.lower() == "yes"):
+def quit_sel():
+    print("Exit")
 
-        print("Name\t\t\tTotal Donation\t\tNum Gifts\tAverage Gift")
-        for jj in range(ll):
-            donation = [ float(item) for index, item in enumerate(",".join(all_donations[jj]).split(","))]
-            donor_name = eval(donor_names[jj])
-            total_donation = sum(donation)
-            num_gifts = len(donation)
-            avg_donation = total_donation/num_gifts
-            print ('{:23}'.format(donor_name),
-                    '${:^6,.2f}'.format(total_donation),
-                    '{:20}'.format(num_gifts),
-                    '{:14}'.format(""), 
-                    '${:^6,.2f}'.format(avg_donation))
-    elif(thank_all.lower() == "yes"):   
-        for jj in range(ll):
-            donation = [ float(item) for index, item in enumerate(",".join(all_donations[jj]).split(","))]
-            donor_name = eval(donor_names[jj])
-            total_donation = sum(donation)
-            print('''
-            
-                  Dear {}, 
-                  
-                  Thank you for your very kind donation of ${:,.2f}.
-                  
-                  It will be put to very good use. 
-       
-                                        Sincerely,
-                                          -The Team'''.format(donor_name,total_donation)) 
-    elif(thank_one.lower() == "yes"):
-        quest = input("Do you have the donor name? (yes/no)" )
-        quest.lower()
-        if quest == "no":
-            print("Please select full name from report")
-        if quest == "yes":
-            donor_sel = input("Please give first and last name").title()
-            print(" If you don't see the letter for {}, please check the report".format(donor_sel))
-            for jj in range(ll):
-                donation = [ float(item) for index, item in enumerate(",".join(all_donations[jj]).split(","))]
-                donor_name = eval(donor_names[jj])
-                if donor_name in donor_sel:
-                    dd = len(donation)-1
-                    total_donation = donation[dd]
-                    print('''
-                    
-                    Dear {}, 
-                    Thank you for your very kind donation of ${:,.2f}.                  
-                    
-                    It will be put to very good use. 
-       
-                                        Sincerely,
-                                          -The Team'''.format(donor_name,total_donation))
-          
-    os.chdir(report_wd)
-  
-# In[6]:
+###############################################
+### following modules are supplementary embded on the above functions
+###############################################
+
+def letter_format( donor, gift):
+    print('''
+          Dear {},
+          Thank you for your very kind donation of ${:,.2f}.
+          It will be put to very good use.
+                                Sincerely,
+                                  -The Team'''.format(donor,gift))
+
+# reads text file from the file path
+def read_donor_info( donation_directory):
+    donor_lists = open(donation_directory)
+    donations = donor_lists.read()
+    donor_lists.close()
+    return(donations)
+
+# extract the donation information of one donor
+def one_donor_info( donor_folder, file_name):
+    # donor_folder: name of the folder in the directory holding donor files
+    #file_name: the file name of the donor (full name of the donor,
+    #              "firstname_last_name.txt")
+    donation_directory = os.path.join( os.getcwd(), donor_folder, file_name)
+    donation_filename = os.path.basename( file_name)
+    donor_name = os.path.splitext( donation_filename)[0].split("_")
+    donor_collect = read_donor_info( donation_directory)
+    donations = donor_collect.split(", ")
+    donation_out = [eval(item) for item in donations]
+    donor_info = {'donor': donor_name, 'gifts': donation_out}
+    return(donor_info)
+
+# creates a loop to get the donation ifnormation of
+# all donors in the directory
+
+def all_donors_info( donor_folder):
+    # donor_folder: name of the folder in the directory holding donor files
+    donation_dir = os.path.join( os.getcwd(), donor_folder)
+    donor_files = os.listdir( donation_dir)
+    donors_gifts = defaultdict( list)
+    for file_name in donor_files:
+        donor_gift = one_donor_info( donor_folder, file_name)
+        donor_name = " ".join( donor_gift["donor"])
+        donation = donor_gift["gifts"]
+        donors_gifts[donor_name] = donation
+    return(donors_gifts)
+
+# switch function will select the fumctions above
+# depending on the selection of user
+
+switch_func_dict = {
+        1: create_report,
+        2: thank_all_letter,
+        3: thank_one_letter,
+        4: quit_sel,
+    }
+
+def output_entry_value():
+    print('''Please choose one of the following numbers:
+             For report select - 1,
+             Send thank you letter to all donors - 2,
+             Send thank you letter to selected donor - 3,
+             Quit - 4
+
+             ''')
+    sel_num = input("Enter one of the four numbers: ")
+    sel_num = eval(sel_num)
+    return(sel_num)
 
 
-# var = 1 is for donors total summary donation Report
-# var = 2 is for List of individual donations
-# var = 3 is for send a Thank You to a single donor
-# var = 4 is for send Thank you letters to all donors
-        
-donors_dir_path = '/Users/Netsanet/Desktop/UW_courses/UWpython/Self_Paced-Online/students/Net_Michael/session04/donors'
+# any of the follwing for choices can be executed for desired output
+
 if __name__ == "__main__":
-    prompt(var = 1)
-    prompt(var = 2)
-    prompt(var = 3)
-    prompt(var = 4)
-    prompt(var = 5)
-    
-
-
-# In[ ]:
-
-
-
-
+    sel_choice = output_entry_value()
+    if sel_choice <= 4:
+        switch_func_dict.get(sel_choice)()
+    else:
+        print("Select an integer between 1 and 4")
