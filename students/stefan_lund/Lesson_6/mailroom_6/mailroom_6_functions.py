@@ -9,22 +9,21 @@ def create_a_report(data):
 
     rprt_header = report_header(data)
 
-    for line in rprt_header[:3]:
-        print(line)
+    rprt_dict = {"frame"      : rprt_header[0],
+                 "line"       : rprt_header[1],
+                 "temp_form"  : rprt_header[2],
+                 "al"         : rprt_header[3],
+                 "nl"         : rprt_header[4],
+                 "name"       : None}
 
-    temp_form = rprt_header[3]
-    amount_len = rprt_header[4]
-    name_len = rprt_header[5]
+    print_header(rprt_dict)
 
-    for name, donations in data.items():
-        total, number_of_donations, average = detail_from(donations)
+    for name, donations in sorted(data.items()):
+        detail_dict = detail_from(donations)
+        rprt_dict["name"] = name
+        rprt_dict.update(detail_dict)
 
-        line = temp_form.format(name,
-                                total,
-                                number_of_donations,
-                                average,
-                                nl=name_len,
-                                al=amount_len)
+        line = rprt_dict["temp_form"].format(**rprt_dict)
         print(line)
 
     return "start"
@@ -37,19 +36,25 @@ def list_of_names(data):
     name_list = data.keys()
 
     lst_header = list_header(data)
-    # print header
-    for line in lst_header[:3]:
-        print(line)
+    list_dict = {"frame"      : lst_header[0],
+                 "line"       : lst_header[1],
+                 "temp_form"  : lst_header[2],
+                 "nl"         : lst_header[3],
+                 "name"       : None}
 
-    temp_form = lst_header[3]
-    name_len = lst_header[4]
-    # print each name in alphabetical order
+    print_header(list_dict)
+
     for name in sorted(name_list):
-        # temp_form = "| {:<{nl}}|"
-        line = temp_form.format(name, nl=name_len)
+        list_dict["name"] = name
+        line = list_dict["temp_form"].format(**list_dict)
         print(line)
 
     return "thank_you"
+
+
+def print_header(header_dict):
+    header_lne = "\n{frame}\n{line}\n{frame}"
+    print(header_lne.format(**header_dict))
 
 
 def name_length(data):
@@ -99,24 +104,27 @@ def detail_from(donations):
     if number_of_donations > 0:
         average = total / number_of_donations
 
-    return ("%.2f" % (total),
-            str(int(number_of_donations)),
-            "%.2f" % (average))
+    temp_dict = {"total"     : "%.2f" % (total),
+                 "num"       : str(int(number_of_donations)),
+                 "average"   : "%.2f" % (average)}
+
+    return temp_dict
 
 
 def list_header(data):
 
     name_len = name_length(data)
-    donor_str = ["Donor Name"]
-    donor_form = "|{:<{nl}}|"
+    donor_dict = {"name"    : "Donor Name",
+                  "nl"      : name_len}
+
+    donor_form = "|{name:<{nl}}|"
 
     p = "+"
     s = "-"
     donor_lne = p + s * (name_len)
 
     donor_header = [donor_lne + p,
-                    donor_form.format(*donor_str, nl=name_len),
-                    donor_lne + p,
+                    donor_form.format(**donor_dict),
                     donor_form,
                     name_len]
 
@@ -126,22 +134,25 @@ def list_header(data):
 def report_header(data):
 
     amount_len = amount_length(data)
+    donor_lne, _, donor_form, name_len = list_header(data)
 
-    report_str = ["Donor Name", "Total Given", "Num Gifts", "Average Gift"]
+    report_dict = {"name"    : "Donor Name",
+                   "total"   : "Total Given",
+                   "num"     : "Num Gifts",
+                   "average" : "Average Gift",
+                   "al"      : amount_len,
+                   "nl"      : name_len}
+    # report_str = ["Donor Name", "Total Given", "Num Gifts", "Average Gift"]
 
-    report_form = "{:>{al}}|{:>{al}}|{:>{al}}|"
+    report_form = "{total:>{al}}|{num:>{al}}|{average:>{al}}|"
 
     p = "+"
     s = "-"
     report_lne = 3 * ((s * (amount_len)) + p)
 
-    donor_lne, _, _, donor_form, name_len = list_header(data)
 
     reprt_header = [donor_lne + report_lne,
-                    (donor_form + report_form).format(*report_str,
-                                                      nl=name_len,
-                                                      al=amount_len),
-                    donor_lne + report_lne,
+                    (donor_form + report_form).format(**report_dict),
                     donor_form + report_form,
                     amount_len,
                     name_len]
