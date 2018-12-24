@@ -1,3 +1,9 @@
+#import modules
+
+import numpy as np
+import os 
+import sys
+
 """
 SENDING A THANKYOU
 If the user (you) selects ‘Send a Thank You’, prompt for a Full Name.
@@ -15,8 +21,7 @@ def send_thankyou():
     name = input("Please Enter First and Last Name: ")
 
     while name == "list":
-        for donor in donors:
-            print(donor)
+        print("\n".join([donor for donor in donors]))
         name = input("\nPlease Enter First and Last Name: ")
 
     if name not in donors:
@@ -26,7 +31,7 @@ def send_thankyou():
         #append new_donation to donor list
         donors[name].append(new_donation)            
 
-    elif name in donors:
+    else:
         new_donation = input("Enter a Donation Amount: ")
         new_donation = float(new_donation)
         #append new_donation to donations
@@ -40,8 +45,6 @@ on the {name.split()[1]} Memorial Children's wing at Dark Place Hospital\n\nYour
 on the {name.split()[0]} Memorial Children's wing at Dark Place Hospital\n\nYours Truly,\nJared Mulholland"""
 
     print(thankyou)
-    return donors
-
 
 """
 CREATE A REPORT
@@ -52,8 +55,6 @@ After printing this report, return to the original prompt.
 At any point, the user should be able to quit their current task and return to the original prompt.
 From the original prompt, the user should be able to quit the script cleanly.
 """
-import numpy as np
-
 def takeSecond(elem):
     return elem[1]
 
@@ -73,8 +74,6 @@ Send Letters Function
 In this version, add a function (and a menu item to invoke it), that goes through all 
 the donors in your donor data structure, generates a thank you letter, and writes it to disk as a text file.
 """
-import os 
-
 file_path = 'C:\\Users\\Jared\\Documents\\IntroToPython\\Self_Paced-Online\\students\\jared_mulholland\\lesson_4\\donation_letters'
 
 def send_letters():
@@ -91,6 +90,13 @@ def send_letters():
 
         with open(donor.replace(" ","_").lower() + '_donations.txt', 'w') as donation_letter:
             donation_letter.write(letter_text)           
+
+"""
+QUIT PROGRAM
+"""
+
+def quit_mailroom():
+    sys.exit(0)
 
 
 """
@@ -115,6 +121,7 @@ main_dict = {
             "1": send_thankyou,
             "2": create_report,
             "3": send_letters, 
+            "4": quit_mailroom
            }
     
 main_prompt = ("\nMain Menu  \n 1. Send a Thank You \n 2. Create a Report \n 3. Send Letters \n 4. Quit \n Please Choose an Option: ")
@@ -122,14 +129,18 @@ main_prompt = ("\nMain Menu  \n 1. Send a Thank You \n 2. Create a Report \n 3. 
 def mail_room_fun(main_prompt, main_dict):
     while True:        
         response = input(main_prompt)
-        if response == "4":
-            break
-        else:
-            print("\n")
+        print("\n")
+        try:
             main_dict.get(response)()
+        except TypeError:
+            print("PLEASE ENTER NUMBER 1-4")
 
-mail_room_fun(main_prompt, main_dict)
-    
+if __name__ == "__main__":
+    mail_room_fun(main_prompt, main_dict)
+
+
+
+
 
     
 
