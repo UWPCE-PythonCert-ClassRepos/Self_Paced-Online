@@ -132,9 +132,9 @@ def add_donation(name):
 def send_note(name,donation,note):
     """Takes a donor name,donation amount and a note and sends the note to the donor"""
     print()
-    print(note.format(name,donation))
+    print(note.format(name, donation))
     print()
-    return note.format(name,donation)
+    return note.format(name, donation)
 
 
 def menu_selection(prompt, dispatch_dict, key_def=None):
@@ -163,20 +163,6 @@ def quit_sys():
 
 def send_letters():
     donors.send_letters(thank_you_note)
-
-
-def create_letters(don_list, note_format):
-    for item in don_list:
-        write_letter(item,don_list[item][-1],note_format)
-
-
-def write_letter(donor, donation,note):
-    outfile = open(file_name(donor),'w')
-    outfile.write(note.format(donor,donation))
-
-
-def file_name(donor):
-    return donor.replace(" ","_")+".txt"
 
 
 main_dispatch = {"1": prompt_donors, "2": print_report, "3": send_letters, "4": quit_sys}
