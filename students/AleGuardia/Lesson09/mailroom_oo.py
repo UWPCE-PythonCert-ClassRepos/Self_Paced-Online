@@ -25,6 +25,17 @@ class Donors():
             if x.name == name:
                 return x
 
+    def return_report(self):
+        """Creates and prints a report of donors and donations"""
+        report = f"{return_label()}\n"
+        for item in self.donor_summary():
+            row = "{:18} $ {:>12.2f}  {:>9d}  $ {:>12.2f}\n".format(item['name'],
+                                                                    item['total'],
+                                                                    item['number'],
+                                                                    item['average'])
+            report += row
+        return report
+
 
 # Donor class - could be in a different module
 class Donor():
@@ -66,6 +77,9 @@ d4.add_donation(1000)
 d5.add_donation(30000)
 d5.add_donation(3499)
 
+
+# User interface
+
 main_responses = {1:"1 - Send a Thank You\n", 2:"2 - Create a Report\n",
                   3: "3 - Send letters to everyone\n",4:"4 - quit\n"}
 main_prompt = f"Please choose one of the following:\n" \
@@ -82,16 +96,16 @@ def return_label():
     return label
 
 
-def return_report(data):
-    """Creates and prints a report of donors and donations"""
-    report = f"{return_label()}\n"
-    for item in data:
-        row = "{:18} $ {:>12.2f}  {:>9d}  $ {:>12.2f}\n".format(item['name'],
-                                                                item['total'],
-                                                                item['number'],
-                                                                item['average'])
-        report += row
-    return report
+# def return_report(data):
+#     """Creates and prints a report of donors and donations"""
+#     report = f"{return_label()}\n"
+#     for item in data:
+#         row = "{:18} $ {:>12.2f}  {:>9d}  $ {:>12.2f}\n".format(item['name'],
+#                                                                 item['total'],
+#                                                                 item['number'],
+#                                                                 item['average'])
+#         report += row
+#     return report
 
 
 def prompt_donors():
@@ -100,23 +114,24 @@ def prompt_donors():
     if name == 'quit':
         return None
     if name == 'list':
-        print(*donors.return_donors(),sep="\n")
+        print()
+        print(*donors.return_donors(), sep="\n")
+        print()
         return prompt_donors()
-    if donors.donor_existence(name):
-        return send_note(name,add_donation(name),thank_you_note)
-    else:
+    if not donors.donor_existence(name):
         donors.add_donor(Donor(name))
-        return send_note(name,add_donation(name),thank_you_note)
+    #     return send_note(name,add_donation(name),thank_you_note)
+    # else:
+    #     donors.add_donor(Donor(name))
+    return send_note(name,add_donation(name),thank_you_note)
 
 
-
-# Added code to handle exceptions when user does not input a number
 def add_donation(name):
     """Takes the name of a donor and adds a donation on his behalf"""
     while True:
         try:
             amount = float(input("Please enter a donation amount for {}:".format(name)))
-            donations[name].append(float(amount))
+            donors.return_donor(name).add_donation(float(amount))
             return amount
         except ValueError:
             print("Please enter only digits")
@@ -145,7 +160,7 @@ def menu_selection(prompt, dispatch_dict, key_def=None):
 
 def print_report():
     print()
-    report = return_report(donations)
+    report = donors.return_report()
     print(report)
     return report
 

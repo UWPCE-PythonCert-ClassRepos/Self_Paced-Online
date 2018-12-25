@@ -123,7 +123,7 @@ def test_report():
     d4.add_donation(1000)
     d5.add_donation(30000)
     d5.add_donation(3499)
-    assert return_report(donors.donor_summary()) == 'Donor Name         |  Total Given | Num Gifts | Average Gift\n' \
+    assert donors.return_report() == 'Donor Name         |  Total Given | Num Gifts | Average Gift\n' \
                                        '-------------------------------------------------------------\n' \
                                        'William Gates, III $   7335000.00          3  $   2445000.00\n' \
                                        'Mark Zuckerberg    $     20000.00          2  $     10000.00\n' \
@@ -154,12 +154,12 @@ def test_prompt_donors_quit(monkeypatch):
     assert prompt_donors() is None
 
 
-# def test_prompt_donors_list(monkeypatch, capsys):
-#     monkeypatch.setitem(__builtins__,'input',make_multi_input(["list","quit"]))
-#     prompt_donors(donors)
-#     out, err = capsys.readouterr()
-#     print(out)
-#     assert out == 'William Gates, III\nMark Zuckerberg\nJeff Bezos\nPaul Allen\nElon Musk'
+def test_prompt_donors_list(monkeypatch, capsys):
+    monkeypatch.setitem(__builtins__,'input',make_multi_input(["list","quit"]))
+    prompt_donors()
+    out, err = capsys.readouterr()
+    print(out)
+    assert out == '\nWilliam Gates, III\nMark Zuckerberg\nJeff Bezos\nPaul Allen\nElon Musk\n\n'
 
 
 
