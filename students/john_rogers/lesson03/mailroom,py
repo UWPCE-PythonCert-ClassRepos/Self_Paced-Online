@@ -3,9 +3,9 @@
 mailroom.py -
     1) prompt user for 3 actions - Send thank you, create report or quit
 Author: JohnR
-Version: .1
-Date: 12/24/2018
-Notes: Creating base template
+Version: .3
+Date: 12/25/2018
+Notes: Completed structure for main loop. Completed get_input function.
 """
 
 
@@ -15,23 +15,41 @@ def main():
     various actions available.
     :return:
     """
-    # TODO: create data structure w/ list of donors and amounts they
-    #       have donated; 1 to 3 donations each
-    # TODO: get user input
-    # TODO: exit program if quit rec'd
-    pass
+    donors = [                 # TODO: May need to add dates here
+        'Oprah', [5, 10, 20],
+        'Sting', [2043.23, 23456.23, 1665.224],
+        'Bono', [25.20, 954.34, 340.234],
+    ]
+
+    while True:
+        choice = get_input()
+
+        if choice == 1:
+            print('Exiting program.')
+            break
+        elif choice == 2:
+            print('here we send a thank you')
+        elif choice == 3:
+            print('we would print a report here')
 
 
 def get_input():
     """
     Get user input
-    :return: User input, sanitized
+    :return: User choice from menu
     """
-    # TODO: present 3 options
-    # TODO: get user input
-    # TODO: sanitize input
-    # TODO: return option
-    pass
+    print('Please choose from the following menu: ')
+    print('1 Quit')
+    print('2 Send a thank you')
+    print('3 Create a report')
+
+    while True:
+        cmd = input('Please pick a number between 1 and 3: ')
+        cmd = int(cmd)
+        if cmd not in range(1, 4):
+            break
+        else:
+            return cmd
 
 
 def thank_you():
@@ -61,6 +79,7 @@ def create_report():
     # TODO:     amount (summary of each only)
     # TODO: Return to original prompt
     # TODO: User should be able to quit current task and return to prompt
+    pass
 
 
 if __name__ == '__main__':
