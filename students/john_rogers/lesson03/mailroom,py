@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""
+mailroom.py -
+    1) prompt user for 3 actions - Send thank you, create report or quit
+Author: JohnR
+Version: .1
+Date: 12/24/2018
+Notes: Creating base template
+"""
+
+
+def main():
+    """
+    Create a list of donor and amounts, then get user input for the
+    various actions available.
+    :return:
+    """
+    # TODO: create a list
+    # TODO: get user input
+    # TODO: exit program if quit rec'd
+
+
+def get_input():
+    """
+    Get user input
+    :return: User input, sanitized
+    """
+
+
+def thank_you():
+    """
+    send a thank you
+    :return: thank you
+    """
+
+
+def create_report():
+    """
+    create a report
+    :return: report
+    """
+
+
+if __name__ == '__main__':
+    main()
