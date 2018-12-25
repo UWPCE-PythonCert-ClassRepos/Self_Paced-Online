@@ -2,6 +2,26 @@
 """Takes donor and donation information and sends thank you notes. Adds donors and donations and reports it"""
 
 
+# Donor Collection class - could be in different module
+class Donors():
+    def __init__(self):
+        self.donors = []
+
+    def add_donor(self,donor):
+        self.donors.append(donor)
+
+    def return_donors(self):
+        return [x.name for x in self.donors]
+
+    def donor_existence(self,name):
+        return name in self.return_donors()
+
+    def donor_summary(self):
+        return [{"name": x.name, "total": x.total_donations(), "number": x.number_donations(),
+                 "average": x.average_donation()} for x in self.donors]
+
+
+# Donor class - could be in a different module
 class Donor():
     def __init__(self,name):
         self.name = name
@@ -16,15 +36,8 @@ class Donor():
     def average_donation(self):
         return sum(self.donations)/len(self.donations)
 
-
-
-# Lesson 5 Mailroom Assignment by Alejandro Guardia
-
-donations = {'William Gates, III': [1000000, 585000, 5750000],
-             'Mark Zuckerberg': [15000, 5000],
-             'Jeff Bezos': [3000000],
-             'Paul Allen': [25000,1000],
-             'Elon Musk': [30000,3499]}
+    def number_donations(self):
+        return len(self.donations)
 
 
 main_responses = {1:"1 - Send a Thank You\n", 2:"2 - Create a Report\n",
@@ -34,11 +47,6 @@ main_prompt = f"Please choose one of the following:\n" \
 thank_you_note = "Dear {}:\n\nWe want to thank you for your generous donation of ${:.2f}.\n\n" \
                  "It will be put to very good use.\n\n" \
                  "\tSincerely,\n\t\tThe Team"
-
-
-def return_average(seq):
-    """Takes a sequence and returns the average"""
-    return sum(seq)/len(seq)
 
 
 def return_label():
@@ -52,18 +60,12 @@ def return_report(data):
     """Creates and prints a report of donors and donations"""
     report = f"{return_label()}\n"
     for item in data:
-        row = "{:18} $ {:>12.2f}  {:>9d}  $ {:>12.2f}\n".format(item,sum(data[item]),len(data[item]),return_average(data[item]))
+        row = "{:18} $ {:>12.2f}  {:>9d}  $ {:>12.2f}\n".format(item['name'],
+                                                                item['total'],
+                                                                item['number'],
+                                                                item['average'])
         report += row
     return report
-
-
-# Changed for loop to list Comprehension - added list comprehension
-def return_donors():
-    """Returns the names of all donors"""
-    # donors = ""
-    # for item in donations:
-    #     donors += item + "\n"
-    return [x + "\n" for x in donations]
 
 
 def prompt_donors():
