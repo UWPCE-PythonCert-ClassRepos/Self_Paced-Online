@@ -18,6 +18,9 @@ def main():
     very_long_tuple = (0, 9, 8, 7, 6, 5, 4, 3, 2, 1)
     five_tuple = (4, 30, 2017, 2, 27)
     t5_list = ['orange', 1.3, 'lemon', 1.1]
+    names = ['Renton', 'Simon', 'Daniel', 'Francis', 'Tommy', 'Davie']
+    ages = [21, 21, 23, 35, 28, 24]
+    cost = [107.00, 20, 23.000, 4566.12304, 431.453, 2.0972345]
 
     print('Task 1 results using f strings: ', end='')
     t1_results = task_1()
@@ -39,6 +42,9 @@ def main():
 
     print('Task 5.0 results, more f strings: ', end='')
     task_5(t5_list)
+
+    print('Task 6.0 results, alignment: ')
+    task_6(names, ages, cost)
 
 
 def task_1():
@@ -111,12 +117,27 @@ def task_5(t5_list):
           f' and the weight of a {t5_list[2].upper()} is {t5_list[3] * 1.2}.')
 
 
-def task_6():
+def task_6(row_1, row_2, row_3):
     """
-    tbd
-    :return: tbd
+    Print a table of several rows, each with a
+    name, an age and a cost. Make sure some of the costs are in the hundreds
+    and thousands to test your alignment specifiers.
+
+    And for an extra task, given a tuple with 10 consecutive numbers,
+    can you work how to quickly print the tuple in columns that are 5
+    characters wide? It’s easily done on one short line!
+    :return: none
     """
-    pass
+    print('Centered')
+    for i in range(len(row_1)):
+        print(f'{row_1[i]:^10} {row_2[i]:^10n} {row_3[i]:^10n}')
+
+    print()
+    print('Right justified')
+    for i in range(len(row_1)):
+        print(f'{row_1[i]:10} {row_2[i]:10n} {row_3[i]:10n}')
+
+    # TODO: extra credit
 
 
 if __name__ == '__main__':
