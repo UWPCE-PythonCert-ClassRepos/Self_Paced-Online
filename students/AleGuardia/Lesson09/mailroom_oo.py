@@ -36,6 +36,13 @@ class Donors():
             report += row
         return report
 
+    def send_letters(self,note):
+        for don in self.donors:
+            # write_letter(item, don_list[item][-1], note_format)
+            outfile = open(don.name.replace(" ","_")+".txt", 'w')
+            outfile.write(note.format(don.name, don.donations[-1]))
+
+
 
 # Donor class - could be in a different module
 class Donor():
@@ -96,18 +103,6 @@ def return_label():
     return label
 
 
-# def return_report(data):
-#     """Creates and prints a report of donors and donations"""
-#     report = f"{return_label()}\n"
-#     for item in data:
-#         row = "{:18} $ {:>12.2f}  {:>9d}  $ {:>12.2f}\n".format(item['name'],
-#                                                                 item['total'],
-#                                                                 item['number'],
-#                                                                 item['average'])
-#         report += row
-#     return report
-
-
 def prompt_donors():
     """Prompt donor name and adds donor and donations"""
     name = input("Please enter a donor name: ")
@@ -120,10 +115,7 @@ def prompt_donors():
         return prompt_donors()
     if not donors.donor_existence(name):
         donors.add_donor(Donor(name))
-    #     return send_note(name,add_donation(name),thank_you_note)
-    # else:
-    #     donors.add_donor(Donor(name))
-    return send_note(name,add_donation(name),thank_you_note)
+    return send_note(name, add_donation(name), thank_you_note)
 
 
 def add_donation(name):
@@ -170,7 +162,7 @@ def quit_sys():
 
 
 def send_letters():
-    create_letters(donations,thank_you_note)
+    donors.send_letters(thank_you_note)
 
 
 def create_letters(don_list, note_format):
