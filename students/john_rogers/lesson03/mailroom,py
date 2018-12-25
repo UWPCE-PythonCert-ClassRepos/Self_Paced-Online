@@ -15,9 +15,11 @@ def main():
     various actions available.
     :return:
     """
-    # TODO: create a list
+    # TODO: create data structure w/ list of donors and amounts they
+    #       have donated; 1 to 3 donations each
     # TODO: get user input
     # TODO: exit program if quit rec'd
+    pass
 
 
 def get_input():
@@ -25,6 +27,11 @@ def get_input():
     Get user input
     :return: User input, sanitized
     """
+    # TODO: present 3 options
+    # TODO: get user input
+    # TODO: sanitize input
+    # TODO: return option
+    pass
 
 
 def thank_you():
@@ -32,6 +39,16 @@ def thank_you():
     send a thank you
     :return: thank you
     """
+    # TODO: Prompt for full name
+    # TODO: If name not in list, add to list and use it
+    # TODO: If 'list' show donor list and re-prompt
+    # TODO: If name in list, use it
+    # TODO: Once name is selected prompt for donation amount
+    # TODO: Turn amount into number
+    # TODO: Add amount to the donation history for that user
+    # TODO: Use string formatting to compose an email thanking the donor
+    # TODO: Print thank you to screen and return to original promport
+    pass
 
 
 def create_report():
@@ -39,6 +56,11 @@ def create_report():
     create a report
     :return: report
     """
+    # TODO: Print a list of donors sorted by historical donation amount
+    # TODO:     List donor name, number of donation and average donation
+    # TODO:     amount (summary of each only)
+    # TODO: Return to original prompt
+    # TODO: User should be able to quit current task and return to prompt
 
 
 if __name__ == '__main__':
