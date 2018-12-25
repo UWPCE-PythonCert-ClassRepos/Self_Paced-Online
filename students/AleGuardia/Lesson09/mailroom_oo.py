@@ -7,7 +7,7 @@ class Donors():
     def __init__(self):
         self.donors = []
 
-    def add_donor(self,donor):
+    def add_donor(self, donor):
         self.donors.append(donor)
 
     def return_donors(self):
@@ -19,6 +19,11 @@ class Donors():
     def donor_summary(self):
         return [{"name": x.name, "total": x.total_donations(), "number": x.number_donations(),
                  "average": x.average_donation()} for x in self.donors]
+
+    def return_donor(self,name):
+        for x in self.donors:
+            if x.name == name:
+                return x
 
 
 # Donor class - could be in a different module
@@ -39,6 +44,27 @@ class Donor():
     def number_donations(self):
         return len(self.donations)
 
+
+# Create Donor Collection for testing
+donors = Donors()
+d1 = Donor("William Gates, III")
+d2 = Donor("Mark Zuckerberg")
+d3 = Donor("Jeff Bezos")
+d4 = Donor("Paul Allen")
+d5 = Donor("Elon Musk")
+donor_list = [d1, d2, d3, d4, d5]
+for donor in donor_list:
+    donors.add_donor(donor)
+d1.add_donation(1000000)
+d1.add_donation(585000)
+d1.add_donation(5750000)
+d2.add_donation(15000)
+d2.add_donation(5000)
+d3.add_donation(3000000)
+d4.add_donation(25000)
+d4.add_donation(1000)
+d5.add_donation(30000)
+d5.add_donation(3499)
 
 main_responses = {1:"1 - Send a Thank You\n", 2:"2 - Create a Report\n",
                   3: "3 - Send letters to everyone\n",4:"4 - quit\n"}
@@ -74,19 +100,14 @@ def prompt_donors():
     if name == 'quit':
         return None
     if name == 'list':
-        print(*return_donors())
+        print(*donors.return_donors(),sep="\n")
         return prompt_donors()
-    if name in donations:
+    if donors.donor_existence(name):
         return send_note(name,add_donation(name),thank_you_note)
-    if name not in donations:
-        add_donor(name)
+    else:
+        donors.add_donor(Donor(name))
         return send_note(name,add_donation(name),thank_you_note)
 
-
-def add_donor(name):
-    """Adds a donor name"""
-    donations[name] = []
-    return donations
 
 
 # Added code to handle exceptions when user does not input a number
@@ -119,7 +140,7 @@ def menu_selection(prompt, dispatch_dict, key_def=None):
             if not callable(key_def):
                 print("Please enter a valid number")
             else:
-                key_def()
+                key_def(donors)
 
 
 def print_report():
