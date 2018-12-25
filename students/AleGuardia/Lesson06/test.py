@@ -104,12 +104,12 @@ def test_add_donation_new_donor(monkeypatch, capsys):
                              'Jeff Bezos         $   3000000.00          1  $   3000000.00\n' \
                              'Paul Allen         $     26000.00          2  $     13000.00\n' \
                              'Elon Musk          $     33499.00          2  $     16749.50\n' \
-                             'Ale                $        20.25          1  $        20.25\n' \
+                             out, err = capsys.readouterr()'Ale                $        20.25          1  $        20.25\n' \
                              'Pit                $        50.00          1  $        50.00\n\n'
     expected_output_note = thank_you_note.format('Pit',50)
     monkeypatch.setitem(__builtins__,'input',make_multi_input(['Pit',50]))
     prompt_donors()
-    out, err = capsys.readouterr()
+
     assert out == expected_output_note
     print_report()
     out, err = capsys.readouterr()
