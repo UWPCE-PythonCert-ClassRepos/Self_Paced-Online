@@ -47,7 +47,7 @@ def print_header(header_dict):
 def name_length(data):
     """
     data: {"Name1": [list of donations], ....}
-    Name1 etc are the dict keys
+    Name1 etc are the dict keys, type str
     name_length: integer
     """
 
@@ -60,21 +60,28 @@ def name_length(data):
 
     return name_lenth
 
+def amount_length_max(lst_of_int):
+    """
+    lst_of_int : list of integers
+    returns the the largest number in lst_of_int unless len("Average Gift")
+        is a longer str, adds 3 to this number
+    """
+    amount_length = max(max(lst_of_int), len("Average Gift")) + 3
+    return amount_length
 
-def amount_length(data):
+
+def amount_lengths(data):
     """
     data: {"Name1": [list of donations], ....}
-    amount_len: len of str value for the sum of each list of donations
-        associated with each name, list content is float numbers
-    amount_length: integer
+    amount_len: add all vars in list and make this value a type str with
+                two decimals , name for name each str total is appended to
+                len_list
+    return len_lst: list of integer(s)
     """
 
     len_lst = []
     [len_lst.append(len("%.2f" % (sum(val["total"])))) for val in data.values()]
-
-    amount_lenth = max(max(len_lst), len("Average Gift")) + 3
-
-    return amount_lenth
+    return len_lst
 
 
 def detail_from(donations):
@@ -131,7 +138,8 @@ def list_header(data):
 
 def report_header(data):
 
-    amount_len = amount_length(data)
+    amount_lengs = amount_lengths(data)
+    amount_len = amount_length_max(amount_lengs)
     lst_dict = list_header(data)
 
     report_dict = {"name"    : "Donor Name",
