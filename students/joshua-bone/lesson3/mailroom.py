@@ -32,6 +32,9 @@ add("Jeff Bezos", 877.33)
 add("Paul Allen", 150.00)
 add("Paul Allen", 450.00)
 add("Paul Allen", 108.42)
+add("Sergey Brin", 4567.89)
+add("Sergey Brin", 123.89)
+add("Sergey Brin", 34732.22)
 
 
 def printHorizontal():
