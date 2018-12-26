@@ -1,7 +1,8 @@
 import math
 
 class Circle:
-	def __init__(self, radius=None):
+
+	def __init__(self, radius):
 		self._radius = radius
 
 
@@ -10,7 +11,6 @@ class Circle:
 		"""return radiuis """
 		return self._radius
 	
-
 	@property
 	def diameter(self):
 		return self._radius * 2
@@ -61,6 +61,7 @@ class Circle:
 		return self._radius != other._radius
 
 
+
 class Sphere(Circle):
 	def __repr__(self):
 		return "Sphere({})".format(self._radius)
@@ -79,8 +80,6 @@ class Sphere(Circle):
 		else:
 			raise NotImplementedError
 	
-
-
 
 
 
