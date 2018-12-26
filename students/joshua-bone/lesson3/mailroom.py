@@ -32,7 +32,7 @@ add("Jeff Bezos", 877.33)
 add("Paul Allen", 150.00)
 add("Paul Allen", 450.00)
 add("Paul Allen", 108.42)
-add("Sergey Brin", 4567.89)
+add("Sergey Brin", 956755.89)
 add("Sergey Brin", 123.89)
 add("Sergey Brin", 34732.22)
 
@@ -56,14 +56,19 @@ def createReport():
            f"{'Num Gifts': >{NUM_WIDTH}} |" +
            f"{'Average Gift': >{NUM_WIDTH}}"))
     print("-" * (max_len + 2 + 3 * (1 + NUM_WIDTH)))
+    unsorted_list = []
     for name in donors:
         amt = sum(donors[name])
         num = len(donors[name])
         avg = amt / num
-        print((f"{name: <{max_len}}" +
-               f"${amt:{NUM_WIDTH}.2f}  " +
-               f"{num:>{NUM_WIDTH}d} " +
-               f"${avg:{NUM_WIDTH}.2f}"))
+        output = (f"{name: <{max_len}}" +
+                  f"${amt:{NUM_WIDTH}.2f}  " +
+                  f"{num:>{NUM_WIDTH}d} " +
+                  f"${avg:{NUM_WIDTH}.2f}")
+        unsorted_list.append((amt, output))
+    sorted_list = sorted(unsorted_list, key=lambda t: t[0], reverse=True)
+    for p in sorted_list:
+        print(p[1])
     print("-" * (max_len + 2 + 3 * (1 + NUM_WIDTH)) + "\n\n")
 
 
