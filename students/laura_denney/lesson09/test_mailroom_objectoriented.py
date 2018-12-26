@@ -31,3 +31,19 @@ def test_sort():
     f = [a, c, e]
     f.sort(reverse = True)
     assert repr(f) == "[Donor('charles', 500), Donor('lewis', 11), Donor('bob', 5, 6)]"
+
+def test_Donors_repr():
+    a = Donors(Donor("Bob", 5), Donor("Charles", 3))
+
+    assert repr(a) == "Donors(Donor('bob', 5), Donor('charles', 3))"
+
+def test_donors_length():
+    a = Donors(Donor("Bob", 5), Donor("Charles", 3))
+    assert len(a) == 2
+
+def test_add_new_donor():
+    a = Donors(Donor("Bob", 5), Donor("Charles", 3))
+    a.add_new_donor(Donor("laura", 1))
+    assert repr(a) == "Donors(Donor('bob', 5), Donor('charles', 3), Donor('laura', 1))"
+
+

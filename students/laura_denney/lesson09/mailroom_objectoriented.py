@@ -238,6 +238,7 @@ def first_run():
         Donor("samuel jackson",1,2,3),
         Donor("mr. bean", 500, 100))
 
+
 #Main Menu options for user
 main_choice_dict = {
     "1": send_thank_you,
@@ -265,7 +266,7 @@ def prompt_user():
                 print("\nYou have chosen to quit. Have a good day!")
                 break
         except AttributeError:
-            print("\nIt appears there are no donors on file, we recommend loading a saved list.")
+            print("\nA saved list of donors was found, please load the saved list.")
         except KeyError:
             print("\nThat is not a valid selection. Please choose option 1 - 6.")
         except FileNotFoundError:
