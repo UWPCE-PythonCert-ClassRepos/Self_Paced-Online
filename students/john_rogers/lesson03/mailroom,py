@@ -17,28 +17,16 @@ def main():
     :return:
     """
 
-    sting = {
-        'name': 'sting',
-        'donation 1': 13.13,
-        'donation 2': 234.34,
-        'donation 3': 65432.43,
-    }
-
-    oprah = {
-        'name': 'oprah',
-        'donation 1': 1234.23,
-        'donation 2': 43.23,
-        'donation 3': 3455.34,
-    }
-
-    bono = {
-        'name': 'bono',
-        'donation 1': 45313.23,
-        'donation 2': 23.23,
-        'donation 3': 532.34,
-    }
-
-    donors = [sting, bono, oprah]
+    db = {'sting': {'d1': 13.45,
+                    'd2': 214.34,
+                    },
+          'bono': {'d1': 54.54,
+                   'd2': 778.01,
+                   },
+          'oprah': {'d1': 66.34,
+                    'd2': 664.33,
+                    }
+         }
 
     while True:
         choice = get_input()
@@ -47,7 +35,7 @@ def main():
             print('Exiting program.')
             exit()
         elif choice == 2:
-            thank_you(donors)
+            thank_you(db)
         elif choice == 3:
             print('we would print a report here')
 
@@ -72,16 +60,11 @@ def get_input():
             return cmd
 
 
-def thank_you(donor_list):
+def thank_you(names):
     """
     send a thank you, check the donor list or add donation
     :return: thank you
     """
-
-    # get the names from the donor list and then test
-    names = []
-    for person in donor_list:
-        names.append(person['name'])
 
     while True:
         print('Enter q to exit to main menu.')
@@ -91,18 +74,24 @@ def thank_you(donor_list):
         if cmd == 'q':
             break
         elif cmd == 'list':
-            print()
-            print(names)
-        elif cmd in names:
+            print()     # TODO: clean up how names are printed to screen
+            print(names.keys())
+        elif cmd in names.keys():
+            # get the donation
             donation = input('Please enter an amount to donate: ')
             donation = int(donation)
-            print(donation)
+
+            # add donation as a new key value pair
+            d_num = len(names[cmd].keys()) + 1
+            d_num = str(d_num)
+            new_key = 'd' + d_num
+            names[cmd][new_key] = donation
+
+            # quick validation; TODO: remove before production
+            print(names)
 
     # TODO: If name not in list, add to list and use it
-    # TODO: If 'list' show donor list and re-prompt
     # TODO: If name in list, use it
-    # TODO: Once name is selected prompt for donation amount
-    # TODO: Turn amount into number
     # TODO: Add amount to the donation history for that user
     # TODO: Use string formatting to compose an email thanking the donor
     # TODO: Print thank you to screen and return to original prompt
