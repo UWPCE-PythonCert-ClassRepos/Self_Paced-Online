@@ -5,8 +5,7 @@ mailroom.py -
 Author: JohnR
 Version: .5
 Date: 12/26/2018
-Notes: Thank_you function mostly complete, need to validate numbers
-        as float (presumably).
+Notes: Need to start last function, create_report.
 """
 
 
@@ -66,7 +65,7 @@ def get_input():
 def thank_you(names):
     """
     send a thank you, check the donor list or add donation
-    :return: thank you
+    :return: None
     """
 
     while True:
@@ -80,10 +79,10 @@ def thank_you(names):
             print()     # TODO: clean up how names are printed to screen
             print(names.keys())
         elif cmd in names.keys():
-            # TODO: Need to validate numbers/ convert to float?
+            # name already in list, solicit new donation and add to dict
             donation = input('Please enter an amount to donate: ')
+            donation = float(donation)
 
-            # add donation as a new key value pair
             d_num = len(names[cmd].keys()) + 1
             d_num = str(d_num)
             new_key = 'd' + d_num
@@ -96,6 +95,7 @@ def thank_you(names):
             print(f'Welcome aboard, {cmd.capitalize()}, how much would '
                   f'you like to donate?')
             new_donation = input('Please an amount to donate: ')
+            new_donation = float(new_donation)
             names[cmd] = {'d1': new_donation}
 
             print(f'Thank you, {cmd.capitalize()}, for your kind'
