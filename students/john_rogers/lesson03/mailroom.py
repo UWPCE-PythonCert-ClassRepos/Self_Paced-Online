@@ -3,10 +3,10 @@
 mailroom.py -
     1) prompt user for 3 actions - Send thank you, create report or quit
 Author: JohnR
-Version: .4
-Date: 12/25/2018
-Notes: Working on thank_you function. Will continue to use nested dicts
-        for time being, should simplify in long term.
+Version: .5
+Date: 12/26/2018
+Notes: Thank_you function mostly complete, need to validate numbers
+        as float (presumably).
 """
 
 
@@ -19,12 +19,15 @@ def main():
 
     db = {'sting': {'d1': 13.45,
                     'd2': 214.34,
+                    'd3': 453.23,
                     },
           'bono': {'d1': 54.54,
                    'd2': 778.01,
+                   'd3': 564.35,
                    },
           'oprah': {'d1': 66.34,
                     'd2': 664.33,
+                    'd3': 566.45,
                     }
          }
 
@@ -77,9 +80,8 @@ def thank_you(names):
             print()     # TODO: clean up how names are printed to screen
             print(names.keys())
         elif cmd in names.keys():
-            # get the donation
+            # TODO: Need to validate numbers/ convert to float?
             donation = input('Please enter an amount to donate: ')
-            donation = int(donation)
 
             # add donation as a new key value pair
             d_num = len(names[cmd].keys()) + 1
@@ -87,14 +89,17 @@ def thank_you(names):
             new_key = 'd' + d_num
             names[cmd][new_key] = donation
 
-            # quick validation; TODO: remove before production
-            print(names)
+            print(f'Thank you, {cmd.capitalize()}, for your kind'
+                  f' donation of ${donation}.')
+        else:
+            # add the new name and prompt for donation
+            print(f'Welcome aboard, {cmd.capitalize()}, how much would '
+                  f'you like to donate?')
+            new_donation = input('Please an amount to donate: ')
+            names[cmd] = {'d1': new_donation}
 
-    # TODO: If name not in list, add to list and use it
-    # TODO: If name in list, use it
-    # TODO: Add amount to the donation history for that user
-    # TODO: Use string formatting to compose an email thanking the donor
-    # TODO: Print thank you to screen and return to original prompt
+            print(f'Thank you, {cmd.capitalize()}, for your kind'
+                  f' donation of ${new_donation}.')
 
 
 def create_report():
