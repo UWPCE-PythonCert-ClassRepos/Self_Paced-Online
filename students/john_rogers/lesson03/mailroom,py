@@ -3,9 +3,10 @@
 mailroom.py -
     1) prompt user for 3 actions - Send thank you, create report or quit
 Author: JohnR
-Version: .3
+Version: .4
 Date: 12/25/2018
-Notes: Completed structure for main loop. Completed get_input function.
+Notes: Working on thank_you function. Will continue to use nested dicts
+        for time being, should simplify in long term.
 """
 
 
@@ -15,20 +16,38 @@ def main():
     various actions available.
     :return:
     """
-    donors = [                 # TODO: May need to add dates here
-        'Oprah', [5, 10, 20],
-        'Sting', [2043.23, 23456.23, 1665.224],
-        'Bono', [25.20, 954.34, 340.234],
-    ]
+
+    sting = {
+        'name': 'sting',
+        'donation 1': 13.13,
+        'donation 2': 234.34,
+        'donation 3': 65432.43,
+    }
+
+    oprah = {
+        'name': 'oprah',
+        'donation 1': 1234.23,
+        'donation 2': 43.23,
+        'donation 3': 3455.34,
+    }
+
+    bono = {
+        'name': 'bono',
+        'donation 1': 45313.23,
+        'donation 2': 23.23,
+        'donation 3': 532.34,
+    }
+
+    donors = [sting, bono, oprah]
 
     while True:
         choice = get_input()
 
         if choice == 1:
             print('Exiting program.')
-            break
+            exit()
         elif choice == 2:
-            print('here we send a thank you')
+            thank_you(donors)
         elif choice == 3:
             print('we would print a report here')
 
@@ -43,6 +62,7 @@ def get_input():
     print('2 Send a thank you')
     print('3 Create a report')
 
+    # TODO: Time permitting, check if string
     while True:
         cmd = input('Please pick a number between 1 and 3: ')
         cmd = int(cmd)
@@ -52,12 +72,32 @@ def get_input():
             return cmd
 
 
-def thank_you():
+def thank_you(donor_list):
     """
-    send a thank you
+    send a thank you, check the donor list or add donation
     :return: thank you
     """
-    # TODO: Prompt for full name
+
+    # get the names from the donor list and then test
+    names = []
+    for person in donor_list:
+        names.append(person['name'])
+
+    while True:
+        print('Enter q to exit to main menu.')
+        cmd = input("Enter 'list' to see a current list of donors or "
+                    "a new name to become a new donor: ")
+        cmd = cmd.lower()
+        if cmd == 'q':
+            break
+        elif cmd == 'list':
+            print()
+            print(names)
+        elif cmd in names:
+            donation = input('Please enter an amount to donate: ')
+            donation = int(donation)
+            print(donation)
+
     # TODO: If name not in list, add to list and use it
     # TODO: If 'list' show donor list and re-prompt
     # TODO: If name in list, use it
@@ -65,8 +105,7 @@ def thank_you():
     # TODO: Turn amount into number
     # TODO: Add amount to the donation history for that user
     # TODO: Use string formatting to compose an email thanking the donor
-    # TODO: Print thank you to screen and return to original promport
-    pass
+    # TODO: Print thank you to screen and return to original prompt
 
 
 def create_report():
