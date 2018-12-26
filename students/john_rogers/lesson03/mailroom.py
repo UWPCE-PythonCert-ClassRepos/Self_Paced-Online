@@ -3,9 +3,10 @@
 mailroom.py -
     1) prompt user for 3 actions - Send thank you, create report or quit
 Author: JohnR
-Version: .5
-Date: 12/26/2018
-Notes: Need to start last function, create_report.
+Version: .7
+Last updated: 12/26/2018
+Notes: Just need to finish formatting of the last function, create_report
+            * Check various TODO items
 """
 
 
@@ -13,7 +14,7 @@ def main():
     """
     Create a list of donor and amounts, then get user input for the
     various actions available.
-    :return:
+    :return: none
     """
 
     db = {'sting': {'d1': 13.45,
@@ -27,7 +28,16 @@ def main():
           'oprah': {'d1': 66.34,
                     'd2': 664.33,
                     'd3': 566.45,
-                    }
+                    },
+          'yoko': {'d1': 64.24,
+                   'd2': 67.03,
+                   'd3': 990.34,
+                   },
+          'santa': {'di': 45.43,
+                    'd2': 98345.32,
+                    'd3': 54.34,
+                    'd4': 456.23,
+                    },
          }
 
     while True:
@@ -39,7 +49,7 @@ def main():
         elif choice == 2:
             thank_you(db)
         elif choice == 3:
-            print('we would print a report here')
+            create_report(db)
 
 
 def get_input():
@@ -47,6 +57,7 @@ def get_input():
     Get user input
     :return: User choice from menu
     """
+    print()
     print('Please choose from the following menu: ')
     print('1 Quit')
     print('2 Send a thank you')
@@ -76,8 +87,9 @@ def thank_you(names):
         if cmd == 'q':
             break
         elif cmd == 'list':
-            print()     # TODO: clean up how names are printed to screen
-            print(names.keys())
+            print()
+            for i in names.keys():
+                print(i.capitalize())
         elif cmd in names.keys():
             # name already in list, solicit new donation and add to dict
             donation = input('Please enter an amount to donate: ')
@@ -91,6 +103,7 @@ def thank_you(names):
             print(f'Thank you, {cmd.capitalize()}, for your kind'
                   f' donation of ${donation}.')
         else:
+            # TODO: validate name is a string and not an int
             # add the new name and prompt for donation
             print(f'Welcome aboard, {cmd.capitalize()}, how much would '
                   f'you like to donate?')
@@ -102,17 +115,22 @@ def thank_you(names):
                   f' donation of ${new_donation}.')
 
 
-def create_report():
+def create_report(data):
     """
-    create a report
-    :return: report
+    Print a list of donors sorted by historical donation amount.
+    List donor name, number of donations and average donation amount.
+    :return: none
     """
-    # TODO: Print a list of donors sorted by historical donation amount
-    # TODO:     List donor name, number of donation and average donation
-    # TODO:     amount (summary of each only)
-    # TODO: Return to original prompt
-    # TODO: User should be able to quit current task and return to prompt
-    pass
+    print()
+    print('Donor Name       | Total Given | Num Gifts | Avg Gift Amount')
+    print('-' * 60)
+
+    # TODO: clean up formatting, add a $ sign
+    for donor in data:
+        total_amount = float(sum(data[donor].values()))
+        num_donations = len(data[donor].values())
+        avg_donation = total_amount / num_donations
+        print(f'{donor.capitalize()} {total_amount:^30n} {num_donations:^10n} {avg_donation:^10n}')
 
 
 if __name__ == '__main__':

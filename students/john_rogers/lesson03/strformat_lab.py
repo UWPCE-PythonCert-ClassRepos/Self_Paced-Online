@@ -2,9 +2,9 @@
 """
 String formatting exercises.
 Author: JohnR
-Version: .7
-Date: 12/14/2018
-Notes: Tasks 1 - 5 complete.
+Version: 1.0
+Last updated: 12/26/2018
+Notes: minor formatting changes
 """
 
 
@@ -86,8 +86,10 @@ def task_3(unknown_tuple):
     values = []
     for i in unknown_tuple:
         values.append(i)
-    l = len(values)
-    print(("The {} numbers are: " + ",".join(["{}"] * l)).format(l, *values))
+
+    length = len(values)
+    print(("The {} numbers are: " + ",".join(["{}"] * length)).format
+          (length, *values))
 
 
 def task_4(date_tuple):
