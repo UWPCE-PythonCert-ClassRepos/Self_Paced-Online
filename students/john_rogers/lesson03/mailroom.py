@@ -5,8 +5,7 @@ mailroom.py -
 Author: JohnR
 Version: 1.0
 Last updated: 12/26/2018
-Notes: Code complete from a requirements standpoint, need to take one
-        last look at any open TODO items and decide to cut or not.
+Notes: Code complete from a requirements standpoint.
 """
 
 
@@ -17,8 +16,8 @@ def main():
     :return: none
     """
 
-    # NOTE: Pretty sure the rules didn't specify beyond 'data structure'.
-    # NOTE: I have been wrong in the past.
+    # Nested dictionaries seems like the most intuitive data structure
+    # for this type of record keeping
     db = {'sting': {'d1': 13.45,
                     'd2': 214.34,
                     'd3': 453.23,
@@ -86,7 +85,12 @@ def thank_you(names):
         cmd = input("Enter 'list' to see a current list of donors or "
                     "a new name to become a new donor: ")
         cmd = cmd.lower()
-        if cmd == 'q':
+
+        # TODO: v-next decompose this into smaller, more discrete functions
+        # TODO: validate donations are digits instead of strings
+        if cmd.isdigit():
+            break
+        elif cmd == 'q':
             break
         elif cmd == 'list':
             print()
@@ -105,7 +109,6 @@ def thank_you(names):
             print(f'Thank you, {cmd.capitalize()}, for your kind'
                   f' donation of ${donation}.')
         else:
-            # TODO: validate name is a string and not an int
             # add the new name and prompt for donation
             print(f'Welcome aboard, {cmd.capitalize()}, how much would '
                   f'you like to donate?')
@@ -127,6 +130,7 @@ def create_report(data):
     print('Donor Name       | Total Given | Num Gifts | Avg Gift Amount')
     print('-' * 60)
 
+    # Not the prettiest formatting, but works well enough for v1
     for donor in data:
         total_amount = round(float(sum(data[donor].values())), 2)
         num_donations = round(len(data[donor].values()), 2)
