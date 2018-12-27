@@ -45,9 +45,19 @@ donations = {"Robin Hood": [50000, 50000, 50000], "Tycoon Reis": [25000000, 2500
 #     total = sum(donations[key])
 #     print(total)
 
+# Below is the main menu function that continues prompting until quit.
+def main_menu(main_prompt,menu_options_dict):
+    while True:
+        response = input(main_prompt)
+        menu_options_dict[response]()
+
+# Below are the 4 menu options that are declared in the dict.
+#
 # The following function takes the 'donations' dictionary and creates a sorted report.
 # Using a complex 'sorted' for loop.
-def calculate_sort(donations):
+def donation_report():
+    print('\nYou Chose Option 1\n\n')
+    print('DONATION SUMMARY REPORT\n\n')
     print('{:25} | {:^13} | {:^13} |   {:>13}'.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift'))
     print('---------------------------------------------------------------------------')
     print()
@@ -57,20 +67,6 @@ def calculate_sort(donations):
         count = 0
         count = len(donations[key])
         print ('{:25} ${:>15,.2f} {:>15} ${:>15,.2f}'.format(key, total, count, total/count))
-
-# Below is the main menu function that continues prompting until quit.
-def main_menu(main_prompt,menu_options_dict):
-    import sys
-    while True:
-        response = input(main_prompt)
-        if menu_options_dict[response]() == "Quit":
-            sys.exit()
-
-# Below are the 4 menu options that are declared in the dict.
-def donation_report():
-    print('\nYou Chose Option 1\n\n')
-    print('DONATION SUMMARY REPORT\n\n')
-    calculate_sort(donations)
 
 # This Option generates a thank you letter for a new donation and prints to the screen.
 def thanks_letter():
@@ -84,22 +80,17 @@ def thanks_letter():
             for key in sorted(donations):
                 print(key)
             print("\n")
-    if donor not in donations:
-        print("You have entered a new donor:", donor)
-        amount = []
-        donation = input("Please enter a donation amount '0.00':")
-        donation = float(donation)
-        amount.append(donation)
-        donations[donor] = amount
-        # donations.update({donor:amount})
-    else:
+    if donor in donations:
         print("You have entered an existing donor:", donor)
-        amount = []
-        donation = input("Please enter the donation amount:")
-        donation = float(donation)
-        amount.append(donation)
-        donations[donor] = donations[donor] + amount
+        donation = float(input("Please enter the donation amount '0.00':"))
+        donations[donor] = donations[donor] + [donation]
+    else:
+        print("You have entered a new donor:", donor)
+        donation = []
+        donation = float(input("Please enter the donation amount '0.00':"))
+        donations.update({donor:[donation]})
     print_letter(donor,donation)
+
 """
 
 outfile = open('output.txt', 'w')
@@ -129,9 +120,12 @@ def thanks_letter_all():
     return "Menu"
 
 def quit():
+    import sys
     print('\nYou Chose Option 4\n\n')
     print('Thanks for using MDTS, Goodbye!\n')
-    return "Quit"
+    sys.exit()
+
+#    return "Quit"
 
 # Below is the dict defining the menu options.
 menu_options_dict = {
