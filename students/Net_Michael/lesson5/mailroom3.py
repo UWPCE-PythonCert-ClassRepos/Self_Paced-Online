@@ -12,7 +12,12 @@ from collections import defaultdict
 def quit_sel():
     raise SystemExit(1)
 
-new_donor_folder = "donor_lists"
+# new_donor_folder is a folder containing
+# the text files of the donors. By providing the foldername
+# the code will search this folder in any machine.
+# for my case - directory/donor_list/Paul_Allen.txt
+
+new_donor_folder = "donor_list"
 
 # list all the folders and their associated paths
 def list_dir_path():
@@ -21,7 +26,6 @@ def list_dir_path():
         for dirname in subdir:
             dir_info = str(os.path.join(dirname))
             yield dir_info, path
-
 
 
 # find the directory name with all the files named by donor names
