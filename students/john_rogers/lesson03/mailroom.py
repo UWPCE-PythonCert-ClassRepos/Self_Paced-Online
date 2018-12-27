@@ -4,7 +4,7 @@ mailroom.py -
     1) prompt user for 3 actions - Send thank you, create report or quit
 Author: JohnR
 Version: 1.0
-Last updated: 12/26/2018
+Last updated: 12/27/2018
 Notes: Code complete from a requirements standpoint.
 """
 
@@ -34,7 +34,7 @@ def main():
                    'd2': 67.03,
                    'd3': 990.34,
                    },
-          'santa': {'di': 45.43,
+          'santa': {'d1': 45.43,
                     'd2': 98345.32,
                     'd3': 54.34,
                     'd4': 456.23,
