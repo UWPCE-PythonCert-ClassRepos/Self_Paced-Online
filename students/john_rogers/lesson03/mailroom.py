@@ -3,10 +3,10 @@
 mailroom.py -
     1) prompt user for 3 actions - Send thank you, create report or quit
 Author: JohnR
-Version: .7
+Version: 1.0
 Last updated: 12/26/2018
-Notes: Just need to finish formatting of the last function, create_report
-            * Check various TODO items
+Notes: Code complete from a requirements standpoint, need to take one
+        last look at any open TODO items and decide to cut or not.
 """
 
 
@@ -17,6 +17,8 @@ def main():
     :return: none
     """
 
+    # NOTE: Pretty sure the rules didn't specify beyond 'data structure'.
+    # NOTE: I have been wrong in the past.
     db = {'sting': {'d1': 13.45,
                     'd2': 214.34,
                     'd3': 453.23,
@@ -125,12 +127,15 @@ def create_report(data):
     print('Donor Name       | Total Given | Num Gifts | Avg Gift Amount')
     print('-' * 60)
 
-    # TODO: clean up formatting, add a $ sign
     for donor in data:
-        total_amount = float(sum(data[donor].values()))
-        num_donations = len(data[donor].values())
+        total_amount = round(float(sum(data[donor].values())), 2)
+        num_donations = round(len(data[donor].values()), 2)
         avg_donation = total_amount / num_donations
-        print(f'{donor.capitalize()} {total_amount:^30n} {num_donations:^10n} {avg_donation:^10n}')
+        avg_donation = round(avg_donation, 2)
+        dollar = '$'
+
+        print(f'{donor.capitalize():20} {dollar:1} {total_amount:3n}'
+              f' {num_donations:12n} {avg_donation:12n}')
 
 
 if __name__ == '__main__':
