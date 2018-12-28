@@ -2,10 +2,12 @@
 """
 ungraded lab work for working with files
 Author: JohnR
-Version: .1
+Version: .5
 Date: 12/28/2018
-Notes:
+Notes: Having trouble copying the text file - no such file or directory
 """
+
+import pathlib as path
 
 
 def main():
@@ -18,6 +20,15 @@ def main():
     5) test with both text files and binary files
     :return:
     """
+    print()
+    dir_contents()
+    print()
+
+    print('Use the format c:/foo/somefile.txt')
+    file_a = input('Enter source file to copy:')
+    file_b = input('Enter a destination folder: ')
+
+    file_copy(file_a, file_b)
 
 
 def dir_contents():
@@ -25,14 +36,34 @@ def dir_contents():
     print out contents of current directory, one per line (full path)
     :return: none
     """
+    # set the working directory
+    pth = path.Path('./')
+
+    # this prints the file only, one per line
+    for i in pth.iterdir():
+        print(i)
+
+    # print out the sub-directories using a list generator(?)
+    print([x for x in pth.iterdir() if x.is_dir()])
+
+    # print files with full path
+    for i in pth.iterdir():
+        print(i.absolute())
 
 
-def file_copy():
+def file_copy(source, destination):
     """
     copy a file from source to destination
     test with any size or file type
     :return:
     """
+    # this work for a binary file, but is fragile
+    # with open(source, 'rb') as infile, open(destination, 'wb') as outfile:
+    #    outfile.write(infile.read())
+
+    # this doesn't see the source file
+    with open(source, 'r') as infile, open(destination, 'w') as outfile:
+        outfile.write(infile.read())
 
 
 if __name__ == '__main__':
