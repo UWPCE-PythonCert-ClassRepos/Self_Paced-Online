@@ -50,4 +50,18 @@ Now see if you can change the f-string so that it displays the names of the frui
 
 four_e = ['oranges', 1.3, 'lemons', 1.1]
 
-print(f'The weight of an {four_e[0][:-1]:} is {four_e[1]} and the weight of a {four_e[2][:-1]:} is {[four_e[3]]}')
+print(f'The weight of an {four_e[0][:-1].upper()} is {four_e[1]*1.2} and the weight of a {four_e[2][:-1].upper()} is {four_e[3]*1.2}')
+
+#Task 6
+"""Then you will need to use alignment specifiers. Do some research on this using the links below. Then:
+
+Write some Python code to print a table of several rows, each with a name, an age and a cost. Make sure some of 
+the costs are in the hundreds and thousands to test your alignment specifiers.
+And for an extra task, given a tuple with 10 consecutive numbers, can you work how to quickly print the tuple 
+in columns that are 5 charaters wide? It’s easily done on one short line!"""
+
+profile = [['Bob', '26', '126.00'],['JuanitaClaritaMansanita', '5', '126,000,000'], ['Ronathan', '75', '100,000'], ['Sir Marcus the 3rd','33', '33']]
+
+for file in profile:
+    print('{:<20}{:<10}{:<8}'.format(*file))
+
