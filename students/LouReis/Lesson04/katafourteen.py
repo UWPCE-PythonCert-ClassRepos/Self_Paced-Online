@@ -60,10 +60,10 @@ You might generate:
 
 """
 
-new_text = input("\n\nWould you like to generate a random story? (Enter Y or N):\n\n")
+new_text = input("\n\nWould you like to generate a random story of 300 words? (Enter Y or N):\n\n")
 import random
 if new_text == 'Y':
-    for x in range(50):
+    for x in range(100):
         random_key = random.sample(list(kata), 1)[0]
         temp_list = kata[random_key]
         index = randint(0, len(temp_list))
