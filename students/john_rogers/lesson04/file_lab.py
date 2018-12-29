@@ -25,8 +25,9 @@ def main():
     print()
 
     print('Use the format c:/foo/somefile.txt')
-    file_a = input('Enter source file to copy:')
-    file_b = input('Enter a destination folder: ')
+
+    file_a = input('File to copy: ')
+    file_b = input('New location and name: ')
 
     file_copy(file_a, file_b)
 
@@ -58,12 +59,12 @@ def file_copy(source, destination):
     :return:
     """
     # this work for a binary file, but is fragile
-    # with open(source, 'rb') as infile, open(destination, 'wb') as outfile:
-    #    outfile.write(infile.read())
+    with open(source, 'rb') as infile, open(destination, 'wb') as outfile:
+        outfile.write(infile.read())
 
     # this doesn't see the source file
-    with open(source, 'r') as infile, open(destination, 'w') as outfile:
-        outfile.write(infile.read())
+    # with open(source, 'r') as infile, open(destination, 'w') as outfile:
+    #    outfile.write(infile.read())
 
 
 if __name__ == '__main__':
