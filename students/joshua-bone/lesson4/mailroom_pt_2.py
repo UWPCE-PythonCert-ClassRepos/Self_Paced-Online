@@ -16,12 +16,17 @@ MAIN_MENU = ("Welcome to the Mailroom!\n\n\n" +
              "Please select from the following options:\n" +
              "(S)end a Thank You\n" +
              "(C)reate a Report\n" +
+             "(M)ail Letters to Everyone\n"
              "(Q)uit\n\n\n")
 TY_MENU = ("Enter a name, or type 'list' for existing donors.\n" +
            "Type 'q' or 'quit' to go back to main menu.\n")
 PROMPT = "Your selection: "
 BAD_INPUT_NOTIF = "Input not understood. Try again\n"
-TY = ("\n\nDear {:s},\n\nThank you for your generous donation of ${:.2f}.\n\n")
+TY_LETTER = ("Dear {full_name},\n\n" +
+             "\tThank you for your very kind donation{s} of {amounts}.\n\n" +
+             "\t{it_they} will be put to very good use.\n\n" +
+             "\t\tSincerely,\n" +
+             "\t\t\t-The Team")
 NUM_FORMAT_WIDTH = 13
 
 donors = {}
@@ -85,11 +90,27 @@ def print_donors():
         print(d)
 
 
+def format_amts(amts):
+    fmt = "${:.2f}"
+    string = ", and ".join([fmt.format(amt) for amt in amts])
+    return string.replace("and ", "", len(amts) - 2)
+
+
+def format_ty(name, amts):
+    d = {
+        "full_name": name,
+        "amounts": format_amts(amts),
+        "it_they": "They" if len(amts) > 1 else "It",
+        "s": "s" if len(amts) > 1 else ""
+    }
+    return TY_LETTER.format(**d)
+
+
 def send_ty(name):
     amt = float(input("Enter amount: "))
     add_donor_gift(name, amt)
     print_horizontal()
-    print(TY.format(*(name, amt)))
+    print(format_ty(name, [amt]))
     return LoopAction.BREAK
 
 
@@ -113,7 +134,17 @@ def quit_main():
     return LoopAction.BREAK
 
 
-menu_dict = {'s': do_ty_menu, 'c': create_report, 'q': quit_main}
+def mail_all_donors():
+    for d in donors:
+        with open(d + ".txt", "w") as f:
+            f.write(format_ty(d, donors[d]))
+    print(f"Mailed {len(donors)} letters.\n\n")
+
+
+menu_dict = {'s': do_ty_menu,
+             'c': create_report,
+             'm': mail_all_donors,
+             'q': quit_main}
 
 
 def do_menu(menu, prompt=PROMPT):
