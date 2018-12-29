@@ -11,3 +11,8 @@ def commonfunction(l,n):
         l.append(y)
         m+=1
     print(l[n-1])
+def sum_series(n,a=0,b=1):
+    l = []
+    l.append(a)
+    l.append(b)
+    commonfunction(l,n)
