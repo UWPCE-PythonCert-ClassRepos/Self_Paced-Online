@@ -15,8 +15,9 @@ for f in pth.iterdir():
     print(f)
 
 # Prompt the user to specify a text file to process.
-filename = input("Please enter a filename: \n\n")
-print("You chose:", filename)
+filename = input("\n\nPlease enter a filename: \n\n")
+print("You chose: ", filename)
+print("\n\nHere's the dictionary:\n")
 # The following lines open the text file & process it creating keys, values for a dictionary.
 kata = {}
 count = 1
