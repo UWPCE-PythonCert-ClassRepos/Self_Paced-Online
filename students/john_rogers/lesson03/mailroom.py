@@ -3,9 +3,11 @@
 mailroom.py -
     1) prompt user for 3 actions - Send thank you, create report or quit
 Author: JohnR
-Version: 1.0
-Last updated: 12/27/2018
-Notes: Code complete from a requirements standpoint.
+Version: 1.1
+Last updated: 12/29/2018
+Notes: Fixed: changed exit() to break
+       Fixed: create_report now sorts by total donation amount
+       Fixed: formatting alignment issues in create_report
 """
 
 
@@ -41,12 +43,14 @@ def main():
                     },
          }
 
+    # Changed exit() to break per Charles; not sure how I ended up with
+    # exit() to begin with...
     while True:
         choice = get_input()
 
         if choice == 1:
             print('Exiting program.')
-            exit()
+            break
         elif choice == 2:
             thank_you(db)
         elif choice == 3:
@@ -126,20 +130,28 @@ def create_report(data):
     List donor name, number of donations and average donation amount.
     :return: none
     """
-    print()
-    print('Donor Name       | Total Given | Num Gifts | Avg Gift Amount')
-    print('-' * 60)
 
-    # Not the prettiest formatting, but works well enough for v1
+    # Create a list from the donor dictionary so we can sort by size
+    d_list = []
     for donor in data:
         total_amount = round(float(sum(data[donor].values())), 2)
         num_donations = round(len(data[donor].values()), 2)
         avg_donation = total_amount / num_donations
         avg_donation = round(avg_donation, 2)
-        dollar = '$'
 
-        print(f'{donor.capitalize():20} {dollar:1} {total_amount:3n}'
-              f' {num_donations:12n} {avg_donation:12n}')
+        d_list.append([[donor], [total_amount, num_donations, avg_donation]])
+
+    # Sort the list from largest to smallest donation
+    d_list.sort(key=lambda x: x[1])
+    d_list.reverse()
+
+    # Print the sorted list in a nice format
+    print()
+    print('Donor Name       | Total Given | Num Gifts | Avg Gift Amount')
+    print('-' * 60)
+
+    for d in d_list:
+        print(f'{d[0][0]:<17} ${d[1][0]:^15} {d[1][1]:<10} ${d[1][2]}')
 
 
 if __name__ == '__main__':
