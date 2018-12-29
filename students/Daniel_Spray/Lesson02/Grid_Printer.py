@@ -1,3 +1,10 @@
+def print_grid(number):
+    if number%2>0:
+        scale=int((number-1)/2)
+        print_grid2(2,scale)
+    else:
+        scale=int(number/2)
+        print_grid2(2,scale)
 def print_grid2(pluses,minuses):
     plus='+'
     minus='-'
