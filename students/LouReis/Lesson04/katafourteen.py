@@ -59,3 +59,17 @@ You might generate:
 "I may"  => ["I"]
 
 """
+
+new_text = input("\n\nWould you like to generate a random story? (Enter Y or N):\n\n")
+import random
+if new_text == 'Y':
+    for x in range(50):
+        random_key = random.sample(list(kata), 1)[0]
+        temp_list = kata[random_key]
+        index = randint(0, len(temp_list))
+        #random_value = kata.get(random_key[index])
+        random_value = temp_list[index-1]
+        print (random_key, random_value, end = " ")
+else:
+    print("Goodbye!")
+print("\n\nThe End\n\n")
