@@ -28,14 +28,6 @@ for fruit in fruit_basket:
 
 #Series 2
 
-"""Using the list created in series 1 above:
-
-Display the list.
-Remove the last fruit from the list.
-Display the list.
-Ask the user for a fruit to delete, find it and delete it.
-(Bonus: Multiply the list times two. Keep asking until a match is found. Once found, delete all occurrences.)"""
-
 fruit_basket = ["Apples", "Pears", "Oranges", "Peaches"]
 print(fruit_basket)
 
@@ -63,13 +55,6 @@ else:    #multiply list x2 each time fruit is not in basket, delete occurances w
 
 #Series 3
 
-"""Again, using the list from series 1:
-
-Ask the user for input displaying a line like “Do you like apples?” for each fruit in the list (making the fruit all lowercase).
-For each “no”, delete that fruit from the list.
-For any answer that is not “yes” or “no”, prompt the user to answer with one of those two values (a while loop is good here)
-Display the list."""
-
 for fruit in fruit_basket:
 
     while fruit:
@@ -78,12 +63,10 @@ for fruit in fruit_basket:
             while fruit in fruit_basket:
                 fruit_basket.remove(fruit)
             break
-
-            print(fruit_basket)
         elif user_preference == "yes":
             break
         else:
             print("Please choose Yes or No")
+            print(fruit_basket)
 
-print(fruit_basket)
 
