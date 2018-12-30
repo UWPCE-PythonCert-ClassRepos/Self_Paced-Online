@@ -5,7 +5,7 @@ mailroom.py -
 Author: JohnR
 Version: 1.3
 Last updated: 12/29/2018
-Notes: Menu is currently working, but is part of main()
+Notes: TODO: create a single template using the .format(**d) method
 
   v2.0 requirements:
     1) use dict where appropriate
@@ -30,6 +30,7 @@ def main():
     global main_prompt
     global main_dispatch
 
+    # create a main database
     db = {'sting': {'d1': 13.45,
                     'd2': 214.34,
                     'd3': 453.23,
@@ -53,6 +54,7 @@ def main():
                     },
          }
 
+    # create the main user prompt
     main_prompt = (
         "\nWelcome to the main menu!\n"
         "Please pick a number from the following:\n"
@@ -63,6 +65,7 @@ def main():
         ">>>\n"
     )
 
+    # create the main menu using dict switch
     main_dispatch = {
         '1': exit_menu,
         '2': thank_you,
@@ -70,13 +73,18 @@ def main():
         '4': write_report,
     }
 
+    # calling menu with no variables at this point since they are global
     menu()
 
 
 def menu():
-    while True:  # TODO: understand why this doesn't work as expected
+    """
+    Get user input
+    :return: call the appropriate menu item
+    """
+    while True:
         response = input(main_prompt)
-        if response == 1:
+        if response == '1':
             exit_menu()
         else:
             main_dispatch[response](db)
@@ -87,6 +95,10 @@ def write_report():
 
 
 def exit_menu():
+    """
+    exit the program
+    :return: SystemExit
+    """
     print('Exiting program -')
     raise SystemExit
 
