@@ -4,8 +4,8 @@ mailroom.py -
     1) prompt user for 3 actions - Send thank you, create report or quit
 Author: JohnR
 Version: 1.3
-Last updated: 12/29/2018
-Notes: TODO: create a single template using the .format(**d) method
+Last updated: 12/30/2018
+Notes: TODO: items inline
 
   v2.0 requirements:
     1) use dict where appropriate
@@ -25,33 +25,14 @@ def main():
     :return: none
     """
 
-    # make some global variables to experiment with
-    global db
-    global main_prompt
-    global main_dispatch
+    # removed globals
 
-    # create a main database
-    db = {'sting': {'d1': 13.45,
-                    'd2': 214.34,
-                    'd3': 453.23,
-                    },
-          'bono': {'d1': 54.54,
-                   'd2': 778.01,
-                   'd3': 564.35,
-                   },
-          'oprah': {'d1': 66.34,
-                    'd2': 664.33,
-                    'd3': 566.45,
-                    },
-          'yoko': {'d1': 64.24,
-                   'd2': 67.03,
-                   'd3': 990.34,
-                   },
-          'santa': {'d1': 45.43,
-                    'd2': 98345.32,
-                    'd3': 54.34,
-                    'd4': 456.23,
-                    },
+    # converted away from nested dict per N.
+    db = {'sting': [13.45, 214.34, 123.45, 1433.23, 1243.13],
+          'bono': [7843.34, 35.55, 732.34],
+          'oprah': [66.34, 32.23, 632.21, 66.67],
+          'yoko': [34.34, 4.34],
+          'santa': [5334.00, 254.34, 64324.23, 2345.23, 5342.24],
          }
 
     # create the main user prompt
@@ -68,42 +49,67 @@ def main():
     # create the main menu using dict switch
     main_dispatch = {
         '1': exit_menu,
-        '2': thank_you,
+        '2': donor_actions,
         '3': create_report,
         '4': write_report,
     }
 
-    # calling menu with no variables at this point since they are global
-    menu()
+    menu(main_prompt, main_dispatch, db)
 
 
-def menu():
+def menu(main_prompt, main_dispatch, db):
     """
     Get user input
     :return: call the appropriate menu item
     """
     while True:
         response = input(main_prompt)
-        if response == '1':
-            exit_menu()
-        else:
-            main_dispatch[response](db)
+        main_dispatch[response](db)
 
 
-def write_report():
+def say_thanks(name, donation):
+    """
+    Print out a thank you note
+    :param name: donor name
+    :param donation: amount of donation as a float
+    :return: None
+    """
+    print(f'Hey {name.capitalize()}, thanks for giving us ${donation}! '
+          f'We promise to spend it all on booze!')
+
+
+def write_report(db):
     pass
 
 
-def exit_menu():
+def exit_menu(db):
     """
-    exit the program
+    write to file and exit the program
     :return: SystemExit
     """
+    # write db to file on exit
+    write_report(db)
     print('Exiting program -')
     raise SystemExit
+    # NOTE: sys.exit() does not work/ resolve and SystemExit doesn't seem
+    # to work on it's own here. So far I can only get 'raise SystemExit
+    # to produce the intended effect. Not sure what I'm doing wrong.
 
 
-def thank_you(names):
+def seek_donation(name):
+    """
+    Prompt user for a donation.
+    :param name: name of donor
+    :return: donation amount as a float
+    """
+    donation_amount = input(f'Hi {name.capitalize()}, how much would you '
+                            f'like to give today? ')
+    donation_amount = round(float(donation_amount), 2)
+    say_thanks(name, donation_amount)
+    return donation_amount
+
+
+def donor_actions(names):
     """
     send a thank you, check the donor list or add donation
     :return: None
@@ -115,8 +121,6 @@ def thank_you(names):
                     "a new name to become a new donor: ")
         cmd = cmd.lower()
 
-        # TODO: v-next decompose this into smaller, more discrete functions
-        # TODO: validate donations are digits instead of strings
         if cmd.isdigit():
             break
         elif cmd == 'q':
@@ -127,26 +131,13 @@ def thank_you(names):
                 print(i.capitalize())
         elif cmd in names.keys():
             # name already in list, solicit new donation and add to dict
-            donation = input('Please enter an amount to donate: ')
-            donation = float(donation)
-
-            d_num = len(names[cmd].keys()) + 1
-            d_num = str(d_num)
-            new_key = 'd' + d_num
-            names[cmd][new_key] = donation
-
-            print(f'Thank you, {cmd.capitalize()}, for your kind'
-                  f' donation of ${donation}.')
+            donation = seek_donation(cmd)
+            names[cmd].append(donation)
         else:
-            # add the new name and prompt for donation
-            print(f'Welcome aboard, {cmd.capitalize()}, how much would '
-                  f'you like to donate?')
-            new_donation = input('Please an amount to donate: ')
-            new_donation = float(new_donation)
-            names[cmd] = {'d1': new_donation}
-
-            print(f'Thank you, {cmd.capitalize()}, for your kind'
-                  f' donation of ${new_donation}.')
+            # add new donor to list and seek contribution
+            names[cmd] = []
+            donation = seek_donation(cmd)
+            names[cmd].append(donation)
 
 
 def create_report(data):
@@ -156,16 +147,15 @@ def create_report(data):
     :return: none
     """
 
-    # Create a list from the donor dictionary so we can sort by size
-    d_list = []
-    for donor in data:
-        total_amount = round(float(sum(data[donor].values())), 2)
-        num_donations = round(len(data[donor].values()), 2)
-        avg_donation = total_amount / num_donations
-        avg_donation = round(avg_donation, 2)
+    # TODO: Need to rewrite all of this using the nested list
+    # TODO: use format 'for name, donations in data.items()'
+    donor_list = []
+    for name, donations in data.items():
+        print(name, donations)
+        donor_list.append([name])
 
-        d_list.append([[donor], [total_amount, num_donations, avg_donation]])
-
+    print(donor_list)
+    """
     # Sort the list from largest to smallest donation
     d_list.sort(key=lambda x: x[1])
     d_list.reverse()
@@ -177,6 +167,7 @@ def create_report(data):
 
     for d in d_list:
         print(f'{d[0][0]:<17} ${d[1][0]:^15} {d[1][1]:<10} ${d[1][2]}')
+    """
 
 
 if __name__ == '__main__':
