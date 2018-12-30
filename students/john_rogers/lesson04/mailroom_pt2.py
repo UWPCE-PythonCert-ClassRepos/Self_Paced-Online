@@ -25,6 +25,11 @@ def main():
     :return: none
     """
 
+    # make some global variables to experiment with
+    global db
+    global main_prompt
+    global main_dispatch
+
     db = {'sting': {'d1': 13.45,
                     'd2': 214.34,
                     'd3': 453.23,
@@ -47,6 +52,7 @@ def main():
                     'd4': 456.23,
                     },
          }
+
     main_prompt = (
         "\nWelcome to the main menu!\n"
         "Please pick a number from the following:\n"
@@ -64,14 +70,16 @@ def main():
         '4': write_report,
     }
 
-    # Call the main menu - currently uses a static variable, db
-    while True:
-        selection = input(main_prompt)
+    menu()
 
-        if selection in main_dispatch:
-            main_dispatch.get(selection)(db)
+
+def menu():
+    while True:  # TODO: understand why this doesn't work as expected
+        response = input(main_prompt)
+        if response == 1:
+            exit_menu()
         else:
-            print('Please enter a number between 1 and 4')
+            main_dispatch[response](db)
 
 
 def write_report():
