@@ -106,8 +106,9 @@ d5.add_donation(3499)
 main_responses = {1:"1 - Send a Thank You\n", 2:"2 - Create a Report\n",
                   3: "3 - Send letters to everyone\n",4:"4 - Match Funds\n",
                   5:"5 - Forecast Donations\n", 6:"6 - quit\n"}
-main_prompt = f"Please choose one of the following:\n" \
-              f"{main_responses[1]}{main_responses[2]}{main_responses[3]}{main_responses[4]}"
+
+main_prompt = f"Please choose one of the following:\n{'{}'*len(main_responses)}".format(*main_responses.values())
+
 thank_you_note = "Dear {}:\n\nWe want to thank you for your generous donation of ${:.2f}.\n\n" \
                  "It will be put to very good use.\n\n" \
                  "\tSincerely,\n\t\tThe Team"
