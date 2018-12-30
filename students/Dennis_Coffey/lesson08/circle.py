@@ -75,26 +75,44 @@ class Circle:
     def from_diameter(cls, diameter):
         return cls(diameter / 2)
 
-
+# Step 1 output
 c = Circle(4)
 print(c.radius)
+
+# Step 2 output
 print(c.diameter)
-print(c.area)
+
+# Step 3 output
 c.diameter = 4
 print(c.radius)
 print(c.diameter)
+
+# Step 4
+print(c.area)
+
+# Step 5
+c = Circle.from_diameter(8)
+print(c.diameter)
+print(c.radius)
+
+# Step 6
 print(c)
 print(repr(c))
 print(eval(repr(c)))
 print(eval(repr(c)).radius)
 
-c = Circle.from_diameter(8)
-print(c.diameter)
-print(c.radius)
-
+# Step 7
 c1 = Circle(2)
 c2 = Circle(4)
 c3 = Circle(2)
+c3 = c1 + c2
+print(c3)
+c2 * 3
+print(c2.radius)
+3 * c1
+print(c1.radius)
+
+# Step 8
 print('Comparison')
 print(c1 < c2)
 print(c2 < c1)
@@ -106,12 +124,6 @@ print(c1 >= c3)
 print(c1 <= c3)
 print(c1 == c3)
 print(c1 == c2)
-c3 = c1 + c2
-print(c3)
-c2 * 3
-print(c2.radius)
-3 * c1
-print(c1.radius)
 
 circles = [Circle(6), Circle(7), Circle(8), Circle(4), Circle(0), Circle(2), Circle(3), Circle(5), Circle(9), Circle(1)]
 print(circles)
