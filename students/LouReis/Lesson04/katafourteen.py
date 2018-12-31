@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.7
 # katafourteen.py
 # Coded by LouReis
 
@@ -62,6 +62,7 @@ You might generate:
 
 new_text = input("\n\nWould you like to generate a random story of 300 words? (Enter Y or N):\n\n")
 import random
+from random import randint
 if new_text == 'Y':
     for x in range(100):
         random_key = random.sample(list(kata), 1)[0]
