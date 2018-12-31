@@ -88,12 +88,20 @@ def thanks_letter():
             print("\n")
     if donor in donations:
         print("You have entered an existing donor:", donor)
-        donation = float(input("Please enter the donation amount '0.00':"))
+        try:
+            donation = float(input("Please enter the donation amount '0.00':"))
+        except ValueError:
+            print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
+            main_menu(main_prompt,menu_options_dict)
         donations[donor] = donations[donor] + [donation]
     else:
         print("You have entered a new donor:", donor)
         donation = []
-        donation = float(input("Please enter the donation amount '0.00':"))
+        try:
+            donation = float(input("Please enter the donation amount '0.00':"))
+        except ValueError:
+            print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
+            main_menu(main_prompt,menu_options_dict)
         donations.update({donor:[donation]})
     print_letter(donor,donation)
 
