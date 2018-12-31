@@ -37,10 +37,12 @@ def main():
         "3: display a summary of current donor activity\n"
         "4: print out a thank for each donor\n"
         "5: save a thank you note to disk for each donor\n"
-        ">>>\n"
+        ">>> "
     )
 
-    # create the main menu using dict switch
+    # QUESTION: How can I call these and pass different variables?
+    #           With this current method I have to pass 'db' to every
+    #           function being called.
     main_dispatch = {
         '1': exit_menu,
         '2': donor_actions,
@@ -48,6 +50,9 @@ def main():
         '4': thank_all,
         '5': save_report,
     }
+
+    # QUESTION: Need an overall template here to replace print_summary;
+    #           see function print_summary for details.
 
     menu(main_prompt, main_dispatch, db)
 
@@ -57,9 +62,15 @@ def menu(main_prompt, main_dispatch, db):
     Get user input
     :return: call the appropriate menu item
     """
+    # TODO: having trouble checking if input is in a range() here
     while True:
         response = input(main_prompt)
-        main_dispatch[response](db)
+        # not sure this is the best way to achieve
+        if response.isalpha():
+            print('Sorry, we need a number between 1 and 5.')
+            menu(main_prompt, main_dispatch, db)
+        else:
+            main_dispatch[response](db)
 
 
 def thank_all(db):
@@ -145,9 +156,10 @@ def donor_actions(names):
     """
 
     while True:
-        print('Enter q to exit to main menu.')
+        print('\nEnter q to exit to main menu.')
         cmd = input("Enter 'list' to see a current list of donors or "
-                    "a new name to become a new donor: ")
+                    "a new name to become a new donor today!"
+                    "\n>>> ")
         cmd = cmd.lower()
 
         if cmd.isdigit():
@@ -196,6 +208,10 @@ def print_summary(db):
     List donor name, number of donations and average donation amount.
     :return: none
     """
+
+    # QUESTION: I'm missing some fundamental connection around how to
+    #           convert the below to a callable template, I think the
+    #           for loop is throwing me off.
     donors = sorted_list(db)
     print()
     print('Donor Name       | Total Given | Num Gifts | Avg Gift Amount')
