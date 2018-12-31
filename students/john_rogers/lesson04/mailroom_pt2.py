@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 """
-mailroom.py -
-    1) prompt user for 3 actions - Send thank you, create report or quit
+mailroom_pt2.py -
+ Prompt user for various actions ranging from send thank you notes to
+ asking for new donations. Write everything to a local file on exit or
+ per menu selection.
 Author: JohnR
-Version: 1.3
+Version: 1.7
 Last updated: 12/30/2018
-Notes: Completed feedback from Natasha, need to create write_report function
-        next. Check and see if shutil is allowed in solution.
+Notes: Technical requirements meet, but need to look at various improvements
+        before going to v2.0.
+        TODO: 1) break apart write_report function
+            : 2) try to take more advantage of templates
+            : 3) write a summary report to file on exit
+            : 4) clean up format of appending to files, provide date timestamp
+            : 5) add some kind of special info in thank message
 
   v2.0 requirements:
     1) use dict where appropriate
@@ -18,6 +25,8 @@ Notes: Completed feedback from Natasha, need to create write_report function
         A) use donor name and date for file name
 """
 
+from datetime import date
+
 
 def main():
     """
@@ -25,8 +34,6 @@ def main():
     various actions available.
     :return: none
     """
-
-    # removed globals
 
     # converted away from nested dict per N.
     db = {'sting': [13.45, 214.34, 123.45, 1433.23, 1243.13],
@@ -42,8 +49,8 @@ def main():
         "Please pick a number from the following:\n"
         "1: exit the program\n"
         "2: check donor list and become a donor\n"
-        "3: create an interactive report of current donors\n"
-        "4: write a thank you note for each donor and write to file\n"
+        "3: display a report of current donor activity\n"
+        "4: print a thank you note for each donor and write to file\n"
         ">>>\n"
     )
 
@@ -70,18 +77,37 @@ def menu(main_prompt, main_dispatch, db):
 
 def say_thanks(name, donation):
     """
-    Print out a thank you note
+    create a form letter
     :param name: donor name
     :param donation: amount of donation as a float
-    :return: None
+    :return: form letter filled in with donor and amount
     """
-    print(f'Hey {name.capitalize()}, thanks for giving us ${donation}! '
-          f'We promise to spend it all on booze!')
+    letter = (
+        f'Hey {name.capitalize()}, thanks for ${donation}!'
+    )
+
+    return letter
 
 
 def write_report(db):
-    for donor, amount in db:
-        say_thanks(donor, amount)
+    """
+    Generate a thank you letter for each donor and write to individual
+    files on disk.
+    :param db: donor database
+    :return: None
+    """
+    # Get a sorted list, print out a thank you for each then write to disk
+    today = date.today()
+    donors = sorted_list(db)
+    for donor in donors:
+        # create a file based on donor name and time stamp
+        letter = say_thanks(donor[0][0], donor[1][0])
+        print(letter)
+        user_file = "{}.{}.txt".format(donor[0][0], today)
+
+        with open(user_file, 'a+') as outfile:
+            outfile.write(letter)
+        outfile.close()
 
 
 def exit_menu(db):
@@ -107,7 +133,7 @@ def seek_donation(name):
     donation_amount = input(f'Hi {name.capitalize()}, how much would you '
                             f'like to give today? ')
     donation_amount = round(float(donation_amount), 2)
-    say_thanks(name, donation_amount)
+    print(say_thanks(name, donation_amount))
     return donation_amount
 
 
@@ -143,6 +169,11 @@ def donor_actions(names):
 
 
 def sorted_list(data):
+    """
+    Sort a give list of donors by total amount given, large to small
+    :param data: dictionary of donor data
+    :return: sorted list of donors
+    """
     # create a list of the summaries
     sorted_donors = []
     for name, donations in data.items():
