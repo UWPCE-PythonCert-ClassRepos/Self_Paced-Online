@@ -5,7 +5,8 @@ mailroom.py -
 Author: JohnR
 Version: 1.3
 Last updated: 12/30/2018
-Notes: TODO: items inline
+Notes: Completed feedback from Natasha, need to create write_report function
+        next. Check and see if shutil is allowed in solution.
 
   v2.0 requirements:
     1) use dict where appropriate
@@ -79,7 +80,8 @@ def say_thanks(name, donation):
 
 
 def write_report(db):
-    pass
+    for donor, amount in db:
+        say_thanks(donor, amount)
 
 
 def exit_menu(db):
@@ -140,35 +142,38 @@ def donor_actions(names):
             names[cmd].append(donation)
 
 
-def create_report(data):
+def sorted_list(data):
+    # create a list of the summaries
+    sorted_donors = []
+    for name, donations in data.items():
+        total = round(sum(donations), 2)
+        number = round(len(donations), 2)
+        avg = total / len(donations)
+        avg = round(avg, 2)
+        sorted_donors.append([[name], [total], [number], [avg]])
+
+    # Sort the list by largest total donation
+    sorted_donors.sort(key=lambda x: x[1])
+    sorted_donors.reverse()
+    return sorted_donors
+
+
+def create_report(db):
     """
     Print a list of donors sorted by historical donation amount.
     List donor name, number of donations and average donation amount.
     :return: none
     """
-
-    # TODO: Need to rewrite all of this using the nested list
-    # TODO: use format 'for name, donations in data.items()'
-    donor_list = []
-    for name, donations in data.items():
-        print(name, donations)
-        donor_list.append([name])
-
-    print(donor_list)
-    """
-    # Sort the list from largest to smallest donation
-    d_list.sort(key=lambda x: x[1])
-    d_list.reverse()
-
-    # Print the sorted list in a nice format
+    donors = sorted_list(db)
     print()
     print('Donor Name       | Total Given | Num Gifts | Avg Gift Amount')
     print('-' * 60)
 
-    for d in d_list:
-        print(f'{d[0][0]:<17} ${d[1][0]:^15} {d[1][1]:<10} ${d[1][2]}')
-    """
+    for donor in donors:
+        print(f'{donor[0][0]:<17} ${donor[1][0]:^15} {donor[2][0]:^13}'
+              f'${donor[3][0]:^8}')
 
 
 if __name__ == '__main__':
     main()
+
