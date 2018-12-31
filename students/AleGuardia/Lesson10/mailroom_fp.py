@@ -56,7 +56,7 @@ class Donors():
 
     def challenge(self,factor,min_con=0, max_con=None):
         """Takes a factor and a minimum and max contribution and returns a list of matching
-        contributions adjusted by teh factor """
+        contributions adjusted by the factor """
         return list(map(lambda x: x*factor,self.get_donation_range(min_con,max_con)))
 
 
@@ -100,6 +100,8 @@ d4.add_donation(1000)
 d5.add_donation(30000)
 d5.add_donation(3499)
 
+# Creates db for matched donations
+match_donors = Donors()
 
 # User interface
 
@@ -172,6 +174,9 @@ def print_report():
     print()
     report = donors.return_report()
     print(report)
+    print()
+    match_report = match_donors.return_report()
+    print(match_report)
     return report
 
 
@@ -184,7 +189,37 @@ def send_letters():
 
 
 def match_funds():
-    pass
+    while True:
+        try:
+            min_don = float(input("What is the minimum donation you wan't to match "
+                                  "(leave blank if there is no minimum)?"))
+
+            while True:
+                try:
+                    max_don = float(input("What is the maximum donation you wan't to match "
+                                          "(leave blank if there is no minimum)?"))
+                    if max_don == "":
+                        max_don = None
+
+                    while True:
+                        try:
+                            factor = float(input("What factor do you want to apply?"))
+                            anonymous = Donor("Anonymous_{}".format(len(match_donors.donors)+1))
+                            match_donors.add_donor(anonymous)
+                            try:
+                                anonymous.add_donation(reduce(lambda x, y: x+y,
+                                                              donors.challenge(factor, min_don, max_don)))
+                            except TypeError:
+                                anonymous.add_donation(0)
+                            return anonymous
+
+                        except ValueError:
+                            print("Please enter only digits (or leave blank if you don't want a maximum)")
+
+                except ValueError:
+                    print("Please enter only digits (or leave blank if you don't want a maximum)")
+        except ValueError:
+            print("Please enter only digits (or leave blank if you don't want a minimum)")
 
 
 def forecast_don():
@@ -196,9 +231,8 @@ def get_total(donations):
 
 
 main_dispatch = {"1": prompt_donors, "2": print_report, "3": send_letters,
-                 "4":match_funds, "5": forecast_don,"6": quit_sys}
+                 "4": match_funds, "5": forecast_don, "6": quit_sys}
 
 
 if __name__ == '__main__':
-    menu_selection(main_prompt,main_dispatch)
-
+    menu_selection(main_prompt, main_dispatch)
