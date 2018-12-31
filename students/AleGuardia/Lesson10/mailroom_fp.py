@@ -105,9 +105,9 @@ match_donors = Donors()
 
 # User interface
 
-main_responses = {1:"1 - Send a Thank You\n", 2:"2 - Create a Report\n",
+main_responses = {1:"1 - Send a Thank You\n", 2: "2 - Create a Report\n",
                   3: "3 - Send letters to everyone\n",4:"4 - Match Funds\n",
-                  5:"5 - Forecast Donations\n", 6:"6 - quit\n"}
+                  5:"5 - Forecast Donations\n", 6: "6 - quit\n"}
 
 main_prompt = f"Please choose one of the following:\n{'{}'*len(main_responses)}".format(*main_responses.values())
 
@@ -171,10 +171,10 @@ def menu_selection(prompt, dispatch_dict, key_def=None):
 
 
 def print_report():
-    print()
+    print("\nRegular Donors")
     report = donors.return_report()
     print(report)
-    print()
+    print("\nMatching Donors")
     match_report = match_donors.return_report()
     print(match_report)
     return report
@@ -189,29 +189,41 @@ def send_letters():
 
 
 def match_funds():
+    anonymous = Donor("Anonymous_{}".format(len(match_donors.donors) + 1))
+    match_donors.add_donor(anonymous)
+    anonymous.add_donation(match_funds_calc())
+
+
+def match_funds_calc():
     while True:
         try:
-            min_don = float(input("What is the minimum donation you wan't to match "
-                                  "(leave blank if there is no minimum)?"))
+            min_don = (input("What is the minimum donation you wan't to match "
+                             "(leave blank if there is no minimum)?"))
+            if min_don == "":
+                min_don = "0"
+            min_don = float(min_don)
 
             while True:
                 try:
-                    max_don = float(input("What is the maximum donation you wan't to match "
-                                          "(leave blank if there is no minimum)?"))
+                    max_don = (input("What is the maximum donation you wan't to match "
+                                     "(leave blank if there is no minimum)?"))
+
+                    if not (max_don.isnumeric() or max_don == ""):
+                        raise ValueError
+
                     if max_don == "":
                         max_don = None
+                    else:
+                        max_don = float(max_don)
 
                     while True:
                         try:
                             factor = float(input("What factor do you want to apply?"))
-                            anonymous = Donor("Anonymous_{}".format(len(match_donors.donors)+1))
-                            match_donors.add_donor(anonymous)
+
                             try:
-                                anonymous.add_donation(reduce(lambda x, y: x+y,
-                                                              donors.challenge(factor, min_don, max_don)))
+                                return get_total(donors.challenge(factor, min_don, max_don))
                             except TypeError:
-                                anonymous.add_donation(0)
-                            return anonymous
+                                return 0
 
                         except ValueError:
                             print("Please enter only digits (or leave blank if you don't want a maximum)")
@@ -223,7 +235,7 @@ def match_funds():
 
 
 def forecast_don():
-    pass
+    print("\nYour Donation would be {}\n".format(match_funds_calc()))
 
 
 def get_total(donations):
