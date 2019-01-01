@@ -1,5 +1,6 @@
 def print_grid0():
     print_grid2(2,4)
+
 def print_grid(number):
     if number%2>0:
         scale=int((number-1)/2)
@@ -7,15 +8,17 @@ def print_grid(number):
     else:
         scale=int(number/2)
         print_grid2(2,scale) 
+
 def print_grid2(pluses,minuses):
     plus='+'
     minus='-'
     m=0
     print(plus+pluses*(minus*minuses+plus))
     while m<pluses:
-        lowergrid(pluses,minuses,plus,minus)
+        lower_grid(pluses,minuses,plus,minus)
         m+=1
-def lowergrid(pluses,minuses,plus,minus):
+
+def lower_grid(pluses,minuses,plus,minus):
     n=0
     while n<minuses:    
         print("|"+pluses*(" "*minuses+"|"))
