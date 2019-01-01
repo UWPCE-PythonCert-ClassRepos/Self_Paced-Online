@@ -15,19 +15,38 @@ def series1():
     for a in list1:
         if a[0].lower() == "p":
             print(a)
-    series2(list1)
+    return list1
 
-def series2(list1):
-    print(list1)
-    del list1[-1]
-    print(list1)
+def series2(list2):
+    print(list2)
+    del list2[-1]
+    print(list2)
     removed_fruit1 = input("Please name a fruit to be removed from the list >")
-    list1.remove(removed_fruit1)
-    print(list1)
-    list1=list1*2
-    while len(list1)>0:
+    list2.remove(removed_fruit1)
+    print(list2)
+    list2=list2*2
+    while len(list2)>0:
         removed_fruit2 = input("Please name a fruit to be removed from the list >")
-        while removed_fruit2 in list1:
-            list1.remove(removed_fruit2)
-        print(list1)
-	
+        while removed_fruit2 in list2:
+            list2.remove(removed_fruit2)
+        print(list2)
+
+def series3(list3):
+    print(list3)
+    list4=[]
+    for fruits in list3:
+        answer1=""
+        while answer1.lower() != "yes" or answer1.lower() != "no":
+            answer1 = input("Do you like {}? >".format(fruits.lower()))
+            if answer1.lower() == "yes":
+                list4.append(fruits)
+                break
+            elif answer1.lower() == "no":
+                break
+            else:
+                print("That's not a yes or no answer")
+    print(list4)
+    return list4
+
+def series4(list5):
+    
