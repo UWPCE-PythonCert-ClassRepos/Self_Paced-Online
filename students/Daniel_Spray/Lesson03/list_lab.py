@@ -15,3 +15,19 @@ def series1():
     for a in list1:
         if a[0].lower() == "p":
             print(a)
+    series2(list1)
+
+def series2(list1):
+    print(list1)
+    del list1[-1]
+    print(list1)
+    removed_fruit1 = input("Please name a fruit to be removed from the list >")
+    list1.remove(removed_fruit1)
+    print(list1)
+    list1=list1*2
+    while len(list1)>0:
+        removed_fruit2 = input("Please name a fruit to be removed from the list >")
+        while removed_fruit2 in list1:
+            list1.remove(removed_fruit2)
+        print(list1)
+	
