@@ -1,5 +1,5 @@
-def FizzBuzzTest():
-    for n in range(1,100):
+def fizz_buzz_test():
+    for n in range(1,101):
         if n%3==0 and n%5==0:
             print("FizzBuzz")
         elif n%3==0:

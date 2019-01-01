@@ -1,12 +1,14 @@
 def fibonacci(n):
     l = [0,1]
-    commonfunction(l,n)
+    common_function(l,n)
     return l
+
 def lucas(n):
     l = [2,1]
-    commonfunction(l,n)
+    common_function(l,n)
     return l
-def commonfunction(l,n):
+
+def common_function(l,n):
     m=1
     while len(l)<n:
         y=l[m-1]+l[m]
@@ -14,11 +16,12 @@ def commonfunction(l,n):
         m+=1
     print(l[n-1])
     return l
+
 def sum_series(n,a=0,b=1):
     l = []
     l.append(a)
     l.append(b)
-    commonfunction(l,n)
+    common_function(l,n)
     return l
 
 assert fibonacci(5)==[0,1,1,2,3],"The Program Returned an Incorrect Sequence for the Fibonacci Function Test"
