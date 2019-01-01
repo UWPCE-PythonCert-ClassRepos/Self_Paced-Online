@@ -15,15 +15,19 @@ first_try = ['spam', 'cheese', 'mr death']
 
 try:
     joke = fun(first_try[0])
+
 except NameError:
     print('Whoops! there is no joke for: {}'.format(first_try[0]))
+
 else:
     joke = fun(first_try[1])
 
 try:
     not_joke = fun(first_try[2])
+
 except SyntaxError:
     print('Run Away!')
+
 else:
     print(not_joke)
 

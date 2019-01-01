@@ -12,13 +12,15 @@ from collections import defaultdict
 def quit_sel():
     raise SystemExit(1)
 
-# new_donor_folder is a folder containing
-# the text files of the donors. By providing the foldername
-# the code will search this folder in any machine.
-# for my case - directory/donor_list/Paul_Allen.txt
+#new_donor_folder is a folder containing the text files of all donors.
 
 new_donor_folder = "donor_list"
 
+"""
+If the cwd is in the pah of the donors folder
+the code will search this folder in the path.
+For this machine - directory/donor_list/Paul_Allen.txt
+"""
 # list all the folders and their associated paths
 def list_dir_path():
     root = os.path.dirname( os.getcwd())
@@ -27,8 +29,7 @@ def list_dir_path():
             dir_info = str(os.path.join(dirname))
             yield dir_info, path
 
-
-# find the directory name with all the files named by donor names
+# outputs the path  *\*\donor_list
 def donor_list_dir(donor_folder = new_donor_folder):
     dir_info = list(list_dir_path())
     for j in range(len(dir_info)):
@@ -44,6 +45,32 @@ def open_donor_file( donation_directory ):
     donations = donor_lists.read()
     donor_lists.close()
     return(donations)
+
+# extract the donation information of one donor
+def one_donor_info(file_name, donor_folder = new_donor_folder):
+    #file_name: the file name of the donor ("firstname_lastname_suffix.txt")
+    donor_filepath = donor_list_dir(donor_folder = new_donor_folder)
+    donation_directory = os.path.join( donor_filepath, file_name)
+    donation_filename = os.path.basename(file_name)
+    donor_name = os.path.splitext( donation_filename)[0].split("_")
+    donor_collect = open_donor_file( donation_directory)
+    donations = donor_collect.split(", ")
+    donation_out = [eval(item) for item in donations]
+    donor_info = {'donor': donor_name, 'gifts': donation_out}
+    return(donor_info)
+
+# extracts donation information of all donors in the directory
+def all_donors_info(donor_folder = new_donor_folder):
+    donor_filepath = donor_list_dir(donor_folder = new_donor_folder)
+    donor_files = os.listdir( donor_filepath)
+    donors_gifts = defaultdict( list)
+    for file_name in donor_files:
+        donor_gift = one_donor_info(file_name, donor_folder = new_donor_folder)
+        donor_name = " ".join( donor_gift["donor"])
+        donation = donor_gift["gifts"]
+        donors_gifts[donor_name] = donation
+    return(donors_gifts)
+
 
 # send thank you letter to all donors
 def thank_all_letter(donor_folder = new_donor_folder):
@@ -98,33 +125,6 @@ def letter_format( donor, gift):
           It will be put to very good use.
                                 Sincerely,
                                   -The Team'''.format(donor,gift))
-
-# extract the donation information of one donor
-def one_donor_info(file_name, donor_folder = new_donor_folder):
-    #file_name: the file name of the donor ("firstname_lastname_suffix.txt")
-    donor_filepath = donor_list_dir(donor_folder = new_donor_folder)
-    donation_directory = os.path.join( donor_filepath, file_name)
-    donation_filename = os.path.basename( file_name)
-    donor_name = os.path.splitext( donation_filename)[0].split("_")
-    donor_collect = open_donor_file( donation_directory)
-    donations = donor_collect.split(", ")
-    donation_out = [eval(item) for item in donations]
-    donor_info = {'donor': donor_name, 'gifts': donation_out}
-    return(donor_info)
-
-# extracts donation information of all donors in the directory
-def all_donors_info(donor_folder = new_donor_folder):
-    donor_filepath = donor_list_dir(donor_folder = new_donor_folder)
-    donor_files = os.listdir( donor_filepath)
-    donors_gifts = defaultdict( list)
-    for file_name in donor_files:
-        donor_gift = one_donor_info(file_name, donor_folder = new_donor_folder)
-        donor_name = " ".join( donor_gift["donor"])
-        donation = donor_gift["gifts"]
-        donors_gifts[donor_name] = donation
-    return(donors_gifts)
-
-
 # update the list of donors and donation
 # donor_name is the list of donors
 # donation is the amount of donation of each donor
@@ -137,16 +137,19 @@ def enter_donation(donor_folder = new_donor_folder):
     print("The current donors in the database are \n ", donors)
     new_donor = input("Enter full name of the donor?").title()
     if new_donor not in donors:
-        # file directory information to create one
-        new_donor_filename = re.sub(" ", "_", new_donor) + ".txt"
-        new_donor_filepath = donor_list_dir(donor_folder = new_donor_folder)
-        donation_directory = os.path.join( donor_filepath, new_donor_filename)
-        # enter donation information
-        new_donation1 = input("Amount of donation by {} ?".format(new_donor))
-        #write the donation information
-        new_file = open(donation_directory, 'w')
-        new_file.write(new_donation1)
-        new_file.close()
+        if list(new_donor)[0] in list(string.ascii_uppercase):
+            new_donor_filename = re.sub(" ", "_", new_donor) + ".txt"
+            new_donor_filepath = donor_list_dir(donor_folder = new_donor_folder)
+            donation_directory = os.path.join( donor_filepath, new_donor_filename)
+            # enter donation information
+            new_donation1 = input("Amount of donation by {} ?".format(new_donor))
+            #write the donation information
+            new_file = open(donation_directory, 'w')
+            new_file.write(new_donation1)
+            new_file.close()
+            print(new_donor, "is a new donor and his first donation is $", new_donation1)
+        else:
+            print("donor entry not correct.")
     elif new_donor in donors:
         new_donor_filename = re.sub(" ", "_", new_donor) + ".txt"
         donation_directory = os.path.join( donor_filepath, new_donor_filename)
@@ -155,7 +158,6 @@ def enter_donation(donor_folder = new_donor_folder):
         append_file = open(donation_directory, 'a')
         append_file.write(new_donation1)
         append_file.close()
-
 
 # enter the correct folder name containing all the text files
 # for this computer, the folder name is donor_list

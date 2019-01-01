@@ -1,4 +1,4 @@
-
+#!/usr/bin/python
 """
 silly little test module that is designed to trigger Exceptions when
 run from the except_exercise.py file
@@ -14,7 +14,6 @@ shop = "Not much of a cheese shop really, is it?"
 cust = "Customer: "
 clerk = "Shopkeeper: "
 
-
 def fun(reaper):
     if reaper == 'spam':
         print(s)
@@ -25,14 +24,12 @@ def fun(reaper):
         print()
         return('{}{}\n{}{}'.format(cust, shop, clerk, district))
 
-
 def more_fun(language):
     if language == 'java':
         test = [1, 2, 3]
         test[5] = language
     elif language == 'c':
         print('{}{}\n{}{}'.format(cust, conclude, clerk, clean))
-
 
 def last_fun():
     print(cust, cheese)
