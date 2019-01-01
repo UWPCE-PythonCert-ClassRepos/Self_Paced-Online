@@ -49,4 +49,11 @@ def series3(list3):
     return list4
 
 def series4(list5):
-    
+    list6=[]
+    for a in list5:
+        list6.append(a)
+    for a in range(0,len(list6)):
+        list6[a]=list6[a][::-1]
+    del list5[-1]
+    print(list5)
+    print(list6)
