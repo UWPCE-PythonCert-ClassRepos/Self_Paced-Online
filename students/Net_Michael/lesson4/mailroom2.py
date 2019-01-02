@@ -12,6 +12,10 @@ from collections import defaultdict
 # creates modules that output options in switch_fun_dict
 #####################################################
 
+
+def quit_sel():
+    raise SystemExit(1)
+
 # send thank you all
 def thank_all_letter( donor_folder = "donor_list"):
     # donor_folder: name of the folder in the directory holding donor files
@@ -63,9 +67,6 @@ def thank_one_letter( donor_folder = "donor_list"):
     else:
         print(full_name, " is not in the donor's list")
 
-def quit_sel():
-    print("Exit")
-
 ###############################################
 ### following modules are supplementary embded on the above functions
 ###############################################
@@ -114,6 +115,32 @@ def all_donors_info( donor_folder):
         donors_gifts[donor_name] = donation
     return(donors_gifts)
 
+def enter_donation(donor_folder = "donor_list" ):
+    donor_info = all_donors_info( donor_folder)
+    donors = list( donor_info.keys())
+    all_gifts = list( donor_info.values())
+    print("The current donors in the database are \n ", donors)
+    new_donor = input("Enter full name of the donor?").title()
+    if new_donor not in donors:
+        # file directory information to create one
+        new_donor_filename = re.sub(" ", "_", new_donor) + ".txt"
+        donation_directory = os.path.join( os.getcwd(), donor_folder, new_donor_filename)
+        # enter donation information
+        new_donation1 = input("Amount of donation by {} ?".format(new_donor))
+        #write the donation information
+        new_file = open(donation_directory, 'w')
+        new_file.write(new_donation1)
+        new_file.close()
+    elif new_donor in donors:
+        new_donor_filename = re.sub(" ", "_", new_donor) + ".txt"
+        donation_directory = os.path.join( os.getcwd(), donor_folder, new_donor_filename)
+        new_donation1 = input("Amount of donation by {} ?  ".format(new_donor))
+        new_donation1 = ', ' + str(new_donation1)
+        append_file = open(donation_directory, 'a')
+        append_file.write(new_donation1)
+        append_file.close()
+
+
 # switch function will select the fumctions above
 # depending on the selection of user
 
@@ -121,7 +148,8 @@ switch_func_dict = {
         1: create_report,
         2: thank_all_letter,
         3: thank_one_letter,
-        4: quit_sel,
+        4: enter_donation,
+        5: quit_sel,
     }
 
 def output_entry_value():
@@ -129,7 +157,8 @@ def output_entry_value():
              For report select - 1,
              Send thank you letter to all donors - 2,
              Send thank you letter to selected donor - 3,
-             Quit - 4
+             Enter new donation - 4,
+             Quit - 5
 
              ''')
     sel_num = input("Enter one of the four numbers: ")
@@ -141,7 +170,7 @@ def output_entry_value():
 
 if __name__ == "__main__":
     sel_choice = output_entry_value()
-    if sel_choice <= 4:
+    if sel_choice <= 5:
         switch_func_dict.get(sel_choice)()
     else:
         print("Select an integer between 1 and 4")
