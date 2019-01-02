@@ -96,7 +96,6 @@ def thanks_letter():
         donations[donor] = donations[donor] + [donation]
     else:
         print("You have entered a new donor:", donor)
-        donation = []
         try:
             donation = float(input("Please enter the donation amount '0.00':"))
         except ValueError:
