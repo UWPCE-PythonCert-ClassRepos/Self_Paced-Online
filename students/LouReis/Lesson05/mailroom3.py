@@ -100,7 +100,7 @@ def thanks_letter():
             donation = float(input("Please enter the donation amount '0.00':"))
         except ValueError:
             print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
-            main_menu(main_prompt,menu_options_dict)
+            return
         donations.update({donor:[donation]})
     print_letter(donor,donation)
 
