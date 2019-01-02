@@ -12,8 +12,8 @@ The initializer signature should look like:
 class Element(object):
 
     tag = "html"
-
-    def __init__(self, content=None, **kwargs):
+    def __init__(indent, self, content=None, **kwargs):
+        self.indent = indent
         self.contents = [content]
         self.attributes = {**kwargs}
         
@@ -23,7 +23,7 @@ class Element(object):
         else:
             self.contents.append(new_content)
 
-    def render(self, out_file):
+    def render(self, out_file, cur_ind = ""):
         #loop through list of contents
         open_tag = ["<{}".format(self.tag)]
         for key in self.attributes:
@@ -65,7 +65,7 @@ class OneLineTag(Element):
     def append(self, content):
         raise NotImplementedError
 
-    def render(self, out_file):
+    def render(self, out_file, cur_ind = ""):
         #write one line text from contents
         out_file.write("<{tag}>{content}</{tag}>\n".format(tag=self.tag, content=self.contents))
         
@@ -91,7 +91,7 @@ class SelfClosingTag(Element):
     def append(self, *args):
         raise TypeError("cannot add content")
 
-    def render(self, out_file):
+    def render(self, out_file, cur_ind = ""):
         open_tag = ["<{tag}".format(tag=self.tag)]
         for key in self.attributes:
             open_tag.append(" " + key + "=\"" + self.attributes[key] + "\"")
@@ -117,7 +117,7 @@ class A(OneLineTag):
         kwargs['href'] = link
         super().__init__(content, **kwargs)
 
-    def render(self, out_file):
+    def render(self, out_file, cur_ind = ""):
         open_tag = ["<{tag}".format(tag=self.tag)]
         for key in self.attributes:
             open_tag.append(" " + key + "=\"" + self.attributes[key] + "\">")
