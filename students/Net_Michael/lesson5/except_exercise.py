@@ -9,25 +9,27 @@ Make sure to catch specifically the error you find, rather than all errors.
 
 from except_test import fun, more_fun, last_fun
 
-
 # Figure out what the exception is, catch it and while still
 # in that catch block, try again with the second item in the list
 first_try = ['spam', 'cheese', 'mr death']
 
 try:
     joke = fun(first_try[0])
+
 except NameError:
     print('Whoops! there is no joke for: {}'.format(first_try[0]))
+
 else:
     joke = fun(first_try[1])
 
 try:
     not_joke = fun(first_try[2])
+
 except SyntaxError:
     print('Run Away!')
+
 else:
     print(not_joke)
-
 
 # What did that do? You can think of else in this context, as well as in
 # loops as meaning: "else if nothing went wrong"
@@ -50,5 +52,5 @@ try:
     more_joke = more_fun(langs[0])
 except IndexError:
     more_joke = more_fun(langs[1])
-
-last_fun()
+finally:
+    last_fun()
