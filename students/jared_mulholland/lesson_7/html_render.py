@@ -10,10 +10,9 @@ The initializer signature should look like:
 
 # This is the framework for the base class
 class Element(object):
-
     tag = "html"
-    def __init__(indent, self, content=None, **kwargs):
-        self.indent = indent
+    indent = "   "
+    def __init__(self, content=None, **kwargs):
         self.contents = [content]
         self.attributes = {**kwargs}
         
