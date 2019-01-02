@@ -131,7 +131,6 @@ def thanks_letter_all():
                 f.write("\nWe will welcome any future donations and appreciate your support.")
                 f.write("\n\n\nSincerely,\n\nMDTS Staff\n\n\n")
     print("\n\nA Letter has been created for each donor and stored in a text file.\n\n")
-    return "Menu"
 
 def quit():
     import sys
