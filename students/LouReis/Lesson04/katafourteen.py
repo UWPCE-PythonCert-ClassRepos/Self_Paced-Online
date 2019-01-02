@@ -2,11 +2,15 @@
 # katafourteen.py
 # Coded by LouReis
 
+import pathlib
+import random
+from random import randint
+
 # Take a text file as input and for each set of 3 words, make the first two words keys.
 
 print('This program takes a file and creates a dictionary.\n')
 print('Here are the files you have to choose from in this directory:\n\n')
-import pathlib
+
 pth = pathlib.Path('./')
 # pth.is_dir()
 pth.absolute()
@@ -61,8 +65,7 @@ You might generate:
 """
 
 new_text = input("\n\nWould you like to generate a random story of 300 words? (Enter Y or N):\n\n")
-import random
-from random import randint
+
 if new_text == 'Y':
     for x in range(100):
         random_key = random.sample(list(kata), 1)[0]
