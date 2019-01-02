@@ -68,7 +68,6 @@ def donation_report():
     print('---------------------------------------------------------------------------')
     print()
     for key,value in sorted(donations.items(),key=lambda i:sum(i[1]),reverse=True):
-        total = 0
         total = sum(donations[key])
         count = 0
         count = len(donations[key])
