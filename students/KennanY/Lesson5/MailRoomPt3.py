@@ -12,14 +12,14 @@ people={'Jeff Bezos': [1005.49, 3116.72, 5200],
              'Jack Boyle': [66.9, 85.13, 443.23]}
 
 #Functions
-def PrintEMail(name, amount):
+def printemail(name, amount):
     ''' Print Email message'''
     print("\nDear " + name +'\n')
     print('We would like to thank you for continuing support for our organization!\n')
     print('Your contribution of $' + str(amount) + ' is received and very much appreciated!')
     print('\nThank you\nKennan Yilmaz')
 
-def Generate_Letters(donationdata):
+def generate_letters(donationdata):
     for donor, amount in donationdata.items():
         #Build file name
         dt= str(datetime.now().strftime('%Y%m%d%H%M%S'))
@@ -44,7 +44,7 @@ def Generate_Letters(donationdata):
         print("There was an error writing to the file.")
         return
 
-def func_Send_Thankyou():
+def func_send_thankyou():
     ''' Send a Thank you note'''
     print('Thank you')
     value=0
@@ -70,9 +70,9 @@ def func_Send_Thankyou():
             #Add the name and the donation
             people[name] = value
         # Print the email now
-        PrintEMail(name, value)
+        printemail(name, value)
 
-def func_Create_Report():
+def func_create_report():
     """Print donation history"""
     donations= []
     for donors in people:
@@ -99,11 +99,11 @@ def func_Create_Report():
         print('{:<25s}  ${:>18,.2f}  {:>15d}  ${:>18,.2f}'.format( donor[0], total_amount, total_donation,
                                                                       avg_donation))
 
-def  func_Send_Letters():
+def  func_send_letters():
     print('Write the letters to file in ' + os.getcwd())
-    Generate_Letters(people)
+    generate_letters(people)
 
-def func_Quit():
+def func_quit():
     global flag
     flag=False
     print('Quiting ... DONE!')
@@ -124,10 +124,10 @@ def showmenu ():
         response=int(input("Please select and option (1,2, 3 or 4)"))
         # Dict implementation of the menu
         switch_func_dict = {
-            1: func_Send_Thankyou,
-            2: func_Create_Report,
-            3: func_Send_Letters,
-            4: func_Quit,
+            1: func_send_thankyou,
+            2: func_create_report,
+            3: func_send_letters,
+            4: func_quit,
         }
         if (response >= 0) and (response < 5):
             switch_func_dict[response]()
