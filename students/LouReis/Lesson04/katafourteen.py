@@ -26,6 +26,7 @@ print("\n\nHere's the dictionary:\n")
 kata = {}
 count = 1
 key = ''
+nextkey = ''
 value = []
 with open(filename,'r') as f:
     for line in f:
@@ -36,17 +37,21 @@ with open(filename,'r') as f:
             elif count == 2:
                 key = key + ' ' + word
                 count = count + 1
+                nextkey = word
             elif count == 3:
                 if key in kata:
                     value = [word]
                     kata[key] = kata[key] + [word]
                     value = []
-                    count = 1
-                    key = ''
+                    count = 3
+                    key = nextkey + ' ' + word
+                    nextkey = word
                 else:
                     kata.update({key:[word]})
-                    count = 1
-                    key = ''
+                    count = 3
+                    key = nextkey + ' ' + word
+                    nextkey = word
+
 for k, v in kata.items():
     print(k, "=>", v)
 
