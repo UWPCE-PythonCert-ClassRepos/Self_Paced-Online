@@ -1,21 +1,16 @@
 #!/usr/bin/env python3
 """
-mailroom.py -
-    1) prompt user for 3 actions - Send thank you, create report or quit
+mailroom_pt2.py:
+ Prompt user for various actions ranging from send thank you notes to
+ asking for new donations. Write everything to a local file on exit or
+ per menu selection.
 Author: JohnR
-Version: 1.3
-Last updated: 12/29/2018
-Notes: TODO: create a single template using the .format(**d) method
-
-  v2.0 requirements:
-    1) use dict where appropriate
-    2) create a dict-based menu
-    3) create a single template using .format(**d) method for the letter
-    4) write a full set of letters to everyone on disk in individual files
-    5) add a function that goes through all donors, generates a thank you
-        letter, and writes it to disk as a text file.
-        A) use donor name and date for file name
+Version: 2.0
+Last updated: 12/30/2018
+Notes: v2 mailroom ready to submit
 """
+
+from datetime import date
 
 
 def main():
@@ -25,33 +20,12 @@ def main():
     :return: none
     """
 
-    # make some global variables to experiment with
-    global db
-    global main_prompt
-    global main_dispatch
-
-    # create a main database
-    db = {'sting': {'d1': 13.45,
-                    'd2': 214.34,
-                    'd3': 453.23,
-                    },
-          'bono': {'d1': 54.54,
-                   'd2': 778.01,
-                   'd3': 564.35,
-                   },
-          'oprah': {'d1': 66.34,
-                    'd2': 664.33,
-                    'd3': 566.45,
-                    },
-          'yoko': {'d1': 64.24,
-                   'd2': 67.03,
-                   'd3': 990.34,
-                   },
-          'santa': {'d1': 45.43,
-                    'd2': 98345.32,
-                    'd3': 54.34,
-                    'd4': 456.23,
-                    },
+    # converted away from nested dict per N.
+    db = {'sting': [13.45, 214.34, 123.45, 1433.23, 1243.13],
+          'bono': [7843.34, 35.55, 732.34],
+          'oprah': [66.34, 32.23, 632.21, 66.67],
+          'yoko': [34.34, 4.34],
+          'santa': [5334.00, 254.34, 64324.23, 2345.23, 5342.24],
          }
 
     # create the main user prompt
@@ -60,63 +34,134 @@ def main():
         "Please pick a number from the following:\n"
         "1: exit the program\n"
         "2: check donor list and become a donor\n"
-        "3: create an interactive report of current donors\n"
-        "4: write a thank you note for each donor and write to file\n"
-        ">>>\n"
+        "3: display a summary of current donor activity\n"
+        "4: print out a thank for each donor\n"
+        "5: save a thank you note to disk for each donor\n"
+        ">>> "
     )
 
-    # create the main menu using dict switch
+    # QUESTION: How can I call these and pass different variables?
+    #           With this current method I have to pass 'db' to every
+    #           function being called.
     main_dispatch = {
         '1': exit_menu,
-        '2': thank_you,
-        '3': create_report,
-        '4': write_report,
+        '2': donor_actions,
+        '3': print_summary,
+        '4': thank_all,
+        '5': save_report,
     }
 
-    # calling menu with no variables at this point since they are global
-    menu()
+    # QUESTION: Need an overall template here to replace print_summary;
+    #           see function print_summary for details.
+
+    menu(main_prompt, main_dispatch, db)
 
 
-def menu():
+def menu(main_prompt, main_dispatch, db):
     """
     Get user input
     :return: call the appropriate menu item
     """
+    # TODO: having trouble checking if input is in a range() here
     while True:
         response = input(main_prompt)
-        if response == '1':
-            exit_menu()
+        # not sure this is the best way to achieve
+        if response.isalpha():
+            print('Sorry, we need a number between 1 and 5.')
+            menu(main_prompt, main_dispatch, db)
         else:
             main_dispatch[response](db)
 
 
-def write_report():
-    pass
-
-
-def exit_menu():
+def thank_all(db):
     """
-    exit the program
+    Print out thanks to all current donors.
+    :param db: current donor db
+    :return: None
+    """
+    donors = sorted_list(db)
+    for donor in donors:
+        letter = form_letter(donor[0][0], donor[1][0])
+        print(letter)
+
+
+def form_letter(name, donation):
+    """
+    create a form letter
+    :param name: donor name
+    :param donation: amount of donation as a float
+    :return: form letter filled in with donor and amount
+    """
+    today = date.today()
+    letter = (
+        f'\nHey {name.capitalize()}, thanks for your donations! '
+        f'As of today, {today}, you have donated a total of '
+        f'${donation}.\n'
+    )
+
+    return letter
+
+
+def save_report(db):
+    """
+    Generate a thank you letter for each donor and write to individual
+    files on disk.
+    :param db: donor database
+    :return: None
+    """
+    # Get a sorted list, print out a thank you for each then write to disk
+    today = date.today()
+    donors = sorted_list(db)
+    for donor in donors:
+        # create a file based on donor name and time stamp
+        letter = form_letter(donor[0][0], donor[1][0])
+        user_file = "{}.{}.txt".format(donor[0][0], today)
+
+        with open(user_file, 'w') as outfile:
+            outfile.write(letter)
+        outfile.close()
+
+
+def exit_menu(db):
+    """
+    write to file and exit the program
     :return: SystemExit
     """
+    # save a current thank you for each donor to disk and exit
+    save_report(db)
     print('Exiting program -')
     raise SystemExit
+    # NOTE: sys.exit() does not work/ resolve and SystemExit doesn't seem
+    # to work on it's own here. So far I can only get 'raise SystemExit
+    # to produce the intended effect. Not sure what I'm doing wrong.
 
 
-def thank_you(names):
+def seek_donation(name):
+    """
+    Prompt user for a donation.
+    :param name: name of donor
+    :return: donation amount as a float
+    """
+    donation_amount = input(f'Hi {name.capitalize()}, how much would you '
+                            f'like to give today? ')
+    donation_amount = round(float(donation_amount), 2)
+    print(form_letter(name, donation_amount))
+    return donation_amount
+
+
+def donor_actions(names):
     """
     send a thank you, check the donor list or add donation
     :return: None
     """
 
     while True:
-        print('Enter q to exit to main menu.')
+        print('\nEnter q to exit to main menu.')
         cmd = input("Enter 'list' to see a current list of donors or "
-                    "a new name to become a new donor: ")
+                    "a new name to become a new donor today!"
+                    "\n>>> ")
         cmd = cmd.lower()
 
-        # TODO: v-next decompose this into smaller, more discrete functions
-        # TODO: validate donations are digits instead of strings
         if cmd.isdigit():
             break
         elif cmd == 'q':
@@ -127,57 +172,56 @@ def thank_you(names):
                 print(i.capitalize())
         elif cmd in names.keys():
             # name already in list, solicit new donation and add to dict
-            donation = input('Please enter an amount to donate: ')
-            donation = float(donation)
-
-            d_num = len(names[cmd].keys()) + 1
-            d_num = str(d_num)
-            new_key = 'd' + d_num
-            names[cmd][new_key] = donation
-
-            print(f'Thank you, {cmd.capitalize()}, for your kind'
-                  f' donation of ${donation}.')
+            donation = seek_donation(cmd)
+            names[cmd].append(donation)
         else:
-            # add the new name and prompt for donation
-            print(f'Welcome aboard, {cmd.capitalize()}, how much would '
-                  f'you like to donate?')
-            new_donation = input('Please an amount to donate: ')
-            new_donation = float(new_donation)
-            names[cmd] = {'d1': new_donation}
-
-            print(f'Thank you, {cmd.capitalize()}, for your kind'
-                  f' donation of ${new_donation}.')
+            # add new donor to list and seek contribution
+            names[cmd] = []
+            donation = seek_donation(cmd)
+            names[cmd].append(donation)
 
 
-def create_report(data):
+def sorted_list(data):
+    """
+    Sort a give list of donors by total amount given, large to small
+    :param data: dictionary of donor data
+    :return: sorted list of donors
+    """
+    # create a list of the summaries
+    sorted_donors = []
+    for name, donations in data.items():
+        total = round(sum(donations), 2)
+        number = round(len(donations), 2)
+        avg = total / len(donations)
+        avg = round(avg, 2)
+        sorted_donors.append([[name], [total], [number], [avg]])
+
+    # Sort the list by largest total donation
+    sorted_donors.sort(key=lambda x: x[1])
+    sorted_donors.reverse()
+    return sorted_donors
+
+
+def print_summary(db):
     """
     Print a list of donors sorted by historical donation amount.
     List donor name, number of donations and average donation amount.
     :return: none
     """
 
-    # Create a list from the donor dictionary so we can sort by size
-    d_list = []
-    for donor in data:
-        total_amount = round(float(sum(data[donor].values())), 2)
-        num_donations = round(len(data[donor].values()), 2)
-        avg_donation = total_amount / num_donations
-        avg_donation = round(avg_donation, 2)
-
-        d_list.append([[donor], [total_amount, num_donations, avg_donation]])
-
-    # Sort the list from largest to smallest donation
-    d_list.sort(key=lambda x: x[1])
-    d_list.reverse()
-
-    # Print the sorted list in a nice format
+    # QUESTION: I'm missing some fundamental connection around how to
+    #           convert the below to a callable template, I think the
+    #           for loop is throwing me off.
+    donors = sorted_list(db)
     print()
     print('Donor Name       | Total Given | Num Gifts | Avg Gift Amount')
     print('-' * 60)
 
-    for d in d_list:
-        print(f'{d[0][0]:<17} ${d[1][0]:^15} {d[1][1]:<10} ${d[1][2]}')
+    for donor in donors:
+        print(f'{donor[0][0]:<17} ${donor[1][0]:^15} {donor[2][0]:^13}'
+              f'${donor[3][0]:^8}')
 
 
 if __name__ == '__main__':
     main()
+
