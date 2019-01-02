@@ -55,7 +55,6 @@ def main_menu(main_prompt,menu_options_dict):
             print("\n\n----------------PLEASE TRY AGAIN! PLEASE ENTER A VALID VALUE!----------------\n\n")
             print("\n\n----------------PLEASE TRY AGAIN! PLEASE ENTER A VALID VALUE!----------------\n\n")
             print("\n\n----------------PLEASE TRY AGAIN! PLEASE ENTER A VALID VALUE!----------------\n\n")
-            main_menu(main_prompt,menu_options_dict)
 
 # Below are the 4 menu options that are declared in the dict.
 #
