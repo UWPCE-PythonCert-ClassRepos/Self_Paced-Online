@@ -25,6 +25,21 @@ class Test_Circle(unittest.TestCase):
         expected=CircleClass.Circle(9)
         self.assertEqual(actual._radius,actual._radius)
 
+    def test_str(self):
+        c = CircleClass.Circle(2)
+        self.assertEqual(str(c), "Circle with radius 2")
+
+    def test_repr(self):
+        c = CircleClass.Circle(5)
+        print(repr(c))
+        self.assertEqual(repr(c), "Circle(5)")
+
+    def test_from_diameter(self):
+        c = CircleClass.Circle(3)
+        actual = c._diameter
+        expected = 6
+        self.assertEqual(actual, expected)
+
     def test_less_than(self):
         c1 = CircleClass.Circle(6)
         c2 = CircleClass.Circle(9)
