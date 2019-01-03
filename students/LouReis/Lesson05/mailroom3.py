@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.7
 # mailroom2.py
 # Coded by LouReis
 
@@ -48,8 +48,14 @@ donations = {"Robin Hood": [50000, 50000, 50000], "Tycoon Reis": [25000000, 2500
 # Below is the main menu function that continues prompting until quit.
 def main_menu(main_prompt,menu_options_dict):
     while True:
-        response = input(main_prompt)
-        menu_options_dict[response]()
+        try:
+            response = input(main_prompt)
+            menu_options_dict[response]()
+        except KeyError:
+            print("\n\n----------------PLEASE TRY AGAIN! PLEASE ENTER A VALID VALUE!----------------\n\n")
+            print("\n\n----------------PLEASE TRY AGAIN! PLEASE ENTER A VALID VALUE!----------------\n\n")
+            print("\n\n----------------PLEASE TRY AGAIN! PLEASE ENTER A VALID VALUE!----------------\n\n")
+            main_menu(main_prompt,menu_options_dict)
 
 # Below are the 4 menu options that are declared in the dict.
 #
@@ -82,12 +88,20 @@ def thanks_letter():
             print("\n")
     if donor in donations:
         print("You have entered an existing donor:", donor)
-        donation = float(input("Please enter the donation amount '0.00':"))
+        try:
+            donation = float(input("Please enter the donation amount '0.00':"))
+        except ValueError:
+            print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
+            main_menu(main_prompt,menu_options_dict)
         donations[donor] = donations[donor] + [donation]
     else:
         print("You have entered a new donor:", donor)
         donation = []
-        donation = float(input("Please enter the donation amount '0.00':"))
+        try:
+            donation = float(input("Please enter the donation amount '0.00':"))
+        except ValueError:
+            print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
+            main_menu(main_prompt,menu_options_dict)
         donations.update({donor:[donation]})
     print_letter(donor,donation)
 
