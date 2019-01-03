@@ -25,7 +25,8 @@ class MyFuncTestCase(unittest.TestCase):
             'test_ab'  : {'total': [1.00, 1.0/3]},
             'test_de'  : {'total': [3.14159265, 2.718281828459045]},
             'test_bcd' : {'total': [1.0/3, 1.1234567890123, 3.14159265]},
-            'test_bcde': {'total': [1.0/3, 1.1234567890123, 3.14159265, 2.718281828459045]}}
+            'test_bcde': {'total': [1.0/3, 1.1234567890123, 3.14159265, 2.718281828459045]}
+            }
 
         # data: {"Name1": [list of donations], ....}
         actual = amount_lengths(test_vals)
