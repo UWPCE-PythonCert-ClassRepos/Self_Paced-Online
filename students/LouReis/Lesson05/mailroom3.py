@@ -55,7 +55,6 @@ def main_menu(main_prompt,menu_options_dict):
             print("\n\n----------------PLEASE TRY AGAIN! PLEASE ENTER A VALID VALUE!----------------\n\n")
             print("\n\n----------------PLEASE TRY AGAIN! PLEASE ENTER A VALID VALUE!----------------\n\n")
             print("\n\n----------------PLEASE TRY AGAIN! PLEASE ENTER A VALID VALUE!----------------\n\n")
-            main_menu(main_prompt,menu_options_dict)
 
 # Below are the 4 menu options that are declared in the dict.
 #
@@ -68,7 +67,6 @@ def donation_report():
     print('---------------------------------------------------------------------------')
     print()
     for key,value in sorted(donations.items(),key=lambda i:sum(i[1]),reverse=True):
-        total = 0
         total = sum(donations[key])
         count = 0
         count = len(donations[key])
@@ -96,12 +94,11 @@ def thanks_letter():
         donations[donor] = donations[donor] + [donation]
     else:
         print("You have entered a new donor:", donor)
-        donation = []
         try:
             donation = float(input("Please enter the donation amount '0.00':"))
         except ValueError:
             print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
-            main_menu(main_prompt,menu_options_dict)
+            return
         donations.update({donor:[donation]})
     print_letter(donor,donation)
 
@@ -131,7 +128,6 @@ def thanks_letter_all():
                 f.write("\nWe will welcome any future donations and appreciate your support.")
                 f.write("\n\n\nSincerely,\n\nMDTS Staff\n\n\n")
     print("\n\nA Letter has been created for each donor and stored in a text file.\n\n")
-    return "Menu"
 
 def quit():
     import sys
