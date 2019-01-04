@@ -17,14 +17,24 @@ class Circle:
     def area(self):
         return math.pi * (self._radius**2)
 
+    @classmethod
+    def from_diameter(cls, diameter):
+        return cls(diameter / 2)
+
     # Print circle
     def __str__(self):
         return "Circle with radius {}".format(str(self._radius))
 
-    #Add two circles
+    #Crcle operations
     def __add__(self, other):
         sum= self._radius + other._radius
         return Circle(sum)
+
+    def __mul__(self, other):
+        return Circle(self._radius * other)
+
+    def __repr__(self):
+        return "Circle({})".format(self._radius)
 
     #Circle comparisons
     def __lt__(self, other):
@@ -49,3 +59,4 @@ class Circle:
     @classmethod
     def from_diameter(cls, diameter):
         return cls(diameter / 2)
+
