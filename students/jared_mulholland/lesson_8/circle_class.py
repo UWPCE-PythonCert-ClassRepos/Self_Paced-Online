@@ -23,7 +23,7 @@ General Instructions:
 
 """
 
-import math
+from math import pi
 
 #Step 1: 
 """
@@ -67,7 +67,7 @@ class Circle_3(object):
 
     @diameter.setter
     def diameter(self, d):
-        radius = int(d/2)
+        radius = d/2
         self.radius = radius
 
 #Step 4:
@@ -83,12 +83,51 @@ class Circle_4(object):
 
     @diameter.setter
     def diameter(self, d):
-        radius = int(d/2)
+        radius = d/2
         self.radius = radius
 
     @property
     def area(self):
-        return math.pi * self.radius**2
+        return pi * self.radius**2
+
+#Step 5:
+"""Add an alternate constructor that lets 
+the user create a Circle directly with the diameter:"""
+
+class Circle(object):
+    """diameter can be set as property"""
+    def __init__(self, radius):
+        self.radius = radius
+        self._diameter = radius * 2
+        self._area = pi * radius**2
+                
+    @property
+    def diameter(self):
+        return self.radius*2
+    
+    @diameter.setter
+    def diameter(self, d):
+        radius = d/2
+        self.radius = radius
+    
+    @property
+    def area(self):
+        return pi * self.radius**2    
+
+    @classmethod
+    def from_diameter(cls, d):
+        radius = d/2
+        return Circle(radius)
+
+    """add __str__ and __repr__ methods to class"""
+    def __str__(self):
+        return "Circle with radius: {}".format(self.radius)
+
+    def __repr__(self):
+        return "Circle({})".format(self.radius)
+
+    
+
 
 
         

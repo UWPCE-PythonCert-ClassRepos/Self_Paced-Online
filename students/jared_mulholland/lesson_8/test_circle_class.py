@@ -39,5 +39,26 @@ def test_area():
     """test that correct area made"""
     c = Circle_4(4)
     assert c.area == math.pi * 4**2
-    try:
+    with pytest.raises(AttributeError):
+        c.area = 42
         
+#Step 5:
+"""Add an alternate constructor that lets 
+the user create a Circle directly with the diameter:"""
+
+def test_area_from_diameter():
+    c = Circle.from_diameter(8)
+    assert c.diameter == 8
+    assert c.radius == 4
+
+#Step 6:
+"""add __str__ and __repr__ method to circle class"""
+def test_rep_str():
+    c = Circle(4)
+    assert repr(c) == 'Circle(4)'
+    assert str(c) == 'Circle with radius: 4'
+
+    
+
+
+
