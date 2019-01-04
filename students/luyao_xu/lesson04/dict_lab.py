@@ -21,6 +21,19 @@ print(diction.values())
 print('cake' in diction.keys())
 # Display whether or not “Mango” is a value in the dictionary
 print('Mango' in diction.values())
+diction = {'name': 'Chris', 'city': 'Seattle', 'cake': 'Chocolate'}
+
+
+"""Dictionaries 2"""
+
+# Using the dictionary from item 1
+diction = {'name': 'Chris', 'city': 'Seattle', 'cake': 'Chocolate'}
+item_copy = diction.copy()
+# Make a dictionary using the same keys but with the number of ‘t’s in each value as the value
+for i in item_copy:
+    item_copy[i] = item_copy[i].lower().count('t')
+print(item_copy)
+
 
 
 
