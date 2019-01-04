@@ -119,12 +119,27 @@ class Circle(object):
         radius = d/2
         return Circle(radius)
 
-    """add __str__ and __repr__ methods to class"""
+    """Step 6: add __str__ and __repr__ methods to class"""
     def __str__(self):
         return "Circle with radius: {}".format(self.radius)
 
     def __repr__(self):
         return "Circle({})".format(self.radius)
+
+    """Step 7: add numeric protocol to class"""
+    def __add__(self,other):
+        return Circle(self.radius + other.radius)
+
+    def __mul__(self,n):
+        return Circle(self.radius * n)
+
+    def __rmul__(self,n):
+        return Circle(n * self.radius)    
+
+    """Step 8: make classes sortable"""
+
+    def __lt__(self, other):
+        return self.radius < other.radius
 
     
 

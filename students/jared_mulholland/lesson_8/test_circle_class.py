@@ -7,6 +7,7 @@ import sys
 import io
 import pytest
 import math
+import random
 #sys.path.append("C:\\Users\\Jared\\Documents\\IntroToPython\\Self_Paced-Online\\students\\jared_mulholland\\lesson_8")
 from circle_class import *
 
@@ -58,7 +59,37 @@ def test_rep_str():
     assert repr(c) == 'Circle(4)'
     assert str(c) == 'Circle with radius: 4'
 
-    
+#Step 7:
+"""add numeric protocol to class"""
+def test_numeric():
+    c1 = Circle(4)
+    c2 = Circle(5)
+    c3 = c1 + c2
+    assert c3.radius == 9
+
+    c4 = c2 * 3
+    assert c4.radius == 15
+
+    c5 = 3 * c2
+    assert c5.radius == 15
+
+
+#Step 8:
+"""make objects sortable"""
+def test_sort():
+    c1 = Circle(4)
+    c2 = Circle(5)
+    c3 = Circle(7)
+    c4 = Circle(8)
+
+    assert c1 < c4
+    assert c3 > c2
+
+    circle_list = [c1,c2,c3,c4]
+    circle_random = circle_list[:]
+    random.shuffle(circle_random)
+
+    assert sorted(circle_random) == [c1,c2,c3,c4]
 
 
 
