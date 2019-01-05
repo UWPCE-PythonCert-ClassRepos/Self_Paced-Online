@@ -49,6 +49,15 @@ print(s3.issubset(s2))
 # Display if s4 is a subset of s2 (True)
 print(s4.issubset(s2))
 
-
-
-
+"""Sets 2"""
+# Create a set with the letters in ‘Python’
+s_python = set('Python')
+# Add ‘i’ to the set
+s_python.update('i')
+# print(s_python)
+# Create a frozenset with the letters in ‘marathon’.
+fs_marathon = frozenset('marathon')
+# display the union  of the two sets
+print(s_python.union(fs_marathon))
+# display the intersection  of the two sets
+print(s_python.intersection(fs_marathon))
