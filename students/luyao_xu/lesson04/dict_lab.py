@@ -35,7 +35,19 @@ for i in item_copy:
 print(item_copy)
 
 
-
+"""Sets 1"""
+# Create sets s2, s3 and s4 that contain numbers from zero through twenty, divisible by 2, 3 and 4
+s2 = set(range(0, 20, 2))
+s3 = set(range(0, 20, 3))
+s4 = set(range(0, 20, 4))
+# Display the sets.
+print(s2)
+print(s3)
+print(s4)
+# Display if s3 is a subset of s2 (False)
+print(s3.issubset(s2))
+# Display if s4 is a subset of s2 (True)
+print(s4.issubset(s2))
 
 
 
