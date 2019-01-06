@@ -2,12 +2,15 @@
 """
 trigram experiment with dict
 Author: JohnR
-Version: .2
+Version: .4
 Date: 1/5/2019
-Notes:
+Notes: TODO: create a random choice from the keys
+        TODO: clean up output of story
 """
 
 import re
+import random
+import os
 
 
 def main():
@@ -15,19 +18,22 @@ def main():
     trigram exercise
     :return:
     """
-    # use static variables for now
-    original_text = './test.txt'
-    new_text = 'tmp.txt'
+    # get user selection for book to use
+    print('Choose from the following txt files: ')
+    print(os.listdir())
+    original_text = input('Enter file name: ')
+    tmp_text = 'tmp.txt'
 
     # munge through the text file and create a clean word list
-    clear_nonalpha(original_text)
-    word_list = create_list(new_text)
-    print(word_list)
+    clear_non_alpha(original_text)
+    word_list = create_list(tmp_text)
 
-    # TODO: run the new word_list through create_dict
+    # create a word dictionary and then print a new story
+    word_db = create_dict(word_list)
+    new_story(word_db)
 
 
-def clear_nonalpha(input_text):
+def clear_non_alpha(input_text):
     """
     Open a text file, strip out any non-alpha numeric characters
     and write to a new file for later use.
@@ -57,17 +63,27 @@ def create_dict(list_of_words):
     Create dict based on short text file
     :return: db
     """
-    # create dict using each two word chunk as a key and value
-    # consists of lists of following words
-    pass
+    my_dict = {}
+    for word in range(len(list_of_words)-2):
+        my_key = list_of_words[word] + ' ' + list_of_words[word + 1]
+        if my_key not in my_dict.keys():
+            my_dict.update({my_key: []})
+        my_dict[my_key].append(list_of_words[word + 2])
+
+    return my_dict
 
 
-def new_story():
+def new_story(word_dict):
     """
     Create a new story based on the new word dictionary
-    :return: None - write results to a file for now
+    :return: None
     """
-    pass
+    keys = list(word_dict)
+    story = []
+    for key in keys:
+        story.append(word_dict[key])
+
+    print(story)
 
 
 if __name__ == '__main__':
