@@ -29,7 +29,7 @@ class MyFuncTestCase(unittest.TestCase):
             try:
                 actual = decimal_count(number)
             except ValueError:
-                # is this proper or does the assertRaise test have to be done
+                # is this proper or does the assertRaises test have to be done
                     # separately in another module?
                 self.assertRaises(ValueError, decimal_count, number)
             else:
