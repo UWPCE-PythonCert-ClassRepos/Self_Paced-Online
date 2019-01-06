@@ -63,29 +63,21 @@ def enter_name(data):
     and stores the letter in cwd folder "thank_you_letter"
     """
 
-    # user enter name, check if input is letters or space
-    good_name = False
-    while not good_name:
-        name = input("\nEnter name, 'First Last': ")
-        good_name = is_letters_space_or_hyphen(name)
-
-    # user enter new_amount, check if new_amount is a number, 2 decimals or less
-    good_amount = False
-    while not good_amount:
-        new_amount = input("\nEnter amount donated: ")
-        good_amount = is_digit_or_period(new_amount)
+    name = name_input()
+    # amount is float
+    amount = amount_input()
 
     # entered name is not case sensitive
     name = name.lower().title()
-    total_amount = float(new_amount)
 
     if name in data:
-        data[name]["total"].append(total_amount)
+        data[name]["total"].append(amount)
     else:
-        data[name]["total"] = [total_amount]
+        data[name] = {"total": []}
+        data[name]["total"] = [amount]
 
     type_letter = "1"
-    letter = print_letter(type_letter, name, total_amount)
+    letter = print_letter(type_letter, name, amount)
     save_letter(type_letter, name, letter)
 
 
@@ -102,7 +94,7 @@ def ask_questions(data):
             "b": {"list of names": list_of_names},
             "c": {"send letters to everyone": send_letters_to_everyone},
             "d": {"enter name": enter_name},
-            "e": {"quit": quit}}
+            "e": {"quit": "finished"}}
 
     stop = False
     while not stop:
@@ -192,33 +184,30 @@ def print_header(header_dict):
     print(header_lne.format(**header_dict))
 
 
-def name_length(data):
+def name_lengths(data):
     """
     data: {"Name1": [list of donations], ....}
     Name1 etc are the dict keys, type str
     name_length: integer
     """
 
-    # width of name field to print
-    name_list = data.keys()
-    name_len = []
-    # list comprehension
-    _ = None
-    _ = [name_len.append(len(name)) for name in name_list]
-    name_lenth = max(name_len) + 4
+    # name_len = max([len(name) for name in data]) + 4
+    name_lenths = [len(name) for name in data]
 
-    return name_lenth
+    return name_lenths
 
 
-def amount_length_max(lst_of_int):
+def max_length(lst_of_int, longest_header_word):
     """
     lst_of_int : list of integers
+    longest_header_word : string, title in header with most letters
     returns the the largest number in lst_of_int unless len("Average Gift")
         is a longer str, adds 3 to this number which is always 15 or more
     """
     assert (isinstance(lst_of_int, list)), "lst_of_int is not a list!"
+    assert (isinstance(longest_header_word, str)), "longest_header_word is not a string!"
     # making sure there's enough room for the longest title "Average Gift".
-    amount_length = max(max(lst_of_int), len("Average Gift")) + 3
+    amount_length = max(max(lst_of_int), len(longest_header_word))
     return amount_length
 
 
@@ -231,9 +220,12 @@ def amount_lengths(data):
     return len_lst: list of integer(s)
     """
     assert (isinstance(data, dict)), "var data is not a dict!"
-    _ = None
-    len_lst = []
-    _ = [len_lst.append(len("%.2f" % (sum(val["total"])))) for val in data.values()]
+    # _ = None
+    # len_lst = []
+    # _ = [len_lst.append(len("%.2f" % (sum(val["total"])))) for val in data.values()]
+
+    len_lst = [len("%.2f" % (sum(data[name]["total"]))) for name in data]
+
     return len_lst
 
 
@@ -245,6 +237,7 @@ def detail_from(donations):
         return: tuple, total, number_of _donations, average
     """
     assert (isinstance(donations, dict)), "var donations is not a dict!"
+    assert (isinstance(donations["total"], list)), 'var donations["total"] is not a list!'
     number_of_donations = len(donations["total"])
     total = sum(donations["total"])
     average = 0
@@ -275,7 +268,9 @@ def make_frame(field_length_dict):
 def list_header(data):
     """constructs the header and gets size information to print the header
     """
-    name_len = name_length(data)
+    name_lens = name_lengths(data)
+    name_len = max_length(name_lens, "Donor Name") + 4
+
     donor_dict = {"name"    : "Donor Name",
                   "nl"      : name_len}
 
@@ -294,66 +289,105 @@ def report_header(data):
     """constructs the header and gets size information to print the header
     """
     amount_lengs = amount_lengths(data)
-    amount_len = amount_length_max(amount_lengs)
+    amount_len = max_length(amount_lengs, "Average Gift") + 3
     lst_dict = list_header(data)
 
-    report_dict = {"name"    : "Donor Name",
-                   "total"   : "Total Given",
-                   "num"     : "Num Gifts",
-                   "average" : "Average Gift",
-                   "al"      : amount_len,
-                   "nl"      : lst_dict["nl"]}
-
     report_form = "{total:>{al}}|{num:>{al}}|{average:>{al}}|"
-
     report_lne = make_frame({"al": amount_len})
-    reprt_dict = {"frame"      : lst_dict["frame"] + report_lne,
-                  "line"       : (lst_dict["temp_form"] + report_form).format(**report_dict),
-                  "temp_form"  : lst_dict["temp_form"] + report_form,
-                  "al"         : amount_len,
+
+    report_dict = {"name"       : "Donor Name",
+                   "total"      : "Total Given",
+                   "num"        : "Num Gifts",
+                   "average"    : "Average Gift",
+                   "al"         : amount_len,
+                   "nl"         : lst_dict["nl"],
+                   "frame"      : report_lne,
+                   "temp_form"  : report_form}
+
+
+
+    reprt_dict = {"frame"      : lst_dict["frame"] + report_dict["frame"],
+                  "line"       : (lst_dict["temp_form"] + report_dict["temp_form"]).
+                                 format(**report_dict),
+                  "temp_form"  : lst_dict["temp_form"] + report_dict["temp_form"],
+                  "al"         : report_dict["al"],
                   "nl"         : lst_dict["nl"]}
 
     return reprt_dict
 
 
-def is_digit_or_period(strng):
+def decimal_count(float_number):
     """
-        checks if all chars in "strng" are digits 0 to 9, decimal period
-            check if more than two decimals
-        returns True of False
+        float_number : user input converted to float
+        checks if more than two decimals and if so, raise ValueError they are
+            greater than 0.
+        returns input value if no ValueErrror raised
     """
-    good_chars = set('0123456789.')
-    digits_and_one_dot = all((chars in good_chars) for chars in strng) and strng.count(".") < 2
-
-    if digits_and_one_dot and "." in strng:
-        decimals = strng.split(".")[1]
+    if "." in str(float_number):
+        decimals = str(float_number).split(".")[1]
         too_many_decimals = decimals[2:]
-        zeros = all((c == '0') for c in too_many_decimals) is True
-        if not zeros:
-            return False
+        zeroes = all((c == '0') for c in too_many_decimals) is True
+        if not zeroes:
+            raise ValueError
 
-    return digits_and_one_dot
+    return float_number
+
+
+def amount_input():
+    """ user entered amount,
+            raise ValueError if input cannot be a float or if input has more
+            than 2 decimals and they are greater than 0.
+        returns accepted user entered amount
+    """
+
+    while True:
+        try:
+            new_amount = float(input("\nEnter amount donated: "))
+            amount = decimal_count(new_amount)
+        except ValueError:
+            print("invalid amount value, try again")
+        else:
+            break
+    return amount
 
 
 def is_letters_space_or_hyphen(strng):
     """
     checks if all chars in "string" are letters, a space or a hyphen
+    good_chars is a string of all chars that are accepted
     returns True or False
     """
-    # all upper and lover case letters
-    good_char = string.ascii_letters
-    # add "space bar" for "first last" name and "-" hyphen for "Anne-Marie"
-    good_char = good_char + ' ' + '-'
+    # all upper and lover case letters, "space bar" for "first last" name and
+    # "-" hyphen for "Anne-Marie"
+    good_char = string.ascii_lowercase + ' ' + '-'
+    str_set = set(strng.lower())
+    return all(char in good_char for char in str_set)
 
-    return all(char in good_char for char in strng)
+
+def name_input():
+    """ user entered name,
+            check if input is letters or space
+        returns name input
+    """
+
+    good_name = False
+    while not good_name:
+        name = input("\nEnter name, 'First Last': ")
+        good_name = is_letters_space_or_hyphen(name)
+
+        if not good_name:
+            print("doesn't look like a name, try again")
+
+    return name
 
 
 def todays_date():
     """
-    returns a list containing year, month, day in str format of todays date
+    returns a string "year/month/day" of todays date
     """
     today = datetime.date.today()
-    date = year, month, day = str(today.year), str(today.month), str(today.day)
+    # year, month, day = str(today.year), str(today.month), str(today.day)
+    date = str(today.year), str(today.month), str(today.day)
     return "/".join(date)
 
 
@@ -364,27 +398,27 @@ def letter_templates(version):
     """
 
     # abbreviations for new line, tab and space bar:
-    n = "\n"
-    t = "\t"
-    st = " " + "\t"
+    # n = "\n"
+    # t = "\t"
+    # st = " " + "\t"
 
     header = "Seattle, WA {date}"
-    dear_donor = n * 3 + t + "Dear {name}," + n * 2
-    regards_from = st * 5 + "Sincerely," + n * 2 + st * 6 + "-The Team"
+    # dear_donor = n * 3 + t + "Dear {name}," + n * 2
+    # regards_from = st * 5 + "Sincerely," + n * 2 + st * 6 + "-The Team"
 
+    dear_donor = "\n" * 3 + "\t" + "Dear {name}," + "\n" * 2
+    regards_from = " \t" * 5 + "Sincerely," + "\n" * 2 + " \t" * 6 + "-The Team"
 
-    # for letter 1, date: todays date, name, amount: amount of donation
-    # registered today
-    thank_you_for_amount = (st + "Thank you for your very "
-                            "kind donation of ${amount:.2f}." + n * 2)
-    money_will_be_used_for = st + "It will be put to very good use." + n * 2
+    thank_you_for_amount = (" \t" + "Thank you for your very "
+                            "kind donation of ${amount:.2f}." + "\n" * 2)
+    money_will_be_used_for = " \t" + "It will be put to very good use." + "\n" * 2
 
 
     # for letter 2, date: todays date, name, amount: total amount donated
-    yearly_amount_thank_you = st +"Your very generous donation of\
-    ${amount:.2f} this year is very much appreciated." + n * 2
-    money_is_used_for = (st + "It is put to very good use helping this "
-                         "and that." + n * 2)
+    yearly_amount_thank_you = " \t" +"Your very generous donation of\
+    ${amount:.2f} this year is very much appreciated." + "\n" * 2
+    money_is_used_for = (" \t" + "It is put to very good use helping this "
+                         "and that." + "\n" * 2)
 
     # thank you letter sent out after a donation has been made
     donation_thank_you = header +\
