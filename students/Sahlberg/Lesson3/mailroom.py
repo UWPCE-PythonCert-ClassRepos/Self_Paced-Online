@@ -27,18 +27,22 @@ def user_options():
     return user_action
 
 def email(name, amount):
+    """Create email for specific donor and amount donated."""
     return print(f'\n\nThank you {name.title()} for the generous donation of $ {amount:.2f}. We appreciate your generosity.\n\nSincerely, \n\nThe Helping R Us Team\n\n')
 
 def quit():
+    """Quit the program"""
     return print('Until next time!')
 
 def sort_and_stats_dict(dictionary):
+    """Create a stats dictionary from a donor dictionary and sort by total donated."""
     pre_sort = {k: [sum(v), len(v), round((sum(v) / len(v)), 0)] for k, v in dictionary.items()}
     print(pre_sort)
     donor_sorted = sorted(list(pre_sort.items()), key=lambda x: x[1], reverse=True)
     return donor_sorted
 
 def print_report(dictionary):
+    """Print out a report of donors and amounts donated, including stats (total donated, number of times donated, average donation)."""
     print('Donor Name       |      Donor Total    |  Count of Donations    |  Average of Donations')
     print('----------------------------------------------------------------------------------------')
     count = 0
@@ -49,10 +53,10 @@ def print_report(dictionary):
 
 if __name__== '__main__':
     user_action = user_options()
-
     if user_action.lower() == 'quit':
         quit()
 
+    #Add users and donations, send thank you email when done.
     while user_action == 'Send a Thank You':
         option = input('Enter an option: List (to give a list of names), A donors name, \"quit\" , to quit.')
         if option.lower() =='quit':
@@ -72,6 +76,7 @@ if __name__== '__main__':
                 print(donor)
                 email(option,amount)
 
+    #Create report of users and donations stats.
     while user_action == 'Create a Report':
         donor_sorted = sort_and_stats_dict(donor)
         print('Donor Name       |      Donor Total    |  Count of Donations    |  Average of Donations')
