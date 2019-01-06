@@ -4,8 +4,8 @@ trigram experiment with dict
 Author: JohnR
 Version: .4
 Date: 1/5/2019
-Notes: TODO: create a random choice from the keys
-        TODO: clean up output of story
+Notes: mostly complete for requirements
+        NEXT: Clean up and optimize
 """
 
 import re
@@ -81,9 +81,11 @@ def new_story(word_dict):
     keys = list(word_dict)
     story = []
     for key in keys:
-        story.append(word_dict[key])
+        n = random.randint(1, len(keys) -1)
+        new_key = keys[n]
+        story.append(word_dict[new_key][0])
 
-    print(story)
+    print(*story, sep=' ')
 
 
 if __name__ == '__main__':
