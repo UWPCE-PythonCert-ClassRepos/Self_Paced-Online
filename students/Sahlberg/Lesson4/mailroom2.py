@@ -2,28 +2,6 @@
 Assignment 4 mailroom2
 Python 210
 01/02/2019"""
-"""In this version, add a function (and a menu item to invoke it), that goes through all the donors in your donor data structure, generates a thank you letter, 
-and writes it to disk as a text file.
-
-Your main menu may look something like:
-
-Choose an action:
-
-1 - Send a Thank You
-2 - Create a Report
-3 - Send letters to everyone
-4 - Quit
-The letters should each get a unique file name – derived from the donor’s name, and maybe a date.
-
-After running the “send letters to everyone” option, you should get a bunch of new files in the working dir – one for each donor.
-
-After choosing (3) above, I get these files in the dir I ran it from:
-
-Jeff_Bezos.txt
-Mark_Zuckerberg.txt
-Paul_Allen.txt
-William_Gates_III.txt
-(If you want to get really fancy, ask the user for a directory name to write to!)"""
 
 #for file dating
 import datetime as dt
@@ -83,7 +61,6 @@ def print_report(dictionary):
 
 def email_file(dictionary):
     """Generates a thank you letter and writes to disk for all donors."""
-    print(dictionary.items())
     count = 0
     count_file = 0
     for name in dictionary.keys():
@@ -99,8 +76,6 @@ def email_file(dictionary):
 #---------------------------------------------------------------
 #Work Zone
 if __name__== '__main__':
-    print_list(donor)
-
     user_action = user_options()
 
     if user_action.lower() == 'quit':
@@ -119,14 +94,12 @@ if __name__== '__main__':
             if option.lower() in donor:
                 amount = donate(option,donor)
                 amount_append(option,donor,amount)
-                print(donor)
                 email(option,amount)
 
             else:
                 donor[option] = []
                 amount = donate(option,donor)
                 amount_append(option, donor, amount)
-                print(donor)
                 email(option,amount)
 
     while user_action == '2':
@@ -135,18 +108,6 @@ if __name__== '__main__':
         break
 
     while user_action == '3':
-        """print(donor.items())
-        count = 0
-        count_file = 0
-        for name in donor.keys():
-            amount = [sum(v) for v in donor.values()][count]
-            file_name = '{}_{}.txt'.format(name, dt.date.today())
-            count += 1
-            with open(file_name, 'w+') as file:
-                e_text = str(email(name, amount))
-                count_file += 1
-                file.write(e_text)
-        break"""
         email_file(donor)
         break
 
