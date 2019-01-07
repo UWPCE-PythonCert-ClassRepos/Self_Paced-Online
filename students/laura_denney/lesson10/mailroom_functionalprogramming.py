@@ -70,7 +70,7 @@ class Donor(object):
     def fun(self, multiplier, min_donation, max_donation):
         filtered_list = self.donations
         if min_donation and max_donation:
-            filtered_list = list(filter(lambda x: x > min_donation and x < max_donation,self.donations))
+            filtered_list = list(filter(lambda x: x >= min_donation and x <= max_donation,self.donations))
         elif min_donation:
             filtered_list = list(filter(lambda x: x > min_donation,self.donations))
         elif max_donation:
