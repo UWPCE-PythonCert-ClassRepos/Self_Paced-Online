@@ -9,25 +9,23 @@ Make sure to catch specifically the error you find, rather than all errors.
 
 from except_test import fun, more_fun, last_fun
 
+
 # Figure out what the exception is, catch it and while still
 # in that catch block, try again with the second item in the list
 first_try = ['spam', 'cheese', 'mr death']
 
+# joke = fun(first_try[0])
+
 try:
     joke = fun(first_try[0])
-
 except NameError:
-    print('Whoops! there is no joke for: {}'.format(first_try[0]))
+    fun(first_try[1])
 
-else:
-    joke = fun(first_try[1])
-
+# Here is a try/except block. Add an else that prints not_joke
 try:
     not_joke = fun(first_try[2])
-
 except SyntaxError:
     print('Run Away!')
-
 else:
     print(not_joke)
 
@@ -48,9 +46,14 @@ else:
 # parameters. (pun intended)
 
 langs = ['java', 'c', 'python']
+
+# more_joke = more_fun(langs[0])
+
 try:
     more_joke = more_fun(langs[0])
 except IndexError:
     more_joke = more_fun(langs[1])
-finally:
+    last_fun()
+else:
+    more_fun(langs[2])
     last_fun()
