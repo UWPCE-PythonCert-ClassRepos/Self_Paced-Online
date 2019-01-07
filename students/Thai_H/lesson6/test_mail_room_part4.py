@@ -31,13 +31,20 @@ class TestMailRoom(unittest.TestCase):
         self.assertEqual(actual, expected)
 
 
-    #----------------------------------------------------------------------
-    def test_letter_file_name(self):
-        assert os.path.isfile('Charles Flint.txt')
-        assert os.path.isfile('Paul Allen.txt')
-        assert os.path.isfile('Steve Jobs.txt')
-        assert os.path.isfile('Thomas Edison.txt')
-        assert os.path.isfile('William Boeing.txt')
+    #-----------------------------------------------------------------------
+    def test_file_creation(self):
+
+        mr4.init_donor_list()
+        for donor_name in mr4.list_of_donors.keys():
+            file_name = donor_name + '.txt'
+            total_donation = sum(mr4.list_of_donors[donor_name])
+            thks_letter = open(file_name, 'w')
+            thks_letter.write('Dear {name}, \n'
+                          'Thank you for your generosity to our Foundation in the total amount of ${amt}'.format(name = donor_name,
+                                                                                                                 amt = total_donation))
+            thks_letter.close()
+
+            assert os.path.isfile(file_name)
 
 
     #-------------------------------------------------------------------------
