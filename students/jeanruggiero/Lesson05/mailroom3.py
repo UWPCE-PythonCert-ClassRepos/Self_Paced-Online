@@ -10,12 +10,17 @@ class MainMenu(Exception): pass
 # Create a dict that contains the donors and a history of the amounts they have
 # donated
 donors = {
-'han solo': {'name': 'Han Solo', 'donations': [3468.34, 457, 34.2]},
-'luke skywalker': {'name': 'Luke Skywalker', 'donations': [5286286.3, 567, 23.5678]},
-'chewbacca': {'name': 'Chewbacca', 'donations': [432, 679.4553]},
-'princess leia': {'name': 'Princess Leia', 'donations':[5.3434]},
-'bobba fett, bounty hunter': {'name': 'Bobba Fett, Bounty Hunter', 'donations': [67]},
-}
+    'han solo': {'name': 'Han Solo',
+        'donations': [3468.34, 457, 34.2]},
+    'luke skywalker': {'name': 'Luke Skywalker',
+        'donations': [5286286.3, 567, 23.5678]},
+    'chewbacca': {'name': 'Chewbacca',
+        'donations': [432, 679.4553]},
+    'princess leia': {'name': 'Princess Leia',
+        'donations':[5.3434]},
+    'bobba fett, bounty hunter': {'name': 'Bobba Fett, Bounty Hunter',
+        'donations': [67]},
+    }
 
 # Define main menu functions
 def add_donation():
@@ -32,9 +37,10 @@ def add_donation():
                 # If the user enters list, display a list of donor names
                 print_names()
             else:
-                # If the user enters a name, add it to the donors dict structure if
-                # not already there.
-                donations = donors.setdefault(name.lower(),{'name': name, 'donations': []})
+                # If the user enters a name, add it to the donors dict
+                # structure if not already there.
+                donations = donors.setdefault(name.lower(),{'name': name,
+                    'donations': []})
                 break
 
         while True:
@@ -70,9 +76,10 @@ def create_report():
     row_string  = '{:{}s} | $ {:>{}.2f} | {:>{}d} | $ {:>{}.2f}'
 
     # Print table header
-    # Add 2 to width of dollar value fields to account for dollar sign and space
-    print(head_string.format('Donor Name', table_size[0], 'Total Given', \
-    table_size[1]+2, 'Num Gifts', table_size[2], 'Average Gift', table_size[3]+2))
+    # Add 2 to width of dollar value fields to account for dollar sign, space
+    print(head_string.format('Donor Name', table_size[0], 'Total Given',
+        table_size[1]+2, 'Num Gifts', table_size[2], 'Average Gift',
+        table_size[3]+2))
     print('-'*(sum(table_size) + 13))
 
     # Print table rows
@@ -80,9 +87,9 @@ def create_report():
         name = donors[key]['name']
         donations = donors[key]['donations']
 
-        print(row_string.format(name, table_size[0], sum(donations),\
-        table_size[1], len(donations), table_size[2], statistics.mean(donations),\
-        table_size[3]))
+        print(row_string.format(name, table_size[0], sum(donations),
+        table_size[1], len(donations), table_size[2],
+        statistics.mean(donations), table_size[3]))
 
 def send_letters():
     """Send letters to all donors thanking them for most recent donation."""
@@ -91,7 +98,8 @@ def send_letters():
         s = '_'
 
         # Build file name using donor name and today's date separated by _
-        filename = s.join([info['name'].replace(' ','_'), str(d.month), str(d.day), str(d.year)])+'.txt'
+        filename = s.join([info['name'].replace(' ','_'), str(d.month),
+            str(d.day), str(d.year)])+'.txt'
         # Create one thank you letter file per donor
         with open(filename, 'w') as f:
             f.write(compose_email(donor))
@@ -103,7 +111,8 @@ def quit():
 # Define sub-functions
 def print_names():
     """Print the list of donor names in alphabetical order."""
-    print(donors[donor]['name']) for donor in sorted(donors)
+    for donor in sorted(donors):
+        print(donors[donor]['name'])
 
 def compose_email(donor):
     """Print an email to the command line thanking donor name for a donation
@@ -132,13 +141,16 @@ def size_report():
     name_width = max(len(name) for name in donors)
     name_width = max(name_width, len('Donor Name'))
 
-    total_width = max(len(str(int(sum(value['donations'])))) for value in donors.values())+3
+    total_width = max(len(str(int(sum(value['donations'])))) for value in
+        donors.values())+3
     total_width = max(total_width, len('Total Given'))
 
-    num_width = max(len(str(len(value['donations']))) for value in donors.values())
+    num_width = max(len(str(len(value['donations']))) for value in
+        donors.values())
     num_width = max(num_width, len('Num Gifts'))
 
-    avg_width = max(len(str(int(statistics.mean(value['donations'])))) for value in donors.values())+3
+    avg_width = max(len(str(int(statistics.mean(value['donations'])))) for
+        value in donors.values())+3
     avg_width = max(avg_width, len('Average Gift'))
 
     return [name_width, total_width, num_width, avg_width]
@@ -148,7 +160,8 @@ def sort_donors():
     return sorted(donors,key=sort_fun, reverse=True)
 
 def sort_fun(x):
-    """"Sort function for use in sort_donors. x is a value in donors (type dict)"""
+    """"Sort function for use in sort_donors. x is a value in donors
+    (type dict)"""
     return sum(donors[x]['donations'])
 
 # Dict of possible main menu actions the user can select
