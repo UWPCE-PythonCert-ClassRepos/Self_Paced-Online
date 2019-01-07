@@ -164,11 +164,11 @@ class DonorCollection:
        
 
 # Create dictionary of donors
-donor1 = Donor('Dennis Coffey', [2500.00,400.00,1400.00])
-donor2 = Donor('Bill Gates', [120.00,650.00])
-donor3 = Donor('Ethan Coffey', [800.00,150.00,1100.00])
+donor1 = Donor('Dennis Coffey', [2500.00,400.00,1400.00,4000.00,75.00])
+donor2 = Donor('Bill Gates', [120.00,650.00,40.00,75.00])
+donor3 = Donor('Ethan Coffey', [800.00,150.00,1100.00,2000.00,60.00])
 donor4 = Donor('Paul Allen', [400.00,45000.00,9000.00])
-donor5 = Donor('Jeff Bezos', [3.00])
+donor5 = Donor('Jeff Bezos', [3.00,8.00])
 
 donors = DonorCollection([donor1,donor2,donor3,donor4,donor5])
 
