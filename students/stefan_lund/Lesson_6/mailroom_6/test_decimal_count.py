@@ -29,14 +29,13 @@ class MyFuncTestCase(unittest.TestCase):
             try:
                 actual = decimal_count(number)
             except ValueError:
-                actual = ValueError
-                # runs when Error has been thrown
-                self.assertEqual(expected_val, actual)
-                # print("bad", expected_val, actual)
+                # is this proper or does the assertRaises test have to be done
+                    # separately in another module?
+                self.assertRaises(ValueError, decimal_count, number)
             else:
                 # runs when no Error has been thrown
                 self.assertEqual(expected_val, actual)
-                # print("good", expected_val, actual)
+                # print("good value", expected_val, actual)
 
 
 if __name__ == '__main__':
