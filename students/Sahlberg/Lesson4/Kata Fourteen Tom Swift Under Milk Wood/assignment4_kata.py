@@ -3,14 +3,42 @@ Kata Fourteen: Tom Swift Under Milk Wood
 1/6/2019
 Python 210"""
 
-with open('C:\\Users\Ian\Documents\GitHub\Self_Paced-Online\students\Sahlberg\Lesson4\Kata Fourteen Tom Swift Under Milk Wood\\test.txt', 'r') as file:
-    kata = file.read().split()
 
-print(kata)
+import random as r
 
-kata_set = []
+with open('in.txt', 'r') as file:
+    x = file.read()
+file.close()
 
-for i in range(len(kata)-2):
-    kata_set.append((kata[i], kata[i+1], kata[i + 2]))
+words = x.split()
+sentence = 'whole of' #Where new string of word pairs will exist
+tri_dict = {}
+n = 0
+for i in range(0, len(words)-2):
 
-print(kata_set)
+    seq = words[n] + ' ' + words[n + 1]
+    if seq in tri_dict:
+        tri_dict[seq].append(words[n + 2])
+    else:
+        tri_dict[seq] = [words[n + 2]]
+    n += 1
+sentence_words = sentence.split()
+last_two = sentence_words[-2] + ' ' + sentence_words[-1]
+
+while last_two in tri_dict:
+    value = r.choice(tri_dict[last_two])
+    sentence += ' ' + value
+    sentence_words = sentence.split()
+    last_two = sentence_words[-2] + ' ' + sentence_words[-1]
+
+with open('out.txt', 'w') as file_out:
+    file_out.write(sentence)
+file_out.close()
+
+#lookup last two words of sentence
+#if word pair exists:
+    #if more than one value/key
+        #lookup random for number of values
+    #if one value/key
+        #select value
+#if not exists(else) exit? or should this be in while loop?
