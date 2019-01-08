@@ -6,75 +6,68 @@ Assignment for lesson 9 UW Selfpaced Online course
 
 class Donor:
     """Creates a donor with name and and empty dontation list """
-    def __init__(self, name, donations=None):
-        self._name = name
-        if donations is None:
-            self._donations = []
-        else:
-            self._donations = [donations]
-       
-    @property
-    def name(self):
-        """Returns donor name"""
-        return self._name
+    def __init__(self, name, donation):
+        self.name = name
+        self.donations = [donation]
 
     @property
-    def donations(self):
-        """Returns donations list for donor"""
-        return self._donations
+    def number_donations(self):
+        """retern number of donations"""
+        return len(self.donations)
 
-    def append_donations(self, value):
+    @property
+    def total_donations(self):
+        """return total of all donations"""
+        return sum(self.donations)
+
+    @property
+    def average_donation(self):
+        """return  average of donations"""
+        return sum(self.donations) / len(self.donations)
+   
+    def add_donation(self, value):
+        """adds value to list of donations"""
         self.donations.append(value)
 
-    @classmethod
-    def thank_you_letter(self, donor_name, donation_amount):
-        dic = {'name': donor_name , 'amount_donated': donation_amount}
-        return("Dear {name}, \n Thank you for your generous donation of ${amount_donated:,.2f}. \nSincerely, Mailroom.".format(**dic))
+    def show_donations(self):
+        """returns all donations for a donor"""
+        return self.donations
+
+    def thank_you_letter(self):
+        """returns a thank you letter to donon"""
+        return "Dear {}, \n Thank you for your generous donation of ${}. \nSincerely, Mailroom.".format(self.name, self.donations)
+
 
 
 class DonorCollection:
+    #donor_list = {'Carlos Santos':[25,50,100], 'Esperanza Gomez': [10,20,30], 'Paul Jackson':[5,10,15], 'Karl Black':[100,200,300], 'Charles Exx': [15,30,45]}
+    def __init__(self, *args):
+        self.donors = {d.name: d for d in args}
 
-    global donor_list
-    donor_list = {'Carlos Santos':[25,50,100], 'Esperanza Gomez': [10,20,30], 'Paul Jackson':[5,10,15], 'Karl Black':[100,200,300], 'Charles Exx': [15,30,45]}
 
-    @classmethod
+    def donor_list(self):
+        dlist = []
+        for d in self.donors:
+            dlist.append(d)
+        return dlist
+
     def donor_exists(self, donor):
-        return donor in donor_list
+        return donor in self.donors.keys()
 
-    @classmethod    
-    def show_donor_list(self):
-        """Display list of all donors"""
-        for key in donor_list.keys():
-            print(key)
-
-    @classmethod
-    def add_or_update_donor(self, donor_name, donation_amount):
-        if self.donor_exists(donor_name) is True: 
-            donor_list[donor_name].append(donation_amount)
+    def add_donation(self, donor, donation):
+        if self.donors.get(donor):
+            self.donors[donor].add_donation(donation)
         else:
-            donor_list[donor_name] = [donation_amount]
+            self.donors[donor] = Donor(donor, donation)
 
-    @classmethod
-    def get_report(self):
-        """Returns a list of rows with donor name, total amount of donations, number of donations, and average donation """
-        report = []
-        
-        for item in donor_list:
-            name = item
-            num_gifts = len(donor_list[item])
-            total = sum(donor_list[item])
-            average = float(round(total / num_gifts, 2))
-            dic = {'name':name, 'total':total, 'num_gifts':num_gifts, 'average':average }
-            new_row = "{name:<25} ${total:^10} {num_gifts:^10} ${average:^10}".format(**dic)
-            report.append(new_row)
-            new_row = ""
-            report.append(new_row)
-        return (report)
+
+
+
+
 
 
 class cli_main:
 
-    @classmethod
     def get_name(self):
         """get donor name from user"""
         while True:
@@ -85,7 +78,6 @@ class cli_main:
             else:
                 return name
 
-    @classmethod
     def get_amount(self):
         """Gets donation amount from user."""
         while True:
@@ -98,7 +90,7 @@ class cli_main:
             else:
                 return amount
 
-    @classmethod
+    
     def thankyou(self):
         donor_name = cli_main.get_name()
         donation_amount = cli_main.get_amount()
@@ -107,7 +99,7 @@ class cli_main:
 
         print(Donor.thank_you_letter(donor_name, donation_amount))
 
-    @classmethod
+  
     def display_report(self):   
         heading = "{:<20s} | {:^10s} | {:^10s} | {:^10s} ".format("Donor Name", "Total Given", "Num Gifts", "Average")
         heading_underline = "-"
