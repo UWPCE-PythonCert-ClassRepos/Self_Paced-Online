@@ -8,11 +8,12 @@ def task1(inputs):
     #print("file_{}: {}, {}, {}".format(a,b,c,d))
 
 def task2(e):
-    print(f"file_{e[0]}: {e[1]}, {e[2]}, {e[3]}aw )
+    string=f"file_{e[0]}: {e[1]}, {e[2]}, {e[3]}"
+    print(string)
+    return string
 
 def task3(f):
-    count=len(f)
-    string=str(f)
-    numbers=string[1:len(string)-1]
-    print(f"the {count} numbers are: {numbers}")
-    print(f) 
+    g="{:d}, "*(len(f)-1)+"{:d}"
+    h=g.format(*f)
+    string = "the {:d} numbers are: {}".format(len(f), h)
+    print(string)
