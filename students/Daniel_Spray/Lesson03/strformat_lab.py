@@ -23,3 +23,10 @@ def task4(i):
     j=str(i[3]).zfill(2)+" "+str(i[4]).zfill(2)+" "+str(i[2]).zfill(4)+" "+str(i[0]).zfill(2)+" "+str(i[1]).zfill(2)
     print(j)
     return j
+
+def task5(k):
+    string=f"The weight of an {k[0][:-1]} is {k[1]} and the weight of a {k[2][:-1]} is {k[3]}"
+    string2=f"The weight of an {(k[0][:-1]).upper()} is {k[1]*1.2} and the weight of a {(k[2][:-1]).upper()} is {k[3]*1.2}"
+    print(string)
+    print(string2)
+    return(string)
