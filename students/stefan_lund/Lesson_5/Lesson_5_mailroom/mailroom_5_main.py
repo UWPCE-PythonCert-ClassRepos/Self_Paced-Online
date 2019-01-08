@@ -76,6 +76,16 @@ def ask_questions():
         option = method_to_call()
         switch_option = menu[option]
 
+# def main_mailroom():
+#     local_data_file = "mailroom_5_data.json"
+#     # set the data_file in mailroom_5_read_write_data file to local_data_file
+#     mailroom_5_read_write_data.data_file = local_data_file
+#
+#     # set data in mailroom_5_read_write_data file to data read from the local_data_file
+#     mailroom_5_read_write_data.data = mailroom_5_read_write_data.get_data_from(local_data_file)
+#
+#
+#     ask_questions()
 
 
 if __name__ == '__main__':
@@ -89,6 +99,7 @@ if __name__ == '__main__':
 
 
     ask_questions()
+
 
 # initial donor data for Lesson 5:
 #
