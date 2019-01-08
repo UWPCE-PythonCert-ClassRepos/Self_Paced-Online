@@ -16,4 +16,10 @@ def task3(f):
     g="{:d}, "*(len(f)-1)+"{:d}"
     h=g.format(*f)
     string = "the {:d} numbers are: {}".format(len(f), h)
+    return string
     print(string)
+
+def task4(i):
+    j=str(i[3]).zfill(2)+" "+str(i[4]).zfill(2)+" "+str(i[2]).zfill(4)+" "+str(i[0]).zfill(2)+" "+str(i[1]).zfill(2)
+    print(j)
+    return j
