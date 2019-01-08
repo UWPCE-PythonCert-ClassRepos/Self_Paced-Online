@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-trigram experiment with dict
+trigram experiment with dict - intake a book as a txt file and output a new story
 Author: JohnR
 Version: 1.0
-Date: 1/8/2019
-Notes: Requires that you have one or two books as text files in your working directory to choose from...
+Last Update: 1/8/2019
+Notes: Requires that you have one or two books as text files in your working directory to choose from.
 """
 
 import re
