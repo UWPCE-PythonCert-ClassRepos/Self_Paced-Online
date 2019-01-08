@@ -2,10 +2,9 @@
 """
 trigram experiment with dict
 Author: JohnR
-Version: .4
-Date: 1/5/2019
-Notes: mostly complete for requirements
-        NEXT: Clean up and optimize
+Version: 1.0
+Date: 1/8/2019
+Notes: Requires that you have one or two books as text files in your working directory to choose from...
 """
 
 import re
@@ -19,6 +18,8 @@ def main():
     :return:
     """
     # get user selection for book to use
+    # TODO: get rid of the static variables
+    # TODO: eliminate the need to write a tmp file to disk
     print('Choose from the following txt files: ')
     print(os.listdir())
     original_text = input('Enter file name: ')
@@ -40,10 +41,10 @@ def clear_non_alpha(input_text):
     :param input_text: text file to clean
     :return: None - currently write file to disk
     """
-    clean_file = 'tmp.txt'
+    tmp_file = 'tmp.txt'
     old_file = open(input_text).read()
     new_file = re.sub('[^a-zA-Z0-9\n]', ' ', old_file)
-    open(clean_file, 'w').write(new_file)
+    open(tmp_file, 'w').write(new_file)
 
 
 def create_list(words_text):
@@ -80,11 +81,14 @@ def new_story(word_dict):
     """
     keys = list(word_dict)
     story = []
+    # TODO: this works even though 'key' isn't being used; not sure why
     for key in keys:
         n = random.randint(1, len(keys) -1)
         new_key = keys[n]
         story.append(word_dict[new_key][0])
 
+    # TODO: this prints a single line of text, need to use pprint or
+    #       similar to create paragraphs with new lines
     print(*story, sep=' ')
 
 
