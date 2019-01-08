@@ -23,43 +23,32 @@ donors = {
     }
 
 # Define main menu functions
-def add_donation():
+def add_donation(name='',amount='0'):
     """Add a donation to donors dict and compose a thank you email."""
     # If the user selects 1, prompt for the name of a donor and a
     # donation amount.
     try:
         while True:
-            name = input("Enter the donor's Full Name, or 'list': ")
-
-            if name.lower() == 'return':
-                raise MainMenu
-            elif name.lower() == 'list':
-                # If the user enters list, display a list of donor names
-                print_names()
-            else:
-                # If the user enters a name, add it to the donors dict
-                # structure if not already there.
-                donations = donors.setdefault(name.lower(),{'name': name,
-                    'donations': []})
+            # Ask for user input for name if file run as executable
+            if __name__ == '__main__':
+                name = input("Enter the donor's Full Name, or 'list': ")
+            # Break out of the loop once a donor name has been added to the
+            # donors dict
+            if donor_name(name):
                 break
 
         while True:
-            amount = input('Enter the donation amount: ')
-
-            if amount.lower() == 'return':
-                raise MainMenu
-
-            try:
-                # Try to add donation amount to donors data structure
-                amount = float(amount)
-                donors[name.lower()]['donations'].append(amount)
+            # Ask for user input for amount if file run as executable
+            if __name__ == '__main__':
+                amount = input('Enter the donation amount: ')
+            # Break out of the loop once an appropriate donation amount has
+            # been provided and added to donors dict
+            if donor_amount(amount,name):
                 break
-            except ValueError:
-                # If value is not a number, ask the user to enter a number
-                print('Please enter a number value for donation amount.')
 
         # Compose a thank you email and print to command line
         print(); print(compose_email(name.lower())); print()
+        return True
 
     except MainMenu:
         pass
@@ -68,7 +57,7 @@ def create_report():
     """Print a report of donors with a summary of their donation history."""
 
     # Determine table size_report
-    table_size = size_report()
+    table_size = size_report(donors)
     sorted_keys = sort_donors()
 
     # Build format strings for header and table rows
@@ -94,12 +83,7 @@ def create_report():
 def send_letters():
     """Send letters to all donors thanking them for most recent donation."""
     for donor,info in donors.items():
-        d = datetime.date.today()
-        s = '_'
-
-        # Build file name using donor name and today's date separated by _
-        filename = s.join([info['name'].replace(' ','_'), str(d.month),
-            str(d.day), str(d.year)])+'.txt'
+        filename = build_filename(info)
         # Create one thank you letter file per donor
         with open(filename, 'w') as f:
             f.write(compose_email(donor))
@@ -109,6 +93,41 @@ def quit():
     raise ExitScript
 
 # Define sub-functions
+def build_filename(info):
+    """Build up a filename for a thankyou letter to a donor."""
+    d = datetime.date.today()
+    # Build file name using donor name and today's date separated by _
+    filename = '_'.join([info['name'].replace(' ','_'), str(d.month),
+        str(d.day), str(d.year)])+'.txt'
+    return filename
+
+def donor_name(name):
+    """Add a donor name to the donors dict or display list of donors."""
+    if name.lower() == 'return':
+        raise MainMenu
+    elif name.lower() == 'list':
+        # If the user enters list, display a list of donor names
+        print_names()
+    else:
+        # If the user enters a name, add it to the donors dict
+        # structure if not already there.
+        donors.setdefault(name.lower(),{'name': name, 'donations': []})
+        return True
+
+def donor_amount(amount,name):
+    """Add a donation amount to the donors dict for donor name."""
+    if amount.lower() == 'return':
+        raise MainMenu
+
+    try:
+        # Try to add donation amount to donors data structure
+        amount = float(amount)
+        donors[name.lower()]['donations'].append(amount)
+        return True
+    except ValueError:
+        # If value is not a number, ask the user to enter a number
+        print('Please enter a number value for donation amount.')
+
 def print_names():
     """Print the list of donor names in alphabetical order."""
     for donor in sorted(donors):
@@ -129,7 +148,7 @@ def compose_email(donor):
         Sincerely, The Wookie Foundation
         """
 
-def size_report():
+def size_report(in_dict):
     """Determine column widths for a donor report."""
     # Determine width of columns based on data in donors data structure
     # Convert numbers to strings to determine their length in characters
@@ -138,19 +157,19 @@ def size_report():
         # accomodate for a period and 2 decimal places
     # Ensure column size is at least as wide as header text
 
-    name_width = max(len(name) for name in donors)
+    name_width = max(len(name) for name in in_dict)
     name_width = max(name_width, len('Donor Name'))
 
     total_width = max(len(str(int(sum(value['donations'])))) for value in
-        donors.values())+3
+        in_dict.values())+3
     total_width = max(total_width, len('Total Given'))
 
     num_width = max(len(str(len(value['donations']))) for value in
-        donors.values())
+        in_dict.values())
     num_width = max(num_width, len('Num Gifts'))
 
     avg_width = max(len(str(int(statistics.mean(value['donations'])))) for
-        value in donors.values())+3
+        value in in_dict.values())+3
     avg_width = max(avg_width, len('Average Gift'))
 
     return [name_width, total_width, num_width, avg_width]
@@ -186,3 +205,5 @@ if __name__ == '__main__':
             actions.get(action)()
         except ExitScript:
             break
+        except TypeError:
+            continue
