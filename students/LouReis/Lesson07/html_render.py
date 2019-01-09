@@ -2,6 +2,8 @@
 
 """
 A class-based system for rendering html.
+
+def __init__(self, content=None, **kwargs):
 """
 
 
@@ -9,7 +11,7 @@ A class-based system for rendering html.
 class Element(object):
     tag = 'html'
 
-    def __init__(self, content=None):
+    def __init__(self, content=None, **kwargs):
         if content is not None:
             self.contents = [content]
             print("contents is:", self.contents)
@@ -44,6 +46,11 @@ class Head(Element):
 
 class OneLineTag(Element):
     def render(self, out_file):
+        # loop through the list of contents:
+        for key, value in self.attributes:
+            open_tag = ["<{}".format(self.tag)]
+            open_tag.append(">\n")
+            out_file.write("".join(open_tag))
         out_file.write("<{}>".format(self.tag))
         out_file.write(self.contents[0])
         out_file.write("</{}>\n".format(self.tag))
