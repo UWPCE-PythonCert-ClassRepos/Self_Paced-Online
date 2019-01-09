@@ -1,7 +1,7 @@
 #!/usr/bin/env Python3
 import unittest
 
-print("The following is a tool to determine either the sum of any Fibonacci/Lucas Series \n"
+print("The following is a tool to determine either the sum of any fibonaccionacci/Lucas Series \n"
 "or determine the value of a Fibonacci/Lucas Series at a specific index. \n"
 "To determine the value of a specific term in a Fibonacci/Lucas Series, type '1'. \n"
 "To compute the total sum of a Fibonacci/Lucas Series, type '2'.")
