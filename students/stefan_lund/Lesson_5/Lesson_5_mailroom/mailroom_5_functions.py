@@ -48,16 +48,19 @@ def create_a_report():
     lne += 3 * e
     print(lne)
 
+    # for name, donations in data.items():
+    #     number_of = 0
+    #     donation = 0
+    #     for date in donations:
+    #         donation += donations[date]
+    #         number_of += 1
     for name, donations in data.items():
-        number_of = 0
-        donation = 0
-        for date in donations:
-            donation += donations[date]
-            number_of += 1
+        number_of = len(donations)
+        donation = sum(donations.values())
 
-            total = float(donation)
-            number_of = int(number_of)
-            average = total / number_of
+        total = float(donation)
+        number_of = int(number_of)
+        average = total / number_of
 
         temp_form = "{:<{nl}} ${:>{al}.2f}  {:>{al}} ${:>{al}.2f}"
         line = temp_form.format(name,
@@ -137,11 +140,14 @@ def list_of_names():
     data = mailroom_5_read_write_data.data
 
     # determine width of fields to print in
-    name_list = data.keys()
-    name_length = []
-    # list comprehension
-    [name_length.append(len(name)) for name in name_list]
-    name_len = max(name_length) + 3
+    # name_list = data.keys()
+    # name_length = []
+    # # list comprehension
+    # [name_length.append(len(name)) for name in name_list]
+    # name_len = max(name_length) + 3
+
+    name_len = max([len(name) for name in data]) + 3
+
 
     # print table header
     temp_str = "Donor Name"
@@ -151,7 +157,8 @@ def list_of_names():
     print(frame, header, frame)
 
     # print each name in alphabetical order
-    for name in sorted(name_list):
+    # for name in sorted(name_list):
+    for name in sorted(data):
         temp_form = "| {:<{nl}}|"
         line = temp_form.format(name, nl=name_len)
         print(line)

@@ -6,13 +6,15 @@ import os
 """
 Created on Wed Dec 26 19:30:19 2018
 
-@author: dennis coffey
+@author: dennis
 """
 
 """You work in the mail room at a local charity. Part of your job is to write incredibly boring, 
 repetitive emails thanking your donors for their generous gifts. 
 You are tired of doing this over and over again, so you’ve decided to let Python help 
 you out of a jam and do your work for you."""
+
+"""Update to mail room program to add functional programming"""
 
 # Donor class - contains properties and methods for accessing and updating donor's data
 class Donor:
@@ -56,6 +58,16 @@ class Donor:
         
     def avg_donations(self):
         return self.sum_donations() / self.number_donations()
+    
+    def multiply_donations(self, factor):
+        self._donations = list(map(lambda x: x*factor, self.donations))
+        return self._donations
+#        d = list(map(lambda x: x*factor, self.donations))
+#        return d
+
+    def filter_donations(self, min_donation = 0, max_donation = 99999999999999999):
+        self._donations = list(filter(lambda x: int(min_donation) <= x <= int(max_donation), self.donations))
+        return self._donations
 
     
 # DonorCollection class - properties and methods for managing collection of donors
@@ -110,7 +122,8 @@ class DonorCollection:
         report = '\nDonor Name                | Total Given | Num Gifts | Average Gift\n'
         report += '-'*66 + '\n'
         for donor in sorted_donors:
-            report +=  f'{donor.name: <27}${donor.sum_donations(): >12.2f}{donor.number_donations(): >12}  ${round(donor.avg_donations(),2): >11.2f}\n'
+            if donor.donations != []:
+                report +=  f'{donor.name: <27}${donor.sum_donations(): >12.2f}{donor.number_donations(): >12}  ${round(donor.avg_donations(),2): >11.2f}\n'
         print(report)
         return report
 
@@ -137,13 +150,25 @@ class DonorCollection:
             print('\nThe thank you emails were sent!')
         except:
             print('\nThere was an error sending the thank you emails.')
+            
+    # Apply multiplication factor to each donor list
+    def challenge(self, factor=3, min_donation=0, max_donation=99999999999999):
+#        mult_donors = DonorCollection()
+        for donor in self.donors:
+            donor.filter_donations(min_donation, max_donation)
+            donor.multiply_donations(factor)
+#            d = donor.multiply_donations(factor)
+#            mult_donors.add_donor(d)
+        return donors
+#        return mult_donors
+       
 
 # Create dictionary of donors
-donor1 = Donor('Dennis Coffey', [2500.00,400.00,1400.00])
-donor2 = Donor('Bill Gates', [120.00,650.00])
-donor3 = Donor('Ethan Coffey', [800.00,150.00,1100.00])
-donor4 = Donor('Paul Allen', [45000.00,9000.00])
-donor5 = Donor('Jeff Bezos', [3.00])
+donor1 = Donor('Dennis Coffey', [2500.00,400.00,1400.00,4000.00,75.00])
+donor2 = Donor('Bill Gates', [120.00,650.00,40.00,75.00])
+donor3 = Donor('Ethan Coffey', [800.00,150.00,1100.00,2000.00,60.00])
+donor4 = Donor('Paul Allen', [400.00,45000.00,9000.00])
+donor5 = Donor('Jeff Bezos', [3.00,8.00])
 
 donors = DonorCollection([donor1,donor2,donor3,donor4,donor5])
 
@@ -169,6 +194,19 @@ def send_thankyou():
             prompt_donation(full_name)
             break
 
+# Prompt for donation scenarios
+def run_donation_scenarios():
+    print("Let's run donation scenarios by modifying multiplication factor,")
+    print("minimum donation amount and maximum donation amount")
+    # Input multiplication factor
+    mult_factor = input('Please input a donation multiplication factor >> ')
+    # Input minimum donation
+    min_donation = input('Please input a minimum donation amount >> ')
+    # Input maximum donation
+    max_donation = input('Please input a maximum donation amount >> ')
+    donors.challenge(int(mult_factor), int(min_donation), int(max_donation))
+    donors.create_report()
+
 # Prompt for donation amount and append donation to user    
 def prompt_donation(full_name, donation_amount = None):
     current_donor = donors.set_donor(full_name)
@@ -193,17 +231,18 @@ if __name__ == '__main__':
 
     # Loop until user selects Quit
     prompt = None
-    switch_action_dict = {'a':send_thankyou, 'b':donors.create_report, 'c': donors.send_letters, 'd': user_quit}
-    while prompt != 'd':
+    switch_action_dict = {'a':send_thankyou, 'b':donors.create_report, 'c':donors.send_letters, 'd':run_donation_scenarios, 'e':user_quit}
+    while prompt != 'e':
         # Create prompt menu
         prompt = input('Actions to choose from:\n'
                          '\ta) Send a Thank You\n'
                          '\tb) Create a Report\n'
                          '\tc) Send letters to everyone\n'
-                         '\td) Quit\n'
+                         '\td) Run donation scenarios\n'
+                         '\te) Quit\n'
                          'Please choose an action: ')
         try:
             switch_action_dict.get(prompt)()
         # Handle error for when user does not choose a valid option in the list
         except TypeError:
-            print('\nNot a valid option.  Please choose a value from the list (a, b, c, or d)')
+            print('\nNot a valid option.  Please choose a value from the list (a, b, c, d, or e)')
