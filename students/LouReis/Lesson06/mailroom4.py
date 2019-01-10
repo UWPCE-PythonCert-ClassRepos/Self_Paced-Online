@@ -72,6 +72,17 @@ def donation_report():
         count = len(donations[key])
         print ('{:25} ${:>15,.2f} {:>15} ${:>15,.2f}'.format(key, total, count, total/count))
 
+# Enter Existing donor & donation
+def enter_existing_donor(donor, donation):
+    donations[donor] = donations[donor] + [donation]
+    #print_letter(donor, donation)
+
+
+# Enter New donor & donation
+def enter_new_donor(donor, donation):
+    donations.update({donor:[donation]})
+    #print_letter(donor, donation)
+
 # This Option generates a thank you letter for a new donation and prints to the screen.
 def thanks_letter():
     print('\nYou Chose Option 2\n\n')
@@ -84,6 +95,7 @@ def thanks_letter():
             for key in sorted(donations):
                 print(key)
             print("\n")
+    donation = 0
     if donor in donations:
         print("You have entered an existing donor:", donor)
         try:
@@ -91,7 +103,7 @@ def thanks_letter():
         except ValueError:
             print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
             main_menu(main_prompt,menu_options_dict)
-        donations[donor] = donations[donor] + [donation]
+        enter_existing_donor(donor, donation)
     else:
         print("You have entered a new donor:", donor)
         try:
@@ -99,8 +111,8 @@ def thanks_letter():
         except ValueError:
             print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
             return
-        donations.update({donor:[donation]})
-    print_letter(donor,donation)
+        enter_new_donor(donor, donation)
+    print_letter(donor, donation)
 
 """
 
