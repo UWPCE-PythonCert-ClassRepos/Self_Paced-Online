@@ -17,22 +17,23 @@ print("Area of rectangle:",obj.rectangle_area())
 print()
 
 class Circle():
-    def __init__(self,radius):
-        self.radius=radius
+    def __init__(self,radius,diameter=0.00):
+        self.radius = radius
+        self._diameter = diameter
 
     @property
     def area(self):
-        return (self.radius**2)*pi
+        return (self.radius**2) * pi
 
     @property
     def diameter(self):
-        return self.radius*2
-"""
-# Do not need a setter for read only attributes
+        self._diameter = self.radius * 2
+        return self._diameter
+
     @diameter.setter
-    def diameter(self, radius):
-        self._diameter = radius*2
-"""
+    def diameter(self, value):
+        self._diameter = value
+        self.radius = self._diameter / 2
 
 choice = input("Would you like to enter the Radius or Diameter of the Circle (R or D)?:")
 if choice == 'R':
@@ -41,9 +42,15 @@ else:
     the_diameter=float(input("Enter the diameter of the circle:"))
     the_radius=the_diameter / 2
 circle_obj=Circle(the_radius)
-print("Area of the Circle:",circle_obj.area())
+print("Area of the Circle:",circle_obj.area)
 print("\nCircle A is as follows:\n")
 circle_a = Circle(5)
+print ("Radius:",circle_a.radius)
+print ("Area:",circle_a.area)
+print ("Diameter:",circle_a.diameter)
+print()
+circle_a.diameter = float(input("Specify a new diameter for Circle A:"))
+print("\nCircle A has changed and is as follows:\n")
 print ("Radius:",circle_a.radius)
 print ("Area:",circle_a.area)
 print ("Diameter:",circle_a.diameter)
