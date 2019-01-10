@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 import datetime
 import os
+from copy import deepcopy
+from functools import reduce
 
 """
-Created on Wed Dec 26 19:30:19 2018
+Created on Wed Jan 2 19:30:19 2018
 
 @author: dennis
 """
@@ -62,8 +64,6 @@ class Donor:
     def multiply_donations(self, factor):
         self._donations = list(map(lambda x: x*factor, self.donations))
         return self._donations
-#        d = list(map(lambda x: x*factor, self.donations))
-#        return d
 
     def filter_donations(self, min_donation = 0, max_donation = 99999999999999999):
         self._donations = list(filter(lambda x: int(min_donation) <= x <= int(max_donation), self.donations))
@@ -153,14 +153,11 @@ class DonorCollection:
             
     # Apply multiplication factor to each donor list
     def challenge(self, factor=3, min_donation=0, max_donation=99999999999999):
-#        mult_donors = DonorCollection()
-        for donor in self.donors:
+        donors_copy = deepcopy(self.donors)
+        for donor in donors_copy:
             donor.filter_donations(min_donation, max_donation)
             donor.multiply_donations(factor)
-#            d = donor.multiply_donations(factor)
-#            mult_donors.add_donor(d)
-        return donors
-#        return mult_donors
+        return donors_copy
        
 
 # Create dictionary of donors
@@ -204,8 +201,14 @@ def run_donation_scenarios():
     min_donation = input('Please input a minimum donation amount >> ')
     # Input maximum donation
     max_donation = input('Please input a maximum donation amount >> ')
-    donors.challenge(int(mult_factor), int(min_donation), int(max_donation))
-    donors.create_report()
+    donors_copy = donors.challenge(int(mult_factor), int(min_donation), int(max_donation))
+    print("\nIf each of you donated " + mult_factor + "x's your current donations for donations")
+    print("between $" + min_donation + " and $" + max_donation + ", your total donations would be as follows:")
+    for donor in donors_copy:
+        if len(donor.donations) > 0:
+            total_donation = reduce(lambda x,y: x+y, donor.donations)
+            # Print donors total based on scenario
+            print(f'{donor.name}: ${total_donation}')
 
 # Prompt for donation amount and append donation to user    
 def prompt_donation(full_name, donation_amount = None):
@@ -243,6 +246,6 @@ if __name__ == '__main__':
                          'Please choose an action: ')
         try:
             switch_action_dict.get(prompt)()
-        # Handle error for when user does not choose a valid option in the list
+       # Handle error for when user does not choose a valid option in the list
         except TypeError:
             print('\nNot a valid option.  Please choose a value from the list (a, b, c, d, or e)')
