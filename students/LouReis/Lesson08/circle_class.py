@@ -21,6 +21,8 @@ class Circle():
         self.radius=radius
     def area(self):
         return self.radius*self.radius*pi
+    def diameter(self):
+        return self.radius*2
 
 choice = input("Would you like to enter the Radius or Dimeter of the Circle (R or D)?:")
 if choice == 'R':
@@ -30,6 +32,11 @@ else:
     the_radius=the_diameter / 2
 circle_obj=Circle(the_radius)
 print("Area of the Circle:",circle_obj.area())
+print("\nCircle A is as follows:\n")
+circle_a = Circle(5)
+print ("Radius:",circle_a.radius)
+print ("Area:",circle_a.area())
+print ("Diameter:",circle_a.diameter())
 print()
 
 
