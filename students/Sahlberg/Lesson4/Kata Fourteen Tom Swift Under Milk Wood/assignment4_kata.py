@@ -1,5 +1,6 @@
 """Assignment 4
 Kata Fourteen: Tom Swift Under Milk Wood
+Ian Sahlberg
 1/6/2019
 Python 210"""
 
@@ -7,7 +8,6 @@ Python 210"""
 #Pre-processing------------------------------------------------------------------------
 
 import random as r
-
 
 def create_series(word_list):
     """Create a dictionary in form of {'word word',[]} from a list of words"""
@@ -33,7 +33,8 @@ def first_words(seq):
     else:
         return first_words(seq)
 
-
+#for text cleaning
+cleanup = ['  ','\'', '"','?',':',',','!','’','‘',';',' .']
 
 #Processing------------------------------------------------------------------------
 
@@ -42,10 +43,7 @@ with open("in.txt", 'r+') as file:
 
 words = x.split()
 
-#for text cleaning
-cleanup = ['  ','\'', '"','?',':',',','!','’','‘',';',' .']
-
-sentence = first_words(words).capitalize()
+sentence = first_words(words)
 print('sentence=', sentence)
 #use function to create new dictionary object
 tri_dict = create_series(words)
@@ -59,17 +57,17 @@ while last_two in tri_dict:
     sentence_words = sentence.split()
     last_two = sentence_words[-2] + ' ' + sentence_words[-1]
 
-
 with open('Out.txt', 'w+') as file_out:
     #shorten output text
     l = 0
     for word in sentence.split():
         print(word)
-
+        #remove unwanted characters from text
         for char in word:
             for c in char:
                 if c in cleanup:
                     word = word.replace(char,'')
+
         if("." in word or l == 30):
             file_out.write(word.strip('\n')+"\n")
             l = 0
