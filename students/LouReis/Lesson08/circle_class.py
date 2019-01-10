@@ -4,6 +4,9 @@
 
 from math import pi
 
+"""
+Sample class for rectangle area:
+
 class rectangle():
     def __init__(self,breadth,length):
         self.breadth=breadth
@@ -15,6 +18,8 @@ b=int(input("Enter breadth of rectangle: "))
 obj=rectangle(a,b)
 print("Area of rectangle:",obj.rectangle_area())
 print()
+
+"""
 
 class Circle():
     def __init__(self,radius,diameter=0.00):
@@ -34,6 +39,8 @@ class Circle():
     def diameter(self, value):
         self._diameter = value
         self.radius = self._diameter / 2
+
+"""
 
 choice = input("Would you like to enter the Radius or Diameter of the Circle (R or D)?:")
 if choice == 'R':
@@ -56,7 +63,7 @@ print ("Area:",circle_a.area)
 print ("Diameter:",circle_a.diameter)
 print()
 
-
+"""
 
 """
 Goal:

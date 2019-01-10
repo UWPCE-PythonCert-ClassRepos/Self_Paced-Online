@@ -1,16 +1,27 @@
 #!/usr/bin/env python3.7
-# circle_class.py
+# test_circle_class.py
 # Coded by LouReis
 
-class rectangle():
-    def __init__(self,breadth,length):
-        self.breadth=breadth
-        self.length=length
-    def area(self):
-        return self.breadth*self.length
-a=int(input("Enter length of rectangle: "))
-b=int(input("Enter breadth of rectangle: "))
-obj=rectangle(a,b)
-print("Area of rectangle:",obj.area())
+from circle_class import *
 
-print()
+# Test that the Circle can be called with a radius 3 resulting in the following:
+def test_1():
+    test = Circle(3)
+    assert test.radius == 3
+    assert test.diameter == 6
+    assert test.area == 28.274333882308138
+
+# Test that the Circle can be called with a decimal value.
+def test_2():
+    test = Circle(1.5)
+    assert test.radius == 1.5
+    assert test.diameter == 3
+    assert test.area == 7.0685834705770345
+
+# Test that an existingCircle diameter can be changed.
+def test_3():
+    test = Circle(1.5)
+    test.diameter = 2
+    assert test.radius == 1
+    assert test.diameter == 2
+    assert test.area == 3.141592653589793
