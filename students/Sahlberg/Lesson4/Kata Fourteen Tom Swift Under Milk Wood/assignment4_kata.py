@@ -58,9 +58,19 @@ while last_two in tri_dict:
     last_two = sentence_words[-2] + ' ' + sentence_words[-1]
 
 with open('Out.txt', 'w+') as file_out:
-    #shorten output text
+    #shorten output text and add '.' to end
     l = 0
-    for word in sentence.split():
+    sentence = sentence.split()
+    sentence[0] = sentence[0].capitalize()
+    sentence = sentence[:300]
+
+    if '.' in sentence[299]:
+        pass
+    elif '.' in sentence[298]:
+        pass
+    else:
+        sentence[299] = sentence[299] + '.'
+    for word in sentence:
         print(word)
         #remove unwanted characters from text
         for char in word:
