@@ -32,3 +32,10 @@ def test_4():
     test = Circle(3)
     with raises(AttributeError):
         test.area = 4.5
+
+# Test that a circle can be created with just the diameter using the classmethod.
+def test_5():
+    test = Circle.from_diameter(3)
+    assert test.radius == 1.5
+    assert test.diameter == 3
+    assert test.area == 7.0685834705770345

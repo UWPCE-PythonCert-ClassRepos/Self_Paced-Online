@@ -40,6 +40,13 @@ class Circle():
         self._diameter = value
         self.radius = self._diameter / 2
 
+    @classmethod
+    def from_diameter(cls, value):
+        _diameter = value
+        radius = _diameter / 2
+        circle = cls(radius)
+        return circle
+
 """
 Created a simple program to run through a few examples:
 
