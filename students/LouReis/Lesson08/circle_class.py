@@ -63,6 +63,12 @@ class Circle():
         circle = cls(radius)
         return circle
 
+    def __eq__(self, other):
+        return self.radius == other
+
+    def __lt__(self, other):
+        return self.radius < other.radius
+
 """
 Created a simple program to run through a few examples:
 

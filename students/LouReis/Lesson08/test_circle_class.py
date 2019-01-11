@@ -63,3 +63,34 @@ def test_6():
 def test_7():
     test = Circle(4)
     assert repr(test) == 'Circle(4)'
+
+# Test the output of __add__ method doing circle1 + circle2
+def test_8():
+    test1 = Circle(5)
+    test2 = Circle(15)
+    test3 = test1 + test2
+    assert test3 == Circle(20)
+
+# Test the output of __mul__ method doing circle1 * number
+def test_9():
+    test1 = Circle(5)
+    test2 = Circle(5) * 5
+    assert test2 == Circle(25)
+
+# Test the output of __rmul__ method doing number * circle1
+def test_10():
+    test1 = Circle(5)
+    test2 = 5 * Circle(5)
+    assert test2 == Circle(25)
+
+# Test the __eq__ method is working properly
+def test_11():
+    test1 = Circle(55)
+    test2 = Circle(55)
+    assert test1 == test2
+
+# Test the less than comparator
+def test_12():
+    test1 = Circle(10)
+    test2 = Circle(20)
+    assert test1 < test2
