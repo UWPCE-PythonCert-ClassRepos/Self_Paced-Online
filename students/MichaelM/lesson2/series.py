@@ -15,9 +15,6 @@ def sum_series(n, n_minus2=0, n_minus1=1):
     """
 
     loop_counter = 1
-    # 0, 1 Fib
-    # 2, 1 Luc
-    # 1, 1 undefined
     term_values = [n_minus2, n_minus1]
     for i in range(1, n - 1):
         new_value = term_values[loop_counter] + term_values[loop_counter - 1]

@@ -1,4 +1,5 @@
-# in filesystem copy Lesson3_Ex1_Slicing.py into new folder C:\Users\v-micmcd.Redmond\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson3
+# in filesystem copy Lesson3_Ex1_Slicing.py into new folder
+# C:\Users\v-micmcd.Redmond\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson3
 # wk: cd C:\Users\v-micmcd.Redmond\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson3
 # mo: cd C:\Users\geekw\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson3
 # hm: cd C:\Users\geekw\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson3
@@ -124,7 +125,6 @@ done with the first 4 and the last 4 items removed, and then every other item in
 done with the elements reversed (just with slicing).
 middle third > last third > first third in a new order.
 """
-
 
 if __name__ == "__main__":
     start_seq = list(my_animal_parade)
