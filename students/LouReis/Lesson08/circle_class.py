@@ -26,6 +26,12 @@ class Circle():
         self.radius = radius
         self._diameter = diameter
 
+    def __str__(self):
+        return 'Circle with a radius of: {}'.format(self.radius)
+
+    def __repr__(self):
+        return 'Circle({!r})'.format(self.radius)
+
     @property
     def area(self):
         return (self.radius**2) * pi
