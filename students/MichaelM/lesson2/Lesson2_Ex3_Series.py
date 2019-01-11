@@ -5,19 +5,21 @@
 # git status
 # git add Lesson2_Ex3_Series.py
 # git add series.py
-# git commit
+# git commit Lesson2_Ex3_Series.py
+# git commit series.py
 # git push
 # goto https://github.com/geekwriter2/Self_Paced-Online/tree/master/students/MichaelM/lesson2/
 # click Pull request > new pull request
-# from Natasha: python uses snake_case, verify indentation, convention is to use 4 spaces
 
-import series
+from lesson2 import series
 from random import randint
 import importlib
+
 importlib.reload(series)
 
 if __name__ == "__main__":
-    n = randint(0, 9)
+    # n = randint(0, 9)
+    n = 9
     n_minus2 = randint(0, 2)
     n_minus1 = 1
     # assertions test
@@ -37,5 +39,7 @@ if __name__ == "__main__":
         series_value = series.sum_series(n, n_minus2, 1)
         result = "The {:s} sequence term requested is {:d}. The value is: {}.".format(calc_type, n, series_value)
         print(result)
-
-
+# 1  2  3  4  5   6   7   8,  9 // term
+# 0, 1, 1, 2, 3,  5,  8, 13, 21 // fibonacci
+# 2, 1, 3, 4, 7, 11, 18, 29, 47 // lucas
+# 1, 1, 2, 3, 5,  8, 13, 21, 34 // undefined
