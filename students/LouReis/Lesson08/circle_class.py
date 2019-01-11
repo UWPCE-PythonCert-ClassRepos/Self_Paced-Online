@@ -41,6 +41,7 @@ class Circle():
         self.radius = self._diameter / 2
 
 """
+Created a simple program to run through a few examples:
 
 choice = input("Would you like to enter the Radius or Diameter of the Circle (R or D)?:")
 if choice == 'R':
