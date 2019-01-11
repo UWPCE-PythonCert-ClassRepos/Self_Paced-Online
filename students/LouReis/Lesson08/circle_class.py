@@ -32,6 +32,16 @@ class Circle():
     def __repr__(self):
         return 'Circle({!r})'.format(self.radius)
 
+    def __add__(self, other):
+        total_radius = self.radius + other.radius
+        return Circle(total_radius)
+
+    def __mul__(self, other):
+        return Circle(self.radius * other)
+
+    def __rmul__(self, other):
+        return Circle(other * self.radius)
+
     @property
     def area(self):
         return (self.radius**2) * pi
