@@ -220,9 +220,6 @@ def amount_lengths(data):
     return len_lst: list of integer(s)
     """
     assert (isinstance(data, dict)), "var data is not a dict!"
-    # _ = None
-    # len_lst = []
-    # _ = [len_lst.append(len("%.2f" % (sum(val["total"])))) for val in data.values()]
 
     len_lst = [len("%.2f" % (sum(data[name]["total"]))) for name in data]
 
@@ -397,14 +394,7 @@ def letter_templates(version):
     could also be read from a file
     """
 
-    # abbreviations for new line, tab and space bar:
-    # n = "\n"
-    # t = "\t"
-    # st = " " + "\t"
-
     header = "Seattle, WA {date}"
-    # dear_donor = n * 3 + t + "Dear {name}," + n * 2
-    # regards_from = st * 5 + "Sincerely," + n * 2 + st * 6 + "-The Team"
 
     dear_donor = "\n" * 3 + "\t" + "Dear {name}," + "\n" * 2
     regards_from = " \t" * 5 + "Sincerely," + "\n" * 2 + " \t" * 6 + "-The Team"

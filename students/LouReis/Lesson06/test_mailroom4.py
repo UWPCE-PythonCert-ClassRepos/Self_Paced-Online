@@ -38,8 +38,12 @@ quit()
 
 # referencing all of the functions, names, variables, symbols to import
 from mailroom4 import main_menu, donation_report, thanks_letter
+from mailroom4 import enter_existing_donor, enter_new_donor
 from mailroom4 import thanks_letter_all, print_letter, quit
 from mailroom4 import main_prompt, menu_options_dict, donations
+
+from io import StringIO
+import sys
 
 # GOAL is to test all code not involving "user interaction".
 # Functions that contain user interaction have been commented out below.
@@ -69,8 +73,9 @@ def test_6():
     assert print_letter('', 0) is not False
 
 # Test that a non-numeric value for donation amount is not accepted.
-#def test_7():
-#    assert print_letter('test name', x) is not True
+def test_7():
+    a = {"Robin Hood": [50000, 50000, 50000], "Tycoon Reis": [25000000, 25000000, 25000000], "Howie Long": [100000], "Joe Neighbor": [25, 25], "Rick Retiree": [0.50, 0.50]}
+    assert a == donations
 
 # Test that the user can still prompt for an existing donor list.
 def test_8():
@@ -83,3 +88,34 @@ def test_9():
 # Test that the quit function still terminates gracefully.
 #def test_10():
 #    assert quit() is True
+
+# Test that a new donor gets added to the dict
+def test_11():
+    enter_new_donor('test', 10)
+    assert 'test' in donations
+
+# Test that another new donor gets added to the dict
+def test_12():
+    enter_new_donor('other test', .01)
+    assert 'other test' in donations
+
+# Test that the output from print_letter is valid.
+def test_13():
+    # Using StringIO from io...
+    # Store the reference, in case you want to show things again in standard output
+    old_stdout = sys.stdout
+    # This variable will store everything that is sent to the standard output
+    result = StringIO()
+    sys.stdout = result
+    # Here we can call anything we like, like external modules, and everything that they will send to standard output will be stored on "result"
+    print_letter('Howie Long', 1000)
+    # Redirect again the std output to screen
+    sys.stdout = old_stdout
+    # Then, get the stdout like a string and process it!
+    result_string = result.getvalue()
+    assert "Subject: Donation" in result_string
+    assert "Dear Howie Long," in result_string
+    assert "Thank you for your $1,000.00 donation, it will be used to help meet our goals." in result_string
+    assert "We will welcome any future donations and appreciate your support." in result_string
+    assert "Sincerely," in result_string
+    assert "MDTS Staff" in result_string

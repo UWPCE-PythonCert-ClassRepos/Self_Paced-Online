@@ -1,29 +1,29 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Dec 26 21:48:02 2018
+Created on Sun Nov 25 21:48:02 2018
 
-@author: dennis coffey
+@author: dennis
 """
 
 import os
 import pytest
-from mailroomOO import *
+from mailroom_fp import *
 
 # Test create report
 def test_create_report():
     assert donors.create_report() == f'\nDonor Name                | Total Given | Num Gifts | Average Gift\n\
 ------------------------------------------------------------------\n\
-Paul Allen                 $    54000.00           2  $   27000.00\n\
-Dennis Coffey              $     4300.00           3  $    1433.33\n\
-Ethan Coffey               $     2050.00           3  $     683.33\n\
-Bill Gates                 $      770.00           2  $     385.00\n\
-Jeff Bezos                 $        3.00           1  $       3.00\n'
+Paul Allen                 $    54400.00           3  $   18133.33\n\
+Dennis Coffey              $     8375.00           5  $    1675.00\n\
+Ethan Coffey               $     4110.00           5  $     822.00\n\
+Bill Gates                 $      885.00           4  $     221.25\n\
+Jeff Bezos                 $       11.00           2  $       5.50\n'
     
 # Test add_donation by adding donation to existing donor
 def test_add_donation_existing_donor(donor='Dennis Coffey', amount=5000.00):
     donor = donors.set_donor(donor)
     donor.add_donation(amount)
-    assert donor.donations == [2500.00,400.00,1400.00,amount]
+    assert donor.donations == [2500.00,400.00,1400.00,4000.00,75.00,amount]
 
 # Test add_donation by adding donation from new donor
 def test_add_donation_new_donor(new_donor='Bill Nye', amount=777.00):
@@ -52,6 +52,17 @@ def test_send_email():
     # Check that number of emails in directory equals number of donors sent emails
     assert num_donors == num_files
     
+# Test multiply donations function
+def test_multiply_donations(factor=3):
+    donor = donors.set_donor('Ethan Coffey')
+    d = donor.multiply_donations(int(factor))
+    assert d == [2400.00,450.00,3300.00,6000.00,180.00]
+    
+# Test filter donations function
+def test_filter_donations(min_donation=200, max_donation=5000):
+    donor = Donor('Bill Nye', [2500.00,400.00,1400.00, 5.00])
+    d = donor.filter_donations(min_donation, max_donation)
+    assert d == [2500.00,400.00,1400.00]
     
     
     
