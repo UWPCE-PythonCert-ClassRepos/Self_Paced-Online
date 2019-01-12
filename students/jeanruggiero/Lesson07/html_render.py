@@ -7,11 +7,13 @@ class Element():
 
     tag_type = 0
 
-    def __init__(self, content=None):
+    def __init__(self, content=None, **kwargs):
         if content is None:
             self.content = []
         else:
             self.content = [content]
+
+        self.attrs = kwargs
 
     def __str__(self):
         return self.tag()
@@ -51,7 +53,7 @@ class Element():
     def opentag(self, ci):
         """Returns an open tag with indentation ci."""
         return ci * self.indent_size * ' ' + '<' + \
-            self.tag_types[self.tag_type] + '>\n'
+            self.tag_types[self.tag_type] + ' ' + self.stattr() + '>\n'
 
     def closetag(self, ci):
         """Returns a close tag with indentation ci."""
@@ -61,6 +63,11 @@ class Element():
     def line(self, c, ci):
         """Returns a block of text with indentation and newlines."""
         return (ci + 1)*self.indent_size * ' ' + c + '\n'
+
+    def stattr(self):
+        """Returns a string of the user-specified attrs."""
+        att_list = [' ']
+        return ''.join([k + '="' + v + '"' for k,v in self.attrs.items() if k])
 
 
 
@@ -80,7 +87,7 @@ class OneLineTag(Element):
     def opentag(self, ci):
         """Returns an open tag with indentation ci."""
         return ci * self.indent_size * ' ' + '<' + \
-            self.tag_types[self.tag_type] + '>'
+            self.tag_types[self.tag_type] + ' ' + self.stattr() + '>'
 
     def closetag(self, ci):
         """Returns a close tag with indentation ci."""
