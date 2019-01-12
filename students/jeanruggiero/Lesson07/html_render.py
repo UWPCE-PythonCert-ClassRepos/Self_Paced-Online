@@ -3,7 +3,7 @@
 class Element():
 
     indent_size = 4
-    tag_types = ['html', 'body', 'p', 'head', 'title', 'meta']
+    tag_types = ['html', 'body', 'p', 'head', 'title', 'hr', 'br']
 
     tag_type = 0
 
@@ -34,15 +34,16 @@ class Element():
         indentation to a string or Element object."""
         if tlist is None:
             tlist = []
-
-        tlist.append(self.opentag(cur_ind))
-
-        for c in self.content:
-            if isinstance(c, Element):
-                c.apply_tag(cur_ind+1, tlist)
-            else:
-                tlist.append(self.line(c,cur_ind))
-        tlist.append(self.closetag(cur_ind))
+        if isinstance(self,SelfClosingTag):
+            tlist.append(self.closetag(cur_ind))
+        else:
+            tlist.append(self.opentag(cur_ind))
+            for c in self.content:
+                if isinstance(c, Element):
+                    c.apply_tag(cur_ind+1, tlist)
+                else:
+                    tlist.append(self.line(c,cur_ind))
+            tlist.append(self.closetag(cur_ind))
         return tlist
 
     def tag(self, cur_ind=0):
@@ -53,7 +54,7 @@ class Element():
     def opentag(self, ci):
         """Returns an open tag with indentation ci."""
         return ci * self.indent_size * ' ' + '<' + \
-            self.tag_types[self.tag_type] + ' ' + self.stattr() + '>\n'
+            self.tag_types[self.tag_type] + self.stattr() + '>\n'
 
     def closetag(self, ci):
         """Returns a close tag with indentation ci."""
@@ -66,8 +67,8 @@ class Element():
 
     def stattr(self):
         """Returns a string of the user-specified attrs."""
-        att_list = [' ']
-        return ''.join([k + '="' + v + '"' for k,v in self.attrs.items() if k])
+        return ' ' + ''.join([k + '="' + v + '"' for k,v in self.attrs.items()
+            if k]) if self.attrs else ''
 
 
 
@@ -87,7 +88,7 @@ class OneLineTag(Element):
     def opentag(self, ci):
         """Returns an open tag with indentation ci."""
         return ci * self.indent_size * ' ' + '<' + \
-            self.tag_types[self.tag_type] + ' ' + self.stattr() + '>'
+            self.tag_types[self.tag_type] + self.stattr() + '>'
 
     def closetag(self, ci):
         """Returns a close tag with indentation ci."""
@@ -99,3 +100,29 @@ class OneLineTag(Element):
 
 class Title(OneLineTag):
     tag_type = 4
+
+class SelfClosingTag(Element):
+    class ContentError(Exception):
+        """Throw an error if user attempts to add content to SelfClosingTag
+        instance"""
+        expression = 'Content cannot be added to a SelfClosingTag'
+
+    def __init__(self, content=None, **kwargs):
+        if content is not None:
+            raise self.ContentError
+        self.attrs = kwargs
+
+    def append(self,newcontent):
+        raise self.ContentError
+
+    def closetag(self, ci):
+        """Returns a close tag with indentation ci."""
+        return ci * self.indent_size * ' ' + '<' + \
+            self.tag_types[self.tag_type] + ' />\n'
+
+
+class Hr(SelfClosingTag):
+    tag_type = 5
+
+class Br(SelfClosingTag):
+    tag_type = 6
