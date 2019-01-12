@@ -1,7 +1,8 @@
-# to run in ipython, import this file then run part2.square_grid(x)
+# second part of UW python homework 2. creates a square of user specified size, rounding down
+# to run in ipython, import this file then run part2.print_grid(x)
 import math
 
-def square_grid(size):
+def print_grid(size):
 	rsize = math.floor(size/2)
 	x =  '+' + ' -' *rsize + ' +' + ' -' *rsize + ' +'
 	y = '|' + '  ' * rsize + ' |' + '  ' *rsize + ' |'
