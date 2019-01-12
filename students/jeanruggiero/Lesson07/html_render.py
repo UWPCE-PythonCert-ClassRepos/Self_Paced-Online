@@ -4,8 +4,7 @@ class Element():
     """Generic html element."""
     indent_size = 4
     tag_types = ['html', 'body', 'p', 'head', 'title', 'hr', 'br', 'a', 'ul',
-                 'li', 'h']
-
+                 'li', 'h', 'meta']
     tag_type = 0
 
     def __init__(self, content=None, **kwargs):
@@ -13,8 +12,20 @@ class Element():
             self.content = []
         else:
             self.content = [content]
-
         self.attrs = kwargs
+
+    def indent(self, status=True):
+        """Turn indentation on (True) or off (False)"""
+        if status:
+            self.indent_size = 4
+        else:
+            self.indent_size = 0
+        try:
+            for c in self.content:
+                if issubclass(type(c), Element):
+                    c.indent(status)
+        except AttributeError:
+            pass
 
     def __str__(self):
         return self.tag()
@@ -71,10 +82,15 @@ class Element():
         return ''.join([' ' + k + '="' + v + '"' for k,v in self.attrs.items()
             if k]) if self.attrs else ''
 
-
-
 class Html(Element):
     tag_type = 0
+
+    def render(self, out_file, cur_ind=0):
+        """
+        Apply appropriate tags and indentation and output Element content to
+        an open writable object.
+        """
+        out_file.write('<!DOCTYPE html>\n' + self.tag(cur_ind))
 
 class Body(Element):
     tag_type = 1
@@ -119,7 +135,7 @@ class SelfClosingTag(Element):
     def closetag(self, ci):
         """Returns a close tag with indentation ci."""
         return ci * self.indent_size * ' ' + '<' + \
-            self.tag_types[self.tag_type] + ' />\n'
+            self.tag_types[self.tag_type] + self.stattr() + ' />\n'
 
 class Hr(SelfClosingTag):
     tag_type = 5
@@ -165,3 +181,7 @@ class H(OneLineTag):
     def closetag(self, ci):
         """Returns a close tag with indentation ci."""
         return '</' + self.tag_types[self.tag_type] + str(self.level) + '>\n'
+
+class Meta(SelfClosingTag):
+    """Html meta tag type"""
+    tag_type = 11

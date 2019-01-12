@@ -6,7 +6,7 @@ from io import StringIO
 
 element = hr.Element('some text', style="text-align: center; font-style: oblique;")
 olt = hr.OneLineTag('title', style="text-align: center; font-style: oblique;")
-sct = hr.SelfClosingTag(style="text-align: center; font-style: oblique;")
+sct = hr.SelfClosingTag()
 link = hr.A('http://google.com', 'link')
 h = hr.H(2,'header')
 
@@ -21,6 +21,12 @@ print(element.attrs)
 def test_init():
     assert element.content == ['some text']
     assert element.tag_type == 0
+
+def test_indent():
+    element.indent(False)
+    assert element.indent_size == 0
+    element.indent(True)
+    assert element.indent_size == 4
 
 def test_str():
     assert element.__str__() == element.tag()
