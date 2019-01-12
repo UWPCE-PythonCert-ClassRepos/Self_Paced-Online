@@ -3,7 +3,8 @@
 class Element():
     """Generic html element."""
     indent_size = 4
-    tag_types = ['html', 'body', 'p', 'head', 'title', 'hr', 'br', 'a']
+    tag_types = ['html', 'body', 'p', 'head', 'title', 'hr', 'br', 'a', 'ul',
+                 'li', 'h']
 
     tag_type = 0
 
@@ -67,7 +68,7 @@ class Element():
 
     def stattr(self):
         """Returns a string of the user-specified attrs."""
-        return ' ' + ''.join([k + '="' + v + '"' for k,v in self.attrs.items()
+        return ''.join([' ' + k + '="' + v + '"' for k,v in self.attrs.items()
             if k]) if self.attrs else ''
 
 
@@ -134,3 +135,33 @@ class A(OneLineTag):
         self.link = link
         self.attrs = {'href': link}
         self.content = [content]
+
+class Ul(Element):
+    """Html unordered list."""
+    tag_type = 8
+
+class Li(Element):
+    """Html list element."""
+    tag_type = 9
+
+class H(OneLineTag):
+    """Html header element"""
+    tag_type = 10
+
+    def __init__(self, level, content=None, **kwargs):
+        if content is None:
+            self.content = []
+        else:
+            self.content = [content]
+        self.attrs = kwargs
+        self.level = int(level)
+
+    def opentag(self, ci):
+        """Returns an open tag with indentation ci."""
+        return ci * self.indent_size * ' ' + '<' + \
+            self.tag_types[self.tag_type] + str(self.level) + self.stattr() + \
+            '>'
+
+    def closetag(self, ci):
+        """Returns a close tag with indentation ci."""
+        return '</' + self.tag_types[self.tag_type] + str(self.level) + '>\n'

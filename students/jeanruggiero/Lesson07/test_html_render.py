@@ -8,6 +8,7 @@ element = hr.Element('some text', style="text-align: center; font-style: oblique
 olt = hr.OneLineTag('title', style="text-align: center; font-style: oblique;")
 sct = hr.SelfClosingTag(style="text-align: center; font-style: oblique;")
 link = hr.A('http://google.com', 'link')
+h = hr.H(2,'header')
 
 print(element.attrs)
 # body = hr.Body()
@@ -99,3 +100,13 @@ def test_a_init():
     assert link.link == 'http://google.com'
     assert link.attrs == {'href': 'http://google.com'}
     assert link.content == ['link']
+
+def test_h_init():
+    assert h.content == ['header']
+    assert h.level == 2
+
+def test_h_opentag():
+    assert h.opentag(0) == '<h2>'
+
+def test_h_closetag():
+    assert h.closetag(0) == '</h2>\n'
