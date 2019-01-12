@@ -3,7 +3,7 @@
 class Element():
 
     indent_size = 4
-    tag_types = ['html', 'body', 'p', 'head', 'meta', 'title']
+    tag_types = ['html', 'body', 'p', 'head', 'title', 'meta']
 
     tag_type = 0
 
@@ -65,14 +65,30 @@ class Element():
 
 
 class Html(Element):
-
     tag_type = 0
 
-
 class Body(Element):
-
     tag_type = 1
 
 class P(Element):
-
     tag_type = 2
+
+class Head(Element):
+    tag_type = 3
+
+class OneLineTag(Element):
+    def opentag(self, ci):
+        """Returns an open tag with indentation ci."""
+        return ci * self.indent_size * ' ' + '<' + \
+            self.tag_types[self.tag_type] + '>'
+
+    def closetag(self, ci):
+        """Returns a close tag with indentation ci."""
+        return '</' + self.tag_types[self.tag_type] + '>\n'
+
+    def line(self, c, ci):
+        """Returns a block of text with indentation and newlines."""
+        return c
+
+class Title(OneLineTag):
+    tag_type = 4

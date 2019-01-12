@@ -5,6 +5,7 @@ from io import StringIO
 
 element = hr.Element()
 element.append('some text')
+olt = hr.OneLineTag('title')
 # body = hr.Body()
 # body.append('body text')
 # p1 = hr.P('para1')
@@ -56,3 +57,15 @@ def test_line():
         'text line\n'
     assert element.line('text line',1) == (2)*element.indent_size * ' ' + \
         'text line\n'
+
+def test_olt_opentag():
+    assert olt.opentag(0) == '<html>'
+    assert olt.opentag(1) == olt.indent_size*' ' + '<html>'
+
+def test_olt_closetag():
+    assert olt.closetag(0) == '</html>\n'
+    assert olt.closetag(1) == '</html>\n'
+
+def test_olt_line():
+    assert olt.line('hi there', 0) == 'hi there'
+    assert olt.line('hi there', 1) == 'hi there'
