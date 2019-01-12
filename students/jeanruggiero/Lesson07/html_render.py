@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 class Element():
-
+    """Generic html element."""
     indent_size = 4
-    tag_types = ['html', 'body', 'p', 'head', 'title', 'hr', 'br']
+    tag_types = ['html', 'body', 'p', 'head', 'title', 'hr', 'br', 'a']
 
     tag_type = 0
 
@@ -120,9 +120,17 @@ class SelfClosingTag(Element):
         return ci * self.indent_size * ' ' + '<' + \
             self.tag_types[self.tag_type] + ' />\n'
 
-
 class Hr(SelfClosingTag):
     tag_type = 5
 
 class Br(SelfClosingTag):
     tag_type = 6
+
+class A(OneLineTag):
+    """Html link element"""
+    tag_type = 7
+
+    def __init__(self, link, content):
+        self.link = link
+        self.attrs = {'href': link}
+        self.content = [content]

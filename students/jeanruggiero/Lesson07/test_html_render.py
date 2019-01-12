@@ -7,6 +7,7 @@ from io import StringIO
 element = hr.Element('some text', style="text-align: center; font-style: oblique;")
 olt = hr.OneLineTag('title', style="text-align: center; font-style: oblique;")
 sct = hr.SelfClosingTag(style="text-align: center; font-style: oblique;")
+link = hr.A('http://google.com', 'link')
 
 print(element.attrs)
 # body = hr.Body()
@@ -93,3 +94,8 @@ def test_sct_append():
 
 def test_sct_closetag():
     assert sct.closetag(0) == '<html />\n'
+
+def test_a_init():
+    assert link.link == 'http://google.com'
+    assert link.attrs == {'href': 'http://google.com'}
+    assert link.content == ['link']
