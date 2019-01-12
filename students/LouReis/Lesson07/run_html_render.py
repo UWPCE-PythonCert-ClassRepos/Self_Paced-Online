@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.7
+# By Lou Reis
 
 """
 a simple script can run and test your html rendering classes.
