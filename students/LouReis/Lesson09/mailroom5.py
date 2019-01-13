@@ -1,8 +1,10 @@
 #!/usr/bin/env python3.7
-# mailroom2.py
+# mailroom5.py
 # Coded by LouReis
 
 """
+Refactor the following code to use classes.
+
 Write a small command-line script called mailroom.py.
 It should have a data structure that holds a list of your donors and a history
 of the amounts they have donated. This structure should be populated at first
@@ -19,6 +21,7 @@ Sally Neighbor             $     877.33           1  $      877.33
 Mack Jack                  $     708.42           3  $      236.14
 
 """
+from functools import total_ordering
 
 # donations = ['Robin Hood', 1500000, 3, 500000, 'Tycoon Reis', 75000000, 3, 25000000, 'Howie Long', 100000, 1, 100000, 'Joe Neighbor', 50, 2, 25, 'Rick Retiree', 1.00, 2, 0.50]
 # Data structure in global namespace to store all donations & donors.
@@ -60,6 +63,60 @@ def main_menu(main_prompt,menu_options_dict):
 #
 # The following function takes the 'donations' dictionary and creates a sorted report.
 # Using a complex 'sorted' for loop.
+
+# The below snippet will display the instances in memory.
+"""
+ import gc
+ for obj in gc.get_objects():
+     if isinstance(obj, Donor):
+         print (obj.name, obj.donation)
+"""
+
+# donations = {"Robin Hood": [50000, 50000, 50000]}
+
+class Donor():
+    def __init__(self, name, donation = 1, _num_donations = 1, _total_donations = 1, _avg_donations = 1):
+        self.name = name
+        self.donation = donation
+        self._num_donations = _num_donations
+        self._total_donations = _total_donations
+        self._avg_donations = _avg_donations
+        if name not in donations:
+            donations.update({name:[donation]})
+        else:
+            donations[name] = donations[name] + [donation]
+
+    def __str__(self):
+        return 'Donor with a name of {}'.format(self.name)
+
+    def __repr__(self):
+        return 'Donor({!r}) made a donation of ${}.'.format(self.name, self.donation)
+
+    @property
+    def num_donations(self):
+        self._num_donations = len(donations[self.name])
+        return self._num_donations
+
+    @property
+    def total_donations(self):
+        return sum(donations[self.name])
+
+    @property
+    def avg_donation(self):
+        return (sum(donations[self.name]) / self._num_donations)
+"""
+    @total_ordering
+    def __eq__(self, other):
+        return self._total_donations == other
+
+    def __lt__(self, other):
+        return self._total_donations < other._total_donations
+"""
+"""
+class Donated(self):
+    for key in donations:
+"""
+
 def donation_report():
     print('\nYou Chose Option 1\n\n')
     print('DONATION SUMMARY REPORT\n\n')
@@ -71,17 +128,6 @@ def donation_report():
         count = 0
         count = len(donations[key])
         print ('{:25} ${:>15,.2f} {:>15} ${:>15,.2f}'.format(key, total, count, total/count))
-
-# Enter Existing donor & donation
-def enter_existing_donor(donor, donation):
-    donations[donor] = donations[donor] + [donation]
-    #print_letter(donor, donation)
-
-
-# Enter New donor & donation
-def enter_new_donor(donor, donation):
-    donations.update({donor:[donation]})
-    #print_letter(donor, donation)
 
 # This Option generates a thank you letter for a new donation and prints to the screen.
 def thanks_letter():
@@ -103,7 +149,7 @@ def thanks_letter():
         except ValueError:
             print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
             main_menu(main_prompt,menu_options_dict)
-        enter_existing_donor(donor, donation)
+        Donor(donor, donation)
     else:
         print("You have entered a new donor:", donor)
         try:
@@ -111,7 +157,7 @@ def thanks_letter():
         except ValueError:
             print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
             return
-        enter_new_donor(donor, donation)
+        Donor(donor, donation)
     print_letter(donor, donation)
 
 """
