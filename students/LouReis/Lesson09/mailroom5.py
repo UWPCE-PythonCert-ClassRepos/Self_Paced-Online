@@ -75,7 +75,7 @@ def main_menu(main_prompt,menu_options_dict):
 # donations = {"Robin Hood": [50000, 50000, 50000]}
 
 class Donor():
-    def __init__(self, name, donation = 1, _num_donations = 1, _total_donations = 1, _avg_donations = 1):
+    def __init__(self, name, donation = 0, _num_donations = 1, _total_donations = 0, _avg_donations = 0):
         self.name = name
         self.donation = donation
         self._num_donations = _num_donations
@@ -116,6 +116,15 @@ class Donor():
 class Donated(self):
     for key in donations:
 """
+# This function uses the Donor Class for values to sort by.
+def donation_report2():
+    print('\nYou Chose Option 1\n\n')
+    print('DONATION SUMMARY REPORT\n\n')
+    print('{:25} | {:^13} | {:^13} |   {:>13}'.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift'))
+    print('---------------------------------------------------------------------------')
+    print()
+    for key in donations:
+        print ('{:25} ${:>15,.2f} {:>15} ${:>15,.2f}'.format(key, Donor(key).total_donations, Donor(key).num_donations, Donor(key).avg_donation))
 
 def donation_report():
     print('\nYou Chose Option 1\n\n')
@@ -197,7 +206,7 @@ def quit():
 
 # Below is the dict defining the menu options.
 menu_options_dict = {
-    "1": donation_report,
+    "1": donation_report2,
     "2": thanks_letter,
     "3": thanks_letter_all,
     "4": quit,

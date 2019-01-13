@@ -1,5 +1,5 @@
 #!/usr/bin/env python3.7
-# test_mailroom4.py
+# test_mailroom5.py
 # Coded by LouReis
 
 
@@ -37,10 +37,9 @@ quit()
 """
 
 # referencing all of the functions, names, variables, symbols to import
-from mailroom4 import main_menu, donation_report, thanks_letter
-from mailroom4 import enter_existing_donor, enter_new_donor
-from mailroom4 import thanks_letter_all, print_letter, quit
-from mailroom4 import main_prompt, menu_options_dict, donations
+from mailroom5 import main_menu, donation_report, thanks_letter, Donor
+from mailroom5 import thanks_letter_all, print_letter, quit
+from mailroom5 import main_prompt, menu_options_dict, donations
 
 from io import StringIO
 import sys
@@ -91,12 +90,12 @@ def test_9():
 
 # Test that a new donor gets added to the dict
 def test_11():
-    enter_new_donor('test', 10)
+    Donor('test', 10)
     assert 'test' in donations
 
 # Test that another new donor gets added to the dict
 def test_12():
-    enter_new_donor('other test', .01)
+    Donor('other test', .01)
     assert 'other test' in donations
 
 # Test that the output from print_letter is valid.
