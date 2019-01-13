@@ -1,34 +1,33 @@
-#!/usr/bin/env python3.7
-# By Lou Reis
+#!/usr/bin/env python3
 
 """
-a simple script can run and test your html rendering classes.
-
-Uncomment the steps as you add to your rendering.
+# wk: cd C:\Users\
+# v-micmcd.Redmond\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson7
+# mo: cd C:\Users\geekw\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson7
+# hm: cd C:\Users\geekw\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson7
+# git add mailroom_lesson06_module.py
+# git add mailroom_lesson06.py
+# git add test_mailroom_lesson06.py
+# git commit mailroom_lesson06_module.py
+# git commit mailroom_lesson06.py
+# git commit test_mailroom_lesson06.py
+# git push
+# goto https://github.com/geekwriter2/Self_Paced-Online/tree/master/students/MichaelM/lesson6/
+# click Pull request > new pull request
 
 """
 
 from io import StringIO
-
-# importing the html_rendering code with a short name for easy typing.
-import html_render as hr
+import lesson7.html_render as hr
 
 
 # writing the file out:
-def render_page(page, filename, indent=None):
-    """
-    render the tree of elements
-
-    This uses StringIO to render to memory, then dump to console and
-    write to file -- very handy!
-    """
-
+def render_page(HtmlPage, filename, indent=None):
     f = StringIO()
     if indent is None:
-        page.render(f)
+        HtmlPage.render(f)
     else:
-        page.render(f, indent)
-
+        HtmlPage.render(f, indent)
     print(f.getvalue())
     with open(filename, 'w') as outfile:
         outfile.write(f.getvalue())
@@ -38,35 +37,41 @@ def render_page(page, filename, indent=None):
 #########
 
 page = hr.Element()
+page.html("open", page.indent(0))
+page.head("open", page.indent(1))
+page.title("A classy html doc", page.indent(2))
+page.head("close", page.indent(1))
+page.body("open", page.indent(1))
+page.p("open", page.indent(2))
+page.append_to_list("Here is a paragraph of text -- there could be more of them, but this is enough to show that we can do some text.\n")
+page.p("close", page.indent(2))
+page.br(page.indent(2))
+page.p("open", page.indent(2))
+page.append_to_list("And here is another piece of text -- you should be able to add any number.\n")
+page.p("close", page.indent(2))
+page.body("close", page.indent(1))
+page.html("close", page.indent(0))
+render_page(page, "html_page.htm")
 
-page.append("Here is a paragraph of text -- there could be more of them, "
-            "but this is enough  to show that we can do some text")
 
-page.append("And here is another piece of text -- you should be able to add any number")
+# ## Step 2
+# ##########
 
-render_page(page, "test_html_output1.html")
+# page = hr.Html()
 
-# The rest of the steps have been commented out.
-#  Uncomment them as you move along with the assignment.
+# body = hr.Body()
 
-# Step 2
-##########
-"""
-page = hr.Html()
+# body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+#                  "but this is enough  to show that we can do some text"))
 
-body = hr.Body()
+# body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
 
-body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-                  "but this is enough  to show that we can do some text"))
+# page.append(body)
 
-body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
+# render_page(page, "test_html_output2.html")
 
-page.append(body)
-
-render_page(page, "test_html_output2.html")
-"""
-# Step 3
-##########
+# # Step 3
+# ##########
 
 # page = hr.Html()
 
