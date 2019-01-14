@@ -25,16 +25,16 @@ Mack Jack                  $     708.42           3  $      236.14
 # donations = ['Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Howie Long', 100000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000]
 donations = {"Robin Hood": [50000, 50000, 50000], "Tycoon Reis": [25000000, 25000000, 25000000], "Howie Long": [100000], "Joe Neighbor": [25, 25], "Rick Retiree": [0.50, 0.50]}
 philanthropy = {}
-def challenge(factor):
-    return factor*2
 
-for key in donations:
-    map(challenge,donations[key])
+"""
+First iteration:
 
 for key in donations:
     print(key)
     print(list(map(challenge,donations[key])))
     philanthropy.update({key:list(map(challenge,donations[key]))})
+
+Second iteration:
 
 def challenge(factor, min_donation=0, max_donation=100):
     def fun(x):
@@ -44,8 +44,19 @@ def challenge(factor, min_donation=0, max_donation=100):
         #print(list(map(fun,donations[key])))
         philanthropy.update({key:list(map(fun,donations[key]))})
     return philanthropy
+"""
 
-
+# The following function returns a philanthropy donation potential.
+def challenge(factor, min_donation=0, max_donation=100):
+    def fun(x):
+        return x * factor
+    temp = {}
+    for key in donations:
+        temp.update({key:list(filter(lambda x: x>=min_donation and x <= max_donation,donations[key]))})
+    for key in temp:
+        if temp[key] != []:
+            philanthropy.update({key:list(map(fun,temp[key]))})
+    return philanthropy
 
 
 # Tested & modified the below code that works for printed an unsorted report.
@@ -171,13 +182,48 @@ def quit():
     sys.exit()
 
 #    return "Quit"
+def projection():
+    print('\nYou Chose Option 5\n\n')
+    print('Philanthropy Projection\n\n')
+    print('Consider the matching contribution to enter, enter a number to multiply by.\n')
+    multiple = float(input('Enter number for the multiple (2 for double, 3 for triple, etc.):'))
+    min_don = float(input('Enter the Minimum donation amount you want to match:'))
+    max_don = float(input('Enter the Maximum donation amount you want to match:'))
+    challenge(multiple, min_don, max_don)
+    grand_total_a = 0
+    for key in donations:
+        grand_total_a += sum(donations[key])
+    print('\n\nThe Grand Total of all Donations is ${}\n\n'.format(grand_total_a))
+    grand_total_b = 0
+    for key in philanthropy:
+        grand_total_b += sum(philanthropy[key])
+    # print('The Grand Total of Philanthropy is ${}'.format(grand_total_b))
+    print('Your Contribution amount is ${}\n\n'.format(grand_total_b - (grand_total_b / multiple)))
+    # Example of doubling contributions under $100
+    challenge(2,0,99.99)
+    grand_total_b = 0
+    for key in philanthropy:
+        grand_total_b += sum(philanthropy[key])
+    # print('The Grand Total of Philanthropy is ${}'.format(grand_total_b))
+    print('\n\nIf you were to do a matching contribution that doubled donations under $100:')
+    print('Your Contribution amount is ${}\n\n'.format(grand_total_b - (grand_total_b / multiple)))
+    # Example of tripling contributions over $50
+    challenge(3,50.01,1000000000000000)
+    grand_total_b = 0
+    for key in philanthropy:
+        grand_total_b += sum(philanthropy[key])
+    # print('The Grand Total of Philanthropy is ${}'.format(grand_total_b))
+    print('\n\nIf you were to do a matching contribution that tripled donations over $50:')
+    print('Your Contribution amount is ${}\n\n'.format(grand_total_b - (grand_total_b / multiple)))
+
 
 # Below is the dict defining the menu options.
 menu_options_dict = {
     "1": donation_report,
     "2": thanks_letter,
     "3": thanks_letter_all,
-    "4": quit,
+    "4": projection,
+    "5": quit,
 }
 
 # The following function prints out an email when the user enters a donation.
@@ -188,7 +234,7 @@ def print_letter(donor, amount):
     print(message,'\n\nSincerely,\n\nMDTS Staff\n\n\n')
 
 main_prompt = ("\nMailroom Donation Tracking System - MDTS\n\nMAIN MENU\n\n""Please choose from the following Menu Options:\n\n"
-"1 - Generate A Donation Report\n\n""2 - Create a Thank You Note\n\n""3 - Send a Thank You Letter to Everyone\n\n""4 - Quit Program\n\n""Enter Menu Option: ")
+"1 - Generate A Donation Report\n\n""2 - Create a Thank You Note\n\n""3 - Send a Thank You Letter to Everyone\n\n""4 - Philanthropy Projection\n\n""5 - Quit Program\n\n""Enter Menu Option: ")
 
 # The following function & dict could be used if it was desired to have an additonal sub menu off of the main menu.
 # The main program does not implement a sub menu.
