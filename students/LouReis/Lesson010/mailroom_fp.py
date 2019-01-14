@@ -24,7 +24,7 @@ Mack Jack                  $     708.42           3  $      236.14
 # Data structure in global namespace to store all donations & donors.
 # donations = ['Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Howie Long', 100000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000]
 donations = {"Robin Hood": [50000, 50000, 50000], "Tycoon Reis": [25000000, 25000000, 25000000], "Howie Long": [100000], "Joe Neighbor": [25, 25], "Rick Retiree": [0.50, 0.50]}
-
+philanthropy = {}
 def challenge(factor):
     return factor*2
 
@@ -34,6 +34,17 @@ for key in donations:
 for key in donations:
     print(key)
     print(list(map(challenge,donations[key])))
+    philanthropy.update({key:list(map(challenge,donations[key]))})
+
+def challenge(factor, min_donation=0, max_donation=100):
+    def fun(x):
+        return x * factor
+    for key in donations:
+        #print(key)
+        #print(list(map(fun,donations[key])))
+        philanthropy.update({key:list(map(fun,donations[key]))})
+    return philanthropy
+
 
 
 
