@@ -1,10 +1,8 @@
 #!/usr/bin/env python3.7
-# mailroom5.py
+# mailroom2.py
 # Coded by LouReis
 
 """
-Refactor the following code to use classes.
-
 Write a small command-line script called mailroom.py.
 It should have a data structure that holds a list of your donors and a history
 of the amounts they have donated. This structure should be populated at first
@@ -21,12 +19,45 @@ Sally Neighbor             $     877.33           1  $      877.33
 Mack Jack                  $     708.42           3  $      236.14
 
 """
-from functools import total_ordering
 
 # donations = ['Robin Hood', 1500000, 3, 500000, 'Tycoon Reis', 75000000, 3, 25000000, 'Howie Long', 100000, 1, 100000, 'Joe Neighbor', 50, 2, 25, 'Rick Retiree', 1.00, 2, 0.50]
 # Data structure in global namespace to store all donations & donors.
 # donations = ['Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Howie Long', 100000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000, 'Joe Neighbor', 25, 'Rick Retiree', 0.50, 'Robin Hood', 50000, 'Tycoon Reis', 25000000]
 donations = {"Robin Hood": [50000, 50000, 50000], "Tycoon Reis": [25000000, 25000000, 25000000], "Howie Long": [100000], "Joe Neighbor": [25, 25], "Rick Retiree": [0.50, 0.50]}
+philanthropy = {}
+
+"""
+First iteration:
+
+for key in donations:
+    print(key)
+    print(list(map(challenge,donations[key])))
+    philanthropy.update({key:list(map(challenge,donations[key]))})
+
+Second iteration:
+
+def challenge(factor, min_donation=0, max_donation=100):
+    def fun(x):
+        return x * factor
+    for key in donations:
+        #print(key)
+        #print(list(map(fun,donations[key])))
+        philanthropy.update({key:list(map(fun,donations[key]))})
+    return philanthropy
+"""
+
+# The following function returns a philanthropy donation potential.
+def challenge(factor, min_donation=0, max_donation=100):
+    def fun(x):
+        return x * factor
+    temp = {}
+    for key in donations:
+        temp.update({key:list(filter(lambda x: x>=min_donation and x <= max_donation,donations[key]))})
+    for key in temp:
+        if temp[key] != []:
+            philanthropy.update({key:list(map(fun,temp[key]))})
+    return philanthropy
+
 
 # Tested & modified the below code that works for printed an unsorted report.
 # def calculate_sort(donations):
@@ -63,69 +94,6 @@ def main_menu(main_prompt,menu_options_dict):
 #
 # The following function takes the 'donations' dictionary and creates a sorted report.
 # Using a complex 'sorted' for loop.
-
-# The below snippet will display the instances in memory.
-"""
- import gc
- for obj in gc.get_objects():
-     if isinstance(obj, Donor):
-         print (obj.name, obj.donation)
-"""
-
-# donations = {"Robin Hood": [50000, 50000, 50000]}
-
-class Donor():
-    def __init__(self, name, donation = 0, _num_donations = 1, _total_donations = 0, _avg_donations = 0):
-        self.name = name
-        self.donation = donation
-        self._num_donations = _num_donations
-        self._total_donations = _total_donations
-        self._avg_donations = _avg_donations
-        if name not in donations:
-            donations.update({name:[donation]})
-        else:
-            donations[name] = donations[name] + [donation]
-
-    def __str__(self):
-        return 'Donor with a name of {}'.format(self.name)
-
-    def __repr__(self):
-        return 'Donor({!r}) made a donation of ${}.'.format(self.name, self.donation)
-
-    @property
-    def num_donations(self):
-        self._num_donations = len(donations[self.name])
-        return self._num_donations
-
-    @property
-    def total_donations(self):
-        return sum(donations[self.name])
-
-    @property
-    def avg_donation(self):
-        return (sum(donations[self.name]) / self._num_donations)
-"""
-    @total_ordering
-    def __eq__(self, other):
-        return self._total_donations == other
-
-    def __lt__(self, other):
-        return self._total_donations < other._total_donations
-"""
-"""
-class Donated(self):
-    for key in donations:
-"""
-# This function uses the Donor Class for values to sort by.
-def donation_report2():
-    print('\nYou Chose Option 1\n\n')
-    print('DONATION SUMMARY REPORT\n\n')
-    print('{:25} | {:^13} | {:^13} |   {:>13}'.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift'))
-    print('---------------------------------------------------------------------------')
-    print()
-    for key in donations:
-        print ('{:25} ${:>15,.2f} {:>15} ${:>15,.2f}'.format(key, Donor(key).total_donations, Donor(key).num_donations, Donor(key).avg_donation))
-
 def donation_report():
     print('\nYou Chose Option 1\n\n')
     print('DONATION SUMMARY REPORT\n\n')
@@ -137,6 +105,17 @@ def donation_report():
         count = 0
         count = len(donations[key])
         print ('{:25} ${:>15,.2f} {:>15} ${:>15,.2f}'.format(key, total, count, total/count))
+
+# Enter Existing donor & donation
+def enter_existing_donor(donor, donation):
+    donations[donor] = donations[donor] + [donation]
+    #print_letter(donor, donation)
+
+
+# Enter New donor & donation
+def enter_new_donor(donor, donation):
+    donations.update({donor:[donation]})
+    #print_letter(donor, donation)
 
 # This Option generates a thank you letter for a new donation and prints to the screen.
 def thanks_letter():
@@ -158,7 +137,7 @@ def thanks_letter():
         except ValueError:
             print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
             main_menu(main_prompt,menu_options_dict)
-        Donor(donor, donation)
+        enter_existing_donor(donor, donation)
     else:
         print("You have entered a new donor:", donor)
         try:
@@ -166,7 +145,7 @@ def thanks_letter():
         except ValueError:
             print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
             return
-        Donor(donor, donation)
+        enter_new_donor(donor, donation)
     print_letter(donor, donation)
 
 """
@@ -203,13 +182,48 @@ def quit():
     sys.exit()
 
 #    return "Quit"
+def projection():
+    print('\nYou Chose Option 5\n\n')
+    print('Philanthropy Projection\n')
+    grand_total_a = 0
+    for key in donations:
+        grand_total_a += sum(donations[key])
+    print('\nThe Grand Total of all Donations is ${:,.2f}\n\n'.format(grand_total_a))
+    print('Consider the matching contribution to enter, enter a number to multiply by.')
+    multiple = float(input('Enter number for the multiple (2 for double, 3 for triple, etc.):'))
+    min_don = float(input('Enter the Minimum donation amount you want to match:'))
+    max_don = float(input('Enter the Maximum donation amount you want to match:'))
+    challenge(multiple, min_don, max_don)
+    grand_total_b = 0
+    for key in philanthropy:
+        grand_total_b += sum(philanthropy[key])
+    # print('The Grand Total of Philanthropy is ${}'.format(grand_total_b))
+    print('Your Contribution amount would be ${:,.2f}\n'.format(grand_total_b - (grand_total_b / multiple)))
+    # Example of doubling contributions under $100
+    challenge(2,0,99.99)
+    grand_total_b = 0
+    for key in philanthropy:
+        grand_total_b += sum(philanthropy[key])
+    # print('The Grand Total of Philanthropy is ${}'.format(grand_total_b))
+    print('\nIf you were to do a matching contribution that doubled donations under $100:')
+    print('Your Contribution amount would be ${:,.2f}\n'.format(grand_total_b - (grand_total_b / multiple)))
+    # Example of tripling contributions over $50
+    challenge(3,50.01,1000000000000000)
+    grand_total_b = 0
+    for key in philanthropy:
+        grand_total_b += sum(philanthropy[key])
+    # print('The Grand Total of Philanthropy is ${}'.format(grand_total_b))
+    print('\nIf you were to do a matching contribution that tripled donations over $50:')
+    print('Your Contribution amount would be ${:,.2f}\n\n'.format(grand_total_b - (grand_total_b / multiple)))
+
 
 # Below is the dict defining the menu options.
 menu_options_dict = {
-    "1": donation_report2,
+    "1": donation_report,
     "2": thanks_letter,
     "3": thanks_letter_all,
-    "4": quit,
+    "4": projection,
+    "5": quit,
 }
 
 # The following function prints out an email when the user enters a donation.
@@ -220,7 +234,7 @@ def print_letter(donor, amount):
     print(message,'\n\nSincerely,\n\nMDTS Staff\n\n\n')
 
 main_prompt = ("\nMailroom Donation Tracking System - MDTS\n\nMAIN MENU\n\n""Please choose from the following Menu Options:\n\n"
-"1 - Generate A Donation Report\n\n""2 - Create a Thank You Note\n\n""3 - Send a Thank You Letter to Everyone\n\n""4 - Quit Program\n\n""Enter Menu Option: ")
+"1 - Generate A Donation Report\n\n""2 - Create a Thank You Note\n\n""3 - Send a Thank You Letter to Everyone\n\n""4 - Philanthropy Projection\n\n""5 - Quit Program\n\n""Enter Menu Option: ")
 
 # The following function & dict could be used if it was desired to have an additonal sub menu off of the main menu.
 # The main program does not implement a sub menu.
