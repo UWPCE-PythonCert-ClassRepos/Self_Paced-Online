@@ -35,4 +35,16 @@ if response == 'send a thank you':
     print(Donors)
     print('Thank you {} for your generous donation of {} dollars!'.format(donor,donation_amount))
 elif response == 'create a report':
-    print(Donors)
+    Donor_report = []
+    for donor in Donors:
+        Donor_total = 0
+        amount_count = 0
+        for amount in donor:
+            if type(amount) == str:
+                pass
+            else:
+                Donor_total += int(amount)
+                amount_count += 1
+        avg_donation = Donor_total / amount_count
+        Donor_report.append([donor[0], Donor_total, amount_count, avg_donation])
+    print(Donor_report)
