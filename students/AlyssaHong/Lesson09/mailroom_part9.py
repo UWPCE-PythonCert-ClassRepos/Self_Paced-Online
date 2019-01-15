@@ -1,7 +1,7 @@
 """
 Author: Alyssa Hong
-Date: 1/10/2019
-Update:
+Date: 1/11/2019
+Update: add new_donor
 Lesson9 Assignments > Mailroom, Object Oriented Mailroom
 """
 
@@ -52,7 +52,7 @@ class DornorList:
         while not donor_name:
             donor_name = donor_input()
             if donor_name.lower() == "list":
-                print(self.get_all_donor_names())
+                print(self.check_donor_list())
         donation = None
         while not donation:
             try:
@@ -103,6 +103,7 @@ d4 = Donor('Alyssa', 'Hong', [120000,30000,40000])
 d5 = Donor('Leo', 'Jeon', [107000,53500])
 
 dh = DornorList([d1, d2, d3, d4, d5])
+
 
 def main():
     while True:
