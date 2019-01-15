@@ -184,37 +184,37 @@ def quit():
 #    return "Quit"
 def projection():
     print('\nYou Chose Option 5\n\n')
-    print('Philanthropy Projection\n\n')
-    print('Consider the matching contribution to enter, enter a number to multiply by.\n')
+    print('Philanthropy Projection\n')
+    grand_total_a = 0
+    for key in donations:
+        grand_total_a += sum(donations[key])
+    print('\nThe Grand Total of all Donations is ${:,.2f}\n\n'.format(grand_total_a))
+    print('Consider the matching contribution to enter, enter a number to multiply by.')
     multiple = float(input('Enter number for the multiple (2 for double, 3 for triple, etc.):'))
     min_don = float(input('Enter the Minimum donation amount you want to match:'))
     max_don = float(input('Enter the Maximum donation amount you want to match:'))
     challenge(multiple, min_don, max_don)
-    grand_total_a = 0
-    for key in donations:
-        grand_total_a += sum(donations[key])
-    print('\n\nThe Grand Total of all Donations is ${}\n\n'.format(grand_total_a))
     grand_total_b = 0
     for key in philanthropy:
         grand_total_b += sum(philanthropy[key])
     # print('The Grand Total of Philanthropy is ${}'.format(grand_total_b))
-    print('Your Contribution amount is ${}\n\n'.format(grand_total_b - (grand_total_b / multiple)))
+    print('Your Contribution amount would be ${:,.2f}\n'.format(grand_total_b - (grand_total_b / multiple)))
     # Example of doubling contributions under $100
     challenge(2,0,99.99)
     grand_total_b = 0
     for key in philanthropy:
         grand_total_b += sum(philanthropy[key])
     # print('The Grand Total of Philanthropy is ${}'.format(grand_total_b))
-    print('\n\nIf you were to do a matching contribution that doubled donations under $100:')
-    print('Your Contribution amount is ${}\n\n'.format(grand_total_b - (grand_total_b / multiple)))
+    print('\nIf you were to do a matching contribution that doubled donations under $100:')
+    print('Your Contribution amount would be ${:,.2f}\n'.format(grand_total_b - (grand_total_b / multiple)))
     # Example of tripling contributions over $50
     challenge(3,50.01,1000000000000000)
     grand_total_b = 0
     for key in philanthropy:
         grand_total_b += sum(philanthropy[key])
     # print('The Grand Total of Philanthropy is ${}'.format(grand_total_b))
-    print('\n\nIf you were to do a matching contribution that tripled donations over $50:')
-    print('Your Contribution amount is ${}\n\n'.format(grand_total_b - (grand_total_b / multiple)))
+    print('\nIf you were to do a matching contribution that tripled donations over $50:')
+    print('Your Contribution amount would be ${:,.2f}\n\n'.format(grand_total_b - (grand_total_b / multiple)))
 
 
 # Below is the dict defining the menu options.
