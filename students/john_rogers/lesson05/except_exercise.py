@@ -17,7 +17,7 @@ first_try = ['spam', 'cheese', 'mr death']
 try:
     joke = fun(first_try[0])
 except NameError as e:
-    print('\nNameError exception hit: ', e)
+    print('\nNameError exception: ', e, '\n')
     joke = fun(first_try[1])
 
 
@@ -50,7 +50,7 @@ langs = ['java', 'c', 'python']
 try:
     more_joke = more_fun(langs[0])
 except IndexError as e:
-    print('\nIndexError exception hit: ', e)
+    print('\nIndexError exception: ', e, '\n')
     more_joke = more_fun(langs[1])
 else:
     more_fun(langs[2])
