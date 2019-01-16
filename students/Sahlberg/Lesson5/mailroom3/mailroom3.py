@@ -29,9 +29,20 @@ def print_list(dictionary):
     """Prints our the donor list"""
     return print(list(dictionary.keys()))
 
-def user_options():
+def user_options(dict):
     """Main user options menu choices."""
-    user_action = input('Please choose from the following options:  \n'+ user_select.get(0) + '\n'+ user_select.get(1) + '\n'+ user_select.get(3)+ '\n'+ user_select.get(2))
+    user_select = dict
+    x = True
+    while x:
+        user_action = int(input('Please choose from the following options:  \n'+ user_select.get(0) + '\n'+ user_select.get(1) + '\n'+ user_select.get(3)+ '\n'+ user_select.get(2)))
+
+        if user_action in (1,2,3,4):
+            x = False
+            return user_action
+        else:
+            print('Not a valid option, please try again.')
+            continue
+
     return user_action
 
 def email(name, amount):
@@ -76,7 +87,13 @@ def email_file(dictionary):
 #---------------------------------------------------------------
 #Work Zone
 if __name__== '__main__':
-    user_action = user_options()
+
+    try:
+        user_action = str(user_options(user_select))
+    except ValueError:
+        print('Please choose options 1 thur 4.')
+        user_action = str(user_options(user_select))
+
 
     if user_action.lower() == 'quit':
         quit()
