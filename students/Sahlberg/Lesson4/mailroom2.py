@@ -29,8 +29,9 @@ def print_list(dictionary):
     """Prints our the donor list"""
     return print(list(dictionary.keys()))
 
-def user_options():
+def user_options(dict):
     """Main user options menu choices."""
+    user_select = dict
     user_action = input('Please choose from the following options:  \n'+ user_select.get(0) + '\n'+ user_select.get(1) + '\n'+ user_select.get(3)+ '\n'+ user_select.get(2))
     return user_action
 
@@ -76,7 +77,7 @@ def email_file(dictionary):
 #---------------------------------------------------------------
 #Work Zone
 if __name__== '__main__':
-    user_action = user_options()
+    user_action = user_options(user_select)
 
     if user_action.lower() == 'quit':
         quit()
