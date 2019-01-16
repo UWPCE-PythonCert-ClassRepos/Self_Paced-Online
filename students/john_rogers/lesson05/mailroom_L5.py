@@ -16,8 +16,6 @@ def main():
     various actions available.
     :return: none
     """
-
-    # converted away from nested dict per N.
     db = {'sting': [13.45, 214.34, 123.45, 1433.23, 1243.13],
           'bono': [7843.34, 35.55, 732.34],
           'oprah': [66.34, 32.23, 632.21, 66.67],
@@ -25,7 +23,6 @@ def main():
           'santa': [5334.00, 254.34, 64324.23, 2345.23, 5342.24],
          }
 
-    # create the main user prompt
     main_prompt = (
         "\nWelcome to the main menu!\n"
         "Please pick a number from the following:\n"
@@ -37,9 +34,6 @@ def main():
         ">>> "
     )
 
-    # QUESTION: How can I call these and pass different variables?
-    #           With this current method I have to pass 'db' to every
-    #           function being called.
     main_dispatch = {
         '1': exit_menu,
         '2': donor_actions,
@@ -47,9 +41,6 @@ def main():
         '4': thank_all,
         '5': save_report,
     }
-
-    # QUESTION: Need an overall template here to replace print_summary;
-    #           see function print_summary for details.
 
     menu(main_prompt, main_dispatch, db)
 
