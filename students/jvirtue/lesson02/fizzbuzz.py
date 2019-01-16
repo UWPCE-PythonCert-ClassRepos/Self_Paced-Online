@@ -1,5 +1,5 @@
 # Print fizz for multiples of 3 and Buzz for multiples of 5
-for x in range (100):
+for x in range (101):
     if x == 0:
         print(0)
     elif x%3 == 0 and x%5 == 0:
