@@ -7,7 +7,6 @@ Lesson 3: String Formatting
 
 
 def send_thank_you(Donors):
-    print(Donors)
     name = input("What's the name? ")
     if name == 'list':
         for donor in Donors:
