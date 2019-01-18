@@ -5,20 +5,12 @@ Py210, Online Self-Paced
 '''
 
 def fibonacci(n):
-    '''Return the nth number in fibonacci sequenc.e'''
-    if n == 0 or n == 1:
-        return(n)
-    else:
-        return(fibonacci(n-1)+fibonacci(n-2))
+    '''Return the nth number in fibonacci sequence.'''
+    return sum_series(n)
 
 def lucas(n):
     '''Return the nth number in the lucas sequence.'''
-    if n == 0:
-        return(2)
-    if n == 1:
-        return(1)
-    else:
-        return(lucas(n-1)+lucas(n-2))
+    return sum_series(n,n0 = 2)
 
 def sum_series(n, n0 = 0, n1 = 1):
     '''Return the nth value in a series based on n = (n-1)+(n-2).
@@ -28,9 +20,9 @@ def sum_series(n, n0 = 0, n1 = 1):
     :param n1 - 1th value, default 1
     '''
     if n == 0:
-        return(n0)
+        return n0
     if n == 1:
-        return(n1)
+        return n1
     else:
         return sum_series(n-1,n0 = n0,n1 = n1)+sum_series(n-2,n0 = n0,n1 = n1)
 
