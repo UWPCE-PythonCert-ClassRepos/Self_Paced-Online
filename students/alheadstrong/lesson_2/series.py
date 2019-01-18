@@ -27,18 +27,22 @@ def sum_series(n, n0 = 0, n1 = 1):
         return sum_series(n-1,n0 = n0,n1 = n1)+sum_series(n-2,n0 = n0,n1 = n1)
 
 
+if __name__ == '__main__':
 #Assert statements to test code
 
-assert fibonacci(0) == 0
-assert fibonacci(1) == 1
-assert fibonacci(7) == 13
+    assert fibonacci(0) == 0
+    assert fibonacci(1) == 1
+    assert fibonacci(7) == 13
 
-assert lucas(0) == 2
-assert lucas(1) == 1
-assert lucas(7) == 29
+    assert lucas(0) == 2
+    assert lucas(1) == 1
+    assert lucas(7) == 29
 
-assert sum_series(7) == 13
-assert sum_series(28) == fibonacci(28)
-assert sum_series(2,n0 = 4) == 5
-assert sum_series(5,n1 = 2) == 10
-assert sum_series(3,n0 =5, n1 = 20) == 45
+    assert sum_series(7) == 13
+    assert sum_series(28) == fibonacci(28)
+    assert sum_series(5, 2, 1) == lucas(5)
+    assert sum_series(2,n0 = 4) == 5
+    assert sum_series(5,n1 = 2) == 10
+    assert sum_series(3,n0 =5, n1 = 20) == 45
+
+    print("tests passed")
