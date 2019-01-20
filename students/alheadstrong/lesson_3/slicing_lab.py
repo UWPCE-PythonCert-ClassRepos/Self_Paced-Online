@@ -1,6 +1,6 @@
 '''Author: Alex Filson
 Updated: 1.18.19
-SLicing Lab for Lesson 3
+Slicing Lab for Lesson 3
 Py210, Online Self-Paced
 '''
 
