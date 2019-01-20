@@ -4,7 +4,7 @@ mailroom_L5.py: refactor using comprehensions and exceptions where appropriate
 Author: JohnR
 Version: 2.1
 Last updated: 1/15/2019
-Notes:
+Notes: TODO: see if a list comp will work at line 70
 """
 
 from datetime import date
@@ -50,15 +50,14 @@ def menu(main_prompt, main_dispatch, db):
     Get user input
     :return: call the appropriate menu item
     """
-    # TODO: implement an exception
     while True:
         response = input(main_prompt)
-        # not sure this is the best way to achieve
-        if response.isalpha():
-            print('Sorry, we need a number between 1 and 5.')
-            menu(main_prompt, main_dispatch, db)
-        else:
+        try:
             main_dispatch[response](db)
+        except KeyError:
+            print('Please enter a number between 1 and 5.')
+        else:
+            menu(main_prompt, main_dispatch, db)
 
 
 def thank_all(db):
@@ -68,6 +67,7 @@ def thank_all(db):
     :return: None
     """
     donors = sorted_list(db)
+    # TODO: Try a list comprehension here.
     for donor in donors:
         letter = form_letter(donor[0][0], donor[1][0])
         print(letter)
@@ -97,17 +97,14 @@ def save_report(db):
     :param db: donor database
     :return: None
     """
-    # Get a sorted list, print out a thank you for each then write to disk
     today = date.today()
     donors = sorted_list(db)
     for donor in donors:
-        # create a file based on donor name and time stamp
         letter = form_letter(donor[0][0], donor[1][0])
         user_file = "{}.{}.txt".format(donor[0][0], today)
 
         with open(user_file, 'w') as outfile:
             outfile.write(letter)
-        outfile.close()
 
 
 def exit_menu(db):
@@ -115,13 +112,9 @@ def exit_menu(db):
     write to file and exit the program
     :return: SystemExit
     """
-    # save a current thank you for each donor to disk and exit
     save_report(db)
-    print('Exiting program -')
+    print('Exiting program, thank you for your time today!')
     raise SystemExit
-    # NOTE: sys.exit() does not work/ resolve and SystemExit doesn't seem
-    # to work on it's own here. So far I can only get 'raise SystemExit
-    # to produce the intended effect. Not sure what I'm doing wrong.
 
 
 def seek_donation(name):
