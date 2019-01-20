@@ -106,9 +106,7 @@ def test_send_letters():
     input = lambda input: ['Eddie Vedder', 10000]
     assert 'Eddie' in send_thankyou()
 
-#to do tomorrow: 
-# create send letters function and tests
-# sort create report in class
+
 
 
 
