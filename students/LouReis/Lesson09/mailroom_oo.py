@@ -98,6 +98,24 @@ class Donor():
         amount = float(amount)
         self.donations.append(amount)
 
+
+    # The below gen_letter is another way to generate a letter.
+    def gen_letter(self, donor):
+        """
+        Generate a thank you letter for the donor
+        :param: donor tuple
+        :returns: string with letter
+        note: This doesn't actually write to a file -- that's a separate
+              function. This makes it more flexible and easier to test.
+        """
+        return dedent('''Dear {0:s},
+              Thank you for your very kind donation of ${1:.2f}.
+              It will be put to very good use.
+                             Sincerely,
+                                -The Team
+              '''.format(donor.name)
+                      )
+
 class DonorDB():
     """
     Contains entire database of donors and data associated with them.
@@ -122,14 +140,9 @@ class DonorDB():
 
     def list_donors(self):
         """
-        creates a list of the donors as a string, so they can be printed
-        Not calling print from here makes it more flexible and easier to
-        test
+        Returns a list of the donors.
         """
-        listing = ["Donor list:"]
-        for donor in self.donors:
-            listing.append(donor.name)
-        return "\n".join(listing)
+        return ["Donor list:"] + list(self.donor_data)
 
     def find_donor(self, name):
         """
@@ -137,7 +150,7 @@ class DonorDB():
         :param: the name of the donor
         :returns: The donor data structure -- None if not in the self.donor_data
         """
-        return self.donor_data.get(Donor.name(name))
+        return self.donor_data.get(name)
 
     def add_donor(self, name):
         """
@@ -147,23 +160,33 @@ class DonorDB():
         """
         donor = Donor(name)
         self.donor_data[donor.name] = donor
-        return donor
 
-    def gen_letter(self, donor):
-        """
-        Generate a thank you letter for the donor
-        :param: donor tuple
-        :returns: string with letter
-        note: This doesn't actually write to a file -- that's a separate
-              function. This makes it more flexible and easier to test.
-        """
-        return dedent('''Dear {0:s},
-              Thank you for your very kind donation of ${1:.2f}.
-              It will be put to very good use.
-                             Sincerely,
-                                -The Team
-              '''.format(donor.name)
-                      )
+    def donate_letter(self):
+        donor = 'L'
+        while donor == 'L':
+            donor=input("Enter the full name of the Donor (Type 'L' for a donor list):")
+            if donor == 'L':
+                print("\n", donations.list_donors(), "\n\n")
+        donation = 0
+        if donations.find_donor(donor) is not None:
+            print("You have entered an existing donor:", donor)
+            try:
+                donation = float(input("Please enter the donation amount '0.00':"))
+            except ValueError:
+                print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
+                main_menu(main_prompt,menu_options_dict)
+            temp = Donor(donor)
+            temp.add_donation(donation)
+        else:
+            print("You have entered a new donor:", donor)
+            try:
+                donation = float(input("Please enter the donation amount '0.00':"))
+            except ValueError:
+                print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
+                return
+            name = donor
+            DonorDB.add_donor(name)
+        print_letter(donor, donation)
 
     def get_report(self):
         for donor_obj in self.donor_data.values():
@@ -186,34 +209,7 @@ def donation_report():
 def thanks_letter():
     print('\nYou Chose Option 2\n\n')
     print('Create a Thank You Letter\n\n')
-    donor = 'L'
-    while donor == 'L':
-        donor=input("Enter the full name of the Donor (Type 'L' for a donor list):")
-        if donor == 'L':
-            print("\n")
-            for key in sorted(donations):
-                print(key)
-            print("\n")
-    donation = 0
-    if donor in Donor:
-        print("You have entered an existing donor:", donor)
-        try:
-            donation = float(input("Please enter the donation amount '0.00':"))
-        except ValueError:
-            print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
-            main_menu(main_prompt,menu_options_dict)
-        temp = Donor(donor)
-        temp.add_donation(donation)
-    else:
-        print("You have entered a new donor:", donor)
-        try:
-            donation = float(input("Please enter the donation amount '0.00':"))
-        except ValueError:
-            print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
-            return
-        DonorDB.add_donor(donor)
-        temp = Donor(donor)
-    print_letter(donor, donation)
+    DonorDB.donate_letter(donations)
 
 # This Option generates a letter saved in a text file for each donor.
 def thanks_letter_all():
