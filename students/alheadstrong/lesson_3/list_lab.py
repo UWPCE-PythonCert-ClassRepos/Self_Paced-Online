@@ -9,7 +9,7 @@ def series1(fruit):
     seriesheader("Series 1")
     print(fruit)
     newfruit = input('Enter the name of a fruit to be added:')
-    fruit.append(newfruit) #Add item to end of list
+    fruit.append(newfruit) #Add item to end of list, creates new global list
     print(fruit)
     num = int(input('Enter a number:'))-1
     print('The fruit at number {} is {}.'.format(num+1,fruit[num]))
