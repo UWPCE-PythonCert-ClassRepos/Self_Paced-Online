@@ -2,9 +2,9 @@
 """
 mailroom_L5.py: refactor using comprehensions and exceptions where appropriate
 Author: JohnR
-Version: 2.1
-Last updated: 1/15/2019
-Notes: TODO: see if a list comp will work at line 70
+Version: 2.7 (Lesson 05)
+Last updated: 1/19/2019
+Notes:
 """
 
 from datetime import date
@@ -29,7 +29,7 @@ def main():
         "1: exit the program\n"
         "2: check donor list and become a donor\n"
         "3: display a summary of current donor activity\n"
-        "4: print out a thank for each donor\n"
+        "4: print out a thank you for each donor\n"
         "5: save a thank you note to disk for each donor\n"
         ">>> "
     )
@@ -62,15 +62,13 @@ def menu(main_prompt, main_dispatch, db):
 
 def thank_all(db):
     """
-    Print out thanks to all current donors.
+    Use a list comprehension to print a thank you letter for each donor
     :param db: current donor db
     :return: None
     """
     donors = sorted_list(db)
-    # TODO: Try a list comprehension here.
-    for donor in donors:
-        letter = form_letter(donor[0][0], donor[1][0])
-        print(letter)
+    letter = [form_letter(donor[0][0], donor[1][0]) for donor in donors]
+    print(letter)
 
 
 def form_letter(name, donation):
@@ -82,9 +80,9 @@ def form_letter(name, donation):
     """
     today = date.today()
     letter = (
-        f'\nHey {name.capitalize()}, thanks for your donations! '
+        f'Hey {name.capitalize()}, thanks for your donations! '
         f'As of today, {today}, you have donated a total of '
-        f'${donation}.\n'
+        f'${donation}.'
     )
 
     return letter
@@ -125,9 +123,15 @@ def seek_donation(name):
     """
     donation_amount = input(f'Hi {name.capitalize()}, how much would you '
                             f'like to give today? ')
-    donation_amount = round(float(donation_amount), 2)
-    print(form_letter(name, donation_amount))
-    return donation_amount
+
+    try:
+        donation_amount = round(float(donation_amount), 2)
+        print(form_letter(name, donation_amount))
+        return donation_amount
+    except (TypeError, ValueError):
+        print('Please enter an amount in digits only.')
+        seek_donation(name)
+        return None
 
 
 def donor_actions(names):
@@ -168,11 +172,17 @@ def sorted_list(data):
     """
     sorted_donors = []
     for name, donations in data.items():
-        total = round(sum(donations), 2)
-        number = round(len(donations), 2)
-        avg = total / len(donations)
-        avg = round(avg, 2)
-        sorted_donors.append([[name], [total], [number], [avg]])
+
+        # TODO: clean up this exception
+        try:
+            total = round(sum(donations), 2)
+            number = round(len(donations), 2)
+            avg = total / len(donations)
+            avg = round(avg, 2)
+            sorted_donors.append([[name], [total], [number], [avg]])
+        except TypeError as e:
+            print('hit an error in sorted list: ', e)
+            return None
 
     sorted_donors.sort(key=lambda x: x[1])
     sorted_donors.reverse()
