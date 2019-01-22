@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+donor_dict = {'Mickey Mouse': [100.00, 150.00, 100.00], 'Minnie Mouse': [50.00, 50.00], 'Ron Jones': [100.00], 'Donald Duck': [25.00], 'Busy Bear': [250.00, 10.00, 10.00]}
 # function - send thank you
 def send_thankyou():
     print("")
@@ -7,18 +7,9 @@ def send_thankyou():
     full_name = input("Please provide full name of donor or enter list to see all donors or q to return to main menu: ")
     print("")
     while full_name == "list":
-        # call donor list function
+        # call donor list function and print results to screen
         donors = print_donors()
-        print(donors)
         print(*donors)
-        print(**donors)
-        # print donor names
-        #for donor_name in donor_dict.keys():
-        #    print(donor_name)
-        #donor_name = ""
-        #donor_name = [donor + "\n" for donor in donor_dict.keys()]
-        #print(donor_name)
-        #prompt for donor name
         print("")
         full_name = input("Please provide full name of donor: ")
     # if q is entered, exit function
@@ -46,17 +37,9 @@ def send_thankyou():
 
 # function - print_donors
 def print_donors():
-    print("running print_donor function")
-    # print donor names
-    #for donor_name in donor_dict.keys():
-    #    print(donor_name)
-        #donor_name = ""
-        #donor_name = [donor + "\n" for donor in donor_dict.keys()]
-        #print(donor_name)
-        #prompt for donor name
-        #print("")
-    donor_name = [donor + "\n" for donor in donor_dict.keys()]
-    print("donor name is: ", donor_name)
+    #donor_name = [donor + "\n" for donor in donor_dict.keys()]
+    donor_name = [donor + "\n" for donor in donor_dict]
+    print(donor_name)
     return donor_name
 
 # function - create thank_you_email - returns formatted message
