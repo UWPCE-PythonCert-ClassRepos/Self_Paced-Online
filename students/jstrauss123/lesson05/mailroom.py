@@ -7,13 +7,9 @@ def send_thankyou():
     full_name = input("Please provide full name of donor or enter list to see all donors or q to return to main menu: ")
     print("")
     while full_name == "list":
-        # print donor names
-        for donor_name in donor_dict.keys():
-            print(donor_name)
-        #donor_name = ""
-        #donor_name = [donor + "\n" for donor in donor_dict.keys()]
-        #print(donor_name)
-        #prompt for donor name
+        # call donor list function and print results to screen
+        donors = print_donors()
+        print(*donors)
         print("")
         full_name = input("Please provide full name of donor: ")
     # if q is entered, exit function
@@ -39,6 +35,13 @@ def send_thankyou():
     #print("Dear {}, Thank you so much for your generous contribution of ${}.".format(full_name, contrib_amt))
     print("")
 
+# function - print_donors
+def print_donors():
+    #donor_name = [donor + "\n" for donor in donor_dict.keys()]
+    donor_name = [donor + "\n" for donor in donor_dict]
+    print(donor_name)
+    return donor_name
+    
 # function - create thank_you_email - returns formatted message
 def thank_you_email(dname, donation):
     email_message = '\nDear {},'.format(dname) + '\n\n' + 'Thank you for your very kind donation of ${:.2f}.\n\n'.format(donation) + 'It will be put to very good use. \n\n' + '\tSincerely,\n' + '\t    -The Team \n'
