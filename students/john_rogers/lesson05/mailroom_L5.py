@@ -80,7 +80,7 @@ def form_letter(name, donation):
     """
     today = date.today()
     letter = (
-        f'Hey {name.capitalize()}, thanks for your donations! '
+        f"Hey {name.capitalize()}, thanks for your donations! "
         f'As of today, {today}, you have donated a total of '
         f'${donation}.'
     )
@@ -121,17 +121,17 @@ def seek_donation(name):
     :param name: name of donor
     :return: donation amount as a float
     """
-    donation_amount = input(f'Hi {name.capitalize()}, how much would you '
-                            f'like to give today? ')
 
-    try:
-        donation_amount = round(float(donation_amount), 2)
-        print(form_letter(name, donation_amount))
-        return donation_amount
-    except (TypeError, ValueError):
-        print('Please enter an amount in digits only.')
-        seek_donation(name)
-        return None
+    while True:
+        donation_amount = input(f'Hi {name.capitalize()}, how much would you '
+                                f'like to give today? ')
+
+        try:
+            donation_amount = round(float(donation_amount), 2)
+            print(form_letter(name, donation_amount))
+            return donation_amount
+        except ValueError:
+            print('Please enter an amount in digits only.')
 
 
 def donor_actions(names):
