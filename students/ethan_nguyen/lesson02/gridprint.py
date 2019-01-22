@@ -6,7 +6,16 @@ NEG = "- "
 PIPE = '|'
 SPACE = ' '
 
-def print_grid(rowSize=2, colSize=3, cellSize=4):
+def print_grid(n=2):
+    '''
+    simple print prid function that print 
+    '''
+    print_grid_base(n, n,4)
+
+def print_grid2(size, cellSize):
+    print_grid_base(size, size, cellSize)
+
+def print_grid_base(rowSize=2, colSize=3, cellSize=4):
     '''
     function to print a grid with given rowSize, colSize and cellSize
     '''
@@ -28,7 +37,11 @@ def print_grid(rowSize=2, colSize=3, cellSize=4):
             print(vertical)
     print(horizontal)
 
-print_grid(4,4,5)
+
+print_grid(4)
+
+print_grid2(3,2)
+
 
 
 
