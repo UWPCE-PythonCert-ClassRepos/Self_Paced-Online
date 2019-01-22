@@ -1,5 +1,5 @@
 #!/usr/bin/env python3.7
-# test_mailroom5.py
+# test_mailroom_oo.py
 # Coded by LouReis
 # Lesson09
 
@@ -38,9 +38,9 @@ quit()
 """
 
 # referencing all of the functions, names, variables, symbols to import
-from mailroom5 import main_menu, donation_report, thanks_letter, Donor
-from mailroom5 import thanks_letter_all, print_letter, quit
-from mailroom5 import main_prompt, menu_options_dict, donations
+from mailroom_oo import main_menu, donation_report, thanks_letter, Donor
+from mailroom_oo import thanks_letter_all, print_letter, quit
+from mailroom_oo import main_prompt, menu_options_dict, donations
 
 from io import StringIO
 import sys

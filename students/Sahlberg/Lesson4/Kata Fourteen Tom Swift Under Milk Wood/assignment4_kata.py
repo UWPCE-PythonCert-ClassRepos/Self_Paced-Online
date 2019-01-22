@@ -38,7 +38,7 @@ cleanup = ['  ','\'', '"','?',':',',','!','’','‘',';',' .']
 
 #Processing------------------------------------------------------------------------
 
-with open("in.txt", 'r+') as file:
+with open("sherlock_small.txt", 'r+') as file:
     x = file.read()
 
 words = x.split()
@@ -62,14 +62,24 @@ with open('Out.txt', 'w+') as file_out:
     l = 0
     sentence = sentence.split()
     sentence[0] = sentence[0].capitalize()
-    sentence = sentence[:300]
+    print('sentence',sentence)
 
-    if '.' in sentence[299]:
-        pass
-    elif '.' in sentence[298]:
-        pass
+    if len(sentence) >=300:
+        sentence = sentence[:300]
+        if '.' in sentence[299]:
+            pass
+        elif '.' in sentence[298]:
+            pass
+        else:
+            sentence[299] = sentence[299] + '.'
     else:
-        sentence[299] = sentence[299] + '.'
+        if '.' in sentence[len(sentence)-2]:
+            pass
+        elif '.' in sentence:
+            pass
+        else:
+            sentence[len(sentence)-1] = sentence[len(sentence)-1] + '.'
+
     for word in sentence:
         print(word)
         #remove unwanted characters from text

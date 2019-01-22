@@ -8,21 +8,32 @@ Lesson 3: String Formatting
 
 # Task1
 def generate_file_name(seq):
-    return 'file_{:0>3d}: {:.2f},{:.2e},{:.2e}'.format(*seq)
+    return 'file_{:0>3d} :   {:.2f}, {:.2e}, {:.2e}'.format(*seq)
+
+
+# Task 1 assert test
+assert generate_file_name((2, 123.4567, 10000, 12345.67)) == 'file_002 :   123.46, 1.00e+04, 1.23e+04'
 
 
 # Task2
 def generate_file_name_f_string(seq):
     filename = seq[0]
     values = seq[1:]
-    return f"file_{filename}: {values[0]},{values[1]},{values[2]}"
+    return f"file_{filename:0>3d} :   {values[0]:.2f}, {values[1]:.2e}, {values[2]:.2e}"
+
+
+# Task 2 assert test
+assert generate_file_name_f_string((2, 123.4567, 10000, 12345.67)) == 'file_002 :   123.46, 1.00e+04, 1.23e+04'
 
 
 # Task3
 def formatter(seq):
     l = len(seq)
-    return ('the {} numbers are ' + ', '.join(["{}"] * l)).format(l, *seq)
+    return ('the {} numbers are: ' + ', '.join(["{}"] * l)).format(l, *seq)
 
+
+# Task 3 assert test
+assert formatter((1, 2, 3)) == 'the 3 numbers are: 1, 2, 3'
 
 # Task4
 seq4 = (4, 30, 2017, 2, 27)

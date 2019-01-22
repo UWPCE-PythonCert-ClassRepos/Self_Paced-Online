@@ -1,7 +1,8 @@
 #!/usr/bin/env python3.7
-# test_mailroom4.py
+# test_mailroom_fp.py
 # Coded by LouReis
-
+# Lesson010
+# Functional Programming Assignment Lesson10
 
 """
 This program is to test the following program, mailroom4.py:

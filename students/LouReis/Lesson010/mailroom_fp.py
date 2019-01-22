@@ -1,6 +1,8 @@
 #!/usr/bin/env python3.7
-# mailroom2.py
+# mailroom_fp.py
 # Coded by LouReis
+# Lesson010
+# Functional Programming Assignment Lesson10
 
 """
 Write a small command-line script called mailroom.py.
