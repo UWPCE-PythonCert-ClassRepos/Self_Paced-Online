@@ -1,8 +1,8 @@
 #!/usr/bin/env python3.7
-# test_mailroom_fp.py
+# test_mailroom_oo.py
 # Coded by LouReis
-# Lesson010
-# Functional Programming Assignment Lesson10
+# Lesson09
+
 
 """
 This program is to test the following program, mailroom4.py:
@@ -38,10 +38,9 @@ quit()
 """
 
 # referencing all of the functions, names, variables, symbols to import
-from mailroom_fp import main_menu, donation_report, thanks_letter
-from mailroom_fp import enter_existing_donor, enter_new_donor, challenge
-from mailroom_fp import thanks_letter_all, print_letter, quit
-from mailroom_fp import main_prompt, menu_options_dict, donations, philanthropy
+from mailroom_oo import main_menu, donation_report, thanks_letter, Donor
+from mailroom_oo import thanks_letter_all, print_letter, quit
+from mailroom_oo import main_prompt, menu_options_dict, donations
 
 from io import StringIO
 import sys
@@ -92,12 +91,12 @@ def test_9():
 
 # Test that a new donor gets added to the dict
 def test_11():
-    enter_new_donor('test', 10)
+    Donor('test', 10)
     assert 'test' in donations
 
 # Test that another new donor gets added to the dict
 def test_12():
-    enter_new_donor('other test', .01)
+    Donor('other test', .01)
     assert 'other test' in donations
 
 # Test that the output from print_letter is valid.
@@ -120,14 +119,3 @@ def test_13():
     assert "We will welcome any future donations and appreciate your support." in result_string
     assert "Sincerely," in result_string
     assert "MDTS Staff" in result_string
-
-# Test that the new challenge function returns proper results based on the donations & parameters
-def test_14():
-    sample1 = challenge(2,1,100)
-    assert sample1 == {'Joe Neighbor': [50, 50], 'test': [20]}
-
-# Test that teh new challenge function returns proper results with larger parameters
-def test_15():
-    sample2 = challenge(10,1000000,10000000000000)
-    print(sample2)
-    assert sample2 == philanthropy
