@@ -2,9 +2,10 @@
 """
 mailroom_L5.py: refactor using comprehensions and exceptions where appropriate
 Author: JohnR
-Version: 2.9 (Lesson 05)
+Version: 3.0 (Lesson 05)
 Last updated: 1/22/2019
-Notes: Currently working as intended.
+Notes: Works as intended but I don't see any for loops that should be re-written
+        as list comprehensions at this stage.
 """
 
 from datetime import date
@@ -21,7 +22,7 @@ def main():
           'oprah': [66.34, 32.23, 632.21, 66.67],
           'yoko': [34.34, 4.34],
           'santa': [5334.00, 254.34, 64324.23, 2345.23, 5342.24],
-         }
+          }
 
     main_prompt = (
         "\nWelcome to the main menu!\n"
@@ -56,8 +57,6 @@ def menu(main_prompt, main_dispatch, db):
             main_dispatch[response](db)
         except KeyError:
             print('Please enter a number between 1 and 5.')
-        else:
-            menu(main_prompt, main_dispatch, db)
 
 
 def thank_all(db):
@@ -67,8 +66,9 @@ def thank_all(db):
     :return: None
     """
     donors = sorted_list(db)
-    letter = [form_letter(donor[0][0], donor[1][0]) for donor in donors]
-    print(letter)
+    for donor in donors:
+        letter = form_letter(donor[0][0], donor[1][0])
+        print(letter)
 
 
 def form_letter(name, donation):
