@@ -65,8 +65,7 @@ def send_thank_you():
 	
 def letter(name,donation):		
     donation=round(float(donation),2)   
-    content = """
-Dear {},
+    content = """Dear {},
 
 Thank you for your generous donation of ${:.2f}
 
@@ -116,7 +115,7 @@ def calculation():
     sorted_data = sorted(data,key=use_total,reverse=True)
     return sorted_data
 
-def send_all(donation_data):
+def send_all():
     for person in donation_data:
         with open(person.replace(' ','_')+'.txt','w') as f:
             f.write(letter(person,donation_data[person][-1]))
