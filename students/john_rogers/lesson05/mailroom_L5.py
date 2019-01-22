@@ -2,9 +2,9 @@
 """
 mailroom_L5.py: refactor using comprehensions and exceptions where appropriate
 Author: JohnR
-Version: 2.7 (Lesson 05)
-Last updated: 1/19/2019
-Notes:
+Version: 2.9 (Lesson 05)
+Last updated: 1/22/2019
+Notes: Currently working as intended.
 """
 
 from datetime import date
@@ -80,7 +80,7 @@ def form_letter(name, donation):
     """
     today = date.today()
     letter = (
-        f"Hey {name.capitalize()}, thanks for your donations! "
+        f'Hey {name.capitalize()}, thanks for your donations! '
         f'As of today, {today}, you have donated a total of '
         f'${donation}.'
     )
@@ -97,12 +97,14 @@ def save_report(db):
     """
     today = date.today()
     donors = sorted_list(db)
+    print('Saving a copy to local disk....')
     for donor in donors:
         letter = form_letter(donor[0][0], donor[1][0])
         user_file = "{}.{}.txt".format(donor[0][0], today)
 
         with open(user_file, 'w') as outfile:
             outfile.write(letter)
+            print(user_file, ' has been saved to disk.')
 
 
 def exit_menu(db):
@@ -117,7 +119,7 @@ def exit_menu(db):
 
 def seek_donation(name):
     """
-    Prompt user for a donation.
+    Prompt user for a donation, use try/except to validate user input.
     :param name: name of donor
     :return: donation amount as a float
     """
@@ -173,7 +175,6 @@ def sorted_list(data):
     sorted_donors = []
     for name, donations in data.items():
 
-        # TODO: clean up this exception
         try:
             total = round(sum(donations), 2)
             number = round(len(donations), 2)
