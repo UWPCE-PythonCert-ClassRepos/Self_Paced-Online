@@ -27,8 +27,13 @@ def data():
     return db
 
 
-def test_thank_all(data):
-    assert thank_all(data) is None
+@pytest.mark.parametrize('name, amount', [
+    ('bill', 100.01),
+])
+def test_form_letter(name, amount):
+    assert form_letter(name, amount) == 'Hey Bill, thanks for your' \
+                                        ' donations! As of today, 2019-01-23,' \
+                                        ' you have donated a total of $100.01.'
 
 
 def test_exit_menu(data):
@@ -38,19 +43,11 @@ def test_exit_menu(data):
 
 def test_save_report(data):
     save_report(data)
-    assert os.path.isfile('sting.2019-01-22.txt')
-    assert os.path.isfile('bono.2019-01-22.txt')
-    assert os.path.isfile('oprah.2019-01-22.txt')
-    assert os.path.isfile('yoko.2019-01-22.txt')
-    assert os.path.isfile('santa.2019-01-22.txt')
-
-
-def test_form_letter():
-    name = 'bill'
-    amount = 100.01
-    assert form_letter(name, amount) == "Hey Bill, thanks for your" \
-                                        " donations! As of today, 2019-01-22," \
-                                        " you have donated a total of $100.01."
+    assert os.path.isfile('sting.2019-01-23.txt')
+    assert os.path.isfile('bono.2019-01-23.txt')
+    assert os.path.isfile('oprah.2019-01-23.txt')
+    assert os.path.isfile('yoko.2019-01-23.txt')
+    assert os.path.isfile('santa.2019-01-23.txt')
 
 
 def test_sorted_list(data):
@@ -62,5 +59,10 @@ def test_sorted_list(data):
     assert sorted_list(data) == some_list
 
 
+# TODO: Test these beyond just returning None
 def test_print_summary(data):
     assert print_summary(data) is None
+
+
+def test_thank_all(data):
+    assert thank_all(data) is None

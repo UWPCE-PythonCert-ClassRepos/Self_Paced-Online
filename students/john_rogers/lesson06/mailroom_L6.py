@@ -60,7 +60,7 @@ def menu(main_prompt, main_dispatch, db):
 
 def thank_all(db):
     """
-    Use a list comprehension to print a thank you letter for each donor
+    Print a form letter for each donor in the database
     :param db: current donor db
     :return: None
     """
