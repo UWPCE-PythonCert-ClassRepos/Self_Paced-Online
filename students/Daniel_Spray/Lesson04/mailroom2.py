@@ -1,7 +1,5 @@
 import sys
 
-#donation_data = [["William Gates, III","Mark Zuckerberg","Jeff Bezos","Paul Allen"],[653784.49,16396.10,877.33,708.42], [2,3,1,3]]
-
 donation_data = {
 'William Gates, III': [100000.00,553784.49],
 'Mark Zuckerberg': [5000.00,5000.00,6396.10],
@@ -76,7 +74,7 @@ The Charity
     return(content)
 
 	
-def create_report(donation_data=donation_data):
+def create_report():
     result = calculation()
     table(result)
     main()
