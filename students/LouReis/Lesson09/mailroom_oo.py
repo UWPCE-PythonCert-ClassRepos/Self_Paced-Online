@@ -35,13 +35,14 @@ from functools import total_ordering
 import sys
 import math
 from textwrap import dedent
+import gc
 
 donations = {}
 
 # Utility so we have data to test with, etc.
 def enter_sample_data():
     """
-    Returns a list of donor objects to use as sample data to populate the DB
+    Returns donor objects to use as sample data to populate the DB
     """
     return [Donor("Robin Hood", [50000, 50000, 50000]),
             Donor("Tycoon Reis", [25000000, 25000000, 25000000]),
@@ -160,6 +161,7 @@ class DonorDB():
         """
         donor = Donor(name)
         self.donor_data[donor.name] = donor
+        return donor
 
     def donate_letter(self):
         donor = 'L'
@@ -175,7 +177,7 @@ class DonorDB():
             except ValueError:
                 print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
                 main_menu(main_prompt,menu_options_dict)
-            temp = Donor(donor)
+            temp = donations.find_donor(donor)
             temp.add_donation(donation)
         else:
             print("You have entered a new donor:", donor)
@@ -184,12 +186,24 @@ class DonorDB():
             except ValueError:
                 print("\n\n----------You have entered an invalid value, returning to Main Menu----------\n\n")
                 return
-            name = donor
-            DonorDB.add_donor(name)
+            temp = donations.add_donor(donor)
+            temp.add_donation(donation)
         print_letter(donor, donation)
 
     def get_report(self):
+        donor_obj_list = []
+        for obj in gc.get_objects():
+            if isinstance(obj, Donor):
+                donor_obj_list.append(obj)
+        donor_obj_list.sort(key=lambda x: x.total_donations, reverse=True)
+
+        """
+        The below lines work but the report is not sorted:
         for donor_obj in self.donor_data.values():
+            print ('{:25} ${:>15,.2f} {:>15} ${:>15,.2f}'.format(donor_obj.name, donor_obj.total_donations, donor_obj.num_donations, donor_obj.avg_donation))
+        """
+
+        for donor_obj in donor_obj_list:
             print ('{:25} ${:>15,.2f} {:>15} ${:>15,.2f}'.format(donor_obj.name, donor_obj.total_donations, donor_obj.num_donations, donor_obj.avg_donation))
 
 # create a DB with the sample data which is also contained in donations dict
