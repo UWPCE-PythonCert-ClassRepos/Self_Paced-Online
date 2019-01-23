@@ -63,5 +63,4 @@ def test_sorted_list(data):
 
 
 def test_print_summary(data):
-    known_good = ""
-    assert print_summary(data) == known_good
+    assert print_summary(data) is None
