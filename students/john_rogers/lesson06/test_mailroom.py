@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
 """
 Test the various functions in mailroom_L6.py
+NOTE: Currently using a fixed date
 """
 
 import pytest
+import os
+
+
 from mailroom_L6 import thank_all
+from mailroom_L6 import exit_menu
+from mailroom_L6 import save_report
+from mailroom_L6 import form_letter
 
 
 @pytest.fixture
@@ -20,5 +27,27 @@ def data():
 
 def test_thank_all(data):
     assert thank_all(data) is None
+
+
+def test_exit_menu(data):
+    with pytest.raises(SystemExit):
+        exit_menu(data)
+
+
+def test_save_report(data):
+    save_report(data)
+    assert os.path.isfile('sting.2019-01-22.txt')
+    assert os.path.isfile('bono.2019-01-22.txt')
+    assert os.path.isfile('oprah.2019-01-22.txt')
+    assert os.path.isfile('yoko.2019-01-22.txt')
+    assert os.path.isfile('santa.2019-01-22.txt')
+
+
+def test_form_letter():
+    name = 'bill'
+    amount = 100.01
+    assert form_letter(name, amount) == "Hey Bill, thanks for your" \
+                                        " donations! As of today, 2019-01-22," \
+                                        " you have donated a total of $100.01."
 
 
