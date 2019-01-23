@@ -3,12 +3,12 @@
 import statistics
 import datetime
 import copy
+from itertools import filterfalse
 
 # Define exception to exit script
 class ExitScript(Exception): pass
 
-# Create a dict that contains the donors and a history of the amounts they have
-# donated
+
 class Donor():
     """Class to contain information about a single donor."""
 
@@ -28,14 +28,9 @@ class Donor():
         return self.donations
 
     def __eq__(self, other):
-        return self.name == other.name and self.donations == other.donations
-
-    def __mul__(self, factor):
-        self._donations = list(map( lambda x: x*factor, self._donations))
-        return self
-
-    def __rmul__(self, factor):
-        return self.__mult__(self, factor)
+        return self.name == other.name and \
+            sorted(list(map(lambda x: float(x), self.donations))) == \
+            sorted(list(map(lambda x: float(x), other.donations)))
 
     @property
     def name(self):
@@ -63,7 +58,6 @@ class Donor():
         except ValueError:
             print('Please enter a number value for donation amount.')
         self._donations.append(amount)
-
 
 
 class DonorDict():
@@ -96,14 +90,16 @@ class DonorDict():
     def __contains__(self, key):
         return key in self._donors
 
-    def __add__(self, other):
-        for donor in other:
-            if donor.name in self:
-                self[donor.name].donations += donor.donations
-            else:
-                self.add_donor(donor)
+    def __sub__(self, other):
+        return self.total_donations - other.total_donations
 
-
+    def __eq__(self, other):
+        for donor in self:
+            if donor.name.lower() not in other:
+                return False
+            if donor != other[donor.name]:
+                return False
+        return True
 
     def names_by_donations(self):
         """Return a list of donor objects sorted by total donation amount."""
@@ -122,6 +118,10 @@ class DonorDict():
         """Return a list of Donors in DonorDict object sorted by name."""
         return sorted([donor.name for donor in self])
 
+    @property
+    def total_donations(self):
+        return sum(donor.total_donations for donor in self)
+
     def add_donor(self, name, donations=None):
         """
         Add a donor to a DonorDict object. An optional list of donations
@@ -136,7 +136,6 @@ class DonorDict():
         """Add a donation to a apecified Donor object within DonorDict."""
         print(self[name])
         self[name].add_donation(amount)
-
 
 
 # Define main menu functions
@@ -166,7 +165,7 @@ def add_donation():
         except ValueError:
             print('Please enter a number value for donation amount.')
 
-    print(); print(donors.thank_donor(name, amount))
+    print(); print(thank_donor(donors, name, amount))
 
 def create_report():
     """Print a report of donors with a summary of their donation history."""
@@ -179,62 +178,23 @@ def send_letters():
 def match_donations():
     """Match all donations by multiplying by a user-specified factor."""
     global donors
-    while True:
-        factor = input('Please enter a multiplication factor for matching' + \
-            ' gifts:')
-        if factor.lower() == 'return':
-            return
-        try:
-            factor = float(factor)
-            break
-        except ValueError:
-            print('Value must be an integer.')
-    while True:
-        min_donation = input('Please enter min donation for matching gifts:' +\
-            'or "None":')
-        if min_donation.lower() == 'return':
-            return
-        try:
-            min_donation = float(factor)
-            break
-        except ValueError:
-            print('Value must be an integer.')
-    while True:
-        max_donation = input('Please enter max donation for matching gifts ' +\
-            'or "None":')
-        if max_donation.lower() == 'return':
-            return
-        try:
-            max_donation = float(factor)
-            break
-        except ValueError:
-            print('Value must be an integer.')
-
-    donors = challenge(donors, factor, min_donation=min_donation,
-        max_donation=max_donation)
+    donors = match(donors)
 
 def project_donations():
     """
     Given a multiplication factor, display to the user their projected
     donation total.
     """
-    while True:
-        factor = input('Please enter a multiplication factor for projecting' + \
-            ' matching gifts:')
-        if factor.lower() == 'return':
-            return
-        try:
-            factor = float(factor)
-            break
-        except ValueError:
-            print('Value must be an integer.')
-
-    projected_donors = challenge(donors, factor)
-
+    projected_donors = match(donors)
+    print(f"\nYour donation of ${projected_donors - donors:.2f} would " +\
+        "increase The Wookie Foundation's endowment from " +\
+        f"${donors.total_donations:.2f} to "+\
+        f"${projected_donors.total_donations:.2f}")
 
 def quit():
     raise ExitScript
 
+# Define sub-functions
 def report(donor_dict):
     """Print a report of donors with summary of their donation history."""
     # Determine table size_report
@@ -314,32 +274,88 @@ def filename(donor):
         str(d.day), str(d.year)])+'.txt'
     return filename
 
+def match(donors):
+    """
+    Take user input for matching gifts and return updated DonorDict object.
+    """
+    while True:
+        factor = input('Please enter a multiplication factor for matching' + \
+            ' gifts:')
+        if factor.lower() == 'return':
+            return
+        try:
+            factor = float(factor)
+            if factor <= 1:
+                print("Multiplication factor must be greater than 1," +\
+                    " otherwise you're stealing money from the poor wookies.")
+                continue
+            break
+        except ValueError:
+            print('Value must be a number.')
+
+    while True:
+        min_donation = input('Please enter min donation for matching gifts ' +\
+            'or press Enter for none:')
+        if min_donation.lower() == 'return':
+            return
+        if not min_donation:
+            min_donation = None
+            break
+        try:
+            min_donation = float(min_donation)
+            break
+        except ValueError:
+            print('Value must be a number.')
+    while True:
+        max_donation = input('Please enter max donation for matching gifts ' +\
+            'or press Enter for none:')
+        if max_donation.lower() == 'return':
+            return
+        if not max_donation:
+            max_donation = None
+            break
+
+        try:
+            max_donation = float(max_donation)
+            if min_donation and max_donation <= min_donation:
+                print('Max donation must be greater than min donation.')
+                continue
+            break
+        except ValueError:
+            print('Value must be a number.')
+    return challenge(donors, factor, min_donation=min_donation,
+        max_donation=max_donation)
+
 def challenge(donor_dict, factor, min_donation=None, max_donation=None):
     """
     Return a new DonorDict object with all donations in donor_dict
-    multiplied by factor.
+    multiplied by factor. Keyword arguments min_donation and max_donation
+    specify range of donations to be multiplied.
     """
-    new_donors = copy.deepcopy(donor_dict)
-    if min_donation is not None:
-        new_donors = DonorDict(filter(lambda x: x >= min_donation, new_donors))
-        leftover_donation = DonorDict(filter(lambda x: x < min_donation,
-            new_donors))
-    if max_donation is not None:
-        new_donors = DonorDict(filter(lambda x: x <= max_donation, new_donors))
-        leftover_donation +=  DonorDict(filter(lambda x: x > min_donation,
-            new_donors))
+    new_donors = DonorDict()
+    for donor in donor_dict:
+        donations = donor.donations
+        if min_donation:
+            leftover_donations_min = list(filterfalse(lambda x: x >= min_donation,
+                donations))
+            donations = list(filter(lambda x: x >= min_donation, donations))
 
-    print(new_donors)
-    new_donors =  DonorDict(map(lambda x: x*factor, new_donors))
-    print(new_donors)
-    try:
-        new_donors += leftover_donation
-    except NameError:
-        pass
-    print(new_donors)
+        if max_donation:
+            leftover_donations_max = list(filterfalse(lambda x: x <= max_donation,
+                donations))
+            donations = list(filter(lambda x: x <= max_donation, donations))
+        new_donations = list(map(lambda x: x*factor, donations))
+        try:
+            new_donations += leftover_donations_min
+        except NameError:
+            pass
+        try:
+            new_donations += leftover_donations_max
+        except NameError:
+            pass
+        new_donors.add_donor(donor.name, new_donations)
+
     return new_donors
-
-
 
 
 
@@ -380,6 +396,6 @@ if __name__ == '__main__':
             actions.get(action)()
         except ExitScript:
             break
-        # except TypeError:
-        #     if action not in actions:
-        #         continue
+        except TypeError:
+            if action not in actions:
+                continue
