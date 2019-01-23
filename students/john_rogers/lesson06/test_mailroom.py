@@ -12,6 +12,8 @@ from mailroom_L6 import thank_all
 from mailroom_L6 import exit_menu
 from mailroom_L6 import save_report
 from mailroom_L6 import form_letter
+from mailroom_L6 import sorted_list
+from mailroom_L6 import print_summary
 
 
 @pytest.fixture
@@ -51,3 +53,15 @@ def test_form_letter():
                                         " you have donated a total of $100.01."
 
 
+def test_sorted_list(data):
+    some_list = [[['santa'], [77600.04], [5], [15520.01]],
+                 [['bono'], [8611.23], [3], [2870.41]],
+                 [['sting'], [3027.6], [5], [605.52]],
+                 [['oprah'], [797.45], [4], [199.36]],
+                 [['yoko'], [38.68], [2], [19.34]]]
+    assert sorted_list(data) == some_list
+
+
+def test_print_summary(data):
+    known_good = ""
+    assert print_summary(data) == known_good
