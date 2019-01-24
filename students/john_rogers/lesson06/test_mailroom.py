@@ -31,9 +31,10 @@ def data():
     ('bill', 100.01),
 ])
 def test_form_letter(name, amount):
-    assert form_letter(name, amount) == 'Hey Bill, thanks for your' \
-                                        ' donations! As of today, 2019-01-23,' \
-                                        ' you have donated a total of $100.01.'
+    letter = 'Hey Bill, thanks for your' \
+             ' donations! As of today, 2019-01-23,' \
+             ' you have donated a total of $100.01.'
+    assert form_letter(name, amount) == letter
 
 
 def test_exit_menu(data):
@@ -41,6 +42,7 @@ def test_exit_menu(data):
         exit_menu(data)
 
 
+# TODO: Moving away from using a static date
 def test_save_report(data):
     save_report(data)
     assert os.path.isfile('sting.2019-01-23.txt')
@@ -51,12 +53,12 @@ def test_save_report(data):
 
 
 def test_sorted_list(data):
-    some_list = [[['santa'], [77600.04], [5], [15520.01]],
+    my_list = [[['santa'], [77600.04], [5], [15520.01]],
                  [['bono'], [8611.23], [3], [2870.41]],
                  [['sting'], [3027.6], [5], [605.52]],
                  [['oprah'], [797.45], [4], [199.36]],
                  [['yoko'], [38.68], [2], [19.34]]]
-    assert sorted_list(data) == some_list
+    assert sorted_list(data) == my_list
 
 
 # TODO: Test these beyond just returning None
