@@ -8,7 +8,6 @@ donation_data = {
 }
 
 def menu():
-
     selection = input("""This program will hopefully help you send some meaningful messages
 Type the corresponding number to select from the following list:
 
