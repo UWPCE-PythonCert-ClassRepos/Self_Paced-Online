@@ -6,6 +6,7 @@ NOTE: Currently using a fixed date
 
 import pytest
 import os
+from datetime import date
 
 
 from mailroom_L6 import thank_all
@@ -29,11 +30,16 @@ def data():
 
 @pytest.mark.parametrize('name, amount', [
     ('bill', 100.01),
+    ('mark', 24100),
+    ('sammy', 2345100.51),
+    ('sarah', 00.01),
+    ('zoe', 150.99),
 ])
 def test_form_letter(name, amount):
-    letter = 'Hey Bill, thanks for your' \
-             ' donations! As of today, 2019-01-23,' \
-             ' you have donated a total of $100.01.'
+    today = date.today()
+    letter = f'Hey {name.capitalize()}, thanks for your' \
+             f' donations! As of today, {today},' \
+             f' you have donated a total of ${amount}.'
     assert form_letter(name, amount) == letter
 
 
@@ -42,14 +48,14 @@ def test_exit_menu(data):
         exit_menu(data)
 
 
-# TODO: Moving away from using a static date
 def test_save_report(data):
+    today = date.today()
     save_report(data)
-    assert os.path.isfile('sting.2019-01-23.txt')
-    assert os.path.isfile('bono.2019-01-23.txt')
-    assert os.path.isfile('oprah.2019-01-23.txt')
-    assert os.path.isfile('yoko.2019-01-23.txt')
-    assert os.path.isfile('santa.2019-01-23.txt')
+    assert os.path.isfile(f'sting.{today}.txt')
+    assert os.path.isfile(f'bono.{today}.txt')
+    assert os.path.isfile(f'oprah.{today}.txt')
+    assert os.path.isfile(f'yoko.{today}.txt')
+    assert os.path.isfile(f'santa.{today}.txt')
 
 
 def test_sorted_list(data):
