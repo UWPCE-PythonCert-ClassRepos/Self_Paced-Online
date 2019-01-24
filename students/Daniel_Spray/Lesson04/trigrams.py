@@ -7,7 +7,7 @@ def main():
         create_new_trigram(dictionary)
         break
 
-def read_file(file='sherlock.txt'):
+def read_file(file='sherlock_small.txt'):
     punctuation = [".",",",";",'"',"!","@","#","$","%","^","&","*","(",")","_","=","+","-","`","~","<",">","?",":","{","}","[","]","\\","|","/"]
     with open(file,"r") as f:
         raw_text = f.read().lower()
@@ -27,7 +27,7 @@ def build_dictionary(raw_words):
 
 def create_new_trigram(dictionary):
     trigram_list = []
-    for trigram_length in range(random.randint(1,7)):
+    for trigram_length in range(random.randint(10,15)):
         trigram_list.append(paragraph(dictionary))
     trigram_string = """
 	
@@ -55,7 +55,7 @@ def sentence(dictionary):
 
 def paragraph(dictionary):
     paragraph_list = []
-    for quantity in range(random.randint(3,5)):
+    for quantity in range(random.randint(5,8)):
         paragraph_list.append(sentence(dictionary))
     paragraph_string=" ".join(paragraph_list)
     return paragraph_string
