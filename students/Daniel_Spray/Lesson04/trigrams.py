@@ -1,11 +1,9 @@
 import random
 
 def main():
-    while True:
-        raw_words = read_file()
-        dictionary = build_dictionary(raw_words)
-        create_new_trigram(dictionary)
-        break
+    raw_words = read_file()
+    dictionary = build_dictionary(raw_words)
+    create_new_trigram(dictionary)
 
 def read_file(file='sherlock_small.txt'):
     punctuation = [".",",",";",'"',"!","@","#","$","%","^","&","*","(",")","_","=","+","-","`","~","<",">","?",":","{","}","[","]","\\","|","/"]
