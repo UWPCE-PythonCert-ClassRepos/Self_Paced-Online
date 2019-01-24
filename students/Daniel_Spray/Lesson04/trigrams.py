@@ -7,7 +7,7 @@ def main():
         create_new_trigram(dictionary)
         break
 
-def read_file(file='sherlock_small.txt'):
+def read_file(file='sherlock.txt'):
     punctuation = [".",",",";",'"',"!","@","#","$","%","^","&","*","(",")","_","=","+","-","`","~","<",">","?",":","{","}","[","]","\\","|","/"]
     with open(file,"r") as f:
         raw_text = f.read().lower()

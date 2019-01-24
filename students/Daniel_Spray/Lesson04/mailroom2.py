@@ -54,22 +54,22 @@ def send_thank_you():
         return
 
     donation_data.setdefault(name,[]).append(float(donation))
-    print("Donor has been added to the list")
-    formatted_donation = float(donation)
-    letter(name,formatted_donation)
+    print("Data added!")
+    letter_dictionary = {'donor':name,'amount':round(float(donation),2)}
+    letter(letter_dictionary)
     print(donation_data)
 
     return donation_data
 	
-def letter(name,donation):		
-    donation=round(float(donation),2)   
-    content = """Dear {},
+def letter(letter_dictionary):		
+    content = """
+Dear {donor},
 
-Thank you for your generous donation of ${:.2f}
+Thank you for your generous donation of ${amount:.2f}
 
 Sincerely,
 The Charity
-""".format(name,donation)
+""".format(**letter_dictionary)
     print(content)
     return(content)
 
@@ -116,7 +116,7 @@ def calculation():
 def send_all():
     for person in donation_data:
         with open(person.replace(' ','_')+'.txt','w') as f:
-            f.write(letter(person,donation_data[person][-1]))
+            f.write(letter({'donor':person,'amount':donation_data[person][-1]}))
     print("Done!")
 
 if __name__ == '__main__':
