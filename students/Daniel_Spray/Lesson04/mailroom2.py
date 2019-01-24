@@ -7,10 +7,6 @@ donation_data = {
 'Paul Allen': [100.00,100.00,508.42]
 }
 
-def main():
-    while True:
-        menu()
-
 def menu():
 
     selection = input("""This program will hopefully help you send some meaningful messages
@@ -77,7 +73,7 @@ The Charity
 def create_report():
     result = calculation()
     table(result)
-    main()
+    return
 
 def table(result):
     print(" ")
@@ -120,4 +116,5 @@ def send_all():
     print("Done!")
 
 if __name__ == '__main__':
-    main()
+    while True:
+        menu()
