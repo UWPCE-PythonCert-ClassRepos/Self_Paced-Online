@@ -1,5 +1,5 @@
 '''Author: Alex Filson
-Updated: 1.19.19
+Updated: 1.20.19
 String Formatting Lab for Lesson 3
 Py210, Online Self-Paced
 '''
