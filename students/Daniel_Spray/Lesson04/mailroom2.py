@@ -24,7 +24,7 @@ Type the corresponding number to select from the following list:
         '4': quit
     }
     
-    while selection != '1' and selection != '2' and selection != '3' and selection != '4':
+    while selection not in switch_menu:
         print("Sorry, I didn't recognize that command")
         return
 
@@ -86,25 +86,14 @@ def use_total(amounts):
     return amounts[2]
 
 def calculation():
-    num_gifts = []
-    donors = []
-    total_given = []
-    averages = []
     data = []
-    for gifts in donation_data.values():
-        num_gifts.append(len(gifts))
-    for donor in donation_data.keys():
-        donors.append(donor)
-    for donations in donation_data.values():
-        total_given.append(sum(donations))
 
-    for donor_averages in range(0,len(donors)):
-        averages.append(float(total_given[donor_averages])/float(num_gifts[donor_averages]))
+    for donor, donations in donation_data.items():
+        total_given = round(sum(donations),2)
+        num_gifts = len(donations)
+        average = round(float(total_given)/float(num_gifts),2)
+        data.append([donor, "$", total_given, num_gifts, "$", average])
 
-    for donor_index in range(0,len(donors)):
-        compiled_data = [donors[donor_index],"$",round(total_given[donor_index],2),num_gifts[donor_index],"$",round(averages[donor_index],2)]
-        data.append(compiled_data)
-    
     sorted_data = sorted(data,key=use_total,reverse=True)
     return sorted_data
 
