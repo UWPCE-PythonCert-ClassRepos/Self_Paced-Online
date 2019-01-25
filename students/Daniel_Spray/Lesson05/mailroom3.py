@@ -8,6 +8,7 @@ donation_data = {
 }
 
 def menu():
+
     selection = input("""This program will hopefully help you send some meaningful messages
 Type the corresponding number to select from the following list:
 
@@ -24,11 +25,11 @@ Type the corresponding number to select from the following list:
         '4': quit
     }
     
-    while selection != '1' and selection != '2' and selection != '3' and selection != '4':
+    try:
+        switch_menu[selection]()
+    except KeyError:
         print("Sorry, I didn't recognize that command")
         return
-
-    switch_menu[selection]()
 
 def quit():
     sys.exit()
@@ -44,11 +45,16 @@ def send_thank_you():
     if name.lower() == "quit":
         return
     
-    donation = input("Donation Amount? > ")
-    if donation.lower() == "quit":
-        return
-
-    donation_data.setdefault(name,[]).append(float(donation))
+    while True:
+        donation = input("Donation Amount? > ")
+        if donation.lower() == "quit":
+            return
+        try:
+            donation_data.setdefault(name,[]).append(float(donation))
+            break
+        except ValueError:
+            print("That's not a valid donation")
+		
     print("Data added!")
     letter_dictionary = {'donor':name,'amount':round(float(donation),2)}
     letter(letter_dictionary)
