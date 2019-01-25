@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """
-Test the various functions in mailroom_L6.py
-NOTE: Currently using a fixed date
+test_mailroom.py: use pytest to validate functions in mailroom.py
+Author: JohnR
+Version: 0.8
+Last updated: 1/24/2019
+Notes:
 """
 
 import pytest
@@ -74,3 +77,5 @@ def test_print_summary(data):
 
 def test_thank_all(data):
     assert thank_all(data) is None
+
+
