@@ -1,5 +1,5 @@
 def thank_you(donor_list):
-    '''Add donation amount to new or existing donor and generate a thank you text.'''
+    """Add donation amount to new or existing donor and generate a thank you text."""
     while 1:
         donor_name = input("Enter donor name:")
         if donor_name == 'list':
@@ -16,18 +16,16 @@ def thank_you(donor_list):
             else:
                 print(f"Donor name not found. Will add {donor_name} to database at position {len(donor_list)+1}.")
                 donation = int(input('Enter donation amount:'))
-                donor_list += (donor_name, donation),
+                donor_list += [[donor_name, donation]]
+                print(donor_list)
             break
-    print(
-    '''Dear {},
-    Thank you for your generous gift of ${}.
-    Sincerely, 
-    Local Charity.'''.format(donor_name, donation))
+    print('Dear {},\nThank you for your generous gift of ${}\n'
+          'Sincerely,\nLocal Charity.'''.format(donor_name, donation))
     return donor_list
 
 
 def report(donor_list):
-    '''Generate report based on existing donors and donations.'''
+    """Generate report based on existing donors and donations. Display in variable column widths."""
     report_table = [("Donor Name", "Total Given", " Num Gifts", "Average Gift")]
 
     for row in donor_list:
@@ -56,23 +54,19 @@ def report(donor_list):
 
 
 def main():
-    '''Establish initial donor database and initiate top user menu. '''
+    """Establish initial donor database and initiate top user menu. """
     ddb = [['Archie Bunker', 20, 100],
            ['Beyonce Knowles', 2000000, 50000000],
            ['Charlie Kauffman', 12345],
            ['David Sedaris', 23000, 1200, 2000],
            ['Edvard Munch', 1, 2, 3]]
     while 1:
-        userinput = input('''\n\nMENU:
-        1 - Send a Thank You
-        2 - Create a Report
-        3 - Quit
-        Please enter 1-3>''')
-        if userinput == '1':
+        user_input = input('\n\nMENU:\n1 - Send a Thank You\n2 - Create a Report\n3 - Quit\nPlease enter 1-3>''')
+        if user_input == '1':
             ddb = thank_you(ddb)
-        elif userinput == '2':
+        elif user_input == '2':
             report(ddb)
-        elif userinput == '3':
+        elif user_input == '3':
             print('Goodbye')
             break
         else:
