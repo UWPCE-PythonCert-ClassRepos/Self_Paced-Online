@@ -18,6 +18,9 @@ Created on Sun Jan 20 00:04:07 2019
 import re
 import random
 import string
+from nltk import word_tokenize, trigrams
+from nltk.probability import FreqDist
+#from nltk.corpus import stopwords
 
 #------------------------------------------------
 def trigram(words):
@@ -54,9 +57,13 @@ def generate_text(trigram, number_sentences = 10, sentence_lenght= 5):
 def main():
     #Open the file for reading 
     try:
+        print("File needed: 'sherlock_small.txt'")
         with open("sherlock_small.txt", 'r') as f:
             small_text = f.read()
-    except: FileNotFoundError("File indicated not found.")
+            print("File 'sherlock_small.txt' was found in program's directory and was loaded.")
+    except  FileNotFoundError as missing:
+        print(missing)
+        print("File 'sherlock_small.txt' not found in the directory where this program is stored.")
     
     regex = re.compile('[%s]' % re.escape(string.punctuation))
     small_text = regex.sub(' ', small_text)
@@ -76,22 +83,21 @@ def main():
 
 #------------------------------------------------
 if __name__=='__main__':
-  main()
+    main()
 #================================================
 
 #------------------------------------------------
 # Option 2 - using NLTK for trigram generation
 #------------------------------------------------
-from nltk import word_tokenize, trigrams
-from nltk.probability import FreqDist
-#from nltk.corpus import stopwords
-    
-#open text file
 try:
+    print("File needed: 'sherlock_small.txt'")
     with open("sherlock_small.txt", 'r') as f:
         small_text = f.read()
-except: FileNotFoundError("File indicated not found.")
-    
+        print("File 'sherlock_small.txt' was found in program's directory and was loaded.")
+except FileNotFoundError as missing:
+    print(missing)
+    print("File 'sherlock_small.txt' not found in the directory where this program is stored.")
+ 
 #tokenize words
 tokens = word_tokenize(small_text)
     
@@ -116,17 +122,46 @@ for w in words_nltk:
 trigram_nltk = [t for t in trigrams(words_nltk)]
 #trigram_nltk = [t for t in trigrams(filtered_words)]
 
-print("Note: We are running now NLTK Option 2! For text generation we'll use text generating function from Option 1 in the program.")
 
+print("Note: We'll run now NLTK Option 2! For text generation we'll use text generating function from Option 1 in the program.")
 print("Please enter an integer as the number of sentences you want to generate, preferably between {} and {}:>>".format(len(trigram_nltk)//10, 2*(len(trigram_nltk)//10)))
 number_sentences = input()
 print("Please enter an integer as the lenght of the sentence in the generated text, preferably bigger than 2 and smaller than {}:>>".format(len(trigram_nltk)//10))
-sentence_lenght = input()
 
+sentence_lenght = input()
 #use text generating function from Option 1
 text_new_nltk = generate_text(trigram_nltk, int(number_sentences), int(sentence_lenght)-2)
 print("Text generated from trigram:>>\n")
 print(text_new_nltk)
+
+#===============================================
+# Additional section - generate small text from trigram_nltk using Markov chains
+
+def reshape_trigram(trigram_nltk):
+    reshaped_trigram = {}
+    for word1, word2, word3 in trigram_nltk:
+        reshaped_trigram.update({(word1, word2): [word3]})
+    return reshaped_trigram        
+        
+def markov_text(reshaped_trigram, words_nltk, size = 10):
+    seed = random.randint(0, len(words_nltk)- 10)
+    try:
+        seed_word, next_word = words_nltk[seed], words_nltk[seed + 1]
+        word1, word2 = seed_word, next_word
+        generated_words = []
+        for i in range(size):
+          generated_words.append(word1)
+          word1, word2 = word2, random.choice(reshaped_trigram[(word1, word2)])
+        generated_words.append(word2)
+        generated_words[0] = generated_words[0].capitalize()
+        generated_words[-1] += ". "
+        phrase = ' '.join(generated_words).lstrip().rstrip()
+        return phrase
+    except KeyError as k_err:
+        print(k_err)
+        print("Random seed inapropriately chosen; please rerun.")
+
+print(markov_text(reshape_trigram(trigram_nltk), words_nltk, 40))
 
 #===============================================
 #---------------- END --------------------------
