@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.7
 # mailroom5.py
 # Coded by LouReis
+# Lesson09
 
 """
 Refactor the following code to use classes.
@@ -104,6 +105,10 @@ class Donor():
     @property
     def avg_donation(self):
         return (sum(donations[self.name]) / self._num_donations)
+
+    def get_thank_you_letter(self):
+        return f"{self.name} thanks!"
+
 """
     @total_ordering
     def __eq__(self, other):
@@ -112,12 +117,30 @@ class Donor():
     def __lt__(self, other):
         return self._total_donations < other._total_donations
 """
-"""
-class Donated(self):
-    for key in donations:
-"""
+
+class DonorCollection:
+    def __init__(self, *args):
+        self.donors = {d.name: d for d in args}
+
+    def add_donation(self, name, donation):
+        if self.donors.get(name):
+            self.donors[name].add_donation(donation)
+        else:
+            self.donors[name] = Donor(name, donation)
+    def get_report(self):
+        for donor_obj in self.donors.values():
+            donor_obj.total_donations
+            print (donor_obj.name, donor_obj.totoal_donations)
+            donation_report2()
+
+    def send_letters(self):
+        for donor_obj in self.donors.values():
+            donor_obj.get_thank_you_letter()
+
+
 # This function uses the Donor Class for values to sort by.
 def donation_report2():
+    DonorCollection.get_report(donations)
     print('\nYou Chose Option 1\n\n')
     print('DONATION SUMMARY REPORT\n\n')
     print('{:25} | {:^13} | {:^13} |   {:>13}'.format('Donor Name', 'Total Given', 'Num Gifts', 'Average Gift'))
