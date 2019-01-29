@@ -100,6 +100,8 @@ def use_total(amounts):
 #Calculate averages and return sorted data for each donor
 def calculation():
     data = []
+    #potential comprehension application
+    #data=[[donor, "$", round(sum(donations),2), len(donations), "$", round(float(round(sum(donations),2))/float(len(donations)),2)] for donor, donations in donation_data.items()]
 
     for donor, donations in donation_data.items():
         total_given = round(sum(donations),2)
