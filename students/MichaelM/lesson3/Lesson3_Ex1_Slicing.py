@@ -1,8 +1,6 @@
 # in filesystem copy Lesson3_Ex1_Slicing.py into new folder
 # C:\Users\v-micmcd.Redmond\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson3
 # wk: cd C:\Users\v-micmcd.Redmond\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson3
-# mo: cd C:\Users\geekw\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson3
-# hm: cd C:\Users\geekw\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson3
 # run Lesson3_Ex1_Slicing.py
 # git status
 # git add Lesson3_Ex1_Slicing.py
