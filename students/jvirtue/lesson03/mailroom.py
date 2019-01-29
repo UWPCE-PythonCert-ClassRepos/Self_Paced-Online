@@ -19,7 +19,7 @@ def Send_Thanks(db_name):
             print(donor_list(db_name))
         elif response != "List":
             print("----------------------------------------")
-            amount = input("How much money did {} donate?> ".format(response))
+            amount = int(input("How much money did {} donate?> ".format(response)))
             if response not in donor_list(db_name):
                 donors_db = donor_add(response,db_name)
                 donors_db = amount_add(response, amount, db_name)
