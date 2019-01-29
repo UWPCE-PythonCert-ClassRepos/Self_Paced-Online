@@ -12,7 +12,14 @@ class Element:
     """
     List out what we want from the base class
     """
-    pass
+    def __init__(self):
+        pass
+
+    def append(self, data):
+        pass
+
+    def render(self, data):
+        pass
 
 
 class Html(Element):
