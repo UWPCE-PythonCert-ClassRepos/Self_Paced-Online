@@ -3,60 +3,60 @@
 #Jason Virtue 01/26/2019
 #UW Self Paced Python Course
 
-#Data table of Donors
+#Thank you letter section
 
-donors = ["Fred Flinstone", 100, "Fred Flinstone", 200, "Wilma Flinstone", 300, "Bambam", 50, "Bambam", 30, "Bambam", 40, "Barney", 75, "Betty", 50]
 
-def donor_list(list):
-    names = list[0::2]
-    unique_name = set(names)
-    return unique_name
+def Send_Thanks(db_name):
+    response = "Not a donor or the word list"
+    while response not in db_name:
+        print("----------------------------------------")
+        response = input("What is the full name of the donor?>(Name, List, Exit) ")
+        response = response.title()
+        if response == "Exit":
+            break
+        elif response == "List":
+            print("----------------------------------------")
+            print("Here are our Donors:> ")
+            print(donor_list(db_name))
+        elif response != "List":
+            print("----------------------------------------")
+            amount = input("How much money did {} donate?> ".format(response))
+            if response not in donor_list(db_name):
+                donors_db = donor_add(response,db_name)
+                donors_db = amount_add(response, amount, db_name)
+            else:
+                donors_db = amount_add(response, amount, db_name)
+            print("----------------------------------------")
+            print(thank_you(response, amount))
+            print(db_name)
 
-def donor_add(list,person):
-    if person not in list:
-        list.append(person)
-    else:
-        list
-    return list
+def donor_list(db_name):
+    return [item[0] for item in db_name]
 
-def donor_select(list,person):
-    if person in list:
-        return True
-    else:
-        return False
+def donor_add(name,db_name):
+    return db_name.append([name])
 
-def numeric(amt):
-    return int(prompt_amount)
+def amount_add(name, amt, db_name):
+    return db_name[donor_list(db_name).index(name)].append(amt)
 
 def thank_you(person,amount):
     return "Thank you {} ".format(person) + "for the donation in the amount of {}!".format(amount)
 
-def report(a_list):
-    print("Donor Name        Amount" )
-    for num in a_list:
-        print("{:<10s}{:10.2f}".format(*num))
-    print("\n")
-    return
-
-
-#Send Thank you section
-prompt_donor = input("What is the full name of the Donor?> ")
-
-unique_donor = list(donor_list(donors))
-
-donor_add(unique_donor,prompt_donor)
-
-prompt_amount = input("What is the amount they donated?> ")
-
-prompt_amount = numeric(prompt_amount)
-
-donors.append(prompt_donor)
-donors.append(prompt_amount)
-
-print(donors)
-
-print(thank_you(prompt_donor,prompt_amount))
+#Options Menu
+if __name__ == '__main__':
+    donors_db = [["Fred Flintstone", 100,200],["Wilma Flintstone", 300],["Bamm-Bamm Rubble", 50,30,40],["Barney Rubble", 75],["Pebbles Flintstone",50]]
+    while True:
+        print("Would you like to;")
+        print("1: Send a 'Thank You'")
+        print("2: Create a 'Report'")
+        print("3: 'Quit'")
+        response = input("Please select option: ")
+        if response.title() == "Thank You":
+            Send_Thanks(donors_db)
+        elif response.title() == "Report":
+            Create_Report(donors_db)
+        elif response.title() == "Quit":
+            break
+        print()
 
 #Create a report
-
-print(report(donors))
