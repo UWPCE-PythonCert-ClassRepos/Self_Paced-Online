@@ -3,9 +3,8 @@
 #Jason Virtue 01/26/2019
 #UW Self Paced Python Course
 
-#Thank you letter section
 
-
+#Thank You Letter Section
 def Send_Thanks(db_name):
     response = "Not a donor or the word list"
     while response not in db_name:
@@ -42,6 +41,33 @@ def amount_add(name, amt, db_name):
 def thank_you(person,amount):
     return "Thank you {} ".format(person) + "for the donation in the amount of {}!".format(amount)
 
+#Create a report
+def Sum_Gift(donor, db_name):
+    total = 0
+    for i in db_name:
+        if i[0] == donor:
+            total = sum(i[1:])
+    return total
+
+def donation_count(donor, db_name):
+    count = 0
+    for i in db_name:
+        if i[0] == donor:
+            count = len(i[1:])
+    return count
+
+def Create_Report(db_name):
+    dnrNames = donor_list(db_name)
+    print(f'{"Donor Name":<20}{"|":<1}{"Total Given":^15}{"|":<1}{"Num Gifts":^15}{"|":<1}{"Average Gift":>15}')
+    print("-" * 68)
+    iCount = 1
+    for i in dnrNames:
+        iTotalGift = Sum_Gift(i, db_name)
+        iCount = donation_count(i, db_name)
+        iAveGift = iTotalGift / iCount
+        s = f'{i:<20}{" ":<1}{"$":<1}{iTotalGift:>14}{" ":<1}{iCount:>15}{" ":<1}{"$":<1}{iAveGift:>14}'
+        print(s)
+
 #Options Menu
 if __name__ == '__main__':
     donors_db = [["Fred Flintstone", 100,200],["Wilma Flintstone", 300],["Bamm-Bamm Rubble", 50,30,40],["Barney Rubble", 75],["Pebbles Flintstone",50]]
@@ -58,5 +84,3 @@ if __name__ == '__main__':
         elif response.title() == "Quit":
             break
         print()
-
-#Create a report
