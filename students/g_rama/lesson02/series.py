@@ -39,18 +39,31 @@ lucas(8)
 
 
 def sum_series(n,g1=0,g2=1):
-        if n <= 1:
-            gen = [g1, g2]
-            print((gen[n]))
-        else:
-            gen = [g1, g2]
-            for _ in range(n):
-                print(gen)
-                gen.append(gen[_] + gen[_ + 1])
-            print(gen[n])
+    """ The function prints a generic sequence number for given arguments
+    usage: g1 and g2 defaults to fibonacci if no arguments are given
+    """
+    if n <= 1:
+        gen = [g1, g2]
+        print((gen[n]))
+    else:
+        gen = [g1, g2]
+        for _ in range(n):
+            print(gen)
+            gen.append(gen[_] + gen[_ + 1])
+        print(gen[n])
 
 
 sum_series(8)
 sum_series(8,2,1)
 sum_series(8,0,1)
 sum_series(8,3,1)
+
+
+def testing():
+    assert fibonacci(8) == 21
+    assert lucas(8) == 47
+    assert sum_series(8) == 21
+    assert sum_series(8, 3, 1) == 60
+    assert fibonacci(0) != 21
+
+
