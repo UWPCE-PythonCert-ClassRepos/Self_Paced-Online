@@ -2,7 +2,7 @@
 """
 html_render.py: using classes to render HTML
 Author: JohnR
-Version: .1
+Version: .2
 Last updated: 1/29/2019
 Notes:
 """
@@ -26,19 +26,23 @@ class Element(object):
 
         for item in self.content:
             try:
-                file_out.write(cur_ind + self.indent + item + '\n')
-            except Exception as e:
-                print(e)
+                item.render(file_out)
+            except AttributeError:
+                file_out.write(f'{item}\n')
 
         file_out.write(cur_ind + f'</{self.tag}>\n')
 
 
 class Html(Element):
-    pass
+    tag = 'html'
 
 
 class Body(Element):
-    pass
+    tag = 'body'
+
+
+class P(Element):
+    tag = 'P'
 
 
 class Head(Element):
