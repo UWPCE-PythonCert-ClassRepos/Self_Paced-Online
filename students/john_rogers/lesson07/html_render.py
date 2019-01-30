@@ -2,7 +2,7 @@
 """
 html_render.py: using classes to render HTML
 Author: JohnR
-Version: .2
+Version: .5
 Last updated: 1/29/2019
 Notes:
 """
@@ -12,7 +12,7 @@ class Element(object):
     """
     create base class for adding html tags and text strings to a file
     """
-    tag = 'html'
+    tag = ''
     indent = ' ' * 4
 
     def __init__(self, content=None, **kwargs):
