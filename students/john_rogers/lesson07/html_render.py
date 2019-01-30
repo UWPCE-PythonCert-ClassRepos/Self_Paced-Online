@@ -33,6 +33,24 @@ class Element(object):
         file_out.write(cur_ind + f'</{self.tag}>\n')
 
 
+class OneLineTag(Element):
+
+    def render(self, file_out, cur_ind=''):
+        file_out.write(cur_ind + f'<{self.tag}>')
+
+        for item in self.content:
+            try:
+                item.render(file_out)
+            except AttributeError:
+                file_out.write(f'{item}')
+
+        file_out.write(cur_ind + f'</{self.tag}>')
+
+
+class Title(OneLineTag):
+    tag = 'title'
+
+
 class Html(Element):
     tag = 'html'
 
@@ -46,7 +64,7 @@ class P(Element):
 
 
 class Head(Element):
-    pass
+    tag = 'head'
 
 
 class Hr(Element):
