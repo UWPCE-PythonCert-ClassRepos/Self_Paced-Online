@@ -1,6 +1,6 @@
 import sys
 
-#Establish donor data dictionary
+"""Establish donor data dictionary"""
 donation_data = {
 'William Gates, III': [100000.00,553784.49],
 'Mark Zuckerberg': [5000.00,5000.00,6396.10],
@@ -8,9 +8,8 @@ donation_data = {
 'Paul Allen': [100.00,100.00,508.42]
 }
 
-#Create a selection menu
 def menu():
-
+    """Create a selection menu"""
     selection = input("""This program will hopefully help you send some meaningful messages
 Type the corresponding number to select from the following list:
 
@@ -33,12 +32,12 @@ Type the corresponding number to select from the following list:
         print("Sorry, I didn't recognize that command")
         return
 
-#Quit the program
 def quit():
+    """Quit the program"""
     sys.exit()
 
-#Prompt inputs for new donation data
 def send_thank_you():
+    """Prompt inputs for new donation data"""
     name = input("Please enter a full name > ")
 	
     while name == "list":
@@ -62,12 +61,11 @@ def send_thank_you():
     print("Data added!")
     letter_dictionary = {'donor':name,'amount':round(float(donation),2)}
     letter(letter_dictionary)
-    print(donation_data)
 
     return donation_data
 	
-#Format a letter for one donor and donation
-def letter(letter_dictionary):		
+def letter(letter_dictionary):
+    """Format a letter for one donor and donation"""	
     content = """
 Dear {donor},
 
@@ -79,26 +77,26 @@ The Charity
     print(content)
     return(content)
 
-#Build a report
 def create_report():
+    """Build a report"""
     result = calculation()
     table(result)
     return
 
-#Make a formatted table from the sorted calculation data output
 def table(result):
-    print(" ")
-    print("{:<24}{:<1}{:^13}{:<1}{:^13}{:<1}{:^17}".format('Donor Name','|','Total Given','|','Num Gifts','|','Average Gift'))
-    print("-"*67)
+    """Make a formatted table from the sorted calculation data output"""
+    table_output = ["{:<24}{:<1}{:^13}{:<1}{:^13}{:<1}{:^17}".format('Donor Name','|','Total Given','|','Num Gifts','|','Average Gift')+"\n"+"-"*67]
     for row in result:
-        print("{:<25}{:<1}{:>12.2f}{:>14}{:>2}{:>13.2f}".format(*row))
-    print(" ")
+        table_output.append("{:<25}{:<1}{:>12.2f}{:>14}{:>2}{:>13.2f}".format(*row))
+    table_string = "\n"+"\n".join(table_output)+"\n"
+    print(table_string)
+    return table_string
 
 def use_total(amounts):
     return amounts[2]
 
-#Calculate averages and return sorted data for each donor
 def calculation():
+    """Calculate averages and return sorted data for each donor"""
     data = []
 
     for donor, donations in donation_data.items():
@@ -110,8 +108,8 @@ def calculation():
     sorted_data = sorted(data,key=use_total,reverse=True)
     return sorted_data
 
-#Write letters to all donors in text documents
 def send_all():
+    """Write letters to all donors in text documents"""
     for person in donation_data:
         with open(person.replace(' ','_')+'.txt','w') as f:
             f.write(letter({'donor':person,'amount':donation_data[person][-1]}))
