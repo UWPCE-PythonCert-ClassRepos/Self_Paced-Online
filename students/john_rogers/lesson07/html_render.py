@@ -91,10 +91,6 @@ class SelfClosingTag(Element):
         file_out.write(cur_ind + f'</{self.tag}>')
 
 
-class Title(OneLineTag):
-    tag = 'title'
-
-
 class Html(Element):
     tag = 'html'
 
@@ -111,9 +107,13 @@ class Head(Element):
     tag = 'head'
 
 
-class Hr(OneLineTag):
+class Title(OneLineTag):
+    tag = 'title'
+
+
+class Hr(SelfClosingTag):
     tag = 'hr'
 
 
-class Br(OneLineTag):
+class Br(SelfClosingTag):
     tag = 'br'
