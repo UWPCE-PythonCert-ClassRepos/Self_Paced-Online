@@ -31,7 +31,14 @@ The Charity
 
     def test_table(self):
         """Test table output format"""
-        expected ='\nDonor Name              | Total Given |  Num Gifts  |  Average Gift   \n-------------------------------------------------------------------\nWilliam Gates, III       $   653784.49             2 $    326892.24\nMark Zuckerberg          $    16396.10             3 $      5465.37\nJeff Bezos               $      877.33             1 $       877.33\nPaul Allen               $      708.42             3 $       236.14\n'
+        expected ="""
+Donor Name              | Total Given |  Num Gifts  |  Average Gift   
+-------------------------------------------------------------------
+William Gates, III       $   653784.49             2 $    326892.24
+Mark Zuckerberg          $    16396.10             3 $      5465.37
+Jeff Bezos               $      877.33             1 $       877.33
+Paul Allen               $      708.42             3 $       236.14
+"""
         actual = mailroom4.table(mailroom4.calculation())
         self.assertEqual(expected,actual)
 
