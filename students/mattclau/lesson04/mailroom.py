@@ -6,18 +6,18 @@ horz = '-'
 vert = '|'
 
 #List of existing donors and their donations
-donors = [
-            {'name':"Douglas Adams", 'donations':[1000]},
-            {'name':"Bruce Lee",'donations':[9876.55]},
-            {'name':"Charles Barkley",'donations':[999999.99,55555.55,7777.77]},
-            {'name':"Scottie Pippen",'donations':[1, 5]},
-            {'name':"Ursula K Le Guin", 'donations':[1234567.89]}
-         ]
+donors = {"Douglas Adams":[1000],
+            "Bruce Lee":[9876.55],
+            "Charles Barkley":[999999.99,55555.55,7777.77],
+            "Scottie Pippen":[1, 5],
+            "Ursula K Le Guin":[1234567.89]
+        }
 
-def create_letter():
+
+def create_letter(donor):
     """Creates letter for the supplied donor name and amount"""
-    print(f'\nDear {donors[-1][0]},\n')
-    print(f'\tThank you for your donation of ${donors[-1][1]:,.2f} to the foundation.  ')
+    print(f'\nDear {donor},\n')
+    print(f'\tThank you for your donation of ${donors[donor][-1]:,.2f} to the foundation.  ')
     print('\tYour generous gift will make a tremendous difference in the coming years.\n\n')
     print('Sincerely,\n\tDirector of the Foundation\n')
 
@@ -40,7 +40,7 @@ def thank_you():
     #display list of names if requested
     if name.upper() == 'LIST':
         for donor in donors:
-            print(donor['name'])
+            print(donor)
         thank_you()
 
     #otherwise ask for donation and add it
@@ -48,18 +48,16 @@ def thank_you():
         amount = float(get_donation())
 
         #if name is in list, add donation amount only
-        if any(name in donor['name'] for donor in donors):
-            index = 0
-            for donor in donors:
-                if donor['name'] == name:
-                    donors[index]['donations'].append(amount)
-                index += 1
+        if name in donors:
+            donors[name].append(amount)
             print(donors)
 
         #otherwise get donation amount for name
         else:
-            donors.append({'name':name, 'donations':[amount]})
+            donors.append(name, [amount])
             print(donors)
+
+        print(create_letter(name))
 
 
 def report():
