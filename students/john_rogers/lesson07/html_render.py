@@ -23,6 +23,12 @@ class Element(object):
         self.content.append(data)
 
     def render(self, file_out, cur_ind=''):
+        """
+        Render content with html tags in place
+        :param file_out: file to write to
+        :param cur_ind: current indentation level
+        :return: none
+        """
         file_out.write(cur_ind + f'<{self.tag}')
 
         for key, value in self.kwargs.items():
@@ -40,6 +46,35 @@ class Element(object):
 
 class OneLineTag(Element):
 
+    def render(self, file_out, cur_ind=''):
+        """
+        Render a string with tags on a single line
+        :param file_out: file to write to
+        :param cur_ind: indentation level
+        :return: none
+        """
+        file_out.write(cur_ind + f'<{self.tag}')
+
+        for key, value in self.kwargs.items():
+            file_out.write(f'{key}="{value}"')
+        file_out.write('>')
+
+        for item in self.content:
+            try:
+                item.render(file_out)
+            except AttributeError:
+                file_out.write(f'{item}')
+
+        file_out.write(cur_ind + f'</{self.tag}>')
+
+
+class SelfClosingTag(Element):
+    """
+    override the render method to render just the one tag and attributes
+    """
+
+    # cut and paste from above; customize this and look for ways to
+    # eliminate repeated code; look at @staticmethod ?
     def render(self, file_out, cur_ind=''):
         file_out.write(cur_ind + f'<{self.tag}')
 
@@ -76,14 +111,9 @@ class Head(Element):
     tag = 'head'
 
 
-class Hr(Element):
-    pass
+class Hr(OneLineTag):
+    tag = 'hr'
 
 
-class Li(Element):
-    pass
-
-
-class Ul(Element):
-    pass
-
+class Br(OneLineTag):
+    tag = 'br'
