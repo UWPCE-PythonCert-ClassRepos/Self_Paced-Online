@@ -1,5 +1,6 @@
 #Mailroom script that creates canned responses for donations and prints a report of all donations
 from operator import itemgetter
+import os.path
 
 #Formatting characters
 horz = '-'
@@ -16,10 +17,11 @@ donors = {"Douglas Adams":[1000],
 
 def create_letter(donor):
     """Creates letter for the supplied donor name and amount"""
-    print(f'\nDear {donor},\n')
-    print(f'\tThank you for your donation of ${donors[donor][-1]:,.2f} to the foundation.  ')
-    print('\tYour generous gift will make a tremendous difference in the coming years.\n\n')
-    print('Sincerely,\n\tDirector of the Foundation\n')
+    letter = f'Dear {donor},\n'
+    letter += f'\tThank you for your donation of ${donors[donor][-1]:,.2f} to the foundation.  '
+    letter += '\tYour generous gift will make a tremendous difference in the coming years.\n\n'
+    letter += 'Sincerely,\n\tDirector of the Foundation\n'
+    return letter
 
 def get_donation():
     """Asks for and returns donation amount"""
@@ -50,13 +52,12 @@ def thank_you():
         #if name is in list, add donation amount only
         if name in donors:
             donors[name].append(amount)
-            print(donors)
 
-        #otherwise get donation amount for name
+        #otherwise add new donor to list with donation amount
         else:
-            donors.append(name, [amount])
-            print(donors)
+            donors[name] = [amount]
 
+        #print thank you note for new donation
         print(create_letter(name))
 
 
@@ -72,7 +73,7 @@ def aggregate_donations():
 
     #parse donor list and aggregate them into totals for each donor
     for donor in donors:
-        donor_totals += [[donor.get('name'),sum(donor.get('donations')),len(donor.get('donations')),sum(donor.get('donations'))/len(donor.get('donations'))]]
+        donor_totals += [[donor,sum(donors[donor]),len(donors[donor]),sum(donors[donor])/len(donors[donor])]]
 
     return donor_totals
 
@@ -91,7 +92,14 @@ def report_formatter(report):
 
 def send_all():
     """Sends letters to all donors when called"""
-    pass
+    filepath = input('\nEnter the path where the files should be created.  Hit enter to create in directory of program: ')
+    for donor in donors:
+        filename = os.path.join(filepath,donor.replace(' ','_') + '.txt')
+        outfile = open(filename, 'w')
+        outfile.write(create_letter(donor))
+        outfile.close()
+
+
 
 def quit():
     """Function that exists the program when called"""
@@ -99,7 +107,7 @@ def quit():
     exit()
 
 #dictionary for switch
-menu = {1:thank_you, 2:report, 3:send_all,4:quit}
+menu = {'1':thank_you, '2':report, '3':send_all,'4':quit}
 
 
 
@@ -107,11 +115,15 @@ def main():
     """Main program flow for getting user input and performing actions"""
     #prompt user for action
     while True:
-        print("1. Send a Thank You","\n2. Create a Report", "\n3. Send letters to everyone", "\n4. Quit")
-        action = int(input("Enter the number for the action you require: "))
+        print("1. Send a Thank You to a single donor","\n2. Create a Report", "\n3. Send letters to all donors", "\n4. Quit")
+        selection = input("Enter the number for the action you require: ")
 
+        #error handling
+        if selection not in menu:
+            print('\n***Error! Please enter only numbers from the menu.***')
         #perform action based on selection
-        menu[action]()
+        else:
+            menu[selection]()
 
 
 #Main program
