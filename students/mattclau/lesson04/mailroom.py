@@ -32,7 +32,7 @@ def get_donation():
     donation = ''
     while not donation.replace('.','',1).isdecimal():
             donation = input('\nEnter donation amount: ')
-            if donation.replace('.','',1).isdecimal():s
+            if donation.replace('.','',1).isdecimal():
                 return donation
             else:
                 print('\n***Error! Use only numbers for the donation amount.***')
