@@ -19,6 +19,10 @@ def create_letter(donor):
     """Creates letter for the supplied donor name and amount"""
     letter = f'Dear {donor},\n'
     letter += f'\tThank you for your donation of ${donors[donor][-1]:,.2f} to the foundation.  '
+
+    if len(donors[donor]) > 1:
+        letter += f'\tWe also thank you for your continuing support and appreciate that you are a repeat giver.  '
+
     letter += '\tYour generous gift will make a tremendous difference in the coming years.\n\n'
     letter += 'Sincerely,\n\tDirector of the Foundation\n'
     return letter
@@ -28,7 +32,7 @@ def get_donation():
     donation = ''
     while not donation.replace('.','',1).isdecimal():
             donation = input('\nEnter donation amount: ')
-            if donation.replace('.','',1).isdecimal():
+            if donation.replace('.','',1).isdecimal():s
                 return donation
             else:
                 print('\n***Error! Use only numbers for the donation amount.***')
