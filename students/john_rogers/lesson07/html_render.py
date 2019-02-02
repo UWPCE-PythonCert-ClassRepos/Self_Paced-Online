@@ -2,8 +2,8 @@
 """
 html_render.py: using classes to render HTML
 Author: JohnR
-Version: .6
-Last updated: 1/31/2019
+Version: .7
+Last updated: 2/02/2019
 Notes:
 """
 
@@ -30,18 +30,21 @@ class Element(object):
         :return: none
         """
         file_out.write(cur_ind + f'<{self.tag}')
-
-        for key, value in self.kwargs.items():
-            file_out.write(f' {key}="{value}"')
+        Element.add_values(self, file_out)
         file_out.write('>\n')
+        Element.add_items(self, file_out)
+        file_out.write(cur_ind + f'</{self.tag}>\n')
 
+    def add_items(self, file_out):
         for item in self.content:
             try:
                 item.render(file_out)
             except AttributeError:
                 file_out.write(f'{item}\n')
 
-        file_out.write(cur_ind + f'</{self.tag}>\n')
+    def add_values(self, file_out):
+        for key, value in self.kwargs.items():
+            file_out.write(f' {key}="{value}"')
 
 
 class OneLineTag(Element):
@@ -54,9 +57,7 @@ class OneLineTag(Element):
         :return: none
         """
         file_out.write(cur_ind + f'<{self.tag}')
-
-        for key, value in self.kwargs.items():
-            file_out.write(f'{key}="{value}"')
+        Element.add_values(self, file_out)
         file_out.write('>')
 
         for item in self.content:
@@ -79,8 +80,7 @@ class SelfClosingTag(Element):
 
     def render(self, file_out, cur_ind=''):
         file_out.write(cur_ind + f'<{self.tag}')
-        for key, value in self.kwargs.items():
-            file_out.write(f' {key}="{value}"')
+        Element.add_values(self, file_out)
         file_out.write(' />\n')
 
 
