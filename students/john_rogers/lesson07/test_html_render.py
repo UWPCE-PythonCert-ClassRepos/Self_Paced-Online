@@ -37,3 +37,7 @@ def test_onelinetag():
     foo = sio()
     test04.render(foo)
     assert foo.getvalue() == '<title>test04</title>'
+
+
+def test_selfclosingtag():
+    test05 = hr.SelfClosingTag()

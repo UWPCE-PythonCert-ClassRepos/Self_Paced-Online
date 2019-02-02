@@ -2,8 +2,8 @@
 """
 html_render.py: using classes to render HTML
 Author: JohnR
-Version: .5
-Last updated: 1/29/2019
+Version: .6
+Last updated: 1/31/2019
 Notes:
 """
 
@@ -72,23 +72,16 @@ class SelfClosingTag(Element):
     """
     override the render method to render just the one tag and attributes
     """
+    def __init__(self, content=None, **kwargs):
+        if content:
+            raise TypeError
+        self.kwargs = kwargs
 
-    # cut and paste from above; customize this and look for ways to
-    # eliminate repeated code; look at @staticmethod ?
     def render(self, file_out, cur_ind=''):
         file_out.write(cur_ind + f'<{self.tag}')
-
         for key, value in self.kwargs.items():
-            file_out.write(f'{key}="{value}"')
-        file_out.write('>')
-
-        for item in self.content:
-            try:
-                item.render(file_out)
-            except AttributeError:
-                file_out.write(f'{item}')
-
-        file_out.write(cur_ind + f'</{self.tag}>')
+            file_out.write(f' {key}="{value}"')
+        file_out.write(' />\n')
 
 
 class Html(Element):
