@@ -36,13 +36,35 @@ class Element(object):
         file_out.write(cur_ind + f'</{self.tag}>\n')
 
     def add_items(self, file_out):
+        """
+        Add in items with a new line
+        :param file_out: file to write to
+        :return: None
+        """
         for item in self.content:
             try:
                 item.render(file_out)
             except AttributeError:
                 file_out.write(f'{item}\n')
 
+    def add_items_no_line(self, file_out):
+        """
+        Add in items without a new line
+        :param file_out: file to write to
+        :return: None
+        """
+        for item in self.content:
+            try:
+                item.render(file_out)
+            except AttributeError:
+                file_out.write(f'{item}')
+
     def add_values(self, file_out):
+        """
+        use a dict to capture kwargs
+        :param file_out: file to write to
+        :return: None
+        """
         for key, value in self.kwargs.items():
             file_out.write(f' {key}="{value}"')
 
@@ -59,13 +81,7 @@ class OneLineTag(Element):
         file_out.write(cur_ind + f'<{self.tag}')
         Element.add_values(self, file_out)
         file_out.write('>')
-
-        for item in self.content:
-            try:
-                item.render(file_out)
-            except AttributeError:
-                file_out.write(f'{item}')
-
+        Element.add_items_no_line(self, file_out)
         file_out.write(cur_ind + f'</{self.tag}>')
 
 
