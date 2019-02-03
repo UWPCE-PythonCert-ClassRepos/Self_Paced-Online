@@ -29,8 +29,12 @@ print("{:0>2} {} {} {:0>2} {}".format(test_tuple[3], test_tuple[4], test_tuple[2
 task_five = ['oranges', 1.3, 'lemons', 1.1]
 print(f"The weight of an {task_five[0][:-1]} is {task_five[1]}  and the weight of a {task_five[2][:-1]} "
       f"is {task_five[3]}")
+print(f"The weight of an {task_five[0][:-1].upper()} is {task_five[1]*1.2}  and the weight of a {task_five[2][:-1].upper()}"
+      f" is {task_five[3]*1.2}")
 
 # Task Six
 
-print(f"The weight of an {task_five[0][:-1].upper()} is {task_five[1]*1.2}  and the weight of a {task_five[2][:-1].upper()}"
-      f" is {task_five[3]*1.2}")
+table_data = (("John", 24, "$2000.3"), ("Susan", 30, "$2000988.3"), ("Terry", 26, "$70056988.3"))
+
+for _ in range(len(table_data)):
+    print('{:10}{:10}{:>20}'.format(*table_data[_]))
