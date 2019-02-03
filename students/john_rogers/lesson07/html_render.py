@@ -69,6 +69,14 @@ class Element(object):
             file_out.write(f' {key}="{value}"')
 
 
+class Ul(Element):
+    tag = 'ul'
+
+
+class Li(Element):
+    tag = 'li'
+
+
 class A(Element):
     """
     Create a link to a given website
@@ -93,6 +101,29 @@ class OneLineTag(Element):
         file_out.write('>')
         Element.add_items_no_line(self, file_out)
         file_out.write(cur_ind + f'</{self.tag}>')
+
+
+class Ul(Element):
+    """
+    unordered list
+    """
+    tag = 'ul'
+
+
+class Li(Element):
+    """
+    element of a list
+    """
+    tag = 'li'
+
+
+class H(OneLineTag):
+    """
+    take in a custom header size
+    """
+    def __init__(self, level, content=None, **kwargs):
+        super().__init__(content=content, **kwargs)
+        self.tag = f'h{level}'
 
 
 class SelfClosingTag(Element):
