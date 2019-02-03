@@ -11,7 +11,7 @@ def test_element():
     test01 = hr.Element('text foo', style="text-align: center;"
                                           " font-style: oblique;")
     assert test01.content == ['text foo']
-    assert test01.indent == '    '
+    assert test01.indent == ' '
     assert test01.tag == ''
     assert test01.kwargs == {'style': 'text-align: center;'
                                       ' font-style: oblique;'}
@@ -36,8 +36,11 @@ def test_onelinetag():
     test04.tag = 'title'
     foo = sio()
     test04.render(foo)
-    assert foo.getvalue() == '<title>test04</title>'
+    assert foo.getvalue() == '<title>test04</title>\n'
 
 
-def test_selfclosingtag():
-    test05 = hr.SelfClosingTag()
+def test_add_items():
+    test05 = hr.Element.add_items(file_out)
+    assert 'foo' in test05.items
+
+

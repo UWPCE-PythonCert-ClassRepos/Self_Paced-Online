@@ -2,8 +2,8 @@
 """
 html_render.py: using classes to render HTML
 Author: JohnR
-Version: .7
-Last updated: 2/02/2019
+Version: .8
+Last updated: 2/03/2019
 Notes:
 """
 
@@ -13,7 +13,7 @@ class Element(object):
     create base class for adding html tags and text strings to a file
     """
     tag = ''
-    indent = ' ' * 4
+    indent = ' '
 
     def __init__(self, content=None, **kwargs):
         self.content = [content] if content else []
@@ -100,7 +100,7 @@ class OneLineTag(Element):
         Element.add_values(self, file_out)
         file_out.write('>')
         Element.add_items_no_line(self, file_out)
-        file_out.write(cur_ind + f'</{self.tag}>')
+        file_out.write(cur_ind + f'</{self.tag}>\n')
 
 
 class Ul(Element):
@@ -135,14 +135,25 @@ class SelfClosingTag(Element):
             raise TypeError
         self.kwargs = kwargs
 
-    def render(self, file_out, cur_ind=''):
+    def render(self, file_out, cur_ind='  '):
         file_out.write(cur_ind + f'<{self.tag}')
         Element.add_values(self, file_out)
-        file_out.write(' />\n')
+        file_out.write('>\n')
+
+
+class Meta(SelfClosingTag):
+    tag = 'meta'
 
 
 class Html(Element):
+    """
+    over ride render and create DOCTYPE tag at head of page
+    """
     tag = 'html'
+
+    def render(self, file_out, cur_ind=''):
+        file_out.write('<!DOCTYPE html>\n')
+        Element.render(self, file_out, cur_ind='')
 
 
 class Body(Element):
