@@ -69,6 +69,16 @@ class Element(object):
             file_out.write(f' {key}="{value}"')
 
 
+class A(Element):
+    """
+    Create a link to a given website
+    """
+    tag = 'a'
+
+    def __init__(self, content, link):
+        super().__init__(link, href=content)
+
+
 class OneLineTag(Element):
 
     def render(self, file_out, cur_ind=''):
