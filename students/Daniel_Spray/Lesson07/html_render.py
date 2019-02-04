@@ -1,12 +1,15 @@
 class Element:
     tag='html'
-    def __init__(self,content=None):
-        self.indent='    '
-        list(content)
-
+    indent='    '
+	
+    def __init__(self, content=None, **kwargs):
+        self.content = [].append(content) if content else []
+        self.kwargs = kwargs
+		
     def append(self,new_content):
+        '''Add content to list'''
         self.content.append(new_content)
 
     def render(self,file_out,cur_ind=''):
-        with open(file_out,'w') as f:
-            f.write(cur_ind+"<"+tag+">/n"+cur_ind+self.content+"/n"+cur_ind+"<"+tag+">")
+        with open('html_render.html','w') as f:
+            f.write(cur_ind+"<"+self.tag+">\n"+cur_ind+'.\n'.join(self.content)+"\n"+cur_ind+"<"+self.tag+">")
