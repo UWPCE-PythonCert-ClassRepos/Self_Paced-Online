@@ -1,5 +1,6 @@
 import os
 
+
 def new_thank_you(donor_dict):
     """Add donation amount to new or existing donor and generate a thank you text."""
     while 1:
@@ -21,7 +22,7 @@ def new_thank_you(donor_dict):
                 donor_dict[current_dict['donor_name']] = [current_dict['donation']]
             break
 
-    print('\n\n',create_letter(current_dict))
+    print('\n\n', create_letter(current_dict))
     return donor_dict
 
 
@@ -68,9 +69,10 @@ def report(donor_dict):
 
 
 def letters_to_all(donor_dict):
+    """Writes form letter to txt files based on input dictionary. Optional directory change."""
     user_input = input("Would you like save to current directory,{}? >(y,n)".format(os.getcwd()))
     if user_input == 'n':
-        path = input("Enter full path to desired directory.")
+        path = input("Enter full path to desired directory: ")
         os.chdir(path)
 
     for key in donor_dict.keys():
@@ -83,6 +85,7 @@ def letters_to_all(donor_dict):
 
 
 def create_letter(letter_dict):
+    """Returns form letter string based on input dictionary. Dictionary needs 'donor_name' and 'donation' keys"""
     letter_dict['fleebs_floobed'] = round(letter_dict['donation']/20)
     return ('Dear {donor_name},'
             '\n\n\tThank you for your generous gift of ${donation:,.2f}.'
