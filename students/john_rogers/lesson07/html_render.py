@@ -104,32 +104,24 @@ class OneLineTag(Element):
 
 
 class Ul(Element):
-    """
-    unordered list
-    """
+    """ unordered list """
     tag = 'ul'
 
 
 class Li(Element):
-    """
-    element of a list
-    """
+    """ element of a list """
     tag = 'li'
 
 
 class H(OneLineTag):
-    """
-    take in a custom header size
-    """
+    """  use a custom header size """
     def __init__(self, level, content=None, **kwargs):
         super().__init__(content=content, **kwargs)
         self.tag = f'h{level}'
 
 
 class SelfClosingTag(Element):
-    """
-    override the render method to render just the one tag and attributes
-    """
+    """ render just one tag and attributes """
     def __init__(self, content=None, **kwargs):
         if content:
             raise TypeError
@@ -146,9 +138,7 @@ class Meta(SelfClosingTag):
 
 
 class Html(Element):
-    """
-    over ride render and create DOCTYPE tag at head of page
-    """
+    """ create a DOCTYPE tag at top of page """
     tag = 'html'
 
     def render(self, file_out, cur_ind=''):

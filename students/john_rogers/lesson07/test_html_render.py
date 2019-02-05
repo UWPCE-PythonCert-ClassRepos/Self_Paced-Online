@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 """
 pytest module for testing html_render
+Author: JohnR
+Version: .9
+Last updated: 2/04/2019
+Notes:
 """
 
+import pytest
 import html_render as hr
 from io import StringIO as sio
 
 
+@pytest.mark.smoke  # not sure why this isn't working
 def test_element():
     test01 = hr.Element('text foo', style="text-align: center;"
                                           " font-style: oblique;")
@@ -40,7 +46,23 @@ def test_onelinetag():
 
 
 def test_add_items():
-    test05 = hr.Element.add_items(file_out)
-    assert 'foo' in test05.items
+    test05 = hr.Element('test05')
+    foo = sio()
+    test05.add_items(foo)
+    assert foo.getvalue() == 'test05\n'
+
+
+def test_add_items_no_line():
+    test06 = hr.Element('test06')
+    foo = sio()
+    test06.add_items_no_line(foo)
+    assert foo.getvalue() == 'test06'
+
+
+# TODO: create a real test here
+def test_add_values():
+    pass
+
+
 
 
