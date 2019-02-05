@@ -14,17 +14,16 @@ from io import StringIO as sio
 
 @pytest.fixture
 def data():
-    pass
+    return hr.Element('text foo', style='text-align: center;'
+                                        ' font-style: oblique;')
 
 
 def test_element(data):
-    test01 = hr.Element('text foo', style='text-align: center;'
-                                          ' font-style: oblique;')
-    assert test01.content == ['text foo']
-    assert test01.indent == ' '
-    assert test01.tag == ''
-    assert test01.kwargs == {'style': 'text-align: center;'
-                                      ' font-style: oblique;'}
+    assert data.content == ['text foo']
+    assert data.indent == ' '
+    assert data.tag == ''
+    assert data.kwargs == {'style': 'text-align: center;'
+                                    ' font-style: oblique;'}
 
 
 def test_append():
@@ -63,11 +62,9 @@ def test_add_items_no_line():
     assert foo.getvalue() == 'test06'
 
 
-def test_add_values():
-    test07 = hr.Element('test07', style='text-align: center;'
-                                        ' font-style: oblique;')
+def test_add_values(data):
     foo = sio()
-    test07.add_values(foo)
+    data.add_values(foo)
     assert foo.getvalue() == ' style="text-align: center; font-style: oblique;"'
 
 
