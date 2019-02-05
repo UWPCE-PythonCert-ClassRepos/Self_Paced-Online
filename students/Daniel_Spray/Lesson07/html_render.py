@@ -28,4 +28,18 @@ class Body(Element):
 class P(Element):
     tag='p'
 
+class OneLineTag(Element):
+    def render(self,file_out,cur_ind=''):
+        file_out.write(cur_ind+'<'+self.tag+'>')
+        for text in self.content:
+            if isinstance(text,str):
+                file_out.write(text)
+            else:
+                text.render(file_out)
+        file_out.write(cur_ind+'</'+self.tag+'>\n')
 
+class Head(Element):
+    tag='head'
+
+class Title(OneLineTag):
+    tag='title'
