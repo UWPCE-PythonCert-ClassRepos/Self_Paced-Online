@@ -2,8 +2,8 @@
 """
 html_render.py: using classes to render HTML
 Author: JohnR
-Version: .8
-Last updated: 2/03/2019
+Version: 1.0
+Last updated: 2/04/2019
 Notes:
 """
 
