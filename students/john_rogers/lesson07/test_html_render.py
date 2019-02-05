@@ -4,7 +4,7 @@ pytest module for testing html_render
 Author: JohnR
 Version: .9
 Last updated: 2/04/2019
-Notes:
+Notes: TODO: use a fixture to pass static test data
 """
 
 import pytest
@@ -12,10 +12,14 @@ import html_render as hr
 from io import StringIO as sio
 
 
-@pytest.mark.smoke  # not sure why this isn't working
-def test_element():
-    test01 = hr.Element('text foo', style="text-align: center;"
-                                          " font-style: oblique;")
+@pytest.fixture
+def data():
+    pass
+
+
+def test_element(data):
+    test01 = hr.Element('text foo', style='text-align: center;'
+                                          ' font-style: oblique;')
     assert test01.content == ['text foo']
     assert test01.indent == ' '
     assert test01.tag == ''
@@ -59,9 +63,12 @@ def test_add_items_no_line():
     assert foo.getvalue() == 'test06'
 
 
-# TODO: create a real test here
 def test_add_values():
-    pass
+    test07 = hr.Element('test07', style='text-align: center;'
+                                        ' font-style: oblique;')
+    foo = sio()
+    test07.add_values(foo)
+    assert foo.getvalue() == ' style="text-align: center; font-style: oblique;"'
 
 
 
