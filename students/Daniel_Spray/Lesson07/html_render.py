@@ -18,13 +18,17 @@ class Element:
         file_out.write('>\n')
         for text in self.content:
             if isinstance(text,str):
-                file_out.write(text+'.\n')
+                file_out.write(cur_ind+self.indent+text+'\n')
             else:
-                text.render(file_out)
+                new_ind=cur_ind+'    '
+                text.render(file_out,new_ind)
         file_out.write(cur_ind+'</'+self.tag+'>\n')
 
 class Html(Element):
     tag='html'
+    def render(self,file_out,cur_ind=''):
+        file_out.write('<!DOCTYPE html>\n')
+        Element.render(self,file_out,cur_ind='')
 
 class Body(Element):
     tag='body'
@@ -34,13 +38,17 @@ class P(Element):
 
 class OneLineTag(Element):
     def render(self,file_out,cur_ind=''):
-        file_out.write(cur_ind+'<'+self.tag+'>')
+        file_out.write(cur_ind+'<'+self.tag)
+        if self.kwargs != {}:
+            for style, name in self.kwargs.items():
+                file_out.write(' '+style+'="'+name+'"')
+        file_out.write('>')
         for text in self.content:
             if isinstance(text,str):
                 file_out.write(text)
             else:
                 text.render(file_out)
-        file_out.write(cur_ind+'</'+self.tag+'>\n')
+        file_out.write('</'+self.tag+'>\n')
 
 class Head(Element):
     tag='head'
@@ -61,3 +69,24 @@ class Hr(SelfClosingTag):
 
 class Br(SelfClosingTag):
     tag='br'
+
+class A(OneLineTag):
+    tag='a'
+    def __init__(self, link, content):
+        OneLineTag.__init__(self,content,href=link)
+
+class Ul(Element):
+    tag='ul'
+
+class Li(Element):
+    tag='li'
+
+class H(OneLineTag):
+    def __init__(self, size, content):
+        OneLineTag.__init__(self,content)
+        self.tag = 'h'+str(size)
+
+class Meta(SelfClosingTag):
+    tag='meta'
+        
+    
