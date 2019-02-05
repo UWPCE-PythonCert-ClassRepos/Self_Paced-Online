@@ -2,9 +2,9 @@
 """
 pytest module for testing html_render
 Author: JohnR
-Version: .9
+Version: 1.0
 Last updated: 2/04/2019
-Notes: TODO: use a fixture to pass static test data
+Notes:
 """
 
 import pytest
@@ -16,6 +16,11 @@ from io import StringIO as sio
 def data():
     return hr.Element('text foo', style='text-align: center;'
                                         ' font-style: oblique;')
+
+
+@pytest.fixture
+def base():
+    return hr.Element('text foo')
 
 
 def test_element(data):
@@ -31,41 +36,35 @@ def test_append(data):
     assert data.content == ['text foo', 'test append method']
 
 
-def test_render():
-    test03 = hr.Element('test03')
-    test03.tag = 'html'
+def test_render(base):
+    base.tag = 'html'
     file_out = sio()
-    test03.render(file_out)
-    assert file_out.getvalue() == '<html>\ntest03\n</html>\n'
+    base.render(file_out)
+    assert file_out.getvalue() == '<html>\ntext foo\n</html>\n'
 
 
 def test_onelinetag():
-    test04 = hr.OneLineTag('test04')
-    test04.tag = 'title'
+    one_tag = hr.OneLineTag('text foo')
+    one_tag.tag = 'title'
     file_out = sio()
-    test04.render(file_out)
-    assert file_out.getvalue() == '<title>test04</title>\n'
+    one_tag.render(file_out)
+    assert file_out.getvalue() == '<title>text foo</title>\n'
 
 
-def test_add_items():
-    test05 = hr.Element('test05')
+def test_add_items(base):
     file_out = sio()
-    test05.add_items(file_out)
-    assert file_out.getvalue() == 'test05\n'
+    base.add_items(file_out)
+    assert file_out.getvalue() == 'text foo\n'
 
 
-def test_add_items_no_line():
-    test06 = hr.Element('test06')
+def test_add_items_no_line(base):
     file_out = sio()
-    test06.add_items_no_line(file_out)
-    assert file_out.getvalue() == 'test06'
+    base.add_items_no_line(file_out)
+    assert file_out.getvalue() == 'text foo'
 
 
 def test_add_values(data):
     file_out = sio()
     data.add_values(file_out)
     assert file_out.getvalue() == ' style="text-align: center; font-style: oblique;"'
-
-
-
 
