@@ -11,7 +11,11 @@ class Element:
         self.content.append(new_content)
 
     def render(self,file_out,cur_ind=''):
-        file_out.write(cur_ind+'<'+self.tag+'>\n')
+        file_out.write(cur_ind+'<'+self.tag)
+        if self.kwargs != {}:
+            for style, name in self.kwargs.items():
+                file_out.write(' '+style+'="'+name+'"')
+        file_out.write('>\n')
         for text in self.content:
             if isinstance(text,str):
                 file_out.write(text+'.\n')
@@ -43,3 +47,17 @@ class Head(Element):
 
 class Title(OneLineTag):
     tag='title'
+
+class SelfClosingTag(Element):
+    def render(self,file_out,cur_ind=''):
+        file_out.write(cur_ind+'<'+self.tag)
+        if self.kwargs != {}:
+            for style, name in self.kwargs.items():
+                file_out.write(' '+style+'="'+name+'"')
+        file_out.write(' />\n')
+
+class Hr(SelfClosingTag):
+    tag='hr'
+
+class Br(SelfClosingTag):
+    tag='br'
