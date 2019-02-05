@@ -1,5 +1,6 @@
 import sys
 
+#Establish donor data dictionary
 donation_data = {
 'William Gates, III': [100000.00,553784.49],
 'Mark Zuckerberg': [5000.00,5000.00,6396.10],
@@ -7,7 +8,9 @@ donation_data = {
 'Paul Allen': [100.00,100.00,508.42]
 }
 
+#Create a selection menu
 def menu():
+
     selection = input("""This program will hopefully help you send some meaningful messages
 Type the corresponding number to select from the following list:
 
@@ -24,15 +27,17 @@ Type the corresponding number to select from the following list:
         '4': quit
     }
     
-    while selection not in switch_menu:
+    try:
+        switch_menu[selection]()
+    except KeyError:
         print("Sorry, I didn't recognize that command")
         return
 
-    switch_menu[selection]()
-
+#Quit the program
 def quit():
     sys.exit()
 
+#Prompt inputs for new donation data
 def send_thank_you():
     name = input("Please enter a full name > ")
 	
@@ -44,11 +49,16 @@ def send_thank_you():
     if name.lower() == "quit":
         return
     
-    donation = input("Donation Amount? > ")
-    if donation.lower() == "quit":
-        return
-
-    donation_data.setdefault(name,[]).append(float(donation))
+    while True:
+        donation = input("Donation Amount? > ")
+        if donation.lower() == "quit":
+            return
+        try:
+            donation_data.setdefault(name,[]).append(float(donation))
+            break
+        except ValueError:
+            print("That's not a valid donation")
+		
     print("Data added!")
     letter_dictionary = {'donor':name,'amount':round(float(donation),2)}
     letter(letter_dictionary)
@@ -56,6 +66,7 @@ def send_thank_you():
 
     return donation_data
 	
+#Format a letter for one donor and donation
 def letter(letter_dictionary):		
     content = """
 Dear {donor},
@@ -68,12 +79,13 @@ The Charity
     print(content)
     return(content)
 
-	
+#Build a report
 def create_report():
     result = calculation()
     table(result)
     return
 
+#Make a formatted table from the sorted calculation data output
 def table(result):
     print(" ")
     print("{:<24}{:<1}{:^13}{:<1}{:^13}{:<1}{:^17}".format('Donor Name','|','Total Given','|','Num Gifts','|','Average Gift'))
@@ -85,8 +97,11 @@ def table(result):
 def use_total(amounts):
     return amounts[2]
 
+#Calculate averages and return sorted data for each donor
 def calculation():
     data = []
+    #potential comprehension application
+    #data=[[donor, "$", round(sum(donations),2), len(donations), "$", round(float(round(sum(donations),2))/float(len(donations)),2)] for donor, donations in donation_data.items()]
 
     for donor, donations in donation_data.items():
         total_given = round(sum(donations),2)
@@ -97,6 +112,7 @@ def calculation():
     sorted_data = sorted(data,key=use_total,reverse=True)
     return sorted_data
 
+#Write letters to all donors in text documents
 def send_all():
     for person in donation_data:
         with open(person.replace(' ','_')+'.txt','w') as f:

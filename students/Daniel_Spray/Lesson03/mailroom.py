@@ -2,7 +2,7 @@ import sys
 
 donation_data = [["William Gates, III","Mark Zuckerberg","Jeff Bezos","Paul Allen"],[653784.49,16396.10,877.33,708.42], [2,3,1,3]]
 
-def main(donation_data=donation_data):
+def main():
     while True:
         print("""This program will hopefully help you send some meaningful messages
 Type the corresponding number to select from the following list:
@@ -15,7 +15,7 @@ Type the corresponding number to select from the following list:
         if response == "1":
             send_thank_you()
         elif response == "2":
-            create_report(donation_data)
+            create_report()
         elif response == "3":
             sys.exit()
         else:
@@ -38,12 +38,12 @@ def send_thank_you(donation_data = donation_data):
         name = input("Please enter a full name > ")
 
     if name.lower() == "quit":
-        sys.exit()
+        return
 
     if name not in donors:
         donation = input("Donation Amount? > ")
         if donation.lower() == "quit":
-            sys.exit()
+            return
         else:
             donors.append(name)
             total_given.append(float(donation))
@@ -51,18 +51,19 @@ def send_thank_you(donation_data = donation_data):
             print("Donor has been added to the list")
             letter(name,donation)
 
-            main([donors, total_given, num_gifts])
+            donation_data = [donors, total_given, num_gifts]
 
     else:
         donor_index = donors.index(name)
         donation = input("Donation Amount? > ")
         if donation.lower() == "quit":
-            sys.exit()
+            return
         else:
             total_given[donor_index] += float(donation)
             num_gifts[donor_index] += 1
             letter(name,donation)
-            main([donors, total_given, num_gifts])
+            donation_data = [donors, total_given, num_gifts]
+    return donation_data
 	
 def letter(name,donation):		
     donation=round(float(donation),2)   
@@ -76,7 +77,7 @@ The Charity
 """.format(name,donation))
 
 	
-def create_report(donation_data):
+def create_report(donation_data=donation_data):
     result = calculation(donation_data[0],donation_data[1],donation_data[2])
     table(result)
     main()
@@ -89,7 +90,7 @@ def table(result):
         print("{:<25}{:<1}{:>12.2f}{:>14}{:>2}{:>13.2f}".format(*row))
     print(" ")
 
-def useTotal(amounts):
+def use_total(amounts):
     return amounts[2]
 
 def calculation(donors, total_given, num_gifts):
@@ -106,7 +107,7 @@ def calculation(donors, total_given, num_gifts):
         compiled_data = [donors[index_data],"$",round(total_given[index_data],2),num_gifts[index_data],"$",round(averages[index_data],2)]
         data.append(compiled_data)
     
-    sortedData = sorted(data,key=useTotal,reverse=True)
+    sortedData = sorted(data,key=use_total,reverse=True)
     return sortedData
 
 if __name__ == '__main__':
