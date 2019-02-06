@@ -112,6 +112,17 @@ class TestHtmlRender(unittest.TestCase):
         actual = f.getvalue()
         self.assertEqual(expected,actual)
 
+#Step 8 meta test
+
+    def test_meta(self):
+        '''Run a test for html, body, and p tags'''
+        test_content = hr.Meta("test string",charset="UTF-8")
+        f = StringIO()
+        test_content.render(f)
+        expected = '<meta charset="UTF-8" />\n'
+        actual = f.getvalue()
+        self.assertEqual(expected,actual)
+
 #Final output test
 
     def test_final_output(self):
