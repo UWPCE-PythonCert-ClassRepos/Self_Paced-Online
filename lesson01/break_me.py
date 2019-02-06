@@ -1,13 +1,28 @@
-#def nameError():  #Success
-#    print(myself)
+'''
+#name error
+a = 5
+del a
+a
+'''
 
-#def typeError():  #Success
-#    list = {1,2}
-#    print(4 + list)
+'''
+#type error
+a = "my name"
+b = 5
 
-#def syntaxError():  #Success
-#    myself =; "myself"
+c = b + a
+'''
 
-#def attrError():  #Success
-#    import os
-#    os.something
+'''
+#syntax error
+def my_func ()
+	return pass
+
+my_func
+'''
+
+'''
+#attribute error
+a = 5
+a.Capitalize
+'''
