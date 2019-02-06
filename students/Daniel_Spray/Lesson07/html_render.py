@@ -105,3 +105,4 @@ class H(OneLineTag):
 class Meta(SelfClosingTag):
     '''Create a class for making a meta tag'''
     tag='meta'
+
