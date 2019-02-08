@@ -2,7 +2,7 @@
 """
 Create a class called Circle with various properties and methods
 Author: JohnR
-Version: 0.1
+Version: 0.3
 Last updated: 2/07/2019
 Notes: first pass, creating a generic circle class without using
         any magic methods/ decorators/ etc.
@@ -11,9 +11,8 @@ Notes: first pass, creating a generic circle class without using
 
 class Circle:
     """
-    circle class for some basic math functions such as area
-    Note: Define instance by either radius or diameter
-    1) compute area
+    Circle class for some basic math functions such as area.
+    Make pi static and create a default for radius.
     2) print circle and get something nice
     3) add two circles together
     4) compare two circles for equality
@@ -26,13 +25,19 @@ class Circle:
 
     def __init__(self, radius=1):
         self.radius = radius
-        self.area = radius * radius * Circle.pi
+        self.area = self.radius * self.radius * Circle.pi
+
+    @property
+    def diameter(self):
+        return self.radius * 2
+
+    @diameter.setter
+    def diameter(self, val):
+        self.radius = val / 2
 
     def __repr__(self):
-        pass
+        return f'A circle where pi={Circle.pi} and radius={self.radius}'
 
     def get_circumference(self):
         return self.radius * Circle.pi * 2
-
-
 
