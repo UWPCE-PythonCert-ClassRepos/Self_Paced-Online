@@ -65,15 +65,15 @@ def write_letter(dit):
             with open(file_name, 'w') as f:
                 f.write(letter(key, value[0]))
                 print(f"Prepared letter for '{key:s}'.")
-        except IOError as io_err:
-            print(f"Error: <{io_err}>. Unable to write the file on disk or directory locked for writting.")
+        except (IOError, OSError, PermissionError, IsADirectoryError) as iosdp_err:
+            print(f"Error: <{iosdp_err}>. Unable to write the file on disk or directory locked for writting.")
             
 #-----------------------------------------------
 def switch_directories(dit, current_directory, new_directory):
     try: 
         os.chdir(new_directory)
-    except: 
-        print(f"Something wrong with specified directory. Exception <{sys.exc_info()}>") 
+    except (FileNotFoundError, WindowsError) as fnfw_err: 
+        print(f"Something wrong with specified directory. Exception {fnfw_err} \n<{sys.exc_info()}>") 
     new_directory = os.getcwd()
     write_letter(dit)
     print(f"\nThank-you letters are storred in {new_directory}.")
@@ -112,38 +112,40 @@ def name_donation_letter(dit):
                 print("We are sorry, but '{}' does not seem to be a not a valid name. Please re-enter;".format(entered))
             else:
                 print ("\nAdd new donor: {}".format(entered))
+                amount = input("Welcome! Please enter your generous donation:\n")
                 try:
-                    amount = input("Welcome! Please enter your generous donation:\n")
                     amount = float(amount)
-                    #gardian - when donation is positive, add the donor to the list along with donation and print a thank-you note. 
-                    if amount > 0:
-                        add_donation_print_letter(dit, entered, amount)
-                    else: 
-                        print ("We accept only positive donations. Please enter a donation to become one of our donors.")
                 except ValueError as v_err:
                     print(f"\nWrong amount - error: '{v_err}'. Please re-enter the amount.\n")
-        else: 
-            try:
-                amount = input("Welcome back {}! Please enter your new donation:\n".format(entered))
-                amount = float(amount)
+                #gardian - when donation is positive, add the donor to the list along with donation and print a thank-you note. 
                 if amount > 0:
                     add_donation_print_letter(dit, entered, amount)
-                #gardian - when an old donor tries to withdraw money inform him his money was spent.
-                elif amount < 0:
-                    print ('Money you donated to charity in the past was spent for noble causes, we cannot return.\n')   
                 else: 
-                    print ("We accept only non-zero donations.")
+                    print ("We accept only positive donations. Please enter a donation to become one of our donors.")
+       
+        else:
+            amount = input("Welcome back {}! Please enter your new donation:\n".format(entered))
+            try:
+                amount = float(amount)
             except ValueError as v_err:
                 print(f"\nWrong amount - error: '{v_err}'. Please re-enter the amount.\n")
+            if amount > 0:
+                add_donation_print_letter(dit, entered, amount)
+            #gardian - when an old donor tries to withdraw money inform him his money was spent.
+            elif amount < 0:
+                print ('Money you donated to charity in the past was spent for noble causes, we cannot return.\n')   
+            else: 
+                print ("We accept only non-zero donations.")
                     
 #-----------------------------------------------
 def report(dit):
     #compute statistics (sum, count, average) 
-    tbl = {}
-    for key, values in dit.items():
-        tbl[key] = [sum(values), len(values), round(sum(values)/len(values), 2)]
+    #tbl = {}
+    #for key, values in dit.items():
+        #tbl[key] = [sum(values), len(values), round(sum(values)/len(values), 2)]
         #tbl.update({key:[sum(values), len(values), round(sum(values)/len(values), 2)]})
-    dst = dict(sorted(tbl.items(), key = lambda x: x[1], reverse = True))
+    stats = {key: [sum(value), len(value), round(sum(value)/len(value), 2)] for key, value in dit.items()}
+    dst = dict(sorted(stats.items(), key = lambda x: x[1], reverse = True))
     
     #print statistics
     print("\n")
@@ -168,15 +170,15 @@ switch_dict = {1: name_donation_letter,
   
 #-----------------------------------------------
 def main(switch_dict):
-        while True:
-            try:
-                alternative = int(input("Please select: \n1 : 'Send a Thank You', \n2 : 'Create a Report', \n3 : 'Send letters to everyone', \n4 : 'Exit'\n"))
-                switch_dict[alternative](donors)
-            except (ValueError, TypeError, KeyError) as vtk_err:
-                print(f"Error: <{vtk_err}>. Please select one of the options above. Enter 4 if you like to exit the program.\n")
-            except SystemExit:
-                print("--- Program closed ---")
-                break
+    while True:
+        try:
+            alternative = int(input("Please select: \n1 : 'Send a Thank You', \n2 : 'Create a Report', \n3 : 'Send letters to everyone', \n4 : 'Exit'\n"))
+            switch_dict[alternative](donors)
+        except (ValueError, TypeError, KeyError) as vtk_err:
+            print(f"Error: <{vtk_err}>. Please select one of the options above. Enter 4 if you like to exit the program.\n")
+        except SystemExit:
+            print("--- Program closed ---")
+            break
     
 #===============================================
 if __name__ == '__main__':

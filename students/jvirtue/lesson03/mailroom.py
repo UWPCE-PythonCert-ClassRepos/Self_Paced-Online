@@ -5,7 +5,7 @@
 
 
 #Thank You Letter Section
-def Send_Thanks(db_name):
+def send_thanks(db_name):
     response = "Not a donor or the word list"
     while response not in db_name:
         print("----------------------------------------")
@@ -17,7 +17,7 @@ def Send_Thanks(db_name):
             print("----------------------------------------")
             print("Here are our Donors:> ")
             print(donor_list(db_name))
-        elif response != "List":
+        else:
             print("----------------------------------------")
             amount = int(input("How much money did {} donate?> ".format(response)))
             if response not in donor_list(db_name):
@@ -42,45 +42,44 @@ def thank_you(person,amount):
     return "Thank you {} ".format(person) + "for the donation in the amount of {}!".format(amount)
 
 #Create a report
-def Sum_Gift(donor, db_name):
-    total = 0
+def crunch_numbers(db_name):
+    crunch_numbers = []
     for i in db_name:
-        if i[0] == donor:
-            total = sum(i[1:])
-    return total
+        donor = i[0]
+        donations = i[1:]
+        sum_gift = sum(donations)
+        count = len(donations)
+        avg_gift = sum_gift / count
+        crunch_numbers.append([donor,sum_gift,count,avg_gift])
+        crunch_numbers.sort(key=sort_key,reverse=True)
+    return crunch_numbers
 
-def donation_count(donor, db_name):
-    count = 0
-    for i in db_name:
-        if i[0] == donor:
-            count = len(i[1:])
-    return count
 
-def Create_Report(db_name):
-    dnrNames = donor_list(db_name)
+def sort_key(crunch_numbers):
+    return crunch_numbers[1]
+
+def create_report(db_name):
     print(f'{"Donor Name":<20}{"|":<1}{"Total Given":^15}{"|":<1}{"Num Gifts":^15}{"|":<1}{"Average Gift":>15}')
     print("-" * 68)
-    iCount = 1
-    for i in dnrNames:
-        iTotalGift = Sum_Gift(i, db_name)
-        iCount = donation_count(i, db_name)
-        iAveGift = iTotalGift / iCount
-        s = f'{i:<20}{" ":<1}{"$":<1}{iTotalGift:>14}{" ":<1}{iCount:>15}{" ":<1}{"$":<1}{iAveGift:>14}'
+    sort_table = crunch_numbers(db_name)
+    for item in sort_table:
+        s = f'{item[0]:<20}{" ":<1}{"$":<1}{item[1]:>14}{" ":<1}{item[2]:>15}{" ":<1}{"$":<1}{item[3]:>14}'
         print(s)
+
 
 #Options Menu
 if __name__ == '__main__':
-    donors_db = [["Fred Flintstone", 100,200],["Wilma Flintstone", 300],["Bamm-Bamm Rubble", 50,30,40],["Barney Rubble", 75],["Pebbles Flintstone",50]]
+    donors_db = [["Fred Flintstone", 100,200],["Wilma Flintstone", 300],["Bamm-Bamm Rubble", 50,30,40],["Barney Rubble", 75],["Pebbles Flintstone",500]]
     while True:
         print("Would you like to;")
-        print("1: Send a 'Thank You'")
-        print("2: Create a 'Report'")
-        print("3: 'Quit'")
-        response = input("Please select option: ")
-        if response.title() == "Thank You":
-            Send_Thanks(donors_db)
-        elif response.title() == "Report":
-            Create_Report(donors_db)
-        elif response.title() == "Quit":
+        print("1: Send a Thank You")
+        print("2: Create a Report")
+        print("3: Quit")
+        response = input("Please select option [Enter number 1 - 3]: ")
+        if response.title() == "1":
+            send_thanks(donors_db)
+        elif response.title() == "2":
+            create_report(donors_db)
+        elif response.title() == "3":
             break
         print()

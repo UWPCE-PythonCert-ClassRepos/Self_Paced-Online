@@ -201,8 +201,11 @@ def print_summary(db):
     print('-' * 60)
 
     for donor in donors:
-        print(f'{donor[0][0]:<17} ${donor[1][0]:^15} {donor[2][0]:^13}'
-              f'${donor[3][0]:^8}')
+        try:
+            print(f'{donor[0][0]:<17} ${donor[1][0]:^15} {donor[2][0]:^13}'
+                  f'${donor[3][0]:^8}')
+        except Exception as e:
+            print(e)
 
 
 if __name__ == '__main__':
