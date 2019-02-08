@@ -143,12 +143,8 @@ def create_new_text(trigramdict, text_length):
     #get how many words are left from user's request
     words_left = text_length - len(new_text.split())
 
-    print(words_left)
-
     #get a random number of paragraphs between length/100 and length
     paragraph_count = random.randint(words_left//100, words_left//10)
-
-    print(words_left, paragraph_count)
 
     #create number of requested paragraphs with 2 to 20 setences until no more words are left
     for i in range(paragraph_count):
