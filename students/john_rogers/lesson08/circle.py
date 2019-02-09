@@ -2,8 +2,8 @@
 """
 Create a class called Circle with various properties and methods
 Author: JohnR
-Version: 0.3
-Last updated: 2/07/2019
+Version: 0.4
+Last updated: 2/09/2019
 Notes: base functionality in place
 """
 
@@ -15,9 +15,6 @@ class Circle:
     3) add two circles together
     4) compare two circles for equality
     5)  be able to put them in a list and sort them
-        A) use properties
-        B) classmethod
-        C) self-defined special methods
     """
     pi = 3.14159
 
