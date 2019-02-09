@@ -4,8 +4,7 @@ Create a class called Circle with various properties and methods
 Author: JohnR
 Version: 0.3
 Last updated: 2/07/2019
-Notes: first pass, creating a generic circle class without using
-        any magic methods/ decorators/ etc.
+Notes: base functionality in place
 """
 
 
@@ -13,7 +12,6 @@ class Circle:
     """
     Circle class for some basic math functions such as area.
     Make pi static and create a default for radius.
-    2) print circle and get something nice
     3) add two circles together
     4) compare two circles for equality
     5)  be able to put them in a list and sort them
