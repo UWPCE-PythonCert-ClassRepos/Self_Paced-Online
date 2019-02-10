@@ -1,10 +1,12 @@
 import os
 import sys
 
+
 def new_thank_you():
     """Add donation amount to new or existing donor and generate a thank you text."""
-    while True:
-        current_dict = {'donor_name': input("Enter donor name, or type 'list' for current donor list:")}
+    donation_added = 0
+    while not donation_added:
+        current_dict = {'donor_name': input("\nEnter donor name, or type 'list' for current donor list:")}
         if current_dict['donor_name'] == 'list':
             for d in ddb:  # display all donor names on user input 'list'
                 print(d + ': ', ddb[d])
@@ -12,14 +14,23 @@ def new_thank_you():
             for key in ddb.keys():
                 if key == current_dict['donor_name']:
                     print("Donor name found in database.")
-                    current_dict['donation'] = float(input('Enter new donation amount:'))
-                    ddb[key].append(current_dict['donation'])
-                    break
+                    while not donation_added:
+                        try:
+                            current_dict['donation'] = float(input('\nEnter new donation amount:'))
+                            ddb[key].append(current_dict['donation'])
+                            donation_added = 1
+                            break
+                        except ValueError:
+                            print("Input was not a number.")
             else:
                 print(f"Donor name not found. Will add {current_dict['donor_name']} to database.")
-                current_dict['donation'] = float(input('Enter donation amount:'))
-                ddb[current_dict['donor_name']] = [current_dict['donation']]
-            break
+                while not donation_added:
+                    try:
+                        current_dict['donation'] = float(input('\nEnter donation amount:'))
+                        ddb[current_dict['donor_name']] = [current_dict['donation']]
+                        donation_added = 1
+                    except ValueError:
+                        print("Input was not a number.")
 
     print('\n\n', create_letter(current_dict))
 
@@ -35,8 +46,9 @@ def report():
         num_gifts = len(ddb[key])
         average_gift = total_given/num_gifts
         report_table += [(key, '$' + str(total_given), str(num_gifts), '$' + str(average_gift))]
+        print(report_table)
 
-    report_table = report_table_header + sorted(report_table, key=lambda list:int(list[1][1:]), reverse=True)
+    report_table = report_table_header + sorted(report_table, key=lambda k: float(k[1][1:]), reverse=True)
 
     mtl = []  # list for the longest characters in each column
     for i in range(len(report_table[0])):
@@ -89,6 +101,7 @@ def goodbye():
     print("goodbye!")
     sys.exit()
 
+
 ddb = {'Archie Bunker': [20, 100, 75, 98],
        'Beyonce Knowles': [2000000, 50000000],
        'Charlie Kauffman': [12345],
@@ -110,7 +123,7 @@ def main():
 
         try:
             user_menu[user_input]()
-        except TypeError:
+        except KeyError:
             print('\nOption not found. Please enter the numeral 1,2,3 or 4')
 
 
