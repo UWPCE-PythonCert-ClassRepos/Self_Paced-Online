@@ -53,4 +53,3 @@ else:
     more_joke = more_fun(lang[2])
 finally:
     last_fun()
-    
