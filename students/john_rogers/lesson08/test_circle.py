@@ -40,6 +40,11 @@ def test_sort(circles):
     assert foo_reverse[4].radius == 2
 
 
+def test_from_diameter():
+    c1 = c.Circle.from_diameter(10)
+    assert c1.radius == 5
+
+
 def test_add():
     c1 = c.Circle(5)
     c2 = c.Circle(10)
@@ -54,3 +59,6 @@ def test_equality():
     assert c1.circumference() == c2.circumference()
     assert c1.area == c2.area
 
+
+def test_area():
+    pass

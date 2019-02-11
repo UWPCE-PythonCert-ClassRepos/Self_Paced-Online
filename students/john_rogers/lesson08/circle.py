@@ -4,25 +4,26 @@ Create a class called Circle with various properties and methods
 Author: JohnR
 Version: 0.9
 Last updated: 2/11/2019
-Notes: TODO: able to set area currently - should throw an attribute error
+Notes: corrected area, replaced static pi with import math
+TODO: implement other math methods
 """
+
+from math import pi
 
 
 class Circle(object):
     """
     Circle class for some basic math functions such as area, equality, etc.
     """
-    pi = 3.14159
 
     def __init__(self, radius=5):
         self.radius = radius
-        self.area = round(self.radius * self.radius * Circle.pi)
 
     def __repr__(self):
-        return f'A circle where pi={Circle.pi} and radius={self.radius}'
+        return f'A circle where pi={pi} and radius={self.radius}'
 
     def __str__(self):
-        return f'A circle where pi={Circle.pi} and radius={self.radius}'
+        return f'A circle where pi={pi} and radius={self.radius}'
 
     def __lt__(self, other):
         return self.radius < other.radius
@@ -61,6 +62,11 @@ class Circle(object):
     def sort_key(self):
         return self.radius
 
+    @property
+    def area(self):
+        return round(self.radius * self.radius * pi)
+
     def circumference(self):
-        return round(self.radius * Circle.pi * 2)
+        return round(self.radius * pi * 2)
+
 
