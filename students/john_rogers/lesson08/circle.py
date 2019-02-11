@@ -4,7 +4,7 @@ Create a class called Circle with various properties and methods
 Author: JohnR
 Version: 0.9
 Last updated: 2/11/2019
-Notes: need to add multiplication and other math functions
+Notes: TODO: able to set area currently - should throw an attribute error
 """
 
 
