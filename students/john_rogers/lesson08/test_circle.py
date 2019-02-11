@@ -2,7 +2,7 @@
 """
 pytest for circle.py
 Author: JohnR
-Version: .9
+Version: 1.0
 Last Updated: 2/11/19
 Notes:
 """
@@ -76,11 +76,6 @@ def test_other():
     c2 = c.Circle(5)
     assert c1 < c2
     assert c2 > c1
-
-
-
-
-
-
-
+    assert c1 != c2
+    assert c1.radius * 2 == 2 * c1.radius
 

@@ -2,10 +2,9 @@
 """
 Create a class called Circle with various properties and methods
 Author: JohnR
-Version: 0.9
+Version: 1.0
 Last updated: 2/11/2019
-Notes: corrected area, replaced static pi with import math
-TODO: implement other math methods
+Notes:
 """
 
 from math import pi
