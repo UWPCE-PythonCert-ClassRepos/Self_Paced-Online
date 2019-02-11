@@ -1,87 +1,76 @@
 
-import operator
-'''
-Class to store Donor object and its attributes
-'''
-class Donor:
-    def __init__(self, name, amount=0, num=0):
-        self.name = name
-        self.amount_gift = amount
-        self.num_gift = num
-    '''function to calculate average donation'''
-    def getAverge(self):
-        return (self.amount_gift/self.num_gift)
-    '''function to return number of donations'''
-    def getCount(self):
-        return self.num_gift
-    '''function to return historical amount'''
-    def getAmount(self):
-        return self.amount_gift
-    def getName(self):
-        return self.name
-    '''function to add new donation amount to historical'''
-    def addAmount(self, addition):
-        self.amount_gift += addition
-        self.num_gift += 1
+import sys
+
+#create a donor_db as a list
+donor_db = [("William Gates, III", [653772.32, 12.17]),
+            ("Jeff Bezos", [877.33]),
+            ("Paul Allen", [663.23, 43.87, 1.32]),
+            ("Mark Zuckerberg", [1663.23, 4300.87, 10432.0]),
+            ("Donald Trump", [50000.24, 1002])
+            ]
+
+prompt = "\n".join(("Welcome to the mail room",
+          "Please choose from below options:",
+          "S - Send a Thank You",
+          "C - Create a Report",
+          "Q - Exit",
+          ">>> "))
+
+
+def view_donors():
+    print("\n".join(donor_db))
+
+def quit_program():
+    print("Thank you. Bye!")
+    sys.exit(0)  # exit the interactive script
+
+def send_thank_you():
+
+    input_Name = input("Please enter a name > ")
+    while("list" in input_Name):
+        for d in donor_db:
+            print(d[0])
+        input_Name = input("Please enter a name > ")
+    
+    is_NewDonor = False
+
+    for d in donor_db:
+        if input_Name in d[0]:
+            select_Donor = d
+            break
+    else: 
+        select_Donor = (input_Name, [])
+        is_NewDonor = True
+
+    input_Amount = input(f"{input_Name} please input amount > ")
+    select_Donor[1].append((float(input_Amount)))
+
+    print(f'Thank you {select_Donor[0]} for your generous donation of ${float(input_Amount):,.2f}')
+
+    #add Donor if he/she is not in donor_db
+    if is_NewDonor:
+        donor_db.append(select_Donor)
+
+def sort_key(donor):
+    return sum(donor[1])
+
+def create_report():
+
+    space=''
+    print(f'Donor Name {space:<15}| Total Given {space:<10}| Num Gifts {space:<9}| Average Gift {space:<19}')
+    print("-"*85)
+
+    sort_Donor = sorted(donor_db, key=sort_key, reverse = True)
+    for d in sort_Donor:
+        print("{:<25} ${:>12,.2f}{:>22}{:<10}${:>12,.2f}".format(d[0], sum(d[1]), len(d[1]), space,sum(d[1])/len(d[1])))
 
 if __name__ == "__main__":
-    #create a dict object to store donors
-    DonorDict = {}
-    D1 = Donor("William Gates, III", 100.2, 2)
-    DonorDict['William Gates, III'] = D1
-    D2 = Donor("Mark Zuckerberg", 3000.2, 3)
-    DonorDict['Mark Zuckerberg'] = D2
-    D3 = Donor("Jeff Bezos", 100000.2, 3)
-    DonorDict['Jeff Bezos'] = D3
-    D4 = Donor("Paul Allen", 5000.24, 1)
-    DonorDict['Paul Allen'] = D4
-    D5 = Donor("Donald Trump", 50000.24, 1)
-    DonorDict['Donald Trump'] = D5
     
-    #sort = sorted(DonorDict.items(), key=operator.itemgetter(1).getAmount(), reverse = True)
-
-    response = input("Please select S for \"Send a Thank You\" C for \"Create a Report\" or Q to quit >")
-    while ("S" or "C" in response.upper()):
-        if 'S' in response.upper():
-            print("Do Thank you")
-            inputName = input("Please enter a name > ")
-            while("list" in inputName):
-                for k,v in DonorDict.items():
-                    print(k)
-                inputName = input("Please enter a name > ")
-            if inputName in DonorDict:
-                selectDonor = DonorDict[inputName]
-            else:
-                selectDonor = Donor(inputName)
-            
-            inputAmount = input(f"{inputName} please input amount > ")
-            selectDonor.addAmount(float(inputAmount))
-
-            print(f'Thank you {selectDonor.getName()} for your generous donation of ${float(inputAmount):,.2f}')
-
-            #add Donor if he/she is not in DonorDict
-            if inputName not in DonorDict:
-                DonorDict[selectDonor.getName()] = selectDonor
-
-            response = input("Please select S for \"Send a Thank You\" C for \"Create a Report\" or Q to quit >")
-            
-        elif 'C' in response.upper():
-            #print(f"Donor Name                | Total Given | Num Gifts | Average Gift")
-            space=''
-            print(f'Donor Name {space:<15}| Total Given {space:<10}| Num Gifts {space:<9}| Average Gift {space:<19}')
-            print("-"*85)
-
-            #Have to use lambda to sort the historical amount donated
-            sortDonor = sorted(DonorDict.items(), key=lambda x: x[1].getAmount(), reverse = True)
-            for d in sortDonor:
-                #print("{:>25} ${}{:,.2f}{:>18}{:,.2f}{:>5}${:>15}{:.2f}".format(v.getName(), '  ', 
-                #        v.getAmount(),space, v.getCount(),space,space, v.getAverge()))
-                print("{:<25} ${:>12,.2f}{:>22}{:<10}${:>12,.2f}".format(d[1].getName(), d[1].getAmount(), d[1].getCount(), space,d[1].getAverge()))
-
-            response = input("Please select S for \"Send a Thank You\" C for \"Create a Report\" or Q to quit >")
-
-        else: 
-            print("Thank you")
-            exit() 
-
-       
+    while True:
+        response = input("Please select S for \"Send a Thank You\" C for \"Create a Report\" or Q to quit >").upper()
+        if response == "S":
+            send_thank_you()
+        elif response == "C":
+            create_report()
+        elif response == "Q":
+            quit_program()
