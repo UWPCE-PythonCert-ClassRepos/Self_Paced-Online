@@ -60,5 +60,27 @@ def test_equality():
     assert c1.area == c2.area
 
 
-def test_area():
-    pass
+def test_multiply():
+    c1 = c.Circle(10)
+    c2 = c.Circle(10)
+    c3 = c1 * c2
+    assert c3 == 100
+    c4 = c3 * 2
+    assert c4 == 200
+    c5 = 2 * c4
+    assert c5 == 400
+
+
+def test_other():
+    c1 = c.Circle(4)
+    c2 = c.Circle(5)
+    assert c1 < c2
+    assert c2 > c1
+
+
+
+
+
+
+
+

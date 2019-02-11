@@ -28,11 +28,20 @@ class Circle(object):
     def __lt__(self, other):
         return self.radius < other.radius
 
+    def __gt__(self, other):
+        return self.radius > other.radius
+
     def __add__(self, other):
         return self.radius + other.radius
 
     def __eq__(self, other):
         return self.radius == other.radius
+
+    def __mul__(self, other):
+        return self.radius * other.radius
+
+    def __rmul__(self, other):
+        return self.radius * other.radius
 
     @classmethod
     def from_diameter(cls, diameter):
@@ -68,5 +77,4 @@ class Circle(object):
 
     def circumference(self):
         return round(self.radius * pi * 2)
-
 
