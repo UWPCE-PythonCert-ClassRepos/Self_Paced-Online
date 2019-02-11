@@ -2,29 +2,33 @@
 """
 Create a class called Circle with various properties and methods
 Author: JohnR
-Version: 0.7
-Last updated: 2/09/2019
+Version: 0.9
+Last updated: 2/10/2019
 Notes: base functionality in place
 """
 
 
-class Circle:
+class Circle(object):
     """
-    Circle class for some basic math functions such as area.
-    3) add two circles together
-    4) compare two circles for equality
+    Circle class for some basic math functions such as area, equality, etc.
     """
     pi = 3.14159
 
-    def __init__(self, radius=1):
+    def __init__(self, radius=5):
         self.radius = radius
-        self.area = self.radius * self.radius * Circle.pi
+        self.area = round(self.radius * self.radius * Circle.pi)
 
     def __repr__(self):
         return f'A circle where pi={Circle.pi} and radius={self.radius}'
 
     def __lt__(self, other):
         return self.radius < other.radius
+
+    def __add__(self, other):
+        return self.radius + other.radius
+
+    def __eq__(self, other):
+        return self.radius == other.radius
 
     @property
     def radius(self):
@@ -48,7 +52,9 @@ class Circle:
     def sort_key(self):
         return self.radius
 
-    def get_circumference(self):
-        return self.radius * Circle.pi * 2
+    def circumference(self):
+        return round(self.radius * Circle.pi * 2)
 
 
+dd = Circle()
+print(dd.circumference())
