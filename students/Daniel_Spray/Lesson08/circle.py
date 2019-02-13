@@ -27,10 +27,17 @@ class Circle:
         return f"Circle({self.radius})"
 
     def __add__(self,other):
-        return self.radius + other.radius
+        if isinstance(other,(float,int)):
+            return Circle(self.radius + other)
+        elif isinstance(other,Circle):
+            return Circle(self.radius + other.radius)
 
     def __mul__(self,other):
-        return self.radius * other.radius
+        if isinstance(other,(float,int)):
+            product = Circle(self.radius * other)
+        elif isinstance(other,Circle):
+            product = Circle(self.radius * other.radius)
+        return product
 
     def __lt__(self,other):
         return self.radius < other.radius
