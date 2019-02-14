@@ -45,8 +45,8 @@ def thank_you():
 
     #display list of names if requested
     if name.upper() == 'LIST':
-        for donor in donors:
-            print(donor)
+        #changed to comprehension
+        [print(donor) for donor in donors]
         thank_you()
 
     #otherwise ask for donation and add it
@@ -74,11 +74,9 @@ def report():
 
 def aggregate_donations():
     """Aggregates the donations from the donors and returns them in a list"""
-    donor_totals = []
-
     #parse donor list and aggregate them into totals for each donor
-    for donor in donors:
-        donor_totals += [[donor,sum(donors[donor]),len(donors[donor]),sum(donors[donor])/len(donors[donor])]]
+    #changed to list comprehension
+    donor_totals = [[donor,sum(donors[donor]),len(donors[donor]),sum(donors[donor])/len(donors[donor])] for donor in donors]
 
     return donor_totals
 
@@ -91,19 +89,30 @@ def report_formatter(report):
     print(horz*(20+15+13+16+2))
 
     #print donor rows
-    for row in report:
-        print(f'{row[0]:<20}  ${row[1]:<15,.2f}{row[2]:<11} ${row[3]:<16,.2f}')
+    #changed to comprehension
+    [print(f'{row[0]:<20}  ${row[1]:<15,.2f}{row[2]:<11} ${row[3]:<16,.2f}') for row in report]
     print('\n')
 
 def send_all():
     """Sends letters to all donors when called"""
-    filepath = input('\nEnter the path where the files should be created.  Hit enter to create in directory of program: ')
-    for donor in donors:
-        filename = os.path.join(filepath,donor.replace(' ','_') + '.txt')
-        outfile = open(filename, 'w')
-        outfile.write(create_letter(donor))
-        outfile.close()
+    #added exception handling for bad path
+    try:
+        filepath = input('\nEnter the path where the files should be created.  Hit enter to create in directory of program: ')
+        os.path.isdir(filepath)
+        for donor in donors:
+            #add path if given
+            filename = os.path.join(filepath,donor.replace(' ','_') + '.txt')
 
+            #updated to use with
+            with open(filename, 'w') as outfile:
+                outfile.write(create_letter(donor))
+            outfile.close()
+    except PermissionError:
+        print('\n***Error! User does not have permission to write to this directory.***')
+        send_all()
+    except FileNotFoundError:
+        print('\n***Error! Please create directory before creating letters.***')
+        send_all()
 
 
 def quit():
@@ -123,6 +132,7 @@ def main():
         selection = input("Enter the number for the action you require: ")
         try:
             menu[selection]()
+
         except KeyError:
             print('\n***Error! Please enter only numbers from the menu.***')
 
