@@ -1,7 +1,6 @@
 # open a terminal window
 # pytest lesson10/test_mailroom_fp.py
 
-
 import hashlib
 import os
 import mailroom_classes_fp as mc
