@@ -1,20 +1,4 @@
 # !/usr/bin/env python3
-# wk: cd C:\Users\v-micmcd.Redmond\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson9
-# mo: cd C:\Users\geekw\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson9
-# hm: cd C:\Users\geekw\Dropbox\UW_Python\git\Self_Paced-Online\students\MichaelM\lesson9
-
-# git add cli_main.py_oo.py
-# git add mailroom_classes_oo.py
-# git add test_mailroom_oo.py
-
-# git commit cli_main.py_oo.py
-# git commit mailroom_classes_oo.py
-# git commit test_mailroom_oo.py
-
-# git push
-# goto https://github.com/geekwriter2/Self_Paced-Online/tree/master/students/MichaelM/lesson9/
-# click Pull request > new pull request
-
 
 from lesson9 import mailroom_classes_oo as mr
 import importlib
