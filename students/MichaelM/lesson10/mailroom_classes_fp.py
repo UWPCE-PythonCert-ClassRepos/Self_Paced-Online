@@ -1,10 +1,5 @@
 import os
 
-
-
-
-
-
 """
 # Generating a thank you letter to a donor only requires knowledge of that one donor – so that code belongs in the Donor class
 """
