@@ -40,11 +40,11 @@ class Circle:
         return Circle(self.radius + other.radius)
 
     def __mul__(self,other):
-        """Incorporate multiplication functioality"""
+        """Incorporate multiplication functionality"""
         return Circle(self.radius * other)
 
     def __rmul__(other,self):
-        """Incorporate multiplication functioality if first number is an int"""
+        """Incorporate multiplication functionality if first number is an int"""
         return Circle(other.radius * self)
 
     def __lt__(self,other):
