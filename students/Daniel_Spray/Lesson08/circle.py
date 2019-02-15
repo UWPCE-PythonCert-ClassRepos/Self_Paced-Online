@@ -33,10 +33,11 @@ class Circle:
             return Circle(self.radius + other.radius)
 
     def __mul__(self,other):
-        if isinstance(other,(float,int)):
-            product = Circle(self.radius * other)
-        elif isinstance(other,Circle):
-            product = Circle(self.radius * other.radius)
+        product = Circle(self.radius * other)
+        return product
+
+    def __rmul__(other,self):
+        product = Circle(other.radius * self)
         return product
 
     def __lt__(self,other):
