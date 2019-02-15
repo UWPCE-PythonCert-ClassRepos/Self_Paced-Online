@@ -37,27 +37,15 @@ class Circle:
 
     def __add__(self,other):
         """Incorporate addition functionality"""
-        if isinstance(other,(float,int)):
-            return Circle(self.radius + other)
-        elif isinstance(other,Circle):
-            return Circle(self.radius + other.radius)
-
-    def __radd__(self,other):
-        """Incorporate addition functionality if int is first"""
-        if isinstance(self,(float,int)):
-            return Circle(self + other.radius)
-        elif isinstance(self,Circle):
-            return Circle(self.radius + other)
+        return Circle(self.radius + other.radius)
 
     def __mul__(self,other):
         """Incorporate multiplication functioality"""
-        product = Circle(self.radius * other)
-        return product
+        return Circle(self.radius * other)
 
     def __rmul__(other,self):
         """Incorporate multiplication functioality if first number is an int"""
-        product = Circle(other.radius * self)
-        return product
+        return Circle(other.radius * self)
 
     def __lt__(self,other):
         """Allow to compare with less than"""
