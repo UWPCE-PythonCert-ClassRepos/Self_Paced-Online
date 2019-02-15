@@ -55,6 +55,9 @@ class TestCircle(unittest.TestCase):
         actual = c1+c2
         expected = Circle(6)
         self.assertEqual(expected, actual)
+        actual_1 = 2+c2
+        expected_1 = Circle(6)
+        self.assertEqual(expected_1, actual_1)
         actual2 = c2*3
         expected2 = Circle(12)
         self.assertEqual(expected2, actual2)
