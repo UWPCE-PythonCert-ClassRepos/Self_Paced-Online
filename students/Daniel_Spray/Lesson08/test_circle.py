@@ -49,7 +49,7 @@ class TestCircle(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_step7(self):
-        """Run a test to show addition works"""
+        """Run a test to show addition and multiplication works"""
         c1 = Circle(2)
         c2 = Circle(4)
         actual = c1+c2
