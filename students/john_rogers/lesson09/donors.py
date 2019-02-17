@@ -23,12 +23,12 @@ class Donor(object):
         self.donations = list(donations)
 
     def __repr__(self):
-        return f'{self.first.capitalize} {self.last.capitalize} is' \
+        return f'{self.first} {self.last} is' \
             f' listed as a donor.'
 
     @property
     def full_name(self):
-        return f'{self.first.capitalize} {self.last.capitalize}'
+        return f'{self.first} {self.last}'
 
     @property
     def total_donations(self):
@@ -58,17 +58,24 @@ class DonorDataBase(object):
     def add_donor(self, donor):
         self.donors.append(donor)
 
-    @property
     def donor_names(self):
         return [d.full_name for d in self.donors]
 
-    @property
     def total_amount_raised(self):
         return sum([sum(d.donations for d in self.donors)])
 
-    @property
     def total_number_donations(self):
         return sum([len(d.donations) for d in self.donors])
+
+    def print_summary(self):
+        pass
+
+    def thank_all(self):
+        pass
+
+    def save_report(self):
+        pass
+
 
 
 
