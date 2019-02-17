@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Nov 25 21:48:02 2018
+Created on Wed Dec 26 21:48:02 2018
 
-@author: dennis
+@author: dennis coffey
 """
 
 import os

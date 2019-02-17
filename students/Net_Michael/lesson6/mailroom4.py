@@ -11,30 +11,44 @@ from collections import defaultdict
 
 def quit_sel():
     raise SystemExit(1)
+#new_donor_folder is a folder containing the text files of all donors.
 
-# new_donor_folder is a folder containing
-# the text files of the donors. By providing the foldername
-# the code will search this folder in any machine.
-# for this machine - directory/donor_list/Paul_Allen.txt
+new_donor_folder = "donor_file_save"
 
-new_donor_folder = "donor_list"
+"""
+If the cwd is in the pah of the donors folder
+the code will search this folder in the path.
+For this machine - directory/donor_list/Paul_Allen.txt
+"""
+# depending on the files you have in your computer these
+# first two functions can take time
+# to make it computationally efficient you can
+# choose two options
+#root = os.path.dirname( os.getcwd())
+#root = "".join([root.split("\\")[0], "\\"])
+# or
+#root = os.path.dirname( os.getcwd())
+#root = "\\".join(root.split("\\")[:2])
+# to save time at least provide the first folder in
+# c drive where the donor_list file is located,
+# which is the later option
 
 # given *\*\directory_a\cwd, lists everything in directory_a
 def list_dir_path():
     root = os.path.dirname( os.getcwd())
+    root = "\\".join(root.split("\\")[:2])
     for path, subdir, file in os.walk(root):
         for dirname in subdir:
             dir_info = str(os.path.join(dirname))
             yield dir_info, path
 
-# given the naame of the folder containing the list of donors
-# such as Paul_Allen.txt, the function provides the path of the folder from
-# any machine
+# outputs the path  *\*\donor_list
 
 def directory_path(donor_folder = new_donor_folder):
     dir_info = list(list_dir_path())
+    subtext = 'lesson6'
     for j in range(len(dir_info)):
-        if dir_info[j][0] in donor_folder:
+        if dir_info[j][0] in donor_folder  and '.pytest_cache' not in dir_info[j][1] and subtext in dir_info[j][1]:
             sel_dirct = dir_info[j][1]
     donation_directory = os.path.join(sel_dirct, donor_folder)
     return(donation_directory)
@@ -47,16 +61,15 @@ def open_donor_file(file_path):
     donations = donor_lists.read()
     donor_lists.close()
     return(donations)
-
 # given the file path (donor_folder/first_last_suffix.txt)
 # outputs dict - donor_gift = {'donor': donor_name, 'gifts': donation_out}
 
 # extract the donation information of one donor
-def one_donor_info(file_name, donor_folder = new_donor_folder):
+def one_donor_info(file_name,donor_filepath = donor_filepath, donor_folder = new_donor_folder):
     #file_name: the file name of the donor ("firstname_lastname_suffix.txt")
-    donor_filepath = directory_path(donor_folder = new_donor_folder)
-    donation_directory = os.path.join( donor_filepath, file_name)
+    #donor_filepath = directory_path(donor_folder = new_donor_folder)
     donation_filename = os.path.basename( file_name)
+    donation_directory = os.path.join( donor_filepath, file_name)
     donor_name = os.path.splitext( donation_filename)[0].split("_")
     donor_collect = open_donor_file( donation_directory)
     donations = donor_collect.split(", ")
@@ -67,13 +80,14 @@ def one_donor_info(file_name, donor_folder = new_donor_folder):
 # extracts donation information of all donors in donor_folder by looping donor_info
 
 # extracts donation information of all donors in the directory
-def all_donors_info(donor_folder = new_donor_folder):
-    donor_filepath = directory_path(donor_folder = new_donor_folder)
+def all_donors_info( donor_filepath = donor_filepath, donor_folder = new_donor_folder):
+    #donor_filepath = directory_path(donor_folder = new_donor_folder)
     donor_files = os.listdir( donor_filepath)
     donors_gifts = defaultdict( list)
     for file_name in donor_files:
         donor_gift = one_donor_info(file_name,
-                                    donor_folder = new_donor_folder)
+                                    donor_filepath = donor_filepath,
+                                    donor_folder = new_donor_folder   )
         donor_name = " ".join( donor_gift["donor"])
         donation = donor_gift["gifts"]
         donors_gifts[donor_name] = donation
@@ -81,17 +95,19 @@ def all_donors_info(donor_folder = new_donor_folder):
 
 
 # send thank you letter to all donors
-def thank_all_letter(donor_folder = new_donor_folder):
-    donor_info = all_donors_info(donor_folder = new_donor_folder)
+def thank_all_letter(donor_filepath = donor_filepath, donor_folder = new_donor_folder):
+    donor_info = all_donors_info(donor_folder = new_donor_folder,
+                                 donor_filepath = donor_filepath)
     donors = list( donor_info.keys())
     all_gifts = list( donor_info.values())
     for ll in range( len(donor_info)):
         letter_format( donor = donors[ll], gift = sum(all_gifts[ll]))
 
 # creates summry table to report total (and average) donation from each donor
-def create_report( ):
-    donor_filepath = directory_path(donor_folder = new_donor_folder)
-    donor_info = all_donors_info(donor_folder = new_donor_folder)
+def create_report(donor_filepath = donor_filepath, donor_folder = new_donor_folder):
+    #donor_filepath = directory_path(donor_folder = new_donor_folder)
+    donor_info = all_donors_info(donor_folder = new_donor_folder,
+                                 donor_filepath = donor_filepath)
     donors = list( donor_info.keys())
     all_gifts = list( donor_info.values())
     print("Name\t\t\tTotal Donation\t\tNum Gifts\tAverage Gift")
@@ -106,7 +122,7 @@ def create_report( ):
                '${:^6,.2f}'.format( avg_gift))
 
 # given first, last names and suffix, writes thank you letter for the last donation
-def thank_one_letter():
+def thank_one_letter(donor_filepath = donor_filepath):
     first_name = input( "Donor's first name - ").title()
     last_name = input( "Donor's last name - ").title()
     suffix = input( "Donor's suffix (if available) - ")
@@ -115,7 +131,7 @@ def thank_one_letter():
     else:
         full_name = "_".join( [first_name,last_name])
     file_name = ".".join( [full_name, "txt"])
-    donor_filepath = directory_path(donor_folder = new_donor_folder)
+    #donor_filepath = directory_path(donor_folder = new_donor_folder)
     if file_name in os.listdir( donor_filepath):
         donor_info = one_donor_info(file_name, donor_folder = new_donor_folder)
         donor = " ".join( donor_info["donor"])
@@ -139,16 +155,17 @@ def letter_format( donor, gift):
 # donation is the amount of donation of each donor
 # donor_name[j] = donation[j]
 
-def enter_donation(donor_folder = new_donor_folder):
-    donor_filepath = directory_path(donor_folder = new_donor_folder)
-    donor_info = all_donors_info(donor_folder = new_donor_folder)
+def enter_donation(donor_filepath = donor_filepath, donor_folder = new_donor_folder ):
+    #donor_filepath = directory_path(donor_folder = new_donor_folder)
+    donor_info = all_donors_info(donor_filepath = donor_filepath,
+                                 donor_folder = new_donor_folder)
     donors = list( donor_info.keys())
     print("The current donors in the database are \n ", donors)
     new_donor = input("Enter full name of the donor?").title()
     if (new_donor not in donors):
         if list(new_donor)[0] in list(string.ascii_uppercase):
             new_donor_filename = re.sub(" ", "_", new_donor) + ".txt"
-            new_donor_filepath = directory_path(donor_folder = new_donor_folder)
+            #new_donor_filepath = directory_path(donor_folder = new_donor_folder)
             donation_directory = os.path.join( donor_filepath, new_donor_filename)
             # enter donation information
             new_donation1 = input("Amount of donation by {} ?".format(new_donor))
@@ -182,6 +199,8 @@ def folder_name_entry():
     Donor_folder = directory_path(donor_folder = donor_folder_name)
     return(Donor_folder)
 
+
+
 # switch function to select desired output
 main_sel = {
         1: enter_donation,
@@ -207,8 +226,10 @@ prompt = "\n".join(("Welcome",
 # to execute the desired outputs (report and thank you letters)
 
 if __name__ == "__main__":
+    print("Please wait to press anoter key until the choise promot shows up")
+    donor_filepath = directory_path()
     try:
-        donor_file_trial = directory_path()
+        donor_file_trial = donor_filepath
         list_files = os.listdir(donor_file_trial)
         if(len(list_files) > 0):
             while True:
@@ -220,6 +241,7 @@ if __name__ == "__main__":
                     print("\n choose less than 4 or press 4 to exit\n")
     except FileNotFoundError:
         donor_folder_new = folder_name_entry()
+        donor_filepath = donor_folder_new
         list_files = os.listdir(donor_folder_new)
         folder_new = os.path.basename(donor_folder_new)
         if(len(list_files) > 0):

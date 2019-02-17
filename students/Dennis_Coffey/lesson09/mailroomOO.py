@@ -6,7 +6,7 @@ import os
 """
 Created on Wed Dec 26 19:30:19 2018
 
-@author: dennis
+@author: dennis coffey
 """
 
 """You work in the mail room at a local charity. Part of your job is to write incredibly boring, 
