@@ -5,10 +5,15 @@ Author: JohnR
 Version: .1 (Lesson 09)
 Last updated: 2/16/2019
 Notes:
+    Guidelines:
+    * User interaction cleanly separated from data handling
+    * No input function in a class that holds the data
+    * Encapsulation
+    * DRY - Don't Repeat Yourself
 """
 
-from datetime import date
-from donors import Donor, Collection
+from donors import Donor as D
+from donors import DonorDB as DDB
 
 
 def main():
@@ -17,12 +22,19 @@ def main():
     various actions available.
     :return: none
     """
-    db = {'sting': [13.45, 214.34, 123.45, 1433.23, 1243.13],
-          'bono': [7843.34, 35.55, 732.34],
-          'oprah': [66.34, 32.23, 632.21, 66.67],
-          'yoko': [34.34, 4.34],
-          'santa': [5334.00, 254.34, 64324.23, 2345.23, 5342.24],
-          }
+
+    d1 = D('Sting', 'Jones', 13.45)
+    d2 = D('Bono', 'Smith', 1.45)
+    d3 = D('Oprah', 'Ricks', 1.00)
+    d4 = D('Yoko', 'Ono', 3.02)
+    d5 = D('Santa', 'Claus', 233.02)
+    DDB.new_donor(d1.)
+    DDB.new_donor(d2)
+    DDB.new_donor(d3)
+    DDB.new_donor(d4)
+    DDB.new_donor(d5)
+
+    db = DDB.donors
 
     main_prompt = (
         "\nWelcome to the main menu!\n"
@@ -36,11 +48,11 @@ def main():
     )
 
     main_dispatch = {
-        '1': exit_menu,
+        '1': DDB.exit_menu,
         '2': donor_actions,
-        '3': print_summary,
-        '4': thank_all,
-        '5': save_report,
+        '3': DDB.print_summary,
+        '4': DDB.thank_all,
+        '5': DDB.save_report,
     }
 
     menu(main_prompt, main_dispatch, db)
@@ -57,64 +69,6 @@ def menu(main_prompt, main_dispatch, db):
             main_dispatch[response](db)
         except KeyError:
             print('Please enter a number between 1 and 5.')
-
-
-def thank_all(db):
-    """
-    Print a form letter for each donor in the database
-    :param db: current donor db
-    :return: None
-    """
-    donors = sorted_list(db)
-    for donor in donors:
-        letter = form_letter(donor[0][0], donor[1][0])
-        print(letter)
-
-
-def form_letter(name, donation):
-    """
-    create a form letter
-    :param name: donor name
-    :param donation: amount of donation as a float
-    :return: form letter filled in with donor and amount
-    """
-    today = date.today()
-    letter = (
-        f'Hey {name.capitalize()}, thanks for your donations! '
-        f'As of today, {today}, you have donated a total of '
-        f'${donation}.'
-    )
-
-    return letter
-
-
-def save_report(db):
-    """
-    Generate a thank you letter for each donor and write to individual
-    files on disk.
-    :param db: donor database
-    :return: None
-    """
-    today = date.today()
-    donors = sorted_list(db)
-    print('Saving a copy to local disk....')
-    for donor in donors:
-        letter = form_letter(donor[0][0], donor[1][0])
-        user_file = "{}.{}.txt".format(donor[0][0], today)
-
-        with open(user_file, 'w') as outfile:
-            outfile.write(letter)
-            print(user_file, ' has been saved to disk.')
-
-
-def exit_menu(db):
-    """
-    write to file and exit the program
-    :return: SystemExit
-    """
-    save_report(db)
-    print('Exiting program, thank you for your time today!')
-    raise SystemExit
 
 
 def seek_donation(name):
@@ -164,49 +118,6 @@ def donor_actions(names):
             names[cmd] = []
             donation = seek_donation(cmd)
             names[cmd].append(donation)
-
-
-def sorted_list(data):
-    """
-    Sort a give list of donors by total amount given, large to small
-    :param data: dictionary of donor data
-    :return: sorted list of donors
-    """
-    sorted_donors = []
-    for name, donations in data.items():
-
-        try:
-            total = round(sum(donations), 2)
-            number = round(len(donations), 2)
-            avg = total / len(donations)
-            avg = round(avg, 2)
-            sorted_donors.append([[name], [total], [number], [avg]])
-        except TypeError as e:
-            print('hit an error in sorted list: ', e)
-            return None
-
-    sorted_donors.sort(key=lambda x: x[1])
-    sorted_donors.reverse()
-    return sorted_donors
-
-
-def print_summary(db):
-    """
-    Print a list of donors sorted by historical donation amount.
-    List donor name, number of donations and average donation amount.
-    :return: none
-    """
-    donors = sorted_list(db)
-    print()
-    print('Donor Name       | Total Given | Num Gifts | Avg Gift Amount')
-    print('-' * 60)
-
-    for donor in donors:
-        try:
-            print(f'{donor[0][0]:<17} ${donor[1][0]:^15} {donor[2][0]:^13}'
-                  f'${donor[3][0]:^8}')
-        except Exception as e:
-            print(e)
 
 
 if __name__ == '__main__':
