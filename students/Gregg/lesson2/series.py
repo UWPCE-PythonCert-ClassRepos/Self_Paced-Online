@@ -47,6 +47,14 @@ def sum_series_non_recursive(n, first = 0, second = 1):
 
 def series_tests():
     """Test the fibonocci and lucas series functions"""
+    #The 8th element of fibonocci should be 13
+    assert(fibonocci(8)==13)
+    #The 8th element of lucas should be 29
+    assert(lucas(8)==29)
+    #The 8th element of fibonocci produced using sum series should be 13
+    assert(sum_series(8)==13)
+    #The 8th element of lucas produced using sum series should be 29
+    assert(sum_series(8,first = 2)==29)
     return True
 
 
@@ -59,6 +67,7 @@ def first_n_series(n, func):
     return series
 
 if __name__ == "__main__":
+    series_tests()
     print('Lesson2: Series Exercise')
     print('Lesson2: Series Exercise - Fibonacci Only')
     print(first_n_series(8,fibonocci))
