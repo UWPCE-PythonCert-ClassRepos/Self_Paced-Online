@@ -14,10 +14,15 @@ def FizzBuzz_iterate(end_int_in = 100):
         print(FizzBuzz(i+1))
 
 
+########
+#Extra messing around with fizzbuzz#
+########
+
 def Fizzbuzz(int_in):
     """Determine the Fizzbuzziness of an input int and return the appropriate string
     I believe the original version required a lowercase b if both conditions were met
-    which makes it a bit harder to do without multiple if statements"""
+    which makes it a bit harder to do without multiple if statements
+    Maybe its not the original but some modification I read about to make it more relevant"""
     b = 'B'*(bool(int_in%3))+'b'*(not(int_in%3))
     string = 'Fizz'*(not(int_in%3))+(b+'uzz')*(not(int_in%5))
     return(string+(not(string))*str(int_in))
@@ -35,3 +40,7 @@ def Fizzbuzz100_OneLine(end_int_in = 100):
     return True
 
 #Irrelevant change to test git commit, again
+
+if __name__ == "__main__":
+    print('Lesson 2: FizzBuzz exercise')
+    FizzBuzz_iterate()
