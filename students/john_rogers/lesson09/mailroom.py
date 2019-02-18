@@ -2,7 +2,7 @@
 """
 mailroom.py: use classes where applicable
 Author: JohnR
-Version: .3
+Version: .9
 Last updated: 2/17/19
 Notes:
 """
@@ -19,10 +19,11 @@ def main():
     """
 
     donor_db = DDB()
-    d1 = D('John', 'Rogers', [12.32, 34.53])
-    d2 = D('Sarah', 'Rogers', [1.32, 324.53])
-    d3 = D('Alex', 'Rogers', [122.32, 2334.53])
-    d4 = D('Dino', 'Rogers', [15.32, 34.00])
+
+    d1 = D('John', 'Randal', [12.32, 34.53, 532.32])
+    d2 = D('Sarah', 'Samson', [1.32, 324.53, 2345.33, 6602.12])
+    d3 = D('Alex', 'Rez', [122.32, 2334.53])
+    d4 = D('Billy', 'Durst', [15.32, 34.00])
 
     donor_db.add_donor(d1)
     donor_db.add_donor(d2)
