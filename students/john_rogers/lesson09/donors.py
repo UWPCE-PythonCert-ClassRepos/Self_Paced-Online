@@ -1,13 +1,9 @@
 """
 Donor classes for mailroom.py
 Author: JohnR
-Version: .9 (Lesson 09)
+Version: 1.0 (Lesson 09)
 Last updated: 2/17/2019
-Notes: Guidelines:
-        Works with one donor --> Donor class
-        Works with multiple donors --> DonorDB
-        User input --> Main script
-        Complete separation of input and data handling
+Notes:
 """
 
 from datetime import date
@@ -20,7 +16,7 @@ class Donor(object):
     def __init__(self, first, last, donations=None):
         self.first = first
         self.last = last
-        if isinstance(donations, int):
+        if isinstance(donations, float):
             donations = [donations]
         self.donations = list(donations)
 
@@ -52,6 +48,8 @@ class DonorDataBase(object):
     """
     Class for managing multiple donors
     """
+    today = date.today()
+
     def __init__(self, donors=None):
         self.donors = []
         if donors:
@@ -77,13 +75,12 @@ class DonorDataBase(object):
             print()
 
     def save_report(self):
-        today = date.today()
         print('Saving database to disk...')
         for donor in self.donors:
             letter = self.form_letter(donor.full_name,
                                       donor.total_donations)
             user_file = "{}.{}.txt".format(donor.full_name,
-                                           today)
+                                           self.today)
             with open(user_file, 'w') as outfile:
                 outfile.write(letter)
                 print(user_file, ' has been saved to disk.')
@@ -123,10 +120,9 @@ class DonorDataBase(object):
         :param name: donor name
         :return: form letter filled in with donor and amount
         """
-        today = date.today()
         letter = (
             f'Hey {name}, thanks for your donations! '
-            f'As of today, {today}, you have donated a total of '
+            f'As of today, {DonorDataBase.today}, you have donated a total of '
             f'${amount}.'
         )
 

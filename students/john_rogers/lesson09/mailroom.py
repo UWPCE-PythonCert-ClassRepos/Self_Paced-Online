@@ -2,7 +2,7 @@
 """
 mailroom.py: use classes where applicable
 Author: JohnR
-Version: .9
+Version: 1.0
 Last updated: 2/17/19
 Notes:
 """
@@ -99,7 +99,8 @@ def donor_actions(data):
         elif cmd == '3':
             first = input('Please enter your first name: ')
             last = input('Please enter your last name: ')
-            amount = input('Amount to donate today: ')
+            amount = float(input('Amount to donate today: '))
+
             new_donor = D(first.capitalize(), last.capitalize(), amount)
             data.add_donor(new_donor)
             print()
