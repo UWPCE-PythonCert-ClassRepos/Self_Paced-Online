@@ -30,8 +30,19 @@ def sum_series_non_recursive(n, first = 0, second = 1):
     Wanted to see how it looked without recursion and thinking about when it
     would and wouldn't make code better
     """
-
-    return True
+    Series = []
+    for i in range(1,n+1):
+        if i == 1:
+            Series.append(first)
+        elif i == 2:
+            Series.append(second)
+        else:
+            Series.append(Series[-1]+Series[-2])
+    #Seems like this works because the series is simple and very orderly -
+    #one after the other, with only one option
+    #I could see how something with more of a tree structure, or with more options
+    #would actually requre recursion
+    return Series[-1]
 
 
 def series_tests():
