@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """
-test file for mailroom classes
+mailroom.py: use classes where applicable
+Author: JohnR
+Version: .3
+Last updated: 2/17/19
+Notes:
 """
 
 from donors import DonorDataBase as DDB
