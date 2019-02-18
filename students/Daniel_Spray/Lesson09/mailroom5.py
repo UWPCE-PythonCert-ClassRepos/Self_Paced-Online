@@ -21,18 +21,20 @@ class Donor:
     @property
     def donations(self):
         return self.donation_history
-
+    @property
     def num_gifts(self):
-        return self.donations.len()
+        return len(self.donation_history)
 
+    @property
     def total_given(self):
-        return round(sum(donations),2)
+        return round(sum(self.donation_history),2)
 
+    @property
     def average(self):
-        return round(float(sum(donations))/float(self.donations.len()),2)
+        return round(float(sum(self.donation_history))/float(len(self.donation_history)),2)
 
     def add_donation(self, new_donation):
-        self.donations.append(new_donation)
+        self.donations.append(float(new_donation))
 
     def letter(self):
         """Format a letter for one donor and donation"""	
@@ -46,53 +48,55 @@ The Charity
 """.format(str(self.full_name), float(self.donation_history[-1]))
         print(content)
         return(content)
+		
+    def __lt__(self,other):
+	    return self.total_given < other.total_given
+ 
+    def __str__(self):
+        """Add a printable string method"""
+        return str(self.full_name)
+		
+    def __repr__(self):
+        """Add a printable string method"""
+        return str(self.full_name)
  
 class Collection:
     """Create a class that manages a collection of donors"""
 
-    def __init__(self, full_names = None):
-        if full_names == None:
-            self.full_names = []
+    def __init__(self, donors = None):
+        if donors == None:
+            self.donors = []
         else:
-            self.full_names = full_names
+            self.donors = donors
 
     @property
     def names(self):
-        return self.full_names
+        return self.donors
 
     def add_new(self,new_donor):
-        self.names.append(new_donor)
+        self.donors.append(new_donor)
 
+    @property
     def list_all(self):
-        return" ,".join(self.names)
+        list = []
+        for donor in self.donors:
+            list.append(repr(donor))
+        return", ".join(list)
 
     def create_report(self):
-        """Build a report"""
-        result = collection.calculation
-        collection.table(result)
-        return
+        """Make a formatted table"""
+        sorted_donors = sorted(self.donors,reverse=True)
+        data = []
 
-    def table(self,result):
-        """Make a formatted table from the sorted calculation data output"""
+        for donor in sorted_donors:
+            data.append([donor.name, '$', donor.total_given, donor.num_gifts, '$', donor.average])
+
         table_output = ["{:<24}{:<1}{:^13}{:<1}{:^13}{:<1}{:^17}".format('Donor Name','|','Total Given','|','Num Gifts','|','Average Gift')+"\n"+"-"*67]
-        for row in result:
+        for row in data:
             table_output.append("{:<25}{:<1}{:>12.2f}{:>14}{:>2}{:>13.2f}".format(*row))
         table_string = "\n"+"\n".join(table_output)+"\n"
         print(table_string)
         return table_string
-
-    def use_total(amounts):
-        return amounts[2]
-
-    def calculation(self):
-        """Calculate averages and return sorted data for each donor"""
-        data = []
-
-        for donor in self.full_names:
-            data.append(donor.name, donor.total_given, donor.num_gifts, donor.average)
-
-        sorted_data = sorted(data,key=Collection.use_total,reverse=True)
-        return sorted_data
 
     def send_all(self):
         """Write letters to all donors in text documents"""
@@ -130,24 +134,37 @@ def send_thank_you():
     name = input("Please enter a full name > ")
 	
     while name == "list":
-        print(Collection.list_all)
+        print(collection.list_all)
         name = input("Please enter a full name > ")
 
     if name.lower() == "quit":
         return
     
     while True:
-        donor = Donor(name)
-        if donor not in Collection().names:
-            Collection().add_new(name)
         donation = input("Donation Amount? > ")
+
         if donation.lower() == "quit":
             return
+
+        string_list = [str(names) for names in collection.names]
+
+#it's not a string, and can't re-initialize
+        if name in string_list:
+            donor = Donor(name)
+            donor.add_donation(donation)
+            break
+			
+        else:
+            donor = Donor(name)
+            donor.add_donation(donation)
+            collection.add_new(donor)
+            break
+    '''
         try:
             donor.add_donation(donation)
             break
         except ValueError:
-            print("That's not a valid donation")
+            print("That's not a valid donation")'''
 		
     print("Data added!")
     donor.letter()
@@ -158,12 +175,12 @@ def quit():
     sys.exit()
 
 """Add the default data to classes"""
-Donor('William Gates, III', [100000.00,553784.49])
-Donor('Mark Zuckerberg', [5000.00,5000.00,6396.10])
-Donor('Jeff Bezos', [877.33])
+collection = Collection([
+Donor('William Gates, III', [100000.00,553784.49]),
+Donor('Mark Zuckerberg', [5000.00,5000.00,6396.10]),
+Donor('Jeff Bezos', [877.33]),
 Donor('Paul Allen', [100.00,100.00,508.42])
-
-collection = Collection(['William Gates, III','Mark Zuckerberg','Jeff Bezos','Paul Allen'])
+])
 
 if __name__ == '__main__':
     while True:
