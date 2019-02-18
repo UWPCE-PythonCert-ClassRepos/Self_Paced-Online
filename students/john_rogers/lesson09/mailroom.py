@@ -10,7 +10,8 @@ from donors import Donor as D
 def main():
     """
     Main script loop and user interaction
-    :return:
+    Start with a database of several donors and donations
+    :return: N/A
     """
 
     donor_db = DDB()
@@ -76,21 +77,32 @@ def donor_actions(data):
     """
 
     while True:
-        print('\nEnter q to exit to main menu.')
-        cmd = input("Enter 'list' to see a current list of donors or "
-                    "a new name to become a new donor today!"
-                    "\n>>> ")
-        cmd = cmd.lower()
+        print()
+        print('Please choose from the following donor options:')
+        print('1 = Return to main menu')
+        print('2 = See a list of current donors')
+        print('3 = Become a new donor')
+        cmd = input('>>> ')
 
-        if cmd.isdigit():
+        if cmd == '1':
             break
-        elif cmd == 'q':
-            break
-        elif cmd == 'list':
+        elif cmd == '2':
             print()
             print('We currently have the following donors on file: ')
             for i in data.donor_names():
                 print(i)
+        elif cmd == '3':
+            first = input('Please enter your first name: ')
+            last = input('Please enter your last name: ')
+            amount = input('Amount to donate today: ')
+            new_donor = D(first.capitalize(), last.capitalize(), amount)
+            data.add_donor(new_donor)
+            print()
+            print(f'{new_donor.full_name} has been added as a donor.')
+        else:
+            print('-' * 40)
+            print('Sorry, need a number between 1 and 3')
+            print('-' * 40)
 
 
 if __name__ == '__main__':
