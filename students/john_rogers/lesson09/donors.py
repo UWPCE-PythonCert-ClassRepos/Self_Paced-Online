@@ -89,8 +89,7 @@ class DonorDataBase(object):
     def save_report(self):
         print('Saving database to disk...')
         for donor in self.donors:
-            letter = self.form_letter(donor.full_name,
-                                      donor.total_donations)
+            letter = Donor.form_letter(donor)
             user_file = "{}.{}.txt".format(donor.full_name,
                                            self.today)
             with open(user_file, 'w') as outfile:
