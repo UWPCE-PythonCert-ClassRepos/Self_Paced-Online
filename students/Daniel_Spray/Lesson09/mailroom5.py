@@ -4,6 +4,7 @@ class Donor:
     """Create a class that sets up one donor"""
 
     def __init__(self,full_name,donation_history = None):
+        """Initialize the donor's name and history"""
         self.full_name = full_name
         if donation_history is None:
             self.donation_history = []
@@ -12,36 +13,43 @@ class Donor:
 
     @property
     def name(self):
+        """Add a name property"""
         return self.full_name
 
     @name.setter
     def name(self,new_name):
+        """Add a name setter"""
         self.full_name = new_name
 		
     @property
     def donations(self):
+        """Add a donations property"""
         return self.donation_history
+
     @property
     def num_gifts(self):
+        """Add a number of gifts property"""
         return len(self.donation_history)
 
     @property
     def total_given(self):
+        """Add a total given property"""
         return round(sum(self.donation_history),2)
 
     @property
     def average(self):
+        """Add an average of gifts property"""
         return round(float(sum(self.donation_history))/float(len(self.donation_history)),2)
 
     def add_donation(self, new_donation):
+        """Make a method for adding a donation to the donor's history"""
         self.donations.append(float(new_donation))
 
     def letter(self):
         """Format a letter for one donor and donation"""	
-        content = """ 
-Dear {},
+        content = """Dear {},
 
-Thank you for your generous donation of ${:.2f}
+Thank you for your generous donation of ${:.2f}.
 
 Sincerely,
 The Charity
@@ -50,7 +58,8 @@ The Charity
         return(content)
 		
     def __lt__(self,other):
-	    return self.total_given < other.total_given
+        """Add a comparison method"""
+        return self.total_given < other.total_given
  
     def __str__(self):
         """Add a printable string method"""
@@ -71,13 +80,16 @@ class Collection:
 
     @property
     def names(self):
+        """Add a names property"""
         return self.donors
 
     def add_new(self,new_donor):
+        """Add a method for adding new donors"""
         self.donors.append(new_donor)
 
     @property
     def list_all(self):
+        """Add a list of all donors property"""
         list = []
         for donor in self.donors:
             list.append(repr(donor))
@@ -100,8 +112,8 @@ class Collection:
 
     def send_all(self):
         """Write letters to all donors in text documents"""
-        for donor in self.full_names:
-            with open(donor.replace(' ','_')+'.txt','w') as f:
+        for donor in self.donors:
+            with open(str(donor).replace(' ','_')+'.txt','w') as f:
                 f.write(donor.letter())
         print("Done!")
 
@@ -139,35 +151,33 @@ def send_thank_you():
 
     if name.lower() == "quit":
         return
-    
-    while True:
-        donation = input("Donation Amount? > ")
 
+    donation = input("Donation Amount? > ")
+    '''while type(donation) != int and type(donation) != float:
         if donation.lower() == "quit":
             return
-
-        string_list = [str(names) for names in collection.names]
-
-#it's not a string, and can't re-initialize
-        if name in string_list:
-            donor = Donor(name)
-            donor.add_donation(donation)
-            break
-			
         else:
-            donor = Donor(name)
-            donor.add_donation(donation)
-            collection.add_new(donor)
-            break
-    '''
+            print("That's not a valid donation")
+            donation = input("Donation Amount? > ")'''
+
+    string_list = [str(names) for names in collection.names]
+    while True:
         try:
-            donor.add_donation(donation)
+            for donor in collection.names:
+                if str(donor) == name:
+                    donor.add_donation(donation)
+                    donor.letter()
+
+            if name not in string_list:
+                donor = Donor(name,[float(donation)])
+                collection.add_new(donor)
+                donor.letter()
             break
         except ValueError:
-            print("That's not a valid donation")'''
+            print("That's not a valid donation")
+            donation = input("Donation Amount? > ")
 		
     print("Data added!")
-    donor.letter()
     return
 
 def quit():
