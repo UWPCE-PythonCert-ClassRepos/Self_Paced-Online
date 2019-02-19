@@ -2,30 +2,38 @@
 """
 mailroom.py: use classes where applicable
 Author: JohnR
-Version: 1.1
+Version: 1.2
 Last updated: 2/19/19
-Notes: TODO: Fix menu; updating each instance in main_dispatch now broken
-             as I'm still passing the donor_db in as a paramater
+Notes: Replaced dict switch with if/elif to get it to work
 """
 
 from donors import DonorDataBase
 from donors import Donor
 
 
-def menu(prompt, options):
+def menu(prompt):
     """
     Get user input
     :return: call the appropriate menu item
     """
     while True:
         response = input(prompt)
-        try:
-            options[response]
-        except KeyError:
-            print('Please enter a number between 1 and 5.')
+        if response == '1':
+            exit_menu()
+        elif response == '2':
+            donor_actions(donor_db)
+        elif response == '3':
+            donor_db.print_summary()
+        elif response == '4':
+            donor_db.thank_all()
+        elif response == '5':
+            donor_db.save_report()
+        else:
+            print('Please enter a valid number between 1 - 5.')
 
 
 def exit_menu():
+
     print()
     save = input('Enter Y to save all data to disk before exiting. ')
     save = save.lower()
@@ -36,10 +44,6 @@ def exit_menu():
 
 
 def donor_actions(data):
-    """
-    send a thank you, check the donor list or add donation
-    :return: None
-    """
 
     while True:
         print()
@@ -72,6 +76,9 @@ def donor_actions(data):
 
 
 if __name__ == '__main__':
+    """
+    Create a database with a few donors and execute main user prompt
+    """
     donor_db = DonorDataBase()
 
     d1 = Donor('John', 'Randal', [12.32, 34.53, 532.32])
@@ -95,12 +102,4 @@ if __name__ == '__main__':
         ">>> "
     )
 
-    main_dispatch = {
-        '1': exit_menu,
-        '2': donor_actions,
-        '3': donor_db.print_summary,
-        '4': donor_db.thank_all,
-        '5': donor_db.save_report,
-    }
-
-    menu(main_prompt, main_dispatch)
+    menu(main_prompt)
