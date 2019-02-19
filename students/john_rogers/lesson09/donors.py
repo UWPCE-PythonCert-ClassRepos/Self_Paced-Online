@@ -1,9 +1,9 @@
 """
 Donor classes for mailroom.py
 Author: JohnR
-Version: 1.0 (Lesson 09)
-Last updated: 2/17/2019
-Notes:
+Version: 1.1
+Last updated: 2/19/2019
+Notes: Incorporating feedback from Natasha.
 """
 
 from datetime import date
@@ -43,6 +43,19 @@ class Donor(object):
     def new_donation(self, amount):
         self.donations.append(amount)
 
+    def form_letter(self):
+        """
+        create a form letter
+        :return: form letter filled in with donor and amount
+        """
+        letter = (
+            f'Hey {self.full_name}, thanks for your donations! '
+            f'As of today, {DonorDataBase.today}, you have donated a total of '
+            f'${self.total_donations}.'
+        )
+
+        return letter
+
 
 class DonorDataBase(object):
     """
@@ -62,15 +75,14 @@ class DonorDataBase(object):
         return [d.full_name for d in self.donors]
 
     def total_amount_raised(self):
-        return sum([sum(d.donations for d in self.donors)])
+        return sum([d.total_donations for d in self.donors])
 
     def total_number_donations(self):
-        return sum([len(d.donations) for d in self.donors])
+        return sum([d.number_of_donations for d in self.donors])
 
     def thank_all(self):
         for donor in self.donors:
-            letter = self.form_letter(donor.full_name,
-                                      donor.total_donations)
+            letter = Donor.form_letter(donor)
             print(letter)
             print()
 
@@ -112,19 +124,5 @@ class DonorDataBase(object):
         sorted_donors.reverse()
         return sorted_donors
 
-    @staticmethod
-    def form_letter(name, amount):
-        """
-        create a form letter
-        :param amount: donation amount
-        :param name: donor name
-        :return: form letter filled in with donor and amount
-        """
-        letter = (
-            f'Hey {name}, thanks for your donations! '
-            f'As of today, {DonorDataBase.today}, you have donated a total of '
-            f'${amount}.'
-        )
 
-        return letter
 

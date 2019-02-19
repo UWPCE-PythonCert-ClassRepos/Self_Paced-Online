@@ -2,13 +2,13 @@
 """
 mailroom.py: use classes where applicable
 Author: JohnR
-Version: 1.0
-Last updated: 2/17/19
-Notes:
+Version: 1.1
+Last updated: 2/19/19
+Notes: TODO: First fix the aliases, then incorporate feedback from Natasha
 """
 
-from donors import DonorDataBase as DDB
-from donors import Donor as D
+from donors import DonorDataBase as DonorDB
+from donors import Donor
 
 
 def main():
@@ -18,12 +18,12 @@ def main():
     :return: N/A
     """
 
-    donor_db = DDB()
+    donor_db = DonorDB()
 
-    d1 = D('John', 'Randal', [12.32, 34.53, 532.32])
-    d2 = D('Sarah', 'Samson', [1.32, 324.53, 2345.33, 6602.12])
-    d3 = D('Alex', 'Rez', [122.32, 2334.53])
-    d4 = D('Billy', 'Durst', [15.32, 34.00])
+    d1 = Donor('John', 'Randal', [12.32, 34.53, 532.32])
+    d2 = Donor('Sarah', 'Samson', [1.32, 324.53, 2345.33, 6602.12])
+    d3 = Donor('Alex', 'Rez', [122.32, 2334.53])
+    d4 = Donor('Billy', 'Durst', [15.32, 34.00])
 
     donor_db.add_donor(d1)
     donor_db.add_donor(d2)
@@ -44,9 +44,9 @@ def main():
     main_dispatch = {
         '1': exit_menu,
         '2': donor_actions,
-        '3': DDB.print_summary,
-        '4': DDB.thank_all,
-        '5': DDB.save_report,
+        '3': DonorDB.print_summary,
+        '4': DonorDB.thank_all,
+        '5': DonorDB.save_report,
     }
 
     menu(main_prompt, main_dispatch, donor_db)
@@ -70,7 +70,7 @@ def exit_menu(data):
     save = input('Enter Y to save all data to disk before exiting. ')
     save = save.lower()
     if save == 'y':
-        DDB.save_report(data)
+        DonorDB.save_report(data)
 
     raise SystemExit
 
@@ -101,7 +101,7 @@ def donor_actions(data):
             last = input('Please enter your last name: ')
             amount = float(input('Amount to donate today: '))
 
-            new_donor = D(first.capitalize(), last.capitalize(), amount)
+            new_donor = Donor(first.capitalize(), last.capitalize(), amount)
             data.add_donor(new_donor)
             print()
             print(f'{new_donor.full_name} has been added as a donor.')
@@ -113,3 +113,4 @@ def donor_actions(data):
 
 if __name__ == '__main__':
     main()
+
