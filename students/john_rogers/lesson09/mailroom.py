@@ -4,7 +4,7 @@ mailroom.py: use classes where applicable
 Author: JohnR
 Version: 1.2
 Last updated: 2/19/19
-Notes: Replaced dict switch with if/elif to get it to work
+Notes: See list of TODO: items inline
 """
 
 from donors import DonorDataBase
@@ -14,9 +14,10 @@ from donors import Donor
 def menu(prompt):
     """
     Get user input
-    :return: call the appropriate menu item
+    :return: call the appropriate method or function
     """
-    while True:
+    while True: # TODO: provide option to save database and restart from
+                # TODO: a previously saved database
         response = input(prompt)
         if response == '1':
             exit_menu()
@@ -33,9 +34,14 @@ def menu(prompt):
 
 
 def exit_menu():
+    """
+    Exit program after giving user option to save to disk
+    :return: None
+    """
 
     print()
-    save = input('Enter Y to save all data to disk before exiting. ')
+    print('Enter Y to save user data to disk before exiting. ')
+    save = input('Any other key to exit without saving >>> ')
     save = save.lower()
     if save == 'y':
         donor_db.save_report()
@@ -44,6 +50,11 @@ def exit_menu():
 
 
 def donor_actions(data):
+    """
+    Sub-menu of user options
+    data: Current user data base
+    :return: None
+    """
 
     while True:
         print()
@@ -60,7 +71,7 @@ def donor_actions(data):
             print('We currently have the following donors on file: ')
             for i in data.donor_names():
                 print(i)
-        elif cmd == '3':
+        elif cmd == '3': # TODO: check database if name already exists
             first = input('Please enter your first name: ')
             last = input('Please enter your last name: ')
             amount = float(input('Amount to donate today: '))
