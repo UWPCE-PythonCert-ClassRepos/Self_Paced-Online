@@ -4,10 +4,11 @@ mailroom.py: use classes where applicable
 Author: JohnR
 Version: 1.1
 Last updated: 2/19/19
-Notes: TODO: First fix the aliases, then incorporate feedback from Natasha
+Notes: TODO: Fix menu; updating each instance in main_dispatch now broken
+             as I'm still passing the donor_db in as a paramater
 """
 
-from donors import DonorDataBase as DonorDB
+from donors import DonorDataBase
 from donors import Donor
 
 
@@ -18,7 +19,7 @@ def main():
     :return: N/A
     """
 
-    donor_db = DonorDB()
+    donor_db = DonorDataBase()
 
     d1 = Donor('John', 'Randal', [12.32, 34.53, 532.32])
     d2 = Donor('Sarah', 'Samson', [1.32, 324.53, 2345.33, 6602.12])
@@ -44,9 +45,9 @@ def main():
     main_dispatch = {
         '1': exit_menu,
         '2': donor_actions,
-        '3': DonorDB.print_summary,
-        '4': DonorDB.thank_all,
-        '5': DonorDB.save_report,
+        '3': donor_db.print_summary,
+        '4': donor_db.thank_all,
+        '5': donor_db.save_report,
     }
 
     menu(main_prompt, main_dispatch, donor_db)
@@ -70,7 +71,7 @@ def exit_menu(data):
     save = input('Enter Y to save all data to disk before exiting. ')
     save = save.lower()
     if save == 'y':
-        DonorDB.save_report(data)
+        DonorDataBase.save_report(data)
 
     raise SystemExit
 
