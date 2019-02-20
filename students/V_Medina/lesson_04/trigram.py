@@ -35,18 +35,17 @@ def read_file(file_name):
 
 def create_file(trigram):
     """
-    :param words_list:
-    :return:
+    :param trigram: dictionary representing trigram
+    :return: sequence of words randomized
     """
-    output_text = ''
-    rand_key = random.choice(list(trigram.keys()))
-    print(output_text)
-    output_text += rand_key
-    print(output_text)
-    output_text += ' '+random.choice(trigram[rand_key])
-    print(output_text)
-    new_key = output_text.split()[-2:]
-    print(output_text)
-    output_text += ' ' + random.choice(trigram[new_key])
-    print(output_text)
-    return output_text
+    random_key = random.choice(list(trigram)).split()
+
+    for index in range(len(trigram)):
+        new_key = random_key[index] + ' ' + random_key[index + 1]
+        if new_key in trigram:
+            new_value = random.choice(trigram[new_key])
+            random_key.append(new_value)
+        else:
+            break
+
+    return ' '.join(random_key)
