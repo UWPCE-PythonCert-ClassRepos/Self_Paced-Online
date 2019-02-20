@@ -2,82 +2,57 @@
 """
 mailroom.py: use classes where applicable
 Author: JohnR
-Version: 1.0
-Last updated: 2/17/19
-Notes:
+Version: 1.2
+Last updated: 2/19/19
+Notes: See list of TODO: items inline
 """
 
-from donors import DonorDataBase as DDB
-from donors import Donor as D
+from donors import DonorDataBase
+from donors import Donor
 
 
-def main():
-    """
-    Main script loop and user interaction
-    Start with a database of several donors and donations
-    :return: N/A
-    """
-
-    donor_db = DDB()
-
-    d1 = D('John', 'Randal', [12.32, 34.53, 532.32])
-    d2 = D('Sarah', 'Samson', [1.32, 324.53, 2345.33, 6602.12])
-    d3 = D('Alex', 'Rez', [122.32, 2334.53])
-    d4 = D('Billy', 'Durst', [15.32, 34.00])
-
-    donor_db.add_donor(d1)
-    donor_db.add_donor(d2)
-    donor_db.add_donor(d3)
-    donor_db.add_donor(d4)
-
-    main_prompt = (
-        "\nWelcome to the main menu!\n"
-        "Please pick a number from the following:\n"
-        "1: exit the program\n"
-        "2: check donor list and become a donor\n"
-        "3: display a summary of current donor activity\n"
-        "4: print out a thank you for each donor\n"
-        "5: save a thank you note to disk for each donor\n"
-        ">>> "
-    )
-
-    main_dispatch = {
-        '1': exit_menu,
-        '2': donor_actions,
-        '3': DDB.print_summary,
-        '4': DDB.thank_all,
-        '5': DDB.save_report,
-    }
-
-    menu(main_prompt, main_dispatch, donor_db)
-
-
-def menu(main_prompt, main_dispatch, donor_db):
+def menu(prompt):
     """
     Get user input
-    :return: call the appropriate menu item
+    :return: call the appropriate method or function
     """
-    while True:
-        response = input(main_prompt)
-        try:
-            main_dispatch[response](donor_db)
-        except KeyError:
-            print('Please enter a number between 1 and 5.')
+    while True: # TODO: provide option to save database and restart from
+                # TODO: a previously saved database
+        response = input(prompt)
+        if response == '1':
+            exit_menu()
+        elif response == '2':
+            donor_actions(donor_db)
+        elif response == '3':
+            donor_db.print_summary()
+        elif response == '4':
+            donor_db.thank_all()
+        elif response == '5':
+            donor_db.save_report()
+        else:
+            print('Please enter a valid number between 1 - 5.')
 
 
-def exit_menu(data):
+def exit_menu():
+    """
+    Exit program after giving user option to save to disk
+    :return: None
+    """
+
     print()
-    save = input('Enter Y to save all data to disk before exiting. ')
+    print('Enter Y to save user data to disk before exiting. ')
+    save = input('Any other key to exit without saving >>> ')
     save = save.lower()
     if save == 'y':
-        DDB.save_report(data)
+        donor_db.save_report()
 
     raise SystemExit
 
 
 def donor_actions(data):
     """
-    send a thank you, check the donor list or add donation
+    Sub-menu of user options
+    data: Current user data base
     :return: None
     """
 
@@ -96,12 +71,12 @@ def donor_actions(data):
             print('We currently have the following donors on file: ')
             for i in data.donor_names():
                 print(i)
-        elif cmd == '3':
+        elif cmd == '3': # TODO: check database if name already exists
             first = input('Please enter your first name: ')
             last = input('Please enter your last name: ')
             amount = float(input('Amount to donate today: '))
 
-            new_donor = D(first.capitalize(), last.capitalize(), amount)
+            new_donor = Donor(first.capitalize(), last.capitalize(), amount)
             data.add_donor(new_donor)
             print()
             print(f'{new_donor.full_name} has been added as a donor.')
@@ -112,4 +87,30 @@ def donor_actions(data):
 
 
 if __name__ == '__main__':
-    main()
+    """
+    Create a database with a few donors and execute main user prompt
+    """
+    donor_db = DonorDataBase()
+
+    d1 = Donor('John', 'Randal', [12.32, 34.53, 532.32])
+    d2 = Donor('Sarah', 'Samson', [1.32, 324.53, 2345.33, 6602.12])
+    d3 = Donor('Alex', 'Rez', [122.32, 2334.53])
+    d4 = Donor('Billy', 'Durst', [15.32, 34.00])
+
+    donor_db.add_donor(d1)
+    donor_db.add_donor(d2)
+    donor_db.add_donor(d3)
+    donor_db.add_donor(d4)
+
+    main_prompt = (
+        "\nWelcome to the main menu!\n"
+        "Please pick a number from the following:\n"
+        "1: exit the program\n"
+        "2: check donor list and become a donor\n"
+        "3: display a summary of current donor activity\n"
+        "4: print out a thank you for each donor\n"
+        "5: save a thank you note to disk for each donor\n"
+        ">>> "
+    )
+
+    menu(main_prompt)
