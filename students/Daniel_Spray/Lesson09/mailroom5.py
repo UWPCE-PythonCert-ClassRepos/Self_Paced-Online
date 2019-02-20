@@ -26,17 +26,14 @@ class Donor:
         """Add a donations property"""
         return self.donation_history
 
-    @property
     def num_gifts(self):
         """Add a number of gifts property"""
         return len(self.donation_history)
 
-    @property
     def total_given(self):
         """Add a total given property"""
         return round(sum(self.donation_history),2)
 
-    @property
     def average(self):
         """Add an average of gifts property"""
         return round(float(sum(self.donation_history))/float(len(self.donation_history)),2)
@@ -59,7 +56,7 @@ The Charity
 		
     def __lt__(self,other):
         """Add a comparison method"""
-        return self.total_given < other.total_given
+        return self.total_given() < other.total_given()
  
     def __str__(self):
         """Add a printable string method"""
@@ -87,7 +84,6 @@ class Collection:
         """Add a method for adding new donors"""
         self.donors.append(new_donor)
 
-    @property
     def list_all(self):
         """Add a list of all donors property"""
         list = []
@@ -101,7 +97,7 @@ class Collection:
         data = []
 
         for donor in sorted_donors:
-            data.append([donor.name, '$', donor.total_given, donor.num_gifts, '$', donor.average])
+            data.append([donor.name, '$', donor.total_given(), donor.num_gifts(), '$', donor.average()])
 
         table_output = ["{:<24}{:<1}{:^13}{:<1}{:^13}{:<1}{:^17}".format('Donor Name','|','Total Given','|','Num Gifts','|','Average Gift')+"\n"+"-"*67]
         for row in data:
@@ -146,23 +142,19 @@ def send_thank_you():
     name = input("Please enter a full name > ")
 	
     while name == "list":
-        print(collection.list_all)
+        print(collection.list_all())
         name = input("Please enter a full name > ")
 
     if name.lower() == "quit":
         return
 
     donation = input("Donation Amount? > ")
-    '''while type(donation) != int and type(donation) != float:
-        if donation.lower() == "quit":
-            return
-        else:
-            print("That's not a valid donation")
-            donation = input("Donation Amount? > ")'''
 
     string_list = [str(names) for names in collection.names]
     while True:
         try:
+            if donation.lower() == "quit":
+                return
             for donor in collection.names:
                 if str(donor) == name:
                     donor.add_donation(donation)
