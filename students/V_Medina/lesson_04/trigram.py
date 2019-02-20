@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+Victor Medina
+Date: 1/12/2019
+Assignment 4: Trigram
+"""
 import string
 import random
 
