@@ -3,7 +3,6 @@ import sys
 
 
 def is_name_list(donor_name):
-    """Check if user input is string 'list'."""
     if donor_name == 'list':
         for d in ddb:  # display all donor names on user input 'list'
             print(d + ': ', ddb[d])
@@ -73,7 +72,7 @@ def create_letter(d):
 
 
 def generate_table_row(name, donation_list):
-    """Take input name and donation list and returns a list of a single tuple of strings."""
+    """Take input name and donation list and return a list of a single tuple of strings."""
     total_given = sum(donation_list)
     num_gifts = len(donation_list)
     try:
@@ -84,7 +83,7 @@ def generate_table_row(name, donation_list):
 
 
 def create_report_table(d):
-    """Take input dictionary and creates a sorted list of tuples based on key and values."""
+    """Take input dictionary and create a sorted list of tuples based on key and values."""
     report_table_header = [("Donor Name", "Total Given", "Num Gifts", "Average Gift")]
     report_table = []
 
@@ -96,7 +95,7 @@ def create_report_table(d):
 
 
 def max_column_width(table):
-    """Take an input table  and returns a list with each value representing the most characters in each column."""
+    """Take an input table  and return a list with each value representing the most characters in each column."""
     column_width_list = []  # list for the longest characters in each column
     for i in range(len(table[0])):
         column_length = 0
@@ -167,7 +166,7 @@ ddb = {'Archie Bunker': [20, 100, 75, 98],
 
 
 def main():
-    """Establish initial donor database and initiate top user menu. """
+    """Initiate top user menu. """
     while True:
         user_input = input('\n\nMENU:\n'
                            '1 - Send a Thank You for a New Donation\n'
