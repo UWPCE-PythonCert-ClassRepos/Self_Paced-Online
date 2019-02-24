@@ -111,7 +111,6 @@ class Collection:
         challenge_list = []
         for donor in self.donors:
             challenge_list = list(filter(lambda donation: donation >= min_donation and donation <= max_donation, donor.donation_history))
-            #challenge_list = list(filter(lambda donation: donation <= max_donation, challenge_list))
             challenge_list = list(map(lambda donation: donation*factor, challenge_list))
             donor.challenge_data = challenge_list
 
