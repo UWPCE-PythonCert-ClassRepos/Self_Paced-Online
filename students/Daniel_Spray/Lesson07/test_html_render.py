@@ -7,18 +7,18 @@ from run_html_render import *
 from io import StringIO
 
 class TestHtmlRender(unittest.TestCase):
-    '''Write a class with a full suite of tests for html_render.py'''
+    """Write a class with a full suite of tests for html_render.py"""
 
 #Step 1 tests:
 
     def test_files_rendered(self):
-        '''Run a test to ensure output html files were written'''
+        """Run a test to ensure output html files were written"""
         run_html_render
         for step in range(1,8):
             self.assertTrue(os.path.exists('test_html_output'+str(step)+'.html'))
 
     def test_initialization(self):
-        '''Run a test to check initialization variables'''
+        """Run a test to check initialization variables"""    
         hr.Element.__init__(self)
         expected_content = []
         expected_kwargs = {}
@@ -26,14 +26,14 @@ class TestHtmlRender(unittest.TestCase):
         self.assertEqual(expected_kwargs,self.kwargs)
 
     def test_append(self):
-        '''Run a test to ensure you can add content'''
+        """Run a test to ensure you can add content"""
         actual = hr.Element("test string")
         actual.append("more text")
         expected = ["test string","more text"]
         self.assertEqual(expected,actual.content)
 
     def test_render(self):
-        '''Run a test to check that your content gets rendered properly'''
+        """Run a test to check that your content gets rendered properly"""
         test_content = hr.Element("test string")
         test_content.tag = "a"
         f = StringIO()
@@ -45,7 +45,7 @@ class TestHtmlRender(unittest.TestCase):
 #Step 2 and 8 test
 
     def test_basic_tags(self):
-        '''Run a test for html, body, and p tags'''
+        """Run a test for html, body, and p tags"""
         test_content = hr.Html(hr.Body(hr.P("test string")))
         f = StringIO()
         test_content.render(f)
@@ -56,7 +56,7 @@ class TestHtmlRender(unittest.TestCase):
 #Step 3 test
 
     def test_one_line_tag(self):
-        '''Run a test for single line tags'''
+        """Run a test for single line tags"""
         test_content = hr.OneLineTag("test string")
         test_content.tag = "title"
         f = StringIO()
@@ -68,7 +68,7 @@ class TestHtmlRender(unittest.TestCase):
 #Step 4 test
 
     def test_styles(self):
-        '''Run a test for adding styles to a tag'''
+        """Run a test for adding styles to a tag"""
         test_content = hr.P("test string",style="text-align: center; font-style: oblique;")
         f = StringIO()
         test_content.render(f)
@@ -79,7 +79,7 @@ class TestHtmlRender(unittest.TestCase):
 #Step 5 test
 
     def test_self_closing_tag(self):
-        '''Run a test for self closing tags'''
+        """Run a test for self closing tags"""
         test_content = hr.SelfClosingTag("test string")
         test_content.tag = "br"
         f = StringIO()
@@ -91,7 +91,7 @@ class TestHtmlRender(unittest.TestCase):
 #Step 6 test
 
     def test_anchor_tag(self):
-        '''Run a test for tags with links'''
+        """Run a test for tags with links"""
         test_content = hr.A("http://google.com","test link")
         f = StringIO()
         test_content.render(f)
@@ -102,7 +102,7 @@ class TestHtmlRender(unittest.TestCase):
 #Step 7 test
 
     def test_list_tags(self):
-        '''Run a test for list tags'''
+        """Run a test for list tags"""
         test_list = hr.Ul("Test List")
         test_list.append(hr.Li("Thing one"))
         test_list.append(hr.Li("Thing two"))
@@ -115,7 +115,7 @@ class TestHtmlRender(unittest.TestCase):
 #Step 8 meta test
 
     def test_meta(self):
-        '''Run a test for html, body, and p tags'''
+        """Run a test for html, body, and p tags"""
         test_content = hr.Meta("test string",charset="UTF-8")
         f = StringIO()
         test_content.render(f)
@@ -126,6 +126,7 @@ class TestHtmlRender(unittest.TestCase):
 #Final output test
 
     def test_final_output(self):
+        """Run a test to check the final output written to the file is as expected"""
         try:
             with open('test_html_output8.html','r') as f:
                 actual = f.read()
