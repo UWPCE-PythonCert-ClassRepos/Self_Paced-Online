@@ -2,8 +2,8 @@
 """
 mailroom_fp.py: intro to functional programming concepts
 Author: JohnR
-Version: 1.4
-Last updated: 2/24/19
+Version: 1.5
+Last updated: 2/26/19
 Notes: introducing map, filter and reduce
  * each donation can be doubled, tripled, etc | challenge(factor)
         give back new donor data base with new data
@@ -59,13 +59,49 @@ def exit_menu():
 
 
 def donor_menu():
+    """
+    Sub-menu for becoming a new donor
+    :return: return a number as a string
+    """
     print()
     print('Please choose from the following donor options:')
     print('1 = Return to main menu')
     print('2 = See a list of current donors')
-    print('3 = Become a new donor')
+    print('3 = Become a new donor or add a donation for an existing donor')
     cmd = input('>>> ')
     return cmd
+
+
+def thanks(name, amount):
+    """
+    say thanks for the money
+    :param name: donor name
+    :param amount: donation amount
+    :return:
+    """
+    print()
+    print(f'Dear {name}, thank you for the kind donation of ${amount} - '
+          f'it has been added to our records.')
+    print()
+
+
+def donor_info():
+    """
+    Get donor name
+    :return: tuple of first and last name
+    """
+    first = input('Please enter your first name: ')
+    last = input('Please enter your last name: ')
+    return first.capitalize().strip(), last.capitalize().strip()
+
+
+def donor_amount():
+    """
+    get donation amount
+    :return: donation amount as float
+    """
+    donation = float(input('Please enter an amount to donate: '))
+    return donation
 
 
 def donor_actions(data):
@@ -74,7 +110,6 @@ def donor_actions(data):
     data: Current user data base
     :return: None
     """
-
     while True:
         cmd = donor_menu()
         if cmd == '1':
@@ -84,15 +119,17 @@ def donor_actions(data):
             print('We currently have the following donors on file: ')
             for i in data.donor_names():
                 print(i)
-        elif cmd == '3': # TODO: check database if name already exists
-            first = input('Please enter your first name: ')
-            last = input('Please enter your last name: ')
-            amount = float(input('Amount to donate today: '))
-
-            new_donor = Donor(first.capitalize(), last.capitalize(), amount)
-            data.add_donor(new_donor)
-            print()
-            print(f'{new_donor.full_name} has been added as a donor.')
+        elif cmd == '3':
+            my_name = donor_info()
+            full_name = my_name[0] + ' ' + my_name[1]
+            amount = donor_amount()
+            if data.get_donor(full_name):
+                data.get_donor(full_name).new_donation(amount)
+                thanks(full_name, amount)
+            else:
+                new_donor = Donor(my_name[0], my_name[1], amount)
+                data.add_donor(new_donor)
+                thanks(new_donor.full_name, amount)
         else:
             print('-' * 40)
             print('Sorry, need a number between 1 and 3')

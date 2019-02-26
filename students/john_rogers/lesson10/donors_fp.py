@@ -1,8 +1,8 @@
 """
 Donor classes for mailroom_fp.py
 Author: JohnR
-Version: 1.4
-Last updated: 2/19/2019
+Version: 1.5
+Last updated: 2/26/2019
 Notes: introducing map, filter and reduce
 """
 
@@ -122,5 +122,10 @@ class DonorDataBase(object):
         sorted_donors.sort(key=lambda x: x[1])
         sorted_donors.reverse()
         return sorted_donors
+
+    def get_donor(self, name):
+        for i in self.donors:
+            if i.full_name == name:
+                return i
 
 
