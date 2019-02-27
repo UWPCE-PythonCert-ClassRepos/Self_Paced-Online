@@ -25,8 +25,7 @@ def menu(prompt):
     Get user input
     :return: call the appropriate method or function
     """
-    while True: # TODO: provide option to save database and restart from
-                # TODO: a previously saved database
+    while True:
         response = input(prompt)
         if response == '1':
             exit_menu()
@@ -38,8 +37,10 @@ def menu(prompt):
             donor_db.thank_all()
         elif response == '5':
             donor_db.save_report()
+        elif response == '6':
+            challenge(donor_db)
         else:
-            print('Please enter a valid number between 1 - 5.')
+            print('Please enter a valid number between 1 - 6.')
 
 
 def exit_menu():
@@ -137,24 +138,28 @@ def donor_actions(data):
 
 
 def amped():
+    """
+    Get a number from user to multiply donations
+    :return: float
+    """
     print()
     multiplier = float(input('Please enter a number to multiply by: '))
-    amped_db = DonorDataBase.challenge(multiplier)
-    print(f'Amping our current donations by a factor of {multiplier}'
-          f' would give us the following amounts: ')
-    print()
-    amped_db.print_summary()
+    return multiplier
 
 
-def challenge(factor):
+def challenge(data):
     """
-    Multiply every donation in donor_db by factor
-    :param factor: integer to multiply each donation
+    Multiply every donation in donor_db by user supplied factor from amped
     :return: new donor database
     """
+    factor = amped()
     challenge_db = DonorDataBase()
-    for donor in self.donors:
+    for donor in data.donors:
+        donations = donor.get_donations
+        list(map(lambda x: x * factor, donations))
         challenge_db.add_donor(donor)
+
+    challenge_db.print_summary()
 
 
 if __name__ == '__main__':
@@ -181,7 +186,7 @@ if __name__ == '__main__':
         "3: display a summary of current donor activity\n"
         "4: print out a thank you for each donor\n"
         "5: save a thank you note to disk for each donor\n"
-        "6: AMPED: Multiply all donations by X amount "
+        "6: AMPED: Multiply all donations by X amount\n "
         ">>> "
     )
 

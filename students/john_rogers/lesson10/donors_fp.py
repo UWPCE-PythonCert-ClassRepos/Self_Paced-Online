@@ -38,7 +38,7 @@ class Donor(object):
 
     @property
     def get_donations(self):
-        pass
+        return self.donations
 
     @property
     def avg_donation_amount(self):
