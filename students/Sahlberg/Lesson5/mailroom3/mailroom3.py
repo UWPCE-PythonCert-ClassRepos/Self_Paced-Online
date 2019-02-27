@@ -25,7 +25,6 @@ def donate():
     except ValueError:
         return print('Please enter a dollar amount.')
 
-
 def amount_append(name, dictionary, amount):
     return dictionary[name].append(amount)
 
@@ -100,10 +99,14 @@ def user_action1(dict):
 
     else:
         if option.lower() in dict:
-            amount = donate()
-            amount_append(option, dict, amount)
-            print(email(option, amount))
-            return user_action1(dict)
+            try:
+                amount = donate()
+                amount_append(option, dict, amount)
+                print(email(option, amount))
+                return user_action1(dict)
+            except ValueError as err:
+                print('Something is not right.')
+                return print(err)
 
         else:
             dict[option] = []
