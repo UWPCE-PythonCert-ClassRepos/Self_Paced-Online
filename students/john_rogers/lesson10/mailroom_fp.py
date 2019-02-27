@@ -2,8 +2,8 @@
 """
 mailroom_fp.py: intro to functional programming concepts
 Author: JohnR
-Version: 1.5
-Last updated: 2/26/19
+Version: 1.6
+Last updated: 2/27/19
 Notes: introducing map, filter and reduce
  * each donation can be doubled, tripled, etc | challenge(factor)
         give back new donor data base with new data
@@ -143,7 +143,7 @@ def amped():
     :return: float
     """
     print()
-    multiplier = float(input('Please enter a number to multiply by: '))
+    multiplier = float(input('Please enter a number to multiply by:\n '))
     return multiplier
 
 
@@ -156,8 +156,9 @@ def challenge(data):
     challenge_db = DonorDataBase()
     for donor in data.donors:
         donations = donor.get_donations
-        list(map(lambda x: x * factor, donations))
-        challenge_db.add_donor(donor)
+        new_donations = list(map(lambda x: x * factor, donations))
+        new_donor = Donor(donor.first, donor.last, new_donations)
+        challenge_db.add_donor(new_donor)
 
     challenge_db.print_summary()
 
@@ -191,3 +192,4 @@ if __name__ == '__main__':
     )
 
     menu(main_prompt)
+
