@@ -5,15 +5,12 @@ Author: JohnR
 Version: 1.6
 Last updated: 2/27/19
 Notes: introducing map, filter and reduce
- * each donation can be doubled, tripled, etc | challenge(factor)
-        give back new donor data base with new data
  * filter donations above or below a specified amount
         Add min_donation and max_donation optional keyword to
          challenge function; filter donations before passing to map
  * Projections: What would it look like to if total contribution if
         they double contributions under $100; what if you triple
         contributions over $50?
- * implement list comprehension where possible
 """
 
 from donors_fp import DonorDataBase
