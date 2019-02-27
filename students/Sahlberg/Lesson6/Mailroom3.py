@@ -1,15 +1,13 @@
 """Ian Sahlberg
-Assignment 5 mailroom3
+Assignment 6 mailroom3 testing
 Python 210
-01/14/2019"""
+02/13/2019"""
 
 
 
 #for file testing only
 if __name__ == "__main__":
     print('this is main')
-
-
 
 else:
 
