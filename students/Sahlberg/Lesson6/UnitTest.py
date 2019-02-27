@@ -1,11 +1,15 @@
-import unittest as u
+"""Ian Sahlberg
+Python210
+2/13/2019
+Unit Testing"""
 
+
+import unittest as u
 import Mailroom3 as m
 from Mailroom3 import amount_append
 from Mailroom3 import donate
 from Mailroom3 import print_report
 from Mailroom3 import quit
-
 
 
 class tests(u.TestCase):
@@ -55,7 +59,6 @@ class tests(u.TestCase):
         self.assertListEqual(expected, actual)
 
     def test_print_report(self):
-
         dict = {'bob johnson': [150,1,150],
              'susan skoosan': [2550,2,1275],
              'tim tam':[10.50,1,10],
