@@ -37,6 +37,10 @@ class Donor(object):
         return len(self.donations)
 
     @property
+    def get_donations(self):
+        pass
+
+    @property
     def avg_donation_amount(self):
         return round(self.total_donations / self.number_of_donations, 2)
 
@@ -127,5 +131,4 @@ class DonorDataBase(object):
         for i in self.donors:
             if i.full_name == name:
                 return i
-
 

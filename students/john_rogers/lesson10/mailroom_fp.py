@@ -136,6 +136,27 @@ def donor_actions(data):
             print('-' * 40)
 
 
+def amped():
+    print()
+    multiplier = float(input('Please enter a number to multiply by: '))
+    amped_db = DonorDataBase.challenge(multiplier)
+    print(f'Amping our current donations by a factor of {multiplier}'
+          f' would give us the following amounts: ')
+    print()
+    amped_db.print_summary()
+
+
+def challenge(factor):
+    """
+    Multiply every donation in donor_db by factor
+    :param factor: integer to multiply each donation
+    :return: new donor database
+    """
+    challenge_db = DonorDataBase()
+    for donor in self.donors:
+        challenge_db.add_donor(donor)
+
+
 if __name__ == '__main__':
     """
     Create a database with a few donors and execute main user prompt
@@ -160,6 +181,7 @@ if __name__ == '__main__':
         "3: display a summary of current donor activity\n"
         "4: print out a thank you for each donor\n"
         "5: save a thank you note to disk for each donor\n"
+        "6: AMPED: Multiply all donations by X amount "
         ">>> "
     )
 
