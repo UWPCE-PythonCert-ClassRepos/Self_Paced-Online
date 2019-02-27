@@ -1,11 +1,8 @@
 import unittest as u
 from Circle import *
-from io import StringIO
-c = Circle(4)
-
-print(c.radius)
 
 class test_circle(u.TestCase):
+    """For testing Circle module"""
 
     def test_radius(self):
         c = Circle(4)
@@ -18,7 +15,6 @@ class test_circle(u.TestCase):
     def test_area(self):
         c = Circle(4)
         self.assertEqual(50.2655, c.area)
-
 
     def test_diameter_set(self):
         d = Circle.from_diameter(10)
@@ -45,6 +41,7 @@ class test_circle(u.TestCase):
     def test_great_than(self):
         self.assertEqual(Circle(22) > Circle(6), True)
         self.assertEqual(Circle(22) > Circle(66), False)
+
     def test_equality(self):
         self.assertEqual(True, True)
         self.assertEqual(Circle(6), Circle(6))
