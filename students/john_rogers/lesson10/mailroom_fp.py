@@ -165,7 +165,7 @@ def challenge(data):
     Multiply every donation in donor_db by user supplied factor from amped
     :return: new donor database
     """
-    factor = amped()
+    factor, minimum, maximum = amped()
     challenge_db = DonorDataBase()
     for donor in data.donors:
         donations = donor.get_donations
