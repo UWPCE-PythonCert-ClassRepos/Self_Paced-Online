@@ -5,6 +5,10 @@
 
 '''
 
+# The method uses the mod division to print the desired message.
+# if number is the multiple of 3, it prints Fizz.
+# if number is the multiple of 5, it prints Buzz.
+# if number is the multiple of 3 AND 5, it prints FizzBuzz.
 def FizzBizz():
     for i in range(1,101):
         msg = i
@@ -16,7 +20,7 @@ def FizzBizz():
             msg = 'Buzz'
         print(msg)
 
-
+# The main method to test the code.
 if __name__ == "__main__":
 
     FizzBizz()
