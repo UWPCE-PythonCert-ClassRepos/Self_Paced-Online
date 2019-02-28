@@ -6,7 +6,7 @@
 '''
 
 # Part 1.
-
+# Simple print statements to generate a grid.
 def print_default_grid():
     print('+'+4*' -'+' +'+4*' -'+' +')
     print('|'+4*'  '+' |'+4*'  '+' |')
@@ -22,7 +22,8 @@ def print_default_grid():
 
 
 # Part 2.***Make it a more general function***
-
+# Generalized function to create the grid.
+# The grid size is determined by paramter n.
 def print_grid(n):
     n=n//2
     print('+'+n*' -'+' +'+n*' -'+' +')
@@ -35,7 +36,9 @@ def print_grid(n):
 
 
 # Part 3.*** Make it an even more general function ***
-
+# The function takes two arguments n1, n2
+# The grid is printed based on the number of rows set by n_1, and number of
+# columns set by n_2.
 def print_grid2(n_1,n_2):
     print(n_1*('+ '+n_2*'- ')+'+')
     counter = 0
