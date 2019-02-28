@@ -48,7 +48,7 @@ def print_grid2(n_1,n_2):
         print(n_1*('+ '+n_2*'- ')+'+')
         counter+=1
 
-
+# The main method to test the code.
 if __name__ == '__main__':
     print('Part 1')
     print_default_grid()
