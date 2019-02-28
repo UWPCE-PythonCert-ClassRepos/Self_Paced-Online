@@ -157,6 +157,8 @@ def challenge(data):
         new_donor = Donor(donor.first, donor.last, new_donations)
         challenge_db.add_donor(new_donor)
 
+    print(f'Amping up our donations by a factor of {factor} would give us '
+          f'the following contribution amounts: \n')
     challenge_db.print_summary()
 
 
