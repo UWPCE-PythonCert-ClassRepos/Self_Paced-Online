@@ -19,10 +19,10 @@ def fibonacci(n):
     return sum_series(n)
 
 
- # The lucas series is an integer series starting with 2,1.
- # The next integer is determined by summing the previous two.
- # i.e: 2, 1, 3, 4, 7, 11, 18, 29, ...
- # The function returns the lucas series of the first n+1 terms.
+# The lucas series is an integer series starting with 2,1.
+# The next integer is determined by summing the previous two.
+# i.e: 2, 1, 3, 4, 7, 11, 18, 29, ...
+# The function returns the lucas series of the first n+1 terms.
 
 def lucas(n):
     '''
