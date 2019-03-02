@@ -44,6 +44,13 @@ class Donor(object):
     def avg_donation_amount(self):
         return round(self.total_donations / self.number_of_donations, 2)
 
+    def amped_donations(self, factor):
+        return list(map(lambda x: x * factor, self.get_donations))
+
+    def filtered_donations(self, min_amount=0, max_amount=999999999):
+        return list(filter(lambda x: min_amount <= x <= max_amount,
+                           self.get_donations))
+
     def new_donation(self, amount):
         self.donations.append(amount)
 

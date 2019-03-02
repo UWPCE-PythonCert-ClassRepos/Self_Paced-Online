@@ -134,48 +134,20 @@ def donor_actions(data):
             print('-' * 40)
 
 
-def amped():
-    """
-    Get a number from user to multiply donations - add optional min/max
-    :return: multiplier, min_amount and max_amount
-    """
-    print()
-    multiplier = float(input('Please enter a number to multiply by:\n '))
-    min_amount = 0
-    max_amount = 0
-    include_min = input('Would you like this to apply only to donations '
-                        'over a certain amount? Y/N: \n')
-    include_min = include_min.lower()
-    if include_min == 'y':
-        min_amount = float(input('Please enter a minimum amount to'
-                                 ' exclude:\n '))
-
-    include_max = input('Would you like to exclude donations over a '
-                        'certain amount? Y/N: \n')
-    include_max = include_max.lower()
-    if include_max == 'y':
-        max_amount = float(input('Please enter a maximum amount to '
-                                 'exclude:\n '))
-
-    return multiplier, min_amount, max_amount
-
-
 def challenge(data):
-    """
-    Multiply every donation in donor_db by user supplied factor from amped
-    :return: new donor database
-    """
-    factor, minimum, maximum = amped()
     challenge_db = DonorDataBase()
+    factor = float(input('Please enter a number to multiply all current '
+                         'donations by: '))
     for donor in data.donors:
-        donations = donor.get_donations
-        new_donations = list(map(lambda x: x * factor, donations))
-        new_donor = Donor(donor.first, donor.last, new_donations)
+        new_amounts = donor.amped_donations(factor)
+        new_donor = Donor(donor.first, donor.last, new_amounts)
         challenge_db.add_donor(new_donor)
 
-    print(f'Amping up our donations by a factor of {factor} would give us '
-          f'the following contribution amounts: \n')
     challenge_db.print_summary()
+
+
+
+
 
 
 if __name__ == '__main__':
