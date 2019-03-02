@@ -36,7 +36,7 @@ print('The series 2 list is: ', series2_list)
 
 # Series 3
 series3_list = series1_list[:]
-print('The list is: ', series3_list)
+
 for fruit in series3_list[:]:
     response = input('Do you like {}? Please answer "yes" or "no".'.format(fruit))
     while response != 'yes' and response != 'no':
@@ -47,6 +47,7 @@ print('The series 3 list is: ', series3_list)
 
 # Series 4
 series4_list = series1_list[:]
-print('The list is: ', series4_list)
-for index, fruit in series4_list[:]:
+for index, fruit in enumerate(series4_list):
     series4_list[index] = fruit[::-1]
+print('The original list is: ', series1_list)
+print('The new list is: ', series4_list)
