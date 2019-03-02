@@ -2,12 +2,9 @@
 """
 mailroom_fp.py: intro to functional programming concepts
 Author: JohnR
-Version: 1.7
+Version: 1.9
 Last updated: 3/2/19
 Notes: introducing map, filter and reduce
- * Projections: What would it look like to if total contribution if
-        they double contributions under $100; what if you triple
-        contributions over $50?
 """
 
 from donors_fp import DonorDataBase
@@ -97,8 +94,13 @@ def donor_amount():
     get donation amount
     :return: donation amount as float
     """
-    donation = float(input('Please enter an amount to donate: '))
-    return donation
+    while True:
+        try:
+            donation = float(input('Please enter an amount to donate: '))
+        except ValueError:
+            print('Sorry, we need a number here!')
+        else:
+            return donation
 
 
 def donor_actions(data):
@@ -138,8 +140,14 @@ def factor():
     Get a float to multiply by
     :return: float
     """
-    some_number = float(input('Please enter a number to multiply by: '))
-    return some_number
+    while True:
+        try:
+            some_number = float(input('Please enter a number to'
+                                      ' multiply by: '))
+        except ValueError:
+            print('Sorry, we need a number here!')
+        else:
+            return some_number
 
 
 def challenge(data):
@@ -183,23 +191,12 @@ def challenge_filtered(data):
     filtered_db.print_summary()
 
 
-if __name__ == '__main__':
+def options():
     """
-    Create a database with a few donors and execute main user prompt
+    Provide a list of options for the main menu
+    :return option list
     """
-    donor_db = DonorDataBase()
-
-    d1 = Donor('John', 'Randal', [12.32, 34.53, 532.32])
-    d2 = Donor('Sarah', 'Samson', [1.32, 324.53, 2345.33, 6602.12])
-    d3 = Donor('Alex', 'Rez', [122.32, 2334.53])
-    d4 = Donor('Billy', 'Durst', [15.32, 34.00])
-
-    donor_db.add_donor(d1)
-    donor_db.add_donor(d2)
-    donor_db.add_donor(d3)
-    donor_db.add_donor(d4)
-
-    main_prompt = (
+    user_prompt = (
         "\nWelcome to the main menu!\n"
         "Please pick a number from the following:\n"
         "1: exit the program\n"
@@ -211,6 +208,24 @@ if __name__ == '__main__':
         "7: AMPED, filtered: Multiply qualifying donations by X amount\n "
         ">>> "
     )
+    return user_prompt
 
-    menu(main_prompt)
+
+if __name__ == '__main__':
+    """
+    Create a database with a few donors and execute main user prompt
+    """
+    donor_db = DonorDataBase()
+
+    d1 = Donor('John', 'Randal', [12.32, 34.53, 532.32])
+    d2 = Donor('Sarah', 'Samson', [1.32, 324.53, 2345.33, 6602.12])
+    d3 = Donor('Alex', 'Rez', [122.32, 2334.53])
+    d4 = Donor('Billy', 'Durst', [5.32, 4.00])
+
+    donors = [d1, d2, d3, d4]
+    
+    for i in donors:
+        donor_db.add_donor(i)
+
+    menu(options())
 
