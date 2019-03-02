@@ -64,3 +64,5 @@ if __name__ =="__main__":
     assert swap_third_third(a_string) == "is a stringthis "
     assert swap_third_third(a_tuple) == (13,12,5,32,2,54)
     assert swap_third_third(a_list) == [3, 4, 5, 6, 7, 8, 9, 0, 1, 2]
+
+    print("Tests Passed: ")
