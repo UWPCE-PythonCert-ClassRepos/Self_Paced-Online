@@ -2,12 +2,9 @@
 """
 mailroom_fp.py: intro to functional programming concepts
 Author: JohnR
-Version: 1.6
-Last updated: 2/27/19
+Version: 1.7
+Last updated: 3/2/19
 Notes: introducing map, filter and reduce
- * filter donations above or below a specified amount
-        Add min_donation and max_donation optional keyword to
-         challenge function; filter donations before passing to map
  * Projections: What would it look like to if total contribution if
         they double contributions under $100; what if you triple
         contributions over $50?
@@ -107,7 +104,7 @@ def donor_amount():
 def donor_actions(data):
     """
     Sub-menu of user options
-    data: Current user data base
+    :param data: Current user data base
     :return: None
     """
     while True:
@@ -136,24 +133,41 @@ def donor_actions(data):
             print('-' * 40)
 
 
+def factor():
+    """
+    Get a float to multiply by
+    :return: float
+    """
+    some_number = float(input('Please enter a number to multiply by: '))
+    return some_number
+
+
 def challenge(data):
+    """
+    Amplify all current donations by X amount
+    :param data: Current user data base
+    :return: New data user database
+    """
     challenge_db = DonorDataBase()
-    factor = float(input('Please enter a number to multiply all current '
-                         'donations by: '))
+    multiplier = factor()
     for donor in data.donors:
-        new_amounts = donor.amped_donations(factor)
+        new_amounts = donor.amped_donations(multiplier)
         new_donor = Donor(donor.first, donor.last, new_amounts)
         challenge_db.add_donor(new_donor)
 
-    print(f'Thank you - multiplying our current donations by {factor} '
+    print(f'Thank you - multiplying our current donations by {multiplier} '
           f'gives us the following new amounts:\n')
     challenge_db.print_summary()
 
 
 def challenge_filtered(data):
+    """
+    Amplify qualifying donations by X amount
+    :param data: Current user data base
+    :return: New data user database
+    """
     filtered_db = DonorDataBase()
-    factor = float(input('Please enter a number to multiply all current '
-                         'donations by: '))
+    multiplier = factor()
     min_donation = float(input('Please exclude donations under: '))
     max_donation = float(input('Please exclude donations over: '))
     for donor in data.donors:
@@ -162,7 +176,7 @@ def challenge_filtered(data):
         if not filtered_list:
             break
         else:
-            amped_list = list(map(lambda x: x * factor, filtered_list))
+            amped_list = list(map(lambda x: x * multiplier, filtered_list))
             new_donor = Donor(donor.first, donor.last, amped_list)
             filtered_db.add_donor(new_donor)
 
