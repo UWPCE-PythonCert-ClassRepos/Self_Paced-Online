@@ -36,6 +36,8 @@ def menu(prompt):
             donor_db.save_report()
         elif response == '6':
             challenge(donor_db)
+        elif response == '7':
+            challenge_filtered(donor_db)
         else:
             print('Please enter a valid number between 1 - 6.')
 
@@ -143,11 +145,28 @@ def challenge(data):
         new_donor = Donor(donor.first, donor.last, new_amounts)
         challenge_db.add_donor(new_donor)
 
+    print(f'Thank you - multiplying our current donations by {factor} '
+          f'gives us the following new amounts:\n')
     challenge_db.print_summary()
 
 
+def challenge_filtered(data):
+    filtered_db = DonorDataBase()
+    factor = float(input('Please enter a number to multiply all current '
+                         'donations by: '))
+    min_donation = float(input('Please exclude donations under: '))
+    max_donation = float(input('Please exclude donations over: '))
+    for donor in data.donors:
+        filtered_list = donor.filtered_donations(min_donation,
+                                                 max_donation)
+        if not filtered_list:
+            break
+        else:
+            amped_list = list(map(lambda x: x * factor, filtered_list))
+            new_donor = Donor(donor.first, donor.last, amped_list)
+            filtered_db.add_donor(new_donor)
 
-
+    filtered_db.print_summary()
 
 
 if __name__ == '__main__':
@@ -174,7 +193,8 @@ if __name__ == '__main__':
         "3: display a summary of current donor activity\n"
         "4: print out a thank you for each donor\n"
         "5: save a thank you note to disk for each donor\n"
-        "6: AMPED: Multiply all donations by X amount\n "
+        "6: AMPED: Multiply all donations by X amount\n"
+        "7: AMPED, filtered: Multiply qualifying donations by X amount\n "
         ">>> "
     )
 
