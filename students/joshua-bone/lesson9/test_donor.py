@@ -43,11 +43,11 @@ def test_avg_donations():
     assert floating_equals(d.avg_donation, 15.0)
 
 
-def test_total_donations():
+def test_total_amt():
     d = Donor("Mark", 10)
-    assert d.total_donations == 10
+    assert d.total_amt == 10
     d.add_donation(2.34)
-    assert floating_equals(d.total_donations, 12.34)
+    assert floating_equals(d.total_amt, 12.34)
 
 
 def test_eq():
