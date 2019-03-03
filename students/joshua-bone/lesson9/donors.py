@@ -1,16 +1,20 @@
 # Joshua Bone - UW Python 210 - Lesson 9
-# 02/10/2019
+# 03/01/2019
 # Assignment: Mailroom, Object Oriented
 
 from donor import Donor
+
 
 class Donors:
     def __init__(self):
         self._index = {}
 
     @property
-    def donor_names(self):
-        return self._index.keys()
+    def names(self):
+        return list(self._index.keys())
+
+    def get_all(self):
+        return self._index.values()
 
     def add_donor(self, donor):
         self._index.update({donor.name: donor})
@@ -21,7 +25,7 @@ class Donors:
     def add_donation(self, name, amt):
         d = self.get_donor(name)
         if d is None:
-            self.add_donor(Donor(name, amt))
+            d = Donor(name, amt)
+            self.add_donor(d)
         else:
             d.add_donation(amt)
-

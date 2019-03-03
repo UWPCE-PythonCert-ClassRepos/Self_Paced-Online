@@ -1,4 +1,6 @@
 import sys
+import math
+from functools import reduce
 
 class Donor:
     """Create a class that sets up one donor"""
@@ -10,6 +12,8 @@ class Donor:
             self.donation_history = []
         else:
             self.donation_history = donation_history
+        self.challenge_numbers = []
+
 
     @property
     def name(self):
@@ -25,6 +29,16 @@ class Donor:
     def donations(self):
         """Add a donations property"""
         return self.donation_history
+
+    @property
+    def challenge_data(self):
+        """Add a property for challenge data"""
+        return self.challenge_numbers
+
+    @challenge_data.setter
+    def challenge_data(self,challenge_list):
+        """Add a way to set the challenge data"""
+        self.challenge_numbers = challenge_list
 
     def num_gifts(self):
         """Add a number of gifts property"""
@@ -53,6 +67,14 @@ The Charity
 """.format(str(self.full_name), float(self.donation_history[-1]))
         print(content)
         return(content)
+
+    def __mul__(self,factor):
+        """Add a multiplication method"""
+        return map(lambda donor: donor*factor, self.donation_history)
+
+    def __rmul__(factor,self):
+        """Add a reverse multiplication method"""
+        return map(lambda donor: donor*factor, self.donation_history)
 		
     def __lt__(self,other):
         """Add a comparison method"""
@@ -83,6 +105,14 @@ class Collection:
     def add_new(self,new_donor):
         """Add a method for adding new donors"""
         self.donors.append(new_donor)
+
+    def challenge(self,factor,min_donation,max_donation):
+        """Add a challenge method"""
+        challenge_list = []
+        for donor in self.donors:
+            challenge_list = list(filter(lambda donation: donation >= min_donation and donation <= max_donation, donor.donation_history))
+            challenge_list = list(map(lambda donation: donation*factor, challenge_list))
+            donor.challenge_data = challenge_list
 
     def list_all(self):
         """Add a list of all donors property"""
@@ -121,14 +151,16 @@ Type the corresponding number to select from the following list:
 1: Send a Thank You
 2: Create a Report
 3: Send Thank You to Everyone
-4: Quit
+4: Challenge
+5: Quit
 >""")
 
     switch_menu = {
         '1': send_thank_you,
         '2': collection.create_report,
         '3': collection.send_all,
-        '4': quit
+        '4': challenge,
+        '5': quit
     }
     
     try:
@@ -170,6 +202,80 @@ def send_thank_you():
 		
     print("Data added!")
 
+def challenge():
+    """Create a challenge function for ambitious philanthropists"""
+    string_list = [str(names) for names in collection.names]
+    while True:
+        name = input("Who's account would you like to see?\n>")
+        if name == "list":
+            print(collection.list_all())
+        elif name.lower() == 'quit':
+            return
+        elif name not in string_list:
+            print("That's not a valid challenger")
+        else:
+            name_key = collection.names[string_list.index(name)]
+            print(name+"'s previous donations were:"+str(name_key.donation_history))
+            break
+
+    while True:
+        min_donation = input("What is the minimum amount you want to challenge?\nType 'None' for no minimum\n>")
+        try:
+            if min_donation.lower() == 'none':
+                break
+            elif min_donation.lower() == 'quit':
+                return
+            elif float(min_donation) > max(name_key.donation_history):
+                print("That minimum is too high")
+            else:
+                min_donation = float(min_donation)
+                break
+        except ValueError:
+            print("That's not a valid minimum")
+
+    while True:			
+        max_donation = input("What is the maximum amount you want to challenge?\nType 'None' for no maximum\n>")
+        try:
+            if max_donation.lower() == 'none':
+                break
+            elif max_donation.lower() == 'quit':
+                return
+            elif float(max_donation) < min(name_key.donation_history):
+                print("That maximum is too low")
+            else:
+                max_donation = float(max_donation)
+                break
+        except ValueError:
+            print("That's not a valid maximum")
+
+    while True:
+        factor = input("What is the multiplier you want to challenge by? \n>")
+        try:
+            if factor.lower() == 'quit':
+                return
+            else:
+                factor = float(factor)
+                break
+        except ValueError:
+            print("That's not a valid factor")
+
+
+    if str(min_donation).lower() != "none" and str(max_donation).lower() != "none":
+        collection.challenge(factor,min_donation,max_donation)
+    elif str(min_donation).lower() != "none" and str(max_donation).lower() == "none":
+        collection.challenge(factor,min_donation,math.inf)
+    elif str(max_donation).lower() != "none" and str(min_donation).lower() == "none":
+        collection.challenge(factor,0,max_donation)
+    elif str(max_donation).lower() == "none" and str(min_donation).lower() == "none":
+        collection.challenge(factor,0,math.inf)
+
+
+    for donor in collection.names:
+        if str(donor) == name:
+            projection = reduce(lambda x,y: x+y,donor.challenge_data)
+
+    print("Your projected total contribution is: ${:0.2f}".format(projection))
+
 def quit():
     """Quit the program"""
     sys.exit()
@@ -185,4 +291,5 @@ Donor('Paul Allen', [100.00,100.00,508.42])
 if __name__ == '__main__':
     while True:
         menu()
+
 

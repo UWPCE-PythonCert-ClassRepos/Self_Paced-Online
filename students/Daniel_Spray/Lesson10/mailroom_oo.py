@@ -86,10 +86,10 @@ class Collection:
 
     def list_all(self):
         """Add a list of all donors property"""
-        str_list = []
+        list = []
         for donor in self.donors:
-            str_list.append(repr(donor))
-        return", ".join(str_list)
+            list.append(repr(donor))
+        return", ".join(list)
 
     def create_report(self):
         """Make a formatted table"""
@@ -135,6 +135,7 @@ Type the corresponding number to select from the following list:
         switch_menu[selection]()
     except KeyError:
         print("Sorry, I didn't recognize that command")
+        return
 
 def send_thank_you():
     """Prompt inputs for new donation data"""
@@ -169,6 +170,7 @@ def send_thank_you():
             donation = input("Donation Amount? > ")
 		
     print("Data added!")
+    return
 
 def quit():
     """Quit the program"""
