@@ -2,8 +2,8 @@
 """
 mailroom_fp.py: intro to functional programming concepts
 Author: JohnR
-Version: 1.9
-Last updated: 3/2/19
+Version: 2.0
+Last updated: 3/3/19
 Notes: introducing map, filter and reduce
 """
 
@@ -208,6 +208,7 @@ def options():
         "7: AMPED, filtered: Multiply qualifying donations by X amount\n "
         ">>> "
     )
+
     return user_prompt
 
 
@@ -223,7 +224,7 @@ if __name__ == '__main__':
     d4 = Donor('Billy', 'Durst', [5.32, 4.00])
 
     donors = [d1, d2, d3, d4]
-    
+
     for i in donors:
         donor_db.add_donor(i)
 

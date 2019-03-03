@@ -1,8 +1,8 @@
 """
 Donor classes for mailroom_fp.py
 Author: JohnR
-Version: 1.9
-Last updated: 3/2/2019
+Version: 2.0
+Last updated: 3/3/2019
 Notes: introducing map, filter and reduce
 """
 
