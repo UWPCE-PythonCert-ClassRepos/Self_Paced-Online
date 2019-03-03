@@ -26,7 +26,7 @@ def remove_first_last_four_and_between(seq):
 
 def reverse_sequence(seq):
     # The method reverses the sequence.
-    ## parm: sequence
+    # parm: sequence
     # return: sequence
     return seq[::-1]
 
