@@ -4,6 +4,7 @@
     Assignment03
 
 '''
+
 # Task 1.
 print('Task 1')
 # Format ( 2, 123.4567, 10000, 12345.67) to
