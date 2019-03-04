@@ -3,6 +3,7 @@ from unittest import TestCase, mock
 import pytest
 import mailroom_v4
 import unittest
+from io import StringIO
 from testfixtures import tempdir, compare
 import os
 
@@ -24,9 +25,6 @@ def test_thank_you_letter_negitive(name, amount, expected):
     result = str(mailroom_v4.thank_you_letter(name, amount))
     assert expected != result
 
-
-test_thank_you_letter_positive
-test_thank_you_letter_negitive
 
 testing_donors_data = {"testname1": [200, 20, 35.5],
                    "testname2": [500, 20],
@@ -57,15 +55,16 @@ def test_thank_you(mock_update_data_print_thanks):
     assert mock_update_data_print_thanks.called
 
 
-# def test_create_report(capfd):
-#     out, err = capfd.readouterr()
-#     assert out == f'\nDonor Name           |         Total Given |Num Gifts            |                Aver\n\
-# ------------------------------------------------------------------------------------------\n\
-# John                 $               255.5                    3 $     85.17\n\
-# Jeff                 $                 520                    2 $     260.0\n\
-# Susan                $                1090                    3 $     363.3\n\
-# Rob                  $                 270                    2 $     135.0\n\
-# Ross                 $                 200                    1 $     200.0\n'
+@unittest.mock.patch('sys.stdout', new_callable=StringIO)
+def test_create_report(mock_stdout,):
+    mailroom_v4.create_report()
+    assert mock_stdout.getvalue() == '''Donor Name           |         Total Given |Num Gifts            |                Aver
+------------------------------------------------------------------------------------------
+John                 $               255.5                    3 $     85.17
+Jeff                 $                 520                    2 $     260.0
+Susan                $                1090                    3 $     363.3
+Rob                  $                 270                    2 $     135.0
+Ross                 $                 200                    1 $     200.0\n'''
 
 
 @unittest.mock.patch('mailroom_v4.send_letters_all')
