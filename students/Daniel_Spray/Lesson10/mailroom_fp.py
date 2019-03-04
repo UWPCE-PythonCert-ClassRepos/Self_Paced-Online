@@ -116,10 +116,10 @@ class Collection:
 
     def list_all(self):
         """Add a list of all donors property"""
-        list = []
+        str_list = []
         for donor in self.donors:
-            list.append(repr(donor))
-        return", ".join(list)
+            str_list.append(repr(donor))
+        return", ".join(str_list)
 
     def create_report(self):
         """Make a formatted table"""
@@ -167,7 +167,6 @@ Type the corresponding number to select from the following list:
         switch_menu[selection]()
     except KeyError:
         print("Sorry, I didn't recognize that command")
-        return
 
 def send_thank_you():
     """Prompt inputs for new donation data"""
@@ -202,7 +201,6 @@ def send_thank_you():
             donation = input("Donation Amount? > ")
 		
     print("Data added!")
-    return
 
 def challenge():
     """Create a challenge function for ambitious philanthropists"""
@@ -217,6 +215,7 @@ def challenge():
             print("That's not a valid challenger")
         else:
             name_key = collection.names[string_list.index(name)]
+            print(name+"'s previous donations were:"+str(name_key.donation_history))
             break
 
     while True:
@@ -275,7 +274,7 @@ def challenge():
         if str(donor) == name:
             projection = reduce(lambda x,y: x+y,donor.challenge_data)
 
-    print("Your projected total contribution would be: ${:0.2f}".format(projection))
+    print("Your projected total contribution is: ${:0.2f}".format(projection))
 
 def quit():
     """Quit the program"""

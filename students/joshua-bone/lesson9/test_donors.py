@@ -13,7 +13,7 @@ def test_donor_names():
     d2 = Donor("Mary", 80)
     donors.add_donor(d1)
     donors.add_donor(d2)
-    assert set(donors.donor_names) == set(["Mark", "Mary"])
+    assert set(donors.names) == set(["Mark", "Mary"])
 
 
 def test_get_donor():
@@ -25,11 +25,11 @@ def test_get_donor():
 
 
 def test_add_donation():
-    donors = Donors() 
+    donors = Donors()
     donors.add_donation("Mark", 10)
     assert donors.get_donor("Mark") == Donor("Mark", 10)
     donors.add_donation("Mark", 20)
     assert donors.get_donor("Mark").donations == (10, 20)
     donors.add_donation("Mary", 30)
     assert donors.get_donor("Mary") == Donor("Mary", 30)
-    assert set(donors.donor_names) == set(["Mark", "Mary"]) 
+    assert set(donors.names) == set(["Mark", "Mary"])
