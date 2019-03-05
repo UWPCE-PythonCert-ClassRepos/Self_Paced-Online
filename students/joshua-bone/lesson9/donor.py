@@ -2,6 +2,7 @@
 # 02/10/2019
 # Assignment: Mailroom, Object Oriented
 
+
 class Donor:
     def __init__(self, name, donation):
         self._name = name
@@ -18,7 +19,7 @@ class Donor:
         return tuple(self._donations)
 
     @property
-    def total_donations(self):
+    def total_amt(self):
         return sum(self.donations)
 
     @property
@@ -29,10 +30,10 @@ class Donor:
     def avg_donation(self):
         if len(self.donations) == 0:
             return 0
-        return self.total_donations / float(self.num_donations)
+        return self.total_amt / float(self.num_donations)
 
     def add_donation(self, donation):
-        self._donations.append(donation)    
+        self._donations.append(donation)
 
     def __eq__(self, other):
         return type(self) == type(other) \
