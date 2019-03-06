@@ -29,7 +29,7 @@ def thank_you():
     while thanks:
         user_in = input("Type List to view all donor names, type a current donor name, or type the name of a new donor: ").title()
         if user_in == "List": 
-            [print(key) for key in donor_db]
+            print("\n".join([key for key in donor_db]))
             #comprehension added here
         else:
             for key, value in donor_db.items():
