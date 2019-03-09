@@ -1,9 +1,9 @@
 """
 Donor classes for mailroom_fp.py
 Author: JohnR
-Version: 2.0
-Last updated: 3/3/2019
-Notes: introducing map, filter and reduce
+Version: 2.1
+Last updated: 3/6/2019
+Notes: incorporating feedback from Natasha
 """
 
 from datetime import date
@@ -93,14 +93,14 @@ class DonorDataBase(object):
 
     def thank_all(self):
         for donor in self.donors:
-            letter = Donor.form_letter(donor)
+            letter = donor.form_letter()
             print(letter)
             print()
 
     def save_report(self):
         print('Saving database to disk...')
         for donor in self.donors:
-            letter = Donor.form_letter(donor)
+            letter = donor.form_letter()
             user_file = "{}.{}.txt".format(donor.full_name,
                                            self.today)
             with open(user_file, 'w') as outfile:
@@ -130,8 +130,7 @@ class DonorDataBase(object):
                                  [donor.number_of_donations],
                                  [donor.avg_donation_amount]])
 
-        sorted_donors.sort(key=lambda x: x[1])
-        sorted_donors.reverse()
+        sorted_donors.sort(key=lambda x: x[1], reverse=True)
         return sorted_donors
 
     def get_donor(self, name):
