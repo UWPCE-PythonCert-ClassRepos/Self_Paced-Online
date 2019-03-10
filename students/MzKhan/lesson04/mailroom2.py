@@ -60,6 +60,7 @@ def add_donation(name, amount, data_list):
     parm: float
     parm: list
     """
+
     donor_index = find_donor(name,data_list)
     if donor_index < len(data_list):
         data_list[donor_index].append(amount)
@@ -78,7 +79,7 @@ def name_prompt(donor_data):
     if donor_name == 'list':
         display_list(donor_data)
         donor_name = input("Please enter the donor's full name: ")
-    return donor_name
+    return donor_name.title()
 
 def donation_prompt(name):
     """
