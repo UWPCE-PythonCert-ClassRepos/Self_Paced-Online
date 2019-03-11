@@ -5,6 +5,7 @@
 
 '''
 
+
 #Goal:
 # Automate the mailroom job of an individual working at a local
 # charity organization. The script will prompt the user for the varioius options
