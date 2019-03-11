@@ -165,7 +165,8 @@ def quit():
     sys.exit()
 
 def send_letter_everyone(donors_data):
-    ''' This method generates the thank you letters for each donor in the list
+    '''
+    This method generates the thank you letters for each donor in the list
     parm: list
     '''
     date_format = '{:%m-%d-%Y}'.format(datetime.datetime.now())
