@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 
-#making sure code is arranged in an orderly fashion
-#begin testing
-
 donor_db = {"Wassily Kandinsky": [43928.13, 131.34, 1928.0],
             "Jasper Johns": [3134.43, 153.34],
             "Mark Rothko": [135353.33],
@@ -35,6 +32,9 @@ def menu_selection(prompt, switch_dict):
             if func == "exit menu":
                 break
 
+def exit_menu():
+    return "exit menu"
+
 
 def print_donors():
     print("\n".join([key for key in donor_db]))
@@ -45,7 +45,6 @@ def ask_for_name():
     name = input("Type donor name: ").title()
     return name
 
-
 def ask_for_donation(name):
     try:
         donation = float(input(f"Add a donation amount for {name}: $"))
@@ -53,34 +52,34 @@ def ask_for_donation(name):
         donation = float(input(f"Please enter a number. Donation Amount: $"))
     return donation  
 
+def generate_thank_you_text(name, donation):
+    return f"\nDear {name},\n\nThank you so much for your donation of ${donation}.\n\nSincerely,\n\nThe Mailroom\n"
 
-def new_donor_to_database(name, donation):
-    donor_db[name] = [donation]
 
 
 def current_donor_donation(name, donation):
     donor_db[name].append(donation)
-
 
 def current_donor():
     name = ask_for_name()
     if name in donor_db.keys():
         donation = ask_for_donation(name)
         current_donor_donation(name, donation)
-        print(f"\nDear {name},\n\nThank you so much for your donation of ${donation}.\n\nSincerely,\n\nThe Mailroom\n")
+        print(generate_thank_you_text(name, donation))
     else:
         print("Donor is not in the system.")
 
+
+
+def new_donor_to_database(name, donation):
+    donor_db[name] = [donation]
 
 def new_donor():
     name = ask_for_name()
     donation = ask_for_donation(name)
     new_donor_to_database(name, donation)
-    print(f"\nDear {name},\n\nThank you so much for your donation of ${donation}.\n\nSincerely,\n\nThe Mailroom\n")
+    print(generate_thank_you_text(name, donation))
 
-
-def exit_menu():
-    return "exit menu"
 
 
 SWITCH_SUB_PROMPT_DICT = {"1": print_donors, "2": current_donor, "3": new_donor, "4": exit_menu}
@@ -90,21 +89,29 @@ def thank_you():
     menu_selection(SUB_PROMPT, SWITCH_SUB_PROMPT_DICT)
 
 
-def report():
-    print("{:<26}{}{}{}".format("Donor Name", "| Total Given ", "| Num Gifts ", "| Average Gift"))
-    print("------------------------------------------------------------------")
+def generate_report():
+    report_list = ["{:<26}{}{}{}".format("Donor Name", "| Total Given ", "| Num Gifts ", "| Average Gift"),"-" * 66]
     for key, value in sorted(donor_db.items(), key=lambda t: sum(t[1]), reverse=True):
-        print("{:<27}${:12.2f}{:11}  ${:12.2f}".format(key, sum(value), len(value), sum(value)/len(value)))
+        report_list.append(("{:<27}${:12.2f}{:11}  ${:12.2f}".format(key, sum(value), len(value), sum(value)/len(value))))
+    return "\n".join(report_list)
+
+
+def display_report():
+    print(generate_report())
+
+
+def letter_text(name, donation):
+    return f'Dear {name},\n\n\tThank you for your donation of ${donation}.\n\n\t\tSincerely,\n\t\t-The Mailroom'
 
 
 def letter_to_all():
     for key, value in donor_db.items():
         with open(f'{key}.txt', 'w') as f:
-            f.write(f'Dear {key},\n\n\tThank you for your donation of ${value[-1]}.\n\n\t\tSincerely,\n\t\t-The Mailroom')
+            f.write(letter_text(key, value[-1]))
     print("Emails have been saved as .txt files in your working directory.")
 
 
-SWITCH_FUNC_DICT = {"1": thank_you, "2": report, "3": letter_to_all, "4": exit_menu}
+SWITCH_FUNC_DICT = {"1": thank_you, "2": display_report, "3": letter_to_all, "4": exit_menu}
 
 
 def main():
