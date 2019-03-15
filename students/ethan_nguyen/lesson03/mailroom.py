@@ -21,11 +21,11 @@ def view_donors():
     print("\n".join(donor_db))
 
 def quit_program():
-    print("Thank you. Bye!")
+    print ("Thank you. Bye!")
     sys.exit(0)  # exit the interactive script
 
 def send_thank_you():
-
+    
     input_Name = input("Please enter a name > ")
     while("list" in input_Name):
         for d in donor_db:
