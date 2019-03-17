@@ -1,7 +1,10 @@
 #! /usr/bin/env python
 def grid():
-    row = '+ - - - - + - - - - +'
-    column = '|         |         |\n'
+    plus = '+'
+    minus = '-'
+    wall = '|'
+    row = plus + (' ' + minus) * 4 + ' ' + plus + (' ' + minus) * 4 + ' ' + plus
+    column = wall + ' ' * 9 + wall + ' ' * 9 + wall + '\n'
     print(row)
     print(column * 4,end='')
     print(row)
