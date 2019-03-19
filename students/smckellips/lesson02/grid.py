@@ -21,5 +21,15 @@ def grid_n(n):
     print(row)
     print(column * n, end = '')
     print(row)
-grid_n(5)
-grid_n(10)
+
+def grid_n_o(n,o):
+    row = plus + ((' ' + minus) * o + ' ' + plus) * n
+    column = wall + (' ' * 2 * o + ' ' + wall) * n + '\n'
+    print(row)
+    for i in range(1,o + 1):
+        print(column * n, end = '')
+        print(row)
+grid_n_o(2,3)
+grid_n_o(3,2)
+
+
