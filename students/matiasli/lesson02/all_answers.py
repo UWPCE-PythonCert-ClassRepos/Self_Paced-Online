@@ -4,9 +4,9 @@
 x =  '+ - - - - + - - - - +'
 y = '|         |         |'
 for i1 in range(2):
-	print(x)
-	for i2 in range(4):
-		print(y)
+    print(x)
+    for i2 in range(4):
+        print(y)
 print(x) 
 
 
@@ -16,14 +16,14 @@ print(x)
 import math
 
 def print_grid(size):
-	rsize = math.floor(size/2)
-	x =  '+' + ' -' *rsize + ' +' + ' -' *rsize + ' +'
-	y = '|' + '  ' * rsize + ' |' + '  ' *rsize + ' |'
-	for i1 in range(2):
-		print(x)
-		for i2 in range(rsize):
-			print(y)
-	print(x) 
+    rsize = math.floor(size/2)
+    x =  '+' + ' -' *rsize + ' +' + ' -' *rsize + ' +'
+    y = '|' + '  ' * rsize + ' |' + '  ' *rsize + ' |'
+    for i1 in range(2):
+        print(x)
+        for i2 in range(rsize):
+            print(y)
+    print(x) 
 
 
 
@@ -32,14 +32,14 @@ def print_grid(size):
 # print_grid2(3,4)  three rows, three columns, and each grid cell four “units” in size
 
 def print_grid2(size, units):
-	x = '+'
-	y = '|'
-	for j1 in range(size):
-		x = x + ' -' * units + ' +'
-		y = y + '  ' * units + ' |'
+    x = '+'
+    y = '|'
+    for j1 in range(size):
+        x = x + ' -' * units + ' +'
+        y = y + '  ' * units + ' |'
 
-	for i1 in range(size):
-		print(x)
-		for i2 in range(units):
-			print(y)
-	print(x) 
+    for i1 in range(size):
+        print(x)
+        for i2 in range(units):
+            print(y)
+    print(x) 
