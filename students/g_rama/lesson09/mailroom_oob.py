@@ -15,7 +15,7 @@ if __name__ == '__main__':
                    "4 - Quit\n")
     main_dispatch = {"1": donor.thank_you,
                      "2": donor.create_report,
-                     "3": donor.send_letters,
+                     "3": donors.send_letters,
                      "4": cli.exit_menu,
                      }
     cli.menu_selection(main_prompt, main_dispatch)
