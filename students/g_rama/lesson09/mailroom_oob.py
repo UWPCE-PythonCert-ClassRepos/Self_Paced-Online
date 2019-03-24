@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
 from Donor import Donor
-from Donors import Donors
+from DonorCollection import DonorCollection
 from CLI import CLI
 
 if __name__ == '__main__':
 
     donor = Donor()
-    donors = Donors()
+    donors = DonorCollection()
     cli = CLI()
     main_prompt = ("1 - Send a Thank You\n"
                    "2 - Create a Report\n"
