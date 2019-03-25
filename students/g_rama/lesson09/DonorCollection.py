@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
 
 
-class Donors:
+class DonorCollection:
 
-    donors_data = {"John": [200, 20, 35.5],
+    donors_collection_data = {"John": [200, 20, 35.5],
                    "Jeff": [500, 20],
                    "Susan": [1000, 20, 70],
                    "Rob": [250, 20],
                    "Ross": [200]}
 
     def display_donors(self):
-        donors_data = self.donors_data
         """Display donors if user enters list"""
-        for name in donors_data.keys():
+        for name in self.donors_collection_data.keys():
             print('{}'.format(name))
 
     def donor_details(self, **data):
@@ -26,8 +25,7 @@ class Donors:
 
     def create_report(self):
         """Call the function to create the donor details"""
-        donors_data = self.donors_data
-        self.donor_details(**donors_data)
+        self.donor_details(**self.donors_collection_data)
 
     def send_letters_all(self, **data):
         for name in data:
@@ -40,5 +38,4 @@ class Donors:
 
     def send_letters(self):
         """Call the function to create the donor details"""
-        donors_data = self.donors_data
-        self.send_letters_all(**donors_data)
+        self.send_letters_all(**self.donors_collection_data)

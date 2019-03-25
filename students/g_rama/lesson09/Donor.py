@@ -1,12 +1,12 @@
-from Donors import Donors
+from DonorCollection import DonorCollection
 from CLI import CLI
 
 
-class Donor(Donors):
+class Donor(DonorCollection):
 
     def add_data_print_thanks(self, amount, fullname):
         if self.amount_validate(amount):
-            super().donors_data.update({fullname: [amount]})
+            super().donors_collection_data.update({fullname: [amount]})
             self.thank_you_letter(fullname, amount)
 
     def thank_you(self):
@@ -15,7 +15,7 @@ class Donor(Donors):
         if fullname.isalpha():
             if fullname == str("list"):
                 super().display_donors()
-            elif fullname in super().donors_data.keys():
+            elif fullname in super().donors_collection_data.keys():
                 amount = CLI.amount_input()
                 self.update_data_print_thanks(amount, fullname)
             else:
@@ -40,7 +40,7 @@ class Donor(Donors):
 
     def update_data_print_thanks(self, amount, fullname):
         if self.amount_validate(amount):
-            super().donors_data[fullname].append(amount)
+            super().donors_collection_data[fullname].append(amount)
             self.thank_you_letter(fullname, amount)
 
 
