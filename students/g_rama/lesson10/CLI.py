@@ -17,6 +17,14 @@ class CLI:
         factor = float(input("Enter the multiplying factor genorously agreed by philonthropists:\n"))
         return factor
 
+    def min_donation_input():
+        min_donation = float(input("Enter the minimum donation amount to which factor to be applied:\n"))
+        return min_donation
+
+    def max_donation_input():
+        max_donation = float(input("Enter the maximum donation amount to which factor to be applied:\n"))
+        return max_donation
+
 
     def menu_selection(self, prompt, dispatch_dict):
 

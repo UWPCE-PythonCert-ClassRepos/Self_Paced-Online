@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-from CLI import CLI
-
 class DonorCollection:
 
-    donors_collection_data = {"John": [200, 20, 35.5],
-                   "Jeff": [500, 20],
-                   "Susan": [1000, 20, 70],
-                   "Rob": [250, 20],
-                   "Ross": [200]}
+    donors_collection_data = {"John": [200, 300, 400],
+                   "Jeff": [200, 500, 600, 700, 800],
+                   "Susan": [1000, 2000, 1500],
+                   "Rob": [250, 300, 500],
+                   "Ross": [600, 700]}
 
     def display_donors(self):
         """Display donors if user enters list"""
@@ -20,8 +18,9 @@ class DonorCollection:
         print('-' * 90)
         sorted_d = sorted(data.items(), key=lambda x: sum(x[1]), reverse=True)
         for row in sorted_d:
-            print(f'{row[0]:<20} ${sum(row[1]):>20} {len(row[1]):>20} ${(sum(row[1]) / len(row[1])):>10.4}')
-            # return f'{row:<20} ${sum(data[row]):>20} {len(data[row]):>20} ${(sum(data[row])/len(data[row])):>10.4}\n'
+            if len(row[1]) > 0:
+                print(f'{row[0]:<20} ${sum(row[1]):>20} {len(row[1]):>20} ${(sum(row[1]) / len(row[1])):>10.4}')
+                # return f'{row:<20} ${sum(data[row]):>20} {len(data[row]):>20} ${(sum(data[row])/len(data[row])):>10.4}\n'
 
     def create_report(self):
         """Call the function to create the donor details"""
@@ -40,11 +39,13 @@ class DonorCollection:
         """Call the function to create the donor details"""
         self.send_letters_all(**self.donors_collection_data)
 
-    def multiply_factor(self, factor=1, **data):
+    def multiply_factor(self, factor=1,min_donation=0, max_donation=0, **data):
         """Function to multiply the Donors's donated amount by an agreed factor"""
         for name in data:
             donation_values = list(data[name])
-            data[name] = list(map(lambda x1: x1 * factor, donation_values))
+            min_max_donation_values = list(filter(lambda min_max_amt: (min_donation < min_max_amt < max_donation),
+                                                  donation_values))
+            data[name] = list(map(lambda amount: amount * factor, min_max_donation_values))
         self.donor_details(**data)
 
 
@@ -55,7 +56,18 @@ class DonorCollection:
 
 
 
-
+# ages = [5, 12, 17, 18, 24, 32]
+#
+# def myFunc(x):
+#   if x < 18:
+#     return False
+#   else:
+#     return True
+#
+# adults = filter(myFunc, ages)
+#
+# for x in adults:
+#   print(x)
 
 
 

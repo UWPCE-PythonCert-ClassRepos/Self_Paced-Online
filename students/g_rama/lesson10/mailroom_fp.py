@@ -31,7 +31,9 @@ if __name__ == '__main__':
     def challenge_factor():
         """A function to take the multiple """
         factor = CLI.mulfactor_input()
-        donors.multiply_factor(factor, **donors.donors_collection_data)
+        min_donation = CLI.min_donation_input()
+        max_donation = CLI.max_donation_input()
+        donors.multiply_factor(factor, min_donation, max_donation, **donors.donors_collection_data)
 
     main_prompt = ("1 - Send a Thank You\n"
                    "2 - Create a Report\n"
