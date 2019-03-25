@@ -47,26 +47,9 @@ class DonorCollection:
             data[name] = list(map(lambda x1: x1 * factor, donation_values))
         self.donor_details(**data)
 
-    def challenge_factor(self):
-        """A function to take the multiple """
-        factor = CLI.mulfactor_input()
-        self.multiply_factor(factor, **self.donors_collection_data)
 
 
 
-
-
-
-    #
-    #     factor_donation_list = [donation * factor for donation in donation_list]
-    #     return factor_donation_list
-    #
-    # #list(map(lambda x1: x1 * 5, [1, 2, 3]))
-    # # test_data = list(donors.donors_collection_data.values())[0]
-    # #
-    # # multiplied_donor_data = map(donors.multiply_factor, test_data, list(str(2)))
-    # #
-    # # print(list(multiplied_donor_data))
 
 
 

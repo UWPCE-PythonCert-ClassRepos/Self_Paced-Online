@@ -28,6 +28,11 @@ if __name__ == '__main__':
         else:
             print("Enter the donor name correctly")
 
+    def challenge_factor():
+        """A function to take the multiple """
+        factor = CLI.mulfactor_input()
+        donors.multiply_factor(factor, **donors.donors_collection_data)
+
     main_prompt = ("1 - Send a Thank You\n"
                    "2 - Create a Report\n"
                    "3 - Send letters to everyone\n"
@@ -36,7 +41,7 @@ if __name__ == '__main__':
     main_dispatch = {"1": thank_you,
                      "2": donor.create_report,
                      "3": donors.send_letters,
-                     "4": donors.challenge_factor,
+                     "4": challenge_factor,
                      "5": cli.exit_menu,
                      }
     cli.menu_selection(main_prompt, main_dispatch)
