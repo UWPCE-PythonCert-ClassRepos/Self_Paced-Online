@@ -1,5 +1,4 @@
 from DonorCollection import DonorCollection
-from CLI import CLI
 
 
 class Donor(DonorCollection):
@@ -8,7 +7,6 @@ class Donor(DonorCollection):
         if self.amount_validate(amount):
             super().donors_collection_data.update({fullname: [amount]})
             self.thank_you_letter(fullname, amount)
-
 
     def amount_validate(self, amount):
         if amount < 0:
