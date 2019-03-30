@@ -21,11 +21,11 @@ class Element:
         file_out.write(f"> ")
         file_out.write("\n")
 
-        for _ in range(len(self.content)):
-            if isinstance(self.content[_], Element):
-                self.content[_].render(file_out)
+        for item in range(len(self.content)):
+            if isinstance(self.content[item], Element):
+                self.content[item].render(file_out)
             else:
-                file_out.write(self.content[_])
+                file_out.write(self.content[item])
                 file_out.write("\n")
         file_out.write(f"<\\{self.tag}>")
         file_out.write("\n")

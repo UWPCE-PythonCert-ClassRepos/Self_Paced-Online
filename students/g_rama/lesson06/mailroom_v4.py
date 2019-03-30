@@ -8,8 +8,8 @@ donors_data = {"John": [200, 20, 35.5],
 
 def display_donors():
     """Display donors if user enters list"""
-    for _ in donors_data.keys():
-        print('{}'.format(_))
+    for name in donors_data.keys():
+        print('{}'.format(name))
 
 
 def amount_input():
@@ -31,6 +31,12 @@ def amount_validate(amount):
 
 def update_data_print_thanks(amount, fullname):
     if amount_validate(amount):
+        donors_data[fullname].append(amount)
+        thank_you_letter(fullname, amount)
+
+
+def add_data_print_thanks(amount, fullname):
+    if amount_validate(amount):
         donors_data.update({fullname: [amount]})
         thank_you_letter(fullname, amount)
 
@@ -47,7 +53,7 @@ def thank_you():
         else:
             try:
                 amount = amount_input()
-                update_data_print_thanks(amount, fullname)
+                add_data_print_thanks(amount, fullname)
             except ValueError:
                 print("Enter the correct amount in integer")
     else:
@@ -64,9 +70,12 @@ def donor_details(**data):
     """Print the Donor table"""
     print(f'{"Donor Name":<20} |{"Total Given":>20} |{"Num Gifts":<20} |{"Average Gift":>20.4}')
     print('-'*90)
-    for row in data:
-        print(f'{row:<20} ${sum(data[row]):>20} {len(data[row]):>20} ${(sum(data[row])/len(data[row])):>10.4}')
-        #return f'{row:<20} ${sum(data[row]):>20} {len(data[row]):>20} ${(sum(data[row])/len(data[row])):>10.4}\n'
+    print(data.items())
+    sorted_d = sorted(data.items(), key=lambda x: sum(x[1]), reverse=True)
+    print(sorted_d)
+    for row in sorted_d:
+        print(f'{row[0]:<20} ${sum(row[1]):>20} {len(row[1]):>20} ${(sum(row[1])/len(row[1])):>10.4}')
+        # return f'{row:<20} ${sum(data[row]):>20} {len(data[row]):>20} ${(sum(data[row])/len(data[row])):>10.4}\n'
 
 
 def create_report():
@@ -82,13 +91,13 @@ def send_letters():
 
 
 def send_letters_all(**data):
-    for _ in data:
-        with open('{}'".txt".format(_), 'w') as outfile:
+    for name in data:
+        with open('{}'".txt".format(name), 'w') as outfile:
             outfile.write("Dear {},\n"
                           "Thank you for your very kind donation of ${}\n"
                           "It will be put to very good use.\n"
                           "                     Sincerely\n"
-                          "                      -The team".format(_,sum(data[_])))
+                          "                      -The team".format(name,sum(data[_])))
 
 
 def menu_selection(prompt, dispatch_dict):

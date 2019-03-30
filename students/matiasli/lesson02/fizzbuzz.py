@@ -8,12 +8,12 @@
 
 def fizzBuzz():
 
-	for i1 in range(100):
-		if ( (i1+1)%15 == 0):
-			print("FizzBuzz")
-		elif ( (i1+1)%3 == 0):
-			print("Fizz")
-		elif ( (i1+1)%5 == 0):
-			print("Buzz")
-		else:
-			print(i1+1)
+    for i1 in range(100):
+        if ( (i1+1)%15 == 0):
+            print("FizzBuzz")
+        elif ( (i1+1)%3 == 0):
+            print("Fizz")
+        elif ( (i1+1)%5 == 0):
+            print("Buzz")
+        else:
+            print(i1+1)
