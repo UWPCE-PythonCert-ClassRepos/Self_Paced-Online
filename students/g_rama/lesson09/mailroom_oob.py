@@ -6,7 +6,7 @@ from CLI import CLI
 
 if __name__ == '__main__':
 
-    donor = Donor()
+
     donors = DonorCollection()
     cli = CLI()
 
@@ -18,11 +18,13 @@ if __name__ == '__main__':
                 donors.display_donors()
             elif fullname in donors.donors_collection_data.keys():
                 amount = CLI.amount_input()
-                donor.update_data_print_thanks(amount, fullname)
+                donor = Donor(fullname, amount)
+                donor.update_data_print_thanks()
             else:
                 try:
                     amount = CLI.amount_input()
-                    donor.add_data_print_thanks(amount, fullname)
+                    donor = Donor(fullname, amount)
+                    donor.add_data_print_thanks()
                 except ValueError:
                     print("Enter the correct amount in integer")
         else:
@@ -33,7 +35,7 @@ if __name__ == '__main__':
                    "3 - Send letters to everyone\n"
                    "4 - Quit\n")
     main_dispatch = {"1": thank_you,
-                     "2": donor.create_report,
+                     "2": donors.create_report,
                      "3": donors.send_letters,
                      "4": cli.exit_menu,
                      }
