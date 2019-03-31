@@ -35,12 +35,8 @@ def sum_series(n,a=0,b=1):
         return a
     if n == 1:
         return b
-    seed = [a,b]
-    result = 0
-    for i in range(2,n + 1):
-        result = seed[0] + seed[1]
-        seed[0] = seed[1]
-        seed[1] = result
+    if n > 1:
+        result = sum_series(n-2,a,b) + sum_series(n-1,a,b)
     return result
 
 
