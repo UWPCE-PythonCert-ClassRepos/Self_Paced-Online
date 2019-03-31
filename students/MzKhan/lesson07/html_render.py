@@ -72,6 +72,7 @@ class Html(Element):
 #Step 3
 #######
 
+
 class Head(Element):
     """Class for head tag."""
     tag = "head"
@@ -98,6 +99,7 @@ class Title(OneLineTag):
     """Class for Title tag inherits from the OneLineTag base class."""
     tag = "title"
 
+
 ########
 # Step 4  Allow constructor of the Element class to accept kwarg argument Done!
 ########
@@ -107,12 +109,12 @@ class Title(OneLineTag):
 #Step 5.
 ########
 
+
 class SelfClosingTag(Element):
     """
     This class inherits from the parent class Element and it provides
     functionality for the self closing html tags.
     """
-
     #initializer(constructor) overriding
     def __init__(self, content=None, **kwargs):
         """Raise the TypeError exception if the user feeds content"""
