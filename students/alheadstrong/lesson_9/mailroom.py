@@ -33,7 +33,7 @@ class Donor(object):
                 '\nFleeb Freedom Now'.format(self.name, self.donations[-1], self.donations[-1]/20))
 
 
-class Donor_Collection():
+class DonorCollection(object):
     def __init__(self, donor_dict):
         self.donors = []
         for key in donor_dict.keys():
@@ -137,7 +137,6 @@ class Donor_Collection():
         else:
             return False
 
-
     def new_thank_you(self):
         """Add donation amount to new or existing donor and generate a thank you text."""
         while True:
@@ -175,9 +174,9 @@ def goodbye():
 
 def main():
     """Main loop"""
-    #Initialize Donor_Collection object
-    d = Donor_Collection(ddb)
-    #Initiate top user menu.
+    # Initialize DonorCollection object
+    d = DonorCollection(ddb)
+    # Initiate top user menu.
     while True:
         user_input = input('\n\nMENU:\n'
                            '1 - Send a Thank You for a New Donation\n'
@@ -193,7 +192,6 @@ def main():
             user_menu[user_input]()
         except KeyError:
             print('\nOption not found. Please enter the numeral 1,2,3 or 4')
-
 
 
 ddb = {'Archie Bunker': [20, 100, 75, 98],
