@@ -25,6 +25,7 @@ class Donor:
     def amount(self, value):
         self._amount_gift = value
 
+    '''function to return donor name'''
     @property
     def name(self):
         return self._name
@@ -48,6 +49,7 @@ class Donor:
     def __gt__(self, other):
         return (self._amount_gift > other._amount_gift)
 
+    '''function to return the thank you string'''
     def create_thank_you_note(self):
         return f'Dear {self.name}, \n Thank you for your very kind donation of ${self.amount:,.2f} \n \
             It will be put to very good use. \n Sincerely, \n -UW'
@@ -67,10 +69,9 @@ class DonorCollection(dict):
         else:
             self[Donor.name] = Donor
 
-    '''function to return number of donations'''
     #def num_donnation(self, name):
     #    return self[name].count_donation
-
+    '''function to update number of donations'''
     def update_num_donnation(self, name):
         self[name].count_donation += 1
 
@@ -88,8 +89,8 @@ class DonorCollection(dict):
             rows.append("{:<25} ${:>12,.2f}{:>22}{:<10}${:>12,.2f}".format(d[1].name, d[1].amount, d[1].count_donation, '', d[1].cal_average()))
         return rows
 
-    def create_letter(self, path, letter_name, letter):
-        """Create letter"""
+    """Create letter"""
+    def create_letter(self, path, letter_name, letter):    
         with open(f'{path}/{letter_name}.txt', 'w') as f:
             f.write(letter) 
 

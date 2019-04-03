@@ -9,7 +9,9 @@ def quit_program():
     print ("Thank you. Bye!")
     sys.exit(0)  # exit the interactive script
 
-#function to make sure input name is letters only and longer than 2 characters
+'''
+function to make sure input name is letters only and longer than 2 characters
+'''
 def validate_name():
     while (True):
         try:
@@ -24,7 +26,9 @@ def validate_name():
     
     return input_Name
 
-#function to make sure input amount is numeric
+'''
+function to make sure input amount is numeric
+'''
 def validate_amount(input_Name):
     while (True):
         try:
@@ -37,6 +41,9 @@ def validate_amount(input_Name):
             print('Valid amount, please')
     return value
 
+'''
+function to add new donor to donor_collection and send thank note
+'''
 def send_thank_you():
 
     input_name = validate_name()
@@ -66,6 +73,7 @@ def display_report():
     for r in get_report():
         print(r)
 
+'''function to print the report'''
 def create_report():
     space=''
     print(f'Donor Name {space:<15}| Total Given {space:<10}| Num Gifts {space:<9}| Average Gift {space:<19}')
@@ -73,6 +81,7 @@ def create_report():
     #sort_Donor = sorted(donor_db.items(), key=lambda x: x[1], reverse = True)
     display_report()
 
+'''function to create the report for each donor'''
 def send_letters():
     path = os.getcwd()
     donor_db.send_letters(path)
