@@ -80,18 +80,18 @@ class Circle:
 #Optional
 #########
 
-#Augumented assignmnet operators.
+#Augmented assignmnet operators.
 
     def __iadd__(self, other):
-        """Augumented Addition """
+        """Augmented Addition """
         return Circle(self.radius + other.radius)
 
 
     def __imul__(self,num):
-        """Augumented Multiplication"""
+        """Augmented Multiplication"""
         return Circle(self.radius*num)
 
-# With a similiar apprach, other augumented operaters can be defined as well.
+# With a similiar apprach, other augmented operaters can be defined as well.
 
 
 
