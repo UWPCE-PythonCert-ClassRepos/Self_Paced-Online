@@ -2,24 +2,18 @@ import os
 import sys
 
 
-
 class Donor(object):
     def __init__(self, name, donation_list):
         self.name = name
         self.donations = donation_list
-        self._donation_total = sum(donation_list)
-        self._donation_average = self._donation_total / len(self.donations)
 
     @property
     def donation_total(self):
-        self._donation_total = sum(self.donations)
-        return self._donation_total
+        return sum(self.donations)
 
     @property
     def donation_average(self):
-        self._donation_total = self.donation_total
-        self._donation_average = self._donation_total/len(self.donations)
-        return self._donation_average
+        return self.donation_total/len(self.donations)
 
     def add_donation(self, donation):
         self.donations.append(donation)
@@ -130,6 +124,24 @@ class DonorCollection(object):
         else:
             return False
 
+    def copy_donors_to_dict(self):
+        dict = {}
+        for d in self.donors:
+            dict[d.name] = d.donations
+        return dict
+
+    def challenge(self, factor, low_limit=None, high_limit=None):
+        ddb = self.copy_donors_to_dict()
+        if high_limit:
+            for d in ddb:
+                ddb[d] = list(filter(lambda x: x < high_limit, ddb[d]))
+        if low_limit:
+            for d in ddb:
+                ddb[d] = list(filter(lambda x: x > low_limit, ddb[d]))
+        for d in ddb:
+            ddb[d] = list(map(lambda x: x*factor, ddb[d]))
+        return ddb
+
 def goodbye():
     print("goodbye!")
     sys.exit()
@@ -172,23 +184,48 @@ def letters_to_all():
     d.write_letters()
 
 
+def matching_scenarios():
+    user_input = input("\nWelcome to Donation Matching Modeling!\n"
+                       "Select one of the following scenarios, based on past giving:\n\n"
+                       "1 - Double donations under $100\n"
+                       "2 - Triple contributions over $50\n")
+
+    user_menu = {'1': scenario_1,
+                 '2': scenario_2}
+    try:
+        print('Total gifts in this scenario are ${:,.2f} after matching'.format(user_menu[user_input]()))
+
+    except KeyError:
+        print('\nOption not found. Please enter the numeral 1 or 2.')
+
+def scenario_1():
+    ddb = d.challenge(2,high_limit=100)
+    return sum([sum(x) for x in ddb.values()])
+
+def scenario_2():
+    ddb = d.challenge(3,low_limit=50)
+    return sum([sum(x) for x in ddb.values()])
+
 def main():
     # Initiate top user menu.
     while True:
         user_input = input('\n\nMENU:\n'
                            '1 - Send a Thank You for a New Donation\n'
                            '2 - Create a Report\n'
-                           '3 - Send letters to everyone\n'
-                           '4 - Quit\n'
-                           'Please enter 1-4>')
+                           '3 - Send Letters to Everyone\n'
+                           '4 - Matching Scenarios\n'
+                           '5 - Quit\n'
+                           'Please enter 1-5>')
+
         user_menu = {'1': new_thank_you,
                      '2': d.display_report,
                      '3': letters_to_all,
-                     '4': goodbye}
+                     '4': matching_scenarios,
+                     '5': goodbye}
         try:
             user_menu[user_input]()
         except KeyError:
-            print('\nOption not found. Please enter the numeral 1,2,3 or 4')
+            print('\nOption not found. Please enter the numeral 1,2,3,4 or 5')
 
 
 ddb = {'Archie Bunker': [20, 100, 75, 98],
