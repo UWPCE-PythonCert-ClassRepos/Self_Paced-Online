@@ -62,3 +62,4 @@ def sum_series(n, n1, n2):
     else:
         nth = sum_series(n-1) + sum_series(n-2)
         return nth
+    
