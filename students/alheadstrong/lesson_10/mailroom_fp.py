@@ -42,8 +42,8 @@ class DonorCollection(object):
         report_table_header = [("Donor Name", "Total Given", "Num Gifts", "Average Gift")]
         report_table = []
 
-        for d in self.donors:  # read dict values into 2D list to be displayed.
-            report_table += self.generate_table_row(d.name, d.donations)
+        for i in self.donors:  # read dict values into 2D list to be displayed.
+            report_table += self.generate_table_row(i.name, i.donations)
 
         report_table = report_table_header + sorted(report_table, key=lambda k: float(k[1][1:]), reverse=True)
         return report_table
@@ -102,16 +102,16 @@ class DonorCollection(object):
 
     def write_letters(self):
         """Take input dictionary and write form letter to txt file based on key and last item in value."""
-        for d in self.donors:
-            name = d.name.replace(' ', '_')
+        for i in self.donors:
+            name = i.name.replace(' ', '_')
             with open('{}.txt'.format(name), 'w') as f:
-                f.write(d.create_letter())
+                f.write(i.create_letter())
 
     @staticmethod
     def is_name_list(donor_name):
         if donor_name == 'list':
-            for d in ddb:  # display all donor names on user input 'list'
-                print(d + ': ', ddb[d])
+            for i in ddb:  # display all donor names on user input 'list'
+                print(i + ': ', ddb[i])
             return True
         else:
             return False
@@ -125,22 +125,25 @@ class DonorCollection(object):
             return False
 
     def copy_donors_to_dict(self):
-        dict = {}
-        for d in self.donors:
-            dict[d.name] = d.donations
-        return dict
+        """Create a new dict from donor objects."""
+        donor_dict = {}
+        for i in self.donors:
+            donor_dict[i.name] = i.donations
+        return donor_dict
 
     def challenge(self, factor, low_limit=None, high_limit=None):
-        ddb = self.copy_donors_to_dict()
+        """Return dict of current donors with filtered, mapped donation amounts."""
+        dd = self.copy_donors_to_dict()
         if high_limit:
-            for d in ddb:
-                ddb[d] = list(filter(lambda x: x < high_limit, ddb[d]))
+            for i in dd:
+                dd[i] = list(filter(lambda x: x < high_limit, dd[i]))
         if low_limit:
-            for d in ddb:
-                ddb[d] = list(filter(lambda x: x > low_limit, ddb[d]))
-        for d in ddb:
-            ddb[d] = list(map(lambda x: x*factor, ddb[d]))
-        return ddb
+            for i in dd:
+                dd[i] = list(filter(lambda x: x > low_limit, dd[i]))
+        for i in dd:
+            dd[i] = list(map(lambda x: x*factor, dd[i]))
+        return dd
+
 
 def goodbye():
     print("goodbye!")
@@ -185,26 +188,31 @@ def letters_to_all():
 
 
 def matching_scenarios():
-    user_input = input("\nWelcome to Donation Matching Modeling!\n"
-                       "Select one of the following scenarios, based on past giving:\n\n"
-                       "1 - Double donations under $100\n"
-                       "2 - Triple contributions over $50\n")
+    print("\nWelcome to Donation Matching Modeling!\n")
+    while True:
+        user_input = input("Select one of the following scenarios, based on past giving:\n\n"
+                           "1 - Double donations under $100\n"
+                           "2 - Triple contributions over $50\n")
 
-    user_menu = {'1': scenario_1,
-                 '2': scenario_2}
-    try:
-        print('Total gifts in this scenario are ${:,.2f} after matching'.format(user_menu[user_input]()))
+        user_menu = {'1': scenario_1,
+                     '2': scenario_2}
+        try:
+            print('Total gifts in this scenario are ${:,.2f} after matching'.format(user_menu[user_input]()))
+            break
 
-    except KeyError:
-        print('\nOption not found. Please enter the numeral 1 or 2.')
+        except KeyError:
+            print('\nOption not found. Please enter the numeral 1 or 2.')
+
 
 def scenario_1():
-    ddb = d.challenge(2,high_limit=100)
-    return sum([sum(x) for x in ddb.values()])
+    dd = d.challenge(2, high_limit=100)
+    return sum([sum(x) for x in dd.values()])
+
 
 def scenario_2():
-    ddb = d.challenge(3,low_limit=50)
-    return sum([sum(x) for x in ddb.values()])
+    dd = d.challenge(3, low_limit=50)
+    return sum([sum(x) for x in dd.values()])
+
 
 def main():
     # Initiate top user menu.
@@ -234,6 +242,7 @@ ddb = {'Archie Bunker': [20, 100, 75, 98],
        'David Sedaris': [23000, 1200, 2000],
        'Edvard Munch': [1, 2, 3]}
 
+# Global variable holding donor collection object
 d = DonorCollection(ddb)
 
 if __name__ == '__main__':
