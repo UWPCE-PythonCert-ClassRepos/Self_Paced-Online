@@ -2,6 +2,7 @@ import os
 import sys
 
 
+
 class Donor(object):
     def __init__(self, name, donation_list):
         self.name = name
@@ -105,14 +106,6 @@ class DonorCollection(object):
         for row in report_table:
             print(form_string.format(*row))
 
-    def letters_to_all(self):
-        """Write form letter to txt files based on input dictionary. Optional directory change."""
-        user_input = input("Would you like save to current directory,{}? >(y,n)".format(os.getcwd()))
-        if user_input == 'n':
-            path = input("Enter full path to desired directory: ")
-            os.chdir(path)
-        self.write_letters()
-
     def write_letters(self):
         """Take input dictionary and write form letter to txt file based on key and last item in value."""
         for d in self.donors:
@@ -121,7 +114,7 @@ class DonorCollection(object):
                 f.write(d.create_letter())
 
     @staticmethod
-    def is3_name_list(donor_name):
+    def is_name_list(donor_name):
         if donor_name == 'list':
             for d in ddb:  # display all donor names on user input 'list'
                 print(d + ': ', ddb[d])
@@ -137,57 +130,49 @@ class DonorCollection(object):
         else:
             return False
 
-    def new_thank_you(self):
-        """Add donation amount to new or existing donor and generate a thank you text."""
-        while True:
-            donor = input("\nEnter donor name, or type 'list' for current donor list:")
-            if not self.is_name_list(donor):
-                break
-        if self.is_name_existing(donor):
-            print(f"Donor name {donor} found in database.")
-            while True:
-                try:
-                    donation = float(input('\nEnter new donation amount:'))
-                    break
-                except ValueError:
-                    print("Input was not a number.")
-            for i in self.donors:
-                if i.name == donor:
-                    i.add_donation(donation)
-                    print('\n\n', i.create_letter())
-        else:
-            print(f"Donor name not found. Will add {donor} to database.")
-            while True:
-                try:
-                    donation = float(input('\nEnter donation amount:'))
-                    break
-                except ValueError:
-                    print("Input was not a number.")
-            self.add_donor(donor, [donation])
-            print('\n\n', self.donors[-1].create_letter())
-
-
 def goodbye():
     print("goodbye!")
     sys.exit()
 
 
-def display_report(d):
-    pass
+def new_thank_you():
+    while True:
+        donor = input("\nEnter donor name, or type 'list' for current donor list:")
+        if not d.is_name_list(donor):
+            break
+    if d.is_name_existing(donor):
+        print(f"Donor name {donor} found in database.")
+        while True:
+            try:
+                donation = float(input('\nEnter new donation amount:'))
+                break
+            except ValueError:
+                print("Input was not a number.")
+        for i in d.donors:
+            if i.name == donor:
+                i.add_donation(donation)
+                print('\n\n', i.create_letter())
+    else:
+        print(f"Donor name not found. Will add {donor} to database.")
+        while True:
+            try:
+                donation = float(input('\nEnter donation amount:'))
+                break
+            except ValueError:
+                print("Input was not a number.")
+        d.add_donor(donor, [donation])
+        print('\n\n', d.donors[-1].create_letter())
 
 
-def new_thank_you(d):
-    pass
-
-
-def letters_to_all(d):
-    pass
+def letters_to_all():
+    user_input = input("Would you like save to current directory,{}? >(y,n)".format(os.getcwd()))
+    if user_input == 'n':
+        path = input("Enter full path to desired directory: ")
+        os.chdir(path)
+    d.write_letters()
 
 
 def main():
-    """Main loop"""
-    # Initialize DonorCollection object
-    d = DonorCollection(ddb)
     # Initiate top user menu.
     while True:
         user_input = input('\n\nMENU:\n'
@@ -196,9 +181,9 @@ def main():
                            '3 - Send letters to everyone\n'
                            '4 - Quit\n'
                            'Please enter 1-4>')
-        user_menu = {'1': d.new_thank_you,
+        user_menu = {'1': new_thank_you,
                      '2': d.display_report,
-                     '3': d.letters_to_all,
+                     '3': letters_to_all,
                      '4': goodbye}
         try:
             user_menu[user_input]()
@@ -211,6 +196,8 @@ ddb = {'Archie Bunker': [20, 100, 75, 98],
        'Charlie Kauffman': [12345],
        'David Sedaris': [23000, 1200, 2000],
        'Edvard Munch': [1, 2, 3]}
+
+d = DonorCollection(ddb)
 
 if __name__ == '__main__':
     main()
