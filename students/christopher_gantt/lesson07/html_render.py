@@ -4,7 +4,7 @@
 A class-based system for rendering html.
 """
 
-class Element(object):
+class Element():
     tag = "html"
     indent = "    "
 
@@ -15,17 +15,14 @@ class Element(object):
             self.contents = [content]
         self.attributes = kwargs
 
-
     def append(self, new_content):
         self.contents.append(new_content)
-
 
     def _open_tag(self):
         open_tag = ["<{}".format(self.tag)]
         for key, value in self.attributes.items():
             open_tag.append(' {}="{}"'.format(key, value))
         return "".join(open_tag)
-
 
     def render(self, out_file, cur_ind=""):
         if self.tag == "html":
@@ -116,8 +113,4 @@ class H(OneLineTag):
 
 class Meta(SelfClosingTag):
     tag = 'meta'
-
-
-
-
 
