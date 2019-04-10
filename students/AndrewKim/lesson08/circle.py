@@ -22,11 +22,11 @@ class Circle:
     def from_diameter(cls, diameter):
         return cls(diameter/2)
 
-    def __str__(self):
-        return "Circle with radius: {}".format(self.radius)
+    #def __str__(self):
+        #return "Circle with radius: {}".format(self.radius)
 
-    def __repr__(self):
-        return "Circle({})".format(self.radius)
+    #def __repr__(self):
+        #return "Circle({})".format(self.radius)
 
     def __add__(self, other):
         return Circle(self.radius + other.radius)
@@ -50,3 +50,7 @@ class Circle:
     def __imul__(self, another):
         self.radius *= another.radius
         return self
+
+C1 = Circle(15)
+C2 = Circle(20)
+C1+C2
