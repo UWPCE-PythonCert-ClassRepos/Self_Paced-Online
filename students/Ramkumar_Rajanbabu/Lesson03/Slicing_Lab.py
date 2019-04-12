@@ -1,8 +1,8 @@
 #Slicing Lab
 
 s = "this is a string"
-t = (2, 54, 13, 12, 5, 32)
-l = [2, 54, 13, 12, 5, 32]
+t = (2, 54, 13, 12, 5, 32, 24, 78, 89, 64, 4)
+l = [2, 54, 13, 12, 5, 32, 24, 78, 89, 64, 4]
 
 def exchange_first_last(seq):
     if seq == tuple(seq):
@@ -29,11 +29,17 @@ def first_last_other_remove(seq):
     return new_seq
 
 def reverse(seq):
-    a_new_seq = seq[::-1]
-    return a_new_seq
+    new_seq = seq[::-1]
+    return new_seq
 
-def mid_last_first(seq):
-    pass
+def last_first_mid(seq):
+    seq_len = int(len(seq) / 3)
+    
+    first = seq[0:seq_len]
+    mid = seq[seq_len:-seq_len]
+    last = seq[-seq_len::]
+    new_seq = last + first + mid
+    return new_seq
 
 if __name__ == "__main__":
     #Run some tests
@@ -41,18 +47,18 @@ if __name__ == "__main__":
     assert other_remove(s) == "ti sasrn"
     assert first_last_other_remove(s) == " sas"
     assert reverse(s) == "gnirts a si siht"
-    #assert mid_last_first(s) == "is a sthis "
+    assert last_first_mid(s) == "tringthis is a s"
     
-    assert exchange_first_last(t) == (32, 54, 13, 12, 5, 2)
-    assert other_remove(t) == (2, 13, 5)
-    assert first_last_other_remove(t) == ()
-    assert reverse(t) == (32, 5, 12, 13, 54, 2)
-    #assert mid_last_first(t) == (13, 12, 5, 32, 2, 54)
+    assert exchange_first_last(t) == (4, 54, 13, 12, 5, 32, 24, 78, 89, 64, 2)
+    assert other_remove(t) == (2, 13, 5, 24, 89, 4)
+    assert first_last_other_remove(t) == (5, 24)
+    assert reverse(t) == (4, 64, 89, 78, 24, 32, 5, 12, 13, 54, 2)
+    assert last_first_mid(t) == (89, 64, 4, 2, 54, 13, 12, 5, 32, 24, 78)
 
-    assert exchange_first_last(l) == [32, 54, 13, 12, 5, 2]
-    assert other_remove(l) == [2, 13, 5]
-    assert first_last_other_remove(l) == []
-    assert reverse(l) == [32, 5, 12, 13, 54, 2]
-    #assert mid_last_first(l) == [13, 12, 5, 32, 2, 54]    
+    assert exchange_first_last(l) == [4, 54, 13, 12, 5, 32, 24, 78, 89, 64, 2]
+    assert other_remove(l) == [2, 13, 5, 24, 89, 4]
+    assert first_last_other_remove(l) == [5, 24]
+    assert reverse(l) == [4, 64, 89, 78, 24, 32, 5, 12, 13, 54, 2]
+    assert last_first_mid(l) == [89, 64, 4, 2, 54, 13, 12, 5, 32, 24, 78]   
     
     print("Tests passed!")
