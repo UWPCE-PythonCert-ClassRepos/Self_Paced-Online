@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Mar 13 14:05:17 2019
+
+@author: acharch
+"""
+
+
 import math
 
 class Circle:
@@ -15,18 +23,20 @@ class Circle:
         self.radius = value / 2
 
     @property
-    def area(self):
-        return self.__area
-
+    def circle_area(self):
+         self.area = math.pi * self.radius * self.radius
+         return self.area 
+     
     @classmethod
-    def from_diameter(cls, diameter):
-        return cls(diameter/2)
+    def circle_from_diameter(cls, diameter):
+        cls.area_dia = math.pi * diameter/2 * cls.diameter/2
+        return cls.area_dia
+    
+    def __str__(self):
+        return "Circle with radius: {}".format(self.radius)
 
-    #def __str__(self):
-        #return "Circle with radius: {}".format(self.radius)
-
-    #def __repr__(self):
-        #return "Circle({})".format(self.radius)
+    def __repr__(self):
+        return "Circle({})".format(self.radius)
 
     def __add__(self, other):
         return Circle(self.radius + other.radius)
@@ -51,6 +61,9 @@ class Circle:
         self.radius *= another.radius
         return self
 
-C1 = Circle(15)
-C2 = Circle(20)
-C1+C2
+    
+        
+
+    
+    
+        
