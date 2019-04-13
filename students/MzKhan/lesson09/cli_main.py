@@ -38,7 +38,7 @@ def donation_prompt(name):
     """
     prompt the user for the donation amount for the given donor.
     :parm 1: name - required parameter.
-    return: float
+    :return: donation_amount in decimal form.
     """
     input_msg = "Please enter the donation amount for {}: "
     donation_amount = input(input_msg.format(name))
@@ -49,23 +49,12 @@ def donation_prompt(name):
             donation_amount=input("INVALID Amount: "+input_msg.format(name))
 
 
-def report(a_list):
-        """Print the donors' report in the formatted tabular form."""
-        title = "{:24} | {:12} | {:10} | {:20}"
-        dashes=67*('-');print(dashes)
-        print(title.format('Donor Name','Total Given','Num Gifts','Average Gift'))
-        strf_format = "{:24} ${:12.2f}   {:^10d}  ${:12.2f}"
-        print(dashes)
-        for donor in a_list:
-            print(strf_format.format(*donor))
-        print(dashes)
-
-
-def display_list(a_list):
+def display_list(d):
     """Print the donor's list to the user."""
     print("\nOur generous donors: \n")
-    for donor in a_list:
-        print(donor)
+    for donor_name in iter(d.donors):
+        print(donor_name)
+    print("\n")
 
 
 def quit():
@@ -74,29 +63,37 @@ def quit():
     sys.exit()
 
 
-def thank_you():
+def thank_you(d):
     """
     This method was created to utilize the dictionary (options) in the program
     main flow
     """
     name = name_prompt()
-    if name.upper() == "LIST":
-        display_list(d.list)
+    while name.upper() == "LIST":
+        display_list(d)
         name = name_prompt()
     donation = donation_prompt(name)
     donor = Donor(name, donation)
-    print(donor.thank_you(name, donation))
+    print(donor.thank_you())
     d.add_donation(name, donation)
 
-def print_report():
-    """
-    This method was created to print the report to the screen if the
-    user selects the correct option
-    """
-    report(d.create_report())
 
-def send_letter_everyone():
+def print_report(d):
+    """Print the donors' report in the formatted tabular form."""
+    report_data = d.get_report_data()
+    title = "{:24} | {:12} | {:10} | {:20}"
+    dashes=67*('-');print(dashes)
+    print(title.format('Donor Name','Total Given','Num Gifts','Average Gift'))
+    strf_format = "{:24} ${:12.2f}   {:^10d}  ${:12.2f}"
+    print(dashes)
+    for donor in report_data:
+        print(strf_format.format(*donor))
+    print(dashes)
+
+
+def send_letter_everyone(d):
     """This method creates the letter for each donor in the donor's database"""
+    print("Letters have been sent to all the donors!!!")
     d.send_letter_everyone()
 
 
@@ -119,7 +116,9 @@ if __name__=="__main__":
 
     while True:
         user_response = prompt_user()
+        if user_response == 4:
+            quit()
         try:
-             options[user_response]()
+             options[user_response](d)
         except (KeyError, ValueError):
             print("***INVALID Option Selected: Please try Again:)***")
