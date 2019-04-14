@@ -8,11 +8,9 @@ from donor_models import Donor
 from donor_models import DonorCollection
 
 def test_init_():
-
     d = Donor("Benny", [2000])
     assert d.name == "Benny"
     assert d.donations == [2000]
-
     arg = [200, 300, 400, 100]
     d = Donor("Benny Huggins", arg)
     assert d.name == "Benny Huggins"
@@ -20,20 +18,17 @@ def test_init_():
 
 
 def test_repr():
-
     d = Donor("Benny", [2000])
     assert repr(d) == 'Donor(Benny,[2000])'
 
 
 def test_properties():
-
     d = Donor("John Adam", [307.9])
     assert d.name == "John Adam"
     assert d.donations == [307.9]
     assert d.total_donations == 1
     assert d.total_donations_amount == 307.9
     assert d.avg_donation == 307.9
-
     args = [200, 300, 400, 100]
     d = Donor("Ashley Wiggins", args)
     assert d.name == "Ashley Wiggins"
@@ -44,7 +39,6 @@ def test_properties():
 
 
 def test_add_donation():
-
     d = Donor("John Adam", [307.9])
     d.add_donation(200)
     assert d.donations[-1] == 200
@@ -65,21 +59,10 @@ dic = {"Adam Johnson":Donor("Adam Johnson",[600, 2200]),
 
 
 def test__init__DonorCollection():
-
     d = DonorCollection(donor_1, donor_2, donor_3)
     assert d.donors.keys() == dic.keys()
     assert d.donors[donor_1.name].donations == [600, 2200]
     assert d.donors[donor_2.name].name == "Matt Marvin"
-
-
-def test_aList():
-
-    test_list=[["Adam Johnson",2800,2.,1400], ["Matt Marvin", 600,2,300 ],
-                                                   ["Ashley Wiggins",55,1,55] ]
-    d = DonorCollection(donor_1, donor_2, donor_3)
-    assert d.a_list()[0] in test_list
-    assert d.a_list()[1] in test_list
-    assert d.a_list()[2] in test_list
 
 
 def test_create_report():
@@ -87,12 +70,11 @@ def test_create_report():
     test_list=[["Adam Johnson",2800,2.,1400], ["Matt Marvin", 600,2,300 ],
                                                    ["Ashley Wiggins",55,1,55] ]
     d = DonorCollection(donor_1, donor_2, donor_3)
-    assert d.create_report()[0] == ["Adam Johnson",2800,2.,1400]
-    assert d.create_report()[2] == ["Ashley Wiggins",55,1,55]
+    assert d.get_report_data()[0] == ["Adam Johnson",2800,2.,1400]
+    assert d.get_report_data()[2] == ["Ashley Wiggins",55,1,55]
 
 
 def test_send_letter_everyone():
-
     d = DonorCollection(donor_1, donor_2, donor_3)
     d.send_letter_everyone()
     assert os.path.exists("Letters")
