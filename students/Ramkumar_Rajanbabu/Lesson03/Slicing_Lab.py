@@ -14,19 +14,10 @@ def exchange_first_last(seq):
         
     """
     
-    if seq == tuple(seq):
-        first = seq[0],
-        mid = seq[1:-1]
-        last = seq[-1],
-    elif seq == list(seq):
-        first = [seq[0]]
-        mid = seq[1:-1]
-        last = [seq[-1]]
-    else:
-        first = seq[0] 
-        mid = seq[1:-1]
-        last = seq[-1]
-    new_seq = last + mid + first 
+    first = seq[:1]
+    mid = seq[1:-1]
+    last = seq[-1:]
+    new_seq = last + mid + first
     return new_seq
 
 def other_remove(seq):
