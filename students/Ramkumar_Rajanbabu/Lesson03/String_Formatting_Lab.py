@@ -1,4 +1,4 @@
-#String Formatting
+#String Formatting Lab
 
 tup_1 = (2, 123.4567, 10000, 12345.67)
 tup_3_3 = (2, 3, 5)
@@ -6,9 +6,13 @@ tup_3_5 = (2,3,5,7,9)
 tup_4 = (4, 30, 2017, 2, 27)
 list_5 = ["oranges", 1.3, "lemons", 1.1]
 
-#Task 1
 def format_1(tup):
-    """
+    """Runs task 1 of taking a tuple and producing a string. 
+    
+    Args:
+        tup: 4 element tuple
+    Returns: 
+        f1_string: a format string
     
     """
     
@@ -17,18 +21,26 @@ def format_1(tup):
     f1_string = t1_string.format(*tup)
     return f1_string
 
-#Task2
 def format_2(tup):
-    """
+    """Runs task 2 of doing task 1 in an alternate method, using f-string. 
+    
+    Args:
+        tup: 4 element tuple
+    Returns: 
+        f2_string: a format string
     
     """
 
     f2_string = f"file_{tup_1[0]:03d} : {tup_1[1]:8.2f}, {tup_1[2]:0.2e}, {tup_1[3]:0.2e}"
     return f2_string
 
-#Task 3
 def format_3(tup):
-    """
+    """Runs task 3 of dynamically building format strings.
+    
+    Args:
+        tup: a tuple
+    Returns: 
+        f3_string: a format string
     
     """
     
@@ -38,9 +50,13 @@ def format_3(tup):
     f3_string = form_string.format(*tup)
     return f3_string
 
-#Task 4
 def format_4(tup):
-    """
+    """Runs task 4 of using string formatting to print date/time string.
+    
+    Args:
+        tup: 5 element tuple
+    Returns: 
+        f4_string: a format string
     
     """
     
@@ -48,9 +64,13 @@ def format_4(tup):
     f4_string = string.format(tup[3], tup[4], tup[2], tup[0], tup[1])
     return f4_string
 
-#Task 5
 def format_5(list_5):
-    """
+    """Runs task 5 of writing a f-string.
+    
+    Args:
+        list_5: 4 element list.
+    Returns: 
+        f5_string: a format string
     
     """
     
@@ -63,7 +83,12 @@ def format_5(list_5):
     return f5_string
 
 def alt_format_5(list_5):
-    """
+    """Runs task 5 of writing a f-string, changing name and weight variable.
+    
+    Args:
+        list_5: 4 element list.
+    Returns: 
+        f5_string: a format string
     
     """
     
@@ -75,8 +100,27 @@ def alt_format_5(list_5):
     f5_string = f"The weight of an {o} is {o_w} and the weight of a {l} is {l_w}"
     return f5_string
 
+def format_6():
+    """Runs task 6 of printing a table of several rows, each with a name, an age and a cost. 
+    
+    Args:
+        None
+    Returns: 
+        None
+    
+    """
+    
+    title_string = "{:<10s} | {:<3s} | {:8s}".format("Name", "Age", "Cost")
+    title_bar = len(title_string) * "-"
+    
+    print(title_string)
+    print(title_bar)
+    print("{:<10s} | {:>3d} |${:>8d}".format("Ram", 28, 2500800))
+    print("{:<10s} | {:>3d} |${:>8d}".format("Tom", 112, 13000))
+    print("{:<10s} | {:>3d} |${:>8d}".format("Bob", 3, 20))
+    
 if __name__ == "__main__":
-    #Run some tests
+    #Perform tasks 1-6
     print("Task 1:")
     print(format_1(tup_1))
     print()
@@ -95,3 +139,4 @@ if __name__ == "__main__":
     print(alt_format_5(list_5))
     print()
     print("Task 6:")
+    format_6()
