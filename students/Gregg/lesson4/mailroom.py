@@ -8,196 +8,213 @@ donations = {
     "Paul Allen": [3.6, 4.5],
     "bob": [.01]
 }
-return_to_primary_prompt = [False]
 
-# This doesn't seem like the cleanest way to do this, but I coultn't
-# come up with anything better without turning it into a full blow stat machine
-# that has a centralized handler thingy for every possible transition
-# That can then return to the start state if necessary
-# It seems like it works ok for this limited example
+# todo
+# add file writing
 
 
-def quitable_input(text_prompt):
-    text_in = input(f"{text_prompt}\nInput: ")
-    if text_in == 'q':
-        return_to_primary_prompt[0] = True
-        return False
+def menu(prompt, menu_dict, quit_string='q'):
+    """Continues prompting with prompt until the quit_string is returned
+
+    Prompt handler is set up to return values based on the functions in
+    action_list, so one of these functions should return the quit_string
+    otherwise there is no way to quit
+    """
+    def menu_function(key_in):
+        menu_handler(key_in, menu_dict)
+
+    while(True):
+        result = quitable_funcion_prompt(prompt, menu_function, quit_string)
+        if result is not None:
+            break
+
+
+def menu_handler(key_in, menu_dict):
+    """use a switch dict to choose route the program based on input
+
+    includes nice handling of invlaid options
+    """
+    selected_action = menu_dict.get(key_in, None)
+    if selected_action:
+        selected_action()
     else:
-        return text_in
+        print("That isn't one of the menu options")
+        raise(KeyError)
 
 
-def primary_prompt():
-    """Text cue to help user select an action"""
-    prompt_string = (
-        "\nWould you like to Send a Thank You (enter TY), "
-        "Create a Report (enter CR) or quit (enter Q).\n"
-        "At any point enter q to return to this prompt\n"
-        "Input: "
-    )
-    return prompt_string
-
-
-def thank_you_prompt():
-    """Text cue to help user send a thankyou"""
-    prompt_string = (
-        "Enter a full name to send them a thank you\n"
-        "Enter 'list' to see current donors"
-    )
-    return prompt_string
-
-
-def donation_amount_prompt():
-    """Text cue to help user enter a donation amount"""
-    prompt_string = "How much did this person donate?"
-    return prompt_string
-
-
-def handle_primary_prompt(action):
-    """Handle the possible user responses to the primary prompt"""
-    map_inputs = {
-        "TY": handle_thankyou_prompt,
-        "CR": create_donation_report
-    }
-    action_handled = False
+def quitable_funcion_prompt(prompt, function_in, quit_string='q'):
+    result = input(prompt_formatter(prompt))
+    if result == quit_string:
+        return 'q'
     try:
-        action_handled = map_inputs[action]()
-    except KeyError as E:
-        print(f"{action} That isn't a valid input")
-    return action_handled
+        function_in(result)
+    except (KeyError, ValueError) as E:
+        quitable_funcion_prompt(prompt, function_in)
 
 
-def handle_thankyou_prompt():
-    """Handle the possible user responses to the thankyou prompt"""
-    text_in = quitable_input(thank_you_prompt())
-    if return_to_primary_prompt[0]:
-        return False
-    else:
-        map_inputs = {
-            "list": list_donors,
-        }
-        action_handled = False
-        try:
-            action_handled = map_inputs[text_in]()
-            handle_thankyou_prompt()
-        except KeyError as E:
-            action_handled = thank_you(text_in)
-        return action_handled
+prompt_formatter = '{}\nInput: '.format
 
 
-def new_donor(donor):
-    """add a new donor to the donations dictionary"""
-    print("That donor isn't in our database yet, lets add them.")
-    donations[donor] = []
-    return True
+def primary_menu():
+    menu(primary_prompt, primary_switch_dict, quit_string='Q')
 
 
-def list_donors():
-    """print all the donors currently as keys of donations dictionary"""
-    print("These are the donors currently in the database:")
-    for donor in donations:
-        print(donor)
-    print('')
-    return True
+primary_prompt = (
+    "\nWould you like to Send a Thank You (enter TY), "
+    "Create a Report (enter CR) or quit (enter Q).\n"
+    "At any point enter q to return to this prompt"
+)
 
 
-def add_donation(donor):
-    """add a donation to the list for given donor in donations dict"""
-    donation = quitable_input(f"How much did {donor} donate today?")
-    if return_to_primary_prompt[0]:
-        return False
-    try:
-        donations[donor].append(float(donation))
-    except ValueError as E:
-        print(f'{donation} is not a number, please enter a number')
-        donation = add_donation(donor)
-    return donation
+def prompt_thank_you():
+    quitable_funcion_prompt(thank_you_prompt, thank_you)
 
 
-def format_thankyou(donor, donation):
-    """create the text string thanking a donor for their dontion"""
-    thankyou_string = (
-        f'Thank you, {donor}, for you generous ${donation} donation.'
-    )
-    return thankyou_string
-
-
-def send_thank_you(donor, thankyou_string):
-    """send the thank you to the donor"""
-    print(f"Heres the thank you that should be sent to {donor}:")
-    print(thankyou_string)
-    print('')
-    return True
+thank_you_prompt = (
+    "Enter a full name to send them a thank you\n"
+    "Enter 'list' to see current donors"
+)
 
 
 def thank_you(donor):
     """Prompt the necessary actions to send thankyou to donor"""
-    if return_to_primary_prompt[0]:
-        return False
-    if not(donor in donations):
-        new_donor(donor)
-    donation = add_donation(donor)
-    if return_to_primary_prompt[0]:
-        return False
-    thankyou_string = format_thankyou(donor, donation)
-    sent = send_thank_you(donor, thankyou_string)
-    return sent
+    print(donor)
+    if donor == 'list':
+        list_donors()
+        prompt_thank_you()
+    else:
+        if not(donor in donations):
+            new_donor(donor, donations)
+        add_donation_prompt = f"How much did {donor} donate today?"
+
+        def add_donation_for_donor(donation_amount):
+            add_donation_handler(donation_amount, donor)
+        quitable_funcion_prompt(add_donation_prompt, add_donation_for_donor)
 
 
-def create_donation_report():
+def list_donors():
+    """print all the donors currently as keys of donations dictionary"""
+    print_list(donors(donations), 'donors')
+
+
+def print_list(list_in, descriptor_str):
+    """prints the elements of the list with some nice UI text"""
+    # makes it more flexible so I could print other lists if I wanted to
+    # such as the donations for a given donor
+    print("These are the {} currently in the database:".format(descriptor_str))
+    for thing in list_in:
+        print(thing)
+    print('')
+
+
+def donors(donations):
+    """Retunr the donors in the database"""
+    # putting this in in case the data strict changes
+    return list(donations.keys())
+
+
+def new_donor(donor, donations):
+    """add a new donor to the donations dictionary"""
+    print("That donor isn't in our database yet, lets add them.")
+    donations[donor] = []
+
+
+def add_donation_handler(donation_amount, donor):
+    """add a donation to the list for given donor in donations dict"""
+    try:
+        add_donation(donor, donation_amount)
+    except ValueError as E:
+        print(f'{donation_amount} is not a number, please enter a number')
+        raise(E)
+    this_thx_string = thankyou_string(donor, donation_amount)
+    send_thank_you(donor, this_thx_string)
+
+
+def add_donation(donor, donation_amount):
+    donations_from(donor).append(float(donation_amount))
+
+
+thankyou_string = 'Thank you, {}, for you generous ${} donation.'.format
+
+
+def send_thank_you(donor, this_thx_string):
+    """send the thank you to the donor"""
+    # leaving this as a sperate function because at some point I expect
+    # to actually do things other than printing here
+    print(f"Heres the thank you that should be sent to {donor}:")
+    print(this_thx_string)
+    print('')
+
+
+def create_donation_report(donors):
     """Create a report of summarry statistics for the current database
 
     The columns are name, total, number and average
     """
     row_list = []
-    row_list.append(format_column_header())
+    headers = 'Donor name', 'Total Given', 'Num Gifts', 'Average Gift'
+    format_column_header = "{:<26}|{:^13}|{:^13}|{:^13}".format
+    row_list.append(format_column_header(*headers))
     row_list.append('_' * 68)
-    for donor in donations:
+
+    donor_rows_list = []
+    for donor in donors:
         donor_stats = get_row(donor)
-        row_list.append(format_row(donor_stats))
+        donor_rows_list.append((donor_stats))
+    donor_rows_list.sort(key=key1, reverse=True)
+
+    format_row = "{:<27}${:>12.2f} {:>12}  ${:>12.2f}".format
+    for row in donor_rows_list:
+        row_list.append(format_row(*row))
     report_string = ('\n').join(row_list)
-    print(report_string)
     return report_string
 
 
-def format_column_header():
-    """format the column headers"""
-    headers = 'Donor name', 'Total Given', 'Num Gifts', 'Average Gift'
-    return "{:<26}|{:^13}|{:^13}|{:^13}".format(*headers)
+def print_report():
+    print(create_donation_report(donations))
+
+
+def key1(iterable):
+    return iterable[1]
 
 
 def get_row(donor):
     """retrieve the statistics for a given donor"""
-    name = donor
     total = total_given(donor)
     num = num_donations(donor)
     avg = average_given(donor)
-    return name, total, num, avg
+    return donor, total, num, avg
 
 
-def format_row(row_tupl):
-    """format a donors statistics so the columns will match"""
-    return "{:<27}${:>12.2f} {:>12}  ${:>12.2f}".format(*row_tupl)
-
-
-def list_donations(donor):
+def donations_from(donor):
     """Return a list of all amounts made by donor ordered chronologically"""
-    # Including this in anticipation that the dta struct might become more complicated
+    # Including this in anticipation that the data struct might change
     return donations[donor]
 
 
 def total_given(donor):
     """Return the total amount donated by donor"""
-    return sum(list_donations(donor))
+    return sum(donations_from(donor))
 
 
 def average_given(donor):
     """Return the average amount donated by donor"""
-    return sum(list_donations(donor))/len(list_donations(donor))
-
+    try:
+        avg = total_given(donor) / num_donations(donor)
+    except ZeroDivisionError as E:
+        avg = 0
+    return avg
 
 def num_donations(donor):
     """Return the total number of donations donated by donor"""
-    return len(list_donations(donor))
+    return len(donations_from(donor))
+
+
+primary_switch_dict = {
+    'TY': prompt_thank_you,
+    'CR': print_report#,
+    #'SL': send_letters
+}
 
 
 
@@ -222,12 +239,5 @@ def tests():
 
 if __name__ == "__main__":
     tests()
-    print("Welcome to Gregg's Mailroom")
-    return_to_primary_prompt = [False]
-    while(True):
-        return_to_primary_prompt[0] = False
-        action = input(primary_prompt())
-        if action == "Q":
-            break
-        else:
-            handled = handle_primary_prompt(action)
+    print("Welcome to Gregg's Mailroom 1.1\n")
+    primary_menu()
