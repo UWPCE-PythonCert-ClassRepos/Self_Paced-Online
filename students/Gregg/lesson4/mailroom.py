@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Use current knowledge to set up an interactive program"""
 
+import datetime
+
+
 donations = {
     "William Gates, III": [3, 5, 7],
     "Mark Zuckerberg": [4.50, 8, 2],
@@ -43,12 +46,19 @@ def menu_handler(key_in, menu_dict):
 
 
 def quitable_funcion_prompt(prompt, function_in, quit_string='q'):
+    """Runs function with user input unless input is quit string
+
+    Will repeat if the input is invalid
+    """
     result = input(prompt_formatter(prompt))
     if result == quit_string:
         return 'q'
     try:
         function_in(result)
     except (KeyError, ValueError) as E:
+        # I feel like maybe these should be custom errors?
+        # made dbugging a bit of a pain
+        print('Unable to continue, please try again')
         quitable_funcion_prompt(prompt, function_in)
 
 
@@ -56,17 +66,19 @@ prompt_formatter = '{}\nInput: '.format
 
 
 def primary_menu():
+    """Guide user through the mailroom UI"""
     menu(primary_prompt, primary_switch_dict, quit_string='Q')
 
 
 primary_prompt = (
     "\nWould you like to Send a Thank You (enter TY), "
-    "Create a Report (enter CR) or quit (enter Q).\n"
+    "Create a Report (enter CR), send thank you letters to everyon (enter SL) or quit (enter Q).\n"
     "At any point enter q to return to this prompt"
 )
 
 
 def prompt_thank_you():
+    """Guide user to create a thank you for a new donation"""
     quitable_funcion_prompt(thank_you_prompt, thank_you)
 
 
@@ -126,15 +138,23 @@ def add_donation_handler(donation_amount, donor):
     except ValueError as E:
         print(f'{donation_amount} is not a number, please enter a number')
         raise(E)
-    this_thx_string = thankyou_string(donor, donation_amount)
+    this_thx_string = thankyou_string(donor, float(donation_amount))
     send_thank_you(donor, this_thx_string)
 
 
 def add_donation(donor, donation_amount):
+    """Add a dontation to to the database for donor"""
     donations_from(donor).append(float(donation_amount))
 
 
-thankyou_string = 'Thank you, {}, for you generous ${} donation.'.format
+line1 = 'Dear {},\n\n'
+line2 = '\tThank you for you generous donation of ${:.2f}.\n\n'
+line3 = '\tIt will be put to good use.\n\n'
+line4 = 'Sincerely,\n'
+line5 = '-The team'
+
+
+thankyou_string = '{}{}{}{:>40}{:>45}'.format(line1, line2, line3, line4, line5).format
 
 
 def send_thank_you(donor, this_thx_string):
@@ -171,10 +191,12 @@ def create_donation_report(donors):
 
 
 def print_report():
+    """Print report to prompt"""
     print(create_donation_report(donations))
 
 
 def key1(iterable):
+    """Sort key for creating report"""
     return iterable[1]
 
 
@@ -210,12 +232,27 @@ def num_donations(donor):
     return len(donations_from(donor))
 
 
+def send_letters():
+    """Save text file thank yous for the last donation from each donor """
+    for donor in donations:
+        last_don = last_donation(donor)
+        now = datetime.datetime.now().strftime("%m.%d.%Y.%H.%M.%S")
+        letter_filename = "{}_{}.txt".format(donor, now)
+        donor_thx_string = thankyou_string(donor, last_don)
+        with open(letter_filename, 'w') as letter:
+            letter.write(donor_thx_string)
+        print(f'Sent letter to {donor}')
+
+
+def last_donation(donor):
+    """Return the value of the last donation made by donor"""
+    return donations_from(donor)[-1]
+
 primary_switch_dict = {
     'TY': prompt_thank_you,
-    'CR': print_report#,
-    #'SL': send_letters
+    'CR': print_report,
+    'SL': send_letters
 }
-
 
 
 def tests():
