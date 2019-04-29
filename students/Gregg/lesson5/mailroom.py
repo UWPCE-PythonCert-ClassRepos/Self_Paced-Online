@@ -244,6 +244,9 @@ def last_donation(donor):
         last_donation = donations_from(donor)[-1]
     except IndexError as E:
         last_donation = None
+    # This is currently pointelss because the default dict took care of the
+    # the situation where a donor would need to be added seperatley from their
+    # donation. I will leave it in anyway in case it comes again in the future
     return last_donation
 
 
@@ -261,5 +264,5 @@ def tests():
 
 if __name__ == "__main__":
     tests()
-    print("Welcome to Gregg's Mailroom 1.1\n")
+    print("Welcome to Gregg's Mailroom 1.3\n")
     primary_menu()
