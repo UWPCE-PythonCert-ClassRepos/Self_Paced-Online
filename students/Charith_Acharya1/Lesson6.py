@@ -35,7 +35,7 @@ def Thanks():
     if Full_Name in Master_List.keys():
         Master_List[Full_Name].append(Amount)
         print(Message(Full_Name, New_Amount))        
-    if Full_Name not in Master_List.keys():
+    elif Full_Name not in Master_List.keys():
         Master_List[Full_Name] = [Amount]
         print(Message(Full_Name, New_Amount))  
       
@@ -43,22 +43,21 @@ def Message(Full_Name, New_Amount):
     return(" ".join(["Hello",Full_Name,"Thank you for the donation of",New_Amount]))
     
   
+def donor_details():
+    """Print donation statistics for each donor"""
+    Master_List_2 = {}
+    Master_List_2 = {k:[sum(v),len(v), sum(v)/len(v)] for k,v in Master_List.items()}
+    Master_List_3  = sorted(Master_List_2 .items(), key = lambda x: x[1], reverse = True)
+    for donor in Master_List_3:
+        print("{:<20} ${:>12,.2f}{:^12} ${:>12,.2f}".format(donor[0], donor[1][0], donor[1][1], donor[1][2]))
+    
+       
 def Report():
-    Sum_List = []
-    Len_List = []
-    Avg_List = []
-    for i in Master_List.keys():
-        Sum = sum(Master_List[i])
-        Len = len(Master_List[i])
-        Average = Sum/Len
-        Sum_List.append(Sum)
-        Len_List.append(Len)
-        Avg_List.append(Average)            
-    print(Sum_List)
-    print(Len_List)
-    print(Avg_List)
-    for i in range(len(list(Master_List.keys()))):
-        print(list(Master_List.keys())[i] + "-"*5 + str(Sum_List[i]) + "-"*5 + str(Len_List[i]) +"-"*5 + str(Avg_List[i]))
+    """Print a list of donors sorted by name, total donated amount, number of donation, and average donation amount"""
+    print("{0:<20}{1:>12}{2:>12}{3:>15}".format("Donor Name", "Total Given", "Num Gifts", "Average Gift"))
+    print("--------------------------------------------------------------")
+    donor_details()
+
 
 def Report_Totals(i):
     SumI = sum(Master_List[i])
