@@ -44,16 +44,10 @@ class Donor:
             print("Enter a donation amount")
             
     def total_donations(self):
-        try:
-            return sum(self.donations)
-        except TypeError:
-            return self.donations
+        return sum(self.donations)
             
     def avg_donation(self):
-        try:
-            return self.total_donations()/self.num_of_donations()
-        except TypeError:
-            return self.donations
+        return self.total_donations()/self.num_of_donations()
 
     def number_donations(self):
         return len(self.donations) 
@@ -149,7 +143,6 @@ prompt = "\n".join(('Welcome',
                    '2.Create a report',
                    '3.Send a letter to all participants',
                    '4. Quit'))
-
      
 def Quit():
     print("Bye!")
