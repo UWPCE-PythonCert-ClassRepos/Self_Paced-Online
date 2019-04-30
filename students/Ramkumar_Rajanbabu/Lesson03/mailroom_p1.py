@@ -17,7 +17,7 @@ prompt = "\n".join(("Menu: ",
                     "3 - Quit",
                     ">>> "))
 def main():
-    """Purpose.
+    """Display menu with options to user.
     
     Args:
         None
@@ -27,18 +27,18 @@ def main():
     """
     
     while True:
-        response = input(prompt)  #continuously collect user selection
+        response = input(prompt)
         if response == "1": #Send a Thank You
             send_a_thank_you()
         elif response == "2": #Create a Report
-            create_report()
+            create_a_report()
         elif response == "3": #Quit
             exit_program()
         else:
             print("Please enter a valid option! (1-3)\n")
 
 def send_a_thank_you():
-    """Purpose.
+    """Show a list of donors and add a new donor based on user response.
     
     Args:
         None
@@ -48,7 +48,7 @@ def send_a_thank_you():
     """
 
     response = str(input("Type in the full donor name (or 'list' to view a list of donor names): "))
-    if response == "list": #Maybe #response.lower()
+    if response == "list":
         view_donor_list()
         send_a_thank_you() # Reprompt to main menu
     elif response in donors:
@@ -58,14 +58,11 @@ def send_a_thank_you():
         donors_db.append([response]) #response in list because it's a new donor entry
         donation_amount(response)
 
-def create_report():
+def create_a_report():
     """Create a report (table with values).
     
     Args:
-        donor_name:
-        total_given:
-        num_gifts:
-        average_gift:
+        None
     Returns:
         None
 
@@ -127,10 +124,11 @@ def view_donor_list():
         print(donor_name[0]) #zeroth index has donor names because of double list
     
 def print_email(response, donors_amount):
-    """Purpose.
+    """Print an email letter based on donor name and donation amount.
     
     Args:
-        None
+        response: donor name
+        donors_amount (float): donation amount  
     Returns:
         None
 
@@ -146,10 +144,10 @@ def print_email(response, donors_amount):
     print(email)
     
 def donation_amount(response):
-    """Purpose.
+    """Add new donation amount to donor list based on user response.
     
     Args:
-        None
+        response: donor name
     Returns:
         None
 
@@ -161,5 +159,5 @@ def donation_amount(response):
     print_email(response, donors_amount)
     
 if __name__ == "__main__":
-    # don't forget this block to guard against your code running automatically if this module is imported
+    #Guard against running code automatically if this module is imported
     main()
