@@ -14,6 +14,7 @@ prompt = "\n".join(("Welcome to the mailroom!",
           ">>> "))
 
 def thank_you(donor_db):
+    #I'm getting an error accessing the global variable donor_db, so passing in as argument to get around the error.
     donor = input("Name of the donor? ").title()
     # donor = "Paul Allen"
     if donor == "List":
@@ -43,9 +44,9 @@ def thank_you(donor_db):
 
 def create_report():
     print("Donor Name                | Total Given | Num Gifts | Average Gift" )
-    print("-" * 65)
+    print("-" * 66)
     for donor in donor_db:
-        print("{:<26} $ {:>,.2f} )
+        print("{:<26} $ {:>10,.2f} {:>11}  ${:>12,.2f}".format(donor[0], sum(donor[1]), len(donor[1]), sum(donor[1]) / len(donor[1])))
 
 def main():
     while True:
