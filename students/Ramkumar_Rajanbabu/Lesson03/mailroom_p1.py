@@ -70,30 +70,23 @@ def create_a_report():
     title_string = "{:<25s} | {:s} | {:s} | {:s}".format("Donor Name", "Total Given", "Num Gifts", "Average Gift")
     title_bar = len(title_string) * "-"    
     
-    donor_name = []
-    total_given = []
-    num_gifts = []
-    avg_gift = []
-
+    summary = []
     for donor in donors_db:
-        name = donor[0]
-        donor_name.append(name)
+        donor_name = donor[0]
+        donations = donor[1:]
 
-        amount = donor[1:]
-        total = sum(amount)
-        total_given.append(total)
+        total_given = sum(donations)
+        num_gifts = len(donations)
+        avg_gift = total_given / num_gifts
 
-        gifts = len(amount)
-        num_gifts.append(gifts)
-
-        avg = total / gifts
-        avg_gift.append(avg)
+        summary.append((donor_name, total_given, num_gifts, avg_gift))
+    summary = sorted(summary, key=sort_key, reverse=True)
     
     print()
     print(title_string)
     print(title_bar)
-    for index in range(len(donor_name)):
-        f_string = "{:<25s}  ${:>11.2f}  {:>10d}  ${:>12.2f}".format(donor_name[index], total_given[index], num_gifts[index], avg_gift[index])
+    for donor_tuple in summary:
+        f_string = "{:<25s}  ${:>11.2f}  {:>10d}  ${:>12.2f}".format(*donor_tuple)
         print(f_string)
 
 def exit_program():
@@ -157,7 +150,18 @@ def donation_amount(response):
     donors_index = (donors.index(response)) #Returns the index value of donor name
     donors_db[donors_index].append(donors_amount)
     print_email(response, donors_amount)
+
+def sort_key(summary):
+    """Creates sort key for sorted function.
     
+    Args:
+        summary: list with donor summary
+    Returns:
+        summary[1]: sorts by total_given values
+
+    """
+    return summary[1]    
+
 if __name__ == "__main__":
     #Guard against running code automatically if this module is imported
     main()
