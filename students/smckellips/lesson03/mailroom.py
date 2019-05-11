@@ -2,10 +2,9 @@
 donor_db = [("William Gates, III", [653772.32, 12.17]),
             ("Jeff Bezos", [877.33]),
             ("Paul Allen", [663.23, 43.87, 1.32]),
-            ("Mark Zuckerberg", [1663.23, 4300.87, 10432.0]),
+            ("Mark Zuckerberg", [1663.23, 4300.87, 10432.0])
             ]
 
-donors = [x[0] for x in donor_db]
 prompt = "\n".join(("Welcome to the mailroom!",
           "Please choose from below options:",
           "1 - Send a thank you",
@@ -13,15 +12,16 @@ prompt = "\n".join(("Welcome to the mailroom!",
           "3 - Exit",
           ">>> "))
 
-def thank_you(donor_db):
+def thank_you():
+    global donor_db
     #I'm getting an error accessing the global variable donor_db, so passing in as argument to get around the error.
     donor = input("Name of the donor? ").title()
     # donor = "Paul Allen"
     if donor == "List":
         print("\n".join(x[0] for x in donor_db))
-        thank_you(donor_db)
+        thank_you()
     else:
-        if donor in donors:
+        if donor in [x[0] for x in donor_db]:
 
             # donor_name = [x[0] for x in donor_db if x[0] == donor]
             # donor_donations = [x[1] for x in donor_db if x[0] == donor]
@@ -57,7 +57,7 @@ def main():
         response = input(prompt)  # continuously collect user selection
         # now redirect to feature functions based on the user selection
         if response == "1":
-            thank_you(donor_db)
+            thank_you()
         elif response == "2":
             create_report()
         elif response == "3":
