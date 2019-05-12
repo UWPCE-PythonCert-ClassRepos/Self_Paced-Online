@@ -9,14 +9,7 @@ donors_db = {"William Gates, III": [653772.32, 12.17],
              "Ramkumar Rajanbabu": [200.30, 50.10, 5.25]}
 
 def main():
-    """Display menu with options to user.
-    
-    Args:
-        None
-    Returns:
-        None
-
-    """
+    """Display menu with options to user."""
     
     prompt = "\n".join(("Menu: ",
                     "Please choose from below options:",
@@ -40,14 +33,7 @@ def main():
             print("Please enter a valid option! (1-4)\n")
 
 def send_thanks():
-    """Show a list of donors and add a new donor based on user response.
-    
-    Args:
-        None
-    Returns:
-        None
-
-    """
+    """Show a list of donors and add a new donor based on user response."""
 
     name = str(input("Type in the full donor name (or 'list' to view a list of donor names): "))
     if name == "list":
@@ -57,14 +43,8 @@ def send_thanks():
         add_donation(name)
 
 def create_report():
-    """Create a report (table with values).
+    """Create a report (table with values)."""
     
-    Args:
-        None
-    Returns:
-        None
-        
-    """
     title_string = "{:<25s} | {:s} | {:s} | {:s}".format("Donor Name", "Total Given", "Num Gifts", "Average Gift")
     title_bar = len(title_string) * "-"
     
@@ -83,14 +63,7 @@ def create_report():
         print("{:<25s}  ${:>11.2f}  {:>10d}  ${:>12.2f}".format(*donor_tuple)) #f_string
 
 def send_letters_all():
-    """Generates a thank you letter for each donor and writes each letter as a text file.
-    
-    Args:
-        None
-    Returns:
-        None
-
-    """
+    """Generates a thank you letter for each donor and writes each letter as a text file."""
     
     for donor_name, amount in donors_db.items():
         file_name = donor_name + ".txt"
@@ -99,27 +72,13 @@ def send_letters_all():
     print("A thank you letter to each donor is saved as a text file.")
     
 def exit_program():
-    """Exit program.
-    
-    Args:
-        None
-    Returns:
-        None
-        
-    """
+    """Exit program."""
     
     print("\nYou chose to quit the program, good-bye!")
     sys.exit() #Exit script
              
 def view_list():
-    """To view donor names in a vertical list.
-    
-    Args:
-        None
-    Returns:
-        None
-
-    """
+    """To view donor names in a vertical list."""
     
     print("\nList of Donor Names:")
     for donor_name in donors_db.keys():
