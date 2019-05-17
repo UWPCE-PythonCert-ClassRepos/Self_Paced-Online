@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+import sys
 donor_db = [("William Gates, III", [653772.32, 12.17]),
             ("Jeff Bezos", [877.33]),
             ("Paul Allen", [663.23, 43.87, 1.32]),
@@ -61,7 +62,7 @@ def main():
         elif response == "2":
             create_report()
         elif response == "3":
-            exit()
+            sys.exit()
         else:
             print("Not a valid option!")
 
