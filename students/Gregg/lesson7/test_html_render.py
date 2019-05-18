@@ -30,7 +30,8 @@ def test_element_render():
     test_string = "test string"
     element = hr.Element(test_string)
     element.append(test_string)
-    goal_string = r"<html>\\{}{}}\\n<\html>".formt(test_string)
-    with open('test.txt') as test_out:
-        element.render(test_out)
-        assert test_out
+    goal_string = "<html>\n    {0}{0}\n</html>".format(test_string)
+    out_file = 'test.txt'
+    element.render(out_file)
+    with open(out_file) as test_out:
+        assert goal_string in test_out.read()
