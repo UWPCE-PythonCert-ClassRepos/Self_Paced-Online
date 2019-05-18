@@ -23,5 +23,4 @@ class Element(object):
         content_string = f'{self.indentation*" "}{"".join(self.content)}'
         render_list = [start_tag, content_string, end_tag]
         render_string = f'{current_indent*" "}\n'.join(render_list)
-        with open(file_out, 'w') as outfile:
-            outfile.write(render_string)
+        file_out.write(render_string)
