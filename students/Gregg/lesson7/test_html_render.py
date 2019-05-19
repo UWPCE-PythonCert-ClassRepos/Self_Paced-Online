@@ -56,6 +56,15 @@ def test_OneLineTag_render():
     element2.render(f)
     assert goal_string in f.getvalue()
 
+def test_attributes_render():
+    test_string = "test string"
+    element = hr.Element(test_string, id="TheList", style="line-height:200%")
+    element.append(test_string)
+    goal_string = '<html id="TheList" style="line-height:200%">\n    {0}\n    {0}\n</html>'.format(test_string)
+    f = StringIO()
+    element.render(f)
+    assert goal_string in f.getvalue()
+
 def test_Html():
     element = hr.Html()
     assert(element.tag_name == 'html')

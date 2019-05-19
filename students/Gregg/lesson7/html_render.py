@@ -14,8 +14,9 @@ class Element(object):
     tag_name = 'html'
     indentation = 4
 
-    def __init__(self, init_content=None):
+    def __init__(self, init_content=None, **kwargs):
         self.contents = []
+        self.attributes_dict = kwargs
         if not(init_content is None):
             self.append(init_content)
 
@@ -34,9 +35,13 @@ class Element(object):
                 ))
 
     def render(self, file_out, current_indent=0, join_lines='\n'):
-        """generate a string with pretty indentation and write it to file out"""
+        """generate an indented html string and write it to file out"""
         tag_indent_str = current_indent*' '
-        start_tag = "{}<{}>".format(tag_indent_str, self.tag_name)
+        attributes_string = ''
+        for attrib, value in self.attributes_dict.items():
+            attrib_string = ' {}="{}"'.format(attrib, value)
+            attributes_string += attrib_string
+        start_tag = "{}<{}{}>".format(tag_indent_str, self.tag_name, attributes_string)
         if join_lines == '':
             end_tag = "</{}>".format(self.tag_name)
             content_indent = 0
