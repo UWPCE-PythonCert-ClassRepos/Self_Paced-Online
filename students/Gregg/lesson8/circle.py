@@ -32,6 +32,14 @@ class Circle():
     def area(self):
         return math.pi*(self.radius**2)
 
+    @classmethod
+    def from_diameter(cls, diameter_in):
+        self = cls(1)
+        self.diameter = diameter_in
+        return self
+        #I feel like it would be nicer if this used the
+
+
 
     def __eq__(self, other):
         return self.radius == other.radius
