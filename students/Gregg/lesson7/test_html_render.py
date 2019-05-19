@@ -89,6 +89,14 @@ def test_A_render():
     element.render(f)
     assert goal_string == f.getvalue()
 
+def test_element_render():
+    test_string = "test string"
+    element = hr.Html(test_string)
+    element.append(test_string)
+    goal_string = "<!DOCTYPE html>\n<html>\n    {0}\n    {0}\n</html>".format(test_string)
+    f = StringIO()
+    element.render(f)
+    assert goal_string == f.getvalue()
 
 def test_H2():
     element = hr.H(2)
@@ -102,6 +110,9 @@ def test_Li():
     element = hr.Li()
     assert(element.tag_name == 'li')
 
+def test_Meta():
+    element = hr.Meta()
+    assert(element.tag_name == 'meta')
 
 def test_Hr():
     element = hr.Hr()

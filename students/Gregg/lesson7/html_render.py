@@ -99,12 +99,27 @@ class H(OneLineTag):
         self.tag_name = 'h'+str(header_level)
         OneLineTag.__init__(self, init_content, **kwargs)
 
+
+class Html(Element):
+    tag_name = 'html'
+    def render(self, file_out, current_indent=0, join_lines='\n', self_closing=False):
+        f = StringIO()
+        Element.render(self, f, current_indent, join_lines, self_closing)
+        content_string = f.getvalue()
+        doc_type_string = '<!DOCTYPE html>\n'
+        render_string = doc_type_string + content_string
+        file_out.write(render_string)
+
+
 class Ul(Element):
     tag_name = 'ul'
 
 class Li(Element):
     tag_name = 'li'
 
+
+class Meta(SelfClosingTag):
+    tag_name = 'meta'
 
 class Hr(SelfClosingTag):
     tag_name = 'hr'
@@ -115,8 +130,7 @@ class Br(SelfClosingTag):
 class Title(OneLineTag):
     tag_name = 'title'
 
-class Html(Element):
-    tag_name = 'html'
+
 
 class Body(Element):
     tag_name = 'body'
