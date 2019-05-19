@@ -62,3 +62,9 @@ def test_sort():
     circles.sort()
     assert(circles == sorted_circles)
 
+def test_iadd():
+    c1 = Circle(2)
+    print(c1)
+    c1 += c1
+    print(c1)
+    assert(c1 == Circle(4))

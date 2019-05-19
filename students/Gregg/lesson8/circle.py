@@ -58,3 +58,7 @@ class Circle():
 
     def __lt__(self, other):
         return self.radius < other.radius
+
+    def __iadd__(self, other):
+        self.radius = self.radius+other.radius
+        return self
