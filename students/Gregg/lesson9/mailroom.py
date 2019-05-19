@@ -4,14 +4,14 @@
 import datetime
 from collections import defaultdict
 
-donations = {
+donations_init = {
     "William Gates, III": [3, 5, 7],
     "Mark Zuckerberg": [4.50, 8, 2],
     "Jeff Bezos": [7.77],
     "Paul Allen": [3.6, 4.5],
     "bob": [.01]
 }
-donations = defaultdict(list, donations)
+#donations = defaultdict(list, donations)
 # todo
 # add file writing
 
@@ -21,7 +21,10 @@ class Donor():
     def __init__(self, name_in, donations=None):
         self.name = name_in
         if donations is not None:
-            self._donation_list = list(donations)
+            try:
+                self._donation_list = list(donations)
+            except TypeError as E:
+                self._donation_list = [donations]
         else:
             self._donation_list = []
 
@@ -195,7 +198,7 @@ class Donations_db():
             print('\n'.join(list_in))
             print('')
 
-donation_db = Donations_db(donations)
+donation_db = Donations_db(donations_init)
 
 def menu(prompt, menu_dict, quit_string='q'):
     """Continues prompting with prompt until the quit_string is returned

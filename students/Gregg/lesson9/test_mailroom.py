@@ -16,6 +16,9 @@ donations = copy.deepcopy(initial_donations)
 
 donations = defaultdict(list, donations)
 
+donation_db = Donations_db(initial_donations)
+
+donors = [Donor(name, donation_list) for name, donation_list in initial_donations.items()]
 
 def test_menu():
     pass
@@ -70,14 +73,14 @@ donors_list = [
 
 def test_list_donors(capsys):
     desc = 'donors'
-    list_donors()
+    donation_db.list_donors()
     captured = capsys.readouterr()
     assert('These are the donors currently in the database:' in captured.out)
 
 
 def test_print_list(capsys):
     desc = 'descriptor'
-    print_list(donors_list, desc)
+    donation_db.print_list(donors_list, desc)
     captured = capsys.readouterr()
     assert(desc in captured.out)
     for donor in donors_list:
@@ -85,55 +88,59 @@ def test_print_list(capsys):
 
 
 def test_donors_in_database():
-    assert(donors_in_database(initial_donations) == donors_list)
+    assert(donation_db.names_in_database == donors_list)
 
 
-donor = 'cary'
+name = 'cary'
 donation_amounts = [-5, 'cow', 300]
 donations_raise = [ValueError, ValueError, False]
 
 
 def test_new_doation_handler(capsys):
+    donation_add_db = Donations_db(initial_donations)
     for idx, donation in enumerate(donation_amounts):
         E = donations_raise[idx]
         if E:
             with pytest.raises(E):
-                new_donation_handler(donor, donation)
+                donation_add_db.new_donation_handler(name, donation)
         else:
-            new_donation_handler(donor, donation)
-            assert(last_donation(donor) == donation)
+            donation_add_db.new_donation_handler(name, donation)
+            assert(donation_add_db.donor_from_name(name).last_donation == donation)
             captured = capsys.readouterr()
-            assert donor in captured.out
+            assert name in captured.out
             assert '$'+str(donation) in captured.out
 
 
 def test_add_donation_to_database():
+    donor = Donor(name)
     for idx, donation in enumerate(donation_amounts):
         if donations_raise[idx]:
             with pytest.raises(ValueError):
-                add_donation_to_database(donor, donation)
+                donor.add_donation(donation)
         else:
-            add_donation_to_database(donor, donation)
-            assert(last_donation(donor) == donation)
+            donor.add_donation(donation)
+            assert(donor.last_donation == donation)
 
-
+name = 'bob'
 test_donations = {
-    5.0935: [donor, '$5.09', 'Thank you'],
-    50: [donor, '$50', 'Thank you'],
-    5.1: [donor, '$5.10', 'Thank you'],
+    5.0935: [name, '$5.09', 'Thank you'],
+    50: [name, '$50', 'Thank you'],
+    5.1: [name, '$5.10', 'Thank you'],
 }
 
 
 def test_thankyou_string():
+    donor = Donor(name)
     for test_donation, should_contain in test_donations.items():
-        thx_str = thankyou_string(donor, test_donation)
+        thx_str = donor.thankyou_string(donor.name, test_donation)
         for string in should_contain:
             assert(string in thx_str)
 
 
 def test_send_thank_you(capsys):
     test_string = 'test_string'
-    send_thank_you(donor, 'test_string')
+    donor = Donor('bob')
+    donor.send_thank_you('test_string')
     captured = capsys.readouterr()
     assert(test_string in captured.out)
         # for string in should_contain:
@@ -153,7 +160,7 @@ donation_report_string = (
 
 
 def test_create_donation_report():
-    donation_report = create_donation_report(donations)
+    donation_report = donation_db.donation_report
     assert(donation_report_string == donation_report)
 
 
@@ -163,7 +170,7 @@ def test_print_report(capsys):
 
 
 def test_key1():
-    assert(key1([1, 2, 3]) == 2)
+    assert(donation_db.key1([1, 2, 3]) == 2)
 
 
 def test_get_row():
@@ -175,44 +182,48 @@ def test_get_row():
         "bob": ("bob", .01, 1, .01),
         "bill": ("bill", 0, 0, 0)
     }
-    for donor in donations:
-        row = get_row(donor)
-        assert(row == rows[donor])
+    for donor in donors:
+        row = donor.stats
+        assert(row == rows[donor.name])
         print(row)
 
 
 def test_donations_from():
-    for donor in donations:
-        assert(donations_from(donor) == donations[donor])
+    for donor in donors:
+        assert(donor.all_donations == donations[donor.name])
 
 
 def test_send_letters():
+    donation_db = Donations_db(initial_donations)
     filename_sufffix = 'test'
-    send_letters(filename_sufffix)
-    for donor in donations:
-        test_name = "{}_{}.txt".format(donor, filename_sufffix)
-        if donor == 'bill':
+    donation_db.send_letters(filename_sufffix)
+    for name in donations:
+        test_name = "{}_{}.txt".format(name, filename_sufffix)
+        if name == 'bill':
             assert(not(os.path.isfile(test_name)))
         else:
+            donor = donation_db.donor_from_name(name)
             with open(test_name, 'r') as letter_file:
                 letter = letter_file.read()
-                las_don = last_donations[donor]
-                assert(letter == thankyou_string(donor, las_don))
+                las_don = donor.last_donation
+                assert(letter == donor.thankyou_string(donor.name, las_don))
 
 
 def test_send_letter(capsys):
-    send_letter('bill', 'test1.txt')
+    donor = Donor('bill')
+    donor.send_letter('test1.txt')
     captured = capsys.readouterr()
     assert("No thank you was saved for bill" in captured.out)
     test_name = 'test2.txt'
-    donor = 'bob'
-    send_letter('bob', test_name)
+    donor = Donor('bob', .01)
+    donor.send_letter(test_name)
     with open(test_name, 'r') as letter_file:
         letter = letter_file.read()
-        las_don = last_donations[donor]
-        print(thankyou_string(donor, las_don))
+        las_don = .01
+        thx_str = donor.thankyou_string(donor.name, las_don)
+        print(thx_str)
         print(letter)
-        assert(thankyou_string(donor, las_don) in letter)
+        assert(thx_str in letter)
 
 
 last_donations = {
@@ -226,7 +237,7 @@ last_donations = {
 
 
 def test_last_donation():
-    for donor in donations:
-        assert(last_donation(donor) == last_donations[donor])
+    for donor in donors:
+        assert(donor.last_donation == last_donations[donor.name])
 
 
