@@ -28,5 +28,9 @@ def test_set_area():
     with pytest.raises(AttributeError):
         c.area = 5
 
+def test_circle_from_diameter():
+    c = Circle.from_diameter(8)
+    assert(c.radius == 4)
+
 def test_repr():
     assert(eval( repr( Circle(4))) == Circle(4))
