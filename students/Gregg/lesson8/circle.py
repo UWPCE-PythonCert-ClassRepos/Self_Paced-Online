@@ -39,7 +39,8 @@ class Circle():
         return self
         #I feel like it would be nicer if this used the
 
-
+    def __str__(self):
+        return '{} with radius: {:f}'.format(self.__class__.__name__, self.radius)
 
     def __eq__(self, other):
         return self.radius == other.radius

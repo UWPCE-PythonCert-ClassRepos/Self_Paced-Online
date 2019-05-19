@@ -34,3 +34,7 @@ def test_circle_from_diameter():
 
 def test_repr():
     assert(eval( repr( Circle(4))) == Circle(4))
+
+def test_str():
+    c = Circle(4)
+    assert(str(c) == "Circle with radius: 4.000000")
