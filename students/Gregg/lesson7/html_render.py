@@ -33,13 +33,17 @@ class Element(object):
                     'or an object with render method'
                 ))
 
-    def render(self, file_out, current_indent=0):
+    def render(self, file_out, current_indent=0, join_lines='\n'):
         """generate a string with pretty indentation and write it to file out"""
         tag_indent_str = current_indent*' '
         start_tag = "{}<{}>".format(tag_indent_str, self.tag_name)
-        end_tag = "{}</{}>".format(tag_indent_str, self.tag_name)
+        if join_lines == '':
+            end_tag = "</{}>".format(self.tag_name)
+            content_indent = 0
+        else:
+            end_tag = "{}</{}>".format(tag_indent_str, self.tag_name)
+            content_indent = current_indent+self.indentation
         rendered_content_list = []#deque()
-        content_indent = current_indent+self.indentation
         for content in self.contents:
             try:
                 f = StringIO()
@@ -51,12 +55,19 @@ class Element(object):
                 content_string = f'{content_indent*" "}{content}'
             rendered_content_list.append(content_string)
         rendered_content_string = '\n'.join(rendered_content_list)
-        render_string = '{}\n{}\n{}'.format(
-            start_tag, rendered_content_string, end_tag
+        render_string = join_lines.join(
+            [start_tag, rendered_content_string, end_tag]
         )
         # f'{current_indent*" "}\n'.join(rendered_content_list)
         file_out.write(render_string)
 
+class OneLineTag(Element):
+    """Renders open and close tags on the same line as the content"""
+    def render(self, file_out, current_indent):
+        Element.render(self, file_out, current_indent, join_lines = '')
+
+class Title(OneLineTag):
+    tag_name = 'title'
 
 class Html(Element):
     tag_name = 'html'
@@ -66,5 +77,8 @@ class Body(Element):
 
 class P(Element):
     tag_name = 'p'
+
+class Head(Element):
+    tag_name = 'head'
 
 

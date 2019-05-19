@@ -46,6 +46,15 @@ def test_element_renders_elements():
     element2.render(f)
     assert goal_string in f.getvalue()
 
+def test_OneLineTag_render():
+    test_string = "test string"
+    element = hr.OneLineTag(test_string)
+    element2 = hr.Element()
+    element2.append(element)
+    goal_string = "<html>\n    <html>{0}</html>\n</html>".format(test_string)
+    f = StringIO()
+    element2.render(f)
+    assert goal_string in f.getvalue()
 
 def test_Html():
     element = hr.Html()
@@ -58,3 +67,11 @@ def test_Body():
 def test_Html():
     element = hr.P()
     assert(element.tag_name == 'p')
+
+def test_Head():
+    element = hr.Head()
+    assert(element.tag_name == 'head')
+
+def test_Title():
+    element = hr.Title()
+    assert(element.tag_name == 'title')
