@@ -93,6 +93,19 @@ class A(OneLineTag):
         Element.__init__(self, content, href=link)
 
 
+class H(OneLineTag):
+    """renders a header of desired level"""
+    def __init__(self, header_level, init_content=None, **kwargs):
+        self.tag_name = 'h'+str(header_level)
+        OneLineTag.__init__(self, init_content, **kwargs)
+
+class Ul(Element):
+    tag_name = 'ul'
+
+class Li(Element):
+    tag_name = 'li'
+
+
 class Hr(SelfClosingTag):
     tag_name = 'hr'
 

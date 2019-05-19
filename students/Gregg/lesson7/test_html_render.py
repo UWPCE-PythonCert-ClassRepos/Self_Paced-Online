@@ -79,6 +79,7 @@ def test_self_closing_content_error():
         element = hr.SelfClosingTag('cat')
 
 
+
 def test_A_render():
     test_link = "http://google.com"
     test_string = "test string"
@@ -87,6 +88,20 @@ def test_A_render():
     f = StringIO()
     element.render(f)
     assert goal_string == f.getvalue()
+
+
+def test_H2():
+    element = hr.H(2)
+    assert(element.tag_name == 'h2')
+
+def test_Ul():
+    element = hr.Ul()
+    assert(element.tag_name == 'ul')
+
+def test_Li():
+    element = hr.Li()
+    assert(element.tag_name == 'li')
+
 
 def test_Hr():
     element = hr.Hr()
