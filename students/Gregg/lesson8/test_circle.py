@@ -38,3 +38,13 @@ def test_repr():
 def test_str():
     c = Circle(4)
     assert(str(c) == "Circle with radius: 4.000000")
+
+def test_add():
+    assert(Circle(4) == Circle(4))
+    assert(Circle(4)+Circle(2) == Circle(6))
+
+def test_multiply():
+    assert(Circle(4)*2 == Circle(8))
+
+def test_reverse_multiple():
+    assert(2*Circle(4) == Circle(8))

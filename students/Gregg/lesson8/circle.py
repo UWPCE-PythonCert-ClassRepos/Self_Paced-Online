@@ -37,7 +37,6 @@ class Circle():
         self = cls(1)
         self.diameter = diameter_in
         return self
-        #I feel like it would be nicer if this used the
 
     def __str__(self):
         return '{} with radius: {:f}'.format(self.__class__.__name__, self.radius)
@@ -47,3 +46,12 @@ class Circle():
 
     def __repr__(self):
         return f'Circle({self.radius})'
+
+    def __add__(self, other):
+        return self.__class__(self.radius + other.radius)
+
+    def __mul__(self, other):
+        return self.__class__(other*self.radius)
+
+    def __rmul__(self, other):
+        return self*other
