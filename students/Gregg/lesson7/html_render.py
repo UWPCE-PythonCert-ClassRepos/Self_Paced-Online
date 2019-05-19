@@ -74,7 +74,7 @@ class Element(object):
 
 class OneLineTag(Element):
     """Renders open and close tags on the same line as the content"""
-    def render(self, file_out, current_indent):
+    def render(self, file_out, current_indent = 0):
         Element.render(self, file_out, current_indent, join_lines = '')
 
 class SelfClosingTag(Element):
@@ -85,6 +85,12 @@ class SelfClosingTag(Element):
 
     def render(self, file_out, current_indent):
         Element.render(self, file_out, current_indent, join_lines = '', self_closing = True)
+
+class A(OneLineTag):
+    """renders a link"""
+    tag_name = 'a'
+    def __init__(self, link, content):
+        Element.__init__(self, content, href=link)
 
 
 class Hr(SelfClosingTag):
