@@ -12,5 +12,10 @@ def test_circle_diameter():
     assert(8 == Circle(4).diameter)
     assert(4 == Circle(2).diameter)
 
+def test_set_diameter():
+    c = Circle(4)
+    c.diameter = 12
+    assert(c.diameter == 12)
+
 def test_repr():
     assert(eval( repr( Circle(4))) == Circle(4))

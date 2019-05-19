@@ -19,10 +19,13 @@ class Circle():
         else:
             raise(ValueError('The radius must be a positive number'))
 
-
     @property
     def diameter(self):
         return 2*self.radius
+
+    @diameter.setter
+    def diameter(self, diameter_in):
+        self.radius = diameter_in/2
 
     def __eq__(self, other):
         return self.radius == other.radius
