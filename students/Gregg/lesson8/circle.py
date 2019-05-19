@@ -55,3 +55,6 @@ class Circle():
 
     def __rmul__(self, other):
         return self*other
+
+    def __lt__(self, other):
+        return self.radius < other.radius

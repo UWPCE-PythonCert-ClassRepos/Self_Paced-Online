@@ -48,3 +48,17 @@ def test_multiply():
 
 def test_reverse_multiple():
     assert(2*Circle(4) == Circle(8))
+
+def test_compare():
+    c1 = Circle(2)
+    c2 =Circle(4)
+    assert(c1 < c2)
+    assert(not(c1 == c2))
+    assert(not(c1>c2))
+
+def test_sort():
+    circles = [Circle(2), Circle(3), Circle(1)]
+    sorted_circles = [Circle(1), Circle(2), Circle(3)]
+    circles.sort()
+    assert(circles == sorted_circles)
+
