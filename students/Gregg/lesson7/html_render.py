@@ -34,20 +34,25 @@ class Element(object):
                     'or an object with render method'
                 ))
 
-    def render(self, file_out, current_indent=0, join_lines='\n'):
+    def render(self, file_out, current_indent=0, join_lines='\n', self_closing=False):
         """generate an indented html string and write it to file out"""
         tag_indent_str = current_indent*' '
         attributes_string = ''
         for attrib, value in self.attributes_dict.items():
             attrib_string = ' {}="{}"'.format(attrib, value)
             attributes_string += attrib_string
-        start_tag = "{}<{}{}>".format(tag_indent_str, self.tag_name, attributes_string)
+        closing_string = self_closing*' /'
+        start_tag = "{}<{}{}{}>".format(
+            tag_indent_str, self.tag_name, attributes_string, closing_string
+        )
         if join_lines == '':
             end_tag = "</{}>".format(self.tag_name)
             content_indent = 0
         else:
             end_tag = "{}</{}>".format(tag_indent_str, self.tag_name)
             content_indent = current_indent+self.indentation
+        if self_closing:
+            end_tag = ''
         rendered_content_list = []#deque()
         for content in self.contents:
             try:
@@ -66,10 +71,27 @@ class Element(object):
         # f'{current_indent*" "}\n'.join(rendered_content_list)
         file_out.write(render_string)
 
+
 class OneLineTag(Element):
     """Renders open and close tags on the same line as the content"""
     def render(self, file_out, current_indent):
         Element.render(self, file_out, current_indent, join_lines = '')
+
+class SelfClosingTag(Element):
+    """Renders a self closing tag"""
+    def __init__(self, **kwargs):
+        Element.__init__(self, **kwargs)
+
+
+    def render(self, file_out, current_indent):
+        Element.render(self, file_out, current_indent, join_lines = '', self_closing = True)
+
+
+class Hr(SelfClosingTag):
+    tag_name = 'hr'
+
+class Br(SelfClosingTag):
+    tag_name = 'br'
 
 class Title(OneLineTag):
     tag_name = 'title'

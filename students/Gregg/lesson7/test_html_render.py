@@ -34,7 +34,7 @@ def test_element_render():
     goal_string = "<html>\n    {0}\n    {0}\n</html>".format(test_string)
     f = StringIO()
     element.render(f)
-    assert goal_string in f.getvalue()
+    assert goal_string == f.getvalue()
 
 def test_element_renders_elements():
     test_string = "test string"
@@ -44,7 +44,7 @@ def test_element_renders_elements():
     goal_string = "<html>\n    <html>\n        {0}\n    </html>\n</html>".format(test_string)
     f = StringIO()
     element2.render(f)
-    assert goal_string in f.getvalue()
+    assert goal_string == f.getvalue()
 
 def test_OneLineTag_render():
     test_string = "test string"
@@ -54,7 +54,7 @@ def test_OneLineTag_render():
     goal_string = "<html>\n    <html>{0}</html>\n</html>".format(test_string)
     f = StringIO()
     element2.render(f)
-    assert goal_string in f.getvalue()
+    assert goal_string == f.getvalue()
 
 def test_attributes_render():
     test_string = "test string"
@@ -63,7 +63,29 @@ def test_attributes_render():
     goal_string = '<html id="TheList" style="line-height:200%">\n    {0}\n    {0}\n</html>'.format(test_string)
     f = StringIO()
     element.render(f)
-    assert goal_string in f.getvalue()
+    assert goal_string == f.getvalue()
+
+def test_self_closing_render():
+    element = hr.SelfClosingTag()
+    element2 = hr.Element()
+    element2.append(element)
+    goal_string = "<html>\n    <html />\n</html>"
+    f = StringIO()
+    element2.render(f)
+    assert goal_string == f.getvalue()
+
+def test_self_closing_content_error():
+    with pytest.raises(TypeError):
+        element = hr.SelfClosingTag('cat')
+
+
+def test_Hr():
+    element = hr.Hr()
+    assert(element.tag_name == 'hr')
+
+def test_Br():
+    element = hr.Br()
+    assert(element.tag_name == 'br')
 
 def test_Html():
     element = hr.Html()
