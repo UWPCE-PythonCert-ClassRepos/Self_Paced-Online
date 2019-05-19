@@ -1,5 +1,6 @@
 import pytest
 from circle import *
+import math
 
 
 def test_circle_radius():
@@ -16,6 +17,16 @@ def test_set_diameter():
     c = Circle(4)
     c.diameter = 12
     assert(c.diameter == 12)
+
+def test_area():
+    c = Circle(4)
+    assert(c.area == math.pi*4*4)
+
+
+def test_set_area():
+    c = Circle(4)
+    with pytest.raises(AttributeError):
+        c.area = 5
 
 def test_repr():
     assert(eval( repr( Circle(4))) == Circle(4))

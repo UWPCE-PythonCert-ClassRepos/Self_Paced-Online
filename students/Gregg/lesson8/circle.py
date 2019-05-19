@@ -1,4 +1,5 @@
-
+"""Create some circular objects"""
+import math
 
 
 class Circle():
@@ -26,6 +27,11 @@ class Circle():
     @diameter.setter
     def diameter(self, diameter_in):
         self.radius = diameter_in/2
+
+    @property
+    def area(self):
+        return math.pi*(self.radius**2)
+
 
     def __eq__(self, other):
         return self.radius == other.radius
