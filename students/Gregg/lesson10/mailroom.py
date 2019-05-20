@@ -3,6 +3,7 @@
 
 import datetime
 from collections import defaultdict
+import logging
 
 donations_init = {
     "William Gates, III": [3, 5, 7],
@@ -115,9 +116,11 @@ class Donor():
 
 class Donations_db():
 
-
     def __init__(self, donor_dict = None):
         self._donors = []
+        self._mp_scale_factor = None
+        self._mp_min_donation = None
+        self._mp_max_donation = None
         if donor_dict is not None:
             for name, donations in donor_dict.items():
                 self.add_donor(name, donations)
@@ -129,6 +132,50 @@ class Donations_db():
     def list_donors(self):
         """print all the donors currently as keys of donations dictionary"""
         self.print_list(self.names_in_database, 'donors')
+
+    @property
+    def mp_scale_factor(self):
+        return self._mp_scale_factor
+
+    @mp_scale_factor.setter
+    def mp_scale_factor(self, scale_factor_in):
+        try:
+            assert(int(scale_factor_in) > 0)
+            self._mp_scale_factor = int(scale_factor_in)
+        except (ValueError, TypeError) as E:
+            print('The match per dollar should be greater than 0')
+            raise(E)
+
+
+    @property
+    def mp_min_donation(self):
+        return self._mp_min_donation
+
+    @mp_min_donation.setter
+    def mp_min_donation(self, min_donation_in):
+        try:
+            self._mp_min_donation = int(min_donation_in)
+        except ValueError as E:
+            if min_donation_in.lower() == 'none':
+                self._mp_min_donation = None
+            else:
+                print('The minimum donation must be a number or None')
+                raise(E)
+
+    @property
+    def mp_max_donation(self):
+        return self._mp_max_donation
+
+    @mp_max_donation.setter
+    def mp_max_donation(self, max_donation_in):
+        try:
+            self._mp_max_donation = int(max_donation_in)
+        except ValueError as E:
+            if max_donation_in.lower() == 'none':
+                self._mp_max_donation = None
+            else:
+                print('The maximum donation must be a number or None')
+                raise(E)
 
 
     def donor_from_name(self, name):
@@ -185,22 +232,45 @@ class Donations_db():
         donor.new_donation_handler(donation_amount)
 
 
-    def scaled_database(self, scale_factor, min_donation = 0, max_donation = None):
+    def scaled_database(self, scale_factor, min_donation=0, max_donation=None):
+        scaled_db = Donations_db()
+        def in_this_range(value):
+            return self.in_range(value, min_donation, max_donation)
 
+        def this_scale(value):
+            return self.scale(value, scale_factor)
 
+        for donor in self._donors:
+            filtered_donations = filter(in_this_range, donor._donation_list)
+            scaled_donations = map(this_scale, filtered_donations)
+            scaled_db.add_donor(donor.name, scaled_donations)
         return scaled_db
 
-
-    def matching_projection(self, scale_factor, min_donation = 0, max_donation = None)
-        scaled_db = self.scaled_database(self, scale_factor, min_donation, max_donation)
+    def matching_projection(self, scale_factor, min_donation=0, max_donation=None):
+        scaled_db = self.scaled_database(scale_factor, min_donation, max_donation)
+        filtered_db = self.scaled_database(1, min_donation, max_donation)
+        scaled_total = scaled_db.total_donations
+        matching_contribution = scaled_total - filtered_db.total_donations
+        return matching_contribution
 
     @staticmethod
-    def total_donations(any_donation_db)
+    def scale(value, scale_factor):
+        return scale_factor * value
+
+    @staticmethod
+    def in_range(value, min_donation=0, max_donation=None):
+        above_min = min_donation is None or value >= min_donation
+        below_max = max_donation is None or value <= max_donation
+        return above_min and below_max
+
+
+    @property
+    def total_donations(self):
         total_donations = sum([
-            sum(donation_list)
-            for donation_list in any_donation_db.donors.values()
+            sum(donor._donation_list)
+            for donor in self._donors
         ])
-        return total_donations
+        return round(total_donations, 2)
 
     @staticmethod
     def key1(iterable):
@@ -255,6 +325,7 @@ def quitable_function_prompt(prompt, function_in, quit_string='q'):
     """
     while True:
         result = input(prompt_formatter(prompt))
+        print('')
         if result == quit_string:
             return result
         try:
@@ -303,18 +374,69 @@ def thank_you(donor):
             donation_db.new_donation_handler(donor, donation_amount)
         quitable_function_prompt(add_donation_prompt, add_donation_for_donor)
 
-
 thank_you_prompt = (
     "Enter a full name to send them a thank you\n"
     "Enter 'list' to see current donors"
+)
+
+def prompt_match_projection1():
+    """Guide user to create a matching projection with scale, min and max"""
+    quitable_function_prompt(projection_prompt_1, prompt_match_projection2)
+
+def prompt_match_projection2(min_donation):
+    donation_db.mp_min_donation = min_donation
+    quitable_function_prompt(projection_prompt_2, prompt_match_projection3)
+
+def prompt_match_projection3(max_donation):
+    donation_db.mp_max_donation = max_donation
+    quitable_function_prompt(projection_prompt_3, prompt_match_projection4)
+
+def prompt_match_projection4(scale_factor):
+    donation_db.mp_scale_factor = scale_factor
+    try:
+        contribution = donation_db.matching_projection(
+            donation_db.mp_scale_factor+1,
+            donation_db.mp_min_donation,
+            donation_db.mp_max_donation
+        )
+        print(match_string(
+            donation_db.mp_min_donation,
+            donation_db.mp_max_donation,
+            donation_db.mp_scale_factor,
+            contribution
+        ))
+    except Exception as E:
+        logging.exception(E)
+        raise(E)
+
+
+
+projection_prompt_1 = (
+    "Please enter the minimum donaion to match "
+    "(enter \"None\" to opt for no minumum):"
+)
+
+projection_prompt_2 = (
+    "Please enter the maximum donaion to match "
+    "(enter \"None\" to opt for no minumum):"
+)
+
+projection_prompt_3 = (
+    "Please enter the amount you want to match for each $1 in the range:"
+)
+
+match_string = (
+    "If you chose to match all donations between ${} and ${} and match "
+    "${} on the dollar, then you would've contributed total of ${} based on our "
+    "current donations".format
 )
 
 
 primary_switch_dict = {
     'TY': prompt_thank_you,
     'CR': donation_db.print_report,
-    'SL': donation_db.send_letters
-    'MP': donation_db.matching_projection
+    'SL': donation_db.send_letters,
+    'MP': prompt_match_projection1
 }
 
 

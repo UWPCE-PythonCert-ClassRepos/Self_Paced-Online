@@ -27,6 +27,26 @@ def test_total_donations():
     assert(donation_db.total_donations == 45.38)
 
 
+def test_matching_projection():
+    assert(donation_db.matching_projection(1, 3, 5) == 0)
+    assert(donation_db.matching_projection(2, 8) == 8)
+    assert(donation_db.matching_projection(3, 1, 3) == 10)
+    assert(donation_db.matching_projection(2) == 45.38)
+
+def test_scale():
+    #Tautological, waste of time to test
+    pass
+
+def test_in_range():
+    test_values = [1,2,3,4,5]
+    output = [False, True, True, True, False]
+    for idx, value in enumerate(test_values):
+        assert(donation_db.in_range(value, 2, 4) == output[idx])
+    test_values = [1,2,3,4,5]
+    output = [True, True, True, True, True]
+    for idx, value in enumerate(test_values):
+        assert(donation_db.in_range(value) == output[idx])
+
 def test_menu_handler(capsys):
     flag = False
 
