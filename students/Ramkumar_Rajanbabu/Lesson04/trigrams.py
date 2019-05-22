@@ -41,9 +41,6 @@ def show_trigrams(trigrams_dict):
         text.append(each_text) #Append 1st and 2nd item
     text.append(trigram_val) #Append 3rd item
 
-    trigram_key = text[1] + " " + text[-1]
-    trigram_val = trigrams_dict.get(trigram_key)[0]
-
     for index in range(random.randint(0,100)):
         trigram_key = text[-2] + " " + text[-1]
         if trigram_key in trigrams_dict:
