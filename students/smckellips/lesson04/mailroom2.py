@@ -42,7 +42,6 @@ def create_report():
 
 def write_letter(donor):
     letter = "Thank you, {}, for your kind donation of ${:,.2f}"
-    print(letter.format(donor[0],donor[1][-1]))
     return letter.format(donor[0],donor[1][-1])
 
 
