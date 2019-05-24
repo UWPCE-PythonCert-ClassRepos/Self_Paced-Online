@@ -13,23 +13,16 @@ def get_donor_db():
 def thank_you():
     donor = input("Name of the donor? ")
     donor_l = donor.lower()
-    # donor = "Paul Allen"
     if donor_l == "list":
         print(list_donors())
     else:
         donation_amt = float(input("Amount of the donation? "))
         if donor_l in donor_db:
             donor_db[donor_l][1].append(donation_amt)
-            # entry_d = entry[1]
         else:
             donor_db[donor_l] = (donor, [donation_amt])
-            # entry_d = []
-        # entry_d.append(donation_amt)
-
-        # donor_db[donor_l] = (donor, entry_d)
-
-        letter = "Thank you, {}, for your kind donation of ${:,.2f}"
-        print(letter.format(donor,donation_amt))
+        letter = write_letter(donor_db[donor_l])
+        print(letter)
 
 
 def list_donors():
@@ -38,8 +31,6 @@ def list_donors():
 def create_report():
     print("Donor Name                | Total Given | Num Gifts | Average Gift" )
     print("-" * 66)
-    # for donor in sorted(donor_db, key=sort_key, reverse=True):
-    #     print("{:<26} $ {:>10,.2f} {:>11}  ${:>12,.2f}".format(donor[0], sum(donor[1]), len(donor[1]), sum(donor[1]) / len(donor[1])))
     for donor in sorted(donor_db.keys(), key=sort_key, reverse=True):
          print("{:<26} $ {:>10,.2f} {:>11}  ${:>12,.2f}".format(
              donor_db[donor][0], 
@@ -47,6 +38,21 @@ def create_report():
              len(donor_db[donor][1]), 
              sum(donor_db[donor][1]) / len(donor_db[donor][1]))
             )
+
+
+def write_letter(donor):
+    letter = "Thank you, {}, for your kind donation of ${:,.2f}"
+    print(letter.format(donor[0],donor[1][-1]))
+    return letter.format(donor[0],donor[1][-1])
+
+
+def send_letters():
+    for donor in  donor_db.values():
+        letter = write_letter(donor)
+        filename = donor[0].replace(' ','_') + '.txt'
+        with open(filename, 'w') as f:
+            f.write(letter)
+    return
 
 
 def quit():
@@ -60,7 +66,7 @@ def sort_key(donor_l):
 def menu_selection(prompt, dispatch_dict):
     while True:
         response = input(prompt)
-        if response in ['1', '2', '3']:
+        if response in dispatch_dict.keys():
             if dispatch_dict[response]() == "exit menu":
                 break
 
@@ -71,11 +77,13 @@ if __name__ == "__main__":
                         "Please choose from below options:",
                         "1 - Send a thank you",
                         "2 - Create a report",
-                        "3 - Exit",
+                        "3 - Send a letter to all donors",
+                        "4 - Exit",
                         ">>> "))
     main_dispatch = {
         "1": thank_you,
         "2": create_report,
-        "3": quit
+        "3": send_letters,
+        "4": quit
     }
     menu_selection(prompt, main_dispatch)
