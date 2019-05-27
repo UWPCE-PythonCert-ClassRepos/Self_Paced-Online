@@ -9,13 +9,30 @@ def get_donor_db():
     }
 
 
+def get_donor(name):
+    if name.lower() in donor_db.keys():
+        donor = donor_db[name.lower()]
+        return donor
+    else:
+        return None
+
+
+def add_donor(name):
+    if name.lower() not in donor_db.keys():
+        donor = (name, [])
+        donor_db[name.lower()] = donor
+        return donor
+    else:
+        return None
+
+
 def thank_you():
     try:
-        donor = input("Name of the donor? ( 'q' to quit ) ")
+        donor_name = input("Name of the donor? ( 'q' to quit, 'list' to list ) ")
     except Exception as e:
         print(f"There is an error with your input, {e}.")
         thank_you()
-    donor_l = donor.lower()
+    donor_l = donor_name.lower()
     if donor_l == 'q':
         return
     elif donor_l == "list":
@@ -27,11 +44,12 @@ def thank_you():
             print("Not a float")
         except Exception as e:
             print("There is an error with your amount")
-        if donor_l in donor_db:
-            donor_db[donor_l][1].append(donation_amt)
-        else:
-            donor_db[donor_l] = (donor, [donation_amt])
-        letter = write_letter(donor_db[donor_l])
+        donor = get_donor(donor_name)
+        if donor == None:
+            donor = add_donor(donor_name)
+        donor[1].append(donation_amt)
+
+        letter = write_letter(donor)
         print(letter)
 
 
@@ -40,15 +58,19 @@ def list_donors():
 
 
 def create_report():
-    print("Donor Name                | Total Given | Num Gifts | Average Gift" )
-    print("-" * 66)
+    print(write_report())
+
+def write_report():
+    report = "Donor Name                | Total Given | Num Gifts | Average Gift" + '\n'
+    report += "-" * 66 + '\n'
+
     for donor in sorted(donor_db.keys(), key=sort_key, reverse=True):
-         print("{:<26} $ {:>10,.2f} {:>11}  ${:>12,.2f}".format(
+        report += "{:<26} $ {:>10,.2f} {:>11}  ${:>12,.2f}".format(
              donor_db[donor][0], 
              sum(donor_db[donor][1]), 
              len(donor_db[donor][1]), 
-             sum(donor_db[donor][1]) / len(donor_db[donor][1]))
-            )
+             sum(donor_db[donor][1]) / len(donor_db[donor][1])) + '\n'
+    return report
 
 
 def write_letter(donor):
