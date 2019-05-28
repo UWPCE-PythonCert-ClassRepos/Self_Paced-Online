@@ -3,8 +3,6 @@
 """
 A class-based system for rendering html.
 """
-
-
 # This is the framework for the base class
 class Element(object):
     tag = "html"
@@ -12,12 +10,14 @@ class Element(object):
 
     def __init__(self, content=None, **kwargs):
         self.attributes = kwargs
-        if content == None:
-            self.contents = []
-        else:
-            self.contents = [content]
+        self.contents = []
+        if content:
+            self.contents.append(content)
 
     def append(self, new_content):
+        # if hasattr(new_content, 'render'):
+        #     self.contents.append(new_content)
+        # else:
         self.contents.append(new_content)
 
     def _open_tag(self):
@@ -38,7 +38,7 @@ class Element(object):
             try:
                 content.render(out_file, cur_ind + self.indent)
             except AttributeError:
-                out_file.write(cur_ind + content)
+                out_file.write(cur_ind + self.indent + content)
             out_file.write('\n')
         out_file.write(cur_ind + self._close_tag())
 
@@ -47,6 +47,7 @@ class Html(Element):
     def render(self, out_file, cur_ind=''):
         out_file.write(cur_ind + "<!DOCTYPE html>\n")
         super().render(out_file, cur_ind=cur_ind)
+
 class Body(Element):
     tag = 'body'
 
@@ -121,3 +122,4 @@ class H(OneLineTag):
 
 class Meta(SelfClosingTag):
     tag = 'meta'
+

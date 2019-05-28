@@ -288,9 +288,8 @@ def test_a():
     file_contents = render_result(e).strip()
     print(file_contents)
 
-    assert file_contents.startswith("<a href")
-    assert file_contents.endswith("</a>")
-    assert file_contents == '<a href="http://google.com">link to google</a>'
+    assert file_contents.startswith('<a href="http://google.com">')
+    assert file_contents.endswith("link to google</a>")
 
 ########
 # Step 7
