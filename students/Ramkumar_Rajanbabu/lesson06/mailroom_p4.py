@@ -89,13 +89,7 @@ def write_letter(name, donation_amount):
         letter (string): a letter in string format
     """
     
-    letter = """
-    Dear {:s},
-    
-    Thank you for choosing to donate to this group. A special thank you for your generous donation of ${:0.2f}.
-    
-    Sincerely, 
-    Donation Society""".format(name, donation_amount)
+    letter = "\n\tDear {:s}, \n\n\tThank you for choosing to donate to this group. A special thank you for your generous donation of ${:0.2f}. \n\n\tSincerely, \n\tDonation Society".format(name, donation_amount)
     return letter 
 
 def display_report():
