@@ -1,3 +1,4 @@
 {
-  "test_html_render.py::test_attributes": true
+  "test_html_render.py::test_hr": true,
+  "test_html_render.py::test_hr_attr": true
 }

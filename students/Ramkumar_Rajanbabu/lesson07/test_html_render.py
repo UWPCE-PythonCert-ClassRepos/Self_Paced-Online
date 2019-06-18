@@ -30,6 +30,7 @@ def render_result(element, ind=""):
         element.render(outfile)
     return outfile.getvalue()
 
+
 ########
 # Step 1
 ########
@@ -209,6 +210,7 @@ def test_one_line_tag_append():
     with pytest.raises(NotImplementedError):
         e.append("some more content")
 
+
 ########
 # Step 4
 ########
@@ -246,12 +248,49 @@ def test_attributes():
 # Step 5
 ########
 
+def test_hr():
+    """a simple horizontal rule with no attributes"""
+    hr = Hr()
+    file_contents = render_result(hr)
+    print(file_contents)
+    assert file_contents == '<hr />\n'
+
+def test_hr_attr():
+    """a horizontal rule with an attribute"""
+    hr = Hr(width=400)
+    file_contents = render_result(hr)
+    print(file_contents)
+    assert file_contents == '<hr width="400" />\n'
+
+
+
+
+
+
+
+########
+# Step 6
+########
+
+
+
+########
+# Step 7
+########
+
+
+
+########
+# Step 8
+########
+
+
 
 
 
 #####################
 # indentation testing
-#  Uncomment for Step 9 -- adding indentation
+#  Step 9 -- adding indentation
 #####################
 
 # def test_indent():
