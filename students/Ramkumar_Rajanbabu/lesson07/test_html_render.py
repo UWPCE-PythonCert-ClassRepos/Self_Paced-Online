@@ -262,30 +262,53 @@ def test_hr_attr():
     print(file_contents)
     assert file_contents == '<hr width="400" />\n'
 
+def test_br():
+    br = Br()
+    file_contents = render_result(br)
+    print(file_contents)
+    assert file_contents == "<br />\n"
 
+def test_content_in_br():
+    with pytest.raises(TypeError):
+        br = Br("some content")
 
-
-
+def test_append_content_in_br():
+    with pytest.raises(TypeError):
+        br = Br()
+        br.append("some content")
 
 
 ########
 # Step 6
 ########
 
+def test_anchor():
+    a = A("http://google.com", "link to google")
+    file_contents = render_result(a)
+    print(file_contents)
+    assert "link to google" in file_contents
+    assert file_contents.startwith("<a href= 'http://google.com'>")
+    assert file_contents == '<a href="http://google.com">link to google</a>\n'
+    assert file_contents.endwith("</a>")
 
 
 ########
 # Step 7
 ########
 
+def test_ul():
+    ul = Ul()
 
+def test_li():
+    li = Li()
 
-########
-# Step 8
-########
-
-
-
+def test_head2():
+    h2 = H(2, "Some content")
+    file_contents = render_result(h2)
+    print(file_contents)
+    
+    assert file_contents.startswith("<h2>")
+    assert file_contents.endswith("</h2>\n")
 
 
 #####################
