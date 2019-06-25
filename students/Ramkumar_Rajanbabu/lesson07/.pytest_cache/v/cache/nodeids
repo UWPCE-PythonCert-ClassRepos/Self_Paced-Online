@@ -19,5 +19,9 @@
   "test_html_render.py::test_anchor",
   "test_html_render.py::test_ul",
   "test_html_render.py::test_li",
-  "test_html_render.py::test_head2"
+  "test_html_render.py::test_head2",
+  "test_html_render.py::test_indent",
+  "test_html_render.py::test_indent_contents",
+  "test_html_render.py::test_multiple_indent",
+  "test_html_render.py::test_element_indent1"
 ]

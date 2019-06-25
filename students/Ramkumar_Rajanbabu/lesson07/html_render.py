@@ -12,15 +12,17 @@ class Element(object):
     """Main Class"""
     
     tag = "html"
+    indent = "    "
     
     def __init__(self, content=None, **kwargs):
         """Initializer"""
         self.contents = content
+        self.attributes = kwargs
+        
         if self.contents is not None:
             self.contents = [content]
         else:
             self.contents = []
-        self.attributes = kwargs
         
     def append(self, new_content):
         """Appends new content to content list."""
@@ -32,27 +34,27 @@ class Element(object):
         
     def _close_tag(self):
         return f"</{self.tag}>"
-
-    def render(self, out_file):      
-        """Renders content and tags, then writes to file."""
-        #Step 4        
-        out_file.write("".join([f"{self._open_tag()}", "\n"]))
-        #Loop through the list of contents:
+    
+    #Step 9 cur_ind
+    def render(self, out_file, cur_ind = ""):      
+        """Renders content and tags, then writes to file."""       
+        out_file.write("".join([f"{cur_ind}{self._open_tag()}", "\n"]))
         for content in self.contents:
             try:    
-                content.render(out_file)
+                content.render(out_file, cur_ind + self.indent)
             except AttributeError:
-                out_file.write(content)
-        out_file.write("".join([f"{self._close_tag()}", "\n"]))
+                out_file.write(cur_ind + self.indent + content + "\n")
+        out_file.write("".join([f"{cur_ind}{self._close_tag()}", "\n"]))
 
 #Step 2
 class Html(Element):
     """Html subclass of Element."""
     tag = "html"
     
-    def render(self, out_file):
-        out_file.write("<!DOCTYPE html>\n")
-        Element.render(self, out_file)
+    #Step 9 cur_ind
+    def render(self, out_file, cur_ind=""):
+        out_file.write(cur_ind + "<!DOCTYPE html>\n")
+        Element.render(self, out_file, cur_ind)
 
 class Body(Element):
     """Body subclass of Element."""
@@ -70,10 +72,12 @@ class Head(Element):
 #Step 4    
 class OneLineTag(Element):
     """One line tagging subclass of Element."""
-    def render(self, out_file):
-        out_file.write("".join([self._open_tag(), self.contents[0], self._close_tag(), "\n"]))
     
-    def append(self, new_content):
+    #Step 9 cur_ind
+    def render(self, out_file, cur_ind=""):
+        out_file.write("".join([f"{cur_ind}{self._open_tag()}", self.contents[0], self._close_tag(), "\n"]))
+    
+    def append(self, content):
         """Appends new content to content list and raises error."""
         raise NotImplementedError
         
@@ -89,10 +93,11 @@ class SelfClosingTag(Element):
             raise TypeError("SelfClosingTag can not contain any content")
         super().__init__(content=content, **kwargs)
     
-    def render(self, out_file):
+    #Step 9 cur_ind
+    def render(self, out_file, cur_ind=""):
         """Renders contents for self closing tags."""
         tag = self._open_tag()[:-1] + " />\n"
-        out_file.write(tag)
+        out_file.write("".join([f"{cur_ind}{tag}"]))
     
     def append(self, *args):
         raise TypeError("You can not add content to a SelfClosingTag")
