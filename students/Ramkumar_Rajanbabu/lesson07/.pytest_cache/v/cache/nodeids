@@ -1,5 +1,27 @@
 [
   "test_html_render.py::test_init",
   "test_html_render.py::test_append",
-  "test_html_render.py::test_render_element"
+  "test_html_render.py::test_render_element",
+  "test_html_render.py::test_render_element2",
+  "test_html_render.py::test_html",
+  "test_html_render.py::test_body",
+  "test_html_render.py::test_p",
+  "test_html_render.py::test_sub_element",
+  "test_html_render.py::test_head",
+  "test_html_render.py::test_title",
+  "test_html_render.py::test_one_line_tag_append",
+  "test_html_render.py::test_attributes",
+  "test_html_render.py::test_hr",
+  "test_html_render.py::test_hr_attr",
+  "test_html_render.py::test_br",
+  "test_html_render.py::test_content_in_br",
+  "test_html_render.py::test_append_content_in_br",
+  "test_html_render.py::test_anchor",
+  "test_html_render.py::test_ul",
+  "test_html_render.py::test_li",
+  "test_html_render.py::test_head2",
+  "test_html_render.py::test_indent",
+  "test_html_render.py::test_indent_contents",
+  "test_html_render.py::test_multiple_indent",
+  "test_html_render.py::test_element_indent1"
 ]
